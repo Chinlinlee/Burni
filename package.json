@@ -1,0 +1,37 @@
+{
+    "name": "raccoon-fhir-api-gen",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1" , 
+        "build" : "node ./build/init.js"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "bcrypt": "^5.0.0",
+        "body-parser": "^1.18.3",
+        "compression": "^1.7.3",
+        "connect-flash": "^0.1.1",
+        "connect-mongo": "^3.2.0",
+        "cookie-parser": "^1.4.4",
+        "dotenv": "^6.0.0",
+        "ejs": "^3.1.2",
+        "express": "^4.16.3",
+        "express-session": "^1.16.2",
+        "joi": "^17.3.0",
+        "js-beautify": "^1.13.0",
+        "loadsh": "0.0.4",
+        "lodash": "^4.17.20",
+        "mkdirp": "^1.0.4",
+        "moment": "^2.24.0",
+        "mongoose": "^5.10.4",
+        "mongoose-date-format": "^1.2.0",
+        "passport": "^0.4.0",
+        "passport-http-bearer": "^1.0.1",
+        "passport-local": "^1.0.0",
+        "rootpath": "^0.1.2",
+        "uuid": "^8.3.2"
+    }
+}

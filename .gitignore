@@ -1,0 +1,11 @@
+.vscode/
+node_modules/
+FHIRModels
+FHIRResource
+models/mongodb/FHIRTypeSchema/*
+!models/mongodb/FHIRTypeSchema/Bundle.js
+api/FHIR/*
+.env
+!api/FHIR/Patient
+models/mongodb/model/*
+!models/mognodb/model/Patient.js
