@@ -70,7 +70,8 @@ GET
     <summary>
         GET patient resource return bundle(Clilk here to show)
     </summary>
-    
+
+`http://localhost:8088/fhir/Patient/`
 ```json=
     {
     "resourceType": "Bundle",
@@ -503,6 +504,14 @@ GET
 ```
 
 </details>
+
+DELETE `http://localhost:8088/fhir/Patient/123456`
+![](https://i.imgur.com/PGXRya4.png)
+
+Then GET by id
+![](https://i.imgur.com/M9V5xaF.png)
+
+
 
 
 
