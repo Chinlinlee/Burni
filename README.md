@@ -513,11 +513,8 @@ DELETE `http://localhost:8088/fhir/Patient/123456`
 Then GET by id
 ![](https://i.imgur.com/M9V5xaF.png)
 
-
-
-
-
-
-## TODO
+# TODO
 - [ ] metadata
 - [ ] history
+- :secret: FHIR Next Generation Sequencing (NGS) Resources
+- :secret: support FHIR implementation guide(IG)
