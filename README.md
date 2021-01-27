@@ -516,5 +516,6 @@ Then GET by id
 # TODO
 - [x] metadata
 - [ ] history
+- [ ] search parameters
 - :secret: FHIR Next Generation Sequencing (NGS) Resources
 - :secret: support FHIR implementation guide(IG)
