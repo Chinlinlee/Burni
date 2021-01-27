@@ -48,5 +48,5 @@ node server.js
 
 
 ## TODO
-- [ ] metadata
+- [x] metadata
 - [ ] history

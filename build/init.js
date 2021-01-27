@@ -1,5 +1,5 @@
 const fs = require('fs');
-const { generateAPI } =require('../API_Generator');
+const { generateAPI , generateMetaData } =require('../API_Generator');
 const config  = require('./config');
 
 function init () {
@@ -20,5 +20,6 @@ FHIRSERVER_APIPATH="fhir"
         fs.writeFileSync(".env" , envText);
     }
     generateAPI(config);
+    generateMetaData();
 }
 init();

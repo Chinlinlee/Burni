@@ -2,6 +2,7 @@ const fhirgen = require('./FHIR-mongoose-Models-Generator');
 const fs =require('fs');
 const mkdirp = require('mkdirp');
 const beautify = require('js-beautify').js;
+const _ = require('lodash');
 /**
  * 
  * @param {Object} option 
@@ -292,13 +293,107 @@ function generateAPI(option) {
         fs.writeFileSync(`./api/FHIR/${res}/index.js` , beautify(indexJs));
     }
 }
+function generateMetaData () {
+    let dirInFHIRAPI = fs.readdirSync('./api/FHIR' , {withFileTypes : true})
+    .filter(itemInDir => itemInDir.isDirectory())
+    .map(dirItem => {
+        if (dirItem.name.toLocaleLowerCase() != "metadata") {
+            return dirItem.name;
+        }
+    });
+    dirInFHIRAPI = _.compact(dirInFHIRAPI);
+    const fhirUrl = "http://hl7.org/fhir/R4";
+    let metaData = {
+        "rest" : [
+            {
+                "mode" : "server" , 
+                "resource" : [] 
+            }
+        ]
+    };
+    console.log(dirInFHIRAPI);
+    for (let resource of dirInFHIRAPI) {
+        metaData.rest[0].resource.push( {
+            "type" : resource , 
+            "profile" : `${fhirUrl}/${resource.toLocaleLowerCase()}.html` ,
+            "interaction" : [
+                {
+                    "code" : "read"
+                } , 
+                {
+                    "code" : "update"
+                } , 
+                {
+                    "code" : "delete"
+                } , 
+                {
+                    'code' : "create"
+                }
+            ] , 
+            "updateCreate" : true , 
+            "conditionalDelete" : "single" ,
+            "searchInclude" : [] ,
+            "searchRevInclude" : [] ,
+            "searchParam" : [
+                {
+                    "name" : "_id" , 
+                    "type" : "string"
+                } 
+            ]
+        });
+    }
+    mkdirp.sync("./api/FHIR/metadata");
+    mkdirp.sync("./api/FHIR/metadata/controller");
+    let metadataRouteIndexText = `
+    const express = require('express');
+    const router = express.Router();
+    const {validateParams} = require('../../validator');
+    const Joi = require('joi');
+    const {isAdminLogin , isAdmin} = require('../../Api_function');
+    
+    router.use((req, res, next) => {
+        res.set('Content-Type', 'application/fhir+json');
+        next();
+    });
+    
+    router.get('/' , require('./controller/getMetadata'));
+    
+    module.exports = router;`
+    fs.writeFileSync("./api/FHIR/metadata/index.js" , beautify(metadataRouteIndexText));
+    let metadataText = `
+    const fhirUrl = "http://hl7.org/fhir/R4";
 
+    module.exports = async function (req ,res) {
+        const metaData = {
+            "resourceType": "CapabilityStatement",
+            "status": "active",
+            "date": Date.now().toString(),
+            "publisher": "Not provided",
+            "kind": "instance",
+            "software": {
+            "name": "Simple-Express-FHIR-Server",
+            "version": "1.0.0"
+            },
+            "implementation": {
+            "description": "Simple-Express FHIR R4 Server",
+            "url": \`http://${process.env.FHIRSERVER_HOST}/${process.env.FHIRSERVER_APIPATH}\`
+            },
+            "fhirVersion": "4.0.1",
+            "format": [ "json" ],
+            "rest" : ${JSON.stringify(metaData.rest[0] , null , 4)}
+        }
+        res.json(metaData);
+    }
+    `
+    fs.writeFileSync("./api/FHIR/metadata/controller/getMetadata.js" , beautify(metadataText));
+}
 /*generateAPI({
     resources : ["Patient" , "MedicationRequest" , "Observation" , "ImagingStudy" , "Claim"]
 })*/
 
 module.exports = {
-    generateAPI : generateAPI
+    generateAPI : generateAPI , 
+    generateMetaData : generateMetaData
 }
 
 
