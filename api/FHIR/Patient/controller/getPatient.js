@@ -4,10 +4,7 @@ const {
     createBundle
 } = require('models/FHIR/func');
 const queryBuild = require('models/FHIR/queryBuild.js');
-const FHIRFilter = {
-    _id: 0,
-    __v: 0
-}
+
 module.exports = async function(req, res) {
     let queryParameter = _.cloneDeep(req.query);
     let paginationSkip = queryParameter['_offset'] == undefined ? 0 : queryParameter['_offset'];
@@ -34,10 +31,13 @@ module.exports = async function(req, res) {
         delete queryParameter["$and"];
     }
     try {
-        let docs = await mongodb.Patient.find(queryParameter, FHIRFilter).
+        let docs = await mongodb.Patient.find(queryParameter).
         limit(realLimit).
         skip(paginationSkip).
         exec();
+        docs = docs.map(v => {
+            return v.getFHIRField();
+        });
         let count = await mongodb.Patient.countDocuments(queryParameter);
         let bundle = createBundle(req, docs, count, paginationSkip, paginationLimit, "Patient");
         return res.status(200).json(bundle);

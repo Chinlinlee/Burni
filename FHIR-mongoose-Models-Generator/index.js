@@ -37,7 +37,7 @@ function generateResourceSchema (type) {
         }
     };
     result = Object.assign({} , topLevelObj , result);
-    let importLib = "const mongoose = require('mongoose');\r\nconst moment = require('moment');\r\n";
+    let importLib = "const mongoose = require('mongoose');\r\nconst moment = require('moment');\r\nconst _ = require('lodash');\r\n";
     let code = `module.exports = function () {
     const ${type} = ${JSON.stringify(result , null , 4).replace(/\"/gm , '').replace(/\\/gm , '"')};\r\n    const ${type}Schema = new mongoose.Schema(${type} , {
         toObject : { getters : true} ,
@@ -48,12 +48,22 @@ function generateResourceSchema (type) {
         delete result._id;
         let version = result.__v;
         if (version) {
-          set(result , 'meta.versionId' , version.toString());
+          _.set(result , 'meta.versionId' , version.toString());
         }
         delete result.__v;
         delete result['name._id'];
         return result;
     }
+    ${type}Schema.post('findOneAndUpdate' , async function (result) {
+        if (result.value) {
+          result.value.__v++;
+          await result.value.save();
+        } else {
+          result.__v++;
+          await result.save();
+        }
+        return result;
+      })
     const ${type}Model = mongoose.model("${type}" , ${type}Schema , "${type}");
     return ${type}Model;\r\n}`;
     for (let i in result) {

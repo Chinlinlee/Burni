@@ -18,10 +18,7 @@ function generateAPI(option) {
         const mongodb = require('models/mongodb');
         const {createBundle} = require('models/FHIR/func');
         const queryBuild = require('models/FHIR/queryBuild.js');
-        const FHIRFilter = {
-            _id: 0,
-            __v: 0
-        }
+
         module.exports = async function (req, res) {
             let queryParameter =  _.cloneDeep(req.query);
             let paginationSkip = queryParameter['_offset'] == undefined ? 0 : queryParameter['_offset'];
@@ -48,10 +45,13 @@ function generateAPI(option) {
                 delete queryParameter["$and"];
             }
             try {
-                let docs = await mongodb.${res}.find(queryParameter ,FHIRFilter).
+                let docs = await mongodb.${res}.find(queryParameter).
                 limit(realLimit).
                 skip(paginationSkip).
                 exec();
+                docs = docs.map(v=> {
+                    return v.getFHIRField();
+                });
                 let count = await mongodb.${res}.countDocuments(queryParameter);
                 let bundle = createBundle(req , docs , count , paginationSkip , paginationLimit , "${res}");
                 return res.status(200).json(bundle);
