@@ -1,4 +1,5 @@
 
+const _ = require('lodash');
 const bundleClass = require('../mongodb/FHIRTypeSchema/Bundle');
 
 function isFirst (offset) {
@@ -53,9 +54,21 @@ function getEntryFullUrl(item , http="http" ,resource) {
     return url;
 }
 
-function createBundle (req ,  docs , count , skip , limit , resource) {
+/**
+ * 
+ * @param {*} req 
+ * @param {*} docs 
+ * @param {Number} count 
+ * @param {Number} skip 
+ * @param {Number} limit 
+ * @param {*} resource 
+ * @param {Object} option 
+ * @param {String} option.type
+ */
+function createBundle (req ,  docs , count , skip , limit , resource , option) {
     let bundle = new bundleClass.Bundle();
-    bundle.type = "searchset";
+    let type = _.get(option , "type");
+    bundle.type = type || "searchset";
     bundle.total = count;
     if (isFirst(skip)) {
         let url = getUrl(req.query , "http" , resource);
@@ -87,9 +100,22 @@ function createBundle (req ,  docs , count , skip , limit , resource) {
         bundle.link.push(link);
         bundle.link.push(preLink);
     }
-    for(let i in docs) {
-        let entry = new bundleClass.entry(getEntryFullUrl(docs[i] , "http", docs[i].resourceType) , docs[i]);
-        bundle.entry.push(entry);
+    if (option.type == "history") {
+        for(let i in docs) {
+            let requestObj = _.cloneDeep(docs[i].request);
+            let responseObj = _.cloneDeep(docs[i].response);
+            delete docs[i].request;
+            delete docs[i].response;
+            let entry = new bundleClass.entry(getEntryFullUrl(docs[i] , "http", docs[i].resourceType) , docs[i]);
+            entry.request = requestObj;
+            entry.response = responseObj;
+            bundle.entry.push(entry);
+        }
+    } else {
+        for(let i in docs) {
+            let entry = new bundleClass.entry(getEntryFullUrl(docs[i] , "http", docs[i].resourceType) , docs[i]);
+            bundle.entry.push(entry);
+        }
     }
     return bundle;
 }
