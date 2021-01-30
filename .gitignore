@@ -8,4 +8,4 @@ api/FHIR/*
 .env
 !api/FHIR/Patient
 models/mongodb/model/*
-!models/mognodb/model/Patient.js
+!models/mongodb/model/Patient.js
