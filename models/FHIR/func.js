@@ -100,7 +100,7 @@ function createBundle (req ,  docs , count , skip , limit , resource , option) {
         bundle.link.push(link);
         bundle.link.push(preLink);
     }
-    if (option.type == "history") {
+    if (type == "history") {
         for(let i in docs) {
             let requestObj = _.cloneDeep(docs[i].request);
             let responseObj = _.cloneDeep(docs[i].response);

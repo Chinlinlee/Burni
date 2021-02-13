@@ -1,5 +1,6 @@
 const fs = require('fs');
 const { generateAPI , generateMetaData } =require('../API_Generator');
+const { genHistoryModel } = require('../history_model_Generator');
 const config  = require('./config');
 
 function init () {
@@ -21,5 +22,6 @@ FHIRSERVER_APIPATH="fhir"
     }
     generateAPI(config);
     generateMetaData();
+    genHistoryModel();
 }
 init();

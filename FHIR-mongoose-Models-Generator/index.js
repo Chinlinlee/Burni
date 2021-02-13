@@ -39,7 +39,9 @@ function generateResourceSchema (type) {
     result = Object.assign({} , topLevelObj , result);
     let importLib = "const mongoose = require('mongoose');\r\nconst moment = require('moment');\r\nconst _ = require('lodash');\r\n";
     let code = `module.exports = function () {
-    const ${type} = ${JSON.stringify(result , null , 4).replace(/\"/gm , '').replace(/\\/gm , '"')};\r\n    const ${type}Schema = new mongoose.Schema(${type} , {
+    const ${type} = ${JSON.stringify(result , null , 4).replace(/\"/gm , '').replace(/\\/gm , '"')};\r\n
+    module.exports.schema = ${type}; 
+    const ${type}Schema = new mongoose.Schema(${type} , {
         toObject : { getters : true} ,
         toJSON : { getters : true} 
     });\r\n
@@ -64,6 +66,38 @@ function generateResourceSchema (type) {
         }
         return result;
       })
+      ${type}Schema.pre('findOneAndUpdate' , async function (next) {
+        const docToUpdate = await this.model.findOne(this.getFilter());
+        let mongodb = require('../index');
+        let item = docToUpdate.toObject();
+        delete item._id;
+        //item.id = uuid.v4();
+        let version = item.__v;
+        
+        let port = (process.env.FHIRSERVER_PORT == "80" || process.env.FHIRSERVER_PORT == "443") ? "" : \`:\${process.env.FHIRSERVER_PORT}\`;
+        if (version == 1) {
+            _.set(item , "request" , {
+                "method" : "POST" , 
+                url : \`http://\${process.env.FHIRSERVER_HOST}\${port}/\${process.env.FHIRSERVER_APIPATH}/${type}/\${item.id}/_history/\${version}\`
+            });
+            _.set(item , "response" , {
+                status : "201"
+            });
+        } else {
+            _.set(item , "request" , {
+                "method" : "PUT" , 
+                url : \`http://\${process.env.FHIRSERVER_HOST}\${port}/\${process.env.FHIRSERVER_APIPATH}/${type}/\${item.id}/_history/\${version}\`
+            });
+            _.set(item , "response" , {
+                status : "200"
+            });             
+        }
+        let createdDocs = await mongodb['${type}_history'].create(item);
+        await mongodb.${type}_history.findOneAndUpdate({_id : mongoose.Types.ObjectId(createdDocs._id)} , {
+            $set : {__v : version}
+        });
+        next();
+    });
     const ${type}Model = mongoose.model("${type}" , ${type}Schema , "${type}");
     return ${type}Model;\r\n}`;
     for (let i in result) {
