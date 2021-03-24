@@ -3,6 +3,156 @@ const fs =require('fs');
 const mkdirp = require('mkdirp');
 const beautify = require('js-beautify').js;
 const _ = require('lodash');
+
+
+const genParamFunc = {
+    "string" : (param , field) => {
+        let txt = "";
+        let searchFields = field.split("|");
+        for (let searchField of searchFields) {
+            let [resource] = searchField.split('.');
+            let fieldInResource = searchField.replace(`${resource}.` , "");
+            fieldInResource = fieldInResource.trim();
+            if (param.includes ('address')) {
+                txt += `
+                paramsSearch["${param}"] = (query) => {
+                    let buildResult = queryBuild.addressQuery(query["${param}"] ,"${fieldInResource}");
+                    query.$and.push(buildResult);
+                    delete query[${param}];
+                } 
+                `;
+            } else if (param == "name") {
+                txt+= `
+                paramsSearch["name"] = (query) => {
+                    if (!_.isArray(query["name"])) {
+                        query["name"] = [query["name"]]
+                    }
+                    for (let item of query["name"]) {
+                        let buildResult = queryBuild.nameQuery(item , "name");
+                        query.$and.push(buildResult);
+                    }
+                    delete query['name'];
+                }
+                `
+            } else {
+                txt += `
+                paramsSearch["${param}"] = (query) => {
+                    queryBuild.arrayStringBuild(query ,"${param}" , "${fieldInResource}" , ["${param}"]);
+                } 
+                `
+            }
+        }
+        return txt;
+    } , 
+    "token" : (param , field) => {
+        let txt = "";
+        let searchFields = field.split("|");
+        for (let searchField of searchFields) {
+            let [resource] = searchField.split('.');
+            let fieldInResource = searchField.replace(`${resource}.` , "");
+            fieldInResource = fieldInResource.trim();
+            if (param == "phone") {
+                txt+=`
+                paramsSearch["phone"] = (query) => {
+                    let buildResult =queryBuild.tokenQuery(query["phone"] , "value" , "telecom" , "phone");
+                    for (let i in buildResult) {
+                        query.$and.push({
+                            [i] : buildResult[i]
+                        });
+                    }
+                    delete query['phone'];
+                }
+                `
+            } else if (param == "email") {
+                txt+=`
+                paramsSearch["email"] = (query) => {
+                    let buildResult =queryBuild.tokenQuery(query["email"] , "value" , "telecom" , "email");
+                    for (let i in buildResult) {
+                        query.$and.push({
+                            [i] : buildResult[i]
+                        });
+                    }
+                    delete query['email'];
+                }
+                `
+            } else if (param =="identifier") {
+                txt+=`
+                paramsSearch["identifier"] = (query) => {
+                    let buildResult = queryBuild.tokenQuery(query["identifier"] , "value" , "identifier" ,"");
+                    for (let i in buildResult) {
+                        query.$and.push({
+                            [i] : buildResult[i]
+                        });
+                    }
+                    delete query['identifier'];
+                }
+                `
+            } else {
+                txt+=`
+                paramsSearch["${param}"] = (query) => {
+                    let buildResult = queryBuild.tokenQuery(query["${param}"] , "" , "${fieldInResource}" ,"");
+                    for (let i in buildResult) {
+                        query.$and.push({
+                            [i] : buildResult[i]
+                        });
+                    }
+                    delete query['${param}'];
+                }
+                `
+            } 
+        }
+        return txt;
+    } ,
+    "number" : (param , field) => {
+        let txt = "";
+        let searchFields = field.split("|");
+        for (let searchField of searchFields) {
+            let [resource] = searchField.split('.');
+            let fieldInResource = searchField.replace(`${resource}.` , "");
+            fieldInResource = fieldInResource.trim();
+            txt += `
+            paramsSearch["${param}"] = (query) => {
+                    let buildResult = numberQuery(item , "${field}");
+                    query.$and.push({
+                        "${fieldInResource}": buildResult
+                    });
+                    delete query["${field}"];
+                } 
+            }
+            `
+        }
+        return txt;
+    } , 
+    "date" : (param , field) => {
+        let txt = "";
+        let searchFields = field.split("|");
+        for (let searchField of searchFields) {
+            let [resource] = searchField.split('.');
+            let fieldInResource = searchField.replace(`${resource}.` , "");
+            fieldInResource = fieldInResource.trim();
+            if (!fieldInResource.includes(")")) {
+                txt += `
+                paramsSearch["${param}"] = (query) => {
+                    if (!_.isArray(query["${param}"])) {
+                        query["${param}"] = [query["${param}"]]
+                    }
+                    for (let i in query["${param}"]) {
+                        let buildResult = queryBuild.dateQuery(query["${param}"][i] , "${fieldInResource}");
+                        if (!buildResult) {
+                            errorMessage = handleError.processing(\`invalid date: \${query["${param}"]}\`)
+                            throw new Error(errorMessage);
+                        }
+                        query.$and.push(buildResult);
+                    }
+                    delete query["${param}"];
+                }
+                `
+            }
+        }
+        return txt;
+    }
+}
+
 /**
  * 
  * @param {Object} option 
@@ -13,11 +163,12 @@ function generateAPI(option) {
     for (let res of option.resources) {
         fhirgen(res, {resourcePath : "./models/mongodb/model" , typePath: "./models/mongodb/FHIRTypeSchema"});
         mkdirp.sync(`./api/FHIR/${res}/controller`);
-        const get = `
+        let get = `
         const _ = require('lodash');
         const mongodb = require('models/mongodb');
         const {createBundle} = require('models/FHIR/func');
         const queryBuild = require('models/FHIR/queryBuild.js');
+        const {handleError} = require('models/FHIR/httpMessage');
 
         module.exports = async function (req, res) {
             let queryParameter =  _.cloneDeep(req.query);
@@ -34,13 +185,16 @@ function generateAPI(option) {
                 }
             });
             queryParameter.$and = [];
-            Object.keys(queryParameter).forEach(key => {
+            for (let key in queryParameter) {
                 try {
                     paramsSearch[key](queryParameter);
                 } catch (e) {
-                    if (key != "$and") delete queryParameter[key];
+                    if (key != "$and") {
+                        console.error(e);
+                        return res.status(400).send(handleError.processing(\`Unknown search parameter \${key} or value \${queryParameter[key]}\`))
+                    }
                 }
-            });
+            }
             if (queryParameter.$and.length == 0) {
                 delete queryParameter["$and"];
             }
@@ -69,8 +223,27 @@ function generateAPI(option) {
                     id : query["_id"]
                 });
                 delete query["_id"];
-            } 
+            }
         }`
+
+        let searchParameter = fs.readFileSync('./FHIRParametersClean.json' , 'utf-8');
+        searchParameter = JSON.parse(searchParameter);
+        let resSearchParams = searchParameter[res];
+        for (let key in resSearchParams) {
+            let paramObj = resSearchParams[key];
+            let param = paramObj["parameter"];
+            let type = paramObj["type"];
+            let field = paramObj["field"];
+            try {
+                let searchFuncTxt = genParamFunc[type](param , field);
+                get+= beautify(searchFuncTxt);
+            } catch (e) {
+                if (e.message.includes("not a function")) {
+                    console.log(type);
+                    console.error(e);
+                }
+            }
+        }
         const getById = `
         const mongodb = require('models/mongodb');
         const {handleError} = require('../../../../models/FHIR/httpMessage');
@@ -89,6 +262,77 @@ function generateAPI(option) {
             }
         };
         `
+
+        const getHistory = `
+        const _ = require('lodash');
+        const mongodb = require('models/mongodb');
+        const {
+            createBundle
+        } = require('models/FHIR/func');
+        const queryBuild = require('models/FHIR/queryBuild.js');
+
+        module.exports = async function(req, res) {
+            let queryParameter = _.cloneDeep(req.query);
+            let id = req.params.id;
+            let paginationSkip = queryParameter['_offset'] == undefined ? 0 : queryParameter['_offset'];
+            let paginationLimit = queryParameter['_count'] == undefined ? 100 : queryParameter['_count'];
+            _.set(req.query, "_offset", paginationSkip);
+            _.set(req.query, "_count", paginationLimit);
+            let realLimit = paginationLimit + paginationSkip;
+            delete queryParameter['_count'];
+            delete queryParameter['_offset'];
+            try {
+                let docs = await mongodb.${res}_history.find({ id : id}).
+                limit(realLimit).
+                skip(paginationSkip).
+                exec();
+                docs = docs.map(v => {
+                    return v.getFHIRBundleField();
+                });
+                let count = await mongodb.${res}_history.countDocuments({ id : id });
+                let bundle = createBundle(req, docs, count, paginationSkip, paginationLimit, "${res}" , {
+                    type : "history"
+                });
+                return res.status(200).json(bundle);
+            } catch (e) {
+                console.log('api api/fhir/${res}/:id/history has error, ', e)
+                return res.status(500).json({
+                    message: 'server has something error'
+                });
+            }
+        };
+        `;
+
+        const getHistoryById = `
+        const mongodb = require('models/mongodb');
+        const {
+            handleError
+        } = require('../../../../models/FHIR/httpMessage');
+        module.exports = async function(req, res) {
+            let id = req.params.id;
+            let version = req.params.version;
+            try {
+                let docs = await mongodb.${res}_history.findOne({
+                    $and : [
+                        {
+                            id: id
+                        } ,
+                        {
+                            __v : version
+                        }
+                    ]
+                }).exec();
+                if (docs) {
+                    return res.status(200).json(docs.getFHIRField());
+                }
+                let errorMessage = \`not found ${res}/\${id} with version \${version} in history\`;
+                return res.status(404).json(handleError["not-found"](errorMessage));
+            } catch (e) {
+                console.log('api api/fhir/${res}/:id has error, ', e)
+                return res.status(500).json(handleError.exception('server has something error'));
+            }
+        };
+        `;
         const post = `
         const mongodb = require('models/mongodb');
         const { handleError } = require('../../../../models/FHIR/httpMessage');
@@ -264,6 +508,8 @@ function generateAPI(option) {
         }`
         fs.writeFileSync(`./api/FHIR/${res}/controller/get${res}.js` , beautify(get));
         fs.writeFileSync(`./api/FHIR/${res}/controller/get${res}ById.js` , beautify(getById));
+        fs.writeFileSync(`./api/FHIR/${res}/controller/get${res}History.js` , beautify(getHistory));
+        fs.writeFileSync(`./api/FHIR/${res}/controller/get${res}HistoryById.js` , beautify(getHistoryById));
         fs.writeFileSync(`./api/FHIR/${res}/controller/post${res}.js` , beautify(post));
         fs.writeFileSync(`./api/FHIR/${res}/controller/put${res}.js` , beautify(put));
         fs.writeFileSync(`./api/FHIR/${res}/controller/delete${res}.js` , beautify(deleteJs));
@@ -283,6 +529,15 @@ function generateAPI(option) {
         } , "query" ,{ allowUnknown : true }) ,require('./controller/get${res}'));
 
         router.get('/:id' ,require('./controller/get${res}ById'));
+
+        router.get('/:id/_history' ,validateParams({
+            "_offset": joi.number().integer(),
+            "_count": joi.number().integer()
+        }, "query", {
+            allowUnknown: true
+        }) , require('./controller/get${res}History'));
+
+        router.get('/:id/_history/:version' , require('./controller/get${res}HistoryById'));
 
         router.post('/' ,require('./controller/post${res}'));
 
