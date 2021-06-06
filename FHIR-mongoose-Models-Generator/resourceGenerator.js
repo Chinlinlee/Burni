@@ -210,7 +210,8 @@ function generateResourceSchema (type) {
     module.exports.schema = ${type}; 
     const ${type}Schema = new mongoose.Schema(${type} , {
         toObject : { getters : true} ,
-        toJSON : { getters : true} 
+        toJSON : { getters : true} ,
+        versionKey : false
     });\r\n
     ${type}Schema.methods.getFHIRField = function () {
         let result = this.toObject();
@@ -259,8 +260,8 @@ function generateResourceSchema (type) {
         let mongodb = require('../index');
         let item = result.toObject();
         delete item._id;
-        let version = item.__v;
-        if (version == 0 ) {
+        let version = item.versionId;
+        if (version == "1" ) {
             let port = (process.env.FHIRSERVER_PORT == "80" || process.env.FHIRSERVER_PORT == "443") ? "" : \`:\${process.env.FHIRSERVER_PORT}\`;
             _.set(item, "request", {
                 "method": "POST",

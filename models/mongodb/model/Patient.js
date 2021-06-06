@@ -113,8 +113,7 @@ module.exports = function() {
         },
         toJSON: {
             getters: true
-        } ,
-        versionKey : false
+        }
     });
 
     PatientSchema.methods.getFHIRField = function() {
@@ -132,17 +131,17 @@ module.exports = function() {
         if (storedID) {
             if (storedID.resourceType == "Patient") {
                 const docInHistory = await mongodb.Patient_history.findOne({
-                    id: this.id
-                })
-                .sort({
-                    "meta.versionId" : -1
-                });
-                let versionId = Number(_.get(docInHistory , "meta.versionId"))+1;
+                        id: this.id
+                    })
+                    .sort({
+                        "meta.versionId": -1
+                    });
+                let versionId = Number(_.get(docInHistory, "meta.versionId")) + 1;
                 let versionIdStr = String(versionId);
-                Object.assign(this , {
-                    meta : {
-                        versionId : versionIdStr ,
-                        lastUpdated : new Date()
+                Object.assign(this, {
+                    meta: {
+                        versionId: versionIdStr,
+                        lastUpdated: new Date()
                     }
                 });
             } else {
@@ -150,10 +149,10 @@ module.exports = function() {
                 return next(new Error(`The id->$"{this.id}" stored by resource ${storedID.resourceType}`));
             }
         } else {
-            Object.assign(this , {
-                meta : {
-                    versionId : "1" ,
-                    lastUpdated : new Date()
+            Object.assign(this, {
+                meta: {
+                    versionId: "1",
+                    lastUpdated: new Date()
                 }
             });
         }
@@ -164,8 +163,8 @@ module.exports = function() {
         let mongodb = require('../index');
         let item = result.toObject();
         delete item._id;
-        let version = item.meta.versionId;
-        if (version == "1") {
+        let version = item.__v;
+        if (version == 0) {
             let port = (process.env.FHIRSERVER_PORT == "80" || process.env.FHIRSERVER_PORT == "443") ? "" : `:${process.env.FHIRSERVER_PORT}`;
             _.set(item, "request", {
                 "method": "POST",
@@ -177,20 +176,20 @@ module.exports = function() {
             let createdDocs = await mongodb['Patient_history'].create(item);
         }
         await mongodb.FHIRStoredID.findOneAndUpdate({
-            id : result.id
-        } , {
+            id: result.id
+        }, {
             id: result.id,
             resourceType: "Patient"
-        } , {
-            upsert : true
-        })
+        }, {
+            upsert: true
+        });
     });
 
-    PatientSchema.pre('findOneAndUpdate' , async function (next) {
+    PatientSchema.pre('findOneAndUpdate', async function(next) {
         const docToUpdate = await this.model.findOne(this.getFilter());
         let version = Number(docToUpdate.meta.versionId);
         this._update.$set.meta = {};
-        this._update.$set.meta.versionId = String(version+1);
+        this._update.$set.meta.versionId = String(version + 1);
         this._update.$set.meta.lastUpdated = new Date();
         return next();
     });
@@ -231,7 +230,7 @@ module.exports = function() {
         let mongodb = require('../index');
         let item = docToDelete.toObject();
         delete item._id;
-        item.meta.versionId = String(Number(item.meta.versionId)+1);
+        item.meta.versionId = String(Number(item.meta.versionId) + 1);
         let version = item.meta.versionId;
 
         let port = (process.env.FHIRSERVER_PORT == "80" || process.env.FHIRSERVER_PORT == "443") ? "" : `:${process.env.FHIRSERVER_PORT}`;
