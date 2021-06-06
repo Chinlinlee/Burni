@@ -33,6 +33,8 @@ module.exports = async function(req, res) {
 async function insertPatient(insertData) {
     return new Promise(async (resolve, reject) => {
         try {
+            delete insertData.text;
+            delete insertData.meta;
             insertData.id = uuid.v4();
             let newPatient = new mongodb.Patient(insertData);
             newPatient.save(function(err, doc) {

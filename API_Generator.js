@@ -414,6 +414,8 @@ function generateAPI(option) {
         async function insert${res}(insertData) {
             return new Promise(async (resolve, reject) => {
                 try {
+                    delete insertData.text;
+                    delete insertData.meta;
                     insertData.id = uuid.v4();
                     let new${res} = new mongodb.${res}(insertData);
                     new${res}.save(function (err, doc) {
