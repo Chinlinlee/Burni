@@ -23,5 +23,7 @@ FHIRSERVER_APIPATH="fhir"
     generateAPI(config);
     generateMetaData();
     genHistoryModel();
+    console.log("Init finished");
+    process.exit(0);
 }
 init();

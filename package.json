@@ -4,8 +4,8 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1" , 
-        "build" : "node ./build/init.js"
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "build": "node ./build/init.js"
     },
     "author": "",
     "license": "ISC",
@@ -23,11 +23,12 @@
         "joi": "^17.3.0",
         "js-beautify": "^1.13.0",
         "loadsh": "0.0.4",
-        "lodash": "^4.17.20",
+        "lodash": "^4.17.21",
         "mkdirp": "^1.0.4",
         "moment": "^2.24.0",
         "mongoose": "^5.10.4",
         "mongoose-date-format": "^1.2.0",
+        "mongoose-schema-jsonschema": "^1.4.4",
         "passport": "^0.4.0",
         "passport-http-bearer": "^1.0.1",
         "passport-local": "^1.0.0",

@@ -1,12 +1,12 @@
-const fhirgen = require('./FHIR-mongoose-Models-Generator');
+const fhirgen = require('./FHIR-mongoose-Models-Generator/resourceGenerator');
 const fs =require('fs');
 const mkdirp = require('mkdirp');
 const beautify = require('js-beautify').js;
 const _ = require('lodash');
-
+require('dotenv').config();
 
 const genParamFunc = {
-    "string" : (param , field) => {
+    "string" : (param , field , schema={}) => {
         let txt = "";
         let searchFields = field.split("|");
         for (let searchField of searchFields) {
@@ -44,7 +44,7 @@ const genParamFunc = {
         }
         return txt;
     } , 
-    "token" : (param , field) => {
+    "token" : (param , field , schema={}) => {
         let txt = "";
         let searchFields = field.split("|");
         for (let searchField of searchFields) {
@@ -90,7 +90,7 @@ const genParamFunc = {
             } else {
                 txt+=`
                 paramsSearch["${param}"] = (query) => {
-                    let buildResult = queryBuild.tokenQuery(query["${param}"] , "" , "${fieldInResource}" ,"");
+                    let buildResult = queryBuild.tokenQuery(query["${param}"] , "code" , "${fieldInResource}" ,"");
                     for (let i in buildResult) {
                         query.$and.push({
                             [i] : buildResult[i]
@@ -103,7 +103,7 @@ const genParamFunc = {
         }
         return txt;
     } ,
-    "number" : (param , field) => {
+    "number" : (param , field , schema={}) => {
         let txt = "";
         let searchFields = field.split("|");
         for (let searchField of searchFields) {
@@ -123,7 +123,7 @@ const genParamFunc = {
         }
         return txt;
     } , 
-    "date" : (param , field) => {
+    "date" : (param , field , schema={}) => {
         let txt = "";
         let searchFields = field.split("|");
         for (let searchField of searchFields) {
@@ -150,19 +150,51 @@ const genParamFunc = {
             }
         }
         return txt;
+    } ,
+    "reference" : (param , field , schema={}) => {
+        let txt = "";
+        let searchFields = field.split("|");
+        for (let searchField of searchFields) {
+            let [resource] = searchField.split('.');
+            let fieldInResource = searchField.replace(`${resource}.` , "");
+            fieldInResource = fieldInResource.trim();
+            if (fieldInResource.includes("where")) {
+                let lastIndexFieldInField = fieldInResource.lastIndexOf(".");
+                fieldInResource = fieldInResource.substring(0  , lastIndexFieldInField) + ".reference";
+            } else {
+                fieldInResource = fieldInResource + ".reference";
+            }
+            txt += `
+                paramsSearch["${param}"] = (query) => {
+                    let buildResult = queryBuild.referenceQuery(query["${param}"] , "${fieldInResource}");
+                    for (let i in buildResult) {
+                        query.$and.push({
+                            [i] : buildResult[i]
+                        });
+                    }
+                    delete query["${param}"];
+                }
+                `
+        }
+        return txt;
     }
 }
+
 
 /**
  * 
  * @param {Object} option 
  * @param {Array} option.resources the resources want to use
  */
-
 function generateAPI(option) {
     for (let res of option.resources) {
         fhirgen(res, {resourcePath : "./models/mongodb/model" , typePath: "./models/mongodb/FHIRTypeSchema"});
+    }
+    
+    for (let res of option.resources) {
         mkdirp.sync(`./api/FHIR/${res}/controller`);
+
+        //#region search
         let get = `
         const _ = require('lodash');
         const mongodb = require('models/mongodb');
@@ -202,6 +234,7 @@ function generateAPI(option) {
                 let docs = await mongodb.${res}.find(queryParameter).
                 limit(realLimit).
                 skip(paginationSkip).
+                sort({_id : -1 }).
                 exec();
                 docs = docs.map(v=> {
                     return v.getFHIRField();
@@ -229,13 +262,16 @@ function generateAPI(option) {
         let searchParameter = fs.readFileSync('./FHIRParametersClean.json' , 'utf-8');
         searchParameter = JSON.parse(searchParameter);
         let resSearchParams = searchParameter[res];
+        let mongodb = require('./models/mongodb');
+        //console.log(res);
+        let resJsonSchema = mongodb[res].jsonSchema();
         for (let key in resSearchParams) {
             let paramObj = resSearchParams[key];
             let param = paramObj["parameter"];
             let type = paramObj["type"];
             let field = paramObj["field"];
             try {
-                let searchFuncTxt = genParamFunc[type](param , field);
+                let searchFuncTxt = genParamFunc[type](param , field , resJsonSchema);
                 get+= beautify(searchFuncTxt);
             } catch (e) {
                 if (e.message.includes("not a function")) {
@@ -244,6 +280,9 @@ function generateAPI(option) {
                 }
             }
         }
+        //#endregion
+
+        //#region getById
         const getById = `
         const mongodb = require('models/mongodb');
         const {handleError} = require('../../../../models/FHIR/httpMessage');
@@ -262,7 +301,9 @@ function generateAPI(option) {
             }
         };
         `
+        //#endregion
 
+        //#region getHistory
         const getHistory = `
         const _ = require('lodash');
         const mongodb = require('models/mongodb');
@@ -285,6 +326,7 @@ function generateAPI(option) {
                 let docs = await mongodb.${res}_history.find({ id : id}).
                 limit(realLimit).
                 skip(paginationSkip).
+                sort({_id : -1 }).
                 exec();
                 docs = docs.map(v => {
                     return v.getFHIRBundleField();
@@ -302,7 +344,9 @@ function generateAPI(option) {
             }
         };
         `;
+        //#endregion
 
+        //#region getHistoryById
         const getHistoryById = `
         const mongodb = require('models/mongodb');
         const {
@@ -333,6 +377,9 @@ function generateAPI(option) {
             }
         };
         `;
+        //#endregion
+
+        //#region create resource (post)
         const post = `
         const mongodb = require('models/mongodb');
         const { handleError } = require('../../../../models/FHIR/httpMessage');
@@ -382,7 +429,9 @@ function generateAPI(option) {
             });
         }
         `
+        //#endregion
 
+        //#region update (put)
         const put = `
         const mongodb = require('models/mongodb');
         const { handleError } = require('models/FHIR/httpMessage');
@@ -437,6 +486,8 @@ function generateAPI(option) {
                 let data = req.body;
                 let id = req.params.id;
                 delete data._id;   
+                delete data.text;
+                delete data.meta;
                 data.id = id;
                 mongodb.${res}.findOneAndUpdate({id : id }  ,{$set : data} , { new : true , rawResult: true} , function (err , newDoc) {
                     if (err) {
@@ -456,6 +507,8 @@ function generateAPI(option) {
             return new Promise ((resolve ) => {
                 let data = req.body;
                 data.id = req.params.id;
+                delete data.text;
+                delete data.meta;
                 let updateData = new mongodb.${res}(data);
                 updateData.save(function (err, doc) {
                     errorMessage.message = err;
@@ -466,6 +519,9 @@ function generateAPI(option) {
                 });
             });
         }`
+        //#endregion
+
+        //#region delete
         const deleteJs  = `
         const mongodb = require('models/mongodb');
         const {getDeleteMessage , handleError} = require('../../../../models/FHIR/httpMessage');
@@ -485,7 +541,7 @@ function generateAPI(option) {
                     return res.status(200).json(getDeleteMessage("${res}" , req.params.id));
                 } , 
                 "false" : (doc) => {
-                    return res.status(errorMessage.code).send(errorMessage);
+                    return res.status(500).json(handleError.exception(errorMessage.message));
                 }
             }
             let [status , doc] = await delete${res}(req);
@@ -506,6 +562,8 @@ function generateAPI(option) {
                 })
             });
         }`
+        //#endregion
+
         fs.writeFileSync(`./api/FHIR/${res}/controller/get${res}.js` , beautify(get));
         fs.writeFileSync(`./api/FHIR/${res}/controller/get${res}ById.js` , beautify(getById));
         fs.writeFileSync(`./api/FHIR/${res}/controller/get${res}History.js` , beautify(getHistory));

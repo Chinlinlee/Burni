@@ -21,6 +21,9 @@ module.exports = async function(req, res) {
         }).
         limit(realLimit).
         skip(paginationSkip).
+        sort({
+            _id: -1
+        }).
         exec();
         docs = docs.map(v => {
             return v.getFHIRBundleField();

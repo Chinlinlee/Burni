@@ -1,11 +1,19 @@
 .vscode/
 node_modules/
-FHIRModels
-FHIRResource
+
 models/mongodb/FHIRTypeSchema/*
 !models/mongodb/FHIRTypeSchema/Bundle.js
 api/FHIR/*
 .env
 !api/FHIR/Patient
 models/mongodb/model/*
-!models/mongodb/model/Patient.js
+!models/mongodb/model/Patient*.js
+!models/mongodb/model/FHIRStoredID.js
+
+#ignore temp folder
+temp/
+
+#ignore the base type generator code
+FHIR-mongoose-Models-Generator/ComplexGenerator.js
+FHIR-mongoose-Models-Generator/DataTypesSummary.js
+FHIR-mongoose-Models-Generator/PrimitiveGenerator.js

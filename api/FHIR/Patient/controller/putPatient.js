@@ -56,6 +56,8 @@ function doUpdateData(req) {
         let data = req.body;
         let id = req.params.id;
         delete data._id;
+        delete data.text;
+        delete data.meta;
         data.id = id;
         mongodb.Patient.findOneAndUpdate({
             id: id
@@ -82,6 +84,8 @@ function doInsertData(req) {
     return new Promise((resolve) => {
         let data = req.body;
         data.id = req.params.id;
+        delete data.text;
+        delete data.meta;
         let updateData = new mongodb.Patient(data);
         updateData.save(function(err, doc) {
             errorMessage.message = err;

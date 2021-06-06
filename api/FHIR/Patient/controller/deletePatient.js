@@ -19,7 +19,7 @@ module.exports = async function(req, res) {
             return res.status(200).json(getDeleteMessage("Patient", req.params.id));
         },
         "false": (doc) => {
-            return res.status(errorMessage.code).send(errorMessage);
+            return res.status(500).json(handleError.exception(errorMessage.message));
         }
     }
     let [status, doc] = await deletePatient(req);

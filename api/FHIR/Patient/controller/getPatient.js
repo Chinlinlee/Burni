@@ -40,6 +40,9 @@ module.exports = async function(req, res) {
         let docs = await mongodb.Patient.find(queryParameter).
         limit(realLimit).
         skip(paginationSkip).
+        sort({
+            _id: -1
+        }).
         exec();
         docs = docs.map(v => {
             return v.getFHIRField();
@@ -89,7 +92,7 @@ paramsSearch["address-state"] = (query) => {
     delete query[address - state];
 }
 paramsSearch["address-use"] = (query) => {
-    let buildResult = queryBuild.tokenQuery(query["address-use"], "", "address.use", "");
+    let buildResult = queryBuild.tokenQuery(query["address-use"], "code", "address.use", "");
     for (let i in buildResult) {
         query.$and.push({
             [i]: buildResult[i]
@@ -124,7 +127,7 @@ paramsSearch["family"] = (query) => {
     queryBuild.arrayStringBuild(query, "family", "name.family", ["family"]);
 }
 paramsSearch["gender"] = (query) => {
-    let buildResult = queryBuild.tokenQuery(query["gender"], "", "gender", "");
+    let buildResult = queryBuild.tokenQuery(query["gender"], "code", "gender", "");
     for (let i in buildResult) {
         query.$and.push({
             [i]: buildResult[i]
@@ -148,7 +151,7 @@ paramsSearch["phonetic"] = (query) => {
     queryBuild.arrayStringBuild(query, "phonetic", "name", ["phonetic"]);
 }
 paramsSearch["telecom"] = (query) => {
-    let buildResult = queryBuild.tokenQuery(query["telecom"], "", "telecom", "");
+    let buildResult = queryBuild.tokenQuery(query["telecom"], "code", "telecom", "");
     for (let i in buildResult) {
         query.$and.push({
             [i]: buildResult[i]
@@ -157,7 +160,7 @@ paramsSearch["telecom"] = (query) => {
     delete query['telecom'];
 }
 paramsSearch["active"] = (query) => {
-    let buildResult = queryBuild.tokenQuery(query["active"], "", "active", "");
+    let buildResult = queryBuild.tokenQuery(query["active"], "code", "active", "");
     for (let i in buildResult) {
         query.$and.push({
             [i]: buildResult[i]
@@ -166,13 +169,22 @@ paramsSearch["active"] = (query) => {
     delete query['active'];
 }
 paramsSearch["deceased"] = (query) => {
-    let buildResult = queryBuild.tokenQuery(query["deceased"], "", "deceased.exists() and Patient.deceased != false", "");
+    let buildResult = queryBuild.tokenQuery(query["deceased"], "code", "deceased", "");
     for (let i in buildResult) {
         query.$and.push({
             [i]: buildResult[i]
         });
     }
     delete query['deceased'];
+}
+paramsSearch["general-practitioner"] = (query) => {
+    let buildResult = queryBuild.referenceQuery(query["general-practitioner"], "generalPractitioner.reference");
+    for (let i in buildResult) {
+        query.$and.push({
+            [i]: buildResult[i]
+        });
+    }
+    delete query["general-practitioner"];
 }
 paramsSearch["identifier"] = (query) => {
     let buildResult = queryBuild.tokenQuery(query["identifier"], "value", "identifier", "");
@@ -184,13 +196,22 @@ paramsSearch["identifier"] = (query) => {
     delete query['identifier'];
 }
 paramsSearch["language"] = (query) => {
-    let buildResult = queryBuild.tokenQuery(query["language"], "", "communication.language", "");
+    let buildResult = queryBuild.tokenQuery(query["language"], "code", "communication.language", "");
     for (let i in buildResult) {
         query.$and.push({
             [i]: buildResult[i]
         });
     }
     delete query['language'];
+}
+paramsSearch["link"] = (query) => {
+    let buildResult = queryBuild.referenceQuery(query["link"], "link.other.reference");
+    for (let i in buildResult) {
+        query.$and.push({
+            [i]: buildResult[i]
+        });
+    }
+    delete query["link"];
 }
 paramsSearch["name"] = (query) => {
     if (!_.isArray(query["name"])) {
@@ -201,4 +222,13 @@ paramsSearch["name"] = (query) => {
         query.$and.push(buildResult);
     }
     delete query['name'];
+}
+paramsSearch["organization"] = (query) => {
+    let buildResult = queryBuild.referenceQuery(query["organization"], "managingOrganization.reference");
+    for (let i in buildResult) {
+        query.$and.push({
+            [i]: buildResult[i]
+        });
+    }
+    delete query["organization"];
 }

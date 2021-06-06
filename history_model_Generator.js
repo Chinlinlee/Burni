@@ -1,12 +1,20 @@
-const  fs =  require('fs');
-const path =  require('path');
+const fs = require('fs');
+const path = require('path');
 const beautify = require('js-beautify').js_beautify;
-function genHistoryModel () {
+const FHIRResourceList = require('./FHIR-mongoose-Models-Generator/fhir.schema.json').definitions.ResourceList.oneOf.map(v => {
+    let refSplit = v.$ref.split("/");
+    return refSplit[refSplit.length - 1];
+});
+
+function genHistoryModel() {
     let FHIRModelFolder = fs.readdirSync('./models/mongodb/model');
     for (let item of FHIRModelFolder) {
         if (!item.includes('_history')) {
             let fileBaseName = path.parse(item).name;
-           let historyModel = `
+            if (!FHIRResourceList.includes(fileBaseName)) {
+                continue;
+            }
+            let historyModel = `
            const mongoose = require('mongoose');
            const moment = require('moment');
            const _ = require('lodash')
@@ -68,7 +76,7 @@ function genHistoryModel () {
                const ${fileBaseName}HistoryModel = mongoose.model("${fileBaseName}_history", ${fileBaseName}HistorySchema, "${fileBaseName}_history");
                return ${fileBaseName}HistoryModel;
            }`
-           fs.writeFileSync(`./models/mongodb/model/${fileBaseName}_history.js` , beautify(historyModel));
+            fs.writeFileSync(`./models/mongodb/model/${fileBaseName}_history.js`, beautify(historyModel));
         }
     }
 }
