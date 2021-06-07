@@ -125,18 +125,21 @@ async function generateSchema (type) {
     let schema = getSchema(FHIRJson[type] , type);
     cleanChildSchema(schema);
     let importLib = "const mongoose = require('mongoose');\r\n";
+    let importedTypeLib = [];
     for (let i in schema) {
         let item = schema[i];
         if (_.get(item , "type")) {
             item.default = "void 0";
             let cleanType = item.type.replace(/[\[\]]/gm , '');
-            if (skipFieldTypes.indexOf(cleanType) < 0 && !importLib.includes(cleanType)) {
+            if (skipFieldTypes.indexOf(cleanType) < 0 && !importedTypeLib.includes(cleanType)) {
                 importLib =`${importLib}const ${cleanType} = require('./${cleanType}');\r\n`;
+                importedTypeLib.push(cleanType);
             }
         } else {
             let cleanType = item.replace(/[\[\]]/gm , '');
-            if (skipFieldTypes.indexOf(cleanType) < 0 && !importLib.includes(cleanType)) {
+            if (skipFieldTypes.indexOf(cleanType) < 0 && !importedTypeLib.includes(cleanType)) {
                 importLib =`${importLib}const ${cleanType} = require('./${cleanType}');\r\n`;
+                importedTypeLib.push(cleanType);
             }
         }
     }
@@ -344,18 +347,22 @@ function generateResourceSchema (type) {
 
     const ${type}Model = mongoose.model("${type}" , ${type}Schema , "${type}");
     return ${type}Model;\r\n}`;
+
+    let importedTypeLib = [];
     for (let i in result) {
         let item = result[i];
         if (_.get(item , "type")) {
             item.default = "void 0";
             let cleanType = item.type.replace(/[\[\]]/gm , '');
-            if (!importLib.includes(cleanType) && !skipFieldTypes.includes(cleanType)) {
+            if (!importedTypeLib.includes(cleanType) && !skipFieldTypes.includes(cleanType)) {
                 importLib =`${importLib}const ${cleanType} = require('${config.requirePath}/${cleanType}');\r\n`;
+                importedTypeLib.push(cleanType);
             }
         } else {
             let cleanType = item.replace(/[\[\]]/gm , '');
-            if (!importLib.includes(cleanType) && !skipFieldTypes.includes(cleanType)) {
+            if (!importedTypeLib.includes(cleanType) && !skipFieldTypes.includes(cleanType)) {
                 importLib =`${importLib}const ${cleanType} = require('${config.requirePath}/${cleanType}');\r\n`;
+                importedTypeLib.push(cleanType);
             }
         }
     }
