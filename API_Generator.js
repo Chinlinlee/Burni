@@ -5,6 +5,60 @@ const beautify = require('js-beautify').js;
 const _ = require('lodash');
 require('dotenv').config();
 
+function getDeepKeys(obj) {
+    var keys = [];
+    for(var key in obj) {
+        keys.push(key);
+        if(typeof obj[key] === "object") {
+            var subkeys = getDeepKeys(obj[key]);
+            keys = keys.concat(subkeys.map(function(subkey) {
+                return key + "." + subkey;
+            }));
+        }
+    }
+    return keys;
+}
+
+const tokenDataTypes = [
+    {
+        dataType : "Coding" , 
+        uri : "" ,
+        code : "code"
+    } ,
+    {
+        dataType : "CodeableConcept" ,
+        uri : "coding.system" ,
+        code : "coding.code"
+    } ,
+    {
+        dataType : "ContactPoint" ,
+        uri : "" ,
+        code : "value"
+    } ,
+    {
+        dataType : "Identifier" ,
+        uri : "" ,
+        code : "value"
+    } ,
+    {
+        dataType : "code" ,
+        uri : "" ,
+        code : ""
+    } ,
+    {
+        dataType : "string" ,
+        uri : "" ,
+        code : ""
+    } ,
+    {
+        dataType : "boolean" ,
+        uri : "" ,
+        code : ""
+    }
+];
+
+const datePrimitiveType = ['instant' ,'time' , 'dateTime' , 'date'];
+
 const genParamFunc = {
     "string" : (param , field , schema={}) => {
         let txt = "";
@@ -88,19 +142,58 @@ const genParamFunc = {
                 }
                 `
             } else {
-                txt+=`
-                paramsSearch["${param}"] = (query) => {
-                    let buildResult = queryBuild.tokenQuery(query["${param}"] , "code" , "${fieldInResource}" ,"");
-                    for (let i in buildResult) {
-                        query.$and.push({
-                            [i] : buildResult[i]
-                        });
-                    }
-                    delete query['${param}'];
+                let deepKeys = getDeepKeys(_.cloneDeep(schema));
+                if (/\(.*\)/.test(fieldInResource)) {
+                    fieldInResource = fieldInResource.substr(0 , fieldInResource.indexOf("."));
                 }
-                `
-            } 
-        }
+                let typePath = deepKeys.filter(v=> {
+                    let fieldNamePath = fieldInResource.split(".");
+                    return fieldNamePath.every(item => v.includes(item) && v.includes("type"))
+                });
+                typePath = typePath.reduce(function (a , b){
+                    return a.length < b.length ? a : b
+                })
+                let typeOfField = _.get(schema , typePath);
+                if (typeOfField == "object") {
+                    let propertiesOfField = _.get(schema , typePath.replace(".type" , ".properties"));
+                    let propertiesKeysLength  =Object.keys(propertiesOfField).length;
+                    if (propertiesKeysLength == 3) {
+                        typeOfField = "CodeableConcept"
+                    } else if (propertiesKeysLength == 5) {
+                        typeOfField = "Coding"
+                    } else {
+                        typeOfField = "Identifier"
+                    }
+                }
+                let hitToken = tokenDataTypes.find(v=> v.dataType == typeOfField);
+                if (hitToken) {
+                    let isCodeableConcept = hitToken.dataType == "CodeableConcept";
+                    txt+=`
+                    paramsSearch["${param}"] = (query) => {
+                        let buildResult = queryBuild.tokenQuery(query["${param}"] , "${hitToken.code}" , "${fieldInResource}" ,"" , ${isCodeableConcept});
+                        for (let i in buildResult) {
+                            query.$and.push({
+                                [i] : buildResult[i]
+                            });
+                        }
+                        delete query['${param}'];
+                    }
+                    `;
+                } else {
+                    txt+=`
+                    paramsSearch["${param}"] = (query) => {
+                        let buildResult = queryBuild.tokenQuery(query["${param}"] , "" , "${fieldInResource}" ,"" , false);
+                        for (let i in buildResult) {
+                            query.$and.push({
+                                [i] : buildResult[i]
+                            });
+                        }
+                        delete query['${param}'];
+                    }
+                    `;
+                }
+            }
+        } 
         return txt;
     } ,
     "number" : (param , field , schema={}) => {
@@ -147,6 +240,19 @@ const genParamFunc = {
                     delete query["${param}"];
                 }
                 `
+            } else {
+                console.log("date insteadof:" , fieldInResource);
+                fieldInResource = fieldInResource.substr(0 , fieldInResource.indexOf(" as")).replace(/[\(\)]/gm , "");
+                let resourceFields = Object.keys(schema.properties);
+                let hitTokenFields = resourceFields.filter(v=> v.includes(fieldInResource));
+                for(let field of hitTokenFields) {
+                    let hitDate= datePrimitiveType.includes(schema.properties[field].type);
+                    console.log(schema.properties[field].type);
+                    console.log(hitDate);
+                    if (hitDate) {
+                        console.log(field);
+                    }
+                }
             }
         }
         return txt;

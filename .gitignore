@@ -10,6 +10,7 @@ models/mongodb/model/*
 !models/mongodb/model/Patient*.js
 !models/mongodb/model/FHIRStoredID.js
 
+
 #ignore temp folder
 temp/
 
@@ -17,3 +18,6 @@ temp/
 FHIR-mongoose-Models-Generator/ComplexGenerator.js
 FHIR-mongoose-Models-Generator/DataTypesSummary.js
 FHIR-mongoose-Models-Generator/PrimitiveGenerator.js
+
+#ignore new back bone element schema
+models/mongodb/FHIRDataTypesSchema

@@ -92,7 +92,7 @@ paramsSearch["address-state"] = (query) => {
     delete query[address - state];
 }
 paramsSearch["address-use"] = (query) => {
-    let buildResult = queryBuild.tokenQuery(query["address-use"], "code", "address.use", "");
+    let buildResult = queryBuild.tokenQuery(query["address-use"], "", "address.use", "", false);
     for (let i in buildResult) {
         query.$and.push({
             [i]: buildResult[i]
@@ -127,7 +127,7 @@ paramsSearch["family"] = (query) => {
     queryBuild.arrayStringBuild(query, "family", "name.family", ["family"]);
 }
 paramsSearch["gender"] = (query) => {
-    let buildResult = queryBuild.tokenQuery(query["gender"], "code", "gender", "");
+    let buildResult = queryBuild.tokenQuery(query["gender"], "", "gender", "", false);
     for (let i in buildResult) {
         query.$and.push({
             [i]: buildResult[i]
@@ -151,7 +151,7 @@ paramsSearch["phonetic"] = (query) => {
     queryBuild.arrayStringBuild(query, "phonetic", "name", ["phonetic"]);
 }
 paramsSearch["telecom"] = (query) => {
-    let buildResult = queryBuild.tokenQuery(query["telecom"], "code", "telecom", "");
+    let buildResult = queryBuild.tokenQuery(query["telecom"], "", "telecom", "", false);
     for (let i in buildResult) {
         query.$and.push({
             [i]: buildResult[i]
@@ -160,7 +160,7 @@ paramsSearch["telecom"] = (query) => {
     delete query['telecom'];
 }
 paramsSearch["active"] = (query) => {
-    let buildResult = queryBuild.tokenQuery(query["active"], "code", "active", "");
+    let buildResult = queryBuild.tokenQuery(query["active"], "", "active", "", false);
     for (let i in buildResult) {
         query.$and.push({
             [i]: buildResult[i]
@@ -169,7 +169,7 @@ paramsSearch["active"] = (query) => {
     delete query['active'];
 }
 paramsSearch["deceased"] = (query) => {
-    let buildResult = queryBuild.tokenQuery(query["deceased"], "code", "deceased", "");
+    let buildResult = queryBuild.tokenQuery(query["deceased"], "", "deceased", "", false);
     for (let i in buildResult) {
         query.$and.push({
             [i]: buildResult[i]
@@ -196,7 +196,7 @@ paramsSearch["identifier"] = (query) => {
     delete query['identifier'];
 }
 paramsSearch["language"] = (query) => {
-    let buildResult = queryBuild.tokenQuery(query["language"], "code", "communication.language", "");
+    let buildResult = queryBuild.tokenQuery(query["language"], "conding.code", "communication.language", "", true);
     for (let i in buildResult) {
         query.$and.push({
             [i]: buildResult[i]

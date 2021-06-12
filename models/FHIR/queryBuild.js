@@ -38,7 +38,7 @@ function stringExact(str) {
 }
 
 
-function tokenQuery(item, type, field, required) {
+function tokenQuery(item, type, field, required , isCodeableConcept = false) {
     let queryBuilder = {};
     let system = "";
     let value = "";
@@ -48,9 +48,17 @@ function tokenQuery(item, type, field, required) {
     }
     value = value || item;
     if (system) {
-        queryBuilder[`${field}.system`] = system;
+        if (isCodeableConcept) {
+            queryBuilder[`${field}.coding.system`] = system;
+        } else {
+            queryBuilder[`${field}.system`] = system;
+        }
     }
     if (value) {
+        if (value == "true" || value == "false") {
+            value = value === "true";
+            system = value;
+        }
         if (type) {
             queryBuilder[`${field}.${type}`] = value;
         } else {
@@ -262,6 +270,7 @@ function dateTimeQuery (value , field) {
     queryBuilder = dateQueryBuilder[queryPrefix](queryBuilder , field , date , inputFormat[momentValidIndex]);
     return queryBuilder;
 }
+
 function timeQuery () {
 
 }

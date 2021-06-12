@@ -148,37 +148,40 @@ async function generateSchema (type) {
     code = `${importLib}${code}`;
     fs.writeFileSync(`./models/mongodb/FHIRDataTypesSchema/${type}.js` , beautify(code , {indent_size : 4 ,pace_in_empty_paren: true }));
     for (let i in schema) {
-        let item = schema[i];
-        if (_.get(item , "type")) { 
-            for (let key in item) {
-                let deepItem = _.get(item[key] , "type") || item[key];
-                deepItem = deepItem.replace(/[\[\]]/gm , '');
-                
-                if (!checkHaveSchema(deepItem) && isFHIRSchema(deepItem)) {
-                    let isBackBone = true;
-                    for (let key in DataTypesSummary) {
-                        if (DataTypesSummary[key].includes(deepItem)) {
-                            isBackBone = false;
-                            break;
+        try {
+            let item = schema[i];
+            if (_.get(item , "type")) { 
+                for (let key in item) {
+                    let deepItem = _.get(item[key] , "type") || item[key];
+                    deepItem = String(deepItem)
+                    deepItem = deepItem.replace(/[\[\]]/gm , '');
+                    if (!checkHaveSchema(deepItem) && isFHIRSchema(deepItem)) {
+                        let isBackBone = true;
+                        for (let key in DataTypesSummary) {
+                            if (DataTypesSummary[key].includes(deepItem)) {
+                                isBackBone = false;
+                                break;
+                            }
                         }
-                    }
-                    if (isBackBone && deepItem.includes("_")) {
-                        console.log("type:" , deepItem);
-                        generateSchema(deepItem);
+                        if (isBackBone && deepItem.includes("_")) {
+                            console.log("type:" , deepItem);
+                            generateSchema(deepItem);
+                        }
                     }
                 }
             }
+        } catch (e) {
+            console.error(e)
         }
     }
 }
-
 function generateResourceSchema (type) {
     if (!FHIRJson[type]) {
         console.error('Unknown resource type ' + type);
         process.exit(1);
     }
     let result = getSchema(FHIRJson[type]);
-    console.log(type , result);
+    console.log("The resource schema" , type , result);
     for (let i in result) {
         if (_.get(result[i] , "type")) {
             let cleanType = result[i].type.replace(/[\[\]]/gm , '');
