@@ -19,6 +19,8 @@ FHIRSERVER_PORT=8088
 FHIRSERVER_APIPATH="fhir"
 `;
         fs.writeFileSync(".env" , envText);
+        console.log("Please config dotenv file first, the example dotenv file generated in root path");
+        process.exit(0);
     }
     generateAPI(config);
     generateMetaData();

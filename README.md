@@ -19,7 +19,6 @@ This server supported FHIR RESTFul API below:
 ## Installation
 ```bash=
 npm install
-npm build #This will generate example dotenv file and API files that you setting in config.js
 ```
 
 ## configure
@@ -44,6 +43,10 @@ MONGODB_SLAVEMODE=false
 FHIRSERVER_HOST="localhost"
 FHIRSERVER_PORT=8088
 FHIRSERVER_APIPATH="fhir"
+```
+After configuration, run `npm run build` to generate resources
+```
+npm run build
 ```
 
 ## Usage
