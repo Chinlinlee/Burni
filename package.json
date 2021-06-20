@@ -1,14 +1,18 @@
 {
-    "name": "raccoon-fhir-api-gen",
+    "name": "Simple-Express-FHIR-Server",
     "version": "1.0.0",
-    "description": "",
+    "description": "The simple FHIR server implements with nodejs-express and mongoose.",
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "build": "node ./build/init.js"
+        "build": "node ./build/init.js" ,
+        "release" : "standard-version"
     },
-    "author": "",
-    "license": "ISC",
+    "author": "Chinlinlee",
+    "repository": {
+        "url": "https://github.com/Chinlinlee/Simple-Express-FHIR-Server"
+    },
+    "license": "Apache-2.0 License",
     "dependencies": {
         "bcrypt": "^5.0.0",
         "body-parser": "^1.18.3",
