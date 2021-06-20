@@ -48,11 +48,31 @@ After configuration, run `npm run build` to generate resources
 ```
 npm run build
 ```
-
+> TypeError: genParamFunc[type] is not a function mean that search parameter method not support
 ## Usage
 ```
 node server.js
 ```
+
+### RESTful API
+- get (search)
+    - Number
+    - Date (DateTime, Instance Not yet)
+    - String
+    - Token
+    - Reference
+>GET http://example.com/fhir/Patient
+
+- getById (read)
+>GET http://example.com/fhir/Patient/123
+- getHistoryById (history, vread)
+>GET http://example.com/fhir/Patient/_history/
+
+> GET http://example.com/fhir/Patient/_history/1
+- putById (update)
+> PUT http://example.com/fhir/Patient/1
+- deleteById (delete)
+> DELETE http://example.com/fhir/Patient/1
 
 ### Example
 Use patient from [here](https://www.hl7.org/fhir/patient-example.json.html)
