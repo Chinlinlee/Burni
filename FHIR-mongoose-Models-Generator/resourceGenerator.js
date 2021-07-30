@@ -201,10 +201,12 @@ function generateResourceSchema (type) {
     }
     cleanChildSchema(result);
     let topLevelObj = {
-        id : "id" ,
         resourceType : {
             type : "String" ,
-            required : "true"
+            required : "true" ,
+            enum: [
+                `"${type}"`
+            ]
         }
     };
     result = Object.assign({} , result , topLevelObj);
@@ -213,12 +215,17 @@ function generateResourceSchema (type) {
     let code = `module.exports = function () {
     require('mongoose-schema-jsonschema')(mongoose);
     const ${type} = ${JSON.stringify(result , null , 4).replace(/\"/gm , '').replace(/\\/gm , '"')};\r\n
+    ${type}.id = {
+        ...id ,
+        index: true
+    }
     module.exports.schema = ${type}; 
     const ${type}Schema = new mongoose.Schema(${type} , {
         toObject : { getters : true} ,
         toJSON : { getters : true} ,
         versionKey : false
     });\r\n
+
     ${type}Schema.methods.getFHIRField = function () {
         let result = this.toObject();
         delete result._id;
@@ -369,6 +376,7 @@ function generateResourceSchema (type) {
             }
         }
     }
+    importLib =`${importLib}const id = require('${config.requirePath}/id');\r\n`;
     code = `${importLib}${code}`;
     mkdirp.sync(config.resourcePath);
     fs.writeFileSync(`${config.resourcePath}/${type}.js` , beautify(code , {indent_size : 4 ,pace_in_empty_paren: true }));    
