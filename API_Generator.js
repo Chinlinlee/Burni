@@ -350,9 +350,7 @@ function generateAPI(option) {
                 return res.status(200).json(bundle);
             } catch (e) {
                 console.log('api api/fhir/${res}/ has error, ', e)
-                return res.status(500).json({
-                    message: 'server has something error'
-                });
+                return res.status(500).json(handleError.exception(e));
             }
         };
 
@@ -444,9 +442,7 @@ function generateAPI(option) {
                 return res.status(200).json(bundle);
             } catch (e) {
                 console.log('api api/fhir/${res}/:id/history has error, ', e)
-                return res.status(500).json({
-                    message: 'server has something error'
-                });
+                return res.status(500).json(handleError.exception(e));
             }
         };
         `;
