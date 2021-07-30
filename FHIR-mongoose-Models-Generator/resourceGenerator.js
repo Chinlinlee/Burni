@@ -248,23 +248,15 @@ function generateResourceSchema (type) {
                 });
                 let versionId = Number(_.get(docInHistory , "meta.versionId"))+1;
                 let versionIdStr = String(versionId);
-                Object.assign(this , {
-                    meta : {
-                        versionId : versionIdStr ,
-                        lastUpdated : new Date()
-                    }
-                });
+                _.set(this, "meta.versionId", versionIdStr);
+                _.set(this, "meta.lastUpdated", new Date());
             } else {
                 console.error('err', storedID);
                 return next(new Error(\`The id->\$"{this.id}" stored by resource \${storedID.resourceType}\`));
             }
         } else {
-            Object.assign(this , {
-                meta : {
-                    versionId : "1" ,
-                    lastUpdated : new Date()
-                }
-            });
+            _.set(this, "meta.versionId", "1");
+            _.set(this, "meta.lastUpdated", new Date());
         }
         return next();
     });
