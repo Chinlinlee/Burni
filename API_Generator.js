@@ -464,7 +464,7 @@ function generateAPI(option) {
                             id: id
                         } ,
                         {
-                            __v : version
+                            "meta.versionId": version
                         }
                     ]
                 }).exec();
@@ -508,8 +508,8 @@ function generateAPI(option) {
                 let [status , doc]  = await insert${res}(insertData);
                 return resFunc[status](doc);
             } catch(e) {
-                console.error(\`error\`);
-                console.log(e);
+                console.error(e);
+                return res.status(500).send(handleError.exception(e));
             }
         }
 
@@ -529,6 +529,7 @@ function generateAPI(option) {
                     });
                 } catch (e) {
                     console.error(e);
+                    return resolve([false , e]);
                 }
             });
         }
