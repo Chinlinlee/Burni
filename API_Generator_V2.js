@@ -459,7 +459,7 @@ function generateAPI(option) {
         const validate = require('../../../FHIRApiService/$validate');
 
         module.exports = async function (req, res) {
-            return await validate(req,res, "Patient");
+            return await validate(req,res, "${res}");
         }
         `;
         fs.writeFileSync(`./api/FHIR/${res}/controller/get${res}.js`, beautify(get));
