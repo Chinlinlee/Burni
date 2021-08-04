@@ -1,5 +1,13 @@
 module.exports = {
     resources : [
-        "Patient"
+        "Bundle",
+        "Composition",
+        "Immunization",
+        "ImmunizationRecommendation",
+        "Location",
+        "Organization",
+        "Patient",
+        "Practitioner",
+        "Observation"
     ]
 }

@@ -1,5 +1,6 @@
 const fs = require('fs');
-const { generateAPI , generateMetaData } =require('../API_Generator');
+//const { generateAPI , generateMetaData } =require('../API_Generator');
+const { generateAPI , generateMetaData } =require('../API_Generator_V2');
 const { genHistoryModel } = require('../history_model_Generator');
 const config  = require('./config');
 

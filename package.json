@@ -14,6 +14,7 @@
     },
     "license": "Apache-2.0 License",
     "dependencies": {
+        "abort-controller": "^3.0.0",
         "bcrypt": "^5.0.0",
         "body-parser": "^1.18.3",
         "compression": "^1.7.3",
@@ -33,6 +34,7 @@
         "mongoose": "^5.10.4",
         "mongoose-date-format": "^1.2.0",
         "mongoose-schema-jsonschema": "^1.4.4",
+        "node-fetch": "^2.6.1",
         "passport": "^0.4.0",
         "passport-http-bearer": "^1.0.1",
         "passport-local": "^1.0.0",

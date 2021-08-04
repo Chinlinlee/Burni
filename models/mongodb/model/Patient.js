@@ -99,13 +99,19 @@ module.exports = function() {
             type: [Patient_Link],
             default: void 0
         },
-        id: id,
         resourceType: {
             type: String,
-            required: true
+            required: true,
+            enum: [
+                "Patient"
+            ]
         }
     };
 
+    Patient.id = {
+        ...id,
+        index: true
+    }
     module.exports.schema = Patient;
     const PatientSchema = new mongoose.Schema(Patient, {
         toObject: {
@@ -116,6 +122,7 @@ module.exports = function() {
         },
         versionKey: false
     });
+
 
     PatientSchema.methods.getFHIRField = function() {
         let result = this.toObject();
@@ -139,23 +146,15 @@ module.exports = function() {
                     });
                 let versionId = Number(_.get(docInHistory, "meta.versionId")) + 1;
                 let versionIdStr = String(versionId);
-                Object.assign(this, {
-                    meta: {
-                        versionId: versionIdStr,
-                        lastUpdated: new Date()
-                    }
-                });
+                _.set(this, "meta.versionId", versionIdStr);
+                _.set(this, "meta.lastUpdated", new Date());
             } else {
                 console.error('err', storedID);
-                return next(new Error(`The id->$"{this.id}" stored by resource ${storedID.resourceType}`));
+                return next(new Error(`The id->${this.id} stored by resource ${storedID.resourceType}`));
             }
         } else {
-            Object.assign(this, {
-                meta: {
-                    versionId: "1",
-                    lastUpdated: new Date()
-                }
-            });
+            _.set(this, "meta.versionId", "1");
+            _.set(this, "meta.lastUpdated", new Date());
         }
         return next();
     });
@@ -164,7 +163,7 @@ module.exports = function() {
         let mongodb = require('../index');
         let item = result.toObject();
         delete item._id;
-        let version = item.versionId;
+        let version = item.meta.versionId;
         if (version == "1") {
             let port = (process.env.FHIRSERVER_PORT == "80" || process.env.FHIRSERVER_PORT == "443") ? "" : `:${process.env.FHIRSERVER_PORT}`;
             _.set(item, "request", {
