@@ -22,6 +22,7 @@ class Validator {
         this.resourceId = resourceId;
         this.isXml = isXml;
         this.obj = obj;
+        this.profile = "";
     }
     validate(input) {
         if (typeof (input) === 'string' && input.indexOf('{') === 0) {
@@ -36,6 +37,7 @@ class Validator {
         }
         const typeDefinition = this.parser.parsedStructureDefinitions[this.obj.resourceType];
         this.resourceId = this.obj.id || '#initial';
+        this.profile = typeDefinition._url || '#initial';
         if (this.options && this.options.onBeforeValidateResource) {
             const eventMessages = this.options.onBeforeValidateResource(this.obj);
             if (eventMessages) {
@@ -174,7 +176,6 @@ class Validator {
                             found = true;
                         }
                         else {
-                            const msg = 'Code "' + coding.code + '" ' + (coding.system ? '(' + coding.system + ')' : '') + ' not found in value set ' + valueSetUrl;
                             if (_valueSetStrength === 'required') {
                                 //this.addError(treeDisplay, msg);
                                 let message = {
@@ -186,7 +187,6 @@ class Validator {
                                 messageList.push(message);
                             }
                             else {
-                                //this.addWarn(treeDisplay, msg);
                                 let message = {
                                     treeDisplay : treeDisplay , 
                                     level: "warn" ,
@@ -202,7 +202,6 @@ class Validator {
                 }
                 else if (property._type === 'Coding') {
                     if (!this.checkCode(foundValueSet, obj.code, obj.system)) {
-                        const msg = 'Code "' + obj.code + '" ' + (obj.system ? '(' + obj.system + ')' : '') + ' not found in value set';
                         if (_valueSetStrength === 'required') {
                             let message = {
                                 treeDisplay : treeDisplay,
@@ -211,7 +210,6 @@ class Validator {
                                 valueSetUrl : valueSetUrl
                             }
                             messageList.push(message);
-                            //this.addError(treeDisplay, msg);
                         }
                         else {
                             let message = {
@@ -221,7 +219,6 @@ class Validator {
                                 valueSetUrl : valueSetUrl
                             }
                             messageList.push(message);
-                            //this.addWarn(treeDisplay, msg);
                         }
                     }
                 }
@@ -241,16 +238,26 @@ class Validator {
             doValidateValueSet(property._valueSet ,property._valueSetStrength);
         } */
         if (property._valueSetList) {
+            property._valueSetList = lodash.uniqBy(property._valueSetList , "_valueSet");
             for(let myValueSet of property._valueSetList) {
                 doValidateValueSet(myValueSet._valueSet , myValueSet._valueSetStrength);
+                if (myValueSet._valueSetMin >= 1) {
+                    let nowValueSetMsg = messageList.filter(v=>v.valueSetUrl.includes(myValueSet._valueSet));
+                    if (nowValueSetMsg.length > 0) {
+                        if (!nowValueSetMsg.filter(v=> v.level == "info").length >= myValueSet._valueSetMin) {
+                            this.addError(nowValueSetMsg[0].treeDisplay , `ValueSet "${myValueSet._valueSet}" is required but not found in property`)
+                        }
+                    }
+                }
             }
-            if (!messageList.find(v=> v.level == "info")) {
-                if (messageList.some(v=> v.level == "error")) {
-                    let codeList = lodash.uniq(lodash.map(messageList , "code"));
-                    let valueSetUriList = lodash.uniq(lodash.map(messageList , "valueSetUrl"));
-                    let valueSetUriMsg = valueSetUriList.join(",\r\n");
-                    for (let inputCode of codeList) {
-                        this.addError(messageList[0].treeDisplay , `Code "${inputCode}" not found in value set ${valueSetUriMsg}`)
+            let codeList = lodash.uniq(lodash.map(messageList , "code"));
+            for (let code of codeList) {
+                let codeMessageList = messageList.filter(v=> v.code == code);
+                if (!codeMessageList.find(v=> v.level == "info")) {
+                    if (codeMessageList.some(v=> v.level == "error")) {
+                        let valueSetUriList = lodash.uniq(lodash.map(codeMessageList , "valueSetUrl"));
+                        let valueSetUriMsg = valueSetUriList.join("  ,  ");
+                        this.addError(messageList[0].treeDisplay , `Code "${code}" not found in value set ${valueSetUriMsg}`)
                     }
                 }
             }
@@ -394,12 +401,14 @@ class Validator {
                     return split[split.length - 1];
                 });
             if (property._type === 'Reference' && targetProfiles.length != 0 && targetProfiles.indexOf('Resource') < 0) {
-                const targetProfiles = property
+                let targetProfiles = property
                     ._targetProfiles
                     .map((p) => {
                         const split = p.split('/');
                         return split[split.length - 1];
                     });
+                let maybeType = targetProfiles[0].split(/(-|_|\.)/gm).shift();
+                targetProfiles = [...targetProfiles, maybeType];
                 const referenceSplit = obj.reference.split('|')[0].split('/');
                 if (obj.type != null) {
                     if (targetProfiles.indexOf(obj.type) < 0) {
@@ -444,14 +453,14 @@ class Validator {
                     }).length > 0;
                 }
                 if (!satisfied) {
-                    this.addError(Validator.getTreeDisplay(tree, this.isXml, property._choice ? property._choice : property._name), 'Missing property');
+                    this.addError(Validator.getTreeDisplay(tree, this.isXml, property._choice ? property._choice : property._name), `Missing property , profile: ${this.profile}`);
                 }
             }
             if (foundProperty) {
                 if (property._multiple) {
                     if (propertyValue instanceof Array) {
                         if (property._required && propertyValue.length === 0) {
-                            this.addError(treeDisplay, 'A ' + property._name + ' entry is required');
+                            this.addError(treeDisplay, 'A ' + property._name + ' entry is required' + ` , profile: ${this.profile}`);
                         }
                         for (let x = 0; x < propertyValue.length; x++) {
                             const foundPropertyElement = propertyValue[x];

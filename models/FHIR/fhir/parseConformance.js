@@ -122,10 +122,10 @@ class ParseConformance {
             });
     }
 
-    getDeepElement(path , parsedStructureDefinition) {
+    getDeepElement(path, parsedStructureDefinition) {
         let eachPath = path.split(".");
         if (eachPath.length > 1) {
-            let findObj = parsedStructureDefinition._properties.find(v=> v._name == eachPath[0]);
+            let findObj = parsedStructureDefinition._properties.find(v => v._name == eachPath[0]);
             return this.getDeepElement(eachPath[0], findObj)
         }
         return parsedStructureDefinition;
@@ -154,20 +154,20 @@ class ParseConformance {
                 }
                 //to handle slicing valueSet
                 if (elementId.indexOf('.coding') > 0) {
-                    let valueSet = lodash.get(element , "binding.valueSet");
+                    let valueSet = lodash.get(element, "binding.valueSet");
                     if (valueSet) {
                         if (elementId.includes(":")) {
                             elementId = elementId.substr(0, elementId.lastIndexOf(":"));
                         }
-                        let propertyId = elementId.substr(0 , elementId.lastIndexOf(".coding"));
-                        console.log("propertyId" , propertyId);
-                        if (propertyId.indexOf(".") > 0 ) {
-                            let parent = this.getDeepElement(propertyId , parsedStructureDefinition);
-                            let elementProperty = parent._properties.find(v=>v._name == propertyId.substr(propertyId.lastIndexOf(".")+1))
-                            this.populateValueSet(element , elementProperty)
+                        let propertyId = elementId.substr(0, elementId.lastIndexOf(".coding"));
+                        console.log("propertyId", propertyId);
+                        if (propertyId.indexOf(".") > 0) {
+                            let parent = this.getDeepElement(propertyId, parsedStructureDefinition);
+                            let elementProperty = parent._properties.find(v => v._name == propertyId.substr(propertyId.lastIndexOf(".") + 1))
+                            this.populateValueSet(element, elementProperty)
                         } else {
-                            let elementProperty = parsedStructureDefinition._properties.find(v=> v._name == propertyId)
-                            this.populateValueSet(element , elementProperty);
+                            let elementProperty = parsedStructureDefinition._properties.find(v => v._name == propertyId)
+                            this.populateValueSet(element, elementProperty);
                         }
                     }
                 }
@@ -183,17 +183,25 @@ class ParseConformance {
                     const newProperty = {
                         _name: elementId,
                         _type: type,
-                        _multiple: element.max !== '1',
+                        _multiple: element.base.max !== '1',
                         _required: element.min === 1
                     };
                     parsedStructureDefinition._properties.push(newProperty);
                     this.populateValueSet(element, newProperty);
-                    if (element.type[0].code == 'BackboneElement' || 
-                        element.type[0].code == 'Element' || 
-                        element.type[0].code == 'Address' ||
-                        element.type[0].code == 'HumanName') {
+                    if (element.type[0].code == 'BackboneElement' ||
+                        element.type[0].code == 'Element'
+                    ) {
                         newProperty._properties = [];
                         this.populateBackboneElement(parsedStructureDefinition, element.id, structureDefinition);
+                    } else if (element.type[0].code == "Address" ||
+                               element.type[0].code == "HumanName"
+                    ) {
+                        let allElementId = lodash.map(structureDefinition.snapshot.element , "id");
+                        if(allElementId.find(v=> v.includes(`${element.id}.`))) {
+                            newProperty._properties = [];
+                            newProperty._type = `${newProperty._type}-Custom-${structureDefinition.id || uid}-${newProperty._name}`;
+                            this.populateBackboneElement(parsedStructureDefinition, element.id, structureDefinition);
+                        }
                     }
                 }
                 else if (elementId.endsWith('[x]')) {
@@ -219,7 +227,7 @@ class ParseConformance {
                             _name: choiceElementId,
                             _choice: elementId,
                             _type: element.type[y].code,
-                            _multiple: element.max !== '1',
+                            _multiple: element.base.max !== '1',
                             _required: element.min === 1 || elementRequired
                         };
                         this.populateValueSet(element, newProperty);
@@ -243,7 +251,7 @@ class ParseConformance {
                             _name: elementId,
                             _type: 'Reference',
                             _targetProfiles: targetProfiles,
-                            _multiple: element.max !== '1',
+                            _multiple: element.base.max !== '1',
                             _required: element.min === 1
                         });
                     }
@@ -276,12 +284,12 @@ class ParseConformance {
                                 _name: choiceElementId,
                                 _choice: elementId,
                                 _type: element.type[y].code,
-                                _multiple: element.max !== '1',
+                                _multiple: element.base.max !== '1',
                                 _required: element.min === 1 || elementRequired
                             };
                             newProperty = parsedStructureDefinition._properties.find(v => v._name == newProperty._name);
                             this.populateValueSet(element, newProperty);
-                           //console.log("newPro" , newProperty);
+                            //console.log("newPro" , newProperty);
                             /*parsedStructureDefinition._properties.push(newProperty);*/
                         }
                     } else {
@@ -404,7 +412,7 @@ class ParseConformance {
         let valueSet = {
             _valueSet: "",
             _valueSetStrength: "",
-            _valueSetRequired: false
+            _valueSetMin: 0
         }
         if (element.binding) {
             const binding = element.binding;
@@ -421,7 +429,7 @@ class ParseConformance {
                 property._valueSet = binding.valueSetReference.reference;
             }
             //handle the required valueSet
-            if (Number(element.min) == 1) valueSet._valueSetRequired = true;
+            if (Number(element.min) >= 1) valueSet._valueSetMin = element.min;
             property._valueSetList.push(valueSet);
         }
     }
@@ -451,7 +459,7 @@ class ParseConformance {
                     parentBackboneElement._properties.push({
                         _name: backboneElementId.substring(backboneElementId.lastIndexOf('.') + 1),
                         _type: type,
-                        _multiple: backboneElement.max !== '1',
+                        _multiple: backboneElement.base.max !== '1',
                         _required: backboneElement.min === 1
                     });
                 }
@@ -464,7 +472,7 @@ class ParseConformance {
                     const newProperty = {
                         _name: backboneElementId.substring(backboneElementId.lastIndexOf('.') + 1),
                         _type: type,
-                        _multiple: backboneElement.max !== '1',
+                        _multiple: backboneElement.base.max !== '1',
                         _required: backboneElement.min === 1,
                         _properties: []
                     };
@@ -472,6 +480,14 @@ class ParseConformance {
                     this.populateValueSet(backboneElement, newProperty);
                     if (backboneElement.type[0].code === 'BackboneElement' || backboneElement.type[0].code == 'Element') {
                         this.populateBackboneElement(parsedStructureDefinition, structureDefinition.snapshot.element[y].id, structureDefinition);
+                    } else if (backboneElement.type[0].code == "Address" ||
+                               backboneElement.type[0].code == "HumanName"
+                    ) {
+                        let allElementId = lodash.map(structureDefinition.snapshot.element , "id");
+                        if(allElementId.find(v=> v.includes(`${backboneElement.id}.`))) {
+                            /*newProperty._type = backboneElement.type[0].code + 'custom';*/
+                            this.populateBackboneElement(parsedStructureDefinition, structureDefinition.snapshot.element[y].id, structureDefinition);
+                        }
                     }
                 }
                 else if (backboneElement.id.endsWith('[x]')) {
@@ -486,7 +502,7 @@ class ParseConformance {
                             _name: choiceElementId,
                             _choice: backboneElement.id.substring(backboneElement.id.lastIndexOf('.') + 1),
                             _type: backboneElement.type[y].code,
-                            _multiple: backboneElement.max !== '1',
+                            _multiple: backboneElement.base.max !== '1',
                             _required: backboneElement.min === 1 || anySliceRequired
                         };
                         parentBackboneElement._properties.push(newProperty);
@@ -507,7 +523,7 @@ class ParseConformance {
                     let newProperty = {
                         _name: backboneElementId.substring(backboneElementId.lastIndexOf('.') + 1),
                         _type: 'Reference',
-                        _multiple: backboneElement.max !== '1',
+                        _multiple: backboneElement.base.max !== '1',
                         _required: backboneElement.min === 1
                     };
                     parentBackboneElement._properties.push(newProperty);
@@ -515,9 +531,13 @@ class ParseConformance {
                 }
                 else if (backboneElementId.includes(':')) {
                     backboneElementId = backboneElementId.substr(0, backboneElementId.lastIndexOf(":"));
-                    let newProperty = parentBackboneElement._properties.find(v=> v._name == backboneElementId.substring(backboneElementId.lastIndexOf('.') + 1));
-                    if (newProperty) {
-                        this.populateValueSet(backboneElement, newProperty);
+                    if (backboneElement.id.indexOf(".coding") > 0) {
+                        this.populateValueSet(backboneElement, parentBackboneElement);
+                    } else {
+                        let newProperty = parentBackboneElement._properties.find(v => v._name == backboneElementId.substring(backboneElementId.lastIndexOf('.') + 1));
+                        if (newProperty) {
+                            this.populateValueSet(backboneElement, newProperty);
+                        }
                     }
                     //console.log(backboneElement);
                 }

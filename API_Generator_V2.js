@@ -455,6 +455,13 @@ function generateAPI(option) {
         `
         //#endregion
 
+        const validationScript = `
+        const validate = require('../../../FHIRApiService/$validate');
+
+        module.exports = async function (req, res) {
+            return await validate(req,res, "Patient");
+        }
+        `;
         fs.writeFileSync(`./api/FHIR/${res}/controller/get${res}.js`, beautify(get));
         fs.writeFileSync(`./api/FHIR/${res}/controller/get${res}ById.js`, beautify(getById));
         fs.writeFileSync(`./api/FHIR/${res}/controller/get${res}History.js`, beautify(getHistory));
@@ -462,6 +469,7 @@ function generateAPI(option) {
         fs.writeFileSync(`./api/FHIR/${res}/controller/post${res}.js`, beautify(post));
         fs.writeFileSync(`./api/FHIR/${res}/controller/put${res}.js`, beautify(put));
         fs.writeFileSync(`./api/FHIR/${res}/controller/delete${res}.js`, beautify(deleteJs));
+        fs.writeFileSync(`./api/FHIR/${res}/controller/post${res}Validate.js`, beautify(validationScript));
         let indexJs = `
         const express = require('express');
         const router = express.Router();
