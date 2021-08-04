@@ -252,7 +252,7 @@ function generateResourceSchema (type) {
                 _.set(this, "meta.lastUpdated", new Date());
             } else {
                 console.error('err', storedID);
-                return next(new Error(\`The id->\$"{this.id}" stored by resource \${storedID.resourceType}\`));
+                return next(new Error(\`The id->\${this.id} stored by resource \${storedID.resourceType}\`));
             }
         } else {
             _.set(this, "meta.versionId", "1");
@@ -265,7 +265,7 @@ function generateResourceSchema (type) {
         let mongodb = require('../index');
         let item = result.toObject();
         delete item._id;
-        let version = item.versionId;
+        let version = item.meta.versionId;
         if (version == "1" ) {
             let port = (process.env.FHIRSERVER_PORT == "80" || process.env.FHIRSERVER_PORT == "443") ? "" : \`:\${process.env.FHIRSERVER_PORT}\`;
             _.set(item, "request", {

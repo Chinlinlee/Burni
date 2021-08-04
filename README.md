@@ -542,3 +542,7 @@ Then GET by id
 - [ ] search parameters
 - :secret: FHIR Next Generation Sequencing (NGS) Resources
 - :secret: support FHIR implementation guide(IG)
+
+# Dependencies (FHIR)
+- [npm fhir](https://www.npmjs.com/package/fhir) modify by self to complete validate function
+    - serialize between XML and JSON
