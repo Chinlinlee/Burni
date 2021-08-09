@@ -291,22 +291,19 @@ function referenceQuery (query , field) {
     }
     return queryBuilder;
 }
-function arrayStringBuild (query , field , queryField ,deleteFields=['']) {
+function arrayStringBuild (query , field , queryField) {
     if (!_.isArray(query[field])) {
         query[field] = [query[field]];
     }
     for (let item of query[field]) {
-        stringBuild(query , item , field , queryField , deleteFields);
+        stringBuild(query , item , field , queryField);
     }
 }
-function stringBuild (query , item , field , queryField ,deleteFields=['']) {
+function stringBuild (query , item , field , queryField) {
     let buildResult = stringQuery(item , field);
     query.$and.push({
         [queryField]: buildResult
     });
-    for (let i of deleteFields) {
-        delete query[i];
-    }
 }
 
 let numberQueryBuilder = {

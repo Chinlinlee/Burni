@@ -19,28 +19,33 @@ function getDeleteMessage (resource , id) {
     let operation = new OperationOutcome([message]);
     return operation;
 }
-
+/**
+ * @param err The error;
+ * @param codeName FHIR OperationOutCome issue code
+ */
+ function getOperationOutCome (err , codeName="exception") {
+    let errorMessage = new issue("error" , codeName , err.toString());
+    let operation = new OperationOutcome([errorMessage]);
+    return operation;
+}
+function getOperationOutComeWarn (warning , codeName="exception") {
+    let errorMessage = new issue("warning" , codeName , warning.toString());
+    let operation = new OperationOutcome([errorMessage]);
+    return operation;
+}
+function getOperationOutComeInfo (Info , codeName="informational") {
+    let errorMessage = new issue("information" , codeName , Info.toString());
+    let operation = new OperationOutcome([errorMessage]);
+    return operation;
+}
 const handleError = {
-    "duplicate" : (err) => {
-        let errorMessage = new issue("error" , "duplicate" , err.toString());
-        let operation = new OperationOutcome([errorMessage]);
-        return operation;
-    } ,
-    "exception" : (err) => {
-        let errorMessage = new issue("error" , "exception" , err.toString());
-        let operation = new OperationOutcome([errorMessage]);
-        return operation;
-    } ,
-    "not-found" : (err) => {
-        let errorMessage = new issue("error" , "not-found" , err.toString());
-        let operation = new OperationOutcome([errorMessage]);
-        return operation;
-    } ,
-    "processing" : (err) => {
-        let errorMessage = new issue("error" , "processing" , err.toString());
-        let operation = new OperationOutcome([errorMessage]);
-        return operation;
-    }
+    "duplicate" : (err) => getOperationOutCome(err, "duplicate") ,
+    "exception" :(err) => getOperationOutCome(err, "exception" ),
+    "not-found" : (err) => getOperationOutCome(err, "not-found"),
+    "processing" : (err) => getOperationOutCome(err, "processing") , 
+    "code-invalid" : (err) => getOperationOutCome(err,"code-invalid") , 
+    "informational" : (info)  => getOperationOutComeInfo(info, "informational") ,
+    "not-supported" : (err) => getOperationOutCome(err,"not-supported")
 }
 
 

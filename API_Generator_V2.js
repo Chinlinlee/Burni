@@ -4,6 +4,7 @@ const mkdirp = require('mkdirp');
 const beautify = require('js-beautify').js;
 const _ = require('lodash');
 require('dotenv').config();
+const {  capitalizeFirstLetter } = require('normalize-text');
 
 function getDeepKeys(obj) {
     var keys = [];
@@ -62,25 +63,71 @@ const datePrimitiveType = ['instant', 'time', 'dateTime', 'date'];
 const genParamFunc = {
     "string": (param, field, schema = {}) => {
         let txt = "";
-        let searchFields = field.split("|");
-        for (let searchField of searchFields) {
-            let [resource] = searchField.split('.');
-            let fieldInResource = searchField.replace(`${resource}.`, "");
-            fieldInResource = fieldInResource.trim();
-            if (param.includes('address')) {
-                txt += `
+        let searchFields = field.split("|").map(
+            v => v.substr(v.indexOf(".") + 1).trim()
+        );
+        for (let key in searchFields) {
+            let searchField = searchFields[key];
+            if (searchField.includes(" as ")) {
+                searchField = searchField.replace(")" , "");
+                let [field , asType] = searchField.split(" as ");
+                asType = capitalizeFirstLetter(asType);
+                searchFields[key] = `${field}${asType}`;
+            }
+        }
+        txt += `paramsSearchFields["${param}"]= ${JSON.stringify(searchFields)};`;
+        if (param.includes('address')) {
+            txt += `
                 paramsSearch["${param}"] = (query) => {
                     if (!_.isArray(query["${param}"])) {
                         query["${param}"] = [query["${param}"]]
                     }
                     for (let item of query["${param}"]) {
-                        let buildResult = queryBuild.addressQuery(item ,"${fieldInResource}");
-                        query.$and.push(buildResult);
+                        let buildQs = {
+                            $or : []
+                        };
+                        for (let field of paramsSearchFields["address"]) {
+                            let buildResult = queryBuild.tokenQuery(item , "value" , field);
+                            buildQs.$or = [...buildQs.$or , ...buildResult.$or];
+                        }
+                        query.$and.push({
+                            ...buildQs
+                        });
                     }
                     delete query["${param}"];
                 } 
                 `;
-            } else if (param == "name") {
+        } else if (param == "name") {
+            let deepKeys = getDeepKeys(_.cloneDeep(schema));
+            let typePath = deepKeys.filter(v =>  v.includes("name") && v.endsWith(".type"));
+            typePath = typePath.reduce(function (a, b) {
+                return a.length < b.length ? a : b
+            })
+            let typeOfField = _.get(schema, typePath);
+            if (typeOfField == "string") {
+                txt += `
+                paramsSearch["name"] = (query) => {
+                    if (!_.isArray(query["name"])) {
+                        query["name"] = [query["name"]]
+                    }
+                    for (let item of query["name"]) {
+                        let buildQs = {
+                            $or: []
+                        };
+                        for (let field of paramsSearchFields["name"]) {
+                            let buildResult = {
+                                [field] : queryBuild.stringQuery(item, field)
+                            }
+                            buildQs.$or.push(buildResult);
+                        }
+                        query.$and.push({
+                            ...buildQs
+                        });
+                    }
+                    delete query['name'];
+                } 
+                `
+            } else {
                 txt += `
                 paramsSearch["name"] = (query) => {
                     if (!_.isArray(query["name"])) {
@@ -93,13 +140,31 @@ const genParamFunc = {
                     delete query['name'];
                 }
                 `
-            } else {
-                txt += `
-                paramsSearch["${param}"] = (query) => {
-                    queryBuild.arrayStringBuild(query ,"${param}" , "${fieldInResource}" , ["${param}"]);
-                } 
-                `
             }
+            
+        } else {
+            txt += `
+            paramsSearch["${param}"] = (query) => {
+                if (!_.isArray(query["${param}"])) {
+                    query["${param}"] = [query["${param}"]]
+                }
+                for (let item of query["${param}"]) {
+                    let buildQs = {
+                        $or: []
+                    };
+                    for (let field of paramsSearchFields["${param}"]) {
+                        let buildResult = {
+                            [field] : queryBuild.stringQuery(item, field)
+                        }
+                        buildQs.$or.push(buildResult);
+                    }
+                    query.$and.push({
+                        ...buildQs
+                    });
+                }
+                delete query['${param}'];
+            } 
+            `
         }
         return txt;
     },
@@ -302,36 +367,43 @@ const genParamFunc = {
     },
     "reference": (param, field, schema = {}) => {
         let txt = "";
-        let searchFields = field.split("|");
-        for (let searchField of searchFields) {
-            let [resource] = searchField.split('.');
-            let fieldInResource = searchField.replace(`${resource}.`, "");
-            fieldInResource = fieldInResource.trim();
-            if (fieldInResource.includes("where")) {
-                let lastIndexFieldInField = fieldInResource.lastIndexOf(".");
-                fieldInResource = fieldInResource.substring(0, lastIndexFieldInField) + ".reference";
-            } else if (fieldInResource.includes(" as ")) {
-                fieldInResource = fieldInResource.substr(0, fieldInResource.indexOf(" as "));
+        //let searchFields = field.split("|");
+        let searchFields = field.split("|").map(
+            v => v.substr(v.indexOf(".") + 1).trim()
+        );
+        searchFields = searchFields.map(v=> {
+            if (v.includes("where")) {
+                let lastIndexFieldInField = v.lastIndexOf(".");
+                v = v.substring(0, lastIndexFieldInField) + ".reference";
+            } else if (v.includes(" as ")) {
+                v = v.substr(0, v.indexOf(" as "));
             } else {
-                fieldInResource = fieldInResource + ".reference";
+                v = v + ".reference";
             }
-            txt += `
-                paramsSearch["${param}"] = (query) => {
-                    if (!_.isArray(query["${param}"])) {
-                        query["${param}"] = [query["${param}"]]
-                    }
-                    for (let item of query["${param}"]) {
-                        let buildResult = queryBuild.referenceQuery(item , "${fieldInResource}");
-                        for (let i in buildResult) {
-                            query.$and.push({
-                                [i]: buildResult[i]
-                            });
-                        }
-                    }
-                    delete query['${param}'];
+            return v;
+        });
+        txt += `paramsSearchFields["${param}"]= ${JSON.stringify(searchFields)};`;
+        txt += `
+            paramsSearch["${param}"] = (query) => {
+                if (!_.isArray(query["${param}"])) {
+                    query["${param}"] = [query["${param}"]]
                 }
-                `
-        }
+                
+                for (let item of query["${param}"]) {
+                    let buildQs = {
+                        $or : []
+                    };
+                    for (let field of paramsSearchFields["${param}"]) {
+                        let buildResult =queryBuild.referenceQuery(item , field);
+                        buildQs.$or.push(buildResult);
+                    }
+                    query.$and.push({
+                        ...buildQs
+                    });
+                }
+                delete query['${param}'];
+            }
+            `
         return txt;
     }
 }

@@ -1,0 +1,43 @@
+version: '3.4'
+services:
+  fhir-baobao-mongodb:
+    image: mongo:4.2
+    container_name : fhir-baobao-mongodb
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - ./mongodb/db:/data/db
+    environment:
+      # provide your credentials here
+      - MONGO_INITDB_DATABASE=admin
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=root
+      - MONGO_PORT=27017
+  
+  fhir-baobao:
+    build: ./
+    container_name: fhir-baobao
+    command: >
+      /bin/sh -c '
+      while ! nc -z mongodb 27017;
+      do
+        echo "waiting for database ...";
+        sleep 3;
+      done;
+      echo "db is ready!";
+      pm2-runtime start ecosystem.config.js;
+      '
+    volumes :
+      - ./:/nodejs/fhir-baobao
+      - fhir-baobao-node_modules:/nodejs/fhir-baobao/node_modules
+    ports:
+      - 8080:8080
+    depends_on:
+      - fhir-baobao-mongodb
+    tty : true
+    restart: on-failure:3
+    stdin_open : true
+    
+volumes:
+  fhir-baobao-node_modules:
