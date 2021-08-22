@@ -33,7 +33,8 @@ async function findResourceById(resource, id) {
 
 async function checkReference(resourceData) {
     let checkedReferenceList = [];
-    let referenceKeys = getDeepKeys(resourceData).filter(
+    let resourceDeepKeys = getDeepKeys(resourceData);
+    let referenceKeys = resourceDeepKeys.filter(
         v => v.endsWith(".reference")
     );
     for (let key of referenceKeys) {
@@ -87,6 +88,26 @@ async function checkReference(resourceData) {
             let resourceId = referenceValueSplit[referenceValueSplit.length - 1];
             let doc = await findResourceById(resourceName, resourceId);
             if (doc) {
+                checkedReferenceList.push({
+                    exist: true,
+                    path: key,
+                    value: referenceValue
+                });
+            } else {
+                checkedReferenceList.push({
+                    exist: false,
+                    path: key,
+                    value: referenceValue
+                });
+            }
+        } else if (/urn:oid:[0-2](\.[1-9]\d*)+/i.test(referenceValue) ||
+            /^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(referenceValue)) {
+            //Only Bundle entry have OID or UUID reference?
+            let referenceTargetFullUrl = resourceDeepKeys.find(
+                v => _.get(resourceData, v) == referenceValue &&
+                    v.endsWith("fullUrl")
+            );
+            if (referenceTargetFullUrl) {
                 checkedReferenceList.push({
                     exist: true,
                     path: key,
