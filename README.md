@@ -23,12 +23,21 @@ npm install
 
 ## configure
 
-The resources config in `build\config.js`
+The resources config in `config\config.js`
 ```javascript=
 module.exports = {
-    resources : [
-        "Patient"  // add the resource name that you need
-    ]
+    // add the resource name that you need
+    "Patient" : { 
+        "interaction": {
+            "read": true,
+            "vread": true,
+            "update": true,
+            "delete": true,
+            "history": true,
+            "create": true,
+            "search": true
+        }
+    }
 }
 ```
 dotenv in root path `.env`

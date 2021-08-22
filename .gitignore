@@ -20,3 +20,7 @@ FHIR-mongoose-Models-Generator/PrimitiveGenerator.js
 
 #ignore new back bone element schema
 models/mongodb/FHIRDataTypesSchema
+
+
+#ignore self config
+config/config.js

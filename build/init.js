@@ -1,8 +1,8 @@
 const fs = require('fs');
 //const { generateAPI , generateMetaData } =require('../API_Generator');
-const { generateAPI , generateMetaData } =require('../API_Generator_V2');
+const { generateAPI , generateMetaData, generateConfig } =require('../API_Generator_V2');
 const { genHistoryModel } = require('../history_model_Generator');
-const config  = require('./config');
+const config  = require('../config/config');
 
 function init () {
     if (!fs.existsSync(".env")) {
@@ -25,6 +25,7 @@ FHIRSERVER_APIPATH="fhir"
     }
     generateAPI(config);
     generateMetaData();
+    generateConfig();
     genHistoryModel();
     console.log("Init finished");
     process.exit(0);
