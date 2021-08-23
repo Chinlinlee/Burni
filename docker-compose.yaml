@@ -30,7 +30,7 @@ services:
       '
     volumes :
       - ./:/nodejs/fhir-baobao
-      - fhir-baobao-node_modules:/nodejs/fhir-baobao/node_modules
+      - /nodejs/fhir-baobao/node_modules
     ports:
       - 8080:8080
     depends_on:
@@ -38,6 +38,3 @@ services:
     tty : true
     restart: on-failure:3
     stdin_open : true
-    
-volumes:
-  fhir-baobao-node_modules:

@@ -9,5 +9,9 @@ module.exports = new mongoose.Schema({
     start: dateTime,
     end: dateTime
 }, {
-    _id: false
+    _id: false,
+    id: false,
+    toObject: {
+        getters: true
+    }
 });

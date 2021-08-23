@@ -21,5 +21,9 @@ module.exports = new mongoose.Schema({
     dimensions: positiveInt,
     data: string
 }, {
-    _id: false
+    _id: false,
+    id: false,
+    toObject: {
+        getters: true
+    }
 });

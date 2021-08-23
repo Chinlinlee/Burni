@@ -61,5 +61,9 @@ module.exports = new mongoose.Schema({
     },
     offset: unsignedInt
 }, {
-    _id: false
+    _id: false,
+    id: false,
+    toObject: {
+        getters: true
+    }
 });

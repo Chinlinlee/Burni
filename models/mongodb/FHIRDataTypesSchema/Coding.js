@@ -15,5 +15,9 @@ module.exports = new mongoose.Schema({
     display: string,
     userSelected: boolean
 }, {
-    _id: false
+    _id: false,
+    id: false,
+    toObject: {
+        getters: true
+    }
 });

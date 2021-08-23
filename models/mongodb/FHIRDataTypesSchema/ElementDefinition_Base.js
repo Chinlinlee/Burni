@@ -15,5 +15,9 @@ module.exports = new mongoose.Schema({
     min: unsignedInt,
     max: string
 }, {
-    _id: false
+    _id: false,
+    id: false,
+    toObject: {
+        getters: true
+    }
 });

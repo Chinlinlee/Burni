@@ -24,5 +24,9 @@ module.exports = new mongoose.Schema({
     xpath: string,
     source: canonical
 }, {
-    _id: false
+    _id: false,
+    id: false,
+    toObject: {
+        getters: true
+    }
 });

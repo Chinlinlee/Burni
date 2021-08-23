@@ -20,5 +20,9 @@ module.exports = new mongoose.Schema({
     title: string,
     creation: dateTime
 }, {
-    _id: false
+    _id: false,
+    id: false,
+    toObject: {
+        getters: true
+    }
 });
