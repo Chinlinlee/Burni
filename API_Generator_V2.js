@@ -269,7 +269,7 @@ const genParamFunc = {
                                 $or : []
                             };
                             for (let field of paramsSearchFields["${param}"]) {
-                                let buildResult =queryBuild.tokenQuery(item , "${hitToken.code}" , field, ${isCodeableConcept});
+                                let buildResult =queryBuild.tokenQuery(item , "${hitToken.code}" , field, "", ${isCodeableConcept});
                                 buildQs.$or = [...buildQs.$or , ...buildResult.$or];
                             }
                             query.$and.push({
@@ -290,7 +290,7 @@ const genParamFunc = {
                                 $or : []
                             };
                             for (let field of paramsSearchFields["${param}"]) {
-                                let buildResult =queryBuild.tokenQuery(item , "" , field, false);
+                                let buildResult =queryBuild.tokenQuery(item , "" , field, "", false);
                                 buildQs.$or = [...buildQs.$or , ...buildResult.$or];
                             }
                             query.$and.push({
@@ -694,7 +694,8 @@ function generateMetaData() {
     const router = express.Router();
     const {validateParams} = require('../../validator');
     const Joi = require('joi');
-    
+    const _ = require('lodash');
+
     router.use((req, res, next) => {
         res.set('Content-Type', 'application/fhir+json');
         next();
@@ -705,6 +706,11 @@ function generateMetaData() {
     module.exports = router;`
     fs.writeFileSync("./api/FHIR/metadata/index.js", beautify(metadataRouteIndexText));
     let metadataText = `
+    const uuid = require('uuid');
+    const moment = require('moment');
+    const _ = require('lodash');
+    const fs = require('fs');
+    
     const fhirUrl = "http://hl7.org/fhir/R4";
 
     module.exports = async function (req ,res) {
