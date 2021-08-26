@@ -33,7 +33,7 @@ module.exports = async function(req, res, resourceType) {
         let docs = await mongodb[`${resourceType}_history`].find({
             id: id
         }).
-        limit(realLimit).
+        limit(paginationLimit).
         skip(paginationSkip).
         sort({
             _id: -1

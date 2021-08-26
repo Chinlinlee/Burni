@@ -53,7 +53,7 @@ module.exports = async function(req, res,resourceType,paramsSearch) {
     }
     try {
         let docs = await mongodb[resourceType].find(queryParameter).
-        limit(realLimit).
+        limit(paginationLimit).
         skip(paginationSkip).
         sort({
             _id: -1
