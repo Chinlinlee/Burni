@@ -117,6 +117,9 @@ function createBundle (req ,  docs , count , skip , limit , resource , option) {
             bundle.entry.push(entry);
         }
     }
+    if (bundle.total == 0) {
+        delete bundle.entry;
+    }
     return bundle;
 }
 
