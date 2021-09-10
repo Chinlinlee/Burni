@@ -60,7 +60,10 @@ app.use(session({
     store: new MongoStore({
         mongooseConnection: mongoose.connection
     }),
-    httpOnly: true
+    cookie: {
+        httpOnly: true,
+        maxAge: 60 * 60 * 1000
+    }
 }));
 app.use(passport.initialize());
 app.use(passport.session());
