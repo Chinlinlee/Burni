@@ -29,7 +29,6 @@ module.exports = async function(req, res,resourceType,paramsSearch) {
     let paginationLimit = queryParameter['_count'] == undefined ? 100 : queryParameter['_count'];
     _.set(req.query, "_offset", paginationSkip);
     _.set(req.query, "_count", paginationLimit);
-    let realLimit = paginationLimit + paginationSkip;
     delete queryParameter['_count'];
     delete queryParameter['_offset'];
     Object.keys(queryParameter).forEach(key => {
