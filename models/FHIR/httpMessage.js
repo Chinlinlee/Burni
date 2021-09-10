@@ -45,7 +45,10 @@ const handleError = {
     "processing" : (err) => getOperationOutCome(err, "processing") , 
     "code-invalid" : (err) => getOperationOutCome(err,"code-invalid") , 
     "informational" : (info)  => getOperationOutComeInfo(info, "informational") ,
-    "not-supported" : (err) => getOperationOutCome(err,"not-supported")
+    "not-supported" : (err) => getOperationOutCome(err,"not-supported"),
+    "security": (err)  => getOperationOutCome(err, "security"),
+    "expired": (err) => getOperationOutCome(err, "expired"),
+    "forbidden": (err) => getOperationOutCome(err, "forbidden")
 }
 
 
