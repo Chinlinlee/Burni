@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="tokenIssuerApp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FHIR Simple-Express-Server·token issuer</title>
+    <link rel="stylesheet" href="../css/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.27.0/slimselect.min.css">
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/tokenIssuer/tokenIssuer.css">
+</head>
+
+<body ng-controller="tokenIssuerCtrl">
+    <navbar></navbar>
+    <main class="container">
+        <h1>token issuer</h1>
+
+        <hr>
+
+        <div class="card">
+
+            <div class="card-body">
+                <div class="row mb-2">
+                    <div class="col-9">
+                        <select id="select-multiple-token-access" multiple>
+                            <option ng-repeat="item in resourceAccessList" value="{{item.resourceType}}">
+                                {{ item.resourceType }} </option>
+                        </select>
+                    </div>
+
+                    <div class="col-3">
+                        <button class="btn btn-danger" ng-click="clearSelectMultipleTokenAccess();">clear all</button>
+                    </div>
+                </div>
+
+                <div class="row mb-2" ng-show="chosenResourceAccessList.length !=0 ">
+                    <div class="col-12">
+                        <select id="select-multiple-access-interaction" multiple>
+                            <option value="{{ interaction }}" ng-repeat="interaction in supportedInteraction">
+                                {{ interaction }}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row mb-2">
+                    <div class="col-12">
+                        <button class="btn btn-block btn-outline-secondary" ng-click="add();">Add</button>
+                    </div>
+                </div>
+
+                <hr />
+
+                <h2>Added List</h2>
+                <div class="row mb-2">
+                    <div class="col-12 table-responsive">
+                        <table class="table table-striped table-inverse table-sm vw-50">
+                            <thead class="thead-inverse">
+                                <tr>
+                                    <th>resourceType</th>
+                                    <th>access</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="item in addedResourceAccessList">
+                                    <td>{{ item.resourceType }}</td>
+                                    <td>
+                                        <span ng-repeat="(key,value) in item">
+                                            <div class="access-values" ng-show="key !='resourceType'">
+                                                <div class="access-value">
+                                                    <span class="ss-value-text">
+                                                        {{ key }}
+                                                    </span>
+                                                    <span class="ss-value-delete"
+                                                        ng-click="remove(item.resourceType, key)">x</span>
+                                                </div>
+                                            </div>
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <hr />
+
+                <div class="row mb-2">
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label for="input-token-name">token name:</label>
+                            <input type="text" class="form-control" name="input-token-name" id="input-token-name"
+                                aria-describedby="help-token-name" placeholder="type your token name"
+                                ng-model="tokenName">
+                            <small id="help-token-name" class="form-text text-muted">The token name will help you to
+                                manage issued tokens.</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-2">
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label for="input-token-note">token note</label>
+                            <input type="text" class="form-control" name="input-token-note" id="input-token-note"
+                                aria-describedby="help-token-note" placeholder="">
+                            <small id="help-token-note" class="form-text text-muted">The note about this token</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <button class="btn btn-outline-success btn-block" ng-click="generate();">generate key</button>
+                    </div>
+                </div>
+
+                <hr />
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label for="input-generated-key">generated key</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="input-generated-key"
+                                    id="input-generated-key" aria-describedby="helpId" ng-model="generatedKey">
+                                <div class="input-group-append">
+                                    <button class="input-group-text btn" 
+                                    role="button"
+                                    ng-click="copyKey();" >copy</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>
+<script src="../js/jquery/jquery-3.6.0.min.js"></script>
+<script src="../js/popper/popper.min.js"></script>
+<script src="../js/bootstrap/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.27.0/slimselect.min.js"></script>
+<script src="../js/config.js"></script>
+<script src="../js/angularjs/angular.min.js"></script>
+<script src="../js/ngCommon.js"></script>
+<script src="../js/tokenIssuer/tokenIssuer.js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- https://github.com/brianvoe/slim-select -->

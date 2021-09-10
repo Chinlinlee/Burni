@@ -9,6 +9,7 @@ api/FHIR/*
 models/mongodb/model/*
 !models/mongodb/model/Patient*.js
 !models/mongodb/model/FHIRStoredID.js
+!models/mongodb/model/issuedToken.js
 
 
 #ignore temp folder

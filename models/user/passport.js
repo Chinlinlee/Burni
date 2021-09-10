@@ -4,6 +4,10 @@ const mongodb = require('models/mongodb');
 const bcrypt = require('bcrypt');
 const BearerStrategy =  require('passport-http-bearer').Strategy;
 
+/**
+ * 
+ * @param {import('passport')} passport 
+ */
 module.exports = function (passport) {
     passport.serializeUser(function (user, done) {
         done(null, user);
@@ -42,6 +46,19 @@ module.exports = function (passport) {
                 return done(null, false, req.flash('error' , 'The user do not active'));  
             }
     }));
+
+    passport.use('admin-login', new LocalStrategy({
+        usernameField: 'username',
+        passwordField: 'password',
+        session: true,
+        passReqToCallback: true
+    }, function (req, username, password, done) {
+        if (username === process.env.ADMIN_USERNAME && password === process.env.ADMIN_PASSWORD) {
+            return done(null ,username);
+        }
+        return done(null, false, 'Invalid user or password')
+    }));
+
     passport.use(new BearerStrategy(
         function(token, done) {
             mongodb.users.findOne({ token: token }, function (err, user) {

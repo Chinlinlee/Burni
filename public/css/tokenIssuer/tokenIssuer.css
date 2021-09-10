@@ -1,0 +1,27 @@
+.access-values {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    flex: 1 1 100%;
+    width: calc(100% - 30px);
+}
+
+.access-value {
+    display: flex;
+    user-select: none;
+    align-items: center;
+    font-size: 12px;
+    padding: 3px 5px;
+    margin: 3px 5px 3px 0;
+    color: #fff;
+    background-color: #5897fb;
+    border-radius: 4px;
+    animation-name: scaleIn;
+    animation-duration: .2s;
+    animation-timing-function: ease-out;
+    animation-fill-mode: both;
+}
+.access-value .ss-value-delete {
+    margin: 0 0 0 5px;
+    cursor: pointer;
+}

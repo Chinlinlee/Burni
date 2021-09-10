@@ -52,6 +52,12 @@ MONGODB_SLAVEMODE=false
 FHIRSERVER_HOST="localhost"
 FHIRSERVER_PORT=8088
 FHIRSERVER_APIPATH="fhir"
+
+#If u want to use token auth, add below.
+ENABLE_TOKEN_AUTH=true
+ADMIN_LOGIN_PATH="adminLogin"  
+ADMIN_USERNAME="adminUsername"
+ADMIN_PASSWORD="adminPassword"
 ```
 After configuration, run `npm run build` to generate resources
 ```
