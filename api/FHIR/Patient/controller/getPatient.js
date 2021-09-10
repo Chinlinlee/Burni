@@ -127,7 +127,7 @@ paramsSearch["address-use"] = (query) => {
             $or: []
         };
         for (let field of paramsSearchFields["address-use"]) {
-            let buildResult = queryBuild.tokenQuery(item, "", field, false);
+            let buildResult = queryBuild.tokenQuery(item, "", field, "", false);
             buildQs.$or = [...buildQs.$or, ...buildResult.$or];
         }
         query.$and.push({
@@ -196,7 +196,7 @@ paramsSearch["gender"] = (query) => {
             $or: []
         };
         for (let field of paramsSearchFields["gender"]) {
-            let buildResult = queryBuild.tokenQuery(item, "", field, false);
+            let buildResult = queryBuild.tokenQuery(item, "", field, "", false);
             buildQs.$or = [...buildQs.$or, ...buildResult.$or];
         }
         query.$and.push({
@@ -272,7 +272,7 @@ paramsSearch["telecom"] = (query) => {
             $or: []
         };
         for (let field of paramsSearchFields["telecom"]) {
-            let buildResult = queryBuild.tokenQuery(item, "value", field, false);
+            let buildResult = queryBuild.tokenQuery(item, "value", field, "", false);
             buildQs.$or = [...buildQs.$or, ...buildResult.$or];
         }
         query.$and.push({
@@ -291,7 +291,7 @@ paramsSearch["active"] = (query) => {
             $or: []
         };
         for (let field of paramsSearchFields["active"]) {
-            let buildResult = queryBuild.tokenQuery(item, "", field, false);
+            let buildResult = queryBuild.tokenQuery(item, "", field, "", false);
             buildQs.$or = [...buildQs.$or, ...buildResult.$or];
         }
         query.$and.push({
@@ -310,7 +310,7 @@ paramsSearch["deceased"] = (query) => {
             $or: []
         };
         for (let field of paramsSearchFields["deceased"]) {
-            let buildResult = queryBuild.tokenQuery(item, "", field, false);
+            let buildResult = queryBuild.tokenQuery(item, "", field, "", false);
             buildQs.$or = [...buildQs.$or, ...buildResult.$or];
         }
         query.$and.push({
@@ -368,7 +368,7 @@ paramsSearch["language"] = (query) => {
             $or: []
         };
         for (let field of paramsSearchFields["language"]) {
-            let buildResult = queryBuild.tokenQuery(item, "coding.code", field, true);
+            let buildResult = queryBuild.tokenQuery(item, "coding.code", field, "", true);
             buildQs.$or = [...buildQs.$or, ...buildResult.$or];
         }
         query.$and.push({
