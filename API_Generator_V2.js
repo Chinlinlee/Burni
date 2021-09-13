@@ -554,6 +554,7 @@ function generateAPI(option) {
         const { handleError } = require('../../../models/FHIR/httpMessage');
         const _ = require('lodash');
         const config = require('../../../config/config');
+        const { user } = require('../../apiService');
 
         function setFormatWhenQuery (req , res) {
             let format = _.get(req , "query._format");
@@ -590,6 +591,9 @@ function generateAPI(option) {
                 return res.send(handleError.exception(e));
             }
         });
+
+        router.use(user.tokenAuthentication);
+
         if (_.get(config, "${res}.interaction.search", true)) {
             router.get('/', FHIRValidateParams({
                 "_offset": joi.number().integer(),

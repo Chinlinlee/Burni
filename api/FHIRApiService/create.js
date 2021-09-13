@@ -6,6 +6,7 @@ const uuid = require('uuid');
 const _ = require('lodash');
 const { checkReference } = require('../apiService');
 const FHIR = require('../../models/FHIR/fhir/fhir').Fhir;
+const { user } = require('../apiService');
 
 /**
  * @param {import("express").Request} req 
@@ -21,6 +22,9 @@ module.exports = async function(req, res , resourceType) {
             return res.status(code).send(xmlItem);
         }
         return res.status(code).send(item);
+    }
+    if (!user.checkTokenPermission(req, resourceType, "create")) {
+        return doRes(403,handleError.forbidden("Your token doesn't have permission with this API"));
     }
     console.log("doPost-create", req.body);
     try {
