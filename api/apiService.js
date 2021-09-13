@@ -158,16 +158,17 @@ const user = {
                     return res.status(400).send(handleError.security("missing authorization in headers"));
                 }
                 let tokenInDb = await mongodb.issuedToken.findOne({
-                    token: token
+                    id: token
                 });
                 if (tokenInDb) {
-                    jwt.verify(tokenInDb, "AhKais7aij9tai7i", function(err, decoded) {
+                    jwt.verify(tokenInDb.token, process.env.JWT_SECRET_KEY, function(err, decoded) {
                         if (err) {
                             if (err.name == "TokenExpiredError") {
                                 return res.status(401).send(handleError.expired("token expired"));
                             }
+                            return res.status(401).send(handleError.security(err.message))
                         } 
-                        req.tokenObj = tokenInDb;
+                        req.tokenObj = decoded;
                         return next();
                     })
                 } else {
@@ -209,16 +210,16 @@ const user = {
  * @param {import('express').NextFunction} next 
  * @returns 
  */
-user["checkTokenPermission"] = (req, res, next) => {
+user["checkTokenPermission"] = async (req, resourceType, interaction) => {
     if (process.env.ENABLE_TOKEN_AUTH == "true") {
-        let permission = await user.getTokenPermission(req.tokenObj.token, resourceType, "create");
-        if (!permission) {
-            return res.status(403).send(handleError.forbidden("This token can not access this API."))
+        let permission = await user.getTokenPermission(req.tokenObj.id, resourceType, interaction);
+        if (permission) {
+            return true;
         } else {
-            next();
+            return false;
         }
     }
-    next();
+    return false;
 }
 
 module.exports = {
