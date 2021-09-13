@@ -55,6 +55,13 @@
 
                 <h2>Added List</h2>
                 <div class="row mb-2">
+                    <div class="col-12">
+                        <div class="form-group">
+                          <label for="input-search"></label>
+                          <input type="text"
+                            class="form-control" name="input-search" id="input-search" aria-describedby="helpId" placeholder="" ng-model="searchQ">
+                        </div>
+                    </div>
                     <div class="col-12 table-responsive">
                         <table class="table table-striped table-inverse table-sm vw-50">
                             <thead class="thead-inverse">
@@ -64,7 +71,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="item in addedResourceAccessList">
+                                <tr ng-repeat="item in addedResourceAccessList |filter:searchQ">
                                     <td>{{ item.resourceType }}</td>
                                     <td>
                                         <span ng-repeat="(key,value) in item">
@@ -132,7 +139,6 @@
                                     ng-click="copyKey();" >copy</button>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>

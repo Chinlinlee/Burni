@@ -1,4 +1,4 @@
-let tokenManagerApp = angular.module('tokenManagerApp' , ['commonApp']);
+let tokenManagerApp = angular.module('tokenManagerApp' , ['commonApp', 'ui.bootstrap']);
 
 
 tokenManagerApp.controller('tokenManagerCtrl', function($scope,$timeout,tokenManagerService) {

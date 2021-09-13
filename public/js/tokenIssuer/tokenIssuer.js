@@ -8,6 +8,8 @@ tokenIssuerApp.controller('tokenIssuerCtrl' , function ($scope , $timeout, $q , 
     $scope.chosenResourceAccessList = [];
     $scope.addedResourceAccessList = [];
     $scope.generatedKey = "";
+    $scope.curPage = 1;
+    $scope.numPerPage = 10;
     let resourceTypeList = [];
     tokenIssuerService.getMetadata().then(res => {
         let fhirMetadata = res.data;
@@ -102,7 +104,7 @@ tokenIssuerApp.controller('tokenIssuerCtrl' , function ($scope , $timeout, $q , 
     )
     
     $(`.${selectMultipleAccessInteractionDataId} .ss-content .ss-list .select-all`).click(()=> {
-        selectMultipleAccessInteraction.set(supportedInteraction);
+        selectMultipleAccessInteraction.set($scope.supportedInteraction);
     });
     
     $(`.${selectMultipleAccessInteractionDataId} .ss-content .ss-list .deselect-all`).click(()=> {
@@ -145,6 +147,14 @@ tokenIssuerApp.controller('tokenIssuerCtrl' , function ($scope , $timeout, $q , 
         if (Object.keys(hitResourceAccess).length == 2) {
             $scope.addedResourceAccessList.splice(hitResourceAccessIndex,1);
         }
+    }
+
+    $scope.paginate = function (value) {
+        var start, end, index;
+        start = ($scope.curPage - 1) * $scope.numPerPage;
+        end = start + $scope.numPerPage;
+        index = $scope.addedResourceAccessList.indexOf(value);
+        return (start <= index && index < end);
     }
 
     $scope.generate = function() {
