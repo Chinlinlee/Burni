@@ -40,6 +40,10 @@ module.exports = function (mongodb) {
     });
 
     let issuedTokenSchema = mongodb.Schema({
+        id: {
+            type: String,
+            default: void 0
+        },
         token: {
             type: String,
             default: void 0

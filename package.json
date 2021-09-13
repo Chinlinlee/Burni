@@ -41,6 +41,7 @@
         "passport-http-bearer": "^1.0.1",
         "passport-local": "^1.0.0",
         "rootpath": "^0.1.2",
+        "uid-generator": "^2.0.0",
         "uuid": "^8.3.2"
     }
 }
