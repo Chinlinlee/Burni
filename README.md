@@ -1,8 +1,9 @@
 <div>
-    <h1>Simple-Express-FHIR-Server</h1>
-    The simple node-ExpressJS FHIR server implement.
+    <h1>Burni FHIR Server</h1>
+    Burni is an implementation of the FHIR server with Node, Express, and MongoDB providing very simple ways to customize the [HL7 FHIR® specification](https://www.hl7.org/fhir/). Currently, Burni support both Windows and Linux environment to enable developers to rapidly deploy a FHIR service. Burni also supports to import your FHIR Implementation Guide to store FHIR Resources and create FHIR RESTful API as well.
+    
+    imported your implementation guide, you can enable it in your FHIR store for FHIR resource validation.
 </div>
- 
 
 This server supported FHIR RESTFul API below:
 - read (e.g. GET http://example.com/fhir/Patient/example)
@@ -539,6 +540,9 @@ Then GET by id
 # TODO
 - [x] metadata
 - [ ] history
-- [ ] search parameters
-- :secret: FHIR Next Generation Sequencing (NGS) Resources
-- :secret: support FHIR implementation guide(IG)
+- [x] search parameters
+- [x] support FHIR implementation guide(IG)
+
+## Special project
+- [Raccoon](https://github.com/cylab-tw/raccoon) - a noSQL-based DICOMWeb Server.
+- [ngs2fhir](https://github.com/cylab-tw/ngs2fhir) - Convert the next generation sequencing (NGS) data to the FHIR Resources.
