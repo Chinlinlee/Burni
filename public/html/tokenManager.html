@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="tokenManagerApp">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FHIR Simple-Express-Server·</title>
+    <link rel="stylesheet" href="../css/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/navbar/navbar.css">
+    <link rel="stylesheet" href="../css/global.css">
+</head>
+<body ng-controller="tokenManagerCtrl">
+    <navbar></navbar>
+    <main class="container">
+        <h1>Access Tokens</h1>
+        <hr />
+        <div class="row" ng-show="tokenList.length > 0">
+            <div class="col-12">
+                <ul class="list-group">
+                    <li class="list-group-item" ng-repeat="item in tokenList">
+                        <div class="row">
+                            <div class="col-9">
+                                <a 
+                                role="button" 
+                                ng-click="showTokenAccessList(item);">{{ item.tokenName }}</a>
+                            </div>
+                            <div class="col-3">
+                                <button class="btn btn-danger" ng-click="deleteToken(item);">Delete</button>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12" ng-show="tokenList.length">
+                <ul uib-pagination total-items="totalItem" ng-model="currentPage" boundary-link-numbers="true" rotate="true" max-size="3" boundary-links="true"  class="pagination-sm"></ul>
+            </div>
+        </div>
+
+        
+        <!-- Modal -->
+        <div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{ clickedTokenObj.tokenName }}</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                    </div>
+                    <div class="modal-body">
+
+                        <div class="row mb-2">
+                            <div class="col-12 table-responsive">
+                                <table class="table table-striped table-inverse table-sm vw-50">
+                                    <thead class="thead-inverse">
+                                        <tr>
+                                            <th>resourceType</th>
+                                            <th>access</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="item in clickedTokenObj.accessList">
+                                            <td>{{ item.resourceType }}</td>
+                                            <td>
+                                                <span ng-repeat="(key,value) in item">
+                                                    <div class="access-values" ng-show="key !='resourceType'">
+                                                        <div class="access-value">
+                                                            <span class="ss-value-text" ng-if="value">
+                                                                {{ key }}
+                                                            </span>
+                                                            
+                                                        </div>
+                                                    </div>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+</body>
+</html>
+<script src="../js/jquery/jquery-3.6.0.min.js"></script>
+<script src="../js/popper/popper.min.js"></script>
+<script src="../js/bootstrap/bootstrap.min.js"></script>
+<script src="../js/angularjs/angular.min.js"></script>
+<script src="../js/angularjs/ui-bootstrap-tpls-3.0.6.min.js"></script>
+<script src="../js/ngCommon.js"></script>
+<script src="../js/tokenManager/tokenManager.js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>

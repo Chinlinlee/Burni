@@ -13,5 +13,9 @@ module.exports = new mongoose.Schema({
     },
     div: xhtml
 }, {
-    _id: false
+    _id: false,
+    id: false,
+    toObject: {
+        getters: true
+    }
 });

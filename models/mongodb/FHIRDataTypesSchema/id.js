@@ -6,6 +6,5 @@ module.exports = {
         },
         message: props => `${props.value} is not a valid id!`
     },
-    default: void 0 ,
-    index : true
+    default: void 0
 }

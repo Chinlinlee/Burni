@@ -1,6 +1,7 @@
 const { isNumber } = require('lodash');
 const _ = require('lodash');
 const moment = require('moment');
+const momentTimezone = require('moment-timezone');
 const prefix = ["eq" , "ne" , "lt" , "gt" , "ge" , "le" , "sa" , "eb" , "ap"];
 function stringQuery(str, key) {
     let keySplit = key.split(':');
@@ -272,7 +273,82 @@ function dateTimeQuery (value , field) {
 }
 
 function timeQuery () {
+    
+}
+let instantQueryBuilder ={
+    "eq": (queryBuilder, field, date) => {
+        let result = {
+            "$eq": date
+        }
+        queryBuilder[field] = result;
+        return queryBuilder;
+    },
+    "ne": (queryBuilder, field, date) => {
+        let result = {
+            "$ne": date
+        }
+        queryBuilder[field] = result;
+        return queryBuilder;
+    },
+    "lt" : (queryBuilder, field, date) => {
+        let result = {
+            "$lt": date
+        }
+        queryBuilder[field] = result;
+        return queryBuilder;
+    },
+    "gt" : (queryBuilder, field, date) => {
+        let result = {
+            "$gt": date
+        }
+        queryBuilder[field] = result;
+        return queryBuilder;
+    },
+    "ge" : (queryBuilder, field, date) => {
+        let result = {
+            "$gte": date
+        }
+        queryBuilder[field] = result;
+        return queryBuilder;
+    },
+    "le" : (queryBuilder, field, date) => {
+        let result = {
+            "$lte": date
+        }
+        queryBuilder[field] = result;
+        return queryBuilder;
+    }
+}
 
+
+function instantQuery(value, field) {
+    let queryBuilder = {};
+    let date = value.substring(2);
+    let queryPrefix = value.substring(0, 2);
+    if (prefix.indexOf(queryPrefix) < 0) {
+        queryPrefix = "eq";
+        date = value;
+    }
+    let isVaildDate = moment(new Date(date)).isValid();
+    if (!isVaildDate) {
+        return false;
+    }
+    if (date.includes("+")) {
+        let dateSplitPlus = date.split("+");
+        let inputTimezone = `-${dateSplitPlus.pop().replace(":","")}`
+        let realDate = moment(dateSplitPlus.pop()).format("YYYY-MM-DDTHH:mm:ss");
+        date = moment(realDate).utc(true).utcOffset(inputTimezone).format("YYYY-MM-DDTHH:mm:ss");
+    } else if (date.includes("-")) {
+        let dateSplitPlus = date.split("-");
+        let inputTimezone = `+${dateSplitPlus.pop().replace(":", "")}`
+        let realDate = moment(dateSplitPlus.pop()).format("YYYY-MM-DDTHH:mm:ss");
+        date = moment(realDate).utc(true).utcOffset(inputTimezone).format("YYYY-MM-DDTHH:mm:ss");
+    } else {
+        date = moment(date).format("YYYY-MM-DDTHH:mm:ss");
+    }
+    let dateObj = moment(date).utc(true).toDate();
+    queryBuilder = instantQueryBuilder[queryPrefix](queryBuilder, field, dateObj, "");
+    return queryBuilder;
 }
 
 function referenceQuery (query , field) {
@@ -291,22 +367,19 @@ function referenceQuery (query , field) {
     }
     return queryBuilder;
 }
-function arrayStringBuild (query , field , queryField ,deleteFields=['']) {
+function arrayStringBuild (query , field , queryField) {
     if (!_.isArray(query[field])) {
         query[field] = [query[field]];
     }
     for (let item of query[field]) {
-        stringBuild(query , item , field , queryField , deleteFields);
+        stringBuild(query , item , field , queryField);
     }
 }
-function stringBuild (query , item , field , queryField ,deleteFields=['']) {
+function stringBuild (query , item , field , queryField) {
     let buildResult = stringQuery(item , field);
     query.$and.push({
         [queryField]: buildResult
     });
-    for (let i of deleteFields) {
-        delete query[i];
-    }
 }
 
 let numberQueryBuilder = {
@@ -394,6 +467,7 @@ module.exports = exports = {
     nameQuery : nameQuery ,
     dateQuery : dateQuery , 
     dateTimeQuery : dateTimeQuery ,
+    instantQuery: instantQuery,
     quantityQuery : quantityQuery , 
     referenceQuery : referenceQuery , 
     arrayStringBuild : arrayStringBuild

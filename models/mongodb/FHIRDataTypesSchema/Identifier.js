@@ -30,5 +30,9 @@ module.exports = new mongoose.Schema({
         default: void 0
     }
 }, {
-    _id: false
+    _id: false,
+    id: false,
+    toObject: {
+        getters: true
+    }
 });

@@ -10,5 +10,9 @@ module.exports = new mongoose.Schema({
     value: decimal,
     currency: code
 }, {
-    _id: false
+    _id: false,
+    id: false,
+    toObject: {
+        getters: true
+    }
 });

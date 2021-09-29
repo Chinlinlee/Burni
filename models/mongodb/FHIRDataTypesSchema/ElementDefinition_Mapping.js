@@ -17,5 +17,9 @@ module.exports = new mongoose.Schema({
     map: string,
     comment: string
 }, {
-    _id: false
+    _id: false,
+    id: false,
+    toObject: {
+        getters: true
+    }
 });

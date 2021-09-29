@@ -9,6 +9,7 @@ api/FHIR/*
 models/mongodb/model/*
 !models/mongodb/model/Patient*.js
 !models/mongodb/model/FHIRStoredID.js
+!models/mongodb/model/issuedToken.js
 
 
 #ignore temp folder
@@ -20,3 +21,7 @@ FHIR-mongoose-Models-Generator/PrimitiveGenerator.js
 
 #ignore new back bone element schema
 models/mongodb/FHIRDataTypesSchema
+
+
+#ignore self config
+config/config.js

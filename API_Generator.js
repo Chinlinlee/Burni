@@ -350,9 +350,7 @@ function generateAPI(option) {
                 return res.status(200).json(bundle);
             } catch (e) {
                 console.log('api api/fhir/${res}/ has error, ', e)
-                return res.status(500).json({
-                    message: 'server has something error'
-                });
+                return res.status(500).json(handleError.exception(e));
             }
         };
 
@@ -444,9 +442,7 @@ function generateAPI(option) {
                 return res.status(200).json(bundle);
             } catch (e) {
                 console.log('api api/fhir/${res}/:id/history has error, ', e)
-                return res.status(500).json({
-                    message: 'server has something error'
-                });
+                return res.status(500).json(handleError.exception(e));
             }
         };
         `;
@@ -468,7 +464,7 @@ function generateAPI(option) {
                             id: id
                         } ,
                         {
-                            __v : version
+                            "meta.versionId": version
                         }
                     ]
                 }).exec();
@@ -512,8 +508,8 @@ function generateAPI(option) {
                 let [status , doc]  = await insert${res}(insertData);
                 return resFunc[status](doc);
             } catch(e) {
-                console.error(\`error\`);
-                console.log(e);
+                console.error(e);
+                return res.status(500).send(handleError.exception(e));
             }
         }
 
@@ -533,6 +529,7 @@ function generateAPI(option) {
                     });
                 } catch (e) {
                     console.error(e);
+                    return resolve([false , e]);
                 }
             });
         }

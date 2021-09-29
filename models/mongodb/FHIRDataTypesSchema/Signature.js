@@ -29,5 +29,9 @@ module.exports = new mongoose.Schema({
     sigFormat: code,
     data: base64Binary
 }, {
-    _id: false
+    _id: false,
+    id: false,
+    toObject: {
+        getters: true
+    }
 });

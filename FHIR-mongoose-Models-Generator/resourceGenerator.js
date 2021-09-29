@@ -201,10 +201,12 @@ function generateResourceSchema (type) {
     }
     cleanChildSchema(result);
     let topLevelObj = {
-        id : "id" ,
         resourceType : {
             type : "String" ,
-            required : "true"
+            required : "true" ,
+            enum: [
+                `"${type}"`
+            ]
         }
     };
     result = Object.assign({} , result , topLevelObj);
@@ -213,12 +215,17 @@ function generateResourceSchema (type) {
     let code = `module.exports = function () {
     require('mongoose-schema-jsonschema')(mongoose);
     const ${type} = ${JSON.stringify(result , null , 4).replace(/\"/gm , '').replace(/\\/gm , '"')};\r\n
+    ${type}.id = {
+        ...id ,
+        index: true
+    }
     module.exports.schema = ${type}; 
     const ${type}Schema = new mongoose.Schema(${type} , {
         toObject : { getters : true} ,
         toJSON : { getters : true} ,
         versionKey : false
     });\r\n
+
     ${type}Schema.methods.getFHIRField = function () {
         let result = this.toObject();
         delete result._id;
@@ -241,23 +248,15 @@ function generateResourceSchema (type) {
                 });
                 let versionId = Number(_.get(docInHistory , "meta.versionId"))+1;
                 let versionIdStr = String(versionId);
-                Object.assign(this , {
-                    meta : {
-                        versionId : versionIdStr ,
-                        lastUpdated : new Date()
-                    }
-                });
+                _.set(this, "meta.versionId", versionIdStr);
+                _.set(this, "meta.lastUpdated", new Date());
             } else {
                 console.error('err', storedID);
-                return next(new Error(\`The id->\$"{this.id}" stored by resource \${storedID.resourceType}\`));
+                return next(new Error(\`The id->\${this.id} stored by resource \${storedID.resourceType}\`));
             }
         } else {
-            Object.assign(this , {
-                meta : {
-                    versionId : "1" ,
-                    lastUpdated : new Date()
-                }
-            });
+            _.set(this, "meta.versionId", "1");
+            _.set(this, "meta.lastUpdated", new Date());
         }
         return next();
     });
@@ -266,7 +265,7 @@ function generateResourceSchema (type) {
         let mongodb = require('../index');
         let item = result.toObject();
         delete item._id;
-        let version = item.versionId;
+        let version = item.meta.versionId;
         if (version == "1" ) {
             let port = (process.env.FHIRSERVER_PORT == "80" || process.env.FHIRSERVER_PORT == "443") ? "" : \`:\${process.env.FHIRSERVER_PORT}\`;
             _.set(item, "request", {
@@ -369,6 +368,7 @@ function generateResourceSchema (type) {
             }
         }
     }
+    importLib =`${importLib}const id = require('${config.requirePath}/id');\r\n`;
     code = `${importLib}${code}`;
     mkdirp.sync(config.resourcePath);
     fs.writeFileSync(`${config.resourcePath}/${type}.js` , beautify(code , {indent_size : 4 ,pace_in_empty_paren: true }));    

@@ -22,12 +22,21 @@ npm install
 
 ## configure
 
-The resources config in `build\config.js`
+The resources config in `config\config.js`
 ```javascript=
 module.exports = {
-    resources : [
-        "Patient"  // add the resource name that you need
-    ]
+    // add the resource name that you need
+    "Patient" : { 
+        "interaction": {
+            "read": true,
+            "vread": true,
+            "update": true,
+            "delete": true,
+            "history": true,
+            "create": true,
+            "search": true
+        }
+    }
 }
 ```
 dotenv in root path `.env`
@@ -42,6 +51,12 @@ MONGODB_SLAVEMODE=false
 FHIRSERVER_HOST="localhost"
 FHIRSERVER_PORT=8088
 FHIRSERVER_APIPATH="fhir"
+
+#If u want to use token auth, add below.
+ENABLE_TOKEN_AUTH=true
+ADMIN_LOGIN_PATH="adminLogin"  
+ADMIN_USERNAME="adminUsername"
+ADMIN_PASSWORD="adminPassword"
 ```
 After configuration, run `npm run build` to generate resources
 ```

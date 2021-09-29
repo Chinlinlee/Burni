@@ -1,0 +1,102 @@
+{
+  "_from": "fhir",
+  "_id": "fhir@4.9.0",
+  "_inBundle": false,
+  "_integrity": "sha512-x+4LzzcNURfgzTbhDdaLxYNj8L84akM+jVvpuEQNxXggchqH5cPCC1cEWl2PUfJTT/tN8WkhM1tY2xOQI/t/rA==",
+  "_location": "/fhir",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "fhir",
+    "name": "fhir",
+    "escapedName": "fhir",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/fhir/-/fhir-4.9.0.tgz",
+  "_shasum": "21a2e7b779661e98eb259289df052fac0942deee",
+  "_spec": "fhir",
+  "_where": "M:\\_vaccinePassport\\TW\\fhir-structuretest",
+  "author": {
+    "name": "Sean McIlvenna",
+    "url": "sean.mcilvenna@lantanagroup.com"
+  },
+  "bugs": {
+    "url": "https://github.com/lantanagroup/FHIR.js/issues",
+    "email": "sean.mcilvenna@lantanagroup.com"
+  },
+  "bundleDependencies": [
+    "lodash",
+    "path",
+    "q",
+    "xml-js"
+  ],
+  "contributors": [
+    {
+      "name": "Sean McIlvenna",
+      "email": "sean.mcilvenna@lantanagroup.com"
+    }
+  ],
+  "dependencies": {
+    "lodash": "^4.17.19",
+    "path": "^0.12.7",
+    "q": "^1.4.1",
+    "randomatic": "^3.1.0",
+    "xml-js": "^1.6.8"
+  },
+  "deprecated": false,
+  "description": "Library that assists in handling FHIR resources. Supports serialization between JSON and XML, validation and FhirPath evaluation.",
+  "devDependencies": {
+    "@types/node": "^14.0.3",
+    "jsdoc": "^3.4.3",
+    "mocha": "^7.1.2",
+    "typedoc": "^0.17.7",
+    "typescript": "^3.1.3",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.11",
+    "yargs": "^3.25.0"
+  },
+  "directories": {
+    "test": "test"
+  },
+  "files": [
+    "model/",
+    "profiles/types.json",
+    "profiles/valuesets.json",
+    "dist/bundle.js",
+    "*.js",
+    "*.d.ts"
+  ],
+  "homepage": "https://github.com/lantanagroup/FHIR.js#readme",
+  "keywords": [
+    "fhir",
+    "healthcare",
+    "interoperability",
+    "xml",
+    "json",
+    "serialization",
+    "hl7",
+    "standards",
+    "clinical"
+  ],
+  "license": "ISC",
+  "main": "index.js",
+  "name": "fhir",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lantanagroup/FHIR.js.git"
+  },
+  "scripts": {
+    "docs": "typedoc -out ./docs -exclude node_modules -ignoreCompilerErrors",
+    "prepublish": "tsc & node profiles/packageProfiles.js & webpack --config webpack.config.js",
+    "test": "mocha test/**/*.js",
+    "tsc": "tsc"
+  },
+  "version": "4.9.0"
+}

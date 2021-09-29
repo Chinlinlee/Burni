@@ -17,5 +17,9 @@ module.exports = new mongoose.Schema({
     time: dateTime,
     text: markdown
 }, {
-    _id: false
+    _id: false,
+    id: false,
+    toObject: {
+        getters: true
+    }
 });

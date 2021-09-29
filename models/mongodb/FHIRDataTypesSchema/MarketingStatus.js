@@ -33,5 +33,9 @@ module.exports = new mongoose.Schema({
     },
     restoreDate: dateTime
 }, {
-    _id: false
+    _id: false,
+    id: false,
+    toObject: {
+        getters: true
+    }
 });
