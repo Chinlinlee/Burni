@@ -2,6 +2,41 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.1.0](https://github.com/Chinlinlee/Simple-Express-FHIR-Server/compare/v2.0.0...v2.1.0) (2021-09-29)
+
+
+### Features
+
+* add checkTokenPermission in every api service ([1df5f0b](https://github.com/Chinlinlee/Simple-Express-FHIR-Server/commit/1df5f0b3ac103b6cd6c877895b5e767c65662616))
+* add cookie expires time ([7379c09](https://github.com/Chinlinlee/Simple-Express-FHIR-Server/commit/7379c09e2e5e023b8e8e87120acf4b35b3c1f69a))
+* add instant query ([c8282a4](https://github.com/Chinlinlee/Simple-Express-FHIR-Server/commit/c8282a4bafd186b568a7c5a12cb0eb17b9eb50b9))
+* add resourceTypes model ([d511051](https://github.com/Chinlinlee/Simple-Express-FHIR-Server/commit/d511051e09cf92c1e0f2d49d17c301dce77121ab))
+* add some FHIR operation outcome message ([6ce5b74](https://github.com/Chinlinlee/Simple-Express-FHIR-Server/commit/6ce5b744350e7edc41ed82173904e61ea2bd4276))
+* add toke service ([f1541ef](https://github.com/Chinlinlee/Simple-Express-FHIR-Server/commit/f1541efc9d54685136b5483fae566ed291c1f7ff))
+* change every restful api point to same function ([d5b7747](https://github.com/Chinlinlee/Simple-Express-FHIR-Server/commit/d5b77474c380cf2567180a41bbde1a7820f1bafe))
+* change the method of storing token ([153b866](https://github.com/Chinlinlee/Simple-Express-FHIR-Server/commit/153b8663d074ac57e174fe5eb0f7a90539f7c8e1))
+* check reference handle uuid ([9703f84](https://github.com/Chinlinlee/Simple-Express-FHIR-Server/commit/9703f841d54ae7e2db8c3f7580926f4a518d909a))
+* generate config that have interaction of resources ([e41fbc7](https://github.com/Chinlinlee/Simple-Express-FHIR-Server/commit/e41fbc7c6a6a66bb3b11803c13a0f7cce91f6c45))
+* parseing multiple value set ([092aa84](https://github.com/Chinlinlee/Simple-Express-FHIR-Server/commit/092aa8472e538821bcb865855f841ebcde1e8a79))
+* send 401 when decode token error ([451de08](https://github.com/Chinlinlee/Simple-Express-FHIR-Server/commit/451de08968f9c2740131b2e500a974f5f36fe799))
+* support multiple fields in search parameter ([8c39d54](https://github.com/Chinlinlee/Simple-Express-FHIR-Server/commit/8c39d54dce53d04afb791d2f0341264f9fbd783a))
+* update complex type schema ([3df86cd](https://github.com/Chinlinlee/Simple-Express-FHIR-Server/commit/3df86cd731b16cfd99c7ec9eb0dd83d1236b7b02))
+* using search instead of pagination ([b268546](https://github.com/Chinlinlee/Simple-Express-FHIR-Server/commit/b268546517f3a8e9f7f6c7aa0bdcc92e335dff95))
+
+
+### Bug Fixes
+
+* get api exception not use operationOutcome ([d747cfd](https://github.com/Chinlinlee/Simple-Express-FHIR-Server/commit/d747cfd1d528b028db029aef011fd89ac18c8563))
+* histroy version query error ([a8bd267](https://github.com/Chinlinlee/Simple-Express-FHIR-Server/commit/a8bd267f41b196368a42c947423b31768b4c2f57))
+* id index every typy that have id ([bdc76f0](https://github.com/Chinlinlee/Simple-Express-FHIR-Server/commit/bdc76f0bd16e957ae42a43d07ad074b91b495038))
+* incorrect arguments in toeknQuery function ([0071d8d](https://github.com/Chinlinlee/Simple-Express-FHIR-Server/commit/0071d8d060a5650b234779564ef9828a2499f70e))
+* incorrect pagination ([bfcda46](https://github.com/Chinlinlee/Simple-Express-FHIR-Server/commit/bfcda4640a31d7b20d08152a00241c5297ce4ebf))
+* incorrect token query function arg ([fe5992d](https://github.com/Chinlinlee/Simple-Express-FHIR-Server/commit/fe5992deeb5e517ee15874dc0ca99805ebe8ebbd))
+* resolve meta not assign original ([5386782](https://github.com/Chinlinlee/Simple-Express-FHIR-Server/commit/5386782b8dd743d54932daa54ef4939797d1cda3))
+* schema use incorrect field with meta versionId ([adfe0e4](https://github.com/Chinlinlee/Simple-Express-FHIR-Server/commit/adfe0e488e3e3d0d1f2f525bd2c4643a96232176))
+* the bundle entry not unset when total is zero ([4a1466e](https://github.com/Chinlinlee/Simple-Express-FHIR-Server/commit/4a1466eeb2841a3038ae1d8417308d90f5c8f797))
+* validate generator not using dynamic resourceType ([c47e5c3](https://github.com/Chinlinlee/Simple-Express-FHIR-Server/commit/c47e5c3b24041a9f47ffd4459da445d450404075))
+
 ## 2.0.0 (2021-06-20)
 
 

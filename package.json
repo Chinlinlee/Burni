@@ -1,12 +1,18 @@
 {
     "name": "Simple-Express-FHIR-Server",
-    "version": "2.0.0",
+    "version": "2.1.0",
     "description": "The simple FHIR server implements with nodejs-express and mongoose.",
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "build": "node ./build/init.js",
         "release": "standard-version"
+    },
+    "standard-version": {
+        "skip": {
+            "tag": true,
+            "commit": true
+        }
     },
     "author": "Chinlinlee",
     "repository": {
