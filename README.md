@@ -1,8 +1,6 @@
 <div>
     <h1>Burni FHIR Server</h1>
-    Burni is an implementation of the FHIR server with Node, Express, and MongoDB providing very simple ways to customize the [HL7 FHIR® specification](https://www.hl7.org/fhir/). Currently, Burni support both Windows and Linux environment to enable developers to rapidly deploy a FHIR service. Burni also supports to import your FHIR Implementation Guide to store FHIR Resources and create FHIR RESTful API as well.
-    
-    imported your implementation guide, you can enable it in your FHIR store for FHIR resource validation.
+    Burni is an implementation of the FHIR server with Node, Express, and MongoDB providing very simple ways to customize the <a href="https://www.hl7.org/fhir/">HL7 FHIR® specification</a> Currently, Burni support both Windows and Linux environment to enable developers to rapidly deploy a FHIR service. Burni also supports to import your <a href="https://www.hl7.org/fhir/implementationguide.html">Implementation Guide<a> to store FHIR Resources and create FHIR RESTful API as well.    
 </div>
 
 This server supported FHIR RESTFul API below:
