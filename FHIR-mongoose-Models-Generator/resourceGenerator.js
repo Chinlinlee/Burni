@@ -211,6 +211,12 @@ function generateResourceSchema (type) {
     };
     result = Object.assign({} , result , topLevelObj);
 
+    if (_.get(result, "collection")) {
+        let tempCollectionField = _.cloneDeep(result["collection"]);
+        delete result["collection"];
+        _.set(result, "myCollection", tempCollectionField);
+    }
+
     let importLib = "const mongoose = require('mongoose');\r\nconst moment = require('moment');\r\nconst _ = require('lodash');\r\n";
     let code = `module.exports = function () {
     require('mongoose-schema-jsonschema')(mongoose);
@@ -230,6 +236,10 @@ function generateResourceSchema (type) {
         let result = this.toObject();
         delete result._id;
         delete result.__v;
+        if (_.get(result, "myCollection")) {
+            let tempCollectionField = _.cloneDeep(result["myCollection"]);
+            _.set(result, "collection", tempCollectionField);
+        }
         return result;
     }
 
@@ -368,7 +378,9 @@ function generateResourceSchema (type) {
             }
         }
     }
-    importLib =`${importLib}const id = require('${config.requirePath}/id');\r\n`;
+    if (!importedTypeLib.includes("id")) {
+        importLib =`${importLib}const id = require('${config.requirePath}/id');\r\n`;
+    }
     code = `${importLib}${code}`;
     mkdirp.sync(config.resourcePath);
     fs.writeFileSync(`${config.resourcePath}/${type}.js` , beautify(code , {indent_size : 4 ,pace_in_empty_paren: true }));    
