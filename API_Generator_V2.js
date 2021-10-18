@@ -313,13 +313,12 @@ const genParamFunc = {
             fieldInResource = fieldInResource.trim();
             txt += `
             paramsSearch["${param}"] = (query) => {
-                    let buildResult = numberQuery(item , "${field}");
-                    query.$and.push({
-                        "${fieldInResource}": buildResult
-                    });
-                    delete query["${field}"];
-                } 
-            }
+                let buildResult = numberQuery(item , "${field}");
+                query.$and.push({
+                    "${fieldInResource}": buildResult
+                });
+                delete query["${field}"];
+            } 
             `
         }
         return txt;
@@ -416,7 +415,7 @@ const genParamFunc = {
  * @param {Boolean} option.generateAllResources
  */
 function generateAPI(option) {
-    
+
     for (let res in option) {
         fhirgen(res, { resourcePath: "./models/mongodb/model", typePath: "./models/mongodb/FHIRTypeSchema" });
     }
