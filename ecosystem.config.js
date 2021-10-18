@@ -1,6 +1,6 @@
 module.exports = {
     apps: [{
-        name: 'fhir-baobao',
+        name: 'fhir-burni',
         script: 'server.js',
         node_args: ["--inspect"],
         watch: false,

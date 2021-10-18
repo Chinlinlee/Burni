@@ -2,11 +2,11 @@ FROM keymetrics/pm2:latest-alpine
 
 
 WORKDIR /
-RUN mkdir -p /nodejs/fhir-baobao/
-WORKDIR /nodejs/fhir-baobao/
+RUN mkdir -p /nodejs/fhir-burni/
+WORKDIR /nodejs/fhir-burni/
 # Bundle APP files
-COPY package*.json /nodejs/fhir-baobao/
-COPY . /nodejs/fhir-baobao/
+COPY package*.json /nodejs/fhir-burni/
+COPY . /nodejs/fhir-burni/
 
 # Install app dependencies
 ENV NPM_CONFIG_LOGLEVEL warn

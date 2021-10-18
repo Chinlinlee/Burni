@@ -1,8 +1,8 @@
 version: '3.4'
 services:
-  fhir-baobao-mongodb:
+  fhir-burni-mongodb:
     image: mongo:4.2
-    container_name : fhir-baobao-mongodb
+    container_name : fhir-burni-mongodb
     restart: always
     ports:
       - 27017:27017
@@ -15,9 +15,9 @@ services:
       - MONGO_INITDB_ROOT_PASSWORD=root
       - MONGO_PORT=27017
   
-  fhir-baobao:
+  fhir-burni:
     build: ./
-    container_name: fhir-baobao
+    container_name: fhir-burni
     command: >
       /bin/sh -c '
       while ! nc -z mongodb 27017;
@@ -29,12 +29,12 @@ services:
       pm2-runtime start ecosystem.config.js;
       '
     volumes :
-      - ./:/nodejs/fhir-baobao
-      - /nodejs/fhir-baobao/node_modules
+      - ./:/nodejs/fhir-burni
+      - /nodejs/fhir-burni/node_modules
     ports:
       - 8080:8080
     depends_on:
-      - fhir-baobao-mongodb
+      - fhir-burni-mongodb
     tty : true
     restart: on-failure:3
     stdin_open : true

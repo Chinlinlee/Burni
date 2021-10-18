@@ -413,8 +413,10 @@ const genParamFunc = {
  * 
  * @param {Object} option 
  * @param {Array} option.resources the resources want to use
+ * @param {Boolean} option.generateAllResources
  */
 function generateAPI(option) {
+    
     for (let res in option) {
         fhirgen(res, { resourcePath: "./models/mongodb/model", typePath: "./models/mongodb/FHIRTypeSchema" });
     }
@@ -592,7 +594,9 @@ function generateAPI(option) {
             }
         });
 
-        router.use(user.tokenAuthentication);
+        if (process.env.ENABLE_TOKEN_AUTH == "true") {
+            router.use(user.tokenAuthentication);
+        }
 
         if (_.get(config, "${res}.interaction.search", true)) {
             router.get('/', FHIRValidateParams({
@@ -725,11 +729,11 @@ function generateMetaData() {
             "publisher": "Not provided",
             "kind": "instance",
             "software": {
-            "name": "Simple-Express-FHIR-Server",
+            "name": "FHIR-Server Burni",
             "version": "1.0.0"
             },
             "implementation": {
-            "description": "Simple-Express FHIR R4 Server",
+            "description": "Burni FHIR R4 Server",
             "url": \`http://${process.env.FHIRSERVER_HOST}/${process.env.FHIRSERVER_APIPATH}\`
             },
             "fhirVersion": "4.0.1",

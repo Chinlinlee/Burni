@@ -1,5 +1,5 @@
 {
-    "name": "Simple-Express-FHIR-Server",
+    "name": "burni-fhir-server",
     "version": "2.1.0",
     "description": "The simple FHIR server implements with nodejs-express and mongoose.",
     "main": "index.js",
@@ -16,7 +16,7 @@
     },
     "author": "Chinlinlee",
     "repository": {
-        "url": "https://github.com/Chinlinlee/Simple-Express-FHIR-Server"
+        "url": "https://github.com/Chinlinlee/Burni"
     },
     "license": "Apache-2.0 License",
     "dependencies": {
