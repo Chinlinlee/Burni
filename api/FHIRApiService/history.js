@@ -59,7 +59,7 @@ module.exports = async function(req, res, resourceType) {
         });
         return doRes(200, bundle);
     } catch (e) {
-        console.log(`api ${process.env.FHIRSERVER_APIPATH}/Patient/:id/history has error, `, e)
+        console.log(`api ${process.env.FHIRSERVER_APIPATH}/${resourceType}/:id/history has error, `, e)
         let operationOutcomeError = handleError.exception(e);
         return doRes(500, operationOutcomeError);
     }

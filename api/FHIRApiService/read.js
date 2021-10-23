@@ -36,7 +36,7 @@ module.exports = async function (req , res , resourceType) {
         let operationOutcomeError = handleError.exception(errorMessage);
         return doRes(404, operationOutcomeError);
     } catch (e) {
-        console.log(`api ${process.env.FHIRSERVER_APIPATH}/Patient/:id has error, `, e);
+        console.log(`api ${process.env.FHIRSERVER_APIPATH}/${resourceType}/:id has error, `, e);
         let operationOutcomeError = handleError.exception(e);
         return doRes(500, operationOutcomeError);
     }
