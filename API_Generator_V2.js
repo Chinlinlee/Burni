@@ -682,6 +682,7 @@ function generateMetaData() {
                     'code': "create"
                 }
             ],
+            "versioning": "versioned",
             "updateCreate": true,
             "conditionalDelete": "single",
             "searchInclude": [],
@@ -724,7 +725,7 @@ function generateMetaData() {
         const metaData = {
             "resourceType": "CapabilityStatement",
             "status": "active",
-            "date": Date.now().toString(),
+            "date": moment.utc().toDate(),
             "publisher": "Not provided",
             "kind": "instance",
             "software": {
@@ -737,7 +738,7 @@ function generateMetaData() {
             },
             "fhirVersion": "4.0.1",
             "format": [ "json" ],
-            "rest" : ${JSON.stringify(metaData.rest[0], null, 4)}
+            "rest" : ${JSON.stringify(metaData.rest, null, 4)}
         }
         res.json(metaData);
     }

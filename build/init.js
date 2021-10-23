@@ -18,6 +18,12 @@ MONGODB_SLAVEMODE=false
 FHIRSERVER_HOST="localhost"
 FHIRSERVER_PORT=8088
 FHIRSERVER_APIPATH="fhir"
+
+ENABLE_TOKEN_AUTH=true
+JWT_SECRET_KEY="secret-key"
+ADMIN_LOGIN_PATH="adminLogin"
+ADMIN_USERNAME="admin"
+ADMIN_PASSWORD="password"
 `;
         fs.writeFileSync(".env" , envText);
         console.log("Please config dotenv file first, the example dotenv file generated in root path");
