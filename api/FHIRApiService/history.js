@@ -51,7 +51,7 @@ module.exports = async function(req, res, resourceType) {
             let operationOutcomeNotFound = handleError['not-found'](`id->"${id}" in resource "${resourceType}" not found`);
             return doRes(404, operationOutcomeNotFound);
         }
-        let count = await mongodb.Patient_history.countDocuments({
+        let count = await mongodb[`${resourceType}_history`].countDocuments({
             id: id
         });
         let bundle = createBundle(req, docs, count, paginationSkip, paginationLimit, resourceType, {
