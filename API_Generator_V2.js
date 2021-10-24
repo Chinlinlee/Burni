@@ -444,7 +444,22 @@ function generateAPI(option) {
                 });
                 delete query["_id"];
             }
-        }`
+        }
+
+        paramsSearch["_lastUpdated"] = (query) => {
+            if (!_.isArray(query["_lastUpdated"])) {
+                query["_lastUpdated"] = [query["_lastUpdated"]]
+            }
+            for (let i in query["_lastUpdated"]) {
+                let buildResult = queryBuild.instantQuery(query["_lastUpdated"][i], "meta.lastUpdated");
+                if (!buildResult) {
+                    throw new Error(\`invalid date: \${query["_lastUpdated"]}\`);
+                }
+                query.$and.push(buildResult);
+            }
+            delete query["_lastUpdated"];
+        }
+        `
 
         let searchParameter = fs.readFileSync('./FHIRParametersClean.json', 'utf-8');
         searchParameter = JSON.parse(searchParameter);

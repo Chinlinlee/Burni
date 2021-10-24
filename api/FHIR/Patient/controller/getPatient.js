@@ -3,7 +3,7 @@ const mongodb = require('models/mongodb');
 const {
     createBundle
 } = require('models/FHIR/func');
-const queryBuild = require('models/FHIR/queryBuild.js');
+const queryBuild = require('../../../../models/FHIR/queryBuild.js');
 const {
     handleError
 } = require('models/FHIR/httpMessage');
@@ -22,6 +22,20 @@ const paramsSearch = {
         delete query["_id"];
     }
 }
+paramsSearch["_lastUpdated"] = (query) => {
+    if (!_.isArray(query["_lastUpdated"])) {
+        query["_lastUpdated"] = [query["_lastUpdated"]]
+    }
+    for (let i in query["_lastUpdated"]) {
+        let buildResult = queryBuild.instantQuery(query["_lastUpdated"][i], "meta.lastUpdated");
+        if (!buildResult) {
+            throw new Error(`invalid date: ${query["_lastUpdated"]}`);
+        }
+        query.$and.push(buildResult);
+    }
+    delete query["_lastUpdated"];
+}
+
 paramsSearchFields["address"] = ["address"];
 paramsSearch["address"] = (query) => {
     if (!_.isArray(query["address"])) {
