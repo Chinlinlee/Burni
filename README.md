@@ -48,8 +48,10 @@ MONGODB_USER="myAdmin"
 MONGODB_PASSWORD="MymongoAdmin1"
 MONGODB_SLAVEMODE=false
 
+SERVER_PORT=8080 
+
 FHIRSERVER_HOST="localhost"
-FHIRSERVER_PORT=8088
+FHIRSERVER_PORT=8080 #use by creating bundle url
 FHIRSERVER_APIPATH="fhir"
 
 #If u want to use token auth, add below.

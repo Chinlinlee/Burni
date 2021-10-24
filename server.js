@@ -14,7 +14,7 @@ const MongoStore = require('connect-mongo')({
 });
 //
 require('dotenv').config();
-const port = process.env.FHIRSERVER_PORT;
+const port = process.env.SERVER_PORT;
 const app = express();
 
 require('rootpath')();
