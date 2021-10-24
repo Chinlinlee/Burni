@@ -144,7 +144,13 @@ async function generateSchema (type) {
         }
     }
     let schemaStr = JSON.stringify(schema , null , 4).replace(/\"/gm , '')
-    let code = `module.exports = new mongoose.Schema (${schemaStr.replace(/\\/gm , '"')} , { _id : false });`;
+    let code = `module.exports = new mongoose.Schema (${schemaStr.replace(/\\/gm , '"')} , { 
+        _id : false ,
+        id: false,
+        toObject: {
+            getters: true
+        }
+    });`;
     code = `${importLib}${code}`;
     fs.writeFileSync(`./models/mongodb/FHIRDataTypesSchema/${type}.js` , beautify(code , {indent_size : 4 ,pace_in_empty_paren: true }));
     for (let i in schema) {
