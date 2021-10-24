@@ -68,6 +68,7 @@ module.exports = async function(req, res,resourceType,paramsSearch) {
         });
         let count = await mongodb[resourceType].countDocuments(queryParameter);
         let bundle = createBundle(req, docs, count, paginationSkip, paginationLimit, resourceType);
+        res.header('Last-Modified', new Date().toUTCString());
         return doRes(200 , bundle);
     } catch (e) {
         console.log(`api ${process.env.FHIRSERVER_APIPATH}/${resourceType}/ has error, `, e)

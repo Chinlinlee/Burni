@@ -57,6 +57,7 @@ module.exports = async function(req, res, resourceType) {
         let bundle = createBundle(req, docs, count, paginationSkip, paginationLimit, resourceType, {
             type: "history"
         });
+        res.header('Last-Modified', new Date().toUTCString());
         return doRes(200, bundle);
     } catch (e) {
         console.log(`api ${process.env.FHIRSERVER_APIPATH}/${resourceType}/:id/history has error, `, e)

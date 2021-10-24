@@ -30,6 +30,7 @@ module.exports = async function (req , res , resourceType) {
         }).exec();
         if (docs) {
             let responseDoc = docs.getFHIRField();
+            res.header('Last-Modified', new Date(responseDoc.meta.lastUpdated).toUTCString());
             return doRes(200, responseDoc);
         }
         let errorMessage = `not found ${resourceType}/${id}`;
