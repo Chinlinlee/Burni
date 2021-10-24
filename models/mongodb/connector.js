@@ -47,15 +47,20 @@ module.exports = exports = function(config) {
     db.once('open', function() {
         console.log("we're connected!");
     });
-
-    fs.readdirSync(__dirname + '/model')
-        .filter((file) => (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js'))
-        .forEach((file) => {
-            const moduleName = file.split('.')[0];
-            console.log('moduleName :: ', moduleName);
-            console.log('path : ', __dirname + '/model')
-            collection[moduleName] = require(__dirname + '/model/' + moduleName)(mongoose);
-        });
+    getCollections('/model', collection);
+    getCollections('/staticModel', collection);
 
     return collection;
 };
+
+function getCollections (dirname, collectionObj) {
+    let jsFilesInDir = fs.readdirSync(__dirname + dirname)
+    .filter((file) => (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js'))
+    for (let file of jsFilesInDir) {
+        const moduleName = file.split('.')[0];
+        console.log('moduleName :: ', moduleName);
+        console.log('path : ', __dirname + dirname)
+        collectionObj[moduleName] = require(__dirname + dirname +'/' + moduleName)(mongoose);
+    }
+
+}
