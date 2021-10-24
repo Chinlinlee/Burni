@@ -336,15 +336,15 @@ function instantQuery(value, field) {
     if (date.includes("+")) {
         let dateSplitPlus = date.split("+");
         let inputTimezone = `-${dateSplitPlus.pop().replace(":","")}`
-        let realDate = moment(dateSplitPlus.pop()).format("YYYY-MM-DDTHH:mm:ss");
-        date = moment(realDate).utc(true).utcOffset(inputTimezone).format("YYYY-MM-DDTHH:mm:ss");
-    } else if (date.includes("-")) {
-        let dateSplitPlus = date.split("-");
-        let inputTimezone = `+${dateSplitPlus.pop().replace(":", "")}`
-        let realDate = moment(dateSplitPlus.pop()).format("YYYY-MM-DDTHH:mm:ss");
-        date = moment(realDate).utc(true).utcOffset(inputTimezone).format("YYYY-MM-DDTHH:mm:ss");
+        let realDate = moment(dateSplitPlus.join("")).format("YYYY-MM-DDTHH:mm:ss.SSS");
+        date = moment(realDate).utc(true).utcOffset(inputTimezone).format("YYYY-MM-DDTHH:mm:ss.SSS");
+    } else if (date.includes("-") && date.match(/:/g).length == 3) {
+        let dateSplitHyphen = date.split("-");
+        let inputTimezone = `+${dateSplitHyphen.pop().replace(":", "")}`
+        let realDate = moment(dateSplitHyphen.join("-")).format("YYYY-MM-DDTHH:mm:ss.SSS");
+        date = moment(realDate).utc(true).utcOffset(inputTimezone).format("YYYY-MM-DDTHH:mm:ss.SSS");
     } else {
-        date = moment(date).format("YYYY-MM-DDTHH:mm:ss");
+        date = moment(date).format("YYYY-MM-DDTHH:mm:ss.SSS");
     }
     let dateObj = moment(date).utc(true).toDate();
     queryBuilder = instantQueryBuilder[queryPrefix](queryBuilder, field, dateObj, "");
