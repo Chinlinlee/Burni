@@ -22,24 +22,17 @@ require('dotenv').config()
 app.use(compress());
 app.use(flash());
 app.use(express.static('public'));
-app.use(bodyParser.urlencoded({
+app.use(express.urlencoded({
     extended: true
 }));
-app.use(bodyParser.json());
-app.use(bodyParser.json({
+app.use(express.json());
+app.use(express.json({
     "type": "application/fhir+json"
 }));
-app.use(bodyParser.text({
-    "type": "text/*"
+app.use(express.text({
+    "type": ["text/*", "/_xml", "xml", "+xml"]
 }));
-app.use(bodyParser.raw({
-    "type": "multipart/related",
-    limit: "1000mb"
-}));
-app.use(bodyParser.raw({
-    "type": "multipart/form-data",
-    limit: "1000mb"
-}));
+
 app.use((err, req, res, next) => {
     // This check makes sure this is a JSON parsing issue, but it might be
     // coming from any middleware, not just body-parser:
