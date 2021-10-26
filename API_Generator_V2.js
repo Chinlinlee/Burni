@@ -587,7 +587,7 @@ function generateAPI(option) {
                 if (req.headers["content-type"]) {
                     if (req.headers["content-type"].includes("xml")) {
                         res.set('Content-Type', 'application/fhir+xml');
-                        if (req.method == "POST") {
+                        if (req.method == "POST" || req.method == "PUT") {
                             let Fhir = new FHIR();
                             req.body = Fhir.xmlToObj(req.body);
                         }
