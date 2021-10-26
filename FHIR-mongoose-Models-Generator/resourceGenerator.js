@@ -282,8 +282,8 @@ function generateResourceSchema (type) {
         let item = result.toObject();
         delete item._id;
         let version = item.meta.versionId;
+        let port = (process.env.FHIRSERVER_PORT == "80" || process.env.FHIRSERVER_PORT == "443") ? "" : \`:\${process.env.FHIRSERVER_PORT}\`;
         if (version == "1" ) {
-            let port = (process.env.FHIRSERVER_PORT == "80" || process.env.FHIRSERVER_PORT == "443") ? "" : \`:\${process.env.FHIRSERVER_PORT}\`;
             _.set(item, "request", {
                 "method": "POST",
                 url: \`http://\${process.env.FHIRSERVER_HOST}\${port}/\${process.env.FHIRSERVER_APIPATH}/${type}/\${item.id}/_history/\${version}\`
