@@ -35,6 +35,9 @@ module.exports = async function(req, res, resourceType) {
         },
         "false": (err) => {
             if (_.isString(err)) {
+                if (err.includes("not found")) {
+                    return doRes(404, handleError['not-found'](err));
+                }
                 return doRes(500,handleError.exception(err));
             }
             return doRes(500,handleError.exception(err.message));
