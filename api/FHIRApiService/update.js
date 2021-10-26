@@ -29,7 +29,7 @@ module.exports = async function (req, res, resourceType) {
             return doRes(data.code, data.doc);
         },
         "false": (error) => {
-            if (_.isString(err)) {
+            if (_.isString(error)) {
                 return doRes(500 , handleError.exception(error));
             }
             return doRes(500, handleError.exception(error.message));
