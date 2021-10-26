@@ -4,6 +4,7 @@ const {
 } = require('models/FHIR/httpMessage');
 const _ = require('lodash');
 const { user } = require('../apiService');
+const FHIR = require('../../models/FHIR/fhir').Fhir;
 
 /**
  * @param {import("express").Request} req 
