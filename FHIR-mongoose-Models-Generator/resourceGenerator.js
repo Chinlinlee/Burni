@@ -292,6 +292,15 @@ function generateResourceSchema (type) {
                 status: "201"
             });
             let createdDocs = await mongodb['${type}_history'].create(item);
+        } else {
+            _.set(item, "request", {
+                "method": "PUT",
+                url: \`http://\${process.env.FHIRSERVER_HOST}\${port}/\${process.env.FHIRSERVER_APIPATH}/${type}/\${item.id}/_history/\${version}\`
+            });
+            _.set(item, "response", {
+                status: "200"
+            });
+            let createdDocs = await mongodb['${type}_history'].create(item);
         }
         await mongodb.FHIRStoredID.findOneAndUpdate({
             id : result.id
