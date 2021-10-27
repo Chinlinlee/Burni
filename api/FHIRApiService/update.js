@@ -28,11 +28,30 @@ module.exports = async function (req, res, resourceType) {
         "true": (data) => {
             return doRes(data.code, data.doc);
         },
-        "false": (error) => {
-            if (_.isString(error)) {
-                return doRes(500 , handleError.exception(error));
-            }
-            return doRes(500, handleError.exception(error.message));
+        "false": (err) => {
+            let operationOutcomeMessage;
+                if (err.message.code == 11000) {
+                    operationOutcomeMessage = {
+                        code : 409 ,
+                        msg : handleError.duplicate(err.message)
+                    }
+                } else if (err.stack.includes("ValidationError")) {
+                    operationOutcomeMessage = {
+                        code : 400 ,
+                        msg : handleError.processing(err.message)
+                    }
+                } else if (err.stack.includes("stored by resource")) {
+                    operationOutcomeMessage = {
+                        code : 400 ,
+                        msg : handleError.processing(err.message)
+                    }
+                } else {
+                    operationOutcomeMessage = {
+                        code : 500 ,
+                        msg : handleError.exception(err.message)
+                    }
+                }
+                return doRes(operationOutcomeMessage.code , operationOutcomeMessage.msg);
         }
     }
     let dataExist = await isDocExist(req.params.id, resourceType);

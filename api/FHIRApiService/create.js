@@ -44,6 +44,11 @@ module.exports = async function(req, res , resourceType) {
                         code : 400 ,
                         msg : handleError.processing(err.message)
                     }
+                } else if (err.stack.includes("stored by resource")) {
+                    operationOutcomeMessage = {
+                        code : 400 ,
+                        msg : handleError.processing(err.message)
+                    }
                 } else {
                     operationOutcomeMessage = {
                         code : 500 ,
