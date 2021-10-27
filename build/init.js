@@ -20,11 +20,13 @@ FHIRSERVER_HOST="localhost"
 FHIRSERVER_PORT=8080
 FHIRSERVER_APIPATH="fhir"
 
-ENABLE_TOKEN_AUTH=true
+ENABLE_TOKEN_AUTH=false
 JWT_SECRET_KEY="secret-key"
 ADMIN_LOGIN_PATH="adminLogin"
 ADMIN_USERNAME="admin"
 ADMIN_PASSWORD="password"
+
+ENABLE_CHECK_ALL_RESOURCE_ID=false
 `;
         fs.writeFileSync(".env" , envText);
         console.log("Please config dotenv file first, the example dotenv file generated in root path");

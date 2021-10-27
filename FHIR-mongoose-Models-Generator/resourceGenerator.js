@@ -254,7 +254,7 @@ function generateResourceSchema (type) {
         let storedID = await mongodb.FHIRStoredID.findOne({
             id: this.id
         });
-        if (storedID) {
+        if (storedID && ENABLE_CHECK_ALL_RESOURCE_ID== "true") {
             if (storedID.resourceType == "${type}") {
                 const docInHistory = await mongodb.${type}_history.findOne({
                     id: this.id
