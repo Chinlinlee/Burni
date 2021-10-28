@@ -515,22 +515,62 @@ function generateAPI(option) {
         //#endregion
 
         //#region create resource (post)
-        const post = `
+        let post = `
         const create = require('../../../FHIRApiService/create');
         module.exports = async function(req, res) {
             return await create(req , res , "${res}");
         }
-        `
+        `;
+        if (res == "List") {
+            post = `
+            const create = require('../../../FHIRApiService/create');
+            const _ = require('lodash');
+            module.exports = async function(req, res) {
+                let resourceData = req.body;
+                if (_.isArray(resourceData.entry) && resourceData.entry.length > 0) {
+                    for (let index in resourceData.entry) {
+                        let entry = resourceData.entry[index];
+                        if (resourceData.mode != "changes") {
+                            delete entry.delete;
+                        } else if (resourceData.mode != "working") {
+                            delete entry.date;
+                        }
+                    }
+                }
+                return await create(req , res , "${res}");
+            }
+            `;
+        }
         //#endregion
 
         //#region update (put)
-        const put = `
+        let put = `
         const update = require('../../../FHIRApiService/update.js');
 
         module.exports = async function(req, res) {
             return await update(req, res, "${res}");
         }
         `
+        if (res == "List") {
+            put = `
+            const update = require('../../../FHIRApiService/update.js');
+            const _ = require('lodash');
+            module.exports = async function(req, res) {
+                let resourceData = req.body;
+                if (_.isArray(resourceData.entry) && resourceData.entry.length > 0) {
+                    for (let index in resourceData.entry) {
+                        let entry = resourceData.entry[index];
+                        if (resourceData.mode != "changes") {
+                            delete entry.delete;
+                        } else if (resourceData.mode != "working") {
+                            delete entry.date;
+                        }
+                    }
+                }
+                return await update(req, res, ${res});
+            }
+            `;
+        }
         //#endregion
 
         //#region delete
