@@ -51,6 +51,7 @@ function genHistoryModel() {
                ${fileBaseName}HistorySchema.methods.getFHIRField = function() {
                    let result = this._doc;
                    delete result._id;
+                   delete result.__v;
                    delete result['name._id'];
                    delete result['request'];
                    delete result['response'];
