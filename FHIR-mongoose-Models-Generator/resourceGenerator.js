@@ -243,7 +243,7 @@ function generateResourceSchema (type) {
     });\r\n
 
     ${type}Schema.methods.getFHIRField = function () {
-        let result = this._doc();
+        let result = this._doc;
         delete result._id;
         delete result.__v;
         if (_.get(result, "myCollection")) {
