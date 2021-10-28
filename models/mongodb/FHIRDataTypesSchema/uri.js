@@ -6,5 +6,8 @@ module.exports = {
         },
         message: props => `${props.value} is not a valid uri!`
     },
+    get : function(v) {
+        return encodeURI(v);
+    },
     default: void 0
 }

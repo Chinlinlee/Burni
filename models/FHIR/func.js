@@ -120,6 +120,10 @@ function createBundle (req ,  docs , count , skip , limit , resource , option) {
     if (bundle.total == 0) {
         delete bundle.entry;
     }
+    for (let index in bundle.link) {
+        let link = bundle.link[index];
+        link.url = encodeURI(link.url);
+    }
     return bundle;
 }
 
