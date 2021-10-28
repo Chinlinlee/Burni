@@ -231,6 +231,10 @@ function generateResourceSchema (type) {
         ...id ,
         index: true
     }
+    ${type}.contained = {
+        type: [Object],
+        default: void 0
+    }
     module.exports.schema = ${type}; 
     const ${type}Schema = new mongoose.Schema(${type} , {
         toObject : { getters : true} ,

@@ -7,6 +7,7 @@ const _ = require('lodash');
 const { checkReference } = require('../apiService');
 const FHIR = require('../../models/FHIR/fhir/fhir').Fhir;
 const { user } = require('../apiService');
+const validateContained = require('./validateContained');
 
 /**
  * @param {import("express").Request} req 
@@ -62,6 +63,17 @@ module.exports = async function(req, res , resourceType) {
             }
         }
         let insertData = req.body;
+        if (_.get(insertData, "contained")) {
+            let containedResources = _.get(insertData, "contained");
+            for (let index in containedResources) {
+                let resource = containedResources[index];
+                let validation = validateContained(resource, index);
+                if (!validation.status) {
+                    let operationOutcomeError = handleError.processing(`The resource in contained error. ${validation.message}`);
+                    return doRes(400, operationOutcomeError);
+                }
+            }
+        }
         let checkReferenceRes = await checkReference(insertData);
         if (!checkReferenceRes.status) {
             let notExistReferenceList = [];

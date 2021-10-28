@@ -5,6 +5,7 @@ const {
 const _ = require('lodash');
 const { user } = require('../apiService');
 const FHIR = require('../../models/FHIR/fhir').Fhir;
+const validateContained = require('./validateContained');
 
 /**
  * @param {import("express").Request} req 
@@ -57,6 +58,18 @@ module.exports = async function (req, res, resourceType) {
                 return doRes(operationOutcomeMessage.code , operationOutcomeMessage.msg);
         }
     }
+    let updateData = req.body;
+    if (_.get(updateData, "contained")) {
+        let containedResources = _.get(updateData, "contained");
+        for (let index in containedResources) {
+            let resource = containedResources[index];
+            let validation = validateContained(resource, index);
+            if (!validation.status) {
+                let operationOutcomeError = handleError.processing(`The resource in contained error. ${validation.message}`);
+                return doRes(400, operationOutcomeError);
+            }
+        }
+    }
     let dataExist = await isDocExist(req.params.id, resourceType);
     if (dataExist.status == 0) {
         return doRes(500, handleError.exception(dataExist.error))
@@ -69,6 +82,7 @@ module.exports = async function (req, res, resourceType) {
         2: doInsertData
     }
     let [status, result] = await dataFuncAfterCheckExist[dataExist.status](req,resourceType);
+    
     return resFunc[status](result);
 }
 
