@@ -49,25 +49,16 @@ function genHistoryModel() {
                });
            
                ${fileBaseName}HistorySchema.methods.getFHIRField = function() {
-                   let result = this.toObject();
+                   let result = this._doc;
                    delete result._id;
-                   let version = result.__v;
-                   if (version) {
-                       _.set(result, 'meta.versionId', version.toString());
-                   }
-                   delete result.__v;
                    delete result['name._id'];
                    delete result['request'];
                    delete result['response'];
                    return result;
                }
                ${fileBaseName}HistorySchema.methods.getFHIRBundleField = function() {
-                   let result = this.toObject();
+                   let result = this._doc;
                    delete result._id;
-                   let version = result.__v;
-                   if (version) {
-                       _.set(result, 'meta.versionId', version.toString());
-                   }
                    delete result.__v;
                    delete result['name._id'];
                    return result;
