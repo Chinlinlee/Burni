@@ -283,7 +283,7 @@ function generateResourceSchema (type) {
 
     ${type}Schema.post('save', async function (result) {
         let mongodb = require('../index');
-        let item = result.toObject();
+        let item = result._doc;
         delete item._id;
         let version = item.meta.versionId;
         let port = (process.env.FHIRSERVER_PORT == "80" || process.env.FHIRSERVER_PORT == "443") ? "" : \`:\${process.env.FHIRSERVER_PORT}\`;
@@ -329,9 +329,9 @@ function generateResourceSchema (type) {
         let mongodb = require('../index');
         let item;
         if (result.value) {
-            item = _.cloneDeep(result.value).toObject();
+            item = _.cloneDeep(result.value)._doc;
         } else {
-            item = _.cloneDeep(result).toObject();
+            item = _.cloneDeep(result)._doc;
         }
         let version = item.meta.versionId;
         delete item._id;
@@ -359,7 +359,7 @@ function generateResourceSchema (type) {
             next(\`The id->\${this.getFilter().id} not found in ${type} resource\`);
         }
         let mongodb = require('../index');
-        let item = docToDelete.toObject();
+        let item = docToDelete._doc;
         delete item._id;
         item.meta.versionId = String(Number(item.meta.versionId)+1);
         let version = item.meta.versionId;
