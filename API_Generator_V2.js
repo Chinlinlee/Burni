@@ -567,7 +567,7 @@ function generateAPI(option) {
                         }
                     }
                 }
-                return await update(req, res, ${res});
+                return await update(req, res, "${res}");
             }
             `;
         }
