@@ -49,7 +49,7 @@ function genHistoryModel() {
                });
            
                ${fileBaseName}HistorySchema.methods.getFHIRField = function() {
-                   let result = this._doc;
+                   let result = this.toObject();
                    delete result._id;
                    delete result.__v;
                    delete result['name._id'];
@@ -58,7 +58,7 @@ function genHistoryModel() {
                    return result;
                }
                ${fileBaseName}HistorySchema.methods.getFHIRBundleField = function() {
-                   let result = this._doc;
+                   let result = this.toObject();
                    delete result._id;
                    delete result.__v;
                    delete result['name._id'];
