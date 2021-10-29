@@ -27,10 +27,7 @@ module.exports = async function (req, res, resourceType) {
     }
     let resFunc = {
         "true": (data) => {
-            if (process.env.ENABLE_RESPONSE_RESOURCE_WHEN_CREATE == "true") { 
-                return doRes(data.code, data.doc);
-            }
-            return res.status(data.code).send();
+            return doRes(data.code, data.doc);
         },
         "false": (err) => {
             let operationOutcomeMessage;
