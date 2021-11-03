@@ -28,7 +28,7 @@ tokenManagerApp.controller('tokenManagerCtrl', function($scope,$timeout,tokenMan
         Swal.fire({
             focusConfirm: false,
             title: "Are you sure??",
-            text: "Any apps using this token will no longer be able to access the Simple-Express-FHIR-Server. You cannot undo this action.",
+            text: "Any apps using this token will no longer be able to access the Burni. You cannot undo this action.",
             confirmButtonText: "Yes, I want to delete this token",
             cancelButtonText: `No`,
             showCancelButton: true,
