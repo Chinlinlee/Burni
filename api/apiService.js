@@ -136,6 +136,19 @@ async function checkReference(resourceData) {
     };
 }
 
+function getNotExistReferenceList(checkReferenceRes) {
+    let notExistReferenceList = [];
+    for (let reference of checkReferenceRes.checkedReferenceList) {
+        if (!reference.exist) {
+            notExistReferenceList.push({
+                path: reference.path ,
+                value: reference.value
+            });
+        }
+    }
+    return notExistReferenceList;
+}
+
 const user = {
     /**
      * 
@@ -226,5 +239,6 @@ module.exports = {
     getDeepKeys: getDeepKeys,
     findResourceById: findResourceById,
     checkReference: checkReference , 
+    getNotExistReferenceList: getNotExistReferenceList,
     user : user
 }
