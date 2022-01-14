@@ -169,12 +169,15 @@ const genParamFunc = {
         return txt;
     },
     "token": (param, field, schema = {}) => {
+        let paramsSearchFieldTxt = "";
         let txt = "";
         let searchFields = field.split("|").map(
             v => v.substr(v.indexOf(".") + 1).trim()
         );
-        txt += `paramsSearchFields["${param}"]= ${JSON.stringify(searchFields)};`;
+        paramsSearchFieldTxt = `paramsSearchFields["${param}"]= ${JSON.stringify(searchFields)};`;
         if (param == "phone") {
+            let searchField = searchFields[0].substr(0, searchFields[0].indexOf("."));
+            paramsSearchFieldTxt = `paramsSearchFields["${param}"]= [${JSON.stringify(searchField)}];`;
             txt += `
                 paramsSearch["phone"] = (query) => {
                     if (!_.isArray(query["phone"])) {
@@ -192,6 +195,8 @@ const genParamFunc = {
                 }
                 `
         } else if (param == "email") {
+            let searchField = searchFields[0].substr(0, searchFields[0].indexOf("."));
+            paramsSearchFieldTxt = `paramsSearchFields["${param}"]= [${JSON.stringify(searchField)}];`;
             txt += `
                 paramsSearch["email"] = (query) => {
                     if (!_.isArray(query["email"])) {
@@ -236,6 +241,7 @@ const genParamFunc = {
             if (/\(.*\)/.test(searchField)) {
                 choiceType = searchField.substr(searchField.indexOf())
                 searchField = searchField.substr(0, searchField.indexOf("."));
+                paramsSearchFieldTxt = `paramsSearchFields["${param}"]= ${JSON.stringify(searchField)};`;
             }
             let typePath = deepKeys.filter(v => {
                 let fieldNamePath = searchField.split(".");
@@ -302,7 +308,7 @@ const genParamFunc = {
                     `;
             }
         }
-        return txt;
+        return `${paramsSearchFieldTxt}${txt}`;
     },
     "number": (param, field, schema = {}) => {
         let txt = "";
