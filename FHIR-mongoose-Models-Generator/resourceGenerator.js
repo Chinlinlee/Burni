@@ -319,7 +319,7 @@ function generateResourceSchema (type) {
     ${type}Schema.pre('findOneAndUpdate' , async function (next) {
         const docToUpdate = await this.model.findOne(this.getFilter());
         let version = Number(docToUpdate.meta.versionId);
-        this._update.$set.meta = {};
+        this._update.$set.meta = docToUpdate.meta;
         this._update.$set.meta.versionId = String(version+1);
         this._update.$set.meta.lastUpdated = new Date();
         return next();
