@@ -52,7 +52,15 @@ router.get(
 router.delete(
     '/token/:_id' , 
     user.checkIsLoggedIn,
-    require('./controller/deleteToken'))
+    require('./controller/deleteToken'));
+
+router.post(
+    '/token/refresh',
+    validateParams({
+        "refresh_token": Joi.string().required()
+    }, "body" , { allowUnknown: false }),
+    require("./controller/postRefreshToken")
+)
 
 
 module.exports = router;
