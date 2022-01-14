@@ -20,6 +20,7 @@ module.exports = async function(req, res) {
         delete queryParameter['_offset'];
         let docs = await mongodb.issuedToken.find({} , {
             token:1,
+            refresh_token: 1,
             _id: 1
         }).
         limit(paginationLimit).
