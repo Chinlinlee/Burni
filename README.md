@@ -65,6 +65,9 @@ ENABLE_TOKEN_AUTH=true
 ADMIN_LOGIN_PATH="adminLogin"  
 ADMIN_USERNAME="adminUsername"
 ADMIN_PASSWORD="adminPassword"
+
+ENABLE_CHECK_ALL_RESOURCE_ID=false #true that want to check resource id cross all resource
+ENABLE_CHECK_REFERENCE #true that want to check reference is exist in resource content
 ```
 After configuration, run `npm run build` to generate resources
 ```

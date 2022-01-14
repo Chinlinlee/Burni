@@ -67,6 +67,15 @@ module.exports = async function (req, res, resourceType) {
             }
         }
     }
+    if (process.env.ENABLE_CHECK_REFERENCE == "true") {
+        let checkReferenceRes = await checkReference(insertData);
+        if (!checkReferenceRes.status) {
+            let notExistReferenceList = getNotExistReferenceList(checkReferenceRes)
+            let operationOutcomeError = handleError.processing(`The reference not found : ${_.map(notExistReferenceList , "value").join(",")}`);
+            _.set(operationOutcomeError , "issue.0.location" , _.map(notExistReferenceList , "path"));
+            return doRes(400, operationOutcomeError);
+        }
+    }
     let dataExist = await isDocExist(req.params.id, resourceType);
     if (dataExist.status == 0) {
         return doRes(500, handleError.exception(dataExist.error))

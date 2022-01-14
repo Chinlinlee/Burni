@@ -4,7 +4,7 @@ const {
 } = require('../../models/FHIR/httpMessage');
 const uuid = require('uuid');
 const _ = require('lodash');
-const { checkReference } = require('../apiService');
+const { checkReference, getNotExistReferenceList } = require('../apiService');
 const FHIR = require('../../models/FHIR/fhir/fhir').Fhir;
 const { user } = require('../apiService');
 const validateContained = require('./validateContained');
@@ -71,20 +71,14 @@ module.exports = async function(req, res , resourceType) {
                 }
             }
         }
-        let checkReferenceRes = await checkReference(insertData);
-        if (!checkReferenceRes.status) {
-            let notExistReferenceList = [];
-            for (let reference of checkReferenceRes.checkedReferenceList) {
-                if (!reference.exist) {
-                    notExistReferenceList.push({
-                        path: reference.path ,
-                        value: reference.value
-                    });
-                }
+        if (process.env.ENABLE_CHECK_REFERENCE == "true") {
+            let checkReferenceRes = await checkReference(insertData);
+            if (!checkReferenceRes.status) {
+                let notExistReferenceList = getNotExistReferenceList(checkReferenceRes)
+                let operationOutcomeError = handleError.processing(`The reference not found : ${_.map(notExistReferenceList , "value").join(",")}`);
+                _.set(operationOutcomeError , "issue.0.location" , _.map(notExistReferenceList , "path"));
+                return doRes(400, operationOutcomeError);
             }
-            let operationOutcomeError = handleError.processing(`The reference not found : ${_.map(notExistReferenceList , "value").join(",")}`);
-            _.set(operationOutcomeError , "issue.0.location" , _.map(notExistReferenceList , "path"));
-            return doRes(400, operationOutcomeError);
         }
         let [status, doc] = await doInsertData(insertData, resourceType);
         return resFunc[status](doc);
