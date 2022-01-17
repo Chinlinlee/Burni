@@ -19,7 +19,7 @@ function isFHIRSchema(typeName) {
 }
 
 function isPrimitiveType(typeName) {
-    return /^[a-z]/.test(typeName) && typeName != "number";
+    return /^[a-z]/.test(typeName) && typeName != "number" && DataTypesSummary.PrimitiveTypes.includes(typeName);
 }
 
 
@@ -36,6 +36,35 @@ function cleanChildSchema (item) {
         }
     }
 }
+
+function isChoiceType (fieldName) {
+    if (fieldName == "modifierExtension") return {
+        yes: false,
+        type: ""
+    };
+    const allDataTypes = [...DataTypesSummary.PrimitiveTypes, ...DataTypesSummary.GeneralPurposeDataTypes, ...DataTypesSummary.MetadataTypes, ...DataTypesSummary.SpecialPurposeDataTypes];
+    for  (let i = 0 ; i< allDataTypes.length ; i++) {
+        let dataType = allDataTypes[i];
+        dataType = dataType.charAt(0).toUpperCase() + dataType.slice(1);
+        let typeOfField = fieldName.match(/([A-Z])\w+/g);
+        if (typeOfField == dataType && fieldName.length > dataType.length) {
+            let lowerFirstDataType = dataType.charAt(0).toLowerCase() + dataType.slice(1);
+            if (isPrimitiveType(lowerFirstDataType)) return {
+                yes: true,
+                type: lowerFirstDataType
+            }
+            return {
+                yes : true,
+                type: dataType
+            };
+        }
+    }
+    return {
+        yes: false,
+        type: ""
+    };
+}
+
 function getSchema (resource , name) {
     //let skipCol = ["resourceType" , "id" , "meta" ,"implicitRules" ,"language" , "text" ,"contained" , "extension" , "modifierExtension"];
     let skipCol = ["id" , "resourceType" , "contained"];
@@ -45,7 +74,8 @@ function getSchema (resource , name) {
         //skip the unusual type
         if (skipCol.indexOf(i) >= 0 ) continue;
         else if (i.indexOf("_") == 0 ) continue;
-        let type = _.get(resource.properties[i] , "type")
+        let type = _.get(resource.properties[i] , "type");
+        let choiceType = isChoiceType(i);
         let refSchema = _.get(resource.properties[i] , "$ref");
         let isCode = _.get(resource.properties[i] , "enum");
         if (type == 'array') {
@@ -59,21 +89,15 @@ function getSchema (resource , name) {
             let arrayRefClean  = arrayRef.split('/');
             let typeOfField = arrayRefClean[arrayRefClean.length-1];
             if (typeOfField == name) typeOfField = "this"; //The type of field reference self
-            if (/^#/.test(arrayRef)) {
-                result[i] = {
-                    type : `[${typeOfField}]` 
-                }
-                //console.log('custom array:' + type);
-            } else {
-                result[i] = {
-                    type : `[${typeOfField}]`
-                }
+            if (choiceType.yes) typeOfField = choiceType.type;
+            result[i] = {
+                type : `[${typeOfField}]` 
             }
-        }
-        else if (refSchema)  {
+        } else if (refSchema)  {
             if (/^#/.test(refSchema)) {
                 let refClean = refSchema.split('/');
                 let typeOfField = refClean[refClean.length-1];
+                if (choiceType.yes) typeOfField = choiceType.type;
                 if (isPrimitiveType(typeOfField)) {
                     result[i] = typeOfField;
                 } else {
@@ -85,6 +109,7 @@ function getSchema (resource , name) {
             } else if (!/^#/.test(refSchema)) {
                 let refClean = refSchema.split('/');
                 let typeOfField = refClean[refClean.length-1];
+                if (choiceType.yes) typeOfField = choiceType.type;
                 if (isPrimitiveType(typeOfField)) {
                     result[i] = typeOfField;
                 } else {
@@ -101,6 +126,7 @@ function getSchema (resource , name) {
                 enum : JSON.stringify(isCode)
             }
         } else {
+            if (choiceType.yes) type = choiceType.type;
             if (isPrimitiveType(type)) {
                 result[i] = type;
             } else {

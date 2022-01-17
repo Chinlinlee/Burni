@@ -1,6 +1,6 @@
 module.exports = {
     PrimitiveTypes : [
-        "instance" , 
+        "instant" , 
         "time" , 
         "date" , 
         "dateTime" , 
