@@ -31,6 +31,9 @@ module.exports = async function(req, res , resourceType) {
     try {
         let resFunc = {
             "true": (doc) => {
+                let reqBaseUrl = `${req.protocol}://${req.get('host')}/`;
+                let fullAbsoluteUrl = new URL(req.originalUrl, reqBaseUrl).href;
+                res.set("Location", fullAbsoluteUrl);
                 return doRes(201 , doc);
             },
             "false": (err) => {
