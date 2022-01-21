@@ -18,5 +18,9 @@ module.exports = new mongoose.Schema({
     },
     preferred: boolean
 }, {
-    _id: false
+    _id: false,
+    id: false,
+    toObject: {
+        getters: true
+    }
 });

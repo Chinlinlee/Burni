@@ -29,7 +29,7 @@ router.use((req, res, next) => {
         if (req.headers["content-type"]) {
             if (req.headers["content-type"].includes("xml")) {
                 res.set('Content-Type', 'application/fhir+xml');
-                if (req.method == "POST") {
+                if (req.method == "POST" || req.method == "PUT") {
                     let Fhir = new FHIR();
                     req.body = Fhir.xmlToObj(req.body);
                 }
@@ -50,7 +50,9 @@ router.use((req, res, next) => {
     }
 });
 
-router.use(user.tokenAuthentication);
+if (process.env.ENABLE_TOKEN_AUTH == "true") {
+    router.use(user.tokenAuthentication);
+}
 
 if (_.get(config, "Patient.interaction.search", true)) {
     router.get('/', FHIRValidateParams({

@@ -11,7 +11,7 @@ const boolean = require('../FHIRDataTypesSchema/boolean');
 const HumanName = require('../FHIRDataTypesSchema/HumanName');
 const ContactPoint = require('../FHIRDataTypesSchema/ContactPoint');
 const date = require('../FHIRDataTypesSchema/date');
-const string = require('../FHIRDataTypesSchema/string');
+const dateTime = require('../FHIRDataTypesSchema/dateTime');
 const Address = require('../FHIRDataTypesSchema/Address');
 const CodeableConcept = require('../FHIRDataTypesSchema/CodeableConcept');
 const Attachment = require('../FHIRDataTypesSchema/Attachment');
@@ -61,7 +61,7 @@ module.exports = function() {
         },
         birthDate: date,
         deceasedBoolean: boolean,
-        deceasedDateTime: string,
+        deceasedDateTime: dateTime,
         address: {
             type: [Address],
             default: void 0
@@ -112,8 +112,12 @@ module.exports = function() {
         ...id,
         index: true
     }
+    Patient.contained = {
+        type: [Object],
+        default: void 0
+    }
     module.exports.schema = Patient;
-    const PatientSchema = new mongoose.Schema(Patient, {
+    let schemaConfig = {
         toObject: {
             getters: true
         },
@@ -121,13 +125,23 @@ module.exports = function() {
             getters: true
         },
         versionKey: false
-    });
+    };
+    if (process.env.MONGODB_IS_SHARDING_MODE == "true") {
+        schemaConfig["shardKey"] = {
+            id: 1
+        };
+    }
+    const PatientSchema = new mongoose.Schema(Patient, schemaConfig);
 
 
     PatientSchema.methods.getFHIRField = function() {
         let result = this.toObject();
         delete result._id;
         delete result.__v;
+        if (_.get(result, "myCollection")) {
+            let tempCollectionField = _.cloneDeep(result["myCollection"]);
+            _.set(result, "collection", tempCollectionField);
+        }
         return result;
     }
 
@@ -136,7 +150,7 @@ module.exports = function() {
         let storedID = await mongodb.FHIRStoredID.findOne({
             id: this.id
         });
-        if (storedID) {
+        if (storedID && process.env.ENABLE_CHECK_ALL_RESOURCE_ID == "true") {
             if (storedID.resourceType == "Patient") {
                 const docInHistory = await mongodb.Patient_history.findOne({
                         id: this.id
@@ -164,14 +178,23 @@ module.exports = function() {
         let item = result.toObject();
         delete item._id;
         let version = item.meta.versionId;
+        let port = (process.env.FHIRSERVER_PORT == "80" || process.env.FHIRSERVER_PORT == "443") ? "" : `:${process.env.FHIRSERVER_PORT}`;
         if (version == "1") {
-            let port = (process.env.FHIRSERVER_PORT == "80" || process.env.FHIRSERVER_PORT == "443") ? "" : `:${process.env.FHIRSERVER_PORT}`;
             _.set(item, "request", {
                 "method": "POST",
                 url: `http://${process.env.FHIRSERVER_HOST}${port}/${process.env.FHIRSERVER_APIPATH}/Patient/${item.id}/_history/${version}`
             });
             _.set(item, "response", {
                 status: "201"
+            });
+            let createdDocs = await mongodb['Patient_history'].create(item);
+        } else {
+            _.set(item, "request", {
+                "method": "PUT",
+                url: `http://${process.env.FHIRSERVER_HOST}${port}/${process.env.FHIRSERVER_APIPATH}/Patient/${item.id}/_history/${version}`
+            });
+            _.set(item, "response", {
+                status: "200"
             });
             let createdDocs = await mongodb['Patient_history'].create(item);
         }
@@ -188,7 +211,7 @@ module.exports = function() {
     PatientSchema.pre('findOneAndUpdate', async function(next) {
         const docToUpdate = await this.model.findOne(this.getFilter());
         let version = Number(docToUpdate.meta.versionId);
-        this._update.$set.meta = {};
+        this._update.$set.meta = docToUpdate.meta;
         this._update.$set.meta.versionId = String(version + 1);
         this._update.$set.meta.lastUpdated = new Date();
         return next();

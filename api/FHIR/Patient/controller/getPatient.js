@@ -3,7 +3,7 @@ const mongodb = require('models/mongodb');
 const {
     createBundle
 } = require('models/FHIR/func');
-const queryBuild = require('../../../../models/FHIR/queryBuild.js');
+const queryBuild = require('models/FHIR/queryBuild.js');
 const {
     handleError
 } = require('models/FHIR/httpMessage');
@@ -22,6 +22,7 @@ const paramsSearch = {
         delete query["_id"];
     }
 }
+
 paramsSearch["_lastUpdated"] = (query) => {
     if (!_.isArray(query["_lastUpdated"])) {
         query["_lastUpdated"] = [query["_lastUpdated"]]
@@ -35,7 +36,6 @@ paramsSearch["_lastUpdated"] = (query) => {
     }
     delete query["_lastUpdated"];
 }
-
 paramsSearchFields["address"] = ["address"];
 paramsSearch["address"] = (query) => {
     if (!_.isArray(query["address"])) {
@@ -164,7 +164,7 @@ paramsSearch["birthdate"] = (query) => {
     }
     delete query["birthdate"];
 }
-paramsSearchFields["email"] = ["telecom.where(system='email')"];
+paramsSearchFields["email"] = ["telecom"];
 paramsSearch["email"] = (query) => {
     if (!_.isArray(query["email"])) {
         query["email"] = [query["email"]]
@@ -240,7 +240,7 @@ paramsSearch["given"] = (query) => {
     }
     delete query['given'];
 }
-paramsSearchFields["phone"] = ["telecom.where(system='phone')"];
+paramsSearchFields["phone"] = ["telecom"];
 paramsSearch["phone"] = (query) => {
     if (!_.isArray(query["phone"])) {
         query["phone"] = [query["phone"]]
@@ -314,7 +314,7 @@ paramsSearch["active"] = (query) => {
     }
     delete query['active'];
 }
-paramsSearchFields["deceased"] = ["deceased.exists() and Patient.deceased != false"];
+paramsSearchFields["deceased"] = "deceased";
 paramsSearch["deceased"] = (query) => {
     if (!_.isArray(query["deceased"])) {
         query["deceased"] = [query["deceased"]]

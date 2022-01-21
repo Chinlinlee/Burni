@@ -34,10 +34,6 @@ module.exports = function() {
     PatientHistorySchema.methods.getFHIRField = function() {
         let result = this.toObject();
         delete result._id;
-        let version = result.__v;
-        if (version) {
-            _.set(result, 'meta.versionId', version.toString());
-        }
         delete result.__v;
         delete result['name._id'];
         delete result['request'];
@@ -47,10 +43,6 @@ module.exports = function() {
     PatientHistorySchema.methods.getFHIRBundleField = function() {
         let result = this.toObject();
         delete result._id;
-        let version = result.__v;
-        if (version) {
-            _.set(result, 'meta.versionId', version.toString());
-        }
         delete result.__v;
         delete result['name._id'];
         return result;
