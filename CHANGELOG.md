@@ -2,6 +2,60 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.2.0](https://github.com/Chinlinlee/Burni/compare/v2.1.0...v2.2.0) (2022-01-21)
+
+
+### Features
+
+* add `_lastUpdated` search parameter ([6ab6f04](https://github.com/Chinlinlee/Burni/commit/6ab6f044f6a65fe0c7ac4d6bcb4bb09a983c1ce8))
+* add `contained` field in schema ([7712dc2](https://github.com/Chinlinlee/Burni/commit/7712dc2698a41c8005ab6f9a77a7d8e42aea4e37))
+* add check reference switch ([9c5e860](https://github.com/Chinlinlee/Burni/commit/9c5e8603089b8292b0865cec909f7a2e47ef68a8))
+* add condition that whether response item in body or not ([807154b](https://github.com/Chinlinlee/Burni/commit/807154bb2b14aadb2ce60ce72bc0aba444853cbd))
+* add condition whether check the stored resource ID ([d21442a](https://github.com/Chinlinlee/Burni/commit/d21442abcba9e7fbb49bbb2b83d8c1dbefd904b8))
+* add last-modified in headers ([25c84cb](https://github.com/Chinlinlee/Burni/commit/25c84cbed73e813091c70407b3057665f459b811))
+* add refresh_token ([e30ac2c](https://github.com/Chinlinlee/Burni/commit/e30ac2ca98d923e90bf02321592836813dc4427a))
+* apply specific rule with `List` resource ([b688eb2](https://github.com/Chinlinlee/Burni/commit/b688eb2f8b042da9174a3c10e8d2b4f670d5561a))
+* refresh_token api ([095efb7](https://github.com/Chinlinlee/Burni/commit/095efb7965af2a66575e388bfaec5d7b23032f63))
+* remove method that response empty when create and update ([56f8358](https://github.com/Chinlinlee/Burni/commit/56f83589a9e543072eda3c51e60be9ad54eaabd2))
+* shard database and every collections when starting up ([c58c8a4](https://github.com/Chinlinlee/Burni/commit/c58c8a41dc2ba60b100d8b5194c6b5cd16a88909))
+
+
+### Bug Fixes
+
+* _doc is not function, ([f6a2678](https://github.com/Chinlinlee/Burni/commit/f6a2678aaca52d387444740f5805ebf7d3b612f3))
+* `history` mongoose response document will fill undefined in not exist field ([7d7bf85](https://github.com/Chinlinlee/Burni/commit/7d7bf850c5b768b85c86b119b3cb8b3c8c09a135))
+* `resource.meta` incorrect after updating ([9439334](https://github.com/Chinlinlee/Burni/commit/9439334decc7ba01ebff7d7a270cceafd22e55e4))
+* backBoneElement not use getter with mongoose schema ([0776c38](https://github.com/Chinlinlee/Burni/commit/0776c38cddf0be1c1df755ce2a8dcaf7fc506136))
+* FHIR package not import ([ce1a85b](https://github.com/Chinlinlee/Burni/commit/ce1a85b371eb7d9794444b72686b35ce12444bde))
+* generate incorrect code at numer query search parametr ([789b435](https://github.com/Chinlinlee/Burni/commit/789b43587206bf15a992ddf726f678420800a597))
+* generate incorrect search field of type of token ([e377476](https://github.com/Chinlinlee/Burni/commit/e377476b0af8356864b26f942400dda95ca08412))
+* incorrect argument name  `err is not defined` ([9bc9ac9](https://github.com/Chinlinlee/Burni/commit/9bc9ac9b7fc7924d6303e3fee059649077faec6a))
+* incorrect countDocuments collection in `history` ([8a7cb9b](https://github.com/Chinlinlee/Burni/commit/8a7cb9b0257b55884aff39f104cff8432cc032e9))
+* incorrect date format ([7788eb9](https://github.com/Chinlinlee/Burni/commit/7788eb9cfb91254b6ed71753b772c1085d8e41d6))
+* incorrect format of metadata rest ([2f6ec60](https://github.com/Chinlinlee/Burni/commit/2f6ec60ae841742e16933029e17e9fd783ec4410))
+* incorrect log when error occur ([2a60bcc](https://github.com/Chinlinlee/Burni/commit/2a60bcc3d61b3843df56e73a9e188441010147de))
+* incorrect name of type, is `instant` not `instance` ([e876ce6](https://github.com/Chinlinlee/Burni/commit/e876ce68f2b92813ef58e6d0fef868068ed45f37))
+* incorrect variable name ([d7a834d](https://github.com/Chinlinlee/Burni/commit/d7a834dc6e0a090c10c2f0cdc739953c0761e418))
+* missing `Location` in headers when statu code 201 ([8092545](https://github.com/Chinlinlee/Burni/commit/809254596085582d95f22a63d66260d991057613))
+* missing condition that server is enable token auth ([d335756](https://github.com/Chinlinlee/Burni/commit/d335756cf11931bf42f86114081c93caf0596fce))
+* missing delete __v in doc ([fe0401e](https://github.com/Chinlinlee/Burni/commit/fe0401e4ba8da5104f6b580e2d90da85a2e3f128))
+* missing placeholder in search input ([04c2403](https://github.com/Chinlinlee/Burni/commit/04c24032e8538e7be10a36c1b6c57b6f1f930d9c))
+* missing variable name and require modules ([d40cf7f](https://github.com/Chinlinlee/Burni/commit/d40cf7feee7d6c51e623d4dddb3f078f4ac4ff66))
+* mongoose response document will fill undefined in not exist field ([fa5a73d](https://github.com/Chinlinlee/Burni/commit/fa5a73d37d04fdfc7a74b72060badc327a09105b))
+* not handle convert XML to JSON when content is XML which using PUT ([543f7b7](https://github.com/Chinlinlee/Burni/commit/543f7b7c99052ad72f6be7f441aa1bbd023caf04))
+* port is not defiend ([2d8fc29](https://github.com/Chinlinlee/Burni/commit/2d8fc298c3c3e9f5529da3793e6eda94a4d83372))
+* put list missing double quote ([68d4ad0](https://github.com/Chinlinlee/Burni/commit/68d4ad06248cd50e04cfe1237e686a09fc1c1a4d))
+* resolve body in a request is empty when content-type is XML ([d7eabc3](https://github.com/Chinlinlee/Burni/commit/d7eabc3846513a7160ae181f6af1ae7c8352db05))
+* resolve problem that port with bundle url and http server is same ([d50e66c](https://github.com/Chinlinlee/Burni/commit/d50e66c1a925344e737e368642e42cb084de6d0b))
+* resolve that input is null the getter will response the default value ([eb9e361](https://github.com/Chinlinlee/Burni/commit/eb9e361a68db79b4c28de96b0486a28647e4c0ce))
+* resolve that missing store history data when PUT recovery data after deleting ([12188cc](https://github.com/Chinlinlee/Burni/commit/12188cc3cd1bf1c08694dcfa926bde2c55f4ef1e))
+* resolve the delete not exist resource return incorrect HTTP response code ([f63be17](https://github.com/Chinlinlee/Burni/commit/f63be170ace10edae5d2889600a7033712b7c6ee))
+* resolve the problem that time of primitive type can't store in schema ([672fb63](https://github.com/Chinlinlee/Burni/commit/672fb6335c98649edf41d627927288813c674594))
+* the filed name `collection` cannot in schema ([ca90dba](https://github.com/Chinlinlee/Burni/commit/ca90dba2bfd5175c9c2ccaa9434a7905eecf4d2d))
+* uri and url occur document fill undefiend in not exist field ([5e14881](https://github.com/Chinlinlee/Burni/commit/5e14881897606bc52c0a9d25ae77f28c4ca7fa5a))
+* URI values cannot have whitespace ([e3096e2](https://github.com/Chinlinlee/Burni/commit/e3096e22f34bb744167e912aa8b2c0ce837e124a))
+* use toObject will fil undefiend in not exist field ([bd98969](https://github.com/Chinlinlee/Burni/commit/bd98969799fd35ce281bc68fc92393974af39f0f))
+
 ## [2.1.0](https://github.com/Chinlinlee/Simple-Express-FHIR-Server/compare/v2.0.0...v2.1.0) (2021-09-29)
 
 
