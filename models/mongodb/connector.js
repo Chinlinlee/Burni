@@ -38,10 +38,25 @@ module.exports = exports = function(config) {
             user: id,
             password: pwd
         }
+    }).then(()=> {
+        if (process.env.MONGODB_IS_SHARDING_MODE == "true") {
+            mongoose.connection.db.admin().command({
+                enableSharding: dbName
+            })
+            .then(res=> {
+                console.log(`sharding database ${dbName} successfully`);
+            })
+            .catch(err=> {
+                console.error(err);
+            });
+        }
+        shardCollection('/model');
+        shardCollection('/staticModel');
     }).catch(err => {
         console.error(err);
         process.exit(1);
     });
+    
     const db = mongoose.connection;
     db.on('error', console.error.bind(console, 'connection error:'));
     db.once('open', function() {
@@ -62,5 +77,24 @@ function getCollections (dirname, collectionObj) {
         console.log('path : ', __dirname + dirname)
         collectionObj[moduleName] = require(__dirname + dirname +'/' + moduleName)(mongoose);
     }
+}
 
+function shardCollection(dirname) {
+    let jsFilesInDir = fs.readdirSync(__dirname + dirname)
+    .filter((file) => (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js'))
+    for (let file of jsFilesInDir) {
+        const moduleName = file.split('.')[0];
+        if (process.env.MONGODB_IS_SHARDING_MODE == "true") {
+            mongoose.connection.db.admin().command({
+                shardCollection: `${process.env.MONGODB_NAME}.${moduleName}`,
+                key: { id: "hashed" }
+            })
+            .then(res=> {
+                console.log(`sharding collection ${moduleName} successfully`);
+            })
+            .catch(err=> {
+                console.error(err);
+            });
+        }
+    }
 }

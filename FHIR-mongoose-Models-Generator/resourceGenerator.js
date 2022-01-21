@@ -262,11 +262,17 @@ function generateResourceSchema (type) {
         default: void 0
     }
     module.exports.schema = ${type}; 
-    const ${type}Schema = new mongoose.Schema(${type} , {
+    let schemaConfig = {
         toObject : { getters : true} ,
         toJSON : { getters : true} ,
         versionKey : false
-    });\r\n
+    };
+    if (process.env.MONGODB_IS_SHARDING_MODE == "true") {
+        schemaConfig["shardKey"] = {
+            id: 1
+        };
+    }
+    const ${type}Schema = new mongoose.Schema(${type} , schemaConfig);\r\n
 
     ${type}Schema.methods.getFHIRField = function () {
         let result = this.toObject();
