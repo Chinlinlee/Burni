@@ -6,6 +6,7 @@ const _ = require('lodash');
 const { user } = require('../apiService');
 const FHIR = require('../../models/FHIR/fhir').Fhir;
 const validateContained = require('./validateContained');
+const { checkReference, getNotExistReferenceList } = require('../apiService');
 
 /**
  * @param {import("express").Request} req 
@@ -73,7 +74,7 @@ module.exports = async function (req, res, resourceType) {
         }
     }
     if (process.env.ENABLE_CHECK_REFERENCE == "true") {
-        let checkReferenceRes = await checkReference(insertData);
+        let checkReferenceRes = await checkReference(updateData);
         if (!checkReferenceRes.status) {
             let notExistReferenceList = getNotExistReferenceList(checkReferenceRes)
             let operationOutcomeError = handleError.processing(`The reference not found : ${_.map(notExistReferenceList , "value").join(",")}`);
