@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.3.0](https://github.com/Chinlinlee/Burni/compare/v2.2.0...v2.3.0) (2022-01-22)
+
+
+### Features
+
+* add `shardKey` config in history schema ([419bae7](https://github.com/Chinlinlee/Burni/commit/419bae714e10e7e550f1e9a2c4f46af08d97995f))
+
+
+### Bug Fixes
+
+* remove choice type [x] generate in schema ([f3a35b7](https://github.com/Chinlinlee/Burni/commit/f3a35b72ecaa776dd3b7fa359a463647043a9097))
+* remove choice type [x] generate in schema ([309ce6b](https://github.com/Chinlinlee/Burni/commit/309ce6b5d20a4d1a78ee30f2bab006a9db1b1816))
+
 ## [2.2.0](https://github.com/Chinlinlee/Burni/compare/v2.1.0...v2.2.0) (2022-01-21)
 
 
