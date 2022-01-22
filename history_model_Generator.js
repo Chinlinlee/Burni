@@ -39,16 +39,17 @@ function genHistoryModel() {
                         required : true
                     } 
                 }
-               const ${fileBaseName}HistorySchema = new mongoose.Schema(${fileBaseName}, {
-                   toObject: {
-                       getters: true
-                   },
-                   toJSON: {
-                       getters: true
-                   }
-               });
-           
-               ${fileBaseName}HistorySchema.methods.getFHIRField = function() {
+                let schemaConfig = {
+                    toObject : { getters : true} ,
+                    toJSON : { getters : true} ,
+                };
+                if (process.env.MONGODB_IS_SHARDING_MODE == "true") {
+                    schemaConfig["shardKey"] = {
+                        id: 1
+                    };
+                }
+                const ${fileBaseName}HistorySchema = new mongoose.Schema(${fileBaseName}, schemaConfig);
+                ${fileBaseName}HistorySchema.methods.getFHIRField = function() {
                    let result = this.toObject();
                    delete result._id;
                    delete result.__v;
@@ -56,18 +57,18 @@ function genHistoryModel() {
                    delete result['request'];
                    delete result['response'];
                    return result;
-               }
-               ${fileBaseName}HistorySchema.methods.getFHIRBundleField = function() {
+                }
+                ${fileBaseName}HistorySchema.methods.getFHIRBundleField = function() {
                    let result = this.toObject();
                    delete result._id;
                    delete result.__v;
                    delete result['name._id'];
                    return result;
-               }
-               
-               const ${fileBaseName}HistoryModel = mongoose.model("${fileBaseName}_history", ${fileBaseName}HistorySchema, "${fileBaseName}_history");
-               return ${fileBaseName}HistoryModel;
-           }`
+                }
+                
+                const ${fileBaseName}HistoryModel = mongoose.model("${fileBaseName}_history", ${fileBaseName}HistorySchema, "${fileBaseName}_history");
+                return ${fileBaseName}HistoryModel;
+            }`
             fs.writeFileSync(`./models/mongodb/model/${fileBaseName}_history.js`, beautify(historyModel));
         }
     }

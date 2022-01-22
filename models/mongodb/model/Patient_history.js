@@ -22,15 +22,20 @@ module.exports = function() {
             required: true
         }
     }
-    const PatientHistorySchema = new mongoose.Schema(Patient, {
+    let schemaConfig = {
         toObject: {
             getters: true
         },
         toJSON: {
             getters: true
-        }
-    });
-
+        },
+    };
+    if (process.env.MONGODB_IS_SHARDING_MODE == "true") {
+        schemaConfig["shardKey"] = {
+            id: 1
+        };
+    }
+    const PatientHistorySchema = new mongoose.Schema(Patient, schemaConfig);
     PatientHistorySchema.methods.getFHIRField = function() {
         let result = this.toObject();
         delete result._id;
