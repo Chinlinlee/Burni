@@ -75,7 +75,7 @@ function getSchema (resource , name) {
         if (skipCol.indexOf(i) >= 0 ) continue;
         else if (i.indexOf("_") == 0 ) continue;
         let type = _.get(resource.properties[i] , "type");
-        let choiceType = isChoiceType(i);
+        //let choiceType = isChoiceType(i);
         let refSchema = _.get(resource.properties[i] , "$ref");
         let isCode = _.get(resource.properties[i] , "enum");
         if (type == 'array') {
@@ -89,7 +89,7 @@ function getSchema (resource , name) {
             let arrayRefClean  = arrayRef.split('/');
             let typeOfField = arrayRefClean[arrayRefClean.length-1];
             if (typeOfField == name) typeOfField = "this"; //The type of field reference self
-            if (choiceType.yes) typeOfField = choiceType.type;
+            //if (choiceType.yes) typeOfField = choiceType.type;
             result[i] = {
                 type : `[${typeOfField}]` 
             }
@@ -97,7 +97,7 @@ function getSchema (resource , name) {
             if (/^#/.test(refSchema)) {
                 let refClean = refSchema.split('/');
                 let typeOfField = refClean[refClean.length-1];
-                if (choiceType.yes) typeOfField = choiceType.type;
+                //if (choiceType.yes) typeOfField = choiceType.type;
                 if (isPrimitiveType(typeOfField)) {
                     result[i] = typeOfField;
                 } else {
@@ -109,7 +109,7 @@ function getSchema (resource , name) {
             } else if (!/^#/.test(refSchema)) {
                 let refClean = refSchema.split('/');
                 let typeOfField = refClean[refClean.length-1];
-                if (choiceType.yes) typeOfField = choiceType.type;
+                //if (choiceType.yes) typeOfField = choiceType.type;
                 if (isPrimitiveType(typeOfField)) {
                     result[i] = typeOfField;
                 } else {
@@ -126,7 +126,7 @@ function getSchema (resource , name) {
                 enum : JSON.stringify(isCode)
             }
         } else {
-            if (choiceType.yes) type = choiceType.type;
+            //if (choiceType.yes) type = choiceType.type;
             if (isPrimitiveType(type)) {
                 result[i] = type;
             } else {
@@ -135,9 +135,9 @@ function getSchema (resource , name) {
                 }
             }
         }
-        let isrequired = _.get(resource , "required");
-        if (isrequired) {
-            for (let item of isrequired) {
+        let isRequired = _.get(resource , "required");
+        if (isRequired) {
+            for (let item of isRequired) {
                 if (item == i) {
                     Object.assign(result[i] , {required : true});
                 }
