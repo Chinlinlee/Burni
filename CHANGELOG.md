@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.3.1](https://github.com/Chinlinlee/Burni/compare/v2.3.0...v2.3.1) (2022-01-23)
+
+
+### Bug Fixes
+
+* incorrect data type of `Date` when choice type[x] ([d32cb2d](https://github.com/Chinlinlee/Burni/commit/d32cb2d13ce289c4f750e3b0225404343f16065a))
+
 ## [2.3.0](https://github.com/Chinlinlee/Burni/compare/v2.2.0...v2.3.0) (2022-01-22)
 
 
