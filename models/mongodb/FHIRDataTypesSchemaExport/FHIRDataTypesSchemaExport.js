@@ -1,1542 +1,1542 @@
 const {
     Element
-} = require('../FHIRDataTypesSchema-New/Element');
+} = require('../FHIRDataTypesSchema/Element');
 const {
     Extension
-} = require('../FHIRDataTypesSchema-New/Extension');
+} = require('../FHIRDataTypesSchema/Extension');
 const {
     Narrative
-} = require('../FHIRDataTypesSchema-New/Narrative');
+} = require('../FHIRDataTypesSchema/Narrative');
 const {
     Annotation
-} = require('../FHIRDataTypesSchema-New/Annotation');
+} = require('../FHIRDataTypesSchema/Annotation');
 const {
     Attachment
-} = require('../FHIRDataTypesSchema-New/Attachment');
+} = require('../FHIRDataTypesSchema/Attachment');
 const {
     Identifier
-} = require('../FHIRDataTypesSchema-New/Identifier');
+} = require('../FHIRDataTypesSchema/Identifier');
 const {
     CodeableConcept
-} = require('../FHIRDataTypesSchema-New/CodeableConcept');
+} = require('../FHIRDataTypesSchema/CodeableConcept');
 const {
     Coding
-} = require('../FHIRDataTypesSchema-New/Coding');
+} = require('../FHIRDataTypesSchema/Coding');
 const {
     Quantity
-} = require('../FHIRDataTypesSchema-New/Quantity');
+} = require('../FHIRDataTypesSchema/Quantity');
 const {
     Duration
-} = require('../FHIRDataTypesSchema-New/Duration');
+} = require('../FHIRDataTypesSchema/Duration');
 const {
     Distance
-} = require('../FHIRDataTypesSchema-New/Distance');
+} = require('../FHIRDataTypesSchema/Distance');
 const {
     Count
-} = require('../FHIRDataTypesSchema-New/Count');
+} = require('../FHIRDataTypesSchema/Count');
 const {
     Money
-} = require('../FHIRDataTypesSchema-New/Money');
+} = require('../FHIRDataTypesSchema/Money');
 const {
     Age
-} = require('../FHIRDataTypesSchema-New/Age');
+} = require('../FHIRDataTypesSchema/Age');
 const {
     Range
-} = require('../FHIRDataTypesSchema-New/Range');
+} = require('../FHIRDataTypesSchema/Range');
 const {
     Period
-} = require('../FHIRDataTypesSchema-New/Period');
+} = require('../FHIRDataTypesSchema/Period');
 const {
     Ratio
-} = require('../FHIRDataTypesSchema-New/Ratio');
+} = require('../FHIRDataTypesSchema/Ratio');
 const {
     Reference
-} = require('../FHIRDataTypesSchema-New/Reference');
+} = require('../FHIRDataTypesSchema/Reference');
 const {
     SampledData
-} = require('../FHIRDataTypesSchema-New/SampledData');
+} = require('../FHIRDataTypesSchema/SampledData');
 const {
     Signature
-} = require('../FHIRDataTypesSchema-New/Signature');
+} = require('../FHIRDataTypesSchema/Signature');
 const {
     HumanName
-} = require('../FHIRDataTypesSchema-New/HumanName');
+} = require('../FHIRDataTypesSchema/HumanName');
 const {
     Address
-} = require('../FHIRDataTypesSchema-New/Address');
+} = require('../FHIRDataTypesSchema/Address');
 const {
     ContactPoint
-} = require('../FHIRDataTypesSchema-New/ContactPoint');
+} = require('../FHIRDataTypesSchema/ContactPoint');
 const {
     Timing
-} = require('../FHIRDataTypesSchema-New/Timing');
+} = require('../FHIRDataTypesSchema/Timing');
 const {
     Timing_Repeat
-} = require('../FHIRDataTypesSchema-New/Timing_Repeat');
+} = require('../FHIRDataTypesSchema/Timing_Repeat');
 const {
     Meta
-} = require('../FHIRDataTypesSchema-New/Meta');
+} = require('../FHIRDataTypesSchema/Meta');
 const {
     ContactDetail
-} = require('../FHIRDataTypesSchema-New/ContactDetail');
+} = require('../FHIRDataTypesSchema/ContactDetail');
 const {
     Contributor
-} = require('../FHIRDataTypesSchema-New/Contributor');
+} = require('../FHIRDataTypesSchema/Contributor');
 const {
     DataRequirement
-} = require('../FHIRDataTypesSchema-New/DataRequirement');
+} = require('../FHIRDataTypesSchema/DataRequirement');
 const {
     DataRequirement_CodeFilter
-} = require('../FHIRDataTypesSchema-New/DataRequirement_CodeFilter');
+} = require('../FHIRDataTypesSchema/DataRequirement_CodeFilter');
 const {
     DataRequirement_DateFilter
-} = require('../FHIRDataTypesSchema-New/DataRequirement_DateFilter');
+} = require('../FHIRDataTypesSchema/DataRequirement_DateFilter');
 const {
     DataRequirement_Sort
-} = require('../FHIRDataTypesSchema-New/DataRequirement_Sort');
+} = require('../FHIRDataTypesSchema/DataRequirement_Sort');
 const {
     ParameterDefinition
-} = require('../FHIRDataTypesSchema-New/ParameterDefinition');
+} = require('../FHIRDataTypesSchema/ParameterDefinition');
 const {
     RelatedArtifact
-} = require('../FHIRDataTypesSchema-New/RelatedArtifact');
+} = require('../FHIRDataTypesSchema/RelatedArtifact');
 const {
     TriggerDefinition
-} = require('../FHIRDataTypesSchema-New/TriggerDefinition');
+} = require('../FHIRDataTypesSchema/TriggerDefinition');
 const {
     UsageContext
-} = require('../FHIRDataTypesSchema-New/UsageContext');
+} = require('../FHIRDataTypesSchema/UsageContext');
 const {
     Dosage
-} = require('../FHIRDataTypesSchema-New/Dosage');
+} = require('../FHIRDataTypesSchema/Dosage');
 const {
     Dosage_DoseAndRate
-} = require('../FHIRDataTypesSchema-New/Dosage_DoseAndRate');
+} = require('../FHIRDataTypesSchema/Dosage_DoseAndRate');
 const {
     Population
-} = require('../FHIRDataTypesSchema-New/Population');
+} = require('../FHIRDataTypesSchema/Population');
 const {
     ProductShelfLife
-} = require('../FHIRDataTypesSchema-New/ProductShelfLife');
+} = require('../FHIRDataTypesSchema/ProductShelfLife');
 const {
     ProdCharacteristic
-} = require('../FHIRDataTypesSchema-New/ProdCharacteristic');
+} = require('../FHIRDataTypesSchema/ProdCharacteristic');
 const {
     MarketingStatus
-} = require('../FHIRDataTypesSchema-New/MarketingStatus');
+} = require('../FHIRDataTypesSchema/MarketingStatus');
 const {
     SubstanceAmount
-} = require('../FHIRDataTypesSchema-New/SubstanceAmount');
+} = require('../FHIRDataTypesSchema/SubstanceAmount');
 const {
     SubstanceAmount_ReferenceRange
-} = require('../FHIRDataTypesSchema-New/SubstanceAmount_ReferenceRange');
+} = require('../FHIRDataTypesSchema/SubstanceAmount_ReferenceRange');
 const {
     Expression
-} = require('../FHIRDataTypesSchema-New/Expression');
+} = require('../FHIRDataTypesSchema/Expression');
 const {
     ElementDefinition
-} = require('../FHIRDataTypesSchema-New/ElementDefinition');
+} = require('../FHIRDataTypesSchema/ElementDefinition');
 const {
     ElementDefinition_Slicing
-} = require('../FHIRDataTypesSchema-New/ElementDefinition_Slicing');
+} = require('../FHIRDataTypesSchema/ElementDefinition_Slicing');
 const {
     ElementDefinition_Discriminator
-} = require('../FHIRDataTypesSchema-New/ElementDefinition_Discriminator');
+} = require('../FHIRDataTypesSchema/ElementDefinition_Discriminator');
 const {
     ElementDefinition_Base
-} = require('../FHIRDataTypesSchema-New/ElementDefinition_Base');
+} = require('../FHIRDataTypesSchema/ElementDefinition_Base');
 const {
     ElementDefinition_Type
-} = require('../FHIRDataTypesSchema-New/ElementDefinition_Type');
+} = require('../FHIRDataTypesSchema/ElementDefinition_Type');
 const {
     ElementDefinition_Example
-} = require('../FHIRDataTypesSchema-New/ElementDefinition_Example');
+} = require('../FHIRDataTypesSchema/ElementDefinition_Example');
 const {
     ElementDefinition_Constraint
-} = require('../FHIRDataTypesSchema-New/ElementDefinition_Constraint');
+} = require('../FHIRDataTypesSchema/ElementDefinition_Constraint');
 const {
     ElementDefinition_Binding
-} = require('../FHIRDataTypesSchema-New/ElementDefinition_Binding');
+} = require('../FHIRDataTypesSchema/ElementDefinition_Binding');
 const {
     ElementDefinition_Mapping
-} = require('../FHIRDataTypesSchema-New/ElementDefinition_Mapping');
+} = require('../FHIRDataTypesSchema/ElementDefinition_Mapping');
 const {
     Account_Coverage
-} = require('../FHIRDataTypesSchema-New/Account_Coverage');
+} = require('../FHIRDataTypesSchema/Account_Coverage');
 const {
     Account_Guarantor
-} = require('../FHIRDataTypesSchema-New/Account_Guarantor');
+} = require('../FHIRDataTypesSchema/Account_Guarantor');
 const {
     ActivityDefinition_Participant
-} = require('../FHIRDataTypesSchema-New/ActivityDefinition_Participant');
+} = require('../FHIRDataTypesSchema/ActivityDefinition_Participant');
 const {
     ActivityDefinition_DynamicValue
-} = require('../FHIRDataTypesSchema-New/ActivityDefinition_DynamicValue');
+} = require('../FHIRDataTypesSchema/ActivityDefinition_DynamicValue');
 const {
     AdverseEvent_SuspectEntity
-} = require('../FHIRDataTypesSchema-New/AdverseEvent_SuspectEntity');
+} = require('../FHIRDataTypesSchema/AdverseEvent_SuspectEntity');
 const {
     AdverseEvent_Causality
-} = require('../FHIRDataTypesSchema-New/AdverseEvent_Causality');
+} = require('../FHIRDataTypesSchema/AdverseEvent_Causality');
 const {
     AllergyIntolerance_Reaction
-} = require('../FHIRDataTypesSchema-New/AllergyIntolerance_Reaction');
+} = require('../FHIRDataTypesSchema/AllergyIntolerance_Reaction');
 const {
     Appointment_Participant
-} = require('../FHIRDataTypesSchema-New/Appointment_Participant');
+} = require('../FHIRDataTypesSchema/Appointment_Participant');
 const {
     AuditEvent_Agent
-} = require('../FHIRDataTypesSchema-New/AuditEvent_Agent');
+} = require('../FHIRDataTypesSchema/AuditEvent_Agent');
 const {
     AuditEvent_Network
-} = require('../FHIRDataTypesSchema-New/AuditEvent_Network');
+} = require('../FHIRDataTypesSchema/AuditEvent_Network');
 const {
     AuditEvent_Source
-} = require('../FHIRDataTypesSchema-New/AuditEvent_Source');
+} = require('../FHIRDataTypesSchema/AuditEvent_Source');
 const {
     AuditEvent_Entity
-} = require('../FHIRDataTypesSchema-New/AuditEvent_Entity');
+} = require('../FHIRDataTypesSchema/AuditEvent_Entity');
 const {
     AuditEvent_Detail
-} = require('../FHIRDataTypesSchema-New/AuditEvent_Detail');
+} = require('../FHIRDataTypesSchema/AuditEvent_Detail');
 const {
     BiologicallyDerivedProduct_Collection
-} = require('../FHIRDataTypesSchema-New/BiologicallyDerivedProduct_Collection');
+} = require('../FHIRDataTypesSchema/BiologicallyDerivedProduct_Collection');
 const {
     BiologicallyDerivedProduct_Processing
-} = require('../FHIRDataTypesSchema-New/BiologicallyDerivedProduct_Processing');
+} = require('../FHIRDataTypesSchema/BiologicallyDerivedProduct_Processing');
 const {
     BiologicallyDerivedProduct_Manipulation
-} = require('../FHIRDataTypesSchema-New/BiologicallyDerivedProduct_Manipulation');
+} = require('../FHIRDataTypesSchema/BiologicallyDerivedProduct_Manipulation');
 const {
     BiologicallyDerivedProduct_Storage
-} = require('../FHIRDataTypesSchema-New/BiologicallyDerivedProduct_Storage');
+} = require('../FHIRDataTypesSchema/BiologicallyDerivedProduct_Storage');
 const {
     Bundle_Link
-} = require('../FHIRDataTypesSchema-New/Bundle_Link');
+} = require('../FHIRDataTypesSchema/Bundle_Link');
 const {
     Bundle_Entry
-} = require('../FHIRDataTypesSchema-New/Bundle_Entry');
+} = require('../FHIRDataTypesSchema/Bundle_Entry');
 const {
     Bundle_Search
-} = require('../FHIRDataTypesSchema-New/Bundle_Search');
+} = require('../FHIRDataTypesSchema/Bundle_Search');
 const {
     Bundle_Request
-} = require('../FHIRDataTypesSchema-New/Bundle_Request');
+} = require('../FHIRDataTypesSchema/Bundle_Request');
 const {
     Bundle_Response
-} = require('../FHIRDataTypesSchema-New/Bundle_Response');
+} = require('../FHIRDataTypesSchema/Bundle_Response');
 const {
     CapabilityStatement_Software
-} = require('../FHIRDataTypesSchema-New/CapabilityStatement_Software');
+} = require('../FHIRDataTypesSchema/CapabilityStatement_Software');
 const {
     CapabilityStatement_Implementation
-} = require('../FHIRDataTypesSchema-New/CapabilityStatement_Implementation');
+} = require('../FHIRDataTypesSchema/CapabilityStatement_Implementation');
 const {
     CapabilityStatement_Rest
-} = require('../FHIRDataTypesSchema-New/CapabilityStatement_Rest');
+} = require('../FHIRDataTypesSchema/CapabilityStatement_Rest');
 const {
     CapabilityStatement_Security
-} = require('../FHIRDataTypesSchema-New/CapabilityStatement_Security');
+} = require('../FHIRDataTypesSchema/CapabilityStatement_Security');
 const {
     CapabilityStatement_Resource
-} = require('../FHIRDataTypesSchema-New/CapabilityStatement_Resource');
+} = require('../FHIRDataTypesSchema/CapabilityStatement_Resource');
 const {
     CapabilityStatement_Interaction
-} = require('../FHIRDataTypesSchema-New/CapabilityStatement_Interaction');
+} = require('../FHIRDataTypesSchema/CapabilityStatement_Interaction');
 const {
     CapabilityStatement_SearchParam
-} = require('../FHIRDataTypesSchema-New/CapabilityStatement_SearchParam');
+} = require('../FHIRDataTypesSchema/CapabilityStatement_SearchParam');
 const {
     CapabilityStatement_Operation
-} = require('../FHIRDataTypesSchema-New/CapabilityStatement_Operation');
+} = require('../FHIRDataTypesSchema/CapabilityStatement_Operation');
 const {
     CapabilityStatement_Interaction1
-} = require('../FHIRDataTypesSchema-New/CapabilityStatement_Interaction1');
+} = require('../FHIRDataTypesSchema/CapabilityStatement_Interaction1');
 const {
     CapabilityStatement_Messaging
-} = require('../FHIRDataTypesSchema-New/CapabilityStatement_Messaging');
+} = require('../FHIRDataTypesSchema/CapabilityStatement_Messaging');
 const {
     CapabilityStatement_Endpoint
-} = require('../FHIRDataTypesSchema-New/CapabilityStatement_Endpoint');
+} = require('../FHIRDataTypesSchema/CapabilityStatement_Endpoint');
 const {
     CapabilityStatement_SupportedMessage
-} = require('../FHIRDataTypesSchema-New/CapabilityStatement_SupportedMessage');
+} = require('../FHIRDataTypesSchema/CapabilityStatement_SupportedMessage');
 const {
     CapabilityStatement_Document
-} = require('../FHIRDataTypesSchema-New/CapabilityStatement_Document');
+} = require('../FHIRDataTypesSchema/CapabilityStatement_Document');
 const {
     CarePlan_Activity
-} = require('../FHIRDataTypesSchema-New/CarePlan_Activity');
+} = require('../FHIRDataTypesSchema/CarePlan_Activity');
 const {
     CarePlan_Detail
-} = require('../FHIRDataTypesSchema-New/CarePlan_Detail');
+} = require('../FHIRDataTypesSchema/CarePlan_Detail');
 const {
     CareTeam_Participant
-} = require('../FHIRDataTypesSchema-New/CareTeam_Participant');
+} = require('../FHIRDataTypesSchema/CareTeam_Participant');
 const {
     CatalogEntry_RelatedEntry
-} = require('../FHIRDataTypesSchema-New/CatalogEntry_RelatedEntry');
+} = require('../FHIRDataTypesSchema/CatalogEntry_RelatedEntry');
 const {
     ChargeItem_Performer
-} = require('../FHIRDataTypesSchema-New/ChargeItem_Performer');
+} = require('../FHIRDataTypesSchema/ChargeItem_Performer');
 const {
     ChargeItemDefinition_Applicability
-} = require('../FHIRDataTypesSchema-New/ChargeItemDefinition_Applicability');
+} = require('../FHIRDataTypesSchema/ChargeItemDefinition_Applicability');
 const {
     ChargeItemDefinition_PropertyGroup
-} = require('../FHIRDataTypesSchema-New/ChargeItemDefinition_PropertyGroup');
+} = require('../FHIRDataTypesSchema/ChargeItemDefinition_PropertyGroup');
 const {
     ChargeItemDefinition_PriceComponent
-} = require('../FHIRDataTypesSchema-New/ChargeItemDefinition_PriceComponent');
+} = require('../FHIRDataTypesSchema/ChargeItemDefinition_PriceComponent');
 const {
     Claim_Related
-} = require('../FHIRDataTypesSchema-New/Claim_Related');
+} = require('../FHIRDataTypesSchema/Claim_Related');
 const {
     Claim_Payee
-} = require('../FHIRDataTypesSchema-New/Claim_Payee');
+} = require('../FHIRDataTypesSchema/Claim_Payee');
 const {
     Claim_CareTeam
-} = require('../FHIRDataTypesSchema-New/Claim_CareTeam');
+} = require('../FHIRDataTypesSchema/Claim_CareTeam');
 const {
     Claim_SupportingInfo
-} = require('../FHIRDataTypesSchema-New/Claim_SupportingInfo');
+} = require('../FHIRDataTypesSchema/Claim_SupportingInfo');
 const {
     Claim_Diagnosis
-} = require('../FHIRDataTypesSchema-New/Claim_Diagnosis');
+} = require('../FHIRDataTypesSchema/Claim_Diagnosis');
 const {
     Claim_Procedure
-} = require('../FHIRDataTypesSchema-New/Claim_Procedure');
+} = require('../FHIRDataTypesSchema/Claim_Procedure');
 const {
     Claim_Insurance
-} = require('../FHIRDataTypesSchema-New/Claim_Insurance');
+} = require('../FHIRDataTypesSchema/Claim_Insurance');
 const {
     Claim_Accident
-} = require('../FHIRDataTypesSchema-New/Claim_Accident');
+} = require('../FHIRDataTypesSchema/Claim_Accident');
 const {
     Claim_Item
-} = require('../FHIRDataTypesSchema-New/Claim_Item');
+} = require('../FHIRDataTypesSchema/Claim_Item');
 const {
     Claim_Detail
-} = require('../FHIRDataTypesSchema-New/Claim_Detail');
+} = require('../FHIRDataTypesSchema/Claim_Detail');
 const {
     Claim_SubDetail
-} = require('../FHIRDataTypesSchema-New/Claim_SubDetail');
+} = require('../FHIRDataTypesSchema/Claim_SubDetail');
 const {
     ClaimResponse_Item
-} = require('../FHIRDataTypesSchema-New/ClaimResponse_Item');
+} = require('../FHIRDataTypesSchema/ClaimResponse_Item');
 const {
     ClaimResponse_Adjudication
-} = require('../FHIRDataTypesSchema-New/ClaimResponse_Adjudication');
+} = require('../FHIRDataTypesSchema/ClaimResponse_Adjudication');
 const {
     ClaimResponse_Detail
-} = require('../FHIRDataTypesSchema-New/ClaimResponse_Detail');
+} = require('../FHIRDataTypesSchema/ClaimResponse_Detail');
 const {
     ClaimResponse_SubDetail
-} = require('../FHIRDataTypesSchema-New/ClaimResponse_SubDetail');
+} = require('../FHIRDataTypesSchema/ClaimResponse_SubDetail');
 const {
     ClaimResponse_AddItem
-} = require('../FHIRDataTypesSchema-New/ClaimResponse_AddItem');
+} = require('../FHIRDataTypesSchema/ClaimResponse_AddItem');
 const {
     ClaimResponse_Detail1
-} = require('../FHIRDataTypesSchema-New/ClaimResponse_Detail1');
+} = require('../FHIRDataTypesSchema/ClaimResponse_Detail1');
 const {
     ClaimResponse_SubDetail1
-} = require('../FHIRDataTypesSchema-New/ClaimResponse_SubDetail1');
+} = require('../FHIRDataTypesSchema/ClaimResponse_SubDetail1');
 const {
     ClaimResponse_Total
-} = require('../FHIRDataTypesSchema-New/ClaimResponse_Total');
+} = require('../FHIRDataTypesSchema/ClaimResponse_Total');
 const {
     ClaimResponse_Payment
-} = require('../FHIRDataTypesSchema-New/ClaimResponse_Payment');
+} = require('../FHIRDataTypesSchema/ClaimResponse_Payment');
 const {
     ClaimResponse_ProcessNote
-} = require('../FHIRDataTypesSchema-New/ClaimResponse_ProcessNote');
+} = require('../FHIRDataTypesSchema/ClaimResponse_ProcessNote');
 const {
     ClaimResponse_Insurance
-} = require('../FHIRDataTypesSchema-New/ClaimResponse_Insurance');
+} = require('../FHIRDataTypesSchema/ClaimResponse_Insurance');
 const {
     ClaimResponse_Error
-} = require('../FHIRDataTypesSchema-New/ClaimResponse_Error');
+} = require('../FHIRDataTypesSchema/ClaimResponse_Error');
 const {
     ClinicalImpression_Investigation
-} = require('../FHIRDataTypesSchema-New/ClinicalImpression_Investigation');
+} = require('../FHIRDataTypesSchema/ClinicalImpression_Investigation');
 const {
     ClinicalImpression_Finding
-} = require('../FHIRDataTypesSchema-New/ClinicalImpression_Finding');
+} = require('../FHIRDataTypesSchema/ClinicalImpression_Finding');
 const {
     CodeSystem_Filter
-} = require('../FHIRDataTypesSchema-New/CodeSystem_Filter');
+} = require('../FHIRDataTypesSchema/CodeSystem_Filter');
 const {
     CodeSystem_Property
-} = require('../FHIRDataTypesSchema-New/CodeSystem_Property');
+} = require('../FHIRDataTypesSchema/CodeSystem_Property');
 const {
     CodeSystem_Concept
-} = require('../FHIRDataTypesSchema-New/CodeSystem_Concept');
+} = require('../FHIRDataTypesSchema/CodeSystem_Concept');
 const {
     CodeSystem_Designation
-} = require('../FHIRDataTypesSchema-New/CodeSystem_Designation');
+} = require('../FHIRDataTypesSchema/CodeSystem_Designation');
 const {
     CodeSystem_Property1
-} = require('../FHIRDataTypesSchema-New/CodeSystem_Property1');
+} = require('../FHIRDataTypesSchema/CodeSystem_Property1');
 const {
     Communication_Payload
-} = require('../FHIRDataTypesSchema-New/Communication_Payload');
+} = require('../FHIRDataTypesSchema/Communication_Payload');
 const {
     CommunicationRequest_Payload
-} = require('../FHIRDataTypesSchema-New/CommunicationRequest_Payload');
+} = require('../FHIRDataTypesSchema/CommunicationRequest_Payload');
 const {
     CompartmentDefinition_Resource
-} = require('../FHIRDataTypesSchema-New/CompartmentDefinition_Resource');
+} = require('../FHIRDataTypesSchema/CompartmentDefinition_Resource');
 const {
     Composition_Attester
-} = require('../FHIRDataTypesSchema-New/Composition_Attester');
+} = require('../FHIRDataTypesSchema/Composition_Attester');
 const {
     Composition_RelatesTo
-} = require('../FHIRDataTypesSchema-New/Composition_RelatesTo');
+} = require('../FHIRDataTypesSchema/Composition_RelatesTo');
 const {
     Composition_Event
-} = require('../FHIRDataTypesSchema-New/Composition_Event');
+} = require('../FHIRDataTypesSchema/Composition_Event');
 const {
     Composition_Section
-} = require('../FHIRDataTypesSchema-New/Composition_Section');
+} = require('../FHIRDataTypesSchema/Composition_Section');
 const {
     ConceptMap_Group
-} = require('../FHIRDataTypesSchema-New/ConceptMap_Group');
+} = require('../FHIRDataTypesSchema/ConceptMap_Group');
 const {
     ConceptMap_Element
-} = require('../FHIRDataTypesSchema-New/ConceptMap_Element');
+} = require('../FHIRDataTypesSchema/ConceptMap_Element');
 const {
     ConceptMap_Target
-} = require('../FHIRDataTypesSchema-New/ConceptMap_Target');
+} = require('../FHIRDataTypesSchema/ConceptMap_Target');
 const {
     ConceptMap_DependsOn
-} = require('../FHIRDataTypesSchema-New/ConceptMap_DependsOn');
+} = require('../FHIRDataTypesSchema/ConceptMap_DependsOn');
 const {
     ConceptMap_Unmapped
-} = require('../FHIRDataTypesSchema-New/ConceptMap_Unmapped');
+} = require('../FHIRDataTypesSchema/ConceptMap_Unmapped');
 const {
     Condition_Stage
-} = require('../FHIRDataTypesSchema-New/Condition_Stage');
+} = require('../FHIRDataTypesSchema/Condition_Stage');
 const {
     Condition_Evidence
-} = require('../FHIRDataTypesSchema-New/Condition_Evidence');
+} = require('../FHIRDataTypesSchema/Condition_Evidence');
 const {
     Consent_Policy
-} = require('../FHIRDataTypesSchema-New/Consent_Policy');
+} = require('../FHIRDataTypesSchema/Consent_Policy');
 const {
     Consent_Verification
-} = require('../FHIRDataTypesSchema-New/Consent_Verification');
+} = require('../FHIRDataTypesSchema/Consent_Verification');
 const {
     Consent_Provision
-} = require('../FHIRDataTypesSchema-New/Consent_Provision');
+} = require('../FHIRDataTypesSchema/Consent_Provision');
 const {
     Consent_Actor
-} = require('../FHIRDataTypesSchema-New/Consent_Actor');
+} = require('../FHIRDataTypesSchema/Consent_Actor');
 const {
     Consent_Data
-} = require('../FHIRDataTypesSchema-New/Consent_Data');
+} = require('../FHIRDataTypesSchema/Consent_Data');
 const {
     Contract_ContentDefinition
-} = require('../FHIRDataTypesSchema-New/Contract_ContentDefinition');
+} = require('../FHIRDataTypesSchema/Contract_ContentDefinition');
 const {
     Contract_Term
-} = require('../FHIRDataTypesSchema-New/Contract_Term');
+} = require('../FHIRDataTypesSchema/Contract_Term');
 const {
     Contract_SecurityLabel
-} = require('../FHIRDataTypesSchema-New/Contract_SecurityLabel');
+} = require('../FHIRDataTypesSchema/Contract_SecurityLabel');
 const {
     Contract_Offer
-} = require('../FHIRDataTypesSchema-New/Contract_Offer');
+} = require('../FHIRDataTypesSchema/Contract_Offer');
 const {
     Contract_Party
-} = require('../FHIRDataTypesSchema-New/Contract_Party');
+} = require('../FHIRDataTypesSchema/Contract_Party');
 const {
     Contract_Answer
-} = require('../FHIRDataTypesSchema-New/Contract_Answer');
+} = require('../FHIRDataTypesSchema/Contract_Answer');
 const {
     Contract_Asset
-} = require('../FHIRDataTypesSchema-New/Contract_Asset');
+} = require('../FHIRDataTypesSchema/Contract_Asset');
 const {
     Contract_Context
-} = require('../FHIRDataTypesSchema-New/Contract_Context');
+} = require('../FHIRDataTypesSchema/Contract_Context');
 const {
     Contract_ValuedItem
-} = require('../FHIRDataTypesSchema-New/Contract_ValuedItem');
+} = require('../FHIRDataTypesSchema/Contract_ValuedItem');
 const {
     Contract_Action
-} = require('../FHIRDataTypesSchema-New/Contract_Action');
+} = require('../FHIRDataTypesSchema/Contract_Action');
 const {
     Contract_Subject
-} = require('../FHIRDataTypesSchema-New/Contract_Subject');
+} = require('../FHIRDataTypesSchema/Contract_Subject');
 const {
     Contract_Signer
-} = require('../FHIRDataTypesSchema-New/Contract_Signer');
+} = require('../FHIRDataTypesSchema/Contract_Signer');
 const {
     Contract_Friendly
-} = require('../FHIRDataTypesSchema-New/Contract_Friendly');
+} = require('../FHIRDataTypesSchema/Contract_Friendly');
 const {
     Contract_Legal
-} = require('../FHIRDataTypesSchema-New/Contract_Legal');
+} = require('../FHIRDataTypesSchema/Contract_Legal');
 const {
     Contract_Rule
-} = require('../FHIRDataTypesSchema-New/Contract_Rule');
+} = require('../FHIRDataTypesSchema/Contract_Rule');
 const {
     Coverage_Class
-} = require('../FHIRDataTypesSchema-New/Coverage_Class');
+} = require('../FHIRDataTypesSchema/Coverage_Class');
 const {
     Coverage_CostToBeneficiary
-} = require('../FHIRDataTypesSchema-New/Coverage_CostToBeneficiary');
+} = require('../FHIRDataTypesSchema/Coverage_CostToBeneficiary');
 const {
     Coverage_Exception
-} = require('../FHIRDataTypesSchema-New/Coverage_Exception');
+} = require('../FHIRDataTypesSchema/Coverage_Exception');
 const {
     CoverageEligibilityRequest_SupportingInfo
-} = require('../FHIRDataTypesSchema-New/CoverageEligibilityRequest_SupportingInfo');
+} = require('../FHIRDataTypesSchema/CoverageEligibilityRequest_SupportingInfo');
 const {
     CoverageEligibilityRequest_Insurance
-} = require('../FHIRDataTypesSchema-New/CoverageEligibilityRequest_Insurance');
+} = require('../FHIRDataTypesSchema/CoverageEligibilityRequest_Insurance');
 const {
     CoverageEligibilityRequest_Item
-} = require('../FHIRDataTypesSchema-New/CoverageEligibilityRequest_Item');
+} = require('../FHIRDataTypesSchema/CoverageEligibilityRequest_Item');
 const {
     CoverageEligibilityRequest_Diagnosis
-} = require('../FHIRDataTypesSchema-New/CoverageEligibilityRequest_Diagnosis');
+} = require('../FHIRDataTypesSchema/CoverageEligibilityRequest_Diagnosis');
 const {
     CoverageEligibilityResponse_Insurance
-} = require('../FHIRDataTypesSchema-New/CoverageEligibilityResponse_Insurance');
+} = require('../FHIRDataTypesSchema/CoverageEligibilityResponse_Insurance');
 const {
     CoverageEligibilityResponse_Item
-} = require('../FHIRDataTypesSchema-New/CoverageEligibilityResponse_Item');
+} = require('../FHIRDataTypesSchema/CoverageEligibilityResponse_Item');
 const {
     CoverageEligibilityResponse_Benefit
-} = require('../FHIRDataTypesSchema-New/CoverageEligibilityResponse_Benefit');
+} = require('../FHIRDataTypesSchema/CoverageEligibilityResponse_Benefit');
 const {
     CoverageEligibilityResponse_Error
-} = require('../FHIRDataTypesSchema-New/CoverageEligibilityResponse_Error');
+} = require('../FHIRDataTypesSchema/CoverageEligibilityResponse_Error');
 const {
     DetectedIssue_Evidence
-} = require('../FHIRDataTypesSchema-New/DetectedIssue_Evidence');
+} = require('../FHIRDataTypesSchema/DetectedIssue_Evidence');
 const {
     DetectedIssue_Mitigation
-} = require('../FHIRDataTypesSchema-New/DetectedIssue_Mitigation');
+} = require('../FHIRDataTypesSchema/DetectedIssue_Mitigation');
 const {
     Device_UdiCarrier
-} = require('../FHIRDataTypesSchema-New/Device_UdiCarrier');
+} = require('../FHIRDataTypesSchema/Device_UdiCarrier');
 const {
     Device_DeviceName
-} = require('../FHIRDataTypesSchema-New/Device_DeviceName');
+} = require('../FHIRDataTypesSchema/Device_DeviceName');
 const {
     Device_Specialization
-} = require('../FHIRDataTypesSchema-New/Device_Specialization');
+} = require('../FHIRDataTypesSchema/Device_Specialization');
 const {
     Device_Version
-} = require('../FHIRDataTypesSchema-New/Device_Version');
+} = require('../FHIRDataTypesSchema/Device_Version');
 const {
     Device_Property
-} = require('../FHIRDataTypesSchema-New/Device_Property');
+} = require('../FHIRDataTypesSchema/Device_Property');
 const {
     DeviceDefinition_UdiDeviceIdentifier
-} = require('../FHIRDataTypesSchema-New/DeviceDefinition_UdiDeviceIdentifier');
+} = require('../FHIRDataTypesSchema/DeviceDefinition_UdiDeviceIdentifier');
 const {
     DeviceDefinition_DeviceName
-} = require('../FHIRDataTypesSchema-New/DeviceDefinition_DeviceName');
+} = require('../FHIRDataTypesSchema/DeviceDefinition_DeviceName');
 const {
     DeviceDefinition_Specialization
-} = require('../FHIRDataTypesSchema-New/DeviceDefinition_Specialization');
+} = require('../FHIRDataTypesSchema/DeviceDefinition_Specialization');
 const {
     DeviceDefinition_Capability
-} = require('../FHIRDataTypesSchema-New/DeviceDefinition_Capability');
+} = require('../FHIRDataTypesSchema/DeviceDefinition_Capability');
 const {
     DeviceDefinition_Property
-} = require('../FHIRDataTypesSchema-New/DeviceDefinition_Property');
+} = require('../FHIRDataTypesSchema/DeviceDefinition_Property');
 const {
     DeviceDefinition_Material
-} = require('../FHIRDataTypesSchema-New/DeviceDefinition_Material');
+} = require('../FHIRDataTypesSchema/DeviceDefinition_Material');
 const {
     DeviceMetric_Calibration
-} = require('../FHIRDataTypesSchema-New/DeviceMetric_Calibration');
+} = require('../FHIRDataTypesSchema/DeviceMetric_Calibration');
 const {
     DeviceRequest_Parameter
-} = require('../FHIRDataTypesSchema-New/DeviceRequest_Parameter');
+} = require('../FHIRDataTypesSchema/DeviceRequest_Parameter');
 const {
     DiagnosticReport_Media
-} = require('../FHIRDataTypesSchema-New/DiagnosticReport_Media');
+} = require('../FHIRDataTypesSchema/DiagnosticReport_Media');
 const {
     DocumentManifest_Related
-} = require('../FHIRDataTypesSchema-New/DocumentManifest_Related');
+} = require('../FHIRDataTypesSchema/DocumentManifest_Related');
 const {
     DocumentReference_RelatesTo
-} = require('../FHIRDataTypesSchema-New/DocumentReference_RelatesTo');
+} = require('../FHIRDataTypesSchema/DocumentReference_RelatesTo');
 const {
     DocumentReference_Content
-} = require('../FHIRDataTypesSchema-New/DocumentReference_Content');
+} = require('../FHIRDataTypesSchema/DocumentReference_Content');
 const {
     DocumentReference_Context
-} = require('../FHIRDataTypesSchema-New/DocumentReference_Context');
+} = require('../FHIRDataTypesSchema/DocumentReference_Context');
 const {
     EffectEvidenceSynthesis_SampleSize
-} = require('../FHIRDataTypesSchema-New/EffectEvidenceSynthesis_SampleSize');
+} = require('../FHIRDataTypesSchema/EffectEvidenceSynthesis_SampleSize');
 const {
     EffectEvidenceSynthesis_ResultsByExposure
-} = require('../FHIRDataTypesSchema-New/EffectEvidenceSynthesis_ResultsByExposure');
+} = require('../FHIRDataTypesSchema/EffectEvidenceSynthesis_ResultsByExposure');
 const {
     EffectEvidenceSynthesis_EffectEstimate
-} = require('../FHIRDataTypesSchema-New/EffectEvidenceSynthesis_EffectEstimate');
+} = require('../FHIRDataTypesSchema/EffectEvidenceSynthesis_EffectEstimate');
 const {
     EffectEvidenceSynthesis_PrecisionEstimate
-} = require('../FHIRDataTypesSchema-New/EffectEvidenceSynthesis_PrecisionEstimate');
+} = require('../FHIRDataTypesSchema/EffectEvidenceSynthesis_PrecisionEstimate');
 const {
     EffectEvidenceSynthesis_Certainty
-} = require('../FHIRDataTypesSchema-New/EffectEvidenceSynthesis_Certainty');
+} = require('../FHIRDataTypesSchema/EffectEvidenceSynthesis_Certainty');
 const {
     EffectEvidenceSynthesis_CertaintySubcomponent
-} = require('../FHIRDataTypesSchema-New/EffectEvidenceSynthesis_CertaintySubcomponent');
+} = require('../FHIRDataTypesSchema/EffectEvidenceSynthesis_CertaintySubcomponent');
 const {
     Encounter_StatusHistory
-} = require('../FHIRDataTypesSchema-New/Encounter_StatusHistory');
+} = require('../FHIRDataTypesSchema/Encounter_StatusHistory');
 const {
     Encounter_ClassHistory
-} = require('../FHIRDataTypesSchema-New/Encounter_ClassHistory');
+} = require('../FHIRDataTypesSchema/Encounter_ClassHistory');
 const {
     Encounter_Participant
-} = require('../FHIRDataTypesSchema-New/Encounter_Participant');
+} = require('../FHIRDataTypesSchema/Encounter_Participant');
 const {
     Encounter_Diagnosis
-} = require('../FHIRDataTypesSchema-New/Encounter_Diagnosis');
+} = require('../FHIRDataTypesSchema/Encounter_Diagnosis');
 const {
     Encounter_Hospitalization
-} = require('../FHIRDataTypesSchema-New/Encounter_Hospitalization');
+} = require('../FHIRDataTypesSchema/Encounter_Hospitalization');
 const {
     Encounter_Location
-} = require('../FHIRDataTypesSchema-New/Encounter_Location');
+} = require('../FHIRDataTypesSchema/Encounter_Location');
 const {
     EpisodeOfCare_StatusHistory
-} = require('../FHIRDataTypesSchema-New/EpisodeOfCare_StatusHistory');
+} = require('../FHIRDataTypesSchema/EpisodeOfCare_StatusHistory');
 const {
     EpisodeOfCare_Diagnosis
-} = require('../FHIRDataTypesSchema-New/EpisodeOfCare_Diagnosis');
+} = require('../FHIRDataTypesSchema/EpisodeOfCare_Diagnosis');
 const {
     EvidenceVariable_Characteristic
-} = require('../FHIRDataTypesSchema-New/EvidenceVariable_Characteristic');
+} = require('../FHIRDataTypesSchema/EvidenceVariable_Characteristic');
 const {
     ExampleScenario_Actor
-} = require('../FHIRDataTypesSchema-New/ExampleScenario_Actor');
+} = require('../FHIRDataTypesSchema/ExampleScenario_Actor');
 const {
     ExampleScenario_Instance
-} = require('../FHIRDataTypesSchema-New/ExampleScenario_Instance');
+} = require('../FHIRDataTypesSchema/ExampleScenario_Instance');
 const {
     ExampleScenario_Version
-} = require('../FHIRDataTypesSchema-New/ExampleScenario_Version');
+} = require('../FHIRDataTypesSchema/ExampleScenario_Version');
 const {
     ExampleScenario_ContainedInstance
-} = require('../FHIRDataTypesSchema-New/ExampleScenario_ContainedInstance');
+} = require('../FHIRDataTypesSchema/ExampleScenario_ContainedInstance');
 const {
     ExampleScenario_Process
-} = require('../FHIRDataTypesSchema-New/ExampleScenario_Process');
+} = require('../FHIRDataTypesSchema/ExampleScenario_Process');
 const {
     ExampleScenario_Step
-} = require('../FHIRDataTypesSchema-New/ExampleScenario_Step');
+} = require('../FHIRDataTypesSchema/ExampleScenario_Step');
 const {
     ExampleScenario_Operation
-} = require('../FHIRDataTypesSchema-New/ExampleScenario_Operation');
+} = require('../FHIRDataTypesSchema/ExampleScenario_Operation');
 const {
     ExampleScenario_Alternative
-} = require('../FHIRDataTypesSchema-New/ExampleScenario_Alternative');
+} = require('../FHIRDataTypesSchema/ExampleScenario_Alternative');
 const {
     ExplanationOfBenefit_Related
-} = require('../FHIRDataTypesSchema-New/ExplanationOfBenefit_Related');
+} = require('../FHIRDataTypesSchema/ExplanationOfBenefit_Related');
 const {
     ExplanationOfBenefit_Payee
-} = require('../FHIRDataTypesSchema-New/ExplanationOfBenefit_Payee');
+} = require('../FHIRDataTypesSchema/ExplanationOfBenefit_Payee');
 const {
     ExplanationOfBenefit_CareTeam
-} = require('../FHIRDataTypesSchema-New/ExplanationOfBenefit_CareTeam');
+} = require('../FHIRDataTypesSchema/ExplanationOfBenefit_CareTeam');
 const {
     ExplanationOfBenefit_SupportingInfo
-} = require('../FHIRDataTypesSchema-New/ExplanationOfBenefit_SupportingInfo');
+} = require('../FHIRDataTypesSchema/ExplanationOfBenefit_SupportingInfo');
 const {
     ExplanationOfBenefit_Diagnosis
-} = require('../FHIRDataTypesSchema-New/ExplanationOfBenefit_Diagnosis');
+} = require('../FHIRDataTypesSchema/ExplanationOfBenefit_Diagnosis');
 const {
     ExplanationOfBenefit_Procedure
-} = require('../FHIRDataTypesSchema-New/ExplanationOfBenefit_Procedure');
+} = require('../FHIRDataTypesSchema/ExplanationOfBenefit_Procedure');
 const {
     ExplanationOfBenefit_Insurance
-} = require('../FHIRDataTypesSchema-New/ExplanationOfBenefit_Insurance');
+} = require('../FHIRDataTypesSchema/ExplanationOfBenefit_Insurance');
 const {
     ExplanationOfBenefit_Accident
-} = require('../FHIRDataTypesSchema-New/ExplanationOfBenefit_Accident');
+} = require('../FHIRDataTypesSchema/ExplanationOfBenefit_Accident');
 const {
     ExplanationOfBenefit_Item
-} = require('../FHIRDataTypesSchema-New/ExplanationOfBenefit_Item');
+} = require('../FHIRDataTypesSchema/ExplanationOfBenefit_Item');
 const {
     ExplanationOfBenefit_Adjudication
-} = require('../FHIRDataTypesSchema-New/ExplanationOfBenefit_Adjudication');
+} = require('../FHIRDataTypesSchema/ExplanationOfBenefit_Adjudication');
 const {
     ExplanationOfBenefit_Detail
-} = require('../FHIRDataTypesSchema-New/ExplanationOfBenefit_Detail');
+} = require('../FHIRDataTypesSchema/ExplanationOfBenefit_Detail');
 const {
     ExplanationOfBenefit_SubDetail
-} = require('../FHIRDataTypesSchema-New/ExplanationOfBenefit_SubDetail');
+} = require('../FHIRDataTypesSchema/ExplanationOfBenefit_SubDetail');
 const {
     ExplanationOfBenefit_AddItem
-} = require('../FHIRDataTypesSchema-New/ExplanationOfBenefit_AddItem');
+} = require('../FHIRDataTypesSchema/ExplanationOfBenefit_AddItem');
 const {
     ExplanationOfBenefit_Detail1
-} = require('../FHIRDataTypesSchema-New/ExplanationOfBenefit_Detail1');
+} = require('../FHIRDataTypesSchema/ExplanationOfBenefit_Detail1');
 const {
     ExplanationOfBenefit_SubDetail1
-} = require('../FHIRDataTypesSchema-New/ExplanationOfBenefit_SubDetail1');
+} = require('../FHIRDataTypesSchema/ExplanationOfBenefit_SubDetail1');
 const {
     ExplanationOfBenefit_Total
-} = require('../FHIRDataTypesSchema-New/ExplanationOfBenefit_Total');
+} = require('../FHIRDataTypesSchema/ExplanationOfBenefit_Total');
 const {
     ExplanationOfBenefit_Payment
-} = require('../FHIRDataTypesSchema-New/ExplanationOfBenefit_Payment');
+} = require('../FHIRDataTypesSchema/ExplanationOfBenefit_Payment');
 const {
     ExplanationOfBenefit_ProcessNote
-} = require('../FHIRDataTypesSchema-New/ExplanationOfBenefit_ProcessNote');
+} = require('../FHIRDataTypesSchema/ExplanationOfBenefit_ProcessNote');
 const {
     ExplanationOfBenefit_BenefitBalance
-} = require('../FHIRDataTypesSchema-New/ExplanationOfBenefit_BenefitBalance');
+} = require('../FHIRDataTypesSchema/ExplanationOfBenefit_BenefitBalance');
 const {
     ExplanationOfBenefit_Financial
-} = require('../FHIRDataTypesSchema-New/ExplanationOfBenefit_Financial');
+} = require('../FHIRDataTypesSchema/ExplanationOfBenefit_Financial');
 const {
     FamilyMemberHistory_Condition
-} = require('../FHIRDataTypesSchema-New/FamilyMemberHistory_Condition');
+} = require('../FHIRDataTypesSchema/FamilyMemberHistory_Condition');
 const {
     Goal_Target
-} = require('../FHIRDataTypesSchema-New/Goal_Target');
+} = require('../FHIRDataTypesSchema/Goal_Target');
 const {
     GraphDefinition_Link
-} = require('../FHIRDataTypesSchema-New/GraphDefinition_Link');
+} = require('../FHIRDataTypesSchema/GraphDefinition_Link');
 const {
     GraphDefinition_Target
-} = require('../FHIRDataTypesSchema-New/GraphDefinition_Target');
+} = require('../FHIRDataTypesSchema/GraphDefinition_Target');
 const {
     GraphDefinition_Compartment
-} = require('../FHIRDataTypesSchema-New/GraphDefinition_Compartment');
+} = require('../FHIRDataTypesSchema/GraphDefinition_Compartment');
 const {
     Group_Characteristic
-} = require('../FHIRDataTypesSchema-New/Group_Characteristic');
+} = require('../FHIRDataTypesSchema/Group_Characteristic');
 const {
     Group_Member
-} = require('../FHIRDataTypesSchema-New/Group_Member');
+} = require('../FHIRDataTypesSchema/Group_Member');
 const {
     HealthcareService_Eligibility
-} = require('../FHIRDataTypesSchema-New/HealthcareService_Eligibility');
+} = require('../FHIRDataTypesSchema/HealthcareService_Eligibility');
 const {
     HealthcareService_AvailableTime
-} = require('../FHIRDataTypesSchema-New/HealthcareService_AvailableTime');
+} = require('../FHIRDataTypesSchema/HealthcareService_AvailableTime');
 const {
     HealthcareService_NotAvailable
-} = require('../FHIRDataTypesSchema-New/HealthcareService_NotAvailable');
+} = require('../FHIRDataTypesSchema/HealthcareService_NotAvailable');
 const {
     ImagingStudy_Series
-} = require('../FHIRDataTypesSchema-New/ImagingStudy_Series');
+} = require('../FHIRDataTypesSchema/ImagingStudy_Series');
 const {
     ImagingStudy_Performer
-} = require('../FHIRDataTypesSchema-New/ImagingStudy_Performer');
+} = require('../FHIRDataTypesSchema/ImagingStudy_Performer');
 const {
     ImagingStudy_Instance
-} = require('../FHIRDataTypesSchema-New/ImagingStudy_Instance');
+} = require('../FHIRDataTypesSchema/ImagingStudy_Instance');
 const {
     Immunization_Performer
-} = require('../FHIRDataTypesSchema-New/Immunization_Performer');
+} = require('../FHIRDataTypesSchema/Immunization_Performer');
 const {
     Immunization_Education
-} = require('../FHIRDataTypesSchema-New/Immunization_Education');
+} = require('../FHIRDataTypesSchema/Immunization_Education');
 const {
     Immunization_Reaction
-} = require('../FHIRDataTypesSchema-New/Immunization_Reaction');
+} = require('../FHIRDataTypesSchema/Immunization_Reaction');
 const {
     Immunization_ProtocolApplied
-} = require('../FHIRDataTypesSchema-New/Immunization_ProtocolApplied');
+} = require('../FHIRDataTypesSchema/Immunization_ProtocolApplied');
 const {
     ImmunizationRecommendation_Recommendation
-} = require('../FHIRDataTypesSchema-New/ImmunizationRecommendation_Recommendation');
+} = require('../FHIRDataTypesSchema/ImmunizationRecommendation_Recommendation');
 const {
     ImmunizationRecommendation_DateCriterion
-} = require('../FHIRDataTypesSchema-New/ImmunizationRecommendation_DateCriterion');
+} = require('../FHIRDataTypesSchema/ImmunizationRecommendation_DateCriterion');
 const {
     ImplementationGuide_DependsOn
-} = require('../FHIRDataTypesSchema-New/ImplementationGuide_DependsOn');
+} = require('../FHIRDataTypesSchema/ImplementationGuide_DependsOn');
 const {
     ImplementationGuide_Global
-} = require('../FHIRDataTypesSchema-New/ImplementationGuide_Global');
+} = require('../FHIRDataTypesSchema/ImplementationGuide_Global');
 const {
     ImplementationGuide_Definition
-} = require('../FHIRDataTypesSchema-New/ImplementationGuide_Definition');
+} = require('../FHIRDataTypesSchema/ImplementationGuide_Definition');
 const {
     ImplementationGuide_Grouping
-} = require('../FHIRDataTypesSchema-New/ImplementationGuide_Grouping');
+} = require('../FHIRDataTypesSchema/ImplementationGuide_Grouping');
 const {
     ImplementationGuide_Resource
-} = require('../FHIRDataTypesSchema-New/ImplementationGuide_Resource');
+} = require('../FHIRDataTypesSchema/ImplementationGuide_Resource');
 const {
     ImplementationGuide_Page
-} = require('../FHIRDataTypesSchema-New/ImplementationGuide_Page');
+} = require('../FHIRDataTypesSchema/ImplementationGuide_Page');
 const {
     ImplementationGuide_Parameter
-} = require('../FHIRDataTypesSchema-New/ImplementationGuide_Parameter');
+} = require('../FHIRDataTypesSchema/ImplementationGuide_Parameter');
 const {
     ImplementationGuide_Template
-} = require('../FHIRDataTypesSchema-New/ImplementationGuide_Template');
+} = require('../FHIRDataTypesSchema/ImplementationGuide_Template');
 const {
     ImplementationGuide_Manifest
-} = require('../FHIRDataTypesSchema-New/ImplementationGuide_Manifest');
+} = require('../FHIRDataTypesSchema/ImplementationGuide_Manifest');
 const {
     ImplementationGuide_Resource1
-} = require('../FHIRDataTypesSchema-New/ImplementationGuide_Resource1');
+} = require('../FHIRDataTypesSchema/ImplementationGuide_Resource1');
 const {
     ImplementationGuide_Page1
-} = require('../FHIRDataTypesSchema-New/ImplementationGuide_Page1');
+} = require('../FHIRDataTypesSchema/ImplementationGuide_Page1');
 const {
     InsurancePlan_Contact
-} = require('../FHIRDataTypesSchema-New/InsurancePlan_Contact');
+} = require('../FHIRDataTypesSchema/InsurancePlan_Contact');
 const {
     InsurancePlan_Coverage
-} = require('../FHIRDataTypesSchema-New/InsurancePlan_Coverage');
+} = require('../FHIRDataTypesSchema/InsurancePlan_Coverage');
 const {
     InsurancePlan_Benefit
-} = require('../FHIRDataTypesSchema-New/InsurancePlan_Benefit');
+} = require('../FHIRDataTypesSchema/InsurancePlan_Benefit');
 const {
     InsurancePlan_Limit
-} = require('../FHIRDataTypesSchema-New/InsurancePlan_Limit');
+} = require('../FHIRDataTypesSchema/InsurancePlan_Limit');
 const {
     InsurancePlan_Plan
-} = require('../FHIRDataTypesSchema-New/InsurancePlan_Plan');
+} = require('../FHIRDataTypesSchema/InsurancePlan_Plan');
 const {
     InsurancePlan_GeneralCost
-} = require('../FHIRDataTypesSchema-New/InsurancePlan_GeneralCost');
+} = require('../FHIRDataTypesSchema/InsurancePlan_GeneralCost');
 const {
     InsurancePlan_SpecificCost
-} = require('../FHIRDataTypesSchema-New/InsurancePlan_SpecificCost');
+} = require('../FHIRDataTypesSchema/InsurancePlan_SpecificCost');
 const {
     InsurancePlan_Benefit1
-} = require('../FHIRDataTypesSchema-New/InsurancePlan_Benefit1');
+} = require('../FHIRDataTypesSchema/InsurancePlan_Benefit1');
 const {
     InsurancePlan_Cost
-} = require('../FHIRDataTypesSchema-New/InsurancePlan_Cost');
+} = require('../FHIRDataTypesSchema/InsurancePlan_Cost');
 const {
     Invoice_Participant
-} = require('../FHIRDataTypesSchema-New/Invoice_Participant');
+} = require('../FHIRDataTypesSchema/Invoice_Participant');
 const {
     Invoice_LineItem
-} = require('../FHIRDataTypesSchema-New/Invoice_LineItem');
+} = require('../FHIRDataTypesSchema/Invoice_LineItem');
 const {
     Invoice_PriceComponent
-} = require('../FHIRDataTypesSchema-New/Invoice_PriceComponent');
+} = require('../FHIRDataTypesSchema/Invoice_PriceComponent');
 const {
     Linkage_Item
-} = require('../FHIRDataTypesSchema-New/Linkage_Item');
+} = require('../FHIRDataTypesSchema/Linkage_Item');
 const {
     List_Entry
-} = require('../FHIRDataTypesSchema-New/List_Entry');
+} = require('../FHIRDataTypesSchema/List_Entry');
 const {
     Location_Position
-} = require('../FHIRDataTypesSchema-New/Location_Position');
+} = require('../FHIRDataTypesSchema/Location_Position');
 const {
     Location_HoursOfOperation
-} = require('../FHIRDataTypesSchema-New/Location_HoursOfOperation');
+} = require('../FHIRDataTypesSchema/Location_HoursOfOperation');
 const {
     Measure_Group
-} = require('../FHIRDataTypesSchema-New/Measure_Group');
+} = require('../FHIRDataTypesSchema/Measure_Group');
 const {
     Measure_Population
-} = require('../FHIRDataTypesSchema-New/Measure_Population');
+} = require('../FHIRDataTypesSchema/Measure_Population');
 const {
     Measure_Stratifier
-} = require('../FHIRDataTypesSchema-New/Measure_Stratifier');
+} = require('../FHIRDataTypesSchema/Measure_Stratifier');
 const {
     Measure_Component
-} = require('../FHIRDataTypesSchema-New/Measure_Component');
+} = require('../FHIRDataTypesSchema/Measure_Component');
 const {
     Measure_SupplementalData
-} = require('../FHIRDataTypesSchema-New/Measure_SupplementalData');
+} = require('../FHIRDataTypesSchema/Measure_SupplementalData');
 const {
     MeasureReport_Group
-} = require('../FHIRDataTypesSchema-New/MeasureReport_Group');
+} = require('../FHIRDataTypesSchema/MeasureReport_Group');
 const {
     MeasureReport_Population
-} = require('../FHIRDataTypesSchema-New/MeasureReport_Population');
+} = require('../FHIRDataTypesSchema/MeasureReport_Population');
 const {
     MeasureReport_Stratifier
-} = require('../FHIRDataTypesSchema-New/MeasureReport_Stratifier');
+} = require('../FHIRDataTypesSchema/MeasureReport_Stratifier');
 const {
     MeasureReport_Stratum
-} = require('../FHIRDataTypesSchema-New/MeasureReport_Stratum');
+} = require('../FHIRDataTypesSchema/MeasureReport_Stratum');
 const {
     MeasureReport_Component
-} = require('../FHIRDataTypesSchema-New/MeasureReport_Component');
+} = require('../FHIRDataTypesSchema/MeasureReport_Component');
 const {
     MeasureReport_Population1
-} = require('../FHIRDataTypesSchema-New/MeasureReport_Population1');
+} = require('../FHIRDataTypesSchema/MeasureReport_Population1');
 const {
     Medication_Ingredient
-} = require('../FHIRDataTypesSchema-New/Medication_Ingredient');
+} = require('../FHIRDataTypesSchema/Medication_Ingredient');
 const {
     Medication_Batch
-} = require('../FHIRDataTypesSchema-New/Medication_Batch');
+} = require('../FHIRDataTypesSchema/Medication_Batch');
 const {
     MedicationAdministration_Performer
-} = require('../FHIRDataTypesSchema-New/MedicationAdministration_Performer');
+} = require('../FHIRDataTypesSchema/MedicationAdministration_Performer');
 const {
     MedicationAdministration_Dosage
-} = require('../FHIRDataTypesSchema-New/MedicationAdministration_Dosage');
+} = require('../FHIRDataTypesSchema/MedicationAdministration_Dosage');
 const {
     MedicationDispense_Performer
-} = require('../FHIRDataTypesSchema-New/MedicationDispense_Performer');
+} = require('../FHIRDataTypesSchema/MedicationDispense_Performer');
 const {
     MedicationDispense_Substitution
-} = require('../FHIRDataTypesSchema-New/MedicationDispense_Substitution');
+} = require('../FHIRDataTypesSchema/MedicationDispense_Substitution');
 const {
     MedicationKnowledge_RelatedMedicationKnowledge
-} = require('../FHIRDataTypesSchema-New/MedicationKnowledge_RelatedMedicationKnowledge');
+} = require('../FHIRDataTypesSchema/MedicationKnowledge_RelatedMedicationKnowledge');
 const {
     MedicationKnowledge_Monograph
-} = require('../FHIRDataTypesSchema-New/MedicationKnowledge_Monograph');
+} = require('../FHIRDataTypesSchema/MedicationKnowledge_Monograph');
 const {
     MedicationKnowledge_Ingredient
-} = require('../FHIRDataTypesSchema-New/MedicationKnowledge_Ingredient');
+} = require('../FHIRDataTypesSchema/MedicationKnowledge_Ingredient');
 const {
     MedicationKnowledge_Cost
-} = require('../FHIRDataTypesSchema-New/MedicationKnowledge_Cost');
+} = require('../FHIRDataTypesSchema/MedicationKnowledge_Cost');
 const {
     MedicationKnowledge_MonitoringProgram
-} = require('../FHIRDataTypesSchema-New/MedicationKnowledge_MonitoringProgram');
+} = require('../FHIRDataTypesSchema/MedicationKnowledge_MonitoringProgram');
 const {
     MedicationKnowledge_AdministrationGuidelines
-} = require('../FHIRDataTypesSchema-New/MedicationKnowledge_AdministrationGuidelines');
+} = require('../FHIRDataTypesSchema/MedicationKnowledge_AdministrationGuidelines');
 const {
     MedicationKnowledge_Dosage
-} = require('../FHIRDataTypesSchema-New/MedicationKnowledge_Dosage');
+} = require('../FHIRDataTypesSchema/MedicationKnowledge_Dosage');
 const {
     MedicationKnowledge_PatientCharacteristics
-} = require('../FHIRDataTypesSchema-New/MedicationKnowledge_PatientCharacteristics');
+} = require('../FHIRDataTypesSchema/MedicationKnowledge_PatientCharacteristics');
 const {
     MedicationKnowledge_MedicineClassification
-} = require('../FHIRDataTypesSchema-New/MedicationKnowledge_MedicineClassification');
+} = require('../FHIRDataTypesSchema/MedicationKnowledge_MedicineClassification');
 const {
     MedicationKnowledge_Packaging
-} = require('../FHIRDataTypesSchema-New/MedicationKnowledge_Packaging');
+} = require('../FHIRDataTypesSchema/MedicationKnowledge_Packaging');
 const {
     MedicationKnowledge_DrugCharacteristic
-} = require('../FHIRDataTypesSchema-New/MedicationKnowledge_DrugCharacteristic');
+} = require('../FHIRDataTypesSchema/MedicationKnowledge_DrugCharacteristic');
 const {
     MedicationKnowledge_Regulatory
-} = require('../FHIRDataTypesSchema-New/MedicationKnowledge_Regulatory');
+} = require('../FHIRDataTypesSchema/MedicationKnowledge_Regulatory');
 const {
     MedicationKnowledge_Substitution
-} = require('../FHIRDataTypesSchema-New/MedicationKnowledge_Substitution');
+} = require('../FHIRDataTypesSchema/MedicationKnowledge_Substitution');
 const {
     MedicationKnowledge_Schedule
-} = require('../FHIRDataTypesSchema-New/MedicationKnowledge_Schedule');
+} = require('../FHIRDataTypesSchema/MedicationKnowledge_Schedule');
 const {
     MedicationKnowledge_MaxDispense
-} = require('../FHIRDataTypesSchema-New/MedicationKnowledge_MaxDispense');
+} = require('../FHIRDataTypesSchema/MedicationKnowledge_MaxDispense');
 const {
     MedicationKnowledge_Kinetics
-} = require('../FHIRDataTypesSchema-New/MedicationKnowledge_Kinetics');
+} = require('../FHIRDataTypesSchema/MedicationKnowledge_Kinetics');
 const {
     MedicationRequest_DispenseRequest
-} = require('../FHIRDataTypesSchema-New/MedicationRequest_DispenseRequest');
+} = require('../FHIRDataTypesSchema/MedicationRequest_DispenseRequest');
 const {
     MedicationRequest_InitialFill
-} = require('../FHIRDataTypesSchema-New/MedicationRequest_InitialFill');
+} = require('../FHIRDataTypesSchema/MedicationRequest_InitialFill');
 const {
     MedicationRequest_Substitution
-} = require('../FHIRDataTypesSchema-New/MedicationRequest_Substitution');
+} = require('../FHIRDataTypesSchema/MedicationRequest_Substitution');
 const {
     MedicinalProduct_Name
-} = require('../FHIRDataTypesSchema-New/MedicinalProduct_Name');
+} = require('../FHIRDataTypesSchema/MedicinalProduct_Name');
 const {
     MedicinalProduct_NamePart
-} = require('../FHIRDataTypesSchema-New/MedicinalProduct_NamePart');
+} = require('../FHIRDataTypesSchema/MedicinalProduct_NamePart');
 const {
     MedicinalProduct_CountryLanguage
-} = require('../FHIRDataTypesSchema-New/MedicinalProduct_CountryLanguage');
+} = require('../FHIRDataTypesSchema/MedicinalProduct_CountryLanguage');
 const {
     MedicinalProduct_ManufacturingBusinessOperation
-} = require('../FHIRDataTypesSchema-New/MedicinalProduct_ManufacturingBusinessOperation');
+} = require('../FHIRDataTypesSchema/MedicinalProduct_ManufacturingBusinessOperation');
 const {
     MedicinalProduct_SpecialDesignation
-} = require('../FHIRDataTypesSchema-New/MedicinalProduct_SpecialDesignation');
+} = require('../FHIRDataTypesSchema/MedicinalProduct_SpecialDesignation');
 const {
     MedicinalProductAuthorization_JurisdictionalAuthorization
-} = require('../FHIRDataTypesSchema-New/MedicinalProductAuthorization_JurisdictionalAuthorization');
+} = require('../FHIRDataTypesSchema/MedicinalProductAuthorization_JurisdictionalAuthorization');
 const {
     MedicinalProductAuthorization_Procedure
-} = require('../FHIRDataTypesSchema-New/MedicinalProductAuthorization_Procedure');
+} = require('../FHIRDataTypesSchema/MedicinalProductAuthorization_Procedure');
 const {
     MedicinalProductContraindication_OtherTherapy
-} = require('../FHIRDataTypesSchema-New/MedicinalProductContraindication_OtherTherapy');
+} = require('../FHIRDataTypesSchema/MedicinalProductContraindication_OtherTherapy');
 const {
     MedicinalProductIndication_OtherTherapy
-} = require('../FHIRDataTypesSchema-New/MedicinalProductIndication_OtherTherapy');
+} = require('../FHIRDataTypesSchema/MedicinalProductIndication_OtherTherapy');
 const {
     MedicinalProductIngredient_SpecifiedSubstance
-} = require('../FHIRDataTypesSchema-New/MedicinalProductIngredient_SpecifiedSubstance');
+} = require('../FHIRDataTypesSchema/MedicinalProductIngredient_SpecifiedSubstance');
 const {
     MedicinalProductIngredient_Strength
-} = require('../FHIRDataTypesSchema-New/MedicinalProductIngredient_Strength');
+} = require('../FHIRDataTypesSchema/MedicinalProductIngredient_Strength');
 const {
     MedicinalProductIngredient_ReferenceStrength
-} = require('../FHIRDataTypesSchema-New/MedicinalProductIngredient_ReferenceStrength');
+} = require('../FHIRDataTypesSchema/MedicinalProductIngredient_ReferenceStrength');
 const {
     MedicinalProductIngredient_Substance
-} = require('../FHIRDataTypesSchema-New/MedicinalProductIngredient_Substance');
+} = require('../FHIRDataTypesSchema/MedicinalProductIngredient_Substance');
 const {
     MedicinalProductInteraction_Interactant
-} = require('../FHIRDataTypesSchema-New/MedicinalProductInteraction_Interactant');
+} = require('../FHIRDataTypesSchema/MedicinalProductInteraction_Interactant');
 const {
     MedicinalProductPackaged_BatchIdentifier
-} = require('../FHIRDataTypesSchema-New/MedicinalProductPackaged_BatchIdentifier');
+} = require('../FHIRDataTypesSchema/MedicinalProductPackaged_BatchIdentifier');
 const {
     MedicinalProductPackaged_PackageItem
-} = require('../FHIRDataTypesSchema-New/MedicinalProductPackaged_PackageItem');
+} = require('../FHIRDataTypesSchema/MedicinalProductPackaged_PackageItem');
 const {
     MedicinalProductPharmaceutical_Characteristics
-} = require('../FHIRDataTypesSchema-New/MedicinalProductPharmaceutical_Characteristics');
+} = require('../FHIRDataTypesSchema/MedicinalProductPharmaceutical_Characteristics');
 const {
     MedicinalProductPharmaceutical_RouteOfAdministration
-} = require('../FHIRDataTypesSchema-New/MedicinalProductPharmaceutical_RouteOfAdministration');
+} = require('../FHIRDataTypesSchema/MedicinalProductPharmaceutical_RouteOfAdministration');
 const {
     MedicinalProductPharmaceutical_TargetSpecies
-} = require('../FHIRDataTypesSchema-New/MedicinalProductPharmaceutical_TargetSpecies');
+} = require('../FHIRDataTypesSchema/MedicinalProductPharmaceutical_TargetSpecies');
 const {
     MedicinalProductPharmaceutical_WithdrawalPeriod
-} = require('../FHIRDataTypesSchema-New/MedicinalProductPharmaceutical_WithdrawalPeriod');
+} = require('../FHIRDataTypesSchema/MedicinalProductPharmaceutical_WithdrawalPeriod');
 const {
     MessageDefinition_Focus
-} = require('../FHIRDataTypesSchema-New/MessageDefinition_Focus');
+} = require('../FHIRDataTypesSchema/MessageDefinition_Focus');
 const {
     MessageDefinition_AllowedResponse
-} = require('../FHIRDataTypesSchema-New/MessageDefinition_AllowedResponse');
+} = require('../FHIRDataTypesSchema/MessageDefinition_AllowedResponse');
 const {
     MessageHeader_Destination
-} = require('../FHIRDataTypesSchema-New/MessageHeader_Destination');
+} = require('../FHIRDataTypesSchema/MessageHeader_Destination');
 const {
     MessageHeader_Source
-} = require('../FHIRDataTypesSchema-New/MessageHeader_Source');
+} = require('../FHIRDataTypesSchema/MessageHeader_Source');
 const {
     MessageHeader_Response
-} = require('../FHIRDataTypesSchema-New/MessageHeader_Response');
+} = require('../FHIRDataTypesSchema/MessageHeader_Response');
 const {
     MolecularSequence_ReferenceSeq
-} = require('../FHIRDataTypesSchema-New/MolecularSequence_ReferenceSeq');
+} = require('../FHIRDataTypesSchema/MolecularSequence_ReferenceSeq');
 const {
     MolecularSequence_Variant
-} = require('../FHIRDataTypesSchema-New/MolecularSequence_Variant');
+} = require('../FHIRDataTypesSchema/MolecularSequence_Variant');
 const {
     MolecularSequence_Quality
-} = require('../FHIRDataTypesSchema-New/MolecularSequence_Quality');
+} = require('../FHIRDataTypesSchema/MolecularSequence_Quality');
 const {
     MolecularSequence_Roc
-} = require('../FHIRDataTypesSchema-New/MolecularSequence_Roc');
+} = require('../FHIRDataTypesSchema/MolecularSequence_Roc');
 const {
     MolecularSequence_Repository
-} = require('../FHIRDataTypesSchema-New/MolecularSequence_Repository');
+} = require('../FHIRDataTypesSchema/MolecularSequence_Repository');
 const {
     MolecularSequence_StructureVariant
-} = require('../FHIRDataTypesSchema-New/MolecularSequence_StructureVariant');
+} = require('../FHIRDataTypesSchema/MolecularSequence_StructureVariant');
 const {
     MolecularSequence_Outer
-} = require('../FHIRDataTypesSchema-New/MolecularSequence_Outer');
+} = require('../FHIRDataTypesSchema/MolecularSequence_Outer');
 const {
     MolecularSequence_Inner
-} = require('../FHIRDataTypesSchema-New/MolecularSequence_Inner');
+} = require('../FHIRDataTypesSchema/MolecularSequence_Inner');
 const {
     NamingSystem_UniqueId
-} = require('../FHIRDataTypesSchema-New/NamingSystem_UniqueId');
+} = require('../FHIRDataTypesSchema/NamingSystem_UniqueId');
 const {
     NutritionOrder_OralDiet
-} = require('../FHIRDataTypesSchema-New/NutritionOrder_OralDiet');
+} = require('../FHIRDataTypesSchema/NutritionOrder_OralDiet');
 const {
     NutritionOrder_Nutrient
-} = require('../FHIRDataTypesSchema-New/NutritionOrder_Nutrient');
+} = require('../FHIRDataTypesSchema/NutritionOrder_Nutrient');
 const {
     NutritionOrder_Texture
-} = require('../FHIRDataTypesSchema-New/NutritionOrder_Texture');
+} = require('../FHIRDataTypesSchema/NutritionOrder_Texture');
 const {
     NutritionOrder_Supplement
-} = require('../FHIRDataTypesSchema-New/NutritionOrder_Supplement');
+} = require('../FHIRDataTypesSchema/NutritionOrder_Supplement');
 const {
     NutritionOrder_EnteralFormula
-} = require('../FHIRDataTypesSchema-New/NutritionOrder_EnteralFormula');
+} = require('../FHIRDataTypesSchema/NutritionOrder_EnteralFormula');
 const {
     NutritionOrder_Administration
-} = require('../FHIRDataTypesSchema-New/NutritionOrder_Administration');
+} = require('../FHIRDataTypesSchema/NutritionOrder_Administration');
 const {
     Observation_ReferenceRange
-} = require('../FHIRDataTypesSchema-New/Observation_ReferenceRange');
+} = require('../FHIRDataTypesSchema/Observation_ReferenceRange');
 const {
     Observation_Component
-} = require('../FHIRDataTypesSchema-New/Observation_Component');
+} = require('../FHIRDataTypesSchema/Observation_Component');
 const {
     ObservationDefinition_QuantitativeDetails
-} = require('../FHIRDataTypesSchema-New/ObservationDefinition_QuantitativeDetails');
+} = require('../FHIRDataTypesSchema/ObservationDefinition_QuantitativeDetails');
 const {
     ObservationDefinition_QualifiedInterval
-} = require('../FHIRDataTypesSchema-New/ObservationDefinition_QualifiedInterval');
+} = require('../FHIRDataTypesSchema/ObservationDefinition_QualifiedInterval');
 const {
     OperationDefinition_Parameter
-} = require('../FHIRDataTypesSchema-New/OperationDefinition_Parameter');
+} = require('../FHIRDataTypesSchema/OperationDefinition_Parameter');
 const {
     OperationDefinition_Binding
-} = require('../FHIRDataTypesSchema-New/OperationDefinition_Binding');
+} = require('../FHIRDataTypesSchema/OperationDefinition_Binding');
 const {
     OperationDefinition_ReferencedFrom
-} = require('../FHIRDataTypesSchema-New/OperationDefinition_ReferencedFrom');
+} = require('../FHIRDataTypesSchema/OperationDefinition_ReferencedFrom');
 const {
     OperationDefinition_Overload
-} = require('../FHIRDataTypesSchema-New/OperationDefinition_Overload');
+} = require('../FHIRDataTypesSchema/OperationDefinition_Overload');
 const {
     OperationOutcome_Issue
-} = require('../FHIRDataTypesSchema-New/OperationOutcome_Issue');
+} = require('../FHIRDataTypesSchema/OperationOutcome_Issue');
 const {
     Organization_Contact
-} = require('../FHIRDataTypesSchema-New/Organization_Contact');
+} = require('../FHIRDataTypesSchema/Organization_Contact');
 const {
     Parameters_Parameter
-} = require('../FHIRDataTypesSchema-New/Parameters_Parameter');
+} = require('../FHIRDataTypesSchema/Parameters_Parameter');
 const {
     Patient_Contact
-} = require('../FHIRDataTypesSchema-New/Patient_Contact');
+} = require('../FHIRDataTypesSchema/Patient_Contact');
 const {
     Patient_Communication
-} = require('../FHIRDataTypesSchema-New/Patient_Communication');
+} = require('../FHIRDataTypesSchema/Patient_Communication');
 const {
     Patient_Link
-} = require('../FHIRDataTypesSchema-New/Patient_Link');
+} = require('../FHIRDataTypesSchema/Patient_Link');
 const {
     PaymentReconciliation_Detail
-} = require('../FHIRDataTypesSchema-New/PaymentReconciliation_Detail');
+} = require('../FHIRDataTypesSchema/PaymentReconciliation_Detail');
 const {
     PaymentReconciliation_ProcessNote
-} = require('../FHIRDataTypesSchema-New/PaymentReconciliation_ProcessNote');
+} = require('../FHIRDataTypesSchema/PaymentReconciliation_ProcessNote');
 const {
     Person_Link
-} = require('../FHIRDataTypesSchema-New/Person_Link');
+} = require('../FHIRDataTypesSchema/Person_Link');
 const {
     PlanDefinition_Goal
-} = require('../FHIRDataTypesSchema-New/PlanDefinition_Goal');
+} = require('../FHIRDataTypesSchema/PlanDefinition_Goal');
 const {
     PlanDefinition_Target
-} = require('../FHIRDataTypesSchema-New/PlanDefinition_Target');
+} = require('../FHIRDataTypesSchema/PlanDefinition_Target');
 const {
     PlanDefinition_Action
-} = require('../FHIRDataTypesSchema-New/PlanDefinition_Action');
+} = require('../FHIRDataTypesSchema/PlanDefinition_Action');
 const {
     PlanDefinition_Condition
-} = require('../FHIRDataTypesSchema-New/PlanDefinition_Condition');
+} = require('../FHIRDataTypesSchema/PlanDefinition_Condition');
 const {
     PlanDefinition_RelatedAction
-} = require('../FHIRDataTypesSchema-New/PlanDefinition_RelatedAction');
+} = require('../FHIRDataTypesSchema/PlanDefinition_RelatedAction');
 const {
     PlanDefinition_Participant
-} = require('../FHIRDataTypesSchema-New/PlanDefinition_Participant');
+} = require('../FHIRDataTypesSchema/PlanDefinition_Participant');
 const {
     PlanDefinition_DynamicValue
-} = require('../FHIRDataTypesSchema-New/PlanDefinition_DynamicValue');
+} = require('../FHIRDataTypesSchema/PlanDefinition_DynamicValue');
 const {
     Practitioner_Qualification
-} = require('../FHIRDataTypesSchema-New/Practitioner_Qualification');
+} = require('../FHIRDataTypesSchema/Practitioner_Qualification');
 const {
     PractitionerRole_AvailableTime
-} = require('../FHIRDataTypesSchema-New/PractitionerRole_AvailableTime');
+} = require('../FHIRDataTypesSchema/PractitionerRole_AvailableTime');
 const {
     PractitionerRole_NotAvailable
-} = require('../FHIRDataTypesSchema-New/PractitionerRole_NotAvailable');
+} = require('../FHIRDataTypesSchema/PractitionerRole_NotAvailable');
 const {
     Procedure_Performer
-} = require('../FHIRDataTypesSchema-New/Procedure_Performer');
+} = require('../FHIRDataTypesSchema/Procedure_Performer');
 const {
     Procedure_FocalDevice
-} = require('../FHIRDataTypesSchema-New/Procedure_FocalDevice');
+} = require('../FHIRDataTypesSchema/Procedure_FocalDevice');
 const {
     Provenance_Agent
-} = require('../FHIRDataTypesSchema-New/Provenance_Agent');
+} = require('../FHIRDataTypesSchema/Provenance_Agent');
 const {
     Provenance_Entity
-} = require('../FHIRDataTypesSchema-New/Provenance_Entity');
+} = require('../FHIRDataTypesSchema/Provenance_Entity');
 const {
     Questionnaire_Item
-} = require('../FHIRDataTypesSchema-New/Questionnaire_Item');
+} = require('../FHIRDataTypesSchema/Questionnaire_Item');
 const {
     Questionnaire_EnableWhen
-} = require('../FHIRDataTypesSchema-New/Questionnaire_EnableWhen');
+} = require('../FHIRDataTypesSchema/Questionnaire_EnableWhen');
 const {
     Questionnaire_AnswerOption
-} = require('../FHIRDataTypesSchema-New/Questionnaire_AnswerOption');
+} = require('../FHIRDataTypesSchema/Questionnaire_AnswerOption');
 const {
     Questionnaire_Initial
-} = require('../FHIRDataTypesSchema-New/Questionnaire_Initial');
+} = require('../FHIRDataTypesSchema/Questionnaire_Initial');
 const {
     QuestionnaireResponse_Item
-} = require('../FHIRDataTypesSchema-New/QuestionnaireResponse_Item');
+} = require('../FHIRDataTypesSchema/QuestionnaireResponse_Item');
 const {
     QuestionnaireResponse_Answer
-} = require('../FHIRDataTypesSchema-New/QuestionnaireResponse_Answer');
+} = require('../FHIRDataTypesSchema/QuestionnaireResponse_Answer');
 const {
     RelatedPerson_Communication
-} = require('../FHIRDataTypesSchema-New/RelatedPerson_Communication');
+} = require('../FHIRDataTypesSchema/RelatedPerson_Communication');
 const {
     RequestGroup_Action
-} = require('../FHIRDataTypesSchema-New/RequestGroup_Action');
+} = require('../FHIRDataTypesSchema/RequestGroup_Action');
 const {
     RequestGroup_Condition
-} = require('../FHIRDataTypesSchema-New/RequestGroup_Condition');
+} = require('../FHIRDataTypesSchema/RequestGroup_Condition');
 const {
     RequestGroup_RelatedAction
-} = require('../FHIRDataTypesSchema-New/RequestGroup_RelatedAction');
+} = require('../FHIRDataTypesSchema/RequestGroup_RelatedAction');
 const {
     ResearchElementDefinition_Characteristic
-} = require('../FHIRDataTypesSchema-New/ResearchElementDefinition_Characteristic');
+} = require('../FHIRDataTypesSchema/ResearchElementDefinition_Characteristic');
 const {
     ResearchStudy_Arm
-} = require('../FHIRDataTypesSchema-New/ResearchStudy_Arm');
+} = require('../FHIRDataTypesSchema/ResearchStudy_Arm');
 const {
     ResearchStudy_Objective
-} = require('../FHIRDataTypesSchema-New/ResearchStudy_Objective');
+} = require('../FHIRDataTypesSchema/ResearchStudy_Objective');
 const {
     RiskAssessment_Prediction
-} = require('../FHIRDataTypesSchema-New/RiskAssessment_Prediction');
+} = require('../FHIRDataTypesSchema/RiskAssessment_Prediction');
 const {
     RiskEvidenceSynthesis_SampleSize
-} = require('../FHIRDataTypesSchema-New/RiskEvidenceSynthesis_SampleSize');
+} = require('../FHIRDataTypesSchema/RiskEvidenceSynthesis_SampleSize');
 const {
     RiskEvidenceSynthesis_RiskEstimate
-} = require('../FHIRDataTypesSchema-New/RiskEvidenceSynthesis_RiskEstimate');
+} = require('../FHIRDataTypesSchema/RiskEvidenceSynthesis_RiskEstimate');
 const {
     RiskEvidenceSynthesis_PrecisionEstimate
-} = require('../FHIRDataTypesSchema-New/RiskEvidenceSynthesis_PrecisionEstimate');
+} = require('../FHIRDataTypesSchema/RiskEvidenceSynthesis_PrecisionEstimate');
 const {
     RiskEvidenceSynthesis_Certainty
-} = require('../FHIRDataTypesSchema-New/RiskEvidenceSynthesis_Certainty');
+} = require('../FHIRDataTypesSchema/RiskEvidenceSynthesis_Certainty');
 const {
     RiskEvidenceSynthesis_CertaintySubcomponent
-} = require('../FHIRDataTypesSchema-New/RiskEvidenceSynthesis_CertaintySubcomponent');
+} = require('../FHIRDataTypesSchema/RiskEvidenceSynthesis_CertaintySubcomponent');
 const {
     SearchParameter_Component
-} = require('../FHIRDataTypesSchema-New/SearchParameter_Component');
+} = require('../FHIRDataTypesSchema/SearchParameter_Component');
 const {
     Specimen_Collection
-} = require('../FHIRDataTypesSchema-New/Specimen_Collection');
+} = require('../FHIRDataTypesSchema/Specimen_Collection');
 const {
     Specimen_Processing
-} = require('../FHIRDataTypesSchema-New/Specimen_Processing');
+} = require('../FHIRDataTypesSchema/Specimen_Processing');
 const {
     Specimen_Container
-} = require('../FHIRDataTypesSchema-New/Specimen_Container');
+} = require('../FHIRDataTypesSchema/Specimen_Container');
 const {
     SpecimenDefinition_TypeTested
-} = require('../FHIRDataTypesSchema-New/SpecimenDefinition_TypeTested');
+} = require('../FHIRDataTypesSchema/SpecimenDefinition_TypeTested');
 const {
     SpecimenDefinition_Container
-} = require('../FHIRDataTypesSchema-New/SpecimenDefinition_Container');
+} = require('../FHIRDataTypesSchema/SpecimenDefinition_Container');
 const {
     SpecimenDefinition_Additive
-} = require('../FHIRDataTypesSchema-New/SpecimenDefinition_Additive');
+} = require('../FHIRDataTypesSchema/SpecimenDefinition_Additive');
 const {
     SpecimenDefinition_Handling
-} = require('../FHIRDataTypesSchema-New/SpecimenDefinition_Handling');
+} = require('../FHIRDataTypesSchema/SpecimenDefinition_Handling');
 const {
     StructureDefinition_Mapping
-} = require('../FHIRDataTypesSchema-New/StructureDefinition_Mapping');
+} = require('../FHIRDataTypesSchema/StructureDefinition_Mapping');
 const {
     StructureDefinition_Context
-} = require('../FHIRDataTypesSchema-New/StructureDefinition_Context');
+} = require('../FHIRDataTypesSchema/StructureDefinition_Context');
 const {
     StructureDefinition_Snapshot
-} = require('../FHIRDataTypesSchema-New/StructureDefinition_Snapshot');
+} = require('../FHIRDataTypesSchema/StructureDefinition_Snapshot');
 const {
     StructureDefinition_Differential
-} = require('../FHIRDataTypesSchema-New/StructureDefinition_Differential');
+} = require('../FHIRDataTypesSchema/StructureDefinition_Differential');
 const {
     StructureMap_Structure
-} = require('../FHIRDataTypesSchema-New/StructureMap_Structure');
+} = require('../FHIRDataTypesSchema/StructureMap_Structure');
 const {
     StructureMap_Group
-} = require('../FHIRDataTypesSchema-New/StructureMap_Group');
+} = require('../FHIRDataTypesSchema/StructureMap_Group');
 const {
     StructureMap_Input
-} = require('../FHIRDataTypesSchema-New/StructureMap_Input');
+} = require('../FHIRDataTypesSchema/StructureMap_Input');
 const {
     StructureMap_Rule
-} = require('../FHIRDataTypesSchema-New/StructureMap_Rule');
+} = require('../FHIRDataTypesSchema/StructureMap_Rule');
 const {
     StructureMap_Source
-} = require('../FHIRDataTypesSchema-New/StructureMap_Source');
+} = require('../FHIRDataTypesSchema/StructureMap_Source');
 const {
     StructureMap_Target
-} = require('../FHIRDataTypesSchema-New/StructureMap_Target');
+} = require('../FHIRDataTypesSchema/StructureMap_Target');
 const {
     StructureMap_Parameter
-} = require('../FHIRDataTypesSchema-New/StructureMap_Parameter');
+} = require('../FHIRDataTypesSchema/StructureMap_Parameter');
 const {
     StructureMap_Dependent
-} = require('../FHIRDataTypesSchema-New/StructureMap_Dependent');
+} = require('../FHIRDataTypesSchema/StructureMap_Dependent');
 const {
     Subscription_Channel
-} = require('../FHIRDataTypesSchema-New/Subscription_Channel');
+} = require('../FHIRDataTypesSchema/Subscription_Channel');
 const {
     Substance_Instance
-} = require('../FHIRDataTypesSchema-New/Substance_Instance');
+} = require('../FHIRDataTypesSchema/Substance_Instance');
 const {
     Substance_Ingredient
-} = require('../FHIRDataTypesSchema-New/Substance_Ingredient');
+} = require('../FHIRDataTypesSchema/Substance_Ingredient');
 const {
     SubstanceNucleicAcid_Subunit
-} = require('../FHIRDataTypesSchema-New/SubstanceNucleicAcid_Subunit');
+} = require('../FHIRDataTypesSchema/SubstanceNucleicAcid_Subunit');
 const {
     SubstanceNucleicAcid_Linkage
-} = require('../FHIRDataTypesSchema-New/SubstanceNucleicAcid_Linkage');
+} = require('../FHIRDataTypesSchema/SubstanceNucleicAcid_Linkage');
 const {
     SubstanceNucleicAcid_Sugar
-} = require('../FHIRDataTypesSchema-New/SubstanceNucleicAcid_Sugar');
+} = require('../FHIRDataTypesSchema/SubstanceNucleicAcid_Sugar');
 const {
     SubstancePolymer_MonomerSet
-} = require('../FHIRDataTypesSchema-New/SubstancePolymer_MonomerSet');
+} = require('../FHIRDataTypesSchema/SubstancePolymer_MonomerSet');
 const {
     SubstancePolymer_StartingMaterial
-} = require('../FHIRDataTypesSchema-New/SubstancePolymer_StartingMaterial');
+} = require('../FHIRDataTypesSchema/SubstancePolymer_StartingMaterial');
 const {
     SubstancePolymer_Repeat
-} = require('../FHIRDataTypesSchema-New/SubstancePolymer_Repeat');
+} = require('../FHIRDataTypesSchema/SubstancePolymer_Repeat');
 const {
     SubstancePolymer_RepeatUnit
-} = require('../FHIRDataTypesSchema-New/SubstancePolymer_RepeatUnit');
+} = require('../FHIRDataTypesSchema/SubstancePolymer_RepeatUnit');
 const {
     SubstancePolymer_DegreeOfPolymerisation
-} = require('../FHIRDataTypesSchema-New/SubstancePolymer_DegreeOfPolymerisation');
+} = require('../FHIRDataTypesSchema/SubstancePolymer_DegreeOfPolymerisation');
 const {
     SubstancePolymer_StructuralRepresentation
-} = require('../FHIRDataTypesSchema-New/SubstancePolymer_StructuralRepresentation');
+} = require('../FHIRDataTypesSchema/SubstancePolymer_StructuralRepresentation');
 const {
     SubstanceProtein_Subunit
-} = require('../FHIRDataTypesSchema-New/SubstanceProtein_Subunit');
+} = require('../FHIRDataTypesSchema/SubstanceProtein_Subunit');
 const {
     SubstanceReferenceInformation_Gene
-} = require('../FHIRDataTypesSchema-New/SubstanceReferenceInformation_Gene');
+} = require('../FHIRDataTypesSchema/SubstanceReferenceInformation_Gene');
 const {
     SubstanceReferenceInformation_GeneElement
-} = require('../FHIRDataTypesSchema-New/SubstanceReferenceInformation_GeneElement');
+} = require('../FHIRDataTypesSchema/SubstanceReferenceInformation_GeneElement');
 const {
     SubstanceReferenceInformation_Classification
-} = require('../FHIRDataTypesSchema-New/SubstanceReferenceInformation_Classification');
+} = require('../FHIRDataTypesSchema/SubstanceReferenceInformation_Classification');
 const {
     SubstanceReferenceInformation_Target
-} = require('../FHIRDataTypesSchema-New/SubstanceReferenceInformation_Target');
+} = require('../FHIRDataTypesSchema/SubstanceReferenceInformation_Target');
 const {
     SubstanceSourceMaterial_FractionDescription
-} = require('../FHIRDataTypesSchema-New/SubstanceSourceMaterial_FractionDescription');
+} = require('../FHIRDataTypesSchema/SubstanceSourceMaterial_FractionDescription');
 const {
     SubstanceSourceMaterial_Organism
-} = require('../FHIRDataTypesSchema-New/SubstanceSourceMaterial_Organism');
+} = require('../FHIRDataTypesSchema/SubstanceSourceMaterial_Organism');
 const {
     SubstanceSourceMaterial_Author
-} = require('../FHIRDataTypesSchema-New/SubstanceSourceMaterial_Author');
+} = require('../FHIRDataTypesSchema/SubstanceSourceMaterial_Author');
 const {
     SubstanceSourceMaterial_Hybrid
-} = require('../FHIRDataTypesSchema-New/SubstanceSourceMaterial_Hybrid');
+} = require('../FHIRDataTypesSchema/SubstanceSourceMaterial_Hybrid');
 const {
     SubstanceSourceMaterial_OrganismGeneral
-} = require('../FHIRDataTypesSchema-New/SubstanceSourceMaterial_OrganismGeneral');
+} = require('../FHIRDataTypesSchema/SubstanceSourceMaterial_OrganismGeneral');
 const {
     SubstanceSourceMaterial_PartDescription
-} = require('../FHIRDataTypesSchema-New/SubstanceSourceMaterial_PartDescription');
+} = require('../FHIRDataTypesSchema/SubstanceSourceMaterial_PartDescription');
 const {
     SubstanceSpecification_Moiety
-} = require('../FHIRDataTypesSchema-New/SubstanceSpecification_Moiety');
+} = require('../FHIRDataTypesSchema/SubstanceSpecification_Moiety');
 const {
     SubstanceSpecification_Property
-} = require('../FHIRDataTypesSchema-New/SubstanceSpecification_Property');
+} = require('../FHIRDataTypesSchema/SubstanceSpecification_Property');
 const {
     SubstanceSpecification_Structure
-} = require('../FHIRDataTypesSchema-New/SubstanceSpecification_Structure');
+} = require('../FHIRDataTypesSchema/SubstanceSpecification_Structure');
 const {
     SubstanceSpecification_Isotope
-} = require('../FHIRDataTypesSchema-New/SubstanceSpecification_Isotope');
+} = require('../FHIRDataTypesSchema/SubstanceSpecification_Isotope');
 const {
     SubstanceSpecification_MolecularWeight
-} = require('../FHIRDataTypesSchema-New/SubstanceSpecification_MolecularWeight');
+} = require('../FHIRDataTypesSchema/SubstanceSpecification_MolecularWeight');
 const {
     SubstanceSpecification_Representation
-} = require('../FHIRDataTypesSchema-New/SubstanceSpecification_Representation');
+} = require('../FHIRDataTypesSchema/SubstanceSpecification_Representation');
 const {
     SubstanceSpecification_Code
-} = require('../FHIRDataTypesSchema-New/SubstanceSpecification_Code');
+} = require('../FHIRDataTypesSchema/SubstanceSpecification_Code');
 const {
     SubstanceSpecification_Name
-} = require('../FHIRDataTypesSchema-New/SubstanceSpecification_Name');
+} = require('../FHIRDataTypesSchema/SubstanceSpecification_Name');
 const {
     SubstanceSpecification_Official
-} = require('../FHIRDataTypesSchema-New/SubstanceSpecification_Official');
+} = require('../FHIRDataTypesSchema/SubstanceSpecification_Official');
 const {
     SubstanceSpecification_Relationship
-} = require('../FHIRDataTypesSchema-New/SubstanceSpecification_Relationship');
+} = require('../FHIRDataTypesSchema/SubstanceSpecification_Relationship');
 const {
     SupplyDelivery_SuppliedItem
-} = require('../FHIRDataTypesSchema-New/SupplyDelivery_SuppliedItem');
+} = require('../FHIRDataTypesSchema/SupplyDelivery_SuppliedItem');
 const {
     SupplyRequest_Parameter
-} = require('../FHIRDataTypesSchema-New/SupplyRequest_Parameter');
+} = require('../FHIRDataTypesSchema/SupplyRequest_Parameter');
 const {
     Task_Restriction
-} = require('../FHIRDataTypesSchema-New/Task_Restriction');
+} = require('../FHIRDataTypesSchema/Task_Restriction');
 const {
     Task_Input
-} = require('../FHIRDataTypesSchema-New/Task_Input');
+} = require('../FHIRDataTypesSchema/Task_Input');
 const {
     Task_Output
-} = require('../FHIRDataTypesSchema-New/Task_Output');
+} = require('../FHIRDataTypesSchema/Task_Output');
 const {
     TerminologyCapabilities_Software
-} = require('../FHIRDataTypesSchema-New/TerminologyCapabilities_Software');
+} = require('../FHIRDataTypesSchema/TerminologyCapabilities_Software');
 const {
     TerminologyCapabilities_Implementation
-} = require('../FHIRDataTypesSchema-New/TerminologyCapabilities_Implementation');
+} = require('../FHIRDataTypesSchema/TerminologyCapabilities_Implementation');
 const {
     TerminologyCapabilities_CodeSystem
-} = require('../FHIRDataTypesSchema-New/TerminologyCapabilities_CodeSystem');
+} = require('../FHIRDataTypesSchema/TerminologyCapabilities_CodeSystem');
 const {
     TerminologyCapabilities_Version
-} = require('../FHIRDataTypesSchema-New/TerminologyCapabilities_Version');
+} = require('../FHIRDataTypesSchema/TerminologyCapabilities_Version');
 const {
     TerminologyCapabilities_Filter
-} = require('../FHIRDataTypesSchema-New/TerminologyCapabilities_Filter');
+} = require('../FHIRDataTypesSchema/TerminologyCapabilities_Filter');
 const {
     TerminologyCapabilities_Expansion
-} = require('../FHIRDataTypesSchema-New/TerminologyCapabilities_Expansion');
+} = require('../FHIRDataTypesSchema/TerminologyCapabilities_Expansion');
 const {
     TerminologyCapabilities_Parameter
-} = require('../FHIRDataTypesSchema-New/TerminologyCapabilities_Parameter');
+} = require('../FHIRDataTypesSchema/TerminologyCapabilities_Parameter');
 const {
     TerminologyCapabilities_ValidateCode
-} = require('../FHIRDataTypesSchema-New/TerminologyCapabilities_ValidateCode');
+} = require('../FHIRDataTypesSchema/TerminologyCapabilities_ValidateCode');
 const {
     TerminologyCapabilities_Translation
-} = require('../FHIRDataTypesSchema-New/TerminologyCapabilities_Translation');
+} = require('../FHIRDataTypesSchema/TerminologyCapabilities_Translation');
 const {
     TerminologyCapabilities_Closure
-} = require('../FHIRDataTypesSchema-New/TerminologyCapabilities_Closure');
+} = require('../FHIRDataTypesSchema/TerminologyCapabilities_Closure');
 const {
     TestReport_Participant
-} = require('../FHIRDataTypesSchema-New/TestReport_Participant');
+} = require('../FHIRDataTypesSchema/TestReport_Participant');
 const {
     TestReport_Setup
-} = require('../FHIRDataTypesSchema-New/TestReport_Setup');
+} = require('../FHIRDataTypesSchema/TestReport_Setup');
 const {
     TestReport_Action
-} = require('../FHIRDataTypesSchema-New/TestReport_Action');
+} = require('../FHIRDataTypesSchema/TestReport_Action');
 const {
     TestReport_Operation
-} = require('../FHIRDataTypesSchema-New/TestReport_Operation');
+} = require('../FHIRDataTypesSchema/TestReport_Operation');
 const {
     TestReport_Assert
-} = require('../FHIRDataTypesSchema-New/TestReport_Assert');
+} = require('../FHIRDataTypesSchema/TestReport_Assert');
 const {
     TestReport_Test
-} = require('../FHIRDataTypesSchema-New/TestReport_Test');
+} = require('../FHIRDataTypesSchema/TestReport_Test');
 const {
     TestReport_Action1
-} = require('../FHIRDataTypesSchema-New/TestReport_Action1');
+} = require('../FHIRDataTypesSchema/TestReport_Action1');
 const {
     TestReport_Teardown
-} = require('../FHIRDataTypesSchema-New/TestReport_Teardown');
+} = require('../FHIRDataTypesSchema/TestReport_Teardown');
 const {
     TestReport_Action2
-} = require('../FHIRDataTypesSchema-New/TestReport_Action2');
+} = require('../FHIRDataTypesSchema/TestReport_Action2');
 const {
     TestScript_Origin
-} = require('../FHIRDataTypesSchema-New/TestScript_Origin');
+} = require('../FHIRDataTypesSchema/TestScript_Origin');
 const {
     TestScript_Destination
-} = require('../FHIRDataTypesSchema-New/TestScript_Destination');
+} = require('../FHIRDataTypesSchema/TestScript_Destination');
 const {
     TestScript_Metadata
-} = require('../FHIRDataTypesSchema-New/TestScript_Metadata');
+} = require('../FHIRDataTypesSchema/TestScript_Metadata');
 const {
     TestScript_Link
-} = require('../FHIRDataTypesSchema-New/TestScript_Link');
+} = require('../FHIRDataTypesSchema/TestScript_Link');
 const {
     TestScript_Capability
-} = require('../FHIRDataTypesSchema-New/TestScript_Capability');
+} = require('../FHIRDataTypesSchema/TestScript_Capability');
 const {
     TestScript_Fixture
-} = require('../FHIRDataTypesSchema-New/TestScript_Fixture');
+} = require('../FHIRDataTypesSchema/TestScript_Fixture');
 const {
     TestScript_Variable
-} = require('../FHIRDataTypesSchema-New/TestScript_Variable');
+} = require('../FHIRDataTypesSchema/TestScript_Variable');
 const {
     TestScript_Setup
-} = require('../FHIRDataTypesSchema-New/TestScript_Setup');
+} = require('../FHIRDataTypesSchema/TestScript_Setup');
 const {
     TestScript_Action
-} = require('../FHIRDataTypesSchema-New/TestScript_Action');
+} = require('../FHIRDataTypesSchema/TestScript_Action');
 const {
     TestScript_Operation
-} = require('../FHIRDataTypesSchema-New/TestScript_Operation');
+} = require('../FHIRDataTypesSchema/TestScript_Operation');
 const {
     TestScript_RequestHeader
-} = require('../FHIRDataTypesSchema-New/TestScript_RequestHeader');
+} = require('../FHIRDataTypesSchema/TestScript_RequestHeader');
 const {
     TestScript_Assert
-} = require('../FHIRDataTypesSchema-New/TestScript_Assert');
+} = require('../FHIRDataTypesSchema/TestScript_Assert');
 const {
     TestScript_Test
-} = require('../FHIRDataTypesSchema-New/TestScript_Test');
+} = require('../FHIRDataTypesSchema/TestScript_Test');
 const {
     TestScript_Action1
-} = require('../FHIRDataTypesSchema-New/TestScript_Action1');
+} = require('../FHIRDataTypesSchema/TestScript_Action1');
 const {
     TestScript_Teardown
-} = require('../FHIRDataTypesSchema-New/TestScript_Teardown');
+} = require('../FHIRDataTypesSchema/TestScript_Teardown');
 const {
     TestScript_Action2
-} = require('../FHIRDataTypesSchema-New/TestScript_Action2');
+} = require('../FHIRDataTypesSchema/TestScript_Action2');
 const {
     ValueSet_Compose
-} = require('../FHIRDataTypesSchema-New/ValueSet_Compose');
+} = require('../FHIRDataTypesSchema/ValueSet_Compose');
 const {
     ValueSet_Include
-} = require('../FHIRDataTypesSchema-New/ValueSet_Include');
+} = require('../FHIRDataTypesSchema/ValueSet_Include');
 const {
     ValueSet_Concept
-} = require('../FHIRDataTypesSchema-New/ValueSet_Concept');
+} = require('../FHIRDataTypesSchema/ValueSet_Concept');
 const {
     ValueSet_Designation
-} = require('../FHIRDataTypesSchema-New/ValueSet_Designation');
+} = require('../FHIRDataTypesSchema/ValueSet_Designation');
 const {
     ValueSet_Filter
-} = require('../FHIRDataTypesSchema-New/ValueSet_Filter');
+} = require('../FHIRDataTypesSchema/ValueSet_Filter');
 const {
     ValueSet_Expansion
-} = require('../FHIRDataTypesSchema-New/ValueSet_Expansion');
+} = require('../FHIRDataTypesSchema/ValueSet_Expansion');
 const {
     ValueSet_Parameter
-} = require('../FHIRDataTypesSchema-New/ValueSet_Parameter');
+} = require('../FHIRDataTypesSchema/ValueSet_Parameter');
 const {
     ValueSet_Contains
-} = require('../FHIRDataTypesSchema-New/ValueSet_Contains');
+} = require('../FHIRDataTypesSchema/ValueSet_Contains');
 const {
     VerificationResult_PrimarySource
-} = require('../FHIRDataTypesSchema-New/VerificationResult_PrimarySource');
+} = require('../FHIRDataTypesSchema/VerificationResult_PrimarySource');
 const {
     VerificationResult_Attestation
-} = require('../FHIRDataTypesSchema-New/VerificationResult_Attestation');
+} = require('../FHIRDataTypesSchema/VerificationResult_Attestation');
 const {
     VerificationResult_Validator
-} = require('../FHIRDataTypesSchema-New/VerificationResult_Validator');
+} = require('../FHIRDataTypesSchema/VerificationResult_Validator');
 const {
     VisionPrescription_LensSpecification
-} = require('../FHIRDataTypesSchema-New/VisionPrescription_LensSpecification');
+} = require('../FHIRDataTypesSchema/VisionPrescription_LensSpecification');
 const {
     VisionPrescription_Prism
-} = require('../FHIRDataTypesSchema-New/VisionPrescription_Prism');
+} = require('../FHIRDataTypesSchema/VisionPrescription_Prism');
 module.exports = {
     Element: Element,
     Extension: Extension,

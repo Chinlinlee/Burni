@@ -167,7 +167,7 @@ function getImportLibs(schema) {
             if (isPrimitiveType(cleanType)) {
                 importLib =`${importLib}const ${cleanType} = require('../FHIRDataTypesSchema/${cleanType}');\r\n`;
             } else {
-                importLib =`${importLib}const {${cleanType}} = require('../FHIRDataTypesSchemaExport/FHIRDataTypesSchemaExport');\r\n`;
+                importLib =`${importLib}const {${cleanType}} = require('../FHIRDataTypesSchema/${cleanType}');\r\n`;
             }
             importedTypeLib.push(cleanType);
         }
