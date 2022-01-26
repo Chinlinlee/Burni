@@ -238,7 +238,7 @@ function dateQuery (value, field) {
 }
 function dateTimeQuery (value , field) {
     let queryBuilder = {};
-    let dateTimeRegex = /([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)(-(0[1-9]|1[0-2])(-(0[1-9]|[1-2][0-9]|3[0-1])(T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\.[0-9]+)?(Z|(\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00)))?)?)?)/gm;
+    let dateTimeRegex = /([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)(-(0[1-9]|1[0-2])(-(0[1-9]|[1-2][0-9]|3[0-1])(T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\.[0-9]+)?(Z|(\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00)))?)?)?/gm;
     if (!dateTimeRegex.test(value)) {
         return false;
     }
@@ -271,9 +271,49 @@ function dateTimeQuery (value , field) {
     queryBuilder = dateQueryBuilder[queryPrefix](queryBuilder , field , date , inputFormat[momentValidIndex]);
     return queryBuilder;
 }
+/**
+ * 
+ * @param {string} value value of query date
+ * @param {string} field field of query
+ */
+function periodQuery(value , field) {
+    let fieldOfStart = `${field}.start`;
+    let fieldOfEnd = `${field}.end`;
+    let queryOfStart = dateTimeQuery(value, fieldOfStart);
+    let queryOfEnd = dateTimeQuery(value, fieldOfEnd);
+    let query = {
+        $or : [
+            {
+                ...queryOfStart
+            },
+            {
+                ...queryOfEnd
+            }
+        ]
+    }
+    return query;
+}
 
-function timeQuery () {
-    
+/**
+ * 
+ * @param {string} value value of query date
+ * @param {string} field field of query
+ */
+function timingQuery (value, field) {
+    let fieldOfEvent = `${field}.event`;
+    let fieldOfBoundsPeriod = `${field}.boundsPeriod`;
+    let eventQuery = dateTimeQuery(value, fieldOfEvent);
+    let boundsPeriodQuery = periodQuery(value, fieldOfBoundsPeriod);
+    let query = {
+        $or: [
+            {
+                ...eventQuery
+            },
+            {
+                ...boundsPeriodQuery
+            }
+        ]
+    };
 }
 let instantQueryBuilder ={
     "eq": (queryBuilder, field, date) => {
@@ -459,7 +499,7 @@ function numberQuery (value, field) {
     }   
 }
 
-module.exports = exports = {
+module.exports = {
     stringQuery: stringQuery,
     numberQuery : numberQuery ,
     tokenQuery: tokenQuery,
@@ -468,6 +508,8 @@ module.exports = exports = {
     dateQuery : dateQuery , 
     dateTimeQuery : dateTimeQuery ,
     instantQuery: instantQuery,
+    periodQuery: periodQuery,
+    timingQuery: timingQuery,
     quantityQuery : quantityQuery , 
     referenceQuery : referenceQuery , 
     arrayStringBuild : arrayStringBuild
