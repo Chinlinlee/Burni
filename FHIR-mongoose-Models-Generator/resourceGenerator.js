@@ -202,23 +202,23 @@ async function generateSchema (type) {
     });`;
     code = `${importLibs}${code}`;
     fs.writeFileSync(`./models/mongodb/FHIRDataTypesSchema/${type}.js` , beautify(code , {indent_size : 4 ,pace_in_empty_paren: true }));
-    for (let i in schema) {
-        try {
-            let item = schema[i];
-            if (_.get(item , "type")) { 
-                for (let key in item) {
-                    let deepItem = _.get(item[key] , "type") || item[key];
-                    deepItem = String(deepItem)
-                    deepItem = deepItem.replace(/[\[\]]/gm , '');
-                    if (!checkHaveSchema(deepItem) && isFHIRSchema(deepItem)) {
-                        generateBackBoneElement(deepItem);
-                    }
-                }
-            }
-        } catch (e) {
-            console.error(e)
-        }
-    }
+    // for (let i in schema) {
+    //     try {
+    //         let item = schema[i];
+    //         if (_.get(item , "type")) { 
+    //             for (let key in item) {
+    //                 let deepItem = _.get(item[key] , "type") || item[key];
+    //                 deepItem = String(deepItem)
+    //                 deepItem = deepItem.replace(/[\[\]]/gm , '');
+    //                 if (!checkHaveSchema(deepItem) && isFHIRSchema(deepItem)) {
+    //                     generateBackBoneElement(deepItem);
+    //                 }
+    //             }
+    //         }
+    //     } catch (e) {
+    //         console.error(e)
+    //     }
+    // }
 }
 function generateResourceSchema (type) {
     if (!FHIRJson[type]) {
@@ -229,8 +229,8 @@ function generateResourceSchema (type) {
     console.log("The resource schema" , type , result);
     for (let i in result) {
         if (_.get(result[i] , "type")) {
-            let cleanType = result[i].type.replace(/[\[\]]/gm , '');
-            generateBackBoneElement(cleanType);
+            // let cleanType = result[i].type.replace(/[\[\]]/gm , '');
+            // generateBackBoneElement(cleanType);
             result[i].default = "void 0";
         }
     }
