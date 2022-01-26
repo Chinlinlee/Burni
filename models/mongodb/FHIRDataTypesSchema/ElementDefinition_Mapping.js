@@ -1,9 +1,15 @@
 const mongoose = require('mongoose');
-const Extension = require('./Extension');
-const id = require('./id');
-const code = require('./code');
-const string = require('./string');
-module.exports = new mongoose.Schema({
+const {
+    Extension
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const id = require('../FHIRDataTypesSchema/id');
+const code = require('../FHIRDataTypesSchema/code');
+const string = require('../FHIRDataTypesSchema/string');
+
+const {
+    ElementDefinition_Mapping
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+ElementDefinition_Mapping.add({
     extension: {
         type: [Extension],
         default: void 0
@@ -16,10 +22,5 @@ module.exports = new mongoose.Schema({
     language: code,
     map: string,
     comment: string
-}, {
-    _id: false,
-    id: false,
-    toObject: {
-        getters: true
-    }
 });
+module.exports.ElementDefinition_Mapping = ElementDefinition_Mapping;

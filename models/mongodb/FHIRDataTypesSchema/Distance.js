@@ -1,10 +1,16 @@
 const mongoose = require('mongoose');
-const Extension = require('./Extension');
-const decimal = require('./decimal');
-const string = require('./string');
-const uri = require('./uri');
-const code = require('./code');
-module.exports = new mongoose.Schema({
+const {
+    Extension
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const decimal = require('../FHIRDataTypesSchema/decimal');
+const string = require('../FHIRDataTypesSchema/string');
+const uri = require('../FHIRDataTypesSchema/uri');
+const code = require('../FHIRDataTypesSchema/code');
+
+const {
+    Distance
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+Distance.add({
     extension: {
         type: [Extension],
         default: void 0
@@ -18,10 +24,5 @@ module.exports = new mongoose.Schema({
     unit: string,
     system: uri,
     code: code
-}, {
-    _id: false,
-    id: false,
-    toObject: {
-        getters: true
-    }
 });
+module.exports.Distance = Distance;

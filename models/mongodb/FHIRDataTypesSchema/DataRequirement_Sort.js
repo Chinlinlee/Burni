@@ -1,7 +1,13 @@
 const mongoose = require('mongoose');
-const Extension = require('./Extension');
-const string = require('./string');
-module.exports = new mongoose.Schema({
+const {
+    Extension
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const string = require('../FHIRDataTypesSchema/string');
+
+const {
+    DataRequirement_Sort
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+DataRequirement_Sort.add({
     extension: {
         type: [Extension],
         default: void 0
@@ -16,10 +22,5 @@ module.exports = new mongoose.Schema({
         enum: ["ascending", "descending"],
         default: void 0
     }
-}, {
-    _id: false,
-    id: false,
-    toObject: {
-        getters: true
-    }
 });
+module.exports.DataRequirement_Sort = DataRequirement_Sort;

@@ -1,8 +1,16 @@
 const mongoose = require('mongoose');
-const Extension = require('./Extension');
-const Coding = require('./Coding');
-const string = require('./string');
-module.exports = new mongoose.Schema({
+const {
+    Extension
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Coding
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const string = require('../FHIRDataTypesSchema/string');
+
+const {
+    CodeableConcept
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+CodeableConcept.add({
     extension: {
         type: [Extension],
         default: void 0
@@ -12,10 +20,5 @@ module.exports = new mongoose.Schema({
         default: void 0
     },
     text: string
-}, {
-    _id: false,
-    id: false,
-    toObject: {
-        getters: true
-    }
 });
+module.exports.CodeableConcept = CodeableConcept;

@@ -1,9 +1,19 @@
 const mongoose = require('mongoose');
-const Extension = require('./Extension');
-const dateTime = require('./dateTime');
-const Timing_Repeat = require('./Timing_Repeat');
-const CodeableConcept = require('./CodeableConcept');
-module.exports = new mongoose.Schema({
+const {
+    Extension
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const dateTime = require('../FHIRDataTypesSchema/dateTime');
+const {
+    Timing_Repeat
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    CodeableConcept
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+
+const {
+    Timing
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+Timing.add({
     extension: {
         type: [Extension],
         default: void 0
@@ -24,10 +34,5 @@ module.exports = new mongoose.Schema({
         type: CodeableConcept,
         default: void 0
     }
-}, {
-    _id: false,
-    id: false,
-    toObject: {
-        getters: true
-    }
 });
+module.exports.Timing = Timing;

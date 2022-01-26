@@ -1,10 +1,18 @@
 const mongoose = require('mongoose');
-const Extension = require('./Extension');
-const Reference = require('./Reference');
-const string = require('./string');
-const dateTime = require('./dateTime');
-const markdown = require('./markdown');
-module.exports = new mongoose.Schema({
+const {
+    Extension
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Reference
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const string = require('../FHIRDataTypesSchema/string');
+const dateTime = require('../FHIRDataTypesSchema/dateTime');
+const markdown = require('../FHIRDataTypesSchema/markdown');
+
+const {
+    Annotation
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+Annotation.add({
     extension: {
         type: [Extension],
         default: void 0
@@ -16,10 +24,5 @@ module.exports = new mongoose.Schema({
     authorString: string,
     time: dateTime,
     text: markdown
-}, {
-    _id: false,
-    id: false,
-    toObject: {
-        getters: true
-    }
 });
+module.exports.Annotation = Annotation;

@@ -1,11 +1,19 @@
 const mongoose = require('mongoose');
-const Extension = require('./Extension');
-const id = require('./id');
-const instant = require('./instant');
-const uri = require('./uri');
-const canonical = require('./canonical');
-const Coding = require('./Coding');
-module.exports = new mongoose.Schema({
+const {
+    Extension
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const id = require('../FHIRDataTypesSchema/id');
+const instant = require('../FHIRDataTypesSchema/instant');
+const uri = require('../FHIRDataTypesSchema/uri');
+const canonical = require('../FHIRDataTypesSchema/canonical');
+const {
+    Coding
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+
+const {
+    Meta
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+Meta.add({
     extension: {
         type: [Extension],
         default: void 0
@@ -25,10 +33,5 @@ module.exports = new mongoose.Schema({
         type: [Coding],
         default: void 0
     }
-}, {
-    _id: false,
-    id: false,
-    toObject: {
-        getters: true
-    }
 });
+module.exports.Meta = Meta;

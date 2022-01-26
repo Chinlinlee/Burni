@@ -1,10 +1,16 @@
 const mongoose = require('mongoose');
-const Extension = require('./Extension');
-const uri = require('./uri');
-const string = require('./string');
-const code = require('./code');
-const boolean = require('./boolean');
-module.exports = new mongoose.Schema({
+const {
+    Extension
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const uri = require('../FHIRDataTypesSchema/uri');
+const string = require('../FHIRDataTypesSchema/string');
+const code = require('../FHIRDataTypesSchema/code');
+const boolean = require('../FHIRDataTypesSchema/boolean');
+
+const {
+    Coding
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+Coding.add({
     extension: {
         type: [Extension],
         default: void 0
@@ -14,10 +20,5 @@ module.exports = new mongoose.Schema({
     code: code,
     display: string,
     userSelected: boolean
-}, {
-    _id: false,
-    id: false,
-    toObject: {
-        getters: true
-    }
 });
+module.exports.Coding = Coding;

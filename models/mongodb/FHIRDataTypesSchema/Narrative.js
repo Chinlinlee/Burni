@@ -1,7 +1,13 @@
 const mongoose = require('mongoose');
-const Extension = require('./Extension');
-const xhtml = require('./xhtml');
-module.exports = new mongoose.Schema({
+const {
+    Extension
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const xhtml = require('../FHIRDataTypesSchema/xhtml');
+
+const {
+    Narrative
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+Narrative.add({
     extension: {
         type: [Extension],
         default: void 0
@@ -12,10 +18,5 @@ module.exports = new mongoose.Schema({
         default: void 0
     },
     div: xhtml
-}, {
-    _id: false,
-    id: false,
-    toObject: {
-        getters: true
-    }
 });
+module.exports.Narrative = Narrative;

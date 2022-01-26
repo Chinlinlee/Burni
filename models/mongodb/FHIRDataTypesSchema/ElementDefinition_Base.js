@@ -1,8 +1,14 @@
 const mongoose = require('mongoose');
-const Extension = require('./Extension');
-const string = require('./string');
-const unsignedInt = require('./unsignedInt');
-module.exports = new mongoose.Schema({
+const {
+    Extension
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const string = require('../FHIRDataTypesSchema/string');
+const unsignedInt = require('../FHIRDataTypesSchema/unsignedInt');
+
+const {
+    ElementDefinition_Base
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+ElementDefinition_Base.add({
     extension: {
         type: [Extension],
         default: void 0
@@ -14,10 +20,5 @@ module.exports = new mongoose.Schema({
     path: string,
     min: unsignedInt,
     max: string
-}, {
-    _id: false,
-    id: false,
-    toObject: {
-        getters: true
-    }
 });
+module.exports.ElementDefinition_Base = ElementDefinition_Base;

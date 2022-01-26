@@ -63,6 +63,12 @@ function fixChoiceTypeOfDate (fieldName, type) {
     };
 }
 
+/**
+ * Parse fhir.schema (JSON Standard Schema) to Mongoose Schema
+ * @param {*} resource 
+ * @param {*} name 
+ * @returns 
+ */
 function getSchema (resource , name) {
     //let skipCol = ["resourceType" , "id" , "meta" ,"implicitRules" ,"language" , "text" ,"contained" , "extension" , "modifierExtension"];
     let skipCol = ["id" , "resourceType" , "contained"];
@@ -126,7 +132,6 @@ function getSchema (resource , name) {
         } else {
             if (choiceTypeDate.yes) type = choiceTypeDate.type;
             if (isPrimitiveType(type)) {
-                console.log(i, type);
                 result[i] = type;
             } else {
                 result[i] = {
@@ -146,28 +151,47 @@ function getSchema (resource , name) {
     return result;
 }
 
-async function generateSchema (type) {
-    let schema = getSchema(FHIRJson[type] , type);
-    cleanChildSchema(schema);
+function getImportLibs(schema) {
     let importLib = "const mongoose = require('mongoose');\r\n";
     let importedTypeLib = [];
+    let cleanType = "";
     for (let i in schema) {
         let item = schema[i];
         if (_.get(item , "type")) {
             item.default = "void 0";
-            let cleanType = item.type.replace(/[\[\]]/gm , '');
-            if (skipFieldTypes.indexOf(cleanType) < 0 && !importedTypeLib.includes(cleanType)) {
-                importLib =`${importLib}const ${cleanType} = require('./${cleanType}');\r\n`;
-                importedTypeLib.push(cleanType);
-            }
+            cleanType = item.type.replace(/[\[\]]/gm , '');
         } else {
-            let cleanType = item.replace(/[\[\]]/gm , '');
-            if (skipFieldTypes.indexOf(cleanType) < 0 && !importedTypeLib.includes(cleanType)) {
-                importLib =`${importLib}const ${cleanType} = require('./${cleanType}');\r\n`;
-                importedTypeLib.push(cleanType);
+            cleanType = item.replace(/[\[\]]/gm , '');
+        }
+        if (skipFieldTypes.indexOf(cleanType) < 0 && !importedTypeLib.includes(cleanType)) {
+            if (isPrimitiveType(cleanType)) {
+                importLib =`${importLib}const ${cleanType} = require('../FHIRDataTypesSchema/${cleanType}');\r\n`;
+            } else {
+                importLib =`${importLib}const {${cleanType}} = require('../FHIRDataTypesSchemaExport/FHIRDataTypesSchemaExport');\r\n`;
             }
+            importedTypeLib.push(cleanType);
         }
     }
+    return importLib;
+}
+
+function generateBackBoneElement(item) {
+    let isBackBone = true;
+    for (let key in DataTypesSummary) {
+        if (DataTypesSummary[key].includes(item)) {
+            isBackBone = false;
+            break;
+        }
+    }
+    if (isBackBone && item.includes("_")) {
+        console.log("back bone element type:" , item);
+        generateSchema(item);
+    }
+}
+async function generateSchema (type) {
+    let schema = getSchema(FHIRJson[type] , type);
+    cleanChildSchema(schema);
+    let importLibs = getImportLibs(schema);
     let schemaStr = JSON.stringify(schema , null , 4).replace(/\"/gm , '')
     let code = `module.exports = new mongoose.Schema (${schemaStr.replace(/\\/gm , '"')} , { 
         _id : false ,
@@ -176,7 +200,7 @@ async function generateSchema (type) {
             getters: true
         }
     });`;
-    code = `${importLib}${code}`;
+    code = `${importLibs}${code}`;
     fs.writeFileSync(`./models/mongodb/FHIRDataTypesSchema/${type}.js` , beautify(code , {indent_size : 4 ,pace_in_empty_paren: true }));
     for (let i in schema) {
         try {
@@ -187,17 +211,7 @@ async function generateSchema (type) {
                     deepItem = String(deepItem)
                     deepItem = deepItem.replace(/[\[\]]/gm , '');
                     if (!checkHaveSchema(deepItem) && isFHIRSchema(deepItem)) {
-                        let isBackBone = true;
-                        for (let key in DataTypesSummary) {
-                            if (DataTypesSummary[key].includes(deepItem)) {
-                                isBackBone = false;
-                                break;
-                            }
-                        }
-                        if (isBackBone && deepItem.includes("_")) {
-                            console.log("type:" , deepItem);
-                            generateSchema(deepItem);
-                        }
+                        generateBackBoneElement(deepItem);
                     }
                 }
             }
@@ -216,17 +230,7 @@ function generateResourceSchema (type) {
     for (let i in result) {
         if (_.get(result[i] , "type")) {
             let cleanType = result[i].type.replace(/[\[\]]/gm , '');
-            let isBackBone = true;
-            for (let key in DataTypesSummary) {
-                if (DataTypesSummary[key].includes(cleanType)) {
-                    isBackBone = false;
-                    break;
-                }
-            }
-            if (isBackBone && cleanType.includes("_")) {
-                console.log("type:" , cleanType);
-                generateSchema(cleanType);
-            }
+            generateBackBoneElement(cleanType);
             result[i].default = "void 0";
         }
     }
@@ -248,7 +252,7 @@ function generateResourceSchema (type) {
         _.set(result, "myCollection", tempCollectionField);
     }
 
-    let importLib = "const mongoose = require('mongoose');\r\nconst moment = require('moment');\r\nconst _ = require('lodash');\r\n";
+    // let importLib = "const mongoose = require('mongoose');\r\nconst moment = require('moment');\r\nconst _ = require('lodash');\r\n";
     let code = `module.exports = function () {
     require('mongoose-schema-jsonschema')(mongoose);
     const ${type} = ${JSON.stringify(result , null , 4).replace(/\"/gm , '').replace(/\\/gm , '"')};\r\n
@@ -409,31 +413,15 @@ function generateResourceSchema (type) {
 
     const ${type}Model = mongoose.model("${type}" , ${type}Schema , "${type}");
     return ${type}Model;\r\n}`;
-
-    let importedTypeLib = [];
-    for (let i in result) {
-        let item = result[i];
-        if (_.get(item , "type")) {
-            item.default = "void 0";
-            let cleanType = item.type.replace(/[\[\]]/gm , '');
-            if (!importedTypeLib.includes(cleanType) && !skipFieldTypes.includes(cleanType)) {
-                importLib =`${importLib}const ${cleanType} = require('${config.requirePath}/${cleanType}');\r\n`;
-                importedTypeLib.push(cleanType);
-            }
-        } else {
-            let cleanType = item.replace(/[\[\]]/gm , '');
-            if (!importedTypeLib.includes(cleanType) && !skipFieldTypes.includes(cleanType)) {
-                importLib =`${importLib}const ${cleanType} = require('${config.requirePath}/${cleanType}');\r\n`;
-                importedTypeLib.push(cleanType);
-            }
-        }
+    let importLibs = getImportLibs(result);
+    if (!importLibs.includes("const id = require")) {
+        importLibs =`const moment = require('moment');\r\nconst _ = require('lodash');\r\n${importLibs}const id = require('${config.requirePath}/id');\r\n`;
+    } else {
+        importLibs =`const moment = require('moment');\r\nconst _ = require('lodash');\r\n${importLibs}\r\n`;
     }
-    if (!importedTypeLib.includes("id")) {
-        importLib =`${importLib}const id = require('${config.requirePath}/id');\r\n`;
-    }
-    code = `${importLib}${code}`;
+    code = `${importLibs}${code}`;
     mkdirp.sync(config.resourcePath);
-    fs.writeFileSync(`${config.resourcePath}/${type}.js` , beautify(code , {indent_size : 4 ,pace_in_empty_paren: true }));    
+    fs.writeFileSync(`${config.resourcePath}/${type}.js` , beautify(code , {indent_size : 4 ,pace_in_empty_paren: true }));   
 }
 
 

@@ -1,11 +1,25 @@
 const mongoose = require('mongoose');
-const Extension = require('./Extension');
-const string = require('./string');
-const Timing = require('./Timing');
-const Reference = require('./Reference');
-const DataRequirement = require('./DataRequirement');
-const Expression = require('./Expression');
-module.exports = new mongoose.Schema({
+const {
+    Extension
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const string = require('../FHIRDataTypesSchema/string');
+const {
+    Timing
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Reference
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    DataRequirement
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Expression
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+
+const {
+    TriggerDefinition
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+TriggerDefinition.add({
     extension: {
         type: [Extension],
         default: void 0
@@ -34,10 +48,5 @@ module.exports = new mongoose.Schema({
         type: Expression,
         default: void 0
     }
-}, {
-    _id: false,
-    id: false,
-    toObject: {
-        getters: true
-    }
 });
+module.exports.TriggerDefinition = TriggerDefinition;

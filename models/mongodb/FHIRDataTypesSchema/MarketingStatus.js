@@ -1,9 +1,19 @@
 const mongoose = require('mongoose');
-const Extension = require('./Extension');
-const CodeableConcept = require('./CodeableConcept');
-const Period = require('./Period');
-const dateTime = require('./dateTime');
-module.exports = new mongoose.Schema({
+const {
+    Extension
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    CodeableConcept
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Period
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const dateTime = require('../FHIRDataTypesSchema/dateTime');
+
+const {
+    MarketingStatus
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+MarketingStatus.add({
     extension: {
         type: [Extension],
         default: void 0
@@ -32,10 +42,5 @@ module.exports = new mongoose.Schema({
         default: void 0
     },
     restoreDate: dateTime
-}, {
-    _id: false,
-    id: false,
-    toObject: {
-        getters: true
-    }
 });
+module.exports.MarketingStatus = MarketingStatus;

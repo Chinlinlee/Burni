@@ -1,12 +1,30 @@
 const mongoose = require('mongoose');
-const Extension = require('./Extension');
-const CodeableConcept = require('./CodeableConcept');
-const HumanName = require('./HumanName');
-const ContactPoint = require('./ContactPoint');
-const Address = require('./Address');
-const Reference = require('./Reference');
-const Period = require('./Period');
-module.exports = new mongoose.Schema({
+const {
+    Extension
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    CodeableConcept
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    HumanName
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    ContactPoint
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Address
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Reference
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Period
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+
+const {
+    Patient_Contact
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+Patient_Contact.add({
     extension: {
         type: [Extension],
         default: void 0
@@ -44,10 +62,5 @@ module.exports = new mongoose.Schema({
         type: Period,
         default: void 0
     }
-}, {
-    _id: false,
-    id: false,
-    toObject: {
-        getters: true
-    }
 });
+module.exports.Patient_Contact = Patient_Contact;

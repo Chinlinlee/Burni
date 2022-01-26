@@ -1,12 +1,18 @@
 const mongoose = require('mongoose');
-const Extension = require('./Extension');
-const code = require('./code');
-const base64Binary = require('./base64Binary');
-const url = require('./url');
-const unsignedInt = require('./unsignedInt');
-const string = require('./string');
-const dateTime = require('./dateTime');
-module.exports = new mongoose.Schema({
+const {
+    Extension
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const code = require('../FHIRDataTypesSchema/code');
+const base64Binary = require('../FHIRDataTypesSchema/base64Binary');
+const url = require('../FHIRDataTypesSchema/url');
+const unsignedInt = require('../FHIRDataTypesSchema/unsignedInt');
+const string = require('../FHIRDataTypesSchema/string');
+const dateTime = require('../FHIRDataTypesSchema/dateTime');
+
+const {
+    Attachment
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+Attachment.add({
     extension: {
         type: [Extension],
         default: void 0
@@ -19,10 +25,5 @@ module.exports = new mongoose.Schema({
     hash: base64Binary,
     title: string,
     creation: dateTime
-}, {
-    _id: false,
-    id: false,
-    toObject: {
-        getters: true
-    }
 });
+module.exports.Attachment = Attachment;

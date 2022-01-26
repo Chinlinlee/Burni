@@ -1,9 +1,17 @@
 const mongoose = require('mongoose');
-const Extension = require('./Extension');
-const string = require('./string');
-const positiveInt = require('./positiveInt');
-const Period = require('./Period');
-module.exports = new mongoose.Schema({
+const {
+    Extension
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const string = require('../FHIRDataTypesSchema/string');
+const positiveInt = require('../FHIRDataTypesSchema/positiveInt');
+const {
+    Period
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+
+const {
+    ContactPoint
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+ContactPoint.add({
     extension: {
         type: [Extension],
         default: void 0
@@ -24,10 +32,5 @@ module.exports = new mongoose.Schema({
         type: Period,
         default: void 0
     }
-}, {
-    _id: false,
-    id: false,
-    toObject: {
-        getters: true
-    }
 });
+module.exports.ContactPoint = ContactPoint;

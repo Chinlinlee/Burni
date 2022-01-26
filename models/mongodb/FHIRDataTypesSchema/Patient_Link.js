@@ -1,7 +1,15 @@
 const mongoose = require('mongoose');
-const Extension = require('./Extension');
-const Reference = require('./Reference');
-module.exports = new mongoose.Schema({
+const {
+    Extension
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Reference
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+
+const {
+    Patient_Link
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+Patient_Link.add({
     extension: {
         type: [Extension],
         default: void 0
@@ -20,10 +28,5 @@ module.exports = new mongoose.Schema({
         enum: ["replaced-by", "replaces", "refer", "seealso"],
         default: void 0
     }
-}, {
-    _id: false,
-    id: false,
-    toObject: {
-        getters: true
-    }
 });
+module.exports.Patient_Link = Patient_Link;

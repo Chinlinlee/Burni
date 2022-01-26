@@ -1,10 +1,24 @@
 const mongoose = require('mongoose');
-const Extension = require('./Extension');
-const CodeableConcept = require('./CodeableConcept');
-const Range = require('./Range');
-const Quantity = require('./Quantity');
-const Ratio = require('./Ratio');
-module.exports = new mongoose.Schema({
+const {
+    Extension
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    CodeableConcept
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Range
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Quantity
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Ratio
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+
+const {
+    Dosage_DoseAndRate
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+Dosage_DoseAndRate.add({
     extension: {
         type: [Extension],
         default: void 0
@@ -37,10 +51,5 @@ module.exports = new mongoose.Schema({
         type: Quantity,
         default: void 0
     }
-}, {
-    _id: false,
-    id: false,
-    toObject: {
-        getters: true
-    }
 });
+module.exports.Dosage_DoseAndRate = Dosage_DoseAndRate;

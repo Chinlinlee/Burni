@@ -1,11 +1,19 @@
 const mongoose = require('mongoose');
-const Extension = require('./Extension');
-const string = require('./string');
-const markdown = require('./markdown');
-const url = require('./url');
-const Attachment = require('./Attachment');
-const canonical = require('./canonical');
-module.exports = new mongoose.Schema({
+const {
+    Extension
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const string = require('../FHIRDataTypesSchema/string');
+const markdown = require('../FHIRDataTypesSchema/markdown');
+const url = require('../FHIRDataTypesSchema/url');
+const {
+    Attachment
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const canonical = require('../FHIRDataTypesSchema/canonical');
+
+const {
+    RelatedArtifact
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+RelatedArtifact.add({
     extension: {
         type: [Extension],
         default: void 0
@@ -24,10 +32,5 @@ module.exports = new mongoose.Schema({
         default: void 0
     },
     resource: canonical
-}, {
-    _id: false,
-    id: false,
-    toObject: {
-        getters: true
-    }
 });
+module.exports.RelatedArtifact = RelatedArtifact;
