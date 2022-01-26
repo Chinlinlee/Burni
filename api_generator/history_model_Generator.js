@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const beautify = require('js-beautify').js_beautify;
-const FHIRResourceList = require('./FHIR-mongoose-Models-Generator/fhir.schema.json').definitions.ResourceList.oneOf.map(v => {
+const FHIRResourceList = require('../FHIR-mongoose-Models-Generator/fhir.schema.json').definitions.ResourceList.oneOf.map(v => {
     let refSplit = v.$ref.split("/");
     return refSplit[refSplit.length - 1];
 });
