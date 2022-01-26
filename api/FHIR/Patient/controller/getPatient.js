@@ -150,34 +150,29 @@ paramsSearch["address-use"] = (query) => {
     }
     delete query['address-use'];
 }
+paramsSearchFields["birthdate"] = ["birthDate"];
+const birthdateSearchFunc = {};
+birthdateSearchFunc["birthDate"] = (value, field) => {
+    return queryBuild.dateQuery(value, field);
+}
+
 paramsSearch["birthdate"] = (query) => {
     if (!_.isArray(query["birthdate"])) {
         query["birthdate"] = [query["birthdate"]]
     }
-    for (let i in query["birthdate"]) {
-        let buildResult = queryBuild.dateQuery(query["birthdate"][i], "birthDate");
-        if (!buildResult) {
-            errorMessage = handleError.processing(`invalid date: ${query["birthdate"]}`)
-            throw new Error(errorMessage);
+    for (let item of query["birthdate"]) {
+        let buildQs = {
+            $or: []
+        };
+        for (let field of paramsSearchFields["birthdate"]) {
+            let buildResult = birthdateSearchFunc[field](item, field);
+            buildQs.$or.push(buildResult);
         }
-        query.$and.push(buildResult);
+        query.$and.push({
+            ...buildQs
+        });
     }
-    delete query["birthdate"];
-}
-paramsSearchFields["email"] = ["telecom"];
-paramsSearch["email"] = (query) => {
-    if (!_.isArray(query["email"])) {
-        query["email"] = [query["email"]]
-    }
-    for (let item of query["email"]) {
-        let buildResult = queryBuild.tokenQuery(item, "value", "telecom", "email", false);
-        for (let i in buildResult) {
-            query.$and.push({
-                [i]: buildResult[i]
-            });
-        }
-    }
-    delete query['email'];
+    delete query['birthdate'];
 }
 paramsSearchFields["family"] = ["name.family"];
 paramsSearch["family"] = (query) => {
@@ -240,21 +235,6 @@ paramsSearch["given"] = (query) => {
     }
     delete query['given'];
 }
-paramsSearchFields["phone"] = ["telecom"];
-paramsSearch["phone"] = (query) => {
-    if (!_.isArray(query["phone"])) {
-        query["phone"] = [query["phone"]]
-    }
-    for (let item of query["phone"]) {
-        let buildResult = queryBuild.tokenQuery(item, "value", "telecom", "phone", false);
-        for (let i in buildResult) {
-            query.$and.push({
-                [i]: buildResult[i]
-            });
-        }
-    }
-    delete query['phone'];
-}
 paramsSearchFields["phonetic"] = ["name"];
 paramsSearch["phonetic"] = (query) => {
     if (!_.isArray(query["phonetic"])) {
@@ -314,7 +294,31 @@ paramsSearch["active"] = (query) => {
     }
     delete query['active'];
 }
-paramsSearchFields["deceased"] = "deceased";
+paramsSearchFields["death-date"] = ["deceasedDateTime"];
+const death_dateSearchFunc = {};
+death_dateSearchFunc["deceasedDateTime"] = (value, field) => {
+    return queryBuild.dateTimeQuery(value, field);
+}
+
+paramsSearch["death-date"] = (query) => {
+    if (!_.isArray(query["death-date"])) {
+        query["death-date"] = [query["death-date"]]
+    }
+    for (let item of query["death-date"]) {
+        let buildQs = {
+            $or: []
+        };
+        for (let field of paramsSearchFields["death-date"]) {
+            let buildResult = death - dateSearchFunc[field](item, field);
+            buildQs.$or.push(buildResult);
+        }
+        query.$and.push({
+            ...buildQs
+        });
+    }
+    delete query['death-date'];
+}
+paramsSearchFields["deceased"] = ["deceased.exists() and Patient.deceased != false"];
 paramsSearch["deceased"] = (query) => {
     if (!_.isArray(query["deceased"])) {
         query["deceased"] = [query["deceased"]]
