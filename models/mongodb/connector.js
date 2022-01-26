@@ -15,24 +15,19 @@ module.exports = exports = function(config) {
     let databaseUrl = "";
 
     hosts.forEach((host, index) => {
-        if (index === 0) {
-            if (id == undefined && pwd == "undefined") {
-                databaseUrl += "mongodb://" + host + ":" + ports[0];
-            } else {
-                databaseUrl += "mongodb://" + id + ":" + pwd + "@" + host + ":" + ports[0];
-            }
+        if (index == 0) {
+            databaseUrl += `mongodb://${host}:${ports[0]}`
         } else {
-            databaseUrl += "," + host + ":" + ports[index];
+            databaseUrl += `,${dbName}`;
         }
     });
-
-    databaseUrl += "/" + dbName + "?slaveOk=" + slave;
 
     console.log(databaseUrl);
     mongoose.connect(databaseUrl, {
         useCreateIndex: true,
         useNewUrlParser: true,
         useFindAndModify: false,
+        useUnifiedTopology: true,
         auth: {
             authSource: 'admin',
             user: id,
