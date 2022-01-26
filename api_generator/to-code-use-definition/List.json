@@ -1,0 +1,127 @@
+{
+    "id": {
+        "type": "string",
+        "isArray": false,
+        "isRequired": false
+    },
+    "meta": {
+        "type": "Meta",
+        "isArray": false,
+        "isRequired": false
+    },
+    "implicitRules": {
+        "type": "uri",
+        "isArray": false,
+        "isRequired": false
+    },
+    "language": {
+        "type": "code",
+        "isArray": false,
+        "isRequired": false
+    },
+    "text": {
+        "type": "Narrative",
+        "isArray": false,
+        "isRequired": false
+    },
+    "contained": {
+        "type": "Resource",
+        "isArray": true,
+        "isRequired": false
+    },
+    "extension": {
+        "type": "Extension",
+        "isArray": true,
+        "isRequired": false
+    },
+    "modifierExtension": {
+        "type": "Extension",
+        "isArray": true,
+        "isRequired": false
+    },
+    "identifier": {
+        "type": "Identifier",
+        "isArray": true,
+        "isRequired": false
+    },
+    "status": {
+        "type": "code",
+        "isArray": false,
+        "isRequired": true
+    },
+    "mode": {
+        "type": "code",
+        "isArray": false,
+        "isRequired": true
+    },
+    "title": {
+        "type": "string",
+        "isArray": false,
+        "isRequired": false
+    },
+    "code": {
+        "type": "CodeableConcept",
+        "isArray": false,
+        "isRequired": false
+    },
+    "subject": {
+        "type": "Reference",
+        "isArray": false,
+        "isRequired": false
+    },
+    "encounter": {
+        "type": "Reference",
+        "isArray": false,
+        "isRequired": false
+    },
+    "date": {
+        "type": "dateTime",
+        "isArray": false,
+        "isRequired": false
+    },
+    "source": {
+        "type": "Reference",
+        "isArray": false,
+        "isRequired": false
+    },
+    "orderedBy": {
+        "type": "CodeableConcept",
+        "isArray": false,
+        "isRequired": false
+    },
+    "note": {
+        "type": "Annotation",
+        "isArray": true,
+        "isRequired": false
+    },
+    "entry": {
+        "type": "BackboneElement",
+        "isArray": true,
+        "isRequired": false,
+        "flag": {
+            "type": "CodeableConcept",
+            "isArray": false,
+            "isRequired": false
+        },
+        "deleted": {
+            "type": "boolean",
+            "isArray": false,
+            "isRequired": false
+        },
+        "date": {
+            "type": "dateTime",
+            "isArray": false,
+            "isRequired": false
+        },
+        "item": {
+            "type": "Reference",
+            "isArray": false,
+            "isRequired": true
+        }
+    },
+    "emptyReason": {
+        "type": "CodeableConcept",
+        "isArray": false,
+        "isRequired": false
+    }
+}

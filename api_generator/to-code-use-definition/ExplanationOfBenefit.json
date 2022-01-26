@@ -1,0 +1,1061 @@
+{
+    "id": {
+        "type": "string",
+        "isArray": false,
+        "isRequired": false
+    },
+    "meta": {
+        "type": "Meta",
+        "isArray": false,
+        "isRequired": false
+    },
+    "implicitRules": {
+        "type": "uri",
+        "isArray": false,
+        "isRequired": false
+    },
+    "language": {
+        "type": "code",
+        "isArray": false,
+        "isRequired": false
+    },
+    "text": {
+        "type": "Narrative",
+        "isArray": false,
+        "isRequired": false
+    },
+    "contained": {
+        "type": "Resource",
+        "isArray": true,
+        "isRequired": false
+    },
+    "extension": {
+        "type": "Extension",
+        "isArray": true,
+        "isRequired": false
+    },
+    "modifierExtension": {
+        "type": "Extension",
+        "isArray": true,
+        "isRequired": false
+    },
+    "identifier": {
+        "type": "Identifier",
+        "isArray": true,
+        "isRequired": false
+    },
+    "status": {
+        "type": "code",
+        "isArray": false,
+        "isRequired": true
+    },
+    "type": {
+        "type": "CodeableConcept",
+        "isArray": false,
+        "isRequired": true
+    },
+    "subType": {
+        "type": "CodeableConcept",
+        "isArray": false,
+        "isRequired": false
+    },
+    "use": {
+        "type": "code",
+        "isArray": false,
+        "isRequired": true
+    },
+    "patient": {
+        "type": "Reference",
+        "isArray": false,
+        "isRequired": true
+    },
+    "billablePeriod": {
+        "type": "Period",
+        "isArray": false,
+        "isRequired": false
+    },
+    "created": {
+        "type": "dateTime",
+        "isArray": false,
+        "isRequired": true
+    },
+    "enterer": {
+        "type": "Reference",
+        "isArray": false,
+        "isRequired": false
+    },
+    "insurer": {
+        "type": "Reference",
+        "isArray": false,
+        "isRequired": true
+    },
+    "provider": {
+        "type": "Reference",
+        "isArray": false,
+        "isRequired": true
+    },
+    "priority": {
+        "type": "CodeableConcept",
+        "isArray": false,
+        "isRequired": false
+    },
+    "fundsReserveRequested": {
+        "type": "CodeableConcept",
+        "isArray": false,
+        "isRequired": false
+    },
+    "fundsReserve": {
+        "type": "CodeableConcept",
+        "isArray": false,
+        "isRequired": false
+    },
+    "related": {
+        "type": "BackboneElement",
+        "isArray": true,
+        "isRequired": false,
+        "claim": {
+            "type": "Reference",
+            "isArray": false,
+            "isRequired": false
+        },
+        "relationship": {
+            "type": "CodeableConcept",
+            "isArray": false,
+            "isRequired": false
+        },
+        "reference": {
+            "type": "Identifier",
+            "isArray": false,
+            "isRequired": false
+        }
+    },
+    "prescription": {
+        "type": "Reference",
+        "isArray": false,
+        "isRequired": false
+    },
+    "originalPrescription": {
+        "type": "Reference",
+        "isArray": false,
+        "isRequired": false
+    },
+    "payee": {
+        "type": {
+            "type": "CodeableConcept",
+            "isArray": false,
+            "isRequired": false
+        },
+        "isArray": false,
+        "isRequired": false,
+        "party": {
+            "type": "Reference",
+            "isArray": false,
+            "isRequired": false
+        }
+    },
+    "referral": {
+        "type": "Reference",
+        "isArray": false,
+        "isRequired": false
+    },
+    "facility": {
+        "type": "Reference",
+        "isArray": false,
+        "isRequired": false
+    },
+    "claim": {
+        "type": "Reference",
+        "isArray": false,
+        "isRequired": false
+    },
+    "claimResponse": {
+        "type": "Reference",
+        "isArray": false,
+        "isRequired": false
+    },
+    "outcome": {
+        "type": "code",
+        "isArray": false,
+        "isRequired": true
+    },
+    "disposition": {
+        "type": "string",
+        "isArray": false,
+        "isRequired": false
+    },
+    "preAuthRef": {
+        "type": "string",
+        "isArray": true,
+        "isRequired": false
+    },
+    "preAuthRefPeriod": {
+        "type": "Period",
+        "isArray": true,
+        "isRequired": false
+    },
+    "careTeam": {
+        "type": "BackboneElement",
+        "isArray": true,
+        "isRequired": false,
+        "sequence": {
+            "type": "positiveInt",
+            "isArray": false,
+            "isRequired": true
+        },
+        "provider": {
+            "type": "Reference",
+            "isArray": false,
+            "isRequired": true
+        },
+        "responsible": {
+            "type": "boolean",
+            "isArray": false,
+            "isRequired": false
+        },
+        "role": {
+            "type": "CodeableConcept",
+            "isArray": false,
+            "isRequired": false
+        },
+        "qualification": {
+            "type": "CodeableConcept",
+            "isArray": false,
+            "isRequired": false
+        }
+    },
+    "supportingInfo": {
+        "type": "BackboneElement",
+        "isArray": true,
+        "isRequired": false,
+        "sequence": {
+            "type": "positiveInt",
+            "isArray": false,
+            "isRequired": true
+        },
+        "category": {
+            "type": "CodeableConcept",
+            "isArray": false,
+            "isRequired": true
+        },
+        "code": {
+            "type": "CodeableConcept",
+            "isArray": false,
+            "isRequired": false
+        },
+        "timingDate": {
+            "type": "date",
+            "isArray": false,
+            "isRequired": false
+        },
+        "timingPeriod": {
+            "type": "Period",
+            "isArray": false,
+            "isRequired": false
+        },
+        "valueBoolean": {
+            "type": "boolean",
+            "isArray": false,
+            "isRequired": false
+        },
+        "valueString": {
+            "type": "string",
+            "isArray": false,
+            "isRequired": false
+        },
+        "valueQuantity": {
+            "type": "Quantity",
+            "isArray": false,
+            "isRequired": false
+        },
+        "valueAttachment": {
+            "type": "Attachment",
+            "isArray": false,
+            "isRequired": false
+        },
+        "valueReference": {
+            "type": "Reference",
+            "isArray": false,
+            "isRequired": false
+        },
+        "reason": {
+            "type": "Coding",
+            "isArray": false,
+            "isRequired": false
+        }
+    },
+    "diagnosis": {
+        "type": {
+            "type": "CodeableConcept",
+            "isArray": true,
+            "isRequired": false
+        },
+        "isArray": true,
+        "isRequired": false,
+        "sequence": {
+            "type": "positiveInt",
+            "isArray": false,
+            "isRequired": true
+        },
+        "diagnosisCodeableConcept": {
+            "type": "CodeableConcept",
+            "isArray": false,
+            "isRequired": true
+        },
+        "diagnosisReference": {
+            "type": "Reference",
+            "isArray": false,
+            "isRequired": true
+        },
+        "onAdmission": {
+            "type": "CodeableConcept",
+            "isArray": false,
+            "isRequired": false
+        },
+        "packageCode": {
+            "type": "CodeableConcept",
+            "isArray": false,
+            "isRequired": false
+        }
+    },
+    "procedure": {
+        "type": {
+            "type": "CodeableConcept",
+            "isArray": true,
+            "isRequired": false
+        },
+        "isArray": true,
+        "isRequired": false,
+        "sequence": {
+            "type": "positiveInt",
+            "isArray": false,
+            "isRequired": true
+        },
+        "date": {
+            "type": "dateTime",
+            "isArray": false,
+            "isRequired": false
+        },
+        "procedureCodeableConcept": {
+            "type": "CodeableConcept",
+            "isArray": false,
+            "isRequired": true
+        },
+        "procedureReference": {
+            "type": "Reference",
+            "isArray": false,
+            "isRequired": true
+        },
+        "udi": {
+            "type": "Reference",
+            "isArray": true,
+            "isRequired": false
+        }
+    },
+    "precedence": {
+        "type": "positiveInt",
+        "isArray": false,
+        "isRequired": false
+    },
+    "insurance": {
+        "type": "BackboneElement",
+        "isArray": true,
+        "isRequired": true,
+        "focal": {
+            "type": "boolean",
+            "isArray": false,
+            "isRequired": true
+        },
+        "coverage": {
+            "type": "Reference",
+            "isArray": false,
+            "isRequired": true
+        },
+        "preAuthRef": {
+            "type": "string",
+            "isArray": true,
+            "isRequired": false
+        }
+    },
+    "accident": {
+        "type": {
+            "type": "CodeableConcept",
+            "isArray": false,
+            "isRequired": false
+        },
+        "isArray": false,
+        "isRequired": false,
+        "date": {
+            "type": "date",
+            "isArray": false,
+            "isRequired": false
+        },
+        "locationAddress": {
+            "type": "Address",
+            "isArray": false,
+            "isRequired": false
+        },
+        "locationReference": {
+            "type": "Reference",
+            "isArray": false,
+            "isRequired": false
+        }
+    },
+    "item": {
+        "type": "BackboneElement",
+        "isArray": true,
+        "isRequired": false,
+        "sequence": {
+            "type": "positiveInt",
+            "isArray": false,
+            "isRequired": true
+        },
+        "careTeamSequence": {
+            "type": "positiveInt",
+            "isArray": true,
+            "isRequired": false
+        },
+        "diagnosisSequence": {
+            "type": "positiveInt",
+            "isArray": true,
+            "isRequired": false
+        },
+        "procedureSequence": {
+            "type": "positiveInt",
+            "isArray": true,
+            "isRequired": false
+        },
+        "informationSequence": {
+            "type": "positiveInt",
+            "isArray": true,
+            "isRequired": false
+        },
+        "revenue": {
+            "type": "CodeableConcept",
+            "isArray": false,
+            "isRequired": false
+        },
+        "category": {
+            "type": "CodeableConcept",
+            "isArray": false,
+            "isRequired": false
+        },
+        "productOrService": {
+            "type": "CodeableConcept",
+            "isArray": false,
+            "isRequired": true
+        },
+        "modifier": {
+            "type": "CodeableConcept",
+            "isArray": true,
+            "isRequired": false
+        },
+        "programCode": {
+            "type": "CodeableConcept",
+            "isArray": true,
+            "isRequired": false
+        },
+        "servicedDate": {
+            "type": "date",
+            "isArray": false,
+            "isRequired": false
+        },
+        "servicedPeriod": {
+            "type": "Period",
+            "isArray": false,
+            "isRequired": false
+        },
+        "locationCodeableConcept": {
+            "type": "CodeableConcept",
+            "isArray": false,
+            "isRequired": false
+        },
+        "locationAddress": {
+            "type": "Address",
+            "isArray": false,
+            "isRequired": false
+        },
+        "locationReference": {
+            "type": "Reference",
+            "isArray": false,
+            "isRequired": false
+        },
+        "quantity": {
+            "type": "Quantity",
+            "isArray": false,
+            "isRequired": false
+        },
+        "unitPrice": {
+            "type": "Money",
+            "isArray": false,
+            "isRequired": false
+        },
+        "factor": {
+            "type": "decimal",
+            "isArray": false,
+            "isRequired": false
+        },
+        "net": {
+            "type": "Money",
+            "isArray": false,
+            "isRequired": false
+        },
+        "udi": {
+            "type": "Reference",
+            "isArray": true,
+            "isRequired": false
+        },
+        "bodySite": {
+            "type": "CodeableConcept",
+            "isArray": false,
+            "isRequired": false
+        },
+        "subSite": {
+            "type": "CodeableConcept",
+            "isArray": true,
+            "isRequired": false
+        },
+        "encounter": {
+            "type": "Reference",
+            "isArray": true,
+            "isRequired": false
+        },
+        "noteNumber": {
+            "type": "positiveInt",
+            "isArray": true,
+            "isRequired": false
+        },
+        "adjudication": {
+            "type": "BackboneElement",
+            "isArray": true,
+            "isRequired": false,
+            "category": {
+                "type": "CodeableConcept",
+                "isArray": false,
+                "isRequired": true
+            },
+            "reason": {
+                "type": "CodeableConcept",
+                "isArray": false,
+                "isRequired": false
+            },
+            "amount": {
+                "type": "Money",
+                "isArray": false,
+                "isRequired": false
+            },
+            "value": {
+                "type": "decimal",
+                "isArray": false,
+                "isRequired": false
+            }
+        },
+        "detail": {
+            "type": "BackboneElement",
+            "isArray": true,
+            "isRequired": false,
+            "sequence": {
+                "type": "positiveInt",
+                "isArray": false,
+                "isRequired": true
+            },
+            "revenue": {
+                "type": "CodeableConcept",
+                "isArray": false,
+                "isRequired": false
+            },
+            "category": {
+                "type": "CodeableConcept",
+                "isArray": false,
+                "isRequired": false
+            },
+            "productOrService": {
+                "type": "CodeableConcept",
+                "isArray": false,
+                "isRequired": true
+            },
+            "modifier": {
+                "type": "CodeableConcept",
+                "isArray": true,
+                "isRequired": false
+            },
+            "programCode": {
+                "type": "CodeableConcept",
+                "isArray": true,
+                "isRequired": false
+            },
+            "quantity": {
+                "type": "Quantity",
+                "isArray": false,
+                "isRequired": false
+            },
+            "unitPrice": {
+                "type": "Money",
+                "isArray": false,
+                "isRequired": false
+            },
+            "factor": {
+                "type": "decimal",
+                "isArray": false,
+                "isRequired": false
+            },
+            "net": {
+                "type": "Money",
+                "isArray": false,
+                "isRequired": false
+            },
+            "udi": {
+                "type": "Reference",
+                "isArray": true,
+                "isRequired": false
+            },
+            "noteNumber": {
+                "type": "positiveInt",
+                "isArray": true,
+                "isRequired": false
+            },
+            "adjudication": {
+                "type": "",
+                "isArray": true,
+                "isRequired": false,
+                "ref": "#ExplanationOfBenefit.item.adjudication"
+            },
+            "subDetail": {
+                "type": "BackboneElement",
+                "isArray": true,
+                "isRequired": false,
+                "sequence": {
+                    "type": "positiveInt",
+                    "isArray": false,
+                    "isRequired": true
+                },
+                "revenue": {
+                    "type": "CodeableConcept",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "category": {
+                    "type": "CodeableConcept",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "productOrService": {
+                    "type": "CodeableConcept",
+                    "isArray": false,
+                    "isRequired": true
+                },
+                "modifier": {
+                    "type": "CodeableConcept",
+                    "isArray": true,
+                    "isRequired": false
+                },
+                "programCode": {
+                    "type": "CodeableConcept",
+                    "isArray": true,
+                    "isRequired": false
+                },
+                "quantity": {
+                    "type": "Quantity",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "unitPrice": {
+                    "type": "Money",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "factor": {
+                    "type": "decimal",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "net": {
+                    "type": "Money",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "udi": {
+                    "type": "Reference",
+                    "isArray": true,
+                    "isRequired": false
+                },
+                "noteNumber": {
+                    "type": "positiveInt",
+                    "isArray": true,
+                    "isRequired": false
+                },
+                "adjudication": {
+                    "type": "",
+                    "isArray": true,
+                    "isRequired": false,
+                    "ref": "#ExplanationOfBenefit.item.adjudication"
+                }
+            }
+        }
+    },
+    "addItem": {
+        "type": "BackboneElement",
+        "isArray": true,
+        "isRequired": false,
+        "itemSequence": {
+            "type": "positiveInt",
+            "isArray": true,
+            "isRequired": false
+        },
+        "detailSequence": {
+            "type": "positiveInt",
+            "isArray": true,
+            "isRequired": false
+        },
+        "subDetailSequence": {
+            "type": "positiveInt",
+            "isArray": true,
+            "isRequired": false
+        },
+        "provider": {
+            "type": "Reference",
+            "isArray": true,
+            "isRequired": false
+        },
+        "productOrService": {
+            "type": "CodeableConcept",
+            "isArray": false,
+            "isRequired": true
+        },
+        "modifier": {
+            "type": "CodeableConcept",
+            "isArray": true,
+            "isRequired": false
+        },
+        "programCode": {
+            "type": "CodeableConcept",
+            "isArray": true,
+            "isRequired": false
+        },
+        "servicedDate": {
+            "type": "date",
+            "isArray": false,
+            "isRequired": false
+        },
+        "servicedPeriod": {
+            "type": "Period",
+            "isArray": false,
+            "isRequired": false
+        },
+        "locationCodeableConcept": {
+            "type": "CodeableConcept",
+            "isArray": false,
+            "isRequired": false
+        },
+        "locationAddress": {
+            "type": "Address",
+            "isArray": false,
+            "isRequired": false
+        },
+        "locationReference": {
+            "type": "Reference",
+            "isArray": false,
+            "isRequired": false
+        },
+        "quantity": {
+            "type": "Quantity",
+            "isArray": false,
+            "isRequired": false
+        },
+        "unitPrice": {
+            "type": "Money",
+            "isArray": false,
+            "isRequired": false
+        },
+        "factor": {
+            "type": "decimal",
+            "isArray": false,
+            "isRequired": false
+        },
+        "net": {
+            "type": "Money",
+            "isArray": false,
+            "isRequired": false
+        },
+        "bodySite": {
+            "type": "CodeableConcept",
+            "isArray": false,
+            "isRequired": false
+        },
+        "subSite": {
+            "type": "CodeableConcept",
+            "isArray": true,
+            "isRequired": false
+        },
+        "noteNumber": {
+            "type": "positiveInt",
+            "isArray": true,
+            "isRequired": false
+        },
+        "adjudication": {
+            "type": "",
+            "isArray": true,
+            "isRequired": false,
+            "ref": "#ExplanationOfBenefit.item.adjudication"
+        },
+        "detail": {
+            "type": "BackboneElement",
+            "isArray": true,
+            "isRequired": false,
+            "productOrService": {
+                "type": "CodeableConcept",
+                "isArray": false,
+                "isRequired": true
+            },
+            "modifier": {
+                "type": "CodeableConcept",
+                "isArray": true,
+                "isRequired": false
+            },
+            "quantity": {
+                "type": "Quantity",
+                "isArray": false,
+                "isRequired": false
+            },
+            "unitPrice": {
+                "type": "Money",
+                "isArray": false,
+                "isRequired": false
+            },
+            "factor": {
+                "type": "decimal",
+                "isArray": false,
+                "isRequired": false
+            },
+            "net": {
+                "type": "Money",
+                "isArray": false,
+                "isRequired": false
+            },
+            "noteNumber": {
+                "type": "positiveInt",
+                "isArray": true,
+                "isRequired": false
+            },
+            "adjudication": {
+                "type": "",
+                "isArray": true,
+                "isRequired": false,
+                "ref": "#ExplanationOfBenefit.item.adjudication"
+            },
+            "subDetail": {
+                "type": "BackboneElement",
+                "isArray": true,
+                "isRequired": false,
+                "productOrService": {
+                    "type": "CodeableConcept",
+                    "isArray": false,
+                    "isRequired": true
+                },
+                "modifier": {
+                    "type": "CodeableConcept",
+                    "isArray": true,
+                    "isRequired": false
+                },
+                "quantity": {
+                    "type": "Quantity",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "unitPrice": {
+                    "type": "Money",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "factor": {
+                    "type": "decimal",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "net": {
+                    "type": "Money",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "noteNumber": {
+                    "type": "positiveInt",
+                    "isArray": true,
+                    "isRequired": false
+                },
+                "adjudication": {
+                    "type": "",
+                    "isArray": true,
+                    "isRequired": false,
+                    "ref": "#ExplanationOfBenefit.item.adjudication"
+                }
+            }
+        }
+    },
+    "adjudication": {
+        "type": "",
+        "isArray": true,
+        "isRequired": false,
+        "ref": "#ExplanationOfBenefit.item.adjudication"
+    },
+    "total": {
+        "type": "BackboneElement",
+        "isArray": true,
+        "isRequired": false,
+        "category": {
+            "type": "CodeableConcept",
+            "isArray": false,
+            "isRequired": true
+        },
+        "amount": {
+            "type": "Money",
+            "isArray": false,
+            "isRequired": true
+        }
+    },
+    "payment": {
+        "type": {
+            "type": "CodeableConcept",
+            "isArray": false,
+            "isRequired": false
+        },
+        "isArray": false,
+        "isRequired": false,
+        "adjustment": {
+            "type": "Money",
+            "isArray": false,
+            "isRequired": false
+        },
+        "adjustmentReason": {
+            "type": "CodeableConcept",
+            "isArray": false,
+            "isRequired": false
+        },
+        "date": {
+            "type": "date",
+            "isArray": false,
+            "isRequired": false
+        },
+        "amount": {
+            "type": "Money",
+            "isArray": false,
+            "isRequired": false
+        },
+        "identifier": {
+            "type": "Identifier",
+            "isArray": false,
+            "isRequired": false
+        }
+    },
+    "formCode": {
+        "type": "CodeableConcept",
+        "isArray": false,
+        "isRequired": false
+    },
+    "form": {
+        "type": "Attachment",
+        "isArray": false,
+        "isRequired": false
+    },
+    "processNote": {
+        "type": {
+            "type": "code",
+            "isArray": false,
+            "isRequired": false
+        },
+        "isArray": true,
+        "isRequired": false,
+        "number": {
+            "type": "positiveInt",
+            "isArray": false,
+            "isRequired": false
+        },
+        "text": {
+            "type": "string",
+            "isArray": false,
+            "isRequired": false
+        },
+        "language": {
+            "type": "CodeableConcept",
+            "isArray": false,
+            "isRequired": false
+        }
+    },
+    "benefitPeriod": {
+        "type": "Period",
+        "isArray": false,
+        "isRequired": false
+    },
+    "benefitBalance": {
+        "type": "BackboneElement",
+        "isArray": true,
+        "isRequired": false,
+        "category": {
+            "type": "CodeableConcept",
+            "isArray": false,
+            "isRequired": true
+        },
+        "excluded": {
+            "type": "boolean",
+            "isArray": false,
+            "isRequired": false
+        },
+        "name": {
+            "type": "string",
+            "isArray": false,
+            "isRequired": false
+        },
+        "description": {
+            "type": "string",
+            "isArray": false,
+            "isRequired": false
+        },
+        "network": {
+            "type": "CodeableConcept",
+            "isArray": false,
+            "isRequired": false
+        },
+        "unit": {
+            "type": "CodeableConcept",
+            "isArray": false,
+            "isRequired": false
+        },
+        "term": {
+            "type": "CodeableConcept",
+            "isArray": false,
+            "isRequired": false
+        },
+        "financial": {
+            "type": {
+                "type": "CodeableConcept",
+                "isArray": false,
+                "isRequired": true
+            },
+            "isArray": true,
+            "isRequired": false,
+            "allowedUnsignedInt": {
+                "type": "unsignedInt",
+                "isArray": false,
+                "isRequired": false
+            },
+            "allowedString": {
+                "type": "string",
+                "isArray": false,
+                "isRequired": false
+            },
+            "allowedMoney": {
+                "type": "Money",
+                "isArray": false,
+                "isRequired": false
+            },
+            "usedUnsignedInt": {
+                "type": "unsignedInt",
+                "isArray": false,
+                "isRequired": false
+            },
+            "usedMoney": {
+                "type": "Money",
+                "isArray": false,
+                "isRequired": false
+            }
+        }
+    }
+}

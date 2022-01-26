@@ -1,0 +1,96 @@
+{
+    "id": {
+        "type": "string",
+        "isArray": false,
+        "isRequired": false
+    },
+    "meta": {
+        "type": "Meta",
+        "isArray": false,
+        "isRequired": false
+    },
+    "implicitRules": {
+        "type": "uri",
+        "isArray": false,
+        "isRequired": false
+    },
+    "language": {
+        "type": "code",
+        "isArray": false,
+        "isRequired": false
+    },
+    "text": {
+        "type": "Narrative",
+        "isArray": false,
+        "isRequired": false
+    },
+    "contained": {
+        "type": "Resource",
+        "isArray": true,
+        "isRequired": false
+    },
+    "extension": {
+        "type": "Extension",
+        "isArray": true,
+        "isRequired": false
+    },
+    "modifierExtension": {
+        "type": "Extension",
+        "isArray": true,
+        "isRequired": false
+    },
+    "status": {
+        "type": "code",
+        "isArray": false,
+        "isRequired": true
+    },
+    "contact": {
+        "type": "ContactPoint",
+        "isArray": true,
+        "isRequired": false
+    },
+    "end": {
+        "type": "instant",
+        "isArray": false,
+        "isRequired": false
+    },
+    "reason": {
+        "type": "string",
+        "isArray": false,
+        "isRequired": true
+    },
+    "criteria": {
+        "type": "string",
+        "isArray": false,
+        "isRequired": true
+    },
+    "error": {
+        "type": "string",
+        "isArray": false,
+        "isRequired": false
+    },
+    "channel": {
+        "type": {
+            "type": "code",
+            "isArray": false,
+            "isRequired": true
+        },
+        "isArray": false,
+        "isRequired": true,
+        "endpoint": {
+            "type": "url",
+            "isArray": false,
+            "isRequired": false
+        },
+        "payload": {
+            "type": "code",
+            "isArray": false,
+            "isRequired": false
+        },
+        "header": {
+            "type": "string",
+            "isArray": true,
+            "isRequired": false
+        }
+    }
+}

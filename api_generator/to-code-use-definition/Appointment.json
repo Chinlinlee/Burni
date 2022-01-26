@@ -1,0 +1,176 @@
+{
+    "id": {
+        "type": "string",
+        "isArray": false,
+        "isRequired": false
+    },
+    "meta": {
+        "type": "Meta",
+        "isArray": false,
+        "isRequired": false
+    },
+    "implicitRules": {
+        "type": "uri",
+        "isArray": false,
+        "isRequired": false
+    },
+    "language": {
+        "type": "code",
+        "isArray": false,
+        "isRequired": false
+    },
+    "text": {
+        "type": "Narrative",
+        "isArray": false,
+        "isRequired": false
+    },
+    "contained": {
+        "type": "Resource",
+        "isArray": true,
+        "isRequired": false
+    },
+    "extension": {
+        "type": "Extension",
+        "isArray": true,
+        "isRequired": false
+    },
+    "modifierExtension": {
+        "type": "Extension",
+        "isArray": true,
+        "isRequired": false
+    },
+    "identifier": {
+        "type": "Identifier",
+        "isArray": true,
+        "isRequired": false
+    },
+    "status": {
+        "type": "code",
+        "isArray": false,
+        "isRequired": true
+    },
+    "cancelationReason": {
+        "type": "CodeableConcept",
+        "isArray": false,
+        "isRequired": false
+    },
+    "serviceCategory": {
+        "type": "CodeableConcept",
+        "isArray": true,
+        "isRequired": false
+    },
+    "serviceType": {
+        "type": "CodeableConcept",
+        "isArray": true,
+        "isRequired": false
+    },
+    "specialty": {
+        "type": "CodeableConcept",
+        "isArray": true,
+        "isRequired": false
+    },
+    "appointmentType": {
+        "type": "CodeableConcept",
+        "isArray": false,
+        "isRequired": false
+    },
+    "reasonCode": {
+        "type": "CodeableConcept",
+        "isArray": true,
+        "isRequired": false
+    },
+    "reasonReference": {
+        "type": "Reference",
+        "isArray": true,
+        "isRequired": false
+    },
+    "priority": {
+        "type": "unsignedInt",
+        "isArray": false,
+        "isRequired": false
+    },
+    "description": {
+        "type": "string",
+        "isArray": false,
+        "isRequired": false
+    },
+    "supportingInformation": {
+        "type": "Reference",
+        "isArray": true,
+        "isRequired": false
+    },
+    "start": {
+        "type": "instant",
+        "isArray": false,
+        "isRequired": false
+    },
+    "end": {
+        "type": "instant",
+        "isArray": false,
+        "isRequired": false
+    },
+    "minutesDuration": {
+        "type": "positiveInt",
+        "isArray": false,
+        "isRequired": false
+    },
+    "slot": {
+        "type": "Reference",
+        "isArray": true,
+        "isRequired": false
+    },
+    "created": {
+        "type": "dateTime",
+        "isArray": false,
+        "isRequired": false
+    },
+    "comment": {
+        "type": "string",
+        "isArray": false,
+        "isRequired": false
+    },
+    "patientInstruction": {
+        "type": "string",
+        "isArray": false,
+        "isRequired": false
+    },
+    "basedOn": {
+        "type": "Reference",
+        "isArray": true,
+        "isRequired": false
+    },
+    "participant": {
+        "type": {
+            "type": "CodeableConcept",
+            "isArray": true,
+            "isRequired": false
+        },
+        "isArray": true,
+        "isRequired": true,
+        "actor": {
+            "type": "Reference",
+            "isArray": false,
+            "isRequired": false
+        },
+        "required": {
+            "type": "code",
+            "isArray": false,
+            "isRequired": false
+        },
+        "status": {
+            "type": "code",
+            "isArray": false,
+            "isRequired": true
+        },
+        "period": {
+            "type": "Period",
+            "isArray": false,
+            "isRequired": false
+        }
+    },
+    "requestedPeriod": {
+        "type": "Period",
+        "isArray": true,
+        "isRequired": false
+    }
+}

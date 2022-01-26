@@ -1,0 +1,189 @@
+{
+    "id": {
+        "type": "string",
+        "isArray": false,
+        "isRequired": false
+    },
+    "meta": {
+        "type": "Meta",
+        "isArray": false,
+        "isRequired": false
+    },
+    "implicitRules": {
+        "type": "uri",
+        "isArray": false,
+        "isRequired": false
+    },
+    "language": {
+        "type": "code",
+        "isArray": false,
+        "isRequired": false
+    },
+    "text": {
+        "type": "Narrative",
+        "isArray": false,
+        "isRequired": false
+    },
+    "contained": {
+        "type": "Resource",
+        "isArray": true,
+        "isRequired": false
+    },
+    "extension": {
+        "type": "Extension",
+        "isArray": true,
+        "isRequired": false
+    },
+    "modifierExtension": {
+        "type": "Extension",
+        "isArray": true,
+        "isRequired": false
+    },
+    "identifier": {
+        "type": "Identifier",
+        "isArray": false,
+        "isRequired": false
+    },
+    "basedOn": {
+        "type": "Reference",
+        "isArray": true,
+        "isRequired": false
+    },
+    "partOf": {
+        "type": "Reference",
+        "isArray": true,
+        "isRequired": false
+    },
+    "questionnaire": {
+        "type": "canonical",
+        "isArray": false,
+        "isRequired": false
+    },
+    "status": {
+        "type": "code",
+        "isArray": false,
+        "isRequired": true
+    },
+    "subject": {
+        "type": "Reference",
+        "isArray": false,
+        "isRequired": false
+    },
+    "encounter": {
+        "type": "Reference",
+        "isArray": false,
+        "isRequired": false
+    },
+    "authored": {
+        "type": "dateTime",
+        "isArray": false,
+        "isRequired": false
+    },
+    "author": {
+        "type": "Reference",
+        "isArray": false,
+        "isRequired": false
+    },
+    "source": {
+        "type": "Reference",
+        "isArray": false,
+        "isRequired": false
+    },
+    "item": {
+        "type": "BackboneElement",
+        "isArray": true,
+        "isRequired": false,
+        "linkId": {
+            "type": "string",
+            "isArray": false,
+            "isRequired": true
+        },
+        "definition": {
+            "type": "uri",
+            "isArray": false,
+            "isRequired": false
+        },
+        "text": {
+            "type": "string",
+            "isArray": false,
+            "isRequired": false
+        },
+        "answer": {
+            "type": "BackboneElement",
+            "isArray": true,
+            "isRequired": false,
+            "valueBoolean": {
+                "type": "boolean",
+                "isArray": false,
+                "isRequired": false
+            },
+            "valueDecimal": {
+                "type": "decimal",
+                "isArray": false,
+                "isRequired": false
+            },
+            "valueInteger": {
+                "type": "integer",
+                "isArray": false,
+                "isRequired": false
+            },
+            "valueDate": {
+                "type": "date",
+                "isArray": false,
+                "isRequired": false
+            },
+            "valueDateTime": {
+                "type": "dateTime",
+                "isArray": false,
+                "isRequired": false
+            },
+            "valueTime": {
+                "type": "time",
+                "isArray": false,
+                "isRequired": false
+            },
+            "valueString": {
+                "type": "string",
+                "isArray": false,
+                "isRequired": false
+            },
+            "valueUri": {
+                "type": "uri",
+                "isArray": false,
+                "isRequired": false
+            },
+            "valueAttachment": {
+                "type": "Attachment",
+                "isArray": false,
+                "isRequired": false
+            },
+            "valueCoding": {
+                "type": "Coding",
+                "isArray": false,
+                "isRequired": false
+            },
+            "valueQuantity": {
+                "type": "Quantity",
+                "isArray": false,
+                "isRequired": false
+            },
+            "valueReference": {
+                "type": "Reference",
+                "isArray": false,
+                "isRequired": false
+            },
+            "item": {
+                "type": "",
+                "isArray": true,
+                "isRequired": false,
+                "ref": "#QuestionnaireResponse.item"
+            }
+        },
+        "item": {
+            "type": "",
+            "isArray": true,
+            "isRequired": false,
+            "ref": "#QuestionnaireResponse.item"
+        }
+    }
+}

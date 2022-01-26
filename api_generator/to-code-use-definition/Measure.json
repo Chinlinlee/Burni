@@ -1,0 +1,342 @@
+{
+    "id": {
+        "type": "string",
+        "isArray": false,
+        "isRequired": false
+    },
+    "meta": {
+        "type": "Meta",
+        "isArray": false,
+        "isRequired": false
+    },
+    "implicitRules": {
+        "type": "uri",
+        "isArray": false,
+        "isRequired": false
+    },
+    "language": {
+        "type": "code",
+        "isArray": false,
+        "isRequired": false
+    },
+    "text": {
+        "type": "Narrative",
+        "isArray": false,
+        "isRequired": false
+    },
+    "contained": {
+        "type": "Resource",
+        "isArray": true,
+        "isRequired": false
+    },
+    "extension": {
+        "type": "Extension",
+        "isArray": true,
+        "isRequired": false
+    },
+    "modifierExtension": {
+        "type": "Extension",
+        "isArray": true,
+        "isRequired": false
+    },
+    "url": {
+        "type": "uri",
+        "isArray": false,
+        "isRequired": false
+    },
+    "identifier": {
+        "type": "Identifier",
+        "isArray": true,
+        "isRequired": false
+    },
+    "version": {
+        "type": "string",
+        "isArray": false,
+        "isRequired": false
+    },
+    "name": {
+        "type": "string",
+        "isArray": false,
+        "isRequired": false
+    },
+    "title": {
+        "type": "string",
+        "isArray": false,
+        "isRequired": false
+    },
+    "subtitle": {
+        "type": "string",
+        "isArray": false,
+        "isRequired": false
+    },
+    "status": {
+        "type": "code",
+        "isArray": false,
+        "isRequired": true
+    },
+    "experimental": {
+        "type": "boolean",
+        "isArray": false,
+        "isRequired": false
+    },
+    "subjectCodeableConcept": {
+        "type": "CodeableConcept",
+        "isArray": false,
+        "isRequired": false
+    },
+    "subjectReference": {
+        "type": "Reference",
+        "isArray": false,
+        "isRequired": false
+    },
+    "date": {
+        "type": "dateTime",
+        "isArray": false,
+        "isRequired": false
+    },
+    "publisher": {
+        "type": "string",
+        "isArray": false,
+        "isRequired": false
+    },
+    "contact": {
+        "type": "ContactDetail",
+        "isArray": true,
+        "isRequired": false
+    },
+    "description": {
+        "type": "markdown",
+        "isArray": false,
+        "isRequired": false
+    },
+    "useContext": {
+        "type": "UsageContext",
+        "isArray": true,
+        "isRequired": false
+    },
+    "jurisdiction": {
+        "type": "CodeableConcept",
+        "isArray": true,
+        "isRequired": false
+    },
+    "purpose": {
+        "type": "markdown",
+        "isArray": false,
+        "isRequired": false
+    },
+    "usage": {
+        "type": "string",
+        "isArray": false,
+        "isRequired": false
+    },
+    "copyright": {
+        "type": "markdown",
+        "isArray": false,
+        "isRequired": false
+    },
+    "approvalDate": {
+        "type": "date",
+        "isArray": false,
+        "isRequired": false
+    },
+    "lastReviewDate": {
+        "type": "date",
+        "isArray": false,
+        "isRequired": false
+    },
+    "effectivePeriod": {
+        "type": "Period",
+        "isArray": false,
+        "isRequired": false
+    },
+    "topic": {
+        "type": "CodeableConcept",
+        "isArray": true,
+        "isRequired": false
+    },
+    "author": {
+        "type": "ContactDetail",
+        "isArray": true,
+        "isRequired": false
+    },
+    "editor": {
+        "type": "ContactDetail",
+        "isArray": true,
+        "isRequired": false
+    },
+    "reviewer": {
+        "type": "ContactDetail",
+        "isArray": true,
+        "isRequired": false
+    },
+    "endorser": {
+        "type": "ContactDetail",
+        "isArray": true,
+        "isRequired": false
+    },
+    "relatedArtifact": {
+        "type": "RelatedArtifact",
+        "isArray": true,
+        "isRequired": false
+    },
+    "library": {
+        "type": "canonical",
+        "isArray": true,
+        "isRequired": false
+    },
+    "disclaimer": {
+        "type": "markdown",
+        "isArray": false,
+        "isRequired": false
+    },
+    "scoring": {
+        "type": "CodeableConcept",
+        "isArray": false,
+        "isRequired": false
+    },
+    "compositeScoring": {
+        "type": "CodeableConcept",
+        "isArray": false,
+        "isRequired": false
+    },
+    "type": {
+        "type": "CodeableConcept",
+        "isArray": true,
+        "isRequired": false
+    },
+    "riskAdjustment": {
+        "type": "string",
+        "isArray": false,
+        "isRequired": false
+    },
+    "rateAggregation": {
+        "type": "string",
+        "isArray": false,
+        "isRequired": false
+    },
+    "rationale": {
+        "type": "markdown",
+        "isArray": false,
+        "isRequired": false
+    },
+    "clinicalRecommendationStatement": {
+        "type": "markdown",
+        "isArray": false,
+        "isRequired": false
+    },
+    "improvementNotation": {
+        "type": "CodeableConcept",
+        "isArray": false,
+        "isRequired": false
+    },
+    "definition": {
+        "type": "markdown",
+        "isArray": true,
+        "isRequired": false
+    },
+    "guidance": {
+        "type": "markdown",
+        "isArray": false,
+        "isRequired": false
+    },
+    "group": {
+        "type": "BackboneElement",
+        "isArray": true,
+        "isRequired": false,
+        "code": {
+            "type": "CodeableConcept",
+            "isArray": false,
+            "isRequired": false
+        },
+        "description": {
+            "type": "string",
+            "isArray": false,
+            "isRequired": false
+        },
+        "population": {
+            "type": "BackboneElement",
+            "isArray": true,
+            "isRequired": false,
+            "code": {
+                "type": "CodeableConcept",
+                "isArray": false,
+                "isRequired": false
+            },
+            "description": {
+                "type": "string",
+                "isArray": false,
+                "isRequired": false
+            },
+            "criteria": {
+                "type": "Expression",
+                "isArray": false,
+                "isRequired": true
+            }
+        },
+        "stratifier": {
+            "type": "BackboneElement",
+            "isArray": true,
+            "isRequired": false,
+            "code": {
+                "type": "CodeableConcept",
+                "isArray": false,
+                "isRequired": false
+            },
+            "description": {
+                "type": "string",
+                "isArray": false,
+                "isRequired": false
+            },
+            "criteria": {
+                "type": "Expression",
+                "isArray": false,
+                "isRequired": false
+            },
+            "component": {
+                "type": "BackboneElement",
+                "isArray": true,
+                "isRequired": false,
+                "code": {
+                    "type": "CodeableConcept",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "description": {
+                    "type": "string",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "criteria": {
+                    "type": "Expression",
+                    "isArray": false,
+                    "isRequired": true
+                }
+            }
+        }
+    },
+    "supplementalData": {
+        "type": "BackboneElement",
+        "isArray": true,
+        "isRequired": false,
+        "code": {
+            "type": "CodeableConcept",
+            "isArray": false,
+            "isRequired": false
+        },
+        "usage": {
+            "type": "CodeableConcept",
+            "isArray": true,
+            "isRequired": false
+        },
+        "description": {
+            "type": "string",
+            "isArray": false,
+            "isRequired": false
+        },
+        "criteria": {
+            "type": "Expression",
+            "isArray": false,
+            "isRequired": true
+        }
+    }
+}

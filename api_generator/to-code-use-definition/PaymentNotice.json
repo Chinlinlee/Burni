@@ -1,0 +1,102 @@
+{
+    "id": {
+        "type": "string",
+        "isArray": false,
+        "isRequired": false
+    },
+    "meta": {
+        "type": "Meta",
+        "isArray": false,
+        "isRequired": false
+    },
+    "implicitRules": {
+        "type": "uri",
+        "isArray": false,
+        "isRequired": false
+    },
+    "language": {
+        "type": "code",
+        "isArray": false,
+        "isRequired": false
+    },
+    "text": {
+        "type": "Narrative",
+        "isArray": false,
+        "isRequired": false
+    },
+    "contained": {
+        "type": "Resource",
+        "isArray": true,
+        "isRequired": false
+    },
+    "extension": {
+        "type": "Extension",
+        "isArray": true,
+        "isRequired": false
+    },
+    "modifierExtension": {
+        "type": "Extension",
+        "isArray": true,
+        "isRequired": false
+    },
+    "identifier": {
+        "type": "Identifier",
+        "isArray": true,
+        "isRequired": false
+    },
+    "status": {
+        "type": "code",
+        "isArray": false,
+        "isRequired": true
+    },
+    "request": {
+        "type": "Reference",
+        "isArray": false,
+        "isRequired": false
+    },
+    "response": {
+        "type": "Reference",
+        "isArray": false,
+        "isRequired": false
+    },
+    "created": {
+        "type": "dateTime",
+        "isArray": false,
+        "isRequired": true
+    },
+    "provider": {
+        "type": "Reference",
+        "isArray": false,
+        "isRequired": false
+    },
+    "payment": {
+        "type": "Reference",
+        "isArray": false,
+        "isRequired": true
+    },
+    "paymentDate": {
+        "type": "date",
+        "isArray": false,
+        "isRequired": false
+    },
+    "payee": {
+        "type": "Reference",
+        "isArray": false,
+        "isRequired": false
+    },
+    "recipient": {
+        "type": "Reference",
+        "isArray": false,
+        "isRequired": true
+    },
+    "amount": {
+        "type": "Money",
+        "isArray": false,
+        "isRequired": true
+    },
+    "paymentStatus": {
+        "type": "CodeableConcept",
+        "isArray": false,
+        "isRequired": false
+    }
+}

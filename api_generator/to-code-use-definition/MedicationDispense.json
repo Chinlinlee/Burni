@@ -1,0 +1,201 @@
+{
+    "id": {
+        "type": "string",
+        "isArray": false,
+        "isRequired": false
+    },
+    "meta": {
+        "type": "Meta",
+        "isArray": false,
+        "isRequired": false
+    },
+    "implicitRules": {
+        "type": "uri",
+        "isArray": false,
+        "isRequired": false
+    },
+    "language": {
+        "type": "code",
+        "isArray": false,
+        "isRequired": false
+    },
+    "text": {
+        "type": "Narrative",
+        "isArray": false,
+        "isRequired": false
+    },
+    "contained": {
+        "type": "Resource",
+        "isArray": true,
+        "isRequired": false
+    },
+    "extension": {
+        "type": "Extension",
+        "isArray": true,
+        "isRequired": false
+    },
+    "modifierExtension": {
+        "type": "Extension",
+        "isArray": true,
+        "isRequired": false
+    },
+    "identifier": {
+        "type": "Identifier",
+        "isArray": true,
+        "isRequired": false
+    },
+    "partOf": {
+        "type": "Reference",
+        "isArray": true,
+        "isRequired": false
+    },
+    "status": {
+        "type": "code",
+        "isArray": false,
+        "isRequired": true
+    },
+    "statusReasonCodeableConcept": {
+        "type": "CodeableConcept",
+        "isArray": false,
+        "isRequired": false
+    },
+    "statusReasonReference": {
+        "type": "Reference",
+        "isArray": false,
+        "isRequired": false
+    },
+    "category": {
+        "type": "CodeableConcept",
+        "isArray": false,
+        "isRequired": false
+    },
+    "medicationCodeableConcept": {
+        "type": "CodeableConcept",
+        "isArray": false,
+        "isRequired": true
+    },
+    "medicationReference": {
+        "type": "Reference",
+        "isArray": false,
+        "isRequired": true
+    },
+    "subject": {
+        "type": "Reference",
+        "isArray": false,
+        "isRequired": false
+    },
+    "context": {
+        "type": "Reference",
+        "isArray": false,
+        "isRequired": false
+    },
+    "supportingInformation": {
+        "type": "Reference",
+        "isArray": true,
+        "isRequired": false
+    },
+    "performer": {
+        "type": "BackboneElement",
+        "isArray": true,
+        "isRequired": false,
+        "function": {
+            "type": "CodeableConcept",
+            "isArray": false,
+            "isRequired": false
+        },
+        "actor": {
+            "type": "Reference",
+            "isArray": false,
+            "isRequired": true
+        }
+    },
+    "location": {
+        "type": "Reference",
+        "isArray": false,
+        "isRequired": false
+    },
+    "authorizingPrescription": {
+        "type": "Reference",
+        "isArray": true,
+        "isRequired": false
+    },
+    "type": {
+        "type": "CodeableConcept",
+        "isArray": false,
+        "isRequired": false
+    },
+    "quantity": {
+        "type": "Quantity",
+        "isArray": false,
+        "isRequired": false
+    },
+    "daysSupply": {
+        "type": "Quantity",
+        "isArray": false,
+        "isRequired": false
+    },
+    "whenPrepared": {
+        "type": "dateTime",
+        "isArray": false,
+        "isRequired": false
+    },
+    "whenHandedOver": {
+        "type": "dateTime",
+        "isArray": false,
+        "isRequired": false
+    },
+    "destination": {
+        "type": "Reference",
+        "isArray": false,
+        "isRequired": false
+    },
+    "receiver": {
+        "type": "Reference",
+        "isArray": true,
+        "isRequired": false
+    },
+    "note": {
+        "type": "Annotation",
+        "isArray": true,
+        "isRequired": false
+    },
+    "dosageInstruction": {
+        "type": "Dosage",
+        "isArray": true,
+        "isRequired": false
+    },
+    "substitution": {
+        "type": {
+            "type": "CodeableConcept",
+            "isArray": false,
+            "isRequired": false
+        },
+        "isArray": false,
+        "isRequired": false,
+        "wasSubstituted": {
+            "type": "boolean",
+            "isArray": false,
+            "isRequired": true
+        },
+        "reason": {
+            "type": "CodeableConcept",
+            "isArray": true,
+            "isRequired": false
+        },
+        "responsibleParty": {
+            "type": "Reference",
+            "isArray": true,
+            "isRequired": false
+        }
+    },
+    "detectedIssue": {
+        "type": "Reference",
+        "isArray": true,
+        "isRequired": false
+    },
+    "eventHistory": {
+        "type": "Reference",
+        "isArray": true,
+        "isRequired": false
+    }
+}

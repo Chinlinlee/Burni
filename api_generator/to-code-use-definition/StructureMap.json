@@ -1,0 +1,606 @@
+{
+    "id": {
+        "type": "string",
+        "isArray": false,
+        "isRequired": false
+    },
+    "meta": {
+        "type": "Meta",
+        "isArray": false,
+        "isRequired": false
+    },
+    "implicitRules": {
+        "type": "uri",
+        "isArray": false,
+        "isRequired": false
+    },
+    "language": {
+        "type": "code",
+        "isArray": false,
+        "isRequired": false
+    },
+    "text": {
+        "type": "Narrative",
+        "isArray": false,
+        "isRequired": false
+    },
+    "contained": {
+        "type": "Resource",
+        "isArray": true,
+        "isRequired": false
+    },
+    "extension": {
+        "type": "Extension",
+        "isArray": true,
+        "isRequired": false
+    },
+    "modifierExtension": {
+        "type": "Extension",
+        "isArray": true,
+        "isRequired": false
+    },
+    "url": {
+        "type": "uri",
+        "isArray": false,
+        "isRequired": true
+    },
+    "identifier": {
+        "type": "Identifier",
+        "isArray": true,
+        "isRequired": false
+    },
+    "version": {
+        "type": "string",
+        "isArray": false,
+        "isRequired": false
+    },
+    "name": {
+        "type": "string",
+        "isArray": false,
+        "isRequired": true
+    },
+    "title": {
+        "type": "string",
+        "isArray": false,
+        "isRequired": false
+    },
+    "status": {
+        "type": "code",
+        "isArray": false,
+        "isRequired": true
+    },
+    "experimental": {
+        "type": "boolean",
+        "isArray": false,
+        "isRequired": false
+    },
+    "date": {
+        "type": "dateTime",
+        "isArray": false,
+        "isRequired": false
+    },
+    "publisher": {
+        "type": "string",
+        "isArray": false,
+        "isRequired": false
+    },
+    "contact": {
+        "type": "ContactDetail",
+        "isArray": true,
+        "isRequired": false
+    },
+    "description": {
+        "type": "markdown",
+        "isArray": false,
+        "isRequired": false
+    },
+    "useContext": {
+        "type": "UsageContext",
+        "isArray": true,
+        "isRequired": false
+    },
+    "jurisdiction": {
+        "type": "CodeableConcept",
+        "isArray": true,
+        "isRequired": false
+    },
+    "purpose": {
+        "type": "markdown",
+        "isArray": false,
+        "isRequired": false
+    },
+    "copyright": {
+        "type": "markdown",
+        "isArray": false,
+        "isRequired": false
+    },
+    "structure": {
+        "type": "BackboneElement",
+        "isArray": true,
+        "isRequired": false,
+        "url": {
+            "type": "canonical",
+            "isArray": false,
+            "isRequired": true
+        },
+        "mode": {
+            "type": "code",
+            "isArray": false,
+            "isRequired": true
+        },
+        "alias": {
+            "type": "string",
+            "isArray": false,
+            "isRequired": false
+        },
+        "documentation": {
+            "type": "string",
+            "isArray": false,
+            "isRequired": false
+        }
+    },
+    "import": {
+        "type": "canonical",
+        "isArray": true,
+        "isRequired": false
+    },
+    "group": {
+        "type": "BackboneElement",
+        "isArray": true,
+        "isRequired": true,
+        "name": {
+            "type": "id",
+            "isArray": false,
+            "isRequired": true
+        },
+        "extends": {
+            "type": "id",
+            "isArray": false,
+            "isRequired": false
+        },
+        "typeMode": {
+            "type": "code",
+            "isArray": false,
+            "isRequired": true
+        },
+        "documentation": {
+            "type": "string",
+            "isArray": false,
+            "isRequired": false
+        },
+        "input": {
+            "type": {
+                "type": "string",
+                "isArray": false,
+                "isRequired": false
+            },
+            "isArray": true,
+            "isRequired": true,
+            "name": {
+                "type": "id",
+                "isArray": false,
+                "isRequired": true
+            },
+            "mode": {
+                "type": "code",
+                "isArray": false,
+                "isRequired": true
+            },
+            "documentation": {
+                "type": "string",
+                "isArray": false,
+                "isRequired": false
+            }
+        },
+        "rule": {
+            "type": "BackboneElement",
+            "isArray": true,
+            "isRequired": true,
+            "name": {
+                "type": "id",
+                "isArray": false,
+                "isRequired": true
+            },
+            "source": {
+                "type": {
+                    "type": "string",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "isArray": true,
+                "isRequired": true,
+                "context": {
+                    "type": "id",
+                    "isArray": false,
+                    "isRequired": true
+                },
+                "min": {
+                    "type": "integer",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "max": {
+                    "type": "string",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "defaultValueBase64Binary": {
+                    "type": "base64Binary",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "defaultValueBoolean": {
+                    "type": "boolean",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "defaultValueCanonical": {
+                    "type": "canonical",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "defaultValueCode": {
+                    "type": "code",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "defaultValueDate": {
+                    "type": "date",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "defaultValueDateTime": {
+                    "type": "dateTime",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "defaultValueDecimal": {
+                    "type": "decimal",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "defaultValueId": {
+                    "type": "id",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "defaultValueInstant": {
+                    "type": "instant",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "defaultValueInteger": {
+                    "type": "integer",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "defaultValueMarkdown": {
+                    "type": "markdown",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "defaultValueOid": {
+                    "type": "oid",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "defaultValuePositiveInt": {
+                    "type": "positiveInt",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "defaultValueString": {
+                    "type": "string",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "defaultValueTime": {
+                    "type": "time",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "defaultValueUnsignedInt": {
+                    "type": "unsignedInt",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "defaultValueUri": {
+                    "type": "uri",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "defaultValueUrl": {
+                    "type": "url",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "defaultValueUuid": {
+                    "type": "uuid",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "defaultValueAddress": {
+                    "type": "Address",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "defaultValueAge": {
+                    "type": "Age",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "defaultValueAnnotation": {
+                    "type": "Annotation",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "defaultValueAttachment": {
+                    "type": "Attachment",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "defaultValueCodeableConcept": {
+                    "type": "CodeableConcept",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "defaultValueCoding": {
+                    "type": "Coding",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "defaultValueContactPoint": {
+                    "type": "ContactPoint",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "defaultValueCount": {
+                    "type": "Count",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "defaultValueDistance": {
+                    "type": "Distance",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "defaultValueDuration": {
+                    "type": "Duration",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "defaultValueHumanName": {
+                    "type": "HumanName",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "defaultValueIdentifier": {
+                    "type": "Identifier",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "defaultValueMoney": {
+                    "type": "Money",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "defaultValuePeriod": {
+                    "type": "Period",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "defaultValueQuantity": {
+                    "type": "Quantity",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "defaultValueRange": {
+                    "type": "Range",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "defaultValueRatio": {
+                    "type": "Ratio",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "defaultValueReference": {
+                    "type": "Reference",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "defaultValueSampledData": {
+                    "type": "SampledData",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "defaultValueSignature": {
+                    "type": "Signature",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "defaultValueTiming": {
+                    "type": "Timing",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "defaultValueContactDetail": {
+                    "type": "ContactDetail",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "defaultValueContributor": {
+                    "type": "Contributor",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "defaultValueDataRequirement": {
+                    "type": "DataRequirement",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "defaultValueExpression": {
+                    "type": "Expression",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "defaultValueParameterDefinition": {
+                    "type": "ParameterDefinition",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "defaultValueRelatedArtifact": {
+                    "type": "RelatedArtifact",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "defaultValueTriggerDefinition": {
+                    "type": "TriggerDefinition",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "defaultValueUsageContext": {
+                    "type": "UsageContext",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "defaultValueDosage": {
+                    "type": "Dosage",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "defaultValueMeta": {
+                    "type": "Meta",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "element": {
+                    "type": "string",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "listMode": {
+                    "type": "code",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "variable": {
+                    "type": "id",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "condition": {
+                    "type": "string",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "check": {
+                    "type": "string",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "logMessage": {
+                    "type": "string",
+                    "isArray": false,
+                    "isRequired": false
+                }
+            },
+            "target": {
+                "type": "BackboneElement",
+                "isArray": true,
+                "isRequired": false,
+                "context": {
+                    "type": "id",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "contextType": {
+                    "type": "code",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "element": {
+                    "type": "string",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "variable": {
+                    "type": "id",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "listMode": {
+                    "type": "code",
+                    "isArray": true,
+                    "isRequired": false
+                },
+                "listRuleId": {
+                    "type": "id",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "transform": {
+                    "type": "code",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "parameter": {
+                    "type": "BackboneElement",
+                    "isArray": true,
+                    "isRequired": false,
+                    "valueId": {
+                        "type": "id",
+                        "isArray": false,
+                        "isRequired": true
+                    },
+                    "valueString": {
+                        "type": "string",
+                        "isArray": false,
+                        "isRequired": true
+                    },
+                    "valueBoolean": {
+                        "type": "boolean",
+                        "isArray": false,
+                        "isRequired": true
+                    },
+                    "valueInteger": {
+                        "type": "integer",
+                        "isArray": false,
+                        "isRequired": true
+                    },
+                    "valueDecimal": {
+                        "type": "decimal",
+                        "isArray": false,
+                        "isRequired": true
+                    }
+                }
+            },
+            "rule": {
+                "type": "",
+                "isArray": true,
+                "isRequired": false,
+                "ref": "#StructureMap.group.rule"
+            },
+            "dependent": {
+                "type": "BackboneElement",
+                "isArray": true,
+                "isRequired": false,
+                "name": {
+                    "type": "id",
+                    "isArray": false,
+                    "isRequired": true
+                },
+                "variable": {
+                    "type": "string",
+                    "isArray": true,
+                    "isRequired": true
+                }
+            },
+            "documentation": {
+                "type": "string",
+                "isArray": false,
+                "isRequired": false
+            }
+        }
+    }
+}

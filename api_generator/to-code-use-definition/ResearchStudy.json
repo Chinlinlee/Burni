@@ -1,0 +1,185 @@
+{
+    "id": {
+        "type": "string",
+        "isArray": false,
+        "isRequired": false
+    },
+    "meta": {
+        "type": "Meta",
+        "isArray": false,
+        "isRequired": false
+    },
+    "implicitRules": {
+        "type": "uri",
+        "isArray": false,
+        "isRequired": false
+    },
+    "language": {
+        "type": "code",
+        "isArray": false,
+        "isRequired": false
+    },
+    "text": {
+        "type": "Narrative",
+        "isArray": false,
+        "isRequired": false
+    },
+    "contained": {
+        "type": "Resource",
+        "isArray": true,
+        "isRequired": false
+    },
+    "extension": {
+        "type": "Extension",
+        "isArray": true,
+        "isRequired": false
+    },
+    "modifierExtension": {
+        "type": "Extension",
+        "isArray": true,
+        "isRequired": false
+    },
+    "identifier": {
+        "type": "Identifier",
+        "isArray": true,
+        "isRequired": false
+    },
+    "title": {
+        "type": "string",
+        "isArray": false,
+        "isRequired": false
+    },
+    "protocol": {
+        "type": "Reference",
+        "isArray": true,
+        "isRequired": false
+    },
+    "partOf": {
+        "type": "Reference",
+        "isArray": true,
+        "isRequired": false
+    },
+    "status": {
+        "type": "code",
+        "isArray": false,
+        "isRequired": true
+    },
+    "primaryPurposeType": {
+        "type": "CodeableConcept",
+        "isArray": false,
+        "isRequired": false
+    },
+    "phase": {
+        "type": "CodeableConcept",
+        "isArray": false,
+        "isRequired": false
+    },
+    "category": {
+        "type": "CodeableConcept",
+        "isArray": true,
+        "isRequired": false
+    },
+    "focus": {
+        "type": "CodeableConcept",
+        "isArray": true,
+        "isRequired": false
+    },
+    "condition": {
+        "type": "CodeableConcept",
+        "isArray": true,
+        "isRequired": false
+    },
+    "contact": {
+        "type": "ContactDetail",
+        "isArray": true,
+        "isRequired": false
+    },
+    "relatedArtifact": {
+        "type": "RelatedArtifact",
+        "isArray": true,
+        "isRequired": false
+    },
+    "keyword": {
+        "type": "CodeableConcept",
+        "isArray": true,
+        "isRequired": false
+    },
+    "location": {
+        "type": "CodeableConcept",
+        "isArray": true,
+        "isRequired": false
+    },
+    "description": {
+        "type": "markdown",
+        "isArray": false,
+        "isRequired": false
+    },
+    "enrollment": {
+        "type": "Reference",
+        "isArray": true,
+        "isRequired": false
+    },
+    "period": {
+        "type": "Period",
+        "isArray": false,
+        "isRequired": false
+    },
+    "sponsor": {
+        "type": "Reference",
+        "isArray": false,
+        "isRequired": false
+    },
+    "principalInvestigator": {
+        "type": "Reference",
+        "isArray": false,
+        "isRequired": false
+    },
+    "site": {
+        "type": "Reference",
+        "isArray": true,
+        "isRequired": false
+    },
+    "reasonStopped": {
+        "type": "CodeableConcept",
+        "isArray": false,
+        "isRequired": false
+    },
+    "note": {
+        "type": "Annotation",
+        "isArray": true,
+        "isRequired": false
+    },
+    "arm": {
+        "type": {
+            "type": "CodeableConcept",
+            "isArray": false,
+            "isRequired": false
+        },
+        "isArray": true,
+        "isRequired": false,
+        "name": {
+            "type": "string",
+            "isArray": false,
+            "isRequired": true
+        },
+        "description": {
+            "type": "string",
+            "isArray": false,
+            "isRequired": false
+        }
+    },
+    "objective": {
+        "type": {
+            "type": "CodeableConcept",
+            "isArray": false,
+            "isRequired": false
+        },
+        "isArray": true,
+        "isRequired": false,
+        "name": {
+            "type": "string",
+            "isArray": false,
+            "isRequired": false
+        }
+    }
+}
