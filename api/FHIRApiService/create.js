@@ -98,13 +98,8 @@ async function doInsertData(insertData , resourceType) {
         //delete insertData.meta;
         insertData.id = uuid.v4();
         let insertDataObject = new mongodb[resourceType](insertData);
-        insertDataObject.save(function(err, doc) {
-            if (err) {
-                console.error(err);
-                return [false, err];
-            }
-            return [true, doc.getFHIRField()];
-        });
+        let doc = await insertDataObject.save();
+        return [true, doc.getFHIRField()];
     } catch (e) {
         console.error(e);
         return [false , e];
