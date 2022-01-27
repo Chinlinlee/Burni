@@ -3,48 +3,48 @@ const _ = require('lodash');
 const mongoose = require('mongoose');
 const {
     Meta
-} = require('../FHIRDataTypesSchema/Meta');
+} = require('../FHIRDataTypesSchemaExport/FHIRDataTypesSchemaExport');
 const uri = require('../FHIRDataTypesSchema/uri');
 const code = require('../FHIRDataTypesSchema/code');
 const {
     Narrative
-} = require('../FHIRDataTypesSchema/Narrative');
+} = require('../FHIRDataTypesSchemaExport/FHIRDataTypesSchemaExport');
 const {
     Extension
-} = require('../FHIRDataTypesSchema/Extension');
+} = require('../FHIRDataTypesSchemaExport/FHIRDataTypesSchemaExport');
 const {
     Identifier
-} = require('../FHIRDataTypesSchema/Identifier');
+} = require('../FHIRDataTypesSchemaExport/FHIRDataTypesSchemaExport');
 const boolean = require('../FHIRDataTypesSchema/boolean');
 const {
     HumanName
-} = require('../FHIRDataTypesSchema/HumanName');
+} = require('../FHIRDataTypesSchemaExport/FHIRDataTypesSchemaExport');
 const {
     ContactPoint
-} = require('../FHIRDataTypesSchema/ContactPoint');
+} = require('../FHIRDataTypesSchemaExport/FHIRDataTypesSchemaExport');
 const date = require('../FHIRDataTypesSchema/date');
 const dateTime = require('../FHIRDataTypesSchema/dateTime');
 const {
     Address
-} = require('../FHIRDataTypesSchema/Address');
+} = require('../FHIRDataTypesSchemaExport/FHIRDataTypesSchemaExport');
 const {
     CodeableConcept
-} = require('../FHIRDataTypesSchema/CodeableConcept');
+} = require('../FHIRDataTypesSchemaExport/FHIRDataTypesSchemaExport');
 const {
     Attachment
-} = require('../FHIRDataTypesSchema/Attachment');
+} = require('../FHIRDataTypesSchemaExport/FHIRDataTypesSchemaExport');
 const {
     Patient_Contact
-} = require('../FHIRDataTypesSchema/Patient_Contact');
+} = require('../FHIRDataTypesSchemaExport/FHIRDataTypesSchemaExport');
 const {
     Patient_Communication
-} = require('../FHIRDataTypesSchema/Patient_Communication');
+} = require('../FHIRDataTypesSchemaExport/FHIRDataTypesSchemaExport');
 const {
     Reference
-} = require('../FHIRDataTypesSchema/Reference');
+} = require('../FHIRDataTypesSchemaExport/FHIRDataTypesSchemaExport');
 const {
     Patient_Link
-} = require('../FHIRDataTypesSchema/Patient_Link');
+} = require('../FHIRDataTypesSchemaExport/FHIRDataTypesSchemaExport');
 const id = require('../FHIRDataTypesSchema/id');
 module.exports = function() {
     require('mongoose-schema-jsonschema')(mongoose);
