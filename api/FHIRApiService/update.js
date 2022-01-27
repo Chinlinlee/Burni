@@ -98,16 +98,9 @@ module.exports = async function (req, res, resourceType) {
     return resFunc[status](result);
 };
 
-function isDocExist(id,resourceType) {
-    mongodb[resourceType].findOne({
-        id: id
-    }, async function (err, doc) {
-        if (err) {
-            return {
-                status: 0,
-                error: err
-            }; //error
-        }
+async function isDocExist(id,resourceType) {
+    try {
+        let doc = await mongodb[resourceType].findOne({ id: id });
         if (doc) {
             return {
                 status: 1,
@@ -119,7 +112,12 @@ function isDocExist(id,resourceType) {
                 error: ""
             }; //no doc
         }
-    });
+    } catch(e) {
+        return {
+            status: 0,
+            error: e
+        }; //error
+    }
 }
 
 function doUpdateData(req,resourceType) {
