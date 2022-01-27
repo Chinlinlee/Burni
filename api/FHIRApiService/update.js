@@ -33,6 +33,7 @@ module.exports = async function (req, res, resourceType) {
                 let fullAbsoluteUrl = new URL(req.originalUrl, reqBaseUrl).href;
                 res.set("Location", fullAbsoluteUrl);
             }
+            res.append("Last-Modified", (new Date()).toUTCString());
             return doRes(data.code, data.doc);
         },
         "false": (err) => {
