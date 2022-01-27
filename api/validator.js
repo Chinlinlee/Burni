@@ -27,7 +27,7 @@ const validateParams = function (paramSchema , item , options) {
             });
         }
         next();
-    }
+    };
 };
 
 const FHIRValidateParams = function (paramSchema , item , options) {
@@ -46,7 +46,7 @@ const FHIRValidateParams = function (paramSchema , item , options) {
             return res.status(400).send(sendErrorMessage);
         }
         next();
-    }
+    };
 };
 module.exports = {
     validateParams: validateParams ,

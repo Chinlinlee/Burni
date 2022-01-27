@@ -128,7 +128,7 @@ async function checkReference(resourceData) {
         return {
             status : checkedReferenceList.every(v=> v.exist),
             checkedReferenceList: checkedReferenceList
-        }
+        };
     }
     return {
         status: true,
@@ -179,11 +179,11 @@ const user = {
                             if (err.name == "TokenExpiredError") {
                                 return res.status(401).send(handleError.expired("token expired"));
                             }
-                            return res.status(401).send(handleError.security(err.message))
+                            return res.status(401).send(handleError.security(err.message));
                         } 
                         req.tokenObj = decoded;
                         return next();
-                    })
+                    });
                 } else {
                     return res.status(401).send(handleError.security("the token not found"));
                 }
@@ -215,7 +215,7 @@ const user = {
             return false;
         }
     }
-}
+};
 /**
  * 
  * @param {import('express').Request} req 
@@ -233,7 +233,7 @@ user["checkTokenPermission"] = async (req, resourceType, interaction) => {
         }
     }
     return false;
-}
+};
 
 module.exports = {
     getDeepKeys: getDeepKeys,
@@ -241,4 +241,4 @@ module.exports = {
     checkReference: checkReference , 
     getNotExistReferenceList: getNotExistReferenceList,
     user : user
-}
+};

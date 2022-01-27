@@ -7,4 +7,4 @@ module.exports = {
         message: props => `${props.value} is not a valid decimal!`
     },
     default: void 0
-}
+};

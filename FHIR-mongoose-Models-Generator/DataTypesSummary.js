@@ -43,7 +43,7 @@ module.exports = {
         "Duration",
         "Count",
         "MoneyQuantity",
-        "SimpleQuantity",
+        "SimpleQuantity"
     ] ,
     MetadataTypes: [
         "ContactDetail",
@@ -53,7 +53,7 @@ module.exports = {
         "UsageContext",
         "ParameterDefinition",
         "Expression",
-        "TriggerDefinition",
+        "TriggerDefinition"
     ] ,
     SpecialPurposeDataTypes: [
         "Reference" ,

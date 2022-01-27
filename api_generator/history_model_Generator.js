@@ -17,9 +17,9 @@ function genHistoryModel() {
             let historyModel = `
            const mongoose = require('mongoose');
            const moment = require('moment');
-           const _ = require('lodash')
+           const _ = require('lodash');
            module.exports = function() {
-               let ${fileBaseName} = require('./${fileBaseName}').schema
+               let ${fileBaseName} = require('./${fileBaseName}').schema;
                ${fileBaseName}.id.unique = false;
                ${fileBaseName}.request = {
                    "type" : Object , 
@@ -31,17 +31,17 @@ function genHistoryModel() {
                        type: String , 
                        required : true
                    }
-               }
+               };
                ${fileBaseName}.response = {
                     "type" : Object , 
                     "status" : {
                         type : String , 
                         required : true
                     } 
-                }
+                };
                 let schemaConfig = {
-                    toObject : { getters : true} ,
-                    toJSON : { getters : true} ,
+                    toObject : { getters : true},
+                    toJSON : { getters : true}
                 };
                 if (process.env.MONGODB_IS_SHARDING_MODE == "true") {
                     schemaConfig["shardKey"] = {
@@ -57,21 +57,21 @@ function genHistoryModel() {
                    delete result['request'];
                    delete result['response'];
                    return result;
-                }
+                };
                 ${fileBaseName}HistorySchema.methods.getFHIRBundleField = function() {
                    let result = this.toObject();
                    delete result._id;
                    delete result.__v;
                    delete result['name._id'];
                    return result;
-                }
+                };
                 
                 const ${fileBaseName}HistoryModel = mongoose.model("${fileBaseName}_history", ${fileBaseName}HistorySchema, "${fileBaseName}_history");
                 return ${fileBaseName}HistoryModel;
-            }`
+            };`;
             fs.writeFileSync(`./models/mongodb/model/${fileBaseName}_history.js`, beautify(historyModel));
         }
     }
 }
 
-module.exports.genHistoryModel = genHistoryModel
+module.exports.genHistoryModel = genHistoryModel;

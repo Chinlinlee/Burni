@@ -19,7 +19,7 @@ module.exports = async function(req, res, resourceType) {
             return res.status(code).send(xmlItem);
         }
         return res.status(code).send(item);
-    }
+    };
     if (!user.checkTokenPermission(req, resourceType, "vread")) {
         return doRes(403,handleError.forbidden("Your token doesn't have permission with this API"));
     }
@@ -44,7 +44,7 @@ module.exports = async function(req, res, resourceType) {
         let operationOutcomeError = handleError.exception(errorMessage);
         return doRes(404 , operationOutcomeError);
     } catch (e) {
-        console.log(`api ${process.env.FHIRSERVER_APIPATH}/${resourceType}/:id has error, `, e)
+        console.log(`api ${process.env.FHIRSERVER_APIPATH}/${resourceType}/:id has error, `, e);
         let operationOutcomeError = handleError.exception(e);
         return doRes(500 , operationOutcomeError);
     }

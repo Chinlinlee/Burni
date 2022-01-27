@@ -25,7 +25,7 @@ module.exports = async function(req, res,resourceType,paramsSearch) {
             return res.status(code).send(xmlItem);
         }
         return res.status(code).send(item);
-    }
+    };
     if (!user.checkTokenPermission(req, resourceType, "search-type")) {
         return doRes(403,handleError.forbidden("Your token doesn't have permission with this API"));
     }
@@ -71,7 +71,7 @@ module.exports = async function(req, res,resourceType,paramsSearch) {
         res.header('Last-Modified', new Date().toUTCString());
         return doRes(200 , bundle);
     } catch (e) {
-        console.log(`api ${process.env.FHIRSERVER_APIPATH}/${resourceType}/ has error, `, e)
+        console.log(`api ${process.env.FHIRSERVER_APIPATH}/${resourceType}/ has error, `, e);
         let operationOutcomeError = handleError.exception(e);
         return doRes(500 , operationOutcomeError);
     }

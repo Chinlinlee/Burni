@@ -16,7 +16,7 @@ module.exports = exports = function(config) {
 
     hosts.forEach((host, index) => {
         if (index == 0) {
-            databaseUrl += `mongodb://${host}:${ports[0]}`
+            databaseUrl += `mongodb://${host}:${ports[0]}`;
         } else {
             databaseUrl += `,${dbName}`;
         }
@@ -65,18 +65,18 @@ module.exports = exports = function(config) {
 
 function getCollections (dirname, collectionObj) {
     let jsFilesInDir = fs.readdirSync(__dirname + dirname)
-    .filter((file) => (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js'))
+    .filter((file) => (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js'));
     for (let file of jsFilesInDir) {
         const moduleName = file.split('.')[0];
         console.log('moduleName :: ', moduleName);
-        console.log('path : ', __dirname + dirname)
+        console.log('path : ', __dirname + dirname);
         collectionObj[moduleName] = require(__dirname + dirname +'/' + moduleName)(mongoose);
     }
 }
 
 function shardCollection(dirname) {
     let jsFilesInDir = fs.readdirSync(__dirname + dirname)
-    .filter((file) => (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js'))
+    .filter((file) => (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js'));
     for (let file of jsFilesInDir) {
         const moduleName = file.split('.')[0];
         if (process.env.MONGODB_IS_SHARDING_MODE == "true") {

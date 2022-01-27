@@ -7,7 +7,7 @@ module.exports = (resourceItem, index) => {
         return {
             status: false,
             message: `Missing resourceType in contained[${index}]`
-        }
+        };
     }
     if (mongodb[resourceType]) {
         let resourceToMongoModel = new mongodb[resourceType](resourceItem);
@@ -16,16 +16,16 @@ module.exports = (resourceItem, index) => {
             return {
                 status: false,
                 message: validation.message
-            }
+            };
         }
         return {
             status: true,
             message: "success"
-        }
+        };
     } else {
         return {
             status: false,
             message: `Burni not support this resource type. ${resourceType}`
-        }
+        };
     }
-}
+};

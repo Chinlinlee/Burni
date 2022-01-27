@@ -13,7 +13,7 @@ module.exports = async function(req, res) {
         return res.status(200).send({
             status: true,
             message: "Delete success"
-        })
+        });
     } catch(e) {
         console.error(e);
         return res.status(500).send({
@@ -22,4 +22,4 @@ module.exports = async function(req, res) {
         });
     }
     
-}
+};

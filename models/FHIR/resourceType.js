@@ -145,4 +145,4 @@ module.exports = [
     "ValueSet",
     "VerificationResult",
     "VisionPrescription"
-]
+];

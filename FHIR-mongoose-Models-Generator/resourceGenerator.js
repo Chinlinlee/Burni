@@ -54,7 +54,7 @@ function fixChoiceTypeOfDate (fieldName, type) {
             return {
                 yes: true,
                 type: lowerFirstDateTypes
-            }
+            };
         }
     }
     return {
@@ -87,7 +87,7 @@ function getSchema (resource , name) {
             if (resource.properties[i].items.enum) {
                 result[i] = {
                     type : `[String]` 
-                }
+                };
                 continue;
             }
             let arrayRefClean  = arrayRef.split('/');
@@ -96,7 +96,7 @@ function getSchema (resource , name) {
             if (choiceTypeDate.yes) typeOfField = choiceTypeDate.type;
             result[i] = {
                 type : `[${typeOfField}]` 
-            }
+            };
         } else if (refSchema)  {
             if (/^#/.test(refSchema)) {
                 let refClean = refSchema.split('/');
@@ -107,7 +107,7 @@ function getSchema (resource , name) {
                 } else {
                     result[i] = {
                         type : typeOfField
-                    }
+                    };
                 }
                 
             } else if (!/^#/.test(refSchema)) {
@@ -118,8 +118,8 @@ function getSchema (resource , name) {
                     result[i] = typeOfField;
                 } else {
                     result[i] = {
-                        type : typeOfField ,
-                    }
+                        type : typeOfField 
+                    };
                 }
             }
         } else if (isCode) {
@@ -128,7 +128,7 @@ function getSchema (resource , name) {
             result[i] = {
                 type : typeOfField ,
                 enum : JSON.stringify(isCode)
-            }
+            };
         } else {
             if (choiceTypeDate.yes) type = choiceTypeDate.type;
             if (isPrimitiveType(type)) {
@@ -136,7 +136,7 @@ function getSchema (resource , name) {
             } else {
                 result[i] = {
                     type : type 
-                }
+                };
             }
         }
         let isRequired = _.get(resource , "required");
@@ -192,7 +192,7 @@ async function generateSchema (type) {
     let schema = getSchema(FHIRJson[type] , type);
     cleanChildSchema(schema);
     let importLibs = getImportLibs(schema);
-    let schemaStr = JSON.stringify(schema , null , 4).replace(/\"/gm , '')
+    let schemaStr = JSON.stringify(schema , null , 4).replace(/\"/gm , '');
     let code = `module.exports = new mongoose.Schema (${schemaStr.replace(/\\/gm , '"')} , { 
         _id : false ,
         id: false,
@@ -259,11 +259,11 @@ function generateResourceSchema (type) {
     ${type}.id = {
         ...id ,
         index: true
-    }
+    };
     ${type}.contained = {
         type: [Object],
         default: void 0
-    }
+    };
     module.exports.schema = ${type}; 
     let schemaConfig = {
         toObject : { getters : true} ,
@@ -286,7 +286,7 @@ function generateResourceSchema (type) {
             _.set(result, "collection", tempCollectionField);
         }
         return result;
-    }
+    };
 
     ${type}Schema.pre('save', async function (next) {
         let mongodb = require('../index');
@@ -419,7 +419,7 @@ function generateResourceSchema (type) {
     } else {
         importLibs =`const moment = require('moment');\r\nconst _ = require('lodash');\r\n${importLibs}\r\n`;
     }
-    code = `${importLibs}${code}`;
+    code = `${importLibs}${code};`;
     mkdirp.sync(config.resourcePath);
     fs.writeFileSync(`${config.resourcePath}/${type}.js` , beautify(code , {indent_size : 4 ,pace_in_empty_paren: true }));   
 }
@@ -445,7 +445,7 @@ module.exports =  function (inputResourceType , option) {
     //mkdirp.sync(`${config.typePath}/`);
     config.requirePath = path.relative(resourcePath , "./models/mongodb/FHIRDataTypesSchema").replace(/\\/gm ,"/");
     generateResourceSchema(inputResourceType);
-}
+};
 
 function main(inputResourceType , option) {
     if (option.cwd) {

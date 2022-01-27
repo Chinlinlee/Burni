@@ -56,7 +56,7 @@ module.exports = function (passport) {
         if (username === process.env.ADMIN_USERNAME && password === process.env.ADMIN_PASSWORD) {
             return done(null ,username);
         }
-        return done(null, false, 'Invalid user or password')
+        return done(null, false, 'Invalid user or password');
     }));
 
     passport.use(new BearerStrategy(
@@ -67,7 +67,7 @@ module.exports = function (passport) {
               return done(null, user.account, { scope: 'all' });
             });
           }
-    ))
+    ));
 };
 async function My_Auth(username , password)
 {

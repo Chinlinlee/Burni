@@ -49,10 +49,10 @@ const handleError = {
     "security": (err)  => getOperationOutCome(err, "security"),
     "expired": (err) => getOperationOutCome(err, "expired"),
     "forbidden": (err) => getOperationOutCome(err, "forbidden")
-}
+};
 
 
 module.exports = {
     getDeleteMessage : getDeleteMessage , 
     handleError : handleError
-}
+};

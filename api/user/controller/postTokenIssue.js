@@ -27,4 +27,4 @@ module.exports = async function (req , res) {
         console.error(err);
         return res.status(500).json(err);
     }
-}
+};

@@ -10,4 +10,4 @@ module.exports = {
         if (v) return encodeURI(v);
     },
     default: void 0
-}
+};

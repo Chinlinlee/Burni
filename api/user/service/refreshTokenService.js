@@ -14,7 +14,7 @@ module.exports = async function (refresh_token,expiresIn='1y') {
                 status: false,
                 code: 404,
                 data: "Not found with refresh token"
-            }
+            };
         }
         let decodedTokenObj = jwt.decode(hitTokenObj.token, { complete:true });
         let id = await uidGenerator.generate();
@@ -25,7 +25,7 @@ module.exports = async function (refresh_token,expiresIn='1y') {
             token: token,
             id: `Bearer ${id}`,
             refresh_token: refresh_token
-        }
+        };
         await mongodb.issuedToken.findOneAndUpdate({
             refresh_token: refresh_token
         } , tokenObj);
@@ -42,4 +42,4 @@ module.exports = async function (refresh_token,expiresIn='1y') {
             data: e
         };
     }
-}
+};

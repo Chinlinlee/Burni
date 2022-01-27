@@ -1,3 +1,4 @@
+const { capitalizeFirstLetter } = require('normalize-text');
 const { StringParameter, TokenParameter, NumberParameter, DateParameter, ReferenceParameter } = require('./parameterHandler');
 
 const genParamFunc = {
@@ -50,8 +51,8 @@ const genParamFunc = {
         let referenceParameterHandler = new ReferenceParameter(param, field);
         return referenceParameterHandler.getCodeString();
     }
-}
+};
 
 module.exports = {
     genParamFunc: genParamFunc
-}
+};

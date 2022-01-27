@@ -8,7 +8,7 @@ function stringQuery(str, key) {
     const buildContainsOrExact = {
         "contains": stringContains,
         "exact": stringExact
-    }
+    };
     let buildFunc = {
         '1': () => {
             return stringContainStart(str);
@@ -17,7 +17,7 @@ function stringQuery(str, key) {
             let modifier = keySplit[1];
             return buildContainsOrExact[modifier](str);
         }
-    }
+    };
     return buildFunc[keySplit.length]();
 }
 
@@ -73,12 +73,12 @@ function tokenQuery(item, type, field, required , isCodeableConcept = false) {
         for(let i in queryBuilder) {
             ors.$or.push({
                 [i] : queryBuilder[i]
-            })
+            });
         }
         return ors;
     }
     return queryBuilder;
-};
+}
 
 function quantityQuery(item, field) {
     let queryBuilder = {};
@@ -104,12 +104,12 @@ function quantityQuery(item, field) {
         for(let i in queryBuilder) {
             ors.$or.push({
                 [i] : queryBuilder[i]
-            })
+            });
         }
         return ors;
     }
     return queryBuilder;
-};
+}
 
 
 function addressQuery(target , key) {
@@ -128,7 +128,7 @@ function addressQuery(target , key) {
         );
     }
     return ors;
-};
+}
 
 function nameQuery(target , key) {
     let totalSplit = target.split(/[\s.,]+/);
@@ -145,7 +145,8 @@ function nameQuery(target , key) {
         );
     }
     return ors;
-};
+}
+
 let dateQueryBuilder = {
     "eq" : (queryBuilder,  field , date , format) => {
         let gte = moment(date).startOf(format);
@@ -153,7 +154,7 @@ let dateQueryBuilder = {
         let result = {
             "$gte" : gte.toDate() ,
             "$lte" : lte.toDate()
-        }
+        };
         queryBuilder[field] = result;
         return queryBuilder;
     } ,
@@ -164,7 +165,7 @@ let dateQueryBuilder = {
             $or : [
                 {
                     [field] : {
-                        "$gte" : moment(gd).toDate() ,
+                        "$gte" : moment(gd).toDate()
                     }
                 } ,
                 {
@@ -173,39 +174,39 @@ let dateQueryBuilder = {
                     }
                 }
             ]
-        }
+        };
         queryBuilder = result;
         return queryBuilder;
     } , 
     "lt" : (queryBuilder,  field , date , format) => {
         let result = {
             "$lt" : moment(date).toDate() 
-        }
+        };
         queryBuilder[field] = result;
         return queryBuilder;
     } ,
     "gt" : (queryBuilder,  field , date , format) => {
         let result = {
             "$gt" : moment(date).toDate() 
-        }
+        };
         queryBuilder[field] = result;
         return queryBuilder;
     } ,
     "ge" : (queryBuilder,  field , date , format) => {
         let result = {
             "$gte" : moment(date).toDate() 
-        }
+        };
         queryBuilder[field] = result;
         return queryBuilder;
     } ,
     "le" : (queryBuilder,  field , date , format) => {
         let result = {
             "$lte" : moment(date).toDate() 
-        }
+        };
         queryBuilder[field] = result;
         return queryBuilder;
     } 
-}
+};
 function dateQuery (value, field) {
     let queryBuilder = {};
     let date = value.substring(2);
@@ -290,7 +291,7 @@ function periodQuery(value , field) {
                 ...queryOfEnd
             }
         ]
-    }
+    };
     return query;
 }
 
@@ -319,46 +320,46 @@ let instantQueryBuilder ={
     "eq": (queryBuilder, field, date) => {
         let result = {
             "$eq": date
-        }
+        };
         queryBuilder[field] = result;
         return queryBuilder;
     },
     "ne": (queryBuilder, field, date) => {
         let result = {
             "$ne": date
-        }
+        };
         queryBuilder[field] = result;
         return queryBuilder;
     },
     "lt" : (queryBuilder, field, date) => {
         let result = {
             "$lt": date
-        }
+        };
         queryBuilder[field] = result;
         return queryBuilder;
     },
     "gt" : (queryBuilder, field, date) => {
         let result = {
             "$gt": date
-        }
+        };
         queryBuilder[field] = result;
         return queryBuilder;
     },
     "ge" : (queryBuilder, field, date) => {
         let result = {
             "$gte": date
-        }
+        };
         queryBuilder[field] = result;
         return queryBuilder;
     },
     "le" : (queryBuilder, field, date) => {
         let result = {
             "$lte": date
-        }
+        };
         queryBuilder[field] = result;
         return queryBuilder;
     }
-}
+};
 
 
 function instantQuery(value, field) {
@@ -375,12 +376,12 @@ function instantQuery(value, field) {
     }
     if (date.includes("+")) {
         let dateSplitPlus = date.split("+");
-        let inputTimezone = `-${dateSplitPlus.pop().replace(":","")}`
+        let inputTimezone = `-${dateSplitPlus.pop().replace(":","")}`;
         let realDate = moment(dateSplitPlus.join("")).format("YYYY-MM-DDTHH:mm:ss.SSS");
         date = moment(realDate).utc(true).utcOffset(inputTimezone).format("YYYY-MM-DDTHH:mm:ss.SSS");
     } else if (date.includes("-") && date.match(/:/g).length == 3) {
         let dateSplitHyphen = date.split("-");
-        let inputTimezone = `+${dateSplitHyphen.pop().replace(":", "")}`
+        let inputTimezone = `+${dateSplitHyphen.pop().replace(":", "")}`;
         let realDate = moment(dateSplitHyphen.join("-")).format("YYYY-MM-DDTHH:mm:ss.SSS");
         date = moment(realDate).utc(true).utcOffset(inputTimezone).format("YYYY-MM-DDTHH:mm:ss.SSS");
     } else {
@@ -399,11 +400,11 @@ function referenceQuery (query , field) {
     if (isUrl) {
         _.set(queryBuilder , field , isUrl[3]);
         queryBuilder[field] = isUrl[3];
-        return result;
+        return queryBuilder;
     } else if (typeAndId.length == 2) {
-        queryBuilder[field] = `${typeAndId[0]}/${typeAndId[1]}`
+        queryBuilder[field] = `${typeAndId[0]}/${typeAndId[1]}`;
     } else {
-        queryBuilder[field] = {$regex : new RegExp(query)}
+        queryBuilder[field] = {$regex : new RegExp(query)};
     }
     return queryBuilder;
 }
@@ -426,49 +427,42 @@ let numberQueryBuilder = {
     "eq" : (queryBuilder,  field , num) => {
         let result = {
             "$eq" : Number(num)
-        }
+        };
         queryBuilder[field] = result;
         return queryBuilder;
     } ,
     "ne" : (queryBuilder,  field , num) => {
         let result = {
             "$ne" : Number(num)
-        }
-        queryBuilder[field] = result;
-        return queryBuilder;
-    } ,
-    "ne" : (queryBuilder,  field , num) => {
-        let result = {
-            "$eq" : Number(num)
-        }
+        };
         queryBuilder[field] = result;
         return queryBuilder;
     } ,
     "gt" : (queryBuilder,  field , num) => {
         let result = {
             "$gt" : Number(num)
-        }
+        };
         queryBuilder[field] = result;
         return queryBuilder;
     } ,
     "lt" : (queryBuilder,  field , num) => {
         let result = {
             "$lt" : Number(num)
-        }
+        };
         queryBuilder[field] = result;
         return queryBuilder;
     } ,
     "ge" : (queryBuilder,  field , num) => {
         let result = {
             "$gte" : Number(num)
-        }
+        };
         queryBuilder[field] = result;
         return queryBuilder;
     } ,
     "le" : (queryBuilder,  field , num) => {
         let result = {
             "$lte" : Number(num)
-        }
+        };
         queryBuilder[field] = result;
         return queryBuilder;
     } ,
@@ -480,9 +474,8 @@ let numberQueryBuilder = {
     } ,
     "ap" : (queryBuilder,  field , num) => {
         return new Error("not support prefix");
-    } ,
-    
-}
+    } 
+};
 function numberQuery (value, field) {
     try {
         let queryBuilder = {};
@@ -513,4 +506,4 @@ module.exports = {
     quantityQuery : quantityQuery , 
     referenceQuery : referenceQuery , 
     arrayStringBuild : arrayStringBuild
-}
+};

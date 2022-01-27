@@ -32,7 +32,7 @@ function generateAPI(option) {
 
         module.exports = async function(req, res) {
             return await search(req, res,"${res}", paramsSearch);
-        }
+        };
         let paramsSearchFields = {};
 
         const paramsSearch = {
@@ -42,11 +42,11 @@ function generateAPI(option) {
                 });
                 delete query["_id"];
             }
-        }
+        };
 
         paramsSearch["_lastUpdated"] = (query) => {
             if (!_.isArray(query["_lastUpdated"])) {
-                query["_lastUpdated"] = [query["_lastUpdated"]]
+                query["_lastUpdated"] = [query["_lastUpdated"]];
             }
             for (let i in query["_lastUpdated"]) {
                 let buildResult = queryBuild.instantQuery(query["_lastUpdated"][i], "meta.lastUpdated");
@@ -56,8 +56,8 @@ function generateAPI(option) {
                 query.$and.push(buildResult);
             }
             delete query["_lastUpdated"];
-        }
-        `
+        };
+        `;
 
         let searchParameter = require('./FHIRParametersClean.json');
         let resSearchParams = searchParameter[res];
@@ -89,7 +89,7 @@ function generateAPI(option) {
         module.exports = async function(req, res) {
             return await read(req , res , "${res}");
         };
-        `
+        `;
         //#endregion
 
         //#region getHistory
@@ -98,7 +98,7 @@ function generateAPI(option) {
 
         module.exports = async function(req , res) {
             return await history(req, res, "${res}");
-        }
+        };
         `;
         //#endregion
 
@@ -108,7 +108,7 @@ function generateAPI(option) {
 
         module.exports = async function(req, res) {
             return await vread(req ,res, "${res}");
-        }
+        };
         `;
         //#endregion
 
@@ -117,7 +117,7 @@ function generateAPI(option) {
         const create = require('../../../FHIRApiService/create');
         module.exports = async function(req, res) {
             return await create(req , res , "${res}");
-        }
+        };
         `;
         if (res == "List") {
             post = `
@@ -136,7 +136,7 @@ function generateAPI(option) {
                     }
                 }
                 return await create(req , res , "${res}");
-            }
+            };
             `;
         }
         //#endregion
@@ -147,8 +147,8 @@ function generateAPI(option) {
 
         module.exports = async function(req, res) {
             return await update(req, res, "${res}");
-        }
-        `
+        };
+        `;
         if (res == "List") {
             put = `
             const update = require('../../../FHIRApiService/update.js');
@@ -166,7 +166,7 @@ function generateAPI(option) {
                     }
                 }
                 return await update(req, res, "${res}");
-            }
+            };
             `;
         }
         //#endregion
@@ -177,8 +177,8 @@ function generateAPI(option) {
 
         module.exports = async function (req, res) {
             return await deleteAPI(req, res, "${res}");
-        }
-        `
+        };
+        `;
         //#endregion
 
         const validationScript = `
@@ -186,7 +186,7 @@ function generateAPI(option) {
 
         module.exports = async function (req, res) {
             return await validate(req,res, "${res}");
-        }
+        };
         `;
         
         fs.writeFileSync(`./api/FHIR/${res}/controller/get${res}.js`, beautify(get));
@@ -290,7 +290,7 @@ function generateAPI(option) {
             router.delete('/:id', require("./controller/delete${res}"));
         }
 
-        module.exports = router;`
+        module.exports = router;`;
         fs.writeFileSync(`./api/FHIR/${res}/index.js`, beautify(indexJs));
     }
 }
@@ -364,7 +364,7 @@ function generateMetaData() {
     
     router.get('/' , require('./controller/getMetadata'));
     
-    module.exports = router;`
+    module.exports = router;`;
     fs.writeFileSync("./api/FHIR/metadata/index.js", beautify(metadataRouteIndexText));
     let metadataText = `
     const uuid = require('uuid');
@@ -395,7 +395,7 @@ function generateMetaData() {
         }
         res.json(metaData);
     }
-    `
+    `;
     fs.writeFileSync("./api/FHIR/metadata/controller/getMetadata.js", beautify(metadataText));
 }
 /*generateAPI({
@@ -412,14 +412,14 @@ function generateConfig() {
             }
         }
     }
-    fs.writeFileSync("./config/config.js", `module.exports=${JSON.stringify(configJson, null, 4)}`);
+    fs.writeFileSync("./config/config.js", `module.exports=${JSON.stringify(configJson, null, 4)};`);
 }
 
 module.exports = {
     generateAPI: generateAPI,
     generateMetaData: generateMetaData,
     generateConfig: generateConfig
-}
+};
 
 
 

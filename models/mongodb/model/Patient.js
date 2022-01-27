@@ -137,11 +137,11 @@ module.exports = function() {
     Patient.id = {
         ...id,
         index: true
-    }
+    };
     Patient.contained = {
         type: [Object],
         default: void 0
-    }
+    };
     module.exports.schema = Patient;
     let schemaConfig = {
         toObject: {
@@ -169,7 +169,7 @@ module.exports = function() {
             _.set(result, "collection", tempCollectionField);
         }
         return result;
-    }
+    };
 
     PatientSchema.pre('save', async function(next) {
         let mongodb = require('../index');
@@ -296,4 +296,4 @@ module.exports = function() {
 
     const PatientModel = mongoose.model("Patient", PatientSchema, "Patient");
     return PatientModel;
-}
+};

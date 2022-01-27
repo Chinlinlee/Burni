@@ -1,4 +1,3 @@
-
 const express = require('express');
 const router = express.Router();
 const path = require('path');
@@ -14,7 +13,7 @@ router.get('/', function (req, res) {
 router.get(`/${process.env.ADMIN_LOGIN_PATH}`, function(req, res) {
     res.sendFile('login.html' , {
         root: __dirname + '../../../public/html'
-    })
+    });
 });
 
 router.get('/tokenIssuer', user.checkIsLoggedIn, function (req, res, next) {
@@ -37,6 +36,6 @@ router.get('/tokenManager', user.checkIsLoggedIn, function (req, res, next) {
     res.sendFile('tokenManager.html', {
         root: __dirname + '../../../public/html'
     });
-})
+});
 
 module.exports = router;

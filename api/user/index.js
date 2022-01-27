@@ -60,7 +60,7 @@ router.post(
         "refresh_token": Joi.string().required()
     }, "body" , { allowUnknown: false }),
     require("./controller/postRefreshToken")
-)
+);
 
 
 module.exports = router;
