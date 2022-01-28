@@ -18,6 +18,23 @@ function getDeepKeys(obj) {
     }
     return keys;
 }
+/**
+ * Check item is real object.
+ * 1. Is Object
+ * 2. then check is array and check some element in array is object 
+ * @param {*} obj 
+ * @return {boolean}
+ */
+function isRealObject(obj) {
+    if (_.isObject(obj)) {
+        if (_.isArray(obj)) {
+            return obj.some(v => isRealObject(v));
+        }
+        return true;
+    }
+    return false;
+}
+
 async function findResourceById(resource, id) {
     try {
         let doc = await mongodb[resource].findOne(
@@ -237,6 +254,7 @@ user["checkTokenPermission"] = async (req, resourceType, interaction) => {
 
 module.exports = {
     getDeepKeys: getDeepKeys,
+    isRealObject: isRealObject,
     findResourceById: findResourceById,
     checkReference: checkReference , 
     getNotExistReferenceList: getNotExistReferenceList,

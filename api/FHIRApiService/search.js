@@ -7,7 +7,7 @@ const {
     handleError
 } = require('models/FHIR/httpMessage');
 const FHIR = require('../../models/FHIR/fhir/fhir').Fhir;
-const { user } = require('../apiService');
+const { user, isRealObject } = require('../apiService');
 
 /**
  * 
@@ -37,7 +37,7 @@ module.exports = async function(req, res,resourceType,paramsSearch) {
     delete queryParameter['_count'];
     delete queryParameter['_offset'];
     Object.keys(queryParameter).forEach(key => {
-        if (!queryParameter[key] || _.isObject(queryParameter[key])) {
+        if (!queryParameter[key] || isRealObject(queryParameter[key])) {
             delete queryParameter[key];
         }
     });
