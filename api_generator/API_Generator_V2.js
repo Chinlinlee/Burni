@@ -24,10 +24,7 @@ function generateAPI(option) {
         //#region search
         let get = `
         const _ = require('lodash');
-        const mongodb = require('models/mongodb');
-        const {createBundle} = require('models/FHIR/func');
-        const queryBuild = require('models/FHIR/queryBuild.js');
-        const {handleError} = require('models/FHIR/httpMessage');
+        const queryBuild = require('../../../../models/FHIR/queryBuild.js');
         const search = require('../../../FHIRApiService/search');
 
         module.exports = async function(req, res) {
@@ -72,7 +69,7 @@ function generateAPI(option) {
             let field = paramObj["field"];
             try {
                 let searchFuncTxt = genParamFunc[type](param, field, resourceDefinition);
-                get += beautify(searchFuncTxt);
+                get += (searchFuncTxt);
             } catch (e) {
                 if (e.message.includes("not a function")) {
                     console.log(type);

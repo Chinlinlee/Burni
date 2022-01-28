@@ -1,12 +1,5 @@
 const _ = require('lodash');
-const mongodb = require('models/mongodb');
-const {
-    createBundle
-} = require('models/FHIR/func');
-const queryBuild = require('models/FHIR/queryBuild.js');
-const {
-    handleError
-} = require('models/FHIR/httpMessage');
+const queryBuild = require('../../../../models/FHIR/queryBuild.js');
 const search = require('../../../FHIRApiService/search');
 
 module.exports = async function(req, res) {
@@ -36,6 +29,7 @@ paramsSearch["_lastUpdated"] = (query) => {
     }
     delete query["_lastUpdated"];
 };
+//#region address
 paramsSearchFields["address"] = ["address"];
 paramsSearch["address"] = (query) => {
     if (!_.isArray(query["address"])) {
@@ -46,7 +40,7 @@ paramsSearch["address"] = (query) => {
             $or: []
         };
         for (let field of paramsSearchFields["address"]) {
-            let buildResult = queryBuild.tokenQuery(item, "value", field);
+            let buildResult = queryBuild.addressQuery(item, field);
             buildQs.$or = [...buildQs.$or, ...buildResult.$or];
         }
         query.$and.push({
@@ -55,6 +49,8 @@ paramsSearch["address"] = (query) => {
     }
     delete query["address"];
 };
+//#endregion
+//#region address-city
 paramsSearchFields["address-city"] = ["address.city"];
 paramsSearch["address-city"] = (query) => {
     if (!_.isArray(query["address-city"])) {
@@ -64,16 +60,20 @@ paramsSearch["address-city"] = (query) => {
         let buildQs = {
             $or: []
         };
-        for (let field of paramsSearchFields["address"]) {
-            let buildResult = queryBuild.tokenQuery(item, "value", field);
-            buildQs.$or = [...buildQs.$or, ...buildResult.$or];
+        for (let field of paramsSearchFields["address-city"]) {
+            let buildResult = {
+                [field]: queryBuild.stringQuery(item, field)
+            };
+            buildQs.$or.push(buildResult);
         }
         query.$and.push({
             ...buildQs
         });
     }
-    delete query["address-city"];
+    delete query['address-city'];
 };
+//#endregion
+//#region address-country
 paramsSearchFields["address-country"] = ["address.country"];
 paramsSearch["address-country"] = (query) => {
     if (!_.isArray(query["address-country"])) {
@@ -83,16 +83,20 @@ paramsSearch["address-country"] = (query) => {
         let buildQs = {
             $or: []
         };
-        for (let field of paramsSearchFields["address"]) {
-            let buildResult = queryBuild.tokenQuery(item, "value", field);
-            buildQs.$or = [...buildQs.$or, ...buildResult.$or];
+        for (let field of paramsSearchFields["address-country"]) {
+            let buildResult = {
+                [field]: queryBuild.stringQuery(item, field)
+            };
+            buildQs.$or.push(buildResult);
         }
         query.$and.push({
             ...buildQs
         });
     }
-    delete query["address-country"];
+    delete query['address-country'];
 };
+//#endregion
+//#region address-postalcode
 paramsSearchFields["address-postalcode"] = ["address.postalCode"];
 paramsSearch["address-postalcode"] = (query) => {
     if (!_.isArray(query["address-postalcode"])) {
@@ -102,16 +106,20 @@ paramsSearch["address-postalcode"] = (query) => {
         let buildQs = {
             $or: []
         };
-        for (let field of paramsSearchFields["address"]) {
-            let buildResult = queryBuild.tokenQuery(item, "value", field);
-            buildQs.$or = [...buildQs.$or, ...buildResult.$or];
+        for (let field of paramsSearchFields["address-postalcode"]) {
+            let buildResult = {
+                [field]: queryBuild.stringQuery(item, field)
+            };
+            buildQs.$or.push(buildResult);
         }
         query.$and.push({
             ...buildQs
         });
     }
-    delete query["address-postalcode"];
+    delete query['address-postalcode'];
 };
+//#endregion
+//#region address-state
 paramsSearchFields["address-state"] = ["address.state"];
 paramsSearch["address-state"] = (query) => {
     if (!_.isArray(query["address-state"])) {
@@ -121,16 +129,46 @@ paramsSearch["address-state"] = (query) => {
         let buildQs = {
             $or: []
         };
-        for (let field of paramsSearchFields["address"]) {
-            let buildResult = queryBuild.tokenQuery(item, "value", field);
-            buildQs.$or = [...buildQs.$or, ...buildResult.$or];
+        for (let field of paramsSearchFields["address-state"]) {
+            let buildResult = {
+                [field]: queryBuild.stringQuery(item, field)
+            };
+            buildQs.$or.push(buildResult);
         }
         query.$and.push({
             ...buildQs
         });
     }
-    delete query["address-state"];
+    delete query['address-state'];
 };
+//#endregion
+//#region address-use
+paramsSearchFields["address-use"] = ["address.use"];
+const address_useSearchFunc = {};
+address_useSearchFunc["address.use"] = (item, field) => {
+    return queryBuild.tokenQuery(item, "", field, "", false);
+};
+
+paramsSearch["address-use"] = (query) => {
+    if (!_.isArray(query["address-use"])) {
+        query["address-use"] = [query["address-use"]];
+    }
+    for (let item of query["address-use"]) {
+        let buildQs = {
+            $or: []
+        };
+        for (let field of paramsSearchFields["address-use"]) {
+            let buildResult = address_useSearchFunc[field](item, field);
+            buildQs.$or.push(buildResult);
+        }
+        query.$and.push({
+            ...buildQs
+        });
+    }
+    delete query['address-use'];
+};
+//#endregion
+//#region birthdate
 paramsSearchFields["birthdate"] = ["birthDate"];
 const birthdateSearchFunc = {};
 birthdateSearchFunc["birthDate"] = (value, field) => {
@@ -155,7 +193,9 @@ paramsSearch["birthdate"] = (query) => {
     }
     delete query['birthdate'];
 };
-paramsSearchFields["email"] = ["telecom.where(system='email')"];
+//#endregion
+//#region email
+paramsSearchFields["email"] = ["telecom"];
 paramsSearch["email"] = (query) => {
     if (!_.isArray(query["email"])) {
         query["email"] = [query["email"]];
@@ -170,6 +210,8 @@ paramsSearch["email"] = (query) => {
     }
     delete query['email'];
 };
+//#endregion
+//#region family
 paramsSearchFields["family"] = ["name.family"];
 paramsSearch["family"] = (query) => {
     if (!_.isArray(query["family"])) {
@@ -191,6 +233,34 @@ paramsSearch["family"] = (query) => {
     }
     delete query['family'];
 };
+//#endregion
+//#region gender
+paramsSearchFields["gender"] = ["gender"];
+const genderSearchFunc = {};
+genderSearchFunc["gender"] = (item, field) => {
+    return queryBuild.tokenQuery(item, "", field, "", false);
+};
+
+paramsSearch["gender"] = (query) => {
+    if (!_.isArray(query["gender"])) {
+        query["gender"] = [query["gender"]];
+    }
+    for (let item of query["gender"]) {
+        let buildQs = {
+            $or: []
+        };
+        for (let field of paramsSearchFields["gender"]) {
+            let buildResult = genderSearchFunc[field](item, field);
+            buildQs.$or.push(buildResult);
+        }
+        query.$and.push({
+            ...buildQs
+        });
+    }
+    delete query['gender'];
+};
+//#endregion
+//#region given
 paramsSearchFields["given"] = ["name.given"];
 paramsSearch["given"] = (query) => {
     if (!_.isArray(query["given"])) {
@@ -212,7 +282,9 @@ paramsSearch["given"] = (query) => {
     }
     delete query['given'];
 };
-paramsSearchFields["phone"] = ["telecom.where(system='phone')"];
+//#endregion
+//#region phone
+paramsSearchFields["phone"] = ["telecom"];
 paramsSearch["phone"] = (query) => {
     if (!_.isArray(query["phone"])) {
         query["phone"] = [query["phone"]];
@@ -227,6 +299,8 @@ paramsSearch["phone"] = (query) => {
     }
     delete query['phone'];
 };
+//#endregion
+//#region phonetic
 paramsSearchFields["phonetic"] = ["name"];
 paramsSearch["phonetic"] = (query) => {
     if (!_.isArray(query["phonetic"])) {
@@ -248,6 +322,60 @@ paramsSearch["phonetic"] = (query) => {
     }
     delete query['phonetic'];
 };
+//#endregion
+//#region telecom
+paramsSearchFields["telecom"] = ["telecom"];
+const telecomSearchFunc = {};
+telecomSearchFunc["telecom"] = (item, field) => {
+    return queryBuild.tokenQuery(item, "value", field, "", false);
+};
+
+paramsSearch["telecom"] = (query) => {
+    if (!_.isArray(query["telecom"])) {
+        query["telecom"] = [query["telecom"]];
+    }
+    for (let item of query["telecom"]) {
+        let buildQs = {
+            $or: []
+        };
+        for (let field of paramsSearchFields["telecom"]) {
+            let buildResult = telecomSearchFunc[field](item, field);
+            buildQs.$or.push(buildResult);
+        }
+        query.$and.push({
+            ...buildQs
+        });
+    }
+    delete query['telecom'];
+};
+//#endregion
+//#region active
+paramsSearchFields["active"] = ["active"];
+const activeSearchFunc = {};
+activeSearchFunc["active"] = (item, field) => {
+    return queryBuild.tokenQuery(item, "", field, "", false);
+};
+
+paramsSearch["active"] = (query) => {
+    if (!_.isArray(query["active"])) {
+        query["active"] = [query["active"]];
+    }
+    for (let item of query["active"]) {
+        let buildQs = {
+            $or: []
+        };
+        for (let field of paramsSearchFields["active"]) {
+            let buildResult = activeSearchFunc[field](item, field);
+            buildQs.$or.push(buildResult);
+        }
+        query.$and.push({
+            ...buildQs
+        });
+    }
+    delete query['active'];
+};
+//#endregion
+//#region death-date
 paramsSearchFields["death-date"] = ["deceasedDateTime"];
 const death_dateSearchFunc = {};
 death_dateSearchFunc["deceasedDateTime"] = (value, field) => {
@@ -272,6 +400,34 @@ paramsSearch["death-date"] = (query) => {
     }
     delete query['death-date'];
 };
+//#endregion
+//#region deceased
+paramsSearchFields["deceased"] = ["deceasedBoolean"];
+const deceasedSearchFunc = {};
+deceasedSearchFunc["deceasedBoolean"] = (item, field) => {
+    return queryBuild.tokenQuery(item, "", field, "", false);
+};
+
+paramsSearch["deceased"] = (query) => {
+    if (!_.isArray(query["deceased"])) {
+        query["deceased"] = [query["deceased"]];
+    }
+    for (let item of query["deceased"]) {
+        let buildQs = {
+            $or: []
+        };
+        for (let field of paramsSearchFields["deceased"]) {
+            let buildResult = deceasedSearchFunc[field](item, field);
+            buildQs.$or.push(buildResult);
+        }
+        query.$and.push({
+            ...buildQs
+        });
+    }
+    delete query['deceased'];
+};
+//#endregion
+//#region general-practitioner
 paramsSearchFields["general-practitioner"] = ["generalPractitioner.reference"];
 paramsSearch["general-practitioner"] = (query) => {
     if (!_.isArray(query["general-practitioner"])) {
@@ -292,6 +448,8 @@ paramsSearch["general-practitioner"] = (query) => {
     }
     delete query['general-practitioner'];
 };
+//#endregion
+//#region identifier
 paramsSearchFields["identifier"] = ["identifier"];
 paramsSearch["identifier"] = (query) => {
     if (!_.isArray(query["identifier"])) {
@@ -311,6 +469,34 @@ paramsSearch["identifier"] = (query) => {
     }
     delete query['identifier'];
 };
+//#endregion
+//#region language
+paramsSearchFields["language"] = ["communication.language"];
+const languageSearchFunc = {};
+languageSearchFunc["communication.language"] = (item, field) => {
+    return queryBuild.tokenQuery(item, "coding.code", field, "", true);
+};
+
+paramsSearch["language"] = (query) => {
+    if (!_.isArray(query["language"])) {
+        query["language"] = [query["language"]];
+    }
+    for (let item of query["language"]) {
+        let buildQs = {
+            $or: []
+        };
+        for (let field of paramsSearchFields["language"]) {
+            let buildResult = languageSearchFunc[field](item, field);
+            buildQs.$or.push(buildResult);
+        }
+        query.$and.push({
+            ...buildQs
+        });
+    }
+    delete query['language'];
+};
+//#endregion
+//#region link
 paramsSearchFields["link"] = ["link.other.reference"];
 paramsSearch["link"] = (query) => {
     if (!_.isArray(query["link"])) {
@@ -331,6 +517,8 @@ paramsSearch["link"] = (query) => {
     }
     delete query['link'];
 };
+//#endregion
+//#region name
 paramsSearchFields["name"] = ["name"];
 paramsSearch["name"] = (query) => {
     if (!_.isArray(query["name"])) {
@@ -342,6 +530,8 @@ paramsSearch["name"] = (query) => {
     }
     delete query['name'];
 };
+//#endregion
+//#region organization
 paramsSearchFields["organization"] = ["managingOrganization.reference"];
 paramsSearch["organization"] = (query) => {
     if (!_.isArray(query["organization"])) {
@@ -362,3 +552,4 @@ paramsSearch["organization"] = (query) => {
     }
     delete query['organization'];
 };
+//#endregion

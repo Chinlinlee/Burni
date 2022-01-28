@@ -1,6 +1,11 @@
 const _ = require('lodash');
 const { capitalizeFirstLetter } = require('normalize-text');
 
+/**
+ * get clean fields of search parameter
+ * @param {string} field The field to clean
+ * @returns 
+ */
 function getSearchFields(field) {
     let searchFields = field.split("|").map(
         v => v.substr(v.indexOf(".") + 1).trim()
@@ -12,9 +17,22 @@ function getSearchFields(field) {
             let [field , asType] = searchField.split(" as ");
             asType = capitalizeFirstLetter(asType);
             searchFields[key] = `${field}${asType}`;
+        } else if (searchField.includes(".exists")) {
+            searchFields[key] = `${searchField.substr(searchField, searchField.indexOf("."))}Boolean`;
         }
     }
     return searchFields;
+}
+/**
+ * Get prefix code string.
+ * @param {string} param 
+ * @param {string} field 
+ */
+function getPrefixCodeString(param, field) {
+    let codeStr = `//#region ${param}\r\n`;
+    let searchFields = getSearchFields(field);
+    codeStr += `paramsSearchFields["${param}"]= ${JSON.stringify(searchFields)};`;
+    return codeStr;
 }
 
 class StringParameter {
@@ -35,7 +53,7 @@ class StringParameter {
                     $or : []
                 };
                 for (let field of paramsSearchFields["address"]) {
-                    let buildResult = queryBuild.tokenQuery(item , "value" , field);
+                    let buildResult = queryBuild.addressQuery(item, field);
                     buildQs.$or = [...buildQs.$or , ...buildResult.$or];
                 }
                 query.$and.push({
@@ -114,32 +132,73 @@ class StringParameter {
     }
 
     getCodeString() {
-        if (this.Param.includes('address')) {
-            return `${this.handleAddress()}\r\n`;
+        let codeStr = getPrefixCodeString(this.Param, this.Field);
+        if (this.Param == "address") {
+            codeStr += `${this.handleAddress()}`;
         } else if (this.Param == "name") {
-            return `${this.handleName()}\r\n`;
+            codeStr += `${this.handleName()}`;
         } else {
-            return `${this.handleCommon()}\r\n`;
+            codeStr += `${this.handleCommon()}`;
         }
+        codeStr += `//#endregion\r\n`;
+        return codeStr;
     }
 }
 
+const TokenDataTypes = [
+    {
+        dataType: "Coding",
+        uri: "",
+        code: "code"
+    },
+    {
+        dataType: "CodeableConcept",
+        uri: "coding.system",
+        code: "coding.code"
+    },
+    {
+        dataType: "ContactPoint",
+        uri: "",
+        code: "value"
+    },
+    {
+        dataType: "Identifier",
+        uri: "",
+        code: "value"
+    },
+    {
+        dataType: "code",
+        uri: "",
+        code: ""
+    },
+    {
+        dataType: "string",
+        uri: "",
+        code: ""
+    },
+    {
+        dataType: "boolean",
+        uri: "",
+        code: ""
+    }
+];
 class TokenParameter {
 
-    constructor(param, field, resourceDef, paramsSearchFieldTxt= "") {
+    constructor(param, field, resourceDef) {
         this.Param = param;
         this.Field = field;
         this.ResourceDef = resourceDef;
-        this.ParamsSearchFieldTxt = paramsSearchFieldTxt;
+        this.ParamsSearchFieldTxt = "";
+        this.NormalizeParamName = this.Param.replace(/-/gm, "_");
     }
 
     fixedParamsSearchFieldTxt() {
-        let searchField = this.Field.substr(0, this.Field.indexOf("."));
-        this.ParamsSearchFieldTxt = `paramsSearchFields["${this.Param}"]= [${JSON.stringify(searchField)}];`;
+        let searchFields = getSearchFields(this.Field);
+        searchFields = searchFields.map( v => v.substr(0, v.indexOf(".")));
+        this.ParamsSearchFieldTxt = `paramsSearchFields["${this.Param}"]= ${JSON.stringify(searchFields)};`;
     }
 
     handlePhone() {
-        this.fixedParamsSearchFieldTxt();
         return `
         paramsSearch["phone"] = (query) => {
             if (!_.isArray(query["phone"])) {
@@ -159,7 +218,6 @@ class TokenParameter {
     }
 
     handleEmail() {
-        this.fixedParamsSearchFieldTxt();
         return `
         paramsSearch["email"] = (query) => {
             if (!_.isArray(query["email"])) {
@@ -200,104 +258,72 @@ class TokenParameter {
         };
         `;
     }
-
-    handleCommon() {
-        let typeOfField = _.get(this.ResourceDef, `${this.Field}.type`);
-        let hitToken = this.TokenDataTypes.find(v => v.dataType == typeOfField);
+    handleCommon(field) {
+        let typeOfField = _.get(this.ResourceDef, `${field}.type`);
+        let hitToken = TokenDataTypes.find(v => v.dataType == typeOfField);
         if (hitToken) {
             let isCodeableConcept = hitToken.dataType == "CodeableConcept";
             return `
-            paramsSearch["${this.Param}"] = (query) => {
-                if (!_.isArray(query["${this.Param}"])) {
-                    query["${this.Param}"] = [query["${this.Param}"]];
-                }
-                for (let item of query["${this.Param}"]) {
-                    let buildQs = {
-                        $or : []
-                    };
-                    for (let field of paramsSearchFields["${this.Param}"]) {
-                        let buildResult =queryBuild.tokenQuery(item , "${hitToken.code}" , field, "", ${isCodeableConcept});
-                        buildQs.$or = [...buildQs.$or , ...buildResult.$or];
-                    }
-                    query.$and.push({
-                        ...buildQs
-                    });
-                }
-                delete query['${this.Param}'];
+            ${this.NormalizeParamName}SearchFunc["${field}"] = (item, field) => {
+                return queryBuild.tokenQuery(item , "${hitToken.code}" , field, "", ${isCodeableConcept});
             };
             `;
         } else {
             return `
-            paramsSearch["${this.Param}"] = (query) => {
-                if (!_.isArray(query["${this.Param}"])) {
-                    query["${this.Param}"] = [query["${this.Param}"]];
-                }
-                for (let item of query["${this.Param}"]) {
-                    let buildQs = {
-                        $or : []
-                    };
-                    for (let field of paramsSearchFields["${this.Param}"]) {
-                        let buildResult =queryBuild.tokenQuery(item , "" , field, "", false);
-                        buildQs.$or = [...buildQs.$or , ...buildResult.$or];
-                    }
-                    query.$and.push({
-                        ...buildQs
-                    });
-                }
-                delete query['${this.Param}'];
+            ${this.NormalizeParamName}SearchFunc["${field}"] = (item, field) => {
+                return queryBuild.tokenQuery(item , "" , field, "", false);
             };
             `;
         }
     }
     getCodeString() {
         if (this.Param == "phone") {
-            return `${this.ParamsSearchFieldTxt}${this.handlePhone()}\r\n`;
+            this.fixedParamsSearchFieldTxt();
+            return `//#region ${this.Param}\r\n${this.ParamsSearchFieldTxt}${this.handlePhone()}//#endregion\r\n`;
         } else if (this.Param == "email") {
-            return `${this.ParamsSearchFieldTxt}${this.handleEmail()}\r\n`;
+            this.fixedParamsSearchFieldTxt();
+            return `//#region ${this.Param}\r\n${this.ParamsSearchFieldTxt}${this.handleEmail()}//#endregion\r\n`;
         } else if (this.Param == "identifier") {
-            return `${this.ParamsSearchFieldTxt}${this.handleIdentifier()}\r\n`;
+            this.ParamsSearchFieldTxt = getPrefixCodeString(this.Param, this.Field);
+            return `${this.ParamsSearchFieldTxt}${this.handleIdentifier()}//#endregion\r\n`;
         } else {
-            return `${this.ParamsSearchFieldTxt}${this.handleCommon()}\r\n`;
+            let searchFields = getSearchFields(this.Field);
+            let paramsSearchFieldTxt = `paramsSearchFields["${this.Param}"]= ${JSON.stringify(searchFields)};\r\n`;
+            let codeStr = `//#region ${this.Param}\r\n${paramsSearchFieldTxt}`;
+            codeStr += `const ${this.NormalizeParamName}SearchFunc = {};`;
+            for (let i = 0 ; i < searchFields.length; i++) { 
+                let field = searchFields[i];
+                try {
+                    codeStr += this.handleCommon(field);
+                } catch(e) {
+                    console.error(e);
+                }
+            }
+            codeStr += `
+            paramsSearch["${this.Param}"] = (query) => {
+                if (!_.isArray(query["${this.Param}"])) {
+                    query["${this.Param}"] = [query["${this.Param}"]];
+                }
+                for (let item of query["${this.Param}"]) {
+                    let buildQs = {
+                        $or: []
+                    };
+                    for (let field of paramsSearchFields["${this.Param}"]) {
+                        let buildResult = ${this.NormalizeParamName}SearchFunc[field](item, field);
+                        buildQs.$or.push(buildResult);
+                    }
+                    query.$and.push({
+                        ...buildQs
+                    });
+                }
+                delete query['${this.Param}'];
+            }; 
+            `;
+            return `${codeStr}//#endregion\r\n`;
         }
     }
 }
-TokenParameter.TokenDataTypes = [
-    {
-        dataType: "Coding",
-        uri: "",
-        code: "code"
-    },
-    {
-        dataType: "CodeableConcept",
-        uri: "coding.system",
-        code: "coding.code"
-    },
-    {
-        dataType: "ContactPoint",
-        uri: "",
-        code: "value"
-    },
-    {
-        dataType: "Identifier",
-        uri: "",
-        code: "value"
-    },
-    {
-        dataType: "code",
-        uri: "",
-        code: ""
-    },
-    {
-        dataType: "string",
-        uri: "",
-        code: ""
-    },
-    {
-        dataType: "boolean",
-        uri: "",
-        code: ""
-    }
-];
+
 
 class NumberParameter {
     constructor(param, field) {
@@ -306,10 +332,8 @@ class NumberParameter {
     }
 
     getCodeString() {
-        let txt = "";
-        let searchFields = getSearchFields(this.Field);
-        txt += `paramsSearchFields["${this.Param }"]= ${JSON.stringify(searchFields)};`;
-        txt += `
+        let codeStr = getPrefixCodeString(this.Param, this.Field);
+        codeStr += `
         paramsSearch["${this.Param}"] = (query) => {
             if (!_.isArray(query["${this.Param}"])) {
                 query["${this.Param}"] = [query["${this.Param}"]];
@@ -331,7 +355,7 @@ class NumberParameter {
             delete query['${this.Param}'];
         }; 
         `;
-        return txt;
+        return codeStr;
     }
     
 }
@@ -391,14 +415,14 @@ class DateParameter {
 
     getCodeString() {
         let searchFields = getSearchFields(this.Field);
-        let paramsSearchFieldTxt = `paramsSearchFields["${this.Param}"]= ${JSON.stringify(searchFields)};\r\n`;
+        let paramsSearchFieldTxt = `//#region ${this.Param}\r\nparamsSearchFields["${this.Param}"]= ${JSON.stringify(searchFields)};\r\n`;
         let codeStr = paramsSearchFieldTxt;
         codeStr += `const ${this.NormalizeParamName}SearchFunc = {};`;
         for (let i = 0 ; i < searchFields.length; i++) { 
             let field = searchFields[i];
             let typeOfField = _.get(this.ResourceDef, `${field}.type`);
             try {
-                codeStr += this.LookUpFunc[typeOfField](field);
+                codeStr += this[`handle${capitalizeFirstLetter(typeOfField)}`](field);
             } catch(e) {
                 console.error(e);
             }
@@ -423,7 +447,7 @@ class DateParameter {
             delete query['${this.Param}'];
         }; 
         `;
-        return codeStr;
+        return `${codeStr}//#endregion\r\n`;
     }
 }
 
@@ -434,8 +458,9 @@ class ReferenceParameter {
     }
 
     getCodeString() {
-        let txt = "";
+        let codeStr = "";
         let searchFields = getSearchFields(this.Field);
+        //clean fields to reference query field
         searchFields = searchFields.map(v=> {
             if (v.includes("where")) {
                 let lastIndexFieldInField = v.lastIndexOf(".");
@@ -447,8 +472,8 @@ class ReferenceParameter {
             }
             return v;
         });
-        txt += `paramsSearchFields["${this.Param}"]= ${JSON.stringify(searchFields)};`;
-        txt += `
+        codeStr += `//#region ${this.Param}\r\nparamsSearchFields["${this.Param}"]= ${JSON.stringify(searchFields)};`;
+        codeStr += `
         paramsSearch["${this.Param}"] = (query) => {
             if (!_.isArray(query["${this.Param}"])) {
                 query["${this.Param}"] = [query["${this.Param}"]];
@@ -469,7 +494,7 @@ class ReferenceParameter {
             delete query['${this.Param}'];
         };
         `;
-        return txt;
+        return `${codeStr}//#endregion\r\n`;
     }
 }
 
