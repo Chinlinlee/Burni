@@ -3,6 +3,12 @@ const _ = require('lodash');
 const moment = require('moment');
 const momentTimezone = require('moment-timezone');
 const prefix = ["eq" , "ne" , "lt" , "gt" , "ge" , "le" , "sa" , "eb" , "ap"];
+/**
+ * 
+ * @param {*} str value
+ * @param {*} key field name
+ * @returns 
+ */
 function stringQuery(str, key) {
     let keySplit = key.split(':');
     const buildContainsOrExact = {
