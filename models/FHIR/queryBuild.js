@@ -44,7 +44,15 @@ function stringExact(str) {
     return str;
 }
 
-
+/**
+ * 
+ * @param {string} item The query value
+ * @param {string} type postfix of field e.g. field of parameter of phone in Patient is `telecom` but use query value with `telecom.value`
+ * @param {string} field 
+ * @param {string} required The fixed system e.g. phone is telecom and email is email
+ * @param {*} isCodeableConcept if is codeable concept
+ * @returns 
+ */
 function tokenQuery(item, type, field, required , isCodeableConcept = false) {
     let queryBuilder = {};
     let system = "";

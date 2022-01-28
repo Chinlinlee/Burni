@@ -7,7 +7,7 @@
         "test": "echo \"Error: no test specified\" && exit 1",
         "build": "node ./build/init.js",
         "release": "standard-version",
-        "lint" : "eslint --ignore-path .gitignore ."
+        "lint": "eslint --ignore-path .gitignore ."
     },
     "standard-version": {
         "skip": {
@@ -47,6 +47,7 @@
         "passport": "^0.4.0",
         "passport-http-bearer": "^1.0.1",
         "passport-local": "^1.0.0",
+        "query-string": "^7.1.0",
         "rootpath": "^0.1.2",
         "uid-generator": "^2.0.0",
         "uuid": "^8.3.2",
