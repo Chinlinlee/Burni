@@ -40,13 +40,13 @@ module.exports = exports = function(config) {
             })
             .then(res=> {
                 console.log(`sharding database ${dbName} successfully`);
+                shardCollection('/model');
+                shardCollection('/staticModel');
             })
             .catch(err=> {
                 console.error(err);
             });
         }
-        shardCollection('/model');
-        shardCollection('/staticModel');
     }).catch(err => {
         console.error(err);
         process.exit(1);
