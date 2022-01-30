@@ -25,6 +25,7 @@ function generateAPI(option) {
         let get = `
         const _ = require('lodash');
         const queryBuild = require('../../../../models/FHIR/queryBuild.js');
+        const queryHandler = require('../../../../models/FHIR/searchParameterQueryHandler');
         const search = require('../../../FHIRApiService/search');
 
         module.exports = async function(req, res) {

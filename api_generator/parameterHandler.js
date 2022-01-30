@@ -44,63 +44,40 @@ class StringParameter {
 
     handleAddress() {
         return `
-        paramsSearch["${this.Param}"] = (query) => {
-            if (!_.isArray(query["${this.Param}"])) {
-                query["${this.Param}"] = [query["${this.Param}"]];
+        paramsSearch["address"] = (query) => {
+            try {
+                queryHandler.getAddressQuery(query, paramsSearchFields);
+            } catch(e) {
+                console.error(e);
+                throw e;
             }
-            for (let item of query["${this.Param}"]) {
-                let buildQs = {
-                    $or : []
-                };
-                for (let field of paramsSearchFields["address"]) {
-                    let buildResult = queryBuild.addressQuery(item, field);
-                    buildQs.$or = [...buildQs.$or , ...buildResult.$or];
-                }
-                query.$and.push({
-                    ...buildQs
-                });
-            }
-            delete query["${this.Param}"];
-        }; 
+        };
         `;
     }
 
     handleName() {
-        let typeOfField = _.get(this.ResourceDef, `${this.Field}.type`);
+        let searchFields = getSearchFields(this.Field);
+        let typeOfField = _.get(this.ResourceDef, `${searchFields[0]}.type`);
         if (typeOfField == "string") {
             return `
             paramsSearch["name"] = (query) => {
-                if (!_.isArray(query["name"])) {
-                    query["name"] = [query["name"]];
+                try {
+                    queryHandler.getStringQuery(query, paramsSearchFields, "name");
+                } catch(e) {
+                    console.error(e);
+                    throw e;
                 }
-                for (let item of query["name"]) {
-                    let buildQs = {
-                        $or: []
-                    };
-                    for (let field of paramsSearchFields["name"]) {
-                        let buildResult = {
-                            [field] : queryBuild.stringQuery(item, field)
-                        };
-                        buildQs.$or.push(buildResult);
-                    }
-                    query.$and.push({
-                        ...buildQs
-                    });
-                }
-                delete query['name'];
-            }; 
+            };
             `;
         } else {
             return `
             paramsSearch["name"] = (query) => {
-                if (!_.isArray(query["name"])) {
-                    query["name"] = [query["name"]];
+                try {
+                    queryHandler.getNameQuery(query, paramsSearchFields);
+                } catch(e) {
+                    console.error(e);
+                    throw e;
                 }
-                for (let item of query["name"]) {
-                    let buildResult = queryBuild.nameQuery(item , "name");
-                    query.$and.push(buildResult);
-                }
-                delete query['name'];
             };
             `;
         }
@@ -108,26 +85,14 @@ class StringParameter {
 
     handleCommon() {
         return `
-        paramsSearch["${this.Param}"] = (query) => {
-            if (!_.isArray(query["${this.Param}"])) {
-                query["${this.Param}"] = [query["${this.Param}"]];
-            }
-            for (let item of query["${this.Param}"]) {
-                let buildQs = {
-                    $or: []
-                };
-                for (let field of paramsSearchFields["${this.Param}"]) {
-                    let buildResult = {
-                        [field] : queryBuild.stringQuery(item, field)
-                    };
-                    buildQs.$or.push(buildResult);
+            paramsSearch["${this.Param}"] = (query) => {
+                try {
+                    queryHandler.getStringQuery(query, paramsSearchFields, "${this.Param}");
+                } catch(e) {
+                    console.error(e);
+                    throw e;
                 }
-                query.$and.push({
-                    ...buildQs
-                });
-            }
-            delete query['${this.Param}'];
-        }; 
+            };
         `;
     }
 
@@ -201,18 +166,12 @@ class TokenParameter {
     handlePhone() {
         return `
         paramsSearch["phone"] = (query) => {
-            if (!_.isArray(query["phone"])) {
-                query["phone"] = [query["phone"]];
+            try {
+                queryHandler.getTokenQuery(query, paramsSearchFields, "phone");
+            } catch(e) {
+                console.error(e);
+                throw e;
             }
-            for (let item of query["phone"]) {
-                let buildResult = queryBuild.tokenQuery(item, "value" , "telecom" , "phone", false);
-                for (let i in buildResult) {
-                    query.$and.push({
-                        [i]: buildResult[i]
-                    });
-                }
-            }
-            delete query['phone'];
         };
         `;
     }
@@ -220,18 +179,12 @@ class TokenParameter {
     handleEmail() {
         return `
         paramsSearch["email"] = (query) => {
-            if (!_.isArray(query["email"])) {
-                query["email"] = [query["email"]];
+            try {
+                queryHandler.getTokenQuery(query, paramsSearchFields, "email");
+            } catch(e) {
+                console.error(e);
+                throw e;
             }
-            for (let item of query["email"]) {
-                let buildResult =queryBuild.tokenQuery(item , "value" , "telecom" , "email", false);
-                for (let i in buildResult) {
-                    query.$and.push({
-                        [i]: buildResult[i]
-                    });
-                }
-            }
-            delete query['email'];
         };
         `;
     }
@@ -239,22 +192,12 @@ class TokenParameter {
     handleIdentifier() {
         return `
         paramsSearch["identifier"] = (query) => {
-            if (!_.isArray(query["identifier"])) {
-                query["identifier"] = [query["identifier"]];
+            try {
+                queryHandler.getTokenQuery(query, paramsSearchFields, "identifier");
+            } catch(e) {
+                console.error(e);
+                throw e;
             }
-            for (let item of query["identifier"]) {
-                let buildQs = {
-                    $or : []
-                };
-                for (let field of paramsSearchFields["identifier"]) {
-                    let buildResult =queryBuild.tokenQuery(item , "value" , field);
-                    buildQs.$or = [...buildQs.$or , ...buildResult.$or];
-                }
-                query.$and.push({
-                    ...buildQs
-                });
-            }
-            delete query['identifier'];
         };
         `;
     }
@@ -301,23 +244,13 @@ class TokenParameter {
             }
             codeStr += `
             paramsSearch["${this.Param}"] = (query) => {
-                if (!_.isArray(query["${this.Param}"])) {
-                    query["${this.Param}"] = [query["${this.Param}"]];
+                try {
+                    queryHandler.getPolyTokenQuery(query, paramsSearchFields, "${this.Param}", ${this.NormalizeParamName}SearchFunc);
+                } catch(e) {
+                    console.error(e);
+                    throw e;
                 }
-                for (let item of query["${this.Param}"]) {
-                    let buildQs = {
-                        $or: []
-                    };
-                    for (let field of paramsSearchFields["${this.Param}"]) {
-                        let buildResult = ${this.NormalizeParamName}SearchFunc[field](item, field);
-                        buildQs.$or.push(buildResult);
-                    }
-                    query.$and.push({
-                        ...buildQs
-                    });
-                }
-                delete query['${this.Param}'];
-            }; 
+            };
             `;
             return `${codeStr}//#endregion\r\n`;
         }
@@ -335,25 +268,13 @@ class NumberParameter {
         let codeStr = getPrefixCodeString(this.Param, this.Field);
         codeStr += `
         paramsSearch["${this.Param}"] = (query) => {
-            if (!_.isArray(query["${this.Param}"])) {
-                query["${this.Param}"] = [query["${this.Param}"]];
+            try {
+                queryHandler.getNumberQuery(query, paramsSearchFields, "${this.Param}");
+            } catch(e) {
+                console.error(e);
+                throw e;
             }
-            for (let item of query["${this.Param}"]) {
-                let buildQs = {
-                    $or: []
-                };
-                for (let field of paramsSearchFields["${this.Param}"]) {
-                    let buildResult = {
-                        [field] : queryBuild.numberQuery(item, field)
-                    };
-                    buildQs.$or.push(buildResult);
-                }
-                query.$and.push({
-                    ...buildQs
-                });
-            }
-            delete query['${this.Param}'];
-        }; 
+        };
         `;
         return codeStr;
     }
@@ -429,23 +350,13 @@ class DateParameter {
         }
         codeStr += `
         paramsSearch["${this.Param}"] = (query) => {
-            if (!_.isArray(query["${this.Param}"])) {
-                query["${this.Param}"] = [query["${this.Param}"]];
+            try {
+                queryHandler.getPolyDateQuery(query, paramsSearchFields, "${this.Param}", ${this.NormalizeParamName}SearchFunc);
+            } catch(e) {
+                console.error(e);
+                throw e;
             }
-            for (let item of query["${this.Param}"]) {
-                let buildQs = {
-                    $or: []
-                };
-                for (let field of paramsSearchFields["${this.Param}"]) {
-                    let buildResult = ${this.NormalizeParamName}SearchFunc[field](item, field);
-                    buildQs.$or.push(buildResult);
-                }
-                query.$and.push({
-                    ...buildQs
-                });
-            }
-            delete query['${this.Param}'];
-        }; 
+        };
         `;
         return `${codeStr}//#endregion\r\n`;
     }
@@ -475,23 +386,12 @@ class ReferenceParameter {
         codeStr += `//#region ${this.Param}\r\nparamsSearchFields["${this.Param}"]= ${JSON.stringify(searchFields)};`;
         codeStr += `
         paramsSearch["${this.Param}"] = (query) => {
-            if (!_.isArray(query["${this.Param}"])) {
-                query["${this.Param}"] = [query["${this.Param}"]];
+            try {
+                queryHandler.getReferenceQuery(query, paramsSearchFields, "${this.Param}");
+            } catch(e) {
+                console.error(e);
+                throw e;
             }
-            
-            for (let item of query["${this.Param}"]) {
-                let buildQs = {
-                    $or : []
-                };
-                for (let field of paramsSearchFields["${this.Param}"]) {
-                    let buildResult =queryBuild.referenceQuery(item , field);
-                    buildQs.$or.push(buildResult);
-                }
-                query.$and.push({
-                    ...buildQs
-                });
-            }
-            delete query['${this.Param}'];
         };
         `;
         return `${codeStr}//#endregion\r\n`;

@@ -57,11 +57,11 @@ function tokenQuery(item, type, field, required , isCodeableConcept = false) {
     let queryBuilder = {};
     let system = "";
     let value = "";
-    [system, value] = item.split('|');
+    if (item.includes("|")) [system, value] = item.split("|");
+    else value = item;
     if (required) {
         system = required;
     }
-    value = value || item;
     if (system) {
         if (isCodeableConcept) {
             queryBuilder[`${field}.coding.system`] = system;
@@ -72,7 +72,6 @@ function tokenQuery(item, type, field, required , isCodeableConcept = false) {
     if (value) {
         if (value == "true" || value == "false") {
             value = value === "true";
-            system = value;
         }
         if (type) {
             queryBuilder[`${field}.${type}`] = value;
@@ -80,16 +79,16 @@ function tokenQuery(item, type, field, required , isCodeableConcept = false) {
             queryBuilder[`${field}`] = value;
         }
     }
-    if (system == value) {
-        let ors = {
-            $or : []
+    if (system && value) {
+        let andQuery = {
+            $and : []
         };
         for(let i in queryBuilder) {
-            ors.$or.push({
+            andQuery.$and.push({
                 [i] : queryBuilder[i]
             });
         }
-        return ors;
+        return andQuery;
     }
     return queryBuilder;
 }
@@ -229,16 +228,16 @@ function dateQuery (value, field) {
         queryPrefix = "eq";
         date = value;
     }
-    let isVaildDate = moment(new Date(date)).isValid();
-    if (!isVaildDate) {
+    let isValidDate = moment(new Date(date)).isValid();
+    if (!isValidDate) {
         return false;
     }
     
     let momentYYYYDate = moment(date , 'YYYY', true);
     let momentYYYYMMDate = moment(date , 'YYYY-MM' , true);
     let momentYYYYMMDDDate = moment(date , 'YYYY-MM-DD', true);
-    let momentVaildArr = [momentYYYYDate.isValid() ,  momentYYYYMMDate.isValid() ,momentYYYYMMDDDate.isValid()];
-    let momentValidIndex = momentVaildArr.indexOf(true);
+    let momentValidArr = [momentYYYYDate.isValid() ,  momentYYYYMMDate.isValid() ,momentYYYYMMDDDate.isValid()];
+    let momentValidIndex = momentValidArr.indexOf(true);
     if (momentValidIndex < 0 ) {
         return false;
     }
@@ -264,16 +263,16 @@ function dateTimeQuery (value , field) {
         queryPrefix = "eq";
         date = value;
     }
-    let isVaildDate = moment(new Date(date)).isValid();
-    if (!isVaildDate) {
+    let isValidDate = moment(new Date(date)).isValid();
+    if (!isValidDate) {
         return false;
     }
     
     let momentYYYYDate = moment(date , 'YYYY', true);
     let momentYYYYMMDate = moment(date , 'YYYY-MM' , true);
     let momentYYYYMMDDDate = moment(date , 'YYYY-MM-DD', true);
-    let momentVaildArr = [momentYYYYDate.isValid() ,  momentYYYYMMDate.isValid() ,momentYYYYMMDDDate.isValid()];
-    let momentValidIndex = momentVaildArr.indexOf(true);
+    let momentValidArr = [momentYYYYDate.isValid() ,  momentYYYYMMDate.isValid() ,momentYYYYMMDDDate.isValid()];
+    let momentValidIndex = momentValidArr.indexOf(true);
     if (momentValidIndex < 0 ) {
         momentValidIndex = 2;
     }
