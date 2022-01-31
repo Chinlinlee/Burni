@@ -495,7 +495,7 @@ function numberQuery (value, field) {
         let queryBuilder = {};
         let num = value.substring(2);
         let queryPrefix = value.substring(0,2);
-        if (isNumber(prefix)) {
+        if (isNumber(Number(queryPrefix))) {
             queryPrefix = "eq";
             num = value;
         }
