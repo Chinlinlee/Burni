@@ -54,6 +54,7 @@
         "xml-js": "^1.6.11"
     },
     "devDependencies": {
-        "babel-eslint": "^10.1.0"
+        "babel-eslint": "^10.1.0",
+        "jsdoc-to-markdown": "^7.1.1"
     }
 }
