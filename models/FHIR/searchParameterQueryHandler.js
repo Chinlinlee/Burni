@@ -1,5 +1,6 @@
 const queryBuild = require('./queryBuild');
 const _ = require('lodash');
+const { getCommaSplitArray } = require('./queryBuild');
 
 /**
  * @example <caption>Example of `address-city` of search parameter of the Patient resource</caption>
@@ -36,10 +37,14 @@ function getStringQuery(query, paramsSearchFields, queryFieldName) {
             $or: []
         };
         for (let field of paramsSearchFields[queryFieldName]) {
-            let buildResult = {
-                [field] : queryBuild.stringQuery(item, field)
-            };
-            buildQs.$or.push(buildResult);
+            let commaSeparatedValue = getCommaSplitArray(item);
+            for (let index in commaSeparatedValue) {
+                let value = commaSeparatedValue[index];
+                let buildResult = {
+                    [field] : queryBuild.stringQuery(value, field)
+                };
+                buildQs.$or.push(buildResult);
+            }
         }
         query.$and.push({
             ...buildQs

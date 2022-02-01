@@ -3,10 +3,21 @@ const _ = require('lodash');
 const moment = require('moment');
 const momentTimezone = require('moment-timezone');
 const prefix = ["eq" , "ne" , "lt" , "gt" , "ge" , "le" , "sa" , "eb" , "ap"];
+
 /**
  * 
- * @param {*} str value
- * @param {*} key field name
+ * @param {string} value 
+ */
+ function getCommaSplitArray(value) {
+    value = value.replace(/\\,/g, "{ＣＯＭＭＡ}");
+    let valueCommaSplit = value.split(",").map(v=> v.replace(/{ＣＯＭＭＡ}/gm,","));
+    return valueCommaSplit;
+}
+
+/**
+ * 
+ * @param {string} str value
+ * @param {string} key field name
  * @returns 
  */
 function stringQuery(str, key) {
@@ -50,15 +61,18 @@ function stringExact(str) {
  * @param {string} type postfix of field e.g. field of parameter of phone in Patient is `telecom` but use query value with `telecom.value`
  * @param {string} field 
  * @param {string} required The fixed system e.g. phone is telecom and email is email
- * @param {*} isCodeableConcept if is codeable concept
+ * @param {boolean} isCodeableConcept if is codeable concept
  * @returns 
  */
 function tokenQuery(item, type, field, required , isCodeableConcept = false) {
     let queryBuilder = {};
     let system = "";
     let value = "";
+    item = item.replace(/\\\|/gm, "{ＯＲ}");
     if (item.includes("|")) [system, value] = item.split("|");
     else value = item;
+    system = system.replace(/{ＯＲ}/gm, "|");
+    value = value.replace(/{ＯＲ}/gm, "|");
     if (required) {
         system = required;
     }
@@ -144,7 +158,7 @@ function addressQuery(target , key) {
 }
 
 function nameQuery(target , key) {
-    let totalSplit = target.split(/[\s.,]+/);
+    let totalSplit = getCommaSplitArray(target);
     let ors = {$or:[]};
 
     for (let index in totalSplit) {
@@ -518,5 +532,6 @@ module.exports = {
     timingQuery: timingQuery,
     quantityQuery : quantityQuery , 
     referenceQuery : referenceQuery , 
-    arrayStringBuild : arrayStringBuild
+    arrayStringBuild : arrayStringBuild,
+    getCommaSplitArray: getCommaSplitArray
 };
