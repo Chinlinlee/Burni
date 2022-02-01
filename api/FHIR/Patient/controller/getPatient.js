@@ -34,7 +34,23 @@ paramsSearch["_lastUpdated"] = (query) => {
 paramsSearchFields["address"] = ["address"];
 paramsSearch["address"] = (query) => {
     try {
-        queryHandler.getAddressQuery(query, paramsSearchFields);
+        queryHandler.getAddressQuery(query, "address");
+    } catch (e) {
+        console.error(e);
+        throw e;
+    }
+};
+paramsSearch["address:contains"] = (query) => {
+    try {
+        queryHandler.getAddressQuery(query, "address:contains");
+    } catch (e) {
+        console.error(e);
+        throw e;
+    }
+};
+paramsSearch["address:exact"] = (query) => {
+    try {
+        queryHandler.getAddressQuery(query, "address:exact");
     } catch (e) {
         console.error(e);
         throw e;
@@ -43,6 +59,8 @@ paramsSearch["address"] = (query) => {
 //#endregion
 //#region address-city
 paramsSearchFields["address-city"] = ["address.city"];
+paramsSearchFields["address-city:contains"] = paramsSearchFields["address-city"];
+paramsSearchFields["address-city:exact"] = paramsSearchFields["address-city"];
 paramsSearch["address-city"] = (query) => {
     try {
         queryHandler.getStringQuery(query, paramsSearchFields, "address-city");
@@ -51,9 +69,27 @@ paramsSearch["address-city"] = (query) => {
         throw e;
     }
 };
+paramsSearch["address-city:contains"] = (query) => {
+    try {
+        queryHandler.getStringQuery(query, paramsSearchFields, "address-city:contains");
+    } catch (e) {
+        console.error(e);
+        throw e;
+    }
+};
+paramsSearch["address-city:exact"] = (query) => {
+    try {
+        queryHandler.getStringQuery(query, paramsSearchFields, "address-city:exact");
+    } catch (e) {
+        console.error(e);
+        throw e;
+    }
+};
 //#endregion
 //#region address-country
 paramsSearchFields["address-country"] = ["address.country"];
+paramsSearchFields["address-country:contains"] = paramsSearchFields["address-country"];
+paramsSearchFields["address-country:exact"] = paramsSearchFields["address-country"];
 paramsSearch["address-country"] = (query) => {
     try {
         queryHandler.getStringQuery(query, paramsSearchFields, "address-country");
@@ -62,9 +98,27 @@ paramsSearch["address-country"] = (query) => {
         throw e;
     }
 };
+paramsSearch["address-country:contains"] = (query) => {
+    try {
+        queryHandler.getStringQuery(query, paramsSearchFields, "address-country:contains");
+    } catch (e) {
+        console.error(e);
+        throw e;
+    }
+};
+paramsSearch["address-country:exact"] = (query) => {
+    try {
+        queryHandler.getStringQuery(query, paramsSearchFields, "address-country:exact");
+    } catch (e) {
+        console.error(e);
+        throw e;
+    }
+};
 //#endregion
 //#region address-postalcode
 paramsSearchFields["address-postalcode"] = ["address.postalCode"];
+paramsSearchFields["address-postalcode:contains"] = paramsSearchFields["address-postalcode"];
+paramsSearchFields["address-postalcode:exact"] = paramsSearchFields["address-postalcode"];
 paramsSearch["address-postalcode"] = (query) => {
     try {
         queryHandler.getStringQuery(query, paramsSearchFields, "address-postalcode");
@@ -73,12 +127,46 @@ paramsSearch["address-postalcode"] = (query) => {
         throw e;
     }
 };
+paramsSearch["address-postalcode:contains"] = (query) => {
+    try {
+        queryHandler.getStringQuery(query, paramsSearchFields, "address-postalcode:contains");
+    } catch (e) {
+        console.error(e);
+        throw e;
+    }
+};
+paramsSearch["address-postalcode:exact"] = (query) => {
+    try {
+        queryHandler.getStringQuery(query, paramsSearchFields, "address-postalcode:exact");
+    } catch (e) {
+        console.error(e);
+        throw e;
+    }
+};
 //#endregion
 //#region address-state
 paramsSearchFields["address-state"] = ["address.state"];
+paramsSearchFields["address-state:contains"] = paramsSearchFields["address-state"];
+paramsSearchFields["address-state:exact"] = paramsSearchFields["address-state"];
 paramsSearch["address-state"] = (query) => {
     try {
         queryHandler.getStringQuery(query, paramsSearchFields, "address-state");
+    } catch (e) {
+        console.error(e);
+        throw e;
+    }
+};
+paramsSearch["address-state:contains"] = (query) => {
+    try {
+        queryHandler.getStringQuery(query, paramsSearchFields, "address-state:contains");
+    } catch (e) {
+        console.error(e);
+        throw e;
+    }
+};
+paramsSearch["address-state:exact"] = (query) => {
+    try {
+        queryHandler.getStringQuery(query, paramsSearchFields, "address-state:exact");
     } catch (e) {
         console.error(e);
         throw e;
@@ -130,9 +218,27 @@ paramsSearch["email"] = (query) => {
 //#endregion
 //#region family
 paramsSearchFields["family"] = ["name.family"];
+paramsSearchFields["family:contains"] = paramsSearchFields["family"];
+paramsSearchFields["family:exact"] = paramsSearchFields["family"];
 paramsSearch["family"] = (query) => {
     try {
         queryHandler.getStringQuery(query, paramsSearchFields, "family");
+    } catch (e) {
+        console.error(e);
+        throw e;
+    }
+};
+paramsSearch["family:contains"] = (query) => {
+    try {
+        queryHandler.getStringQuery(query, paramsSearchFields, "family:contains");
+    } catch (e) {
+        console.error(e);
+        throw e;
+    }
+};
+paramsSearch["family:exact"] = (query) => {
+    try {
+        queryHandler.getStringQuery(query, paramsSearchFields, "family:exact");
     } catch (e) {
         console.error(e);
         throw e;
@@ -157,9 +263,27 @@ paramsSearch["gender"] = (query) => {
 //#endregion
 //#region given
 paramsSearchFields["given"] = ["name.given"];
+paramsSearchFields["given:contains"] = paramsSearchFields["given"];
+paramsSearchFields["given:exact"] = paramsSearchFields["given"];
 paramsSearch["given"] = (query) => {
     try {
         queryHandler.getStringQuery(query, paramsSearchFields, "given");
+    } catch (e) {
+        console.error(e);
+        throw e;
+    }
+};
+paramsSearch["given:contains"] = (query) => {
+    try {
+        queryHandler.getStringQuery(query, paramsSearchFields, "given:contains");
+    } catch (e) {
+        console.error(e);
+        throw e;
+    }
+};
+paramsSearch["given:exact"] = (query) => {
+    try {
+        queryHandler.getStringQuery(query, paramsSearchFields, "given:exact");
     } catch (e) {
         console.error(e);
         throw e;
@@ -179,9 +303,27 @@ paramsSearch["phone"] = (query) => {
 //#endregion
 //#region phonetic
 paramsSearchFields["phonetic"] = ["name"];
+paramsSearchFields["phonetic:contains"] = paramsSearchFields["phonetic"];
+paramsSearchFields["phonetic:exact"] = paramsSearchFields["phonetic"];
 paramsSearch["phonetic"] = (query) => {
     try {
         queryHandler.getStringQuery(query, paramsSearchFields, "phonetic");
+    } catch (e) {
+        console.error(e);
+        throw e;
+    }
+};
+paramsSearch["phonetic:contains"] = (query) => {
+    try {
+        queryHandler.getStringQuery(query, paramsSearchFields, "phonetic:contains");
+    } catch (e) {
+        console.error(e);
+        throw e;
+    }
+};
+paramsSearch["phonetic:exact"] = (query) => {
+    try {
+        queryHandler.getStringQuery(query, paramsSearchFields, "phonetic:exact");
     } catch (e) {
         console.error(e);
         throw e;
@@ -305,7 +447,23 @@ paramsSearch["link"] = (query) => {
 paramsSearchFields["name"] = ["name"];
 paramsSearch["name"] = (query) => {
     try {
-        queryHandler.getNameQuery(query, paramsSearchFields);
+        queryHandler.getNameQuery(query, "name");
+    } catch (e) {
+        console.error(e);
+        throw e;
+    }
+};
+paramsSearch["name:contains"] = (query) => {
+    try {
+        queryHandler.getNameQuery(query, "name:contains");
+    } catch (e) {
+        console.error(e);
+        throw e;
+    }
+};
+paramsSearch["name:exact"] = (query) => {
+    try {
+        queryHandler.getNameQuery(query, "name:exact");
     } catch (e) {
         console.error(e);
         throw e;

@@ -141,7 +141,7 @@ function quantityQuery(item, field) {
 
 function addressQuery(target , key) {
     // Tokenize the input as mush as possible
-    let totalSplit = target.split(/[\s,]+/);
+    let totalSplit = getCommaSplitArray(target);
     let ors = {$or: []};
     for (let index in totalSplit) {
         let queryValue = stringQuery(totalSplit[index], key);

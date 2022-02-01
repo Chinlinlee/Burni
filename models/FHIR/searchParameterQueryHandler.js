@@ -41,7 +41,7 @@ function getStringQuery(query, paramsSearchFields, queryFieldName) {
             for (let index in commaSeparatedValue) {
                 let value = commaSeparatedValue[index];
                 let buildResult = {
-                    [field] : queryBuild.stringQuery(value, field)
+                    [field] : queryBuild.stringQuery(value, queryFieldName)
                 };
                 buildQs.$or.push(buildResult);
             }
@@ -99,27 +99,25 @@ function getStringQuery(query, paramsSearchFields, queryFieldName) {
  *    "address": "PleasantVille",
  *    "gender": "male",
  *    "$and": []
- * }, ["address"]);
+ * }, "address");
  * @param {string} query The request query object 
- * @param {Array<string>} paramsSearchFields The fields of search parameters that in resource
+ * @param {string} queryFieldName The name of search parameter 
  */
-function getAddressQuery(query, paramsSearchFields) {
-    if (!_.isArray(query["address"])) {
-        query["address"] = [query["address"]];
+function getAddressQuery(query, queryFieldName) {
+    if (!_.isArray(query[queryFieldName])) {
+        query[queryFieldName] = [query[queryFieldName]];
     }
-    for (let item of query["address"]) {
+    for (let item of query[queryFieldName]) {
         let buildQs = {
             $or : []
         };
-        for (let field of paramsSearchFields["address"]) {
-            let buildResult = queryBuild.addressQuery(item, field);
-            buildQs.$or = [...buildQs.$or , ...buildResult.$or];
-        }
+        let buildResult = queryBuild.addressQuery(item, queryFieldName);
+        buildQs.$or = [...buildQs.$or , ...buildResult.$or];
         query.$and.push({
             ...buildQs
         });
     }
-    delete query["address"];
+    delete query[queryFieldName];
 }
 
 /**
@@ -165,27 +163,26 @@ function getAddressQuery(query, paramsSearchFields) {
  * getNameQuery(
  * {
  *     "name": "Chalmers"
- * }, ["name"]);
+ * }, ["name"], "name");
  * @param {string} query The request query object 
- * @param {Array<string>} paramsSearchFields The fields of search parameters that in resource
+ * that in resource
+ *  * @param {string} queryFieldName The name of search parameter
  */
-function getNameQuery(query, paramsSearchFields) {
-    if (!_.isArray(query["name"])) {
-        query["name"] = [query["name"]];
+function getNameQuery(query, queryFieldName) {
+    if (!_.isArray(query[queryFieldName])) {
+        query[queryFieldName] = [query[queryFieldName]];
     }
-    for (let item of query["name"]) {
+    for (let item of query[queryFieldName]) {
         let buildQs = {
             $or : []
         };
-        for (let field of paramsSearchFields["name"]) {
-            let buildResult = queryBuild.nameQuery(item , field);
-            buildQs.$or.push(buildResult);
-        }
+        let buildResult = queryBuild.nameQuery(item , queryFieldName);
+        buildQs.$or.push(buildResult);
         query.$and.push({
             ...buildQs
         });
     }
-    delete query['name'];
+    delete query[queryFieldName];
 }
 
 /**

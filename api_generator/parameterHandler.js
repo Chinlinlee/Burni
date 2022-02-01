@@ -46,7 +46,23 @@ class StringParameter {
         return `
         paramsSearch["address"] = (query) => {
             try {
-                queryHandler.getAddressQuery(query, paramsSearchFields);
+                queryHandler.getAddressQuery(query, "address");
+            } catch(e) {
+                console.error(e);
+                throw e;
+            }
+        };
+        paramsSearch["address:contains"] = (query) => {
+            try {
+                queryHandler.getAddressQuery(query, "address:contains");
+            } catch(e) {
+                console.error(e);
+                throw e;
+            }
+        };
+        paramsSearch["address:exact"] = (query) => {
+            try {
+                queryHandler.getAddressQuery(query, "address:exact");
             } catch(e) {
                 console.error(e);
                 throw e;
@@ -60,9 +76,27 @@ class StringParameter {
         let typeOfField = _.get(this.ResourceDef, `${searchFields[0]}.type`);
         if (typeOfField == "string") {
             return `
+            paramsSearchFields["name:contains"] = paramsSearchFields["name"];
+            paramsSearchFields["name"] = paramsSearchFields["name"];
             paramsSearch["name"] = (query) => {
                 try {
                     queryHandler.getStringQuery(query, paramsSearchFields, "name");
+                } catch(e) {
+                    console.error(e);
+                    throw e;
+                }
+            };
+            paramsSearch["name:contains"] = (query) => {
+                try {
+                    queryHandler.getStringQuery(query, paramsSearchFields, "name:contains");
+                } catch(e) {
+                    console.error(e);
+                    throw e;
+                }
+            };
+            paramsSearch["name:exact"] = (query) => {
+                try {
+                    queryHandler.getStringQuery(query, paramsSearchFields, "name:exact");
                 } catch(e) {
                     console.error(e);
                     throw e;
@@ -73,7 +107,23 @@ class StringParameter {
             return `
             paramsSearch["name"] = (query) => {
                 try {
-                    queryHandler.getNameQuery(query, paramsSearchFields);
+                    queryHandler.getNameQuery(query, "name");
+                } catch(e) {
+                    console.error(e);
+                    throw e;
+                }
+            };
+            paramsSearch["name:contains"] = (query) => {
+                try {
+                    queryHandler.getNameQuery(query, "name:contains");
+                } catch(e) {
+                    console.error(e);
+                    throw e;
+                }
+            };
+            paramsSearch["name:exact"] = (query) => {
+                try {
+                    queryHandler.getNameQuery(query, "name:exact");
                 } catch(e) {
                     console.error(e);
                     throw e;
@@ -85,9 +135,27 @@ class StringParameter {
 
     handleCommon() {
         return `
+            paramsSearchFields["${this.Param}:contains"] = paramsSearchFields["${this.Param}"];
+            paramsSearchFields["${this.Param}:exact"] = paramsSearchFields["${this.Param}"];
             paramsSearch["${this.Param}"] = (query) => {
                 try {
                     queryHandler.getStringQuery(query, paramsSearchFields, "${this.Param}");
+                } catch(e) {
+                    console.error(e);
+                    throw e;
+                }
+            };
+            paramsSearch["${this.Param}:contains"] = (query) => {
+                try {
+                    queryHandler.getStringQuery(query, paramsSearchFields, "${this.Param}:contains");
+                } catch(e) {
+                    console.error(e);
+                    throw e;
+                }
+            };
+            paramsSearch["${this.Param}:exact"] = (query) => {
+                try {
+                    queryHandler.getStringQuery(query, paramsSearchFields, "${this.Param}:exact");
                 } catch(e) {
                     console.error(e);
                     throw e;
