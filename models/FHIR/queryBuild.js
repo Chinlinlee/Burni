@@ -112,7 +112,12 @@ function quantityQuery(item, field) {
     let system = "";
     let code = "";
     let value = "";
-    [value , system, code] = item.split('|');
+    item = item.replace(/\\\|/gm, "{ＯＲ}");
+    if (item.includes("|")) [value="" , system="", code=""] = item.split('|');
+    else value = item;
+    value = value.replace(/{ＯＲ}/gm, "|");
+    system = system.replace(/{ＯＲ}/gm, "|");
+    code = code.replace(/{ＯＲ}/gm, "|");
     if (system) {
         queryBuilder[`${field}.system`] = system;
     }
@@ -125,15 +130,15 @@ function quantityQuery(item, field) {
     }
     queryBuilder[`${field}.value`] = tempNumberQuery[field];
     if (system || code) {
-        let ors = {
-            $or : []
+        let andQuery = {
+            $and : []
         };
         for(let i in queryBuilder) {
-            ors.$or.push({
+            andQuery.$and.push({
                 [i] : queryBuilder[i]
             });
         }
-        return ors;
+        return andQuery;
     }
     return queryBuilder;
 }
