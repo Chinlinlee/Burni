@@ -1,5 +1,5 @@
 const { capitalizeFirstLetter } = require('normalize-text');
-const { StringParameter, TokenParameter, NumberParameter, DateParameter, ReferenceParameter } = require('./parameterHandler');
+const { StringParameter, TokenParameter, NumberParameter, DateParameter, ReferenceParameter, QuantityParameter } = require('./parameterHandler');
 
 const genParamFunc = {
     "string": (param, field, schema = {}) => {
@@ -21,6 +21,10 @@ const genParamFunc = {
     "reference": (param, field, schema = {}) => {
         let referenceParameterHandler = new ReferenceParameter(param, field);
         return `${referenceParameterHandler.getCodeString()}`;
+    },
+    "quantity": (param, field, schema = {}) => {
+        let quantityParameterHandler = new QuantityParameter(param, field);
+        return `${quantityParameterHandler.getCodeString()}`;
     }
 };
 

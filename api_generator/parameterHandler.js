@@ -466,10 +466,33 @@ class ReferenceParameter {
     }
 }
 
+class QuantityParameter {
+    constructor(param, field) {
+        this.Param = param;
+        this.Field = field;
+    }
+
+    getCodeString() {
+        let codeStr = getPrefixCodeString(this.Param, this.Field);
+        codeStr += `
+        paramsSearch["${this.Param}"] = (query) => {
+            try {
+                queryHandler.getQuantityQuery(query, paramsSearchFields, "${this.Param}");
+            } catch(e) {
+                console.error(e);
+                throw e;
+            }
+        };
+        `;
+        return codeStr;
+    }
+}
+
 module.exports = {
     StringParameter: StringParameter,
     TokenParameter: TokenParameter,
     NumberParameter: NumberParameter,
     DateParameter: DateParameter,
-    ReferenceParameter: ReferenceParameter
+    ReferenceParameter: ReferenceParameter,
+    QuantityParameter: QuantityParameter
 };

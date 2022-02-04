@@ -356,6 +356,25 @@ function getReferenceQuery(query, paramsSearchFields, queryFieldName) {
     delete query[queryFieldName];
 }
 
+function getQuantityQuery (query, paramsSearchFields, queryFieldName) {
+    if (!_.isArray(query[queryFieldName])) {
+        query[queryFieldName] = [query[queryFieldName]];
+    }
+    for (let item of query[queryFieldName]) {
+        let buildQs = {
+            $or: []
+        };
+        for (let field of paramsSearchFields[queryFieldName]) {
+            let buildResult = queryBuild.quantityQuery(item, field);
+            buildQs.$or.push(buildResult);
+        }
+        query.$and.push({
+            ...buildQs
+        });
+    }
+    delete query[queryFieldName];
+}
+
 module.exports = {
     getStringQuery: getStringQuery,
     getAddressQuery: getAddressQuery,
@@ -364,5 +383,6 @@ module.exports = {
     getPolyTokenQuery: getPolyTokenQuery,
     getNumberQuery: getNumberQuery,
     getPolyDateQuery: getPolyDateQuery,
-    getReferenceQuery: getReferenceQuery
+    getReferenceQuery: getReferenceQuery,
+    getQuantityQuery: getQuantityQuery
 };
