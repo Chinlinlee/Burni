@@ -77,7 +77,7 @@ class StringParameter {
         if (typeOfField == "string") {
             return `
             paramsSearchFields["name:contains"] = paramsSearchFields["name"];
-            paramsSearchFields["name"] = paramsSearchFields["name"];
+            paramsSearchFields["name:exact"] = paramsSearchFields["name"];
             paramsSearch["name"] = (query) => {
                 try {
                     queryHandler.getStringQuery(query, paramsSearchFields, "name");
