@@ -92,6 +92,7 @@ if (_.get(config, "Patient.interaction.update", true)) {
 
 if (_.get(config, "Patient.interaction.delete", true)) {
     router.delete('/:id', require("./controller/deletePatient"));
+    router.delete('/', require("./controller/condition-deletePatient"));
 }
 
 module.exports = router;

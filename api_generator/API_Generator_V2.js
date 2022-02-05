@@ -184,6 +184,18 @@ function generateAPI(option) {
         `;
         //#endregion
 
+        //#region condition delete  
+        const conditionDeleteJs = `
+        const conditionDelete = require('../../../FHIRApiService/condition-delete');
+        const {
+            paramsSearch
+        } = require('../${res}ParametersHandler');
+        module.exports = async function(req, res) {
+            return await conditionDelete(req, res, "${res}", paramsSearch);
+        };
+        `;
+        //#endregion
+
         const validationScript = `
         const validate = require('../../../FHIRApiService/$validate');
 
@@ -200,6 +212,7 @@ function generateAPI(option) {
         fs.writeFileSync(`./api/FHIR/${res}/controller/post${res}.js`, beautify(post));
         fs.writeFileSync(`./api/FHIR/${res}/controller/put${res}.js`, beautify(put));
         fs.writeFileSync(`./api/FHIR/${res}/controller/delete${res}.js`, beautify(deleteJs));
+        fs.writeFileSync(`./api/FHIR/${res}/controller/condition-delete${res}.js`, beautify(conditionDeleteJs));
         fs.writeFileSync(`./api/FHIR/${res}/controller/post${res}Validate.js`, beautify(validationScript));
         let indexJs = `
         const express = require('express');
@@ -292,6 +305,7 @@ function generateAPI(option) {
         
         if (_.get(config, "${res}.interaction.delete", true)) {
             router.delete('/:id', require("./controller/delete${res}"));
+            router.delete('/', require("./controller/condition-delete${res}"));
         }
 
         module.exports = router;`;
