@@ -23,14 +23,20 @@ function generateAPI(option) {
 
         //#region search
         let get = `
-        const _ = require('lodash');
-        const queryBuild = require('../../../../models/FHIR/queryBuild.js');
-        const queryHandler = require('../../../../models/FHIR/searchParameterQueryHandler');
         const search = require('../../../FHIRApiService/search');
-
+        const { paramsSearch } = require('../${res}ParametersHandler');
         module.exports = async function(req, res) {
             return await search(req, res,"${res}", paramsSearch);
         };
+        `;
+        //#endregion
+
+        //#region search parameters
+        let resourceParameterHandler = `
+        const _ = require('lodash');
+        const queryBuild = require('../../../models/FHIR/queryBuild.js');
+        const queryHandler = require('../../../models/FHIR/searchParameterQueryHandler');
+
         let paramsSearchFields = {};
 
         const paramsSearch = {
@@ -56,12 +62,8 @@ function generateAPI(option) {
             delete query["_lastUpdated"];
         };
         `;
-
         let searchParameter = require('./FHIRParametersClean.json');
         let resSearchParams = searchParameter[res];
-        // let mongodb = require('../models/mongodb');
-        // console.log(res);
-        // let resJsonSchema = mongodb[res].jsonSchema();
         let resourceDefinition = require(`./to-code-use-definition/${res}.json`);
         for (let key in resSearchParams) {
             let paramObj = resSearchParams[key];
@@ -70,7 +72,7 @@ function generateAPI(option) {
             let field = paramObj["field"];
             try {
                 let searchFuncTxt = genParamFunc[type](param, field, resourceDefinition);
-                get += (searchFuncTxt);
+                resourceParameterHandler += (searchFuncTxt);
             } catch (e) {
                 if (e.message.includes("not a function")) {
                     console.log(type);
@@ -78,6 +80,9 @@ function generateAPI(option) {
                 }
             }
         }
+        resourceParameterHandler += `
+        module.exports.paramsSearch = paramsSearch;
+        `;
         //#endregion
 
         //#region getById
@@ -188,6 +193,7 @@ function generateAPI(option) {
         `;
         
         fs.writeFileSync(`./api/FHIR/${res}/controller/get${res}.js`, beautify(get));
+        fs.writeFileSync(`./api/FHIR/${res}/${res}ParametersHandler.js`, beautify(resourceParameterHandler));
         fs.writeFileSync(`./api/FHIR/${res}/controller/get${res}ById.js`, beautify(getById));
         fs.writeFileSync(`./api/FHIR/${res}/controller/get${res}History.js`, beautify(getHistory));
         fs.writeFileSync(`./api/FHIR/${res}/controller/get${res}HistoryById.js`, beautify(getHistoryById));
