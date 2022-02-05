@@ -67,7 +67,7 @@ module.exports = async function (req, res, resourceType) {
         let containedResources = _.get(updateData, "contained");
         for (let index in containedResources) {
             let resource = containedResources[index];
-            let validation = validateContained(resource, index);
+            let validation = await validateContained(resource, index);
             if (!validation.status) {
                 let operationOutcomeError = handleError.processing(`The resource in contained error. ${validation.message}`);
                 return doRes(400, operationOutcomeError);
