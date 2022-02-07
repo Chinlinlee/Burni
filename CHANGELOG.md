@@ -2,6 +2,47 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.4.0](https://github.com/Chinlinlee/Burni/compare/v2.3.1...v2.4.0) (2022-02-07)
+
+
+### Features
+
+* add all resources definition json files ([0c34d96](https://github.com/Chinlinlee/Burni/commit/0c34d968d3ec02c379bf5d7d92f2eb9067d13a81))
+* add condition delete API ([bf4b3a0](https://github.com/Chinlinlee/Burni/commit/bf4b3a08b35f1a2314bc0860a7760efc97c8c8b7))
+* add general string query builder ([7cb186e](https://github.com/Chinlinlee/Burni/commit/7cb186e1988ffc6a4c99a98b5254892585d24b0c))
+* add modifier of type of `string` and comma $or query in `address` query ([f12fca5](https://github.com/Chinlinlee/Burni/commit/f12fca528aeb438238133dec83b9c8d34918d178))
+* change `validateContained` to async funtion ([0a30cd1](https://github.com/Chinlinlee/Burni/commit/0a30cd193fe8ef121688bab6de3484332534df84))
+* change count of searching result method ([2b9751b](https://github.com/Chinlinlee/Burni/commit/2b9751bb695706beac287d3b5f9e5cdf2f5331ae))
+* handle comma `,` query and esacaping `\,` and `\|` ([1a5bef6](https://github.com/Chinlinlee/Burni/commit/1a5bef63ef385c3e4a6057ccc1beb442f7fc4632))
+* handle expression `where(type='${type}')` in the reference type search parameter ([17fe9b2](https://github.com/Chinlinlee/Burni/commit/17fe9b28379121133fdc02dc7908a7dc8b6232cd))
+* separate parameter search functions to single file ([695219e](https://github.com/Chinlinlee/Burni/commit/695219e66b36ffad99ed7db9234ec64ebef5672c))
+* **api-generator:** add `getPrefixCodeString` and change `TokenParameter` method ([a3a761b](https://github.com/Chinlinlee/Burni/commit/a3a761b25a573f59377512e59105933b0de01392))
+* **api-generator:** add and change feature ([de51fea](https://github.com/Chinlinlee/Burni/commit/de51feaf8c0aba914ce1669bff8e4eea5dbb98f3))
+* **api-generator:** add type of quantity search parameter ([0aab652](https://github.com/Chinlinlee/Burni/commit/0aab652743022013861098fc6ee0ed08cbbeb823))
+* **api-generator:** new way to handle all data types of search parameter, change token query build and add jsdoc comments to methods ([c3d9e24](https://github.com/Chinlinlee/Burni/commit/c3d9e248bd92cf8719a46d672a2309ebbaa10299))
+* **mongodb:** change connection url ([4b97705](https://github.com/Chinlinlee/Burni/commit/4b9770592ac4dbb8b56c3df4b46282c7fea8ebf6))
+* **quantityQuery:** hanlde escaping `\` and using `$and` to handle query value ([f49edeb](https://github.com/Chinlinlee/Burni/commit/f49edebb90ce2e58201c7d94b8556087c4cd6913))
+* **queryBuild:** add new query builder about date ([468ad6e](https://github.com/Chinlinlee/Burni/commit/468ad6e6b540dcbc21b220cce428761589969dea))
+* **schema:** support unicode string ([597aba5](https://github.com/Chinlinlee/Burni/commit/597aba5fed1a6f6957c96e4a0dbc133656bd6871))
+
+
+### Bug Fixes
+
+* error of `eslint` rules ([1624240](https://github.com/Chinlinlee/Burni/commit/1624240a958e1e30e0fda1ee45a33c786f763369))
+* eslint rule `semi`, `no-async-promise-executor` ([38ad62d](https://github.com/Chinlinlee/Burni/commit/38ad62d2a7eb18ebb7537e657a508703dff6c05b))
+* generate incorrect back bone element schema ([0665447](https://github.com/Chinlinlee/Burni/commit/0665447092514a12737c1cc136580233df02f7c3))
+* incorrect check is number condition in `numberQuery` ([8e29a16](https://github.com/Chinlinlee/Burni/commit/8e29a16d82b14743ab6c3597d0fbf2b705dacb3f))
+* incorrect connection url ([2249d4a](https://github.com/Chinlinlee/Burni/commit/2249d4a29d01b0e9713a68b064e2bffa6dfc54ef))
+* incorrect shard collection process flow ([1f853ce](https://github.com/Chinlinlee/Burni/commit/1f853ce624bc05795a384e1b44510f643fc6f600))
+* missing `:exact` in object name ([5201ec1](https://github.com/Chinlinlee/Burni/commit/5201ec14e009f07fc2d46e9fac4c510e0f562e95))
+* not allow array `field=1&field=2` parameter ([cbda323](https://github.com/Chinlinlee/Burni/commit/cbda3239775935b2908daf062d0043c2a51b4692))
+* **api,create:** model `save()` method not using await ([cab23f0](https://github.com/Chinlinlee/Burni/commit/cab23f0605776ae45af256d56bddcd862448c5af))
+* **api,update:** `isDocExist` return empty object ([630ac3d](https://github.com/Chinlinlee/Burni/commit/630ac3d01721137833c52e9816bb0fa0ea939c7a))
+* **api,update:** missing `Last-modified` in header ([45f4c2a](https://github.com/Chinlinlee/Burni/commit/45f4c2afe300a21c7f3cbac380ac530d1d95b7db))
+* model not load all dependencis type ([2d102d8](https://github.com/Chinlinlee/Burni/commit/2d102d81baaced34bf993b426e8a56e1ac6ae563))
+* **resources-generator:** incorrect require path ([dc6b62b](https://github.com/Chinlinlee/Burni/commit/dc6b62b1ff39daad803549b4bfbcfe0803454769))
+* **resources-generator:** mongoose circular dependency warnings ([d02a4ba](https://github.com/Chinlinlee/Burni/commit/d02a4ba46e563fc6be16c24bd513fa58e3a9e2af))
+
 ### [2.3.1](https://github.com/Chinlinlee/Burni/compare/v2.3.0...v2.3.1) (2022-01-23)
 
 
