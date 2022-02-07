@@ -1,0 +1,106 @@
+{
+    "id": {
+        "type": "string",
+        "isArray": false,
+        "isRequired": false
+    },
+    "meta": {
+        "type": "Meta",
+        "isArray": false,
+        "isRequired": false
+    },
+    "implicitRules": {
+        "type": "uri",
+        "isArray": false,
+        "isRequired": false
+    },
+    "language": {
+        "type": "code",
+        "isArray": false,
+        "isRequired": false
+    },
+    "text": {
+        "type": "Narrative",
+        "isArray": false,
+        "isRequired": false
+    },
+    "contained": {
+        "type": "Resource",
+        "isArray": true,
+        "isRequired": false
+    },
+    "extension": {
+        "type": "Extension",
+        "isArray": true,
+        "isRequired": false
+    },
+    "modifierExtension": {
+        "type": "Extension",
+        "isArray": true,
+        "isRequired": false
+    },
+    "identifier": {
+        "type": "Identifier",
+        "isArray": true,
+        "isRequired": false
+    },
+    "type": {
+        "type": "CodeableConcept",
+        "isArray": false,
+        "isRequired": true
+    },
+    "unit": {
+        "type": "CodeableConcept",
+        "isArray": false,
+        "isRequired": false
+    },
+    "source": {
+        "type": "Reference",
+        "isArray": false,
+        "isRequired": false
+    },
+    "parent": {
+        "type": "Reference",
+        "isArray": false,
+        "isRequired": false
+    },
+    "operationalStatus": {
+        "type": "code",
+        "isArray": false,
+        "isRequired": false
+    },
+    "color": {
+        "type": "code",
+        "isArray": false,
+        "isRequired": false
+    },
+    "category": {
+        "type": "code",
+        "isArray": false,
+        "isRequired": true
+    },
+    "measurementPeriod": {
+        "type": "Timing",
+        "isArray": false,
+        "isRequired": false
+    },
+    "calibration": {
+        "type": {
+            "type": "code",
+            "isArray": false,
+            "isRequired": false
+        },
+        "isArray": true,
+        "isRequired": false,
+        "state": {
+            "type": "code",
+            "isArray": false,
+            "isRequired": false
+        },
+        "time": {
+            "type": "instant",
+            "isArray": false,
+            "isRequired": false
+        }
+    }
+}

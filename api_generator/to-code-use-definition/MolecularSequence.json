@@ -1,0 +1,380 @@
+{
+    "id": {
+        "type": "string",
+        "isArray": false,
+        "isRequired": false
+    },
+    "meta": {
+        "type": "Meta",
+        "isArray": false,
+        "isRequired": false
+    },
+    "implicitRules": {
+        "type": "uri",
+        "isArray": false,
+        "isRequired": false
+    },
+    "language": {
+        "type": "code",
+        "isArray": false,
+        "isRequired": false
+    },
+    "text": {
+        "type": "Narrative",
+        "isArray": false,
+        "isRequired": false
+    },
+    "contained": {
+        "type": "Resource",
+        "isArray": true,
+        "isRequired": false
+    },
+    "extension": {
+        "type": "Extension",
+        "isArray": true,
+        "isRequired": false
+    },
+    "modifierExtension": {
+        "type": "Extension",
+        "isArray": true,
+        "isRequired": false
+    },
+    "identifier": {
+        "type": "Identifier",
+        "isArray": true,
+        "isRequired": false
+    },
+    "type": {
+        "type": "code",
+        "isArray": false,
+        "isRequired": false
+    },
+    "coordinateSystem": {
+        "type": "integer",
+        "isArray": false,
+        "isRequired": true
+    },
+    "patient": {
+        "type": "Reference",
+        "isArray": false,
+        "isRequired": false
+    },
+    "specimen": {
+        "type": "Reference",
+        "isArray": false,
+        "isRequired": false
+    },
+    "device": {
+        "type": "Reference",
+        "isArray": false,
+        "isRequired": false
+    },
+    "performer": {
+        "type": "Reference",
+        "isArray": false,
+        "isRequired": false
+    },
+    "quantity": {
+        "type": "Quantity",
+        "isArray": false,
+        "isRequired": false
+    },
+    "referenceSeq": {
+        "type": "BackboneElement",
+        "isArray": false,
+        "isRequired": false,
+        "chromosome": {
+            "type": "CodeableConcept",
+            "isArray": false,
+            "isRequired": false
+        },
+        "genomeBuild": {
+            "type": "string",
+            "isArray": false,
+            "isRequired": false
+        },
+        "orientation": {
+            "type": "code",
+            "isArray": false,
+            "isRequired": false
+        },
+        "referenceSeqId": {
+            "type": "CodeableConcept",
+            "isArray": false,
+            "isRequired": false
+        },
+        "referenceSeqPointer": {
+            "type": "Reference",
+            "isArray": false,
+            "isRequired": false
+        },
+        "referenceSeqString": {
+            "type": "string",
+            "isArray": false,
+            "isRequired": false
+        },
+        "strand": {
+            "type": "code",
+            "isArray": false,
+            "isRequired": false
+        },
+        "windowStart": {
+            "type": "integer",
+            "isArray": false,
+            "isRequired": false
+        },
+        "windowEnd": {
+            "type": "integer",
+            "isArray": false,
+            "isRequired": false
+        }
+    },
+    "variant": {
+        "type": "BackboneElement",
+        "isArray": true,
+        "isRequired": false,
+        "start": {
+            "type": "integer",
+            "isArray": false,
+            "isRequired": false
+        },
+        "end": {
+            "type": "integer",
+            "isArray": false,
+            "isRequired": false
+        },
+        "observedAllele": {
+            "type": "string",
+            "isArray": false,
+            "isRequired": false
+        },
+        "referenceAllele": {
+            "type": "string",
+            "isArray": false,
+            "isRequired": false
+        },
+        "cigar": {
+            "type": "string",
+            "isArray": false,
+            "isRequired": false
+        },
+        "variantPointer": {
+            "type": "Reference",
+            "isArray": false,
+            "isRequired": false
+        }
+    },
+    "observedSeq": {
+        "type": "string",
+        "isArray": false,
+        "isRequired": false
+    },
+    "quality": {
+        "type": {
+            "type": "code",
+            "isArray": false,
+            "isRequired": true
+        },
+        "isArray": true,
+        "isRequired": false,
+        "standardSequence": {
+            "type": "CodeableConcept",
+            "isArray": false,
+            "isRequired": false
+        },
+        "start": {
+            "type": "integer",
+            "isArray": false,
+            "isRequired": false
+        },
+        "end": {
+            "type": "integer",
+            "isArray": false,
+            "isRequired": false
+        },
+        "score": {
+            "type": "Quantity",
+            "isArray": false,
+            "isRequired": false
+        },
+        "method": {
+            "type": "CodeableConcept",
+            "isArray": false,
+            "isRequired": false
+        },
+        "truthTP": {
+            "type": "decimal",
+            "isArray": false,
+            "isRequired": false
+        },
+        "queryTP": {
+            "type": "decimal",
+            "isArray": false,
+            "isRequired": false
+        },
+        "truthFN": {
+            "type": "decimal",
+            "isArray": false,
+            "isRequired": false
+        },
+        "queryFP": {
+            "type": "decimal",
+            "isArray": false,
+            "isRequired": false
+        },
+        "gtFP": {
+            "type": "decimal",
+            "isArray": false,
+            "isRequired": false
+        },
+        "precision": {
+            "type": "decimal",
+            "isArray": false,
+            "isRequired": false
+        },
+        "recall": {
+            "type": "decimal",
+            "isArray": false,
+            "isRequired": false
+        },
+        "fScore": {
+            "type": "decimal",
+            "isArray": false,
+            "isRequired": false
+        },
+        "roc": {
+            "type": "BackboneElement",
+            "isArray": false,
+            "isRequired": false,
+            "score": {
+                "type": "integer",
+                "isArray": true,
+                "isRequired": false
+            },
+            "numTP": {
+                "type": "integer",
+                "isArray": true,
+                "isRequired": false
+            },
+            "numFP": {
+                "type": "integer",
+                "isArray": true,
+                "isRequired": false
+            },
+            "numFN": {
+                "type": "integer",
+                "isArray": true,
+                "isRequired": false
+            },
+            "precision": {
+                "type": "decimal",
+                "isArray": true,
+                "isRequired": false
+            },
+            "sensitivity": {
+                "type": "decimal",
+                "isArray": true,
+                "isRequired": false
+            },
+            "fMeasure": {
+                "type": "decimal",
+                "isArray": true,
+                "isRequired": false
+            }
+        }
+    },
+    "readCoverage": {
+        "type": "integer",
+        "isArray": false,
+        "isRequired": false
+    },
+    "repository": {
+        "type": {
+            "type": "code",
+            "isArray": false,
+            "isRequired": true
+        },
+        "isArray": true,
+        "isRequired": false,
+        "url": {
+            "type": "uri",
+            "isArray": false,
+            "isRequired": false
+        },
+        "name": {
+            "type": "string",
+            "isArray": false,
+            "isRequired": false
+        },
+        "datasetId": {
+            "type": "string",
+            "isArray": false,
+            "isRequired": false
+        },
+        "variantsetId": {
+            "type": "string",
+            "isArray": false,
+            "isRequired": false
+        },
+        "readsetId": {
+            "type": "string",
+            "isArray": false,
+            "isRequired": false
+        }
+    },
+    "pointer": {
+        "type": "Reference",
+        "isArray": true,
+        "isRequired": false
+    },
+    "structureVariant": {
+        "type": "BackboneElement",
+        "isArray": true,
+        "isRequired": false,
+        "variantType": {
+            "type": "CodeableConcept",
+            "isArray": false,
+            "isRequired": false
+        },
+        "exact": {
+            "type": "boolean",
+            "isArray": false,
+            "isRequired": false
+        },
+        "length": {
+            "type": "integer",
+            "isArray": false,
+            "isRequired": false
+        },
+        "outer": {
+            "type": "BackboneElement",
+            "isArray": false,
+            "isRequired": false,
+            "start": {
+                "type": "integer",
+                "isArray": false,
+                "isRequired": false
+            },
+            "end": {
+                "type": "integer",
+                "isArray": false,
+                "isRequired": false
+            }
+        },
+        "inner": {
+            "type": "BackboneElement",
+            "isArray": false,
+            "isRequired": false,
+            "start": {
+                "type": "integer",
+                "isArray": false,
+                "isRequired": false
+            },
+            "end": {
+                "type": "integer",
+                "isArray": false,
+                "isRequired": false
+            }
+        }
+    }
+}

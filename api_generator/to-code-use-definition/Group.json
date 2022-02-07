@@ -1,0 +1,147 @@
+{
+    "id": {
+        "type": "string",
+        "isArray": false,
+        "isRequired": false
+    },
+    "meta": {
+        "type": "Meta",
+        "isArray": false,
+        "isRequired": false
+    },
+    "implicitRules": {
+        "type": "uri",
+        "isArray": false,
+        "isRequired": false
+    },
+    "language": {
+        "type": "code",
+        "isArray": false,
+        "isRequired": false
+    },
+    "text": {
+        "type": "Narrative",
+        "isArray": false,
+        "isRequired": false
+    },
+    "contained": {
+        "type": "Resource",
+        "isArray": true,
+        "isRequired": false
+    },
+    "extension": {
+        "type": "Extension",
+        "isArray": true,
+        "isRequired": false
+    },
+    "modifierExtension": {
+        "type": "Extension",
+        "isArray": true,
+        "isRequired": false
+    },
+    "identifier": {
+        "type": "Identifier",
+        "isArray": true,
+        "isRequired": false
+    },
+    "active": {
+        "type": "boolean",
+        "isArray": false,
+        "isRequired": false
+    },
+    "type": {
+        "type": "code",
+        "isArray": false,
+        "isRequired": true
+    },
+    "actual": {
+        "type": "boolean",
+        "isArray": false,
+        "isRequired": true
+    },
+    "code": {
+        "type": "CodeableConcept",
+        "isArray": false,
+        "isRequired": false
+    },
+    "name": {
+        "type": "string",
+        "isArray": false,
+        "isRequired": false
+    },
+    "quantity": {
+        "type": "unsignedInt",
+        "isArray": false,
+        "isRequired": false
+    },
+    "managingEntity": {
+        "type": "Reference",
+        "isArray": false,
+        "isRequired": false
+    },
+    "characteristic": {
+        "type": "BackboneElement",
+        "isArray": true,
+        "isRequired": false,
+        "code": {
+            "type": "CodeableConcept",
+            "isArray": false,
+            "isRequired": true
+        },
+        "valueCodeableConcept": {
+            "type": "CodeableConcept",
+            "isArray": false,
+            "isRequired": true
+        },
+        "valueBoolean": {
+            "type": "boolean",
+            "isArray": false,
+            "isRequired": true
+        },
+        "valueQuantity": {
+            "type": "Quantity",
+            "isArray": false,
+            "isRequired": true
+        },
+        "valueRange": {
+            "type": "Range",
+            "isArray": false,
+            "isRequired": true
+        },
+        "valueReference": {
+            "type": "Reference",
+            "isArray": false,
+            "isRequired": true
+        },
+        "exclude": {
+            "type": "boolean",
+            "isArray": false,
+            "isRequired": true
+        },
+        "period": {
+            "type": "Period",
+            "isArray": false,
+            "isRequired": false
+        }
+    },
+    "member": {
+        "type": "BackboneElement",
+        "isArray": true,
+        "isRequired": false,
+        "entity": {
+            "type": "Reference",
+            "isArray": false,
+            "isRequired": true
+        },
+        "period": {
+            "type": "Period",
+            "isArray": false,
+            "isRequired": false
+        },
+        "inactive": {
+            "type": "boolean",
+            "isArray": false,
+            "isRequired": false
+        }
+    }
+}

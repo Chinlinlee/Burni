@@ -1,9 +1,21 @@
 const mongoose = require('mongoose');
-const Extension = require('./Extension');
-const Identifier = require('./Identifier');
-const CodeableConcept = require('./CodeableConcept');
-const Quantity = require('./Quantity');
-module.exports = new mongoose.Schema({
+const {
+    Extension
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Identifier
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    CodeableConcept
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Quantity
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+
+const {
+    ProductShelfLife
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+ProductShelfLife.add({
     extension: {
         type: [Extension],
         default: void 0
@@ -30,10 +42,5 @@ module.exports = new mongoose.Schema({
         type: [CodeableConcept],
         default: void 0
     }
-}, {
-    _id: false,
-    id: false,
-    toObject: {
-        getters: true
-    }
 });
+module.exports.ProductShelfLife = ProductShelfLife;

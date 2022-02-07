@@ -1,9 +1,17 @@
 const mongoose = require('mongoose');
-const Extension = require('./Extension');
-const string = require('./string');
-const canonical = require('./canonical');
-const Coding = require('./Coding');
-module.exports = new mongoose.Schema({
+const {
+    Extension
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const string = require('../FHIRDataTypesSchema/string');
+const canonical = require('../FHIRDataTypesSchema/canonical');
+const {
+    Coding
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+
+const {
+    DataRequirement_CodeFilter
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+DataRequirement_CodeFilter.add({
     extension: {
         type: [Extension],
         default: void 0
@@ -19,10 +27,5 @@ module.exports = new mongoose.Schema({
         type: [Coding],
         default: void 0
     }
-}, {
-    _id: false,
-    id: false,
-    toObject: {
-        getters: true
-    }
 });
+module.exports.DataRequirement_CodeFilter = DataRequirement_CodeFilter;

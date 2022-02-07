@@ -1,11 +1,23 @@
 const mongoose = require('mongoose');
-const Extension = require('./Extension');
-const CodeableConcept = require('./CodeableConcept');
-const uri = require('./uri');
-const string = require('./string');
-const Period = require('./Period');
-const Reference = require('./Reference');
-module.exports = new mongoose.Schema({
+const {
+    Extension
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    CodeableConcept
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const uri = require('../FHIRDataTypesSchema/uri');
+const string = require('../FHIRDataTypesSchema/string');
+const {
+    Period
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Reference
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+
+const {
+    Identifier
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+Identifier.add({
     extension: {
         type: [Extension],
         default: void 0
@@ -29,10 +41,5 @@ module.exports = new mongoose.Schema({
         type: Reference,
         default: void 0
     }
-}, {
-    _id: false,
-    id: false,
-    toObject: {
-        getters: true
-    }
 });
+module.exports.Identifier = Identifier;

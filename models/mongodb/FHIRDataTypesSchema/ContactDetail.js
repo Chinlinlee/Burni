@@ -1,8 +1,16 @@
 const mongoose = require('mongoose');
-const Extension = require('./Extension');
-const string = require('./string');
-const ContactPoint = require('./ContactPoint');
-module.exports = new mongoose.Schema({
+const {
+    Extension
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const string = require('../FHIRDataTypesSchema/string');
+const {
+    ContactPoint
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+
+const {
+    ContactDetail
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+ContactDetail.add({
     extension: {
         type: [Extension],
         default: void 0
@@ -12,10 +20,5 @@ module.exports = new mongoose.Schema({
         type: [ContactPoint],
         default: void 0
     }
-}, {
-    _id: false,
-    id: false,
-    toObject: {
-        getters: true
-    }
 });
+module.exports.ContactDetail = ContactDetail;

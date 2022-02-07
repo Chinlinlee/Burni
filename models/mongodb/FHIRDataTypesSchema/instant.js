@@ -4,5 +4,5 @@ module.exports = {
     get: function(v) {
         if (v) return moment(v).format("YYYY-MM-DDTHH:mm:ss.SSSZ");
     } ,
-    default: void 0,
-}
+    default: void 0
+};

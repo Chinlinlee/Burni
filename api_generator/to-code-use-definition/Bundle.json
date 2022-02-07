@@ -1,0 +1,173 @@
+{
+    "id": {
+        "type": "string",
+        "isArray": false,
+        "isRequired": false
+    },
+    "meta": {
+        "type": "Meta",
+        "isArray": false,
+        "isRequired": false
+    },
+    "implicitRules": {
+        "type": "uri",
+        "isArray": false,
+        "isRequired": false
+    },
+    "language": {
+        "type": "code",
+        "isArray": false,
+        "isRequired": false
+    },
+    "identifier": {
+        "type": "Identifier",
+        "isArray": false,
+        "isRequired": false
+    },
+    "type": {
+        "type": "code",
+        "isArray": false,
+        "isRequired": true
+    },
+    "timestamp": {
+        "type": "instant",
+        "isArray": false,
+        "isRequired": false
+    },
+    "total": {
+        "type": "unsignedInt",
+        "isArray": false,
+        "isRequired": false
+    },
+    "link": {
+        "type": "BackboneElement",
+        "isArray": true,
+        "isRequired": false,
+        "relation": {
+            "type": "string",
+            "isArray": false,
+            "isRequired": true
+        },
+        "url": {
+            "type": "uri",
+            "isArray": false,
+            "isRequired": true
+        }
+    },
+    "extension": {
+        "type": "Extension",
+        "isArray": true,
+        "isRequired": false
+    },
+    "modifierExtension": {
+        "type": "Extension",
+        "isArray": true,
+        "isRequired": false
+    },
+    "entry": {
+        "type": "BackboneElement",
+        "isArray": true,
+        "isRequired": false,
+        "link": {
+            "type": "",
+            "isArray": true,
+            "isRequired": false,
+            "ref": "#Bundle.link"
+        },
+        "fullUrl": {
+            "type": "uri",
+            "isArray": false,
+            "isRequired": false
+        },
+        "resource": {
+            "type": "Resource",
+            "isArray": false,
+            "isRequired": false
+        },
+        "search": {
+            "type": "BackboneElement",
+            "isArray": false,
+            "isRequired": false,
+            "mode": {
+                "type": "code",
+                "isArray": false,
+                "isRequired": false
+            },
+            "score": {
+                "type": "decimal",
+                "isArray": false,
+                "isRequired": false
+            }
+        },
+        "request": {
+            "type": "BackboneElement",
+            "isArray": false,
+            "isRequired": false,
+            "method": {
+                "type": "code",
+                "isArray": false,
+                "isRequired": true
+            },
+            "url": {
+                "type": "uri",
+                "isArray": false,
+                "isRequired": true
+            },
+            "ifNoneMatch": {
+                "type": "string",
+                "isArray": false,
+                "isRequired": false
+            },
+            "ifModifiedSince": {
+                "type": "instant",
+                "isArray": false,
+                "isRequired": false
+            },
+            "ifMatch": {
+                "type": "string",
+                "isArray": false,
+                "isRequired": false
+            },
+            "ifNoneExist": {
+                "type": "string",
+                "isArray": false,
+                "isRequired": false
+            }
+        },
+        "response": {
+            "type": "BackboneElement",
+            "isArray": false,
+            "isRequired": false,
+            "status": {
+                "type": "string",
+                "isArray": false,
+                "isRequired": true
+            },
+            "location": {
+                "type": "uri",
+                "isArray": false,
+                "isRequired": false
+            },
+            "etag": {
+                "type": "string",
+                "isArray": false,
+                "isRequired": false
+            },
+            "lastModified": {
+                "type": "instant",
+                "isArray": false,
+                "isRequired": false
+            },
+            "outcome": {
+                "type": "Resource",
+                "isArray": false,
+                "isRequired": false
+            }
+        }
+    },
+    "signature": {
+        "type": "Signature",
+        "isArray": false,
+        "isRequired": false
+    }
+}

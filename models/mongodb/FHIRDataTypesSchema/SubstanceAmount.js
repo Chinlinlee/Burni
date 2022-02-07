@@ -1,11 +1,25 @@
 const mongoose = require('mongoose');
-const Extension = require('./Extension');
-const Quantity = require('./Quantity');
-const Range = require('./Range');
-const string = require('./string');
-const CodeableConcept = require('./CodeableConcept');
-const SubstanceAmount_ReferenceRange = require('./SubstanceAmount_ReferenceRange');
-module.exports = new mongoose.Schema({
+const {
+    Extension
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Quantity
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Range
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const string = require('../FHIRDataTypesSchema/string');
+const {
+    CodeableConcept
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    SubstanceAmount_ReferenceRange
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+
+const {
+    SubstanceAmount
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+SubstanceAmount.add({
     extension: {
         type: [Extension],
         default: void 0
@@ -32,10 +46,5 @@ module.exports = new mongoose.Schema({
         type: SubstanceAmount_ReferenceRange,
         default: void 0
     }
-}, {
-    _id: false,
-    id: false,
-    toObject: {
-        getters: true
-    }
 });
+module.exports.SubstanceAmount = SubstanceAmount;

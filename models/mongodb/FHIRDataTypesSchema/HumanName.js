@@ -1,8 +1,16 @@
 const mongoose = require('mongoose');
-const Extension = require('./Extension');
-const string = require('./string');
-const Period = require('./Period');
-module.exports = new mongoose.Schema({
+const {
+    Extension
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const string = require('../FHIRDataTypesSchema/string');
+const {
+    Period
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+
+const {
+    HumanName
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+HumanName.add({
     extension: {
         type: [Extension],
         default: void 0
@@ -30,10 +38,5 @@ module.exports = new mongoose.Schema({
         type: Period,
         default: void 0
     }
-}, {
-    _id: false,
-    id: false,
-    toObject: {
-        getters: true
-    }
 });
+module.exports.HumanName = HumanName;

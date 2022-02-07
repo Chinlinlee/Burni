@@ -21,7 +21,7 @@ module.exports = async function(req, res, resourceType) {
             return res.status(code).send(xmlItem);
         }
         return res.status(code).send(item);
-    }
+    };
     if (!user.checkTokenPermission(req, resourceType, "detele")) {
         return doRes(403,handleError.forbidden("Your token doesn't have permission with this API"));
     }
@@ -42,10 +42,10 @@ module.exports = async function(req, res, resourceType) {
             }
             return doRes(500,handleError.exception(err.message));
         }
-    }
+    };
     let [status, doc] = await doDeleteData(req, resourceType);
     return resFunc[status.toString()](doc);
-}
+};
 
 async function doDeleteData(req, resourceType) {
     return new Promise((resolve) => {
@@ -58,6 +58,6 @@ async function doDeleteData(req, resourceType) {
                 return resolve([false, err]);
             }
             return resolve([true, doc]);
-        })
+        });
     });
 }

@@ -1,0 +1,112 @@
+{
+    "id": {
+        "type": "string",
+        "isArray": false,
+        "isRequired": false
+    },
+    "meta": {
+        "type": "Meta",
+        "isArray": false,
+        "isRequired": false
+    },
+    "implicitRules": {
+        "type": "uri",
+        "isArray": false,
+        "isRequired": false
+    },
+    "language": {
+        "type": "code",
+        "isArray": false,
+        "isRequired": false
+    },
+    "text": {
+        "type": "Narrative",
+        "isArray": false,
+        "isRequired": false
+    },
+    "contained": {
+        "type": "Resource",
+        "isArray": true,
+        "isRequired": false
+    },
+    "extension": {
+        "type": "Extension",
+        "isArray": true,
+        "isRequired": false
+    },
+    "modifierExtension": {
+        "type": "Extension",
+        "isArray": true,
+        "isRequired": false
+    },
+    "identifier": {
+        "type": "Identifier",
+        "isArray": true,
+        "isRequired": false
+    },
+    "code": {
+        "type": "CodeableConcept",
+        "isArray": false,
+        "isRequired": false
+    },
+    "status": {
+        "type": "code",
+        "isArray": false,
+        "isRequired": false
+    },
+    "manufacturer": {
+        "type": "Reference",
+        "isArray": false,
+        "isRequired": false
+    },
+    "form": {
+        "type": "CodeableConcept",
+        "isArray": false,
+        "isRequired": false
+    },
+    "amount": {
+        "type": "Ratio",
+        "isArray": false,
+        "isRequired": false
+    },
+    "ingredient": {
+        "type": "BackboneElement",
+        "isArray": true,
+        "isRequired": false,
+        "itemCodeableConcept": {
+            "type": "CodeableConcept",
+            "isArray": false,
+            "isRequired": true
+        },
+        "itemReference": {
+            "type": "Reference",
+            "isArray": false,
+            "isRequired": true
+        },
+        "isActive": {
+            "type": "boolean",
+            "isArray": false,
+            "isRequired": false
+        },
+        "strength": {
+            "type": "Ratio",
+            "isArray": false,
+            "isRequired": false
+        }
+    },
+    "batch": {
+        "type": "BackboneElement",
+        "isArray": false,
+        "isRequired": false,
+        "lotNumber": {
+            "type": "string",
+            "isArray": false,
+            "isRequired": false
+        },
+        "expirationDate": {
+            "type": "dateTime",
+            "isArray": false,
+            "isRequired": false
+        }
+    }
+}

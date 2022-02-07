@@ -1,0 +1,122 @@
+{
+    "id": {
+        "type": "string",
+        "isArray": false,
+        "isRequired": false
+    },
+    "meta": {
+        "type": "Meta",
+        "isArray": false,
+        "isRequired": false
+    },
+    "implicitRules": {
+        "type": "uri",
+        "isArray": false,
+        "isRequired": false
+    },
+    "language": {
+        "type": "code",
+        "isArray": false,
+        "isRequired": false
+    },
+    "text": {
+        "type": "Narrative",
+        "isArray": false,
+        "isRequired": false
+    },
+    "contained": {
+        "type": "Resource",
+        "isArray": true,
+        "isRequired": false
+    },
+    "extension": {
+        "type": "Extension",
+        "isArray": true,
+        "isRequired": false
+    },
+    "modifierExtension": {
+        "type": "Extension",
+        "isArray": true,
+        "isRequired": false
+    },
+    "identifier": {
+        "type": "Identifier",
+        "isArray": true,
+        "isRequired": false
+    },
+    "basedOn": {
+        "type": "Reference",
+        "isArray": true,
+        "isRequired": false
+    },
+    "partOf": {
+        "type": "Reference",
+        "isArray": true,
+        "isRequired": false
+    },
+    "status": {
+        "type": "code",
+        "isArray": false,
+        "isRequired": false
+    },
+    "patient": {
+        "type": "Reference",
+        "isArray": false,
+        "isRequired": false
+    },
+    "type": {
+        "type": "CodeableConcept",
+        "isArray": false,
+        "isRequired": false
+    },
+    "suppliedItem": {
+        "type": "BackboneElement",
+        "isArray": false,
+        "isRequired": false,
+        "quantity": {
+            "type": "Quantity",
+            "isArray": false,
+            "isRequired": false
+        },
+        "itemCodeableConcept": {
+            "type": "CodeableConcept",
+            "isArray": false,
+            "isRequired": false
+        },
+        "itemReference": {
+            "type": "Reference",
+            "isArray": false,
+            "isRequired": false
+        }
+    },
+    "occurrenceDateTime": {
+        "type": "dateTime",
+        "isArray": false,
+        "isRequired": false
+    },
+    "occurrencePeriod": {
+        "type": "Period",
+        "isArray": false,
+        "isRequired": false
+    },
+    "occurrenceTiming": {
+        "type": "Timing",
+        "isArray": false,
+        "isRequired": false
+    },
+    "supplier": {
+        "type": "Reference",
+        "isArray": false,
+        "isRequired": false
+    },
+    "destination": {
+        "type": "Reference",
+        "isArray": false,
+        "isRequired": false
+    },
+    "receiver": {
+        "type": "Reference",
+        "isArray": true,
+        "isRequired": false
+    }
+}

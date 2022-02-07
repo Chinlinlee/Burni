@@ -1,41 +1,107 @@
 const mongoose = require('mongoose');
-const uri = require('./uri');
-const string = require('./string');
-const boolean = require('./boolean');
-const Address = require('./Address');
-const Age = require('./Age');
-const Annotation = require('./Annotation');
-const Attachment = require('./Attachment');
-const CodeableConcept = require('./CodeableConcept');
-const Coding = require('./Coding');
-const ContactPoint = require('./ContactPoint');
-const Count = require('./Count');
-const Distance = require('./Distance');
-const Duration = require('./Duration');
-const HumanName = require('./HumanName');
-const Identifier = require('./Identifier');
-const Money = require('./Money');
-const Period = require('./Period');
-const Quantity = require('./Quantity');
-const Range = require('./Range');
-const Ratio = require('./Ratio');
-const Reference = require('./Reference');
-const SampledData = require('./SampledData');
-const Signature = require('./Signature');
-const Timing = require('./Timing');
-const ContactDetail = require('./ContactDetail');
-const Contributor = require('./Contributor');
-const DataRequirement = require('./DataRequirement');
-const Expression = require('./Expression');
-const ParameterDefinition = require('./ParameterDefinition');
-const RelatedArtifact = require('./RelatedArtifact');
-const TriggerDefinition = require('./TriggerDefinition');
-const UsageContext = require('./UsageContext');
-const Dosage = require('./Dosage');
-const Meta = require('./Meta');
-module.exports = new mongoose.Schema({
+const uri = require('../FHIRDataTypesSchema/uri');
+const string = require('../FHIRDataTypesSchema/string');
+const boolean = require('../FHIRDataTypesSchema/boolean');
+const {
+    Address
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Age
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Annotation
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Attachment
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    CodeableConcept
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Coding
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    ContactPoint
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Count
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Distance
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Duration
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    HumanName
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Identifier
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Money
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Period
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Quantity
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Range
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Ratio
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Reference
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    SampledData
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Signature
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Timing
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    ContactDetail
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Contributor
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    DataRequirement
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Expression
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    ParameterDefinition
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    RelatedArtifact
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    TriggerDefinition
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    UsageContext
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Dosage
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Meta
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+
+const {
+    Extension
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+Extension.add({
     extension: {
-        type: [this],
+        type: [Extension],
         default: void 0
     },
     url: uri,
@@ -194,10 +260,5 @@ module.exports = new mongoose.Schema({
         type: Meta,
         default: void 0
     }
-}, {
-    _id: false,
-    id: false,
-    toObject: {
-        getters: true
-    }
 });
+module.exports.Extension = Extension;

@@ -1,0 +1,177 @@
+{
+    "id": {
+        "type": "string",
+        "isArray": false,
+        "isRequired": false
+    },
+    "meta": {
+        "type": "Meta",
+        "isArray": false,
+        "isRequired": false
+    },
+    "implicitRules": {
+        "type": "uri",
+        "isArray": false,
+        "isRequired": false
+    },
+    "language": {
+        "type": "code",
+        "isArray": false,
+        "isRequired": false
+    },
+    "text": {
+        "type": "Narrative",
+        "isArray": false,
+        "isRequired": false
+    },
+    "contained": {
+        "type": "Resource",
+        "isArray": true,
+        "isRequired": false
+    },
+    "extension": {
+        "type": "Extension",
+        "isArray": true,
+        "isRequired": false
+    },
+    "modifierExtension": {
+        "type": "Extension",
+        "isArray": true,
+        "isRequired": false
+    },
+    "identifier": {
+        "type": "Identifier",
+        "isArray": true,
+        "isRequired": false
+    },
+    "clinicalStatus": {
+        "type": "CodeableConcept",
+        "isArray": false,
+        "isRequired": false
+    },
+    "verificationStatus": {
+        "type": "CodeableConcept",
+        "isArray": false,
+        "isRequired": false
+    },
+    "type": {
+        "type": "code",
+        "isArray": false,
+        "isRequired": false
+    },
+    "category": {
+        "type": "code",
+        "isArray": true,
+        "isRequired": false
+    },
+    "criticality": {
+        "type": "code",
+        "isArray": false,
+        "isRequired": false
+    },
+    "code": {
+        "type": "CodeableConcept",
+        "isArray": false,
+        "isRequired": false
+    },
+    "patient": {
+        "type": "Reference",
+        "isArray": false,
+        "isRequired": true
+    },
+    "encounter": {
+        "type": "Reference",
+        "isArray": false,
+        "isRequired": false
+    },
+    "onsetDateTime": {
+        "type": "dateTime",
+        "isArray": false,
+        "isRequired": false
+    },
+    "onsetAge": {
+        "type": "Age",
+        "isArray": false,
+        "isRequired": false
+    },
+    "onsetPeriod": {
+        "type": "Period",
+        "isArray": false,
+        "isRequired": false
+    },
+    "onsetRange": {
+        "type": "Range",
+        "isArray": false,
+        "isRequired": false
+    },
+    "onsetString": {
+        "type": "string",
+        "isArray": false,
+        "isRequired": false
+    },
+    "recordedDate": {
+        "type": "dateTime",
+        "isArray": false,
+        "isRequired": false
+    },
+    "recorder": {
+        "type": "Reference",
+        "isArray": false,
+        "isRequired": false
+    },
+    "asserter": {
+        "type": "Reference",
+        "isArray": false,
+        "isRequired": false
+    },
+    "lastOccurrence": {
+        "type": "dateTime",
+        "isArray": false,
+        "isRequired": false
+    },
+    "note": {
+        "type": "Annotation",
+        "isArray": true,
+        "isRequired": false
+    },
+    "reaction": {
+        "type": "BackboneElement",
+        "isArray": true,
+        "isRequired": false,
+        "substance": {
+            "type": "CodeableConcept",
+            "isArray": false,
+            "isRequired": false
+        },
+        "manifestation": {
+            "type": "CodeableConcept",
+            "isArray": true,
+            "isRequired": true
+        },
+        "description": {
+            "type": "string",
+            "isArray": false,
+            "isRequired": false
+        },
+        "onset": {
+            "type": "dateTime",
+            "isArray": false,
+            "isRequired": false
+        },
+        "severity": {
+            "type": "code",
+            "isArray": false,
+            "isRequired": false
+        },
+        "exposureRoute": {
+            "type": "CodeableConcept",
+            "isArray": false,
+            "isRequired": false
+        },
+        "note": {
+            "type": "Annotation",
+            "isArray": true,
+            "isRequired": false
+        }
+    }
+}

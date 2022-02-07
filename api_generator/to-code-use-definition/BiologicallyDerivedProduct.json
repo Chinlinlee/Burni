@@ -1,0 +1,177 @@
+{
+    "id": {
+        "type": "string",
+        "isArray": false,
+        "isRequired": false
+    },
+    "meta": {
+        "type": "Meta",
+        "isArray": false,
+        "isRequired": false
+    },
+    "implicitRules": {
+        "type": "uri",
+        "isArray": false,
+        "isRequired": false
+    },
+    "language": {
+        "type": "code",
+        "isArray": false,
+        "isRequired": false
+    },
+    "text": {
+        "type": "Narrative",
+        "isArray": false,
+        "isRequired": false
+    },
+    "contained": {
+        "type": "Resource",
+        "isArray": true,
+        "isRequired": false
+    },
+    "extension": {
+        "type": "Extension",
+        "isArray": true,
+        "isRequired": false
+    },
+    "modifierExtension": {
+        "type": "Extension",
+        "isArray": true,
+        "isRequired": false
+    },
+    "identifier": {
+        "type": "Identifier",
+        "isArray": true,
+        "isRequired": false
+    },
+    "productCategory": {
+        "type": "code",
+        "isArray": false,
+        "isRequired": false
+    },
+    "productCode": {
+        "type": "CodeableConcept",
+        "isArray": false,
+        "isRequired": false
+    },
+    "status": {
+        "type": "code",
+        "isArray": false,
+        "isRequired": false
+    },
+    "request": {
+        "type": "Reference",
+        "isArray": true,
+        "isRequired": false
+    },
+    "quantity": {
+        "type": "integer",
+        "isArray": false,
+        "isRequired": false
+    },
+    "parent": {
+        "type": "Reference",
+        "isArray": true,
+        "isRequired": false
+    },
+    "collection": {
+        "type": "BackboneElement",
+        "isArray": false,
+        "isRequired": false,
+        "collector": {
+            "type": "Reference",
+            "isArray": false,
+            "isRequired": false
+        },
+        "source": {
+            "type": "Reference",
+            "isArray": false,
+            "isRequired": false
+        },
+        "collectedDateTime": {
+            "type": "dateTime",
+            "isArray": false,
+            "isRequired": false
+        },
+        "collectedPeriod": {
+            "type": "Period",
+            "isArray": false,
+            "isRequired": false
+        }
+    },
+    "processing": {
+        "type": "BackboneElement",
+        "isArray": true,
+        "isRequired": false,
+        "description": {
+            "type": "string",
+            "isArray": false,
+            "isRequired": false
+        },
+        "procedure": {
+            "type": "CodeableConcept",
+            "isArray": false,
+            "isRequired": false
+        },
+        "additive": {
+            "type": "Reference",
+            "isArray": false,
+            "isRequired": false
+        },
+        "timeDateTime": {
+            "type": "dateTime",
+            "isArray": false,
+            "isRequired": false
+        },
+        "timePeriod": {
+            "type": "Period",
+            "isArray": false,
+            "isRequired": false
+        }
+    },
+    "manipulation": {
+        "type": "BackboneElement",
+        "isArray": false,
+        "isRequired": false,
+        "description": {
+            "type": "string",
+            "isArray": false,
+            "isRequired": false
+        },
+        "timeDateTime": {
+            "type": "dateTime",
+            "isArray": false,
+            "isRequired": false
+        },
+        "timePeriod": {
+            "type": "Period",
+            "isArray": false,
+            "isRequired": false
+        }
+    },
+    "storage": {
+        "type": "BackboneElement",
+        "isArray": true,
+        "isRequired": false,
+        "description": {
+            "type": "string",
+            "isArray": false,
+            "isRequired": false
+        },
+        "temperature": {
+            "type": "decimal",
+            "isArray": false,
+            "isRequired": false
+        },
+        "scale": {
+            "type": "code",
+            "isArray": false,
+            "isRequired": false
+        },
+        "duration": {
+            "type": "Period",
+            "isArray": false,
+            "isRequired": false
+        }
+    }
+}

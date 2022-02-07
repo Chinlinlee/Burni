@@ -23,7 +23,7 @@ module.exports = async function(req, res , resourceType) {
             return res.status(code).send(xmlItem);
         }
         return res.status(code).send(item);
-    }
+    };
     if (!user.checkTokenPermission(req, resourceType, "create")) {
         return doRes(403,handleError.forbidden("Your token doesn't have permission with this API"));
     }
@@ -42,32 +42,32 @@ module.exports = async function(req, res , resourceType) {
                     operationOutcomeMessage = {
                         code : 409 ,
                         msg : handleError.duplicate(err.message)
-                    }
+                    };
                 } else if (err.stack.includes("ValidationError")) {
                     operationOutcomeMessage = {
                         code : 400 ,
                         msg : handleError.processing(err.message)
-                    }
+                    };
                 } else if (err.stack.includes("stored by resource")) {
                     operationOutcomeMessage = {
                         code : 400 ,
                         msg : handleError.processing(err.message)
-                    }
+                    };
                 } else {
                     operationOutcomeMessage = {
                         code : 500 ,
                         msg : handleError.exception(err.message)
-                    }
+                    };
                 }
                 return doRes(operationOutcomeMessage.code , operationOutcomeMessage.msg);
             }
-        }
+        };
         let insertData = req.body;
         if (_.get(insertData, "contained")) {
             let containedResources = _.get(insertData, "contained");
             for (let index in containedResources) {
                 let resource = containedResources[index];
-                let validation = validateContained(resource, index);
+                let validation = await validateContained(resource, index);
                 if (!validation.status) {
                     let operationOutcomeError = handleError.processing(`The resource in contained error. ${validation.message}`);
                     return doRes(400, operationOutcomeError);
@@ -77,7 +77,7 @@ module.exports = async function(req, res , resourceType) {
         if (process.env.ENABLE_CHECK_REFERENCE == "true") {
             let checkReferenceRes = await checkReference(insertData);
             if (!checkReferenceRes.status) {
-                let notExistReferenceList = getNotExistReferenceList(checkReferenceRes)
+                let notExistReferenceList = getNotExistReferenceList(checkReferenceRes);
                 let operationOutcomeError = handleError.processing(`The reference not found : ${_.map(notExistReferenceList , "value").join(",")}`);
                 _.set(operationOutcomeError , "issue.0.location" , _.map(notExistReferenceList , "path"));
                 return doRes(400, operationOutcomeError);
@@ -87,28 +87,21 @@ module.exports = async function(req, res , resourceType) {
         return resFunc[status](doc);
     } catch (e) {
         console.error(e);
-        let operationOutcomeError = handleError.exception(e)
+        let operationOutcomeError = handleError.exception(e);
         return doRes(500 , operationOutcomeError);
     }
-}
+};
 
 async function doInsertData(insertData , resourceType) {
-    return new Promise(async (resolve, reject) => {
-        try {
-            delete insertData.text;
-            //delete insertData.meta;
-            insertData.id = uuid.v4();
-            let insertDataObject = new mongodb[resourceType](insertData);
-            insertDataObject.save(function(err, doc) {
-                if (err) {
-                    console.error(err)
-                    return resolve([false, err]);
-                }
-                return resolve([true, doc.getFHIRField()]);
-            });
-        } catch (e) {
-            console.error(e);
-            return resolve([false , e]);
-        }
-    });
+    try {
+        delete insertData.text;
+        //delete insertData.meta;
+        insertData.id = uuid.v4();
+        let insertDataObject = new mongodb[resourceType](insertData);
+        let doc = await insertDataObject.save();
+        return [true, doc.getFHIRField()];
+    } catch (e) {
+        console.error(e);
+        return [false , e];
+    }
 }

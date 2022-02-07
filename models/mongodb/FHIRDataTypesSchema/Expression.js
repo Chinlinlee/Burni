@@ -1,9 +1,15 @@
 const mongoose = require('mongoose');
-const Extension = require('./Extension');
-const string = require('./string');
-const id = require('./id');
-const uri = require('./uri');
-module.exports = new mongoose.Schema({
+const {
+    Extension
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const string = require('../FHIRDataTypesSchema/string');
+const id = require('../FHIRDataTypesSchema/id');
+const uri = require('../FHIRDataTypesSchema/uri');
+
+const {
+    Expression
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+Expression.add({
     extension: {
         type: [Extension],
         default: void 0
@@ -17,10 +23,5 @@ module.exports = new mongoose.Schema({
     },
     expression: string,
     reference: uri
-}, {
-    _id: false,
-    id: false,
-    toObject: {
-        getters: true
-    }
 });
+module.exports.Expression = Expression;

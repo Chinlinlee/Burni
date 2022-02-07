@@ -18,7 +18,7 @@ const port = process.env.SERVER_PORT;
 const app = express();
 
 require('rootpath')();
-require('dotenv').config()
+require('dotenv').config();
 app.use(compress());
 app.use(flash());
 app.use(express.static('public'));

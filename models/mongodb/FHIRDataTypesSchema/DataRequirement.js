@@ -1,15 +1,31 @@
 const mongoose = require('mongoose');
-const Extension = require('./Extension');
-const code = require('./code');
-const canonical = require('./canonical');
-const CodeableConcept = require('./CodeableConcept');
-const Reference = require('./Reference');
-const string = require('./string');
-const DataRequirement_CodeFilter = require('./DataRequirement_CodeFilter');
-const DataRequirement_DateFilter = require('./DataRequirement_DateFilter');
-const positiveInt = require('./positiveInt');
-const DataRequirement_Sort = require('./DataRequirement_Sort');
-module.exports = new mongoose.Schema({
+const {
+    Extension
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const code = require('../FHIRDataTypesSchema/code');
+const canonical = require('../FHIRDataTypesSchema/canonical');
+const {
+    CodeableConcept
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Reference
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const string = require('../FHIRDataTypesSchema/string');
+const {
+    DataRequirement_CodeFilter
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    DataRequirement_DateFilter
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const positiveInt = require('../FHIRDataTypesSchema/positiveInt');
+const {
+    DataRequirement_Sort
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+
+const {
+    DataRequirement
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+DataRequirement.add({
     extension: {
         type: [Extension],
         default: void 0
@@ -44,10 +60,5 @@ module.exports = new mongoose.Schema({
         type: [DataRequirement_Sort],
         default: void 0
     }
-}, {
-    _id: false,
-    id: false,
-    toObject: {
-        getters: true
-    }
 });
+module.exports.DataRequirement = DataRequirement;

@@ -1,0 +1,142 @@
+{
+    "id": {
+        "type": "string",
+        "isArray": false,
+        "isRequired": false
+    },
+    "meta": {
+        "type": "Meta",
+        "isArray": false,
+        "isRequired": false
+    },
+    "implicitRules": {
+        "type": "uri",
+        "isArray": false,
+        "isRequired": false
+    },
+    "language": {
+        "type": "code",
+        "isArray": false,
+        "isRequired": false
+    },
+    "text": {
+        "type": "Narrative",
+        "isArray": false,
+        "isRequired": false
+    },
+    "contained": {
+        "type": "Resource",
+        "isArray": true,
+        "isRequired": false
+    },
+    "extension": {
+        "type": "Extension",
+        "isArray": true,
+        "isRequired": false
+    },
+    "modifierExtension": {
+        "type": "Extension",
+        "isArray": true,
+        "isRequired": false
+    },
+    "sequenceType": {
+        "type": "CodeableConcept",
+        "isArray": false,
+        "isRequired": false
+    },
+    "numberOfSubunits": {
+        "type": "integer",
+        "isArray": false,
+        "isRequired": false
+    },
+    "areaOfHybridisation": {
+        "type": "string",
+        "isArray": false,
+        "isRequired": false
+    },
+    "oligoNucleotideType": {
+        "type": "CodeableConcept",
+        "isArray": false,
+        "isRequired": false
+    },
+    "subunit": {
+        "type": "BackboneElement",
+        "isArray": true,
+        "isRequired": false,
+        "subunit": {
+            "type": "integer",
+            "isArray": false,
+            "isRequired": false
+        },
+        "sequence": {
+            "type": "string",
+            "isArray": false,
+            "isRequired": false
+        },
+        "length": {
+            "type": "integer",
+            "isArray": false,
+            "isRequired": false
+        },
+        "sequenceAttachment": {
+            "type": "Attachment",
+            "isArray": false,
+            "isRequired": false
+        },
+        "fivePrime": {
+            "type": "CodeableConcept",
+            "isArray": false,
+            "isRequired": false
+        },
+        "threePrime": {
+            "type": "CodeableConcept",
+            "isArray": false,
+            "isRequired": false
+        },
+        "linkage": {
+            "type": "BackboneElement",
+            "isArray": true,
+            "isRequired": false,
+            "connectivity": {
+                "type": "string",
+                "isArray": false,
+                "isRequired": false
+            },
+            "identifier": {
+                "type": "Identifier",
+                "isArray": false,
+                "isRequired": false
+            },
+            "name": {
+                "type": "string",
+                "isArray": false,
+                "isRequired": false
+            },
+            "residueSite": {
+                "type": "string",
+                "isArray": false,
+                "isRequired": false
+            }
+        },
+        "sugar": {
+            "type": "BackboneElement",
+            "isArray": true,
+            "isRequired": false,
+            "identifier": {
+                "type": "Identifier",
+                "isArray": false,
+                "isRequired": false
+            },
+            "name": {
+                "type": "string",
+                "isArray": false,
+                "isRequired": false
+            },
+            "residueSite": {
+                "type": "string",
+                "isArray": false,
+                "isRequired": false
+            }
+        }
+    }
+}

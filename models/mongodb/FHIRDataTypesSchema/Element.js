@@ -1,14 +1,15 @@
 const mongoose = require('mongoose');
-const Extension = require('./Extension');
-module.exports = new mongoose.Schema({
+const {
+    Extension
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+
+const {
+    Element
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+Element.add({
     extension: {
         type: [Extension],
         default: void 0
     }
-}, {
-    _id: false,
-    id: false,
-    toObject: {
-        getters: true
-    }
 });
+module.exports.Element = Element;

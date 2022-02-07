@@ -1,0 +1,387 @@
+{
+    "id": {
+        "type": "string",
+        "isArray": false,
+        "isRequired": false
+    },
+    "meta": {
+        "type": "Meta",
+        "isArray": false,
+        "isRequired": false
+    },
+    "implicitRules": {
+        "type": "uri",
+        "isArray": false,
+        "isRequired": false
+    },
+    "language": {
+        "type": "code",
+        "isArray": false,
+        "isRequired": false
+    },
+    "text": {
+        "type": "Narrative",
+        "isArray": false,
+        "isRequired": false
+    },
+    "contained": {
+        "type": "Resource",
+        "isArray": true,
+        "isRequired": false
+    },
+    "extension": {
+        "type": "Extension",
+        "isArray": true,
+        "isRequired": false
+    },
+    "modifierExtension": {
+        "type": "Extension",
+        "isArray": true,
+        "isRequired": false
+    },
+    "url": {
+        "type": "uri",
+        "isArray": false,
+        "isRequired": false
+    },
+    "identifier": {
+        "type": "Identifier",
+        "isArray": true,
+        "isRequired": false
+    },
+    "version": {
+        "type": "string",
+        "isArray": false,
+        "isRequired": false
+    },
+    "name": {
+        "type": "string",
+        "isArray": false,
+        "isRequired": false
+    },
+    "title": {
+        "type": "string",
+        "isArray": false,
+        "isRequired": false
+    },
+    "derivedFrom": {
+        "type": "canonical",
+        "isArray": true,
+        "isRequired": false
+    },
+    "status": {
+        "type": "code",
+        "isArray": false,
+        "isRequired": true
+    },
+    "experimental": {
+        "type": "boolean",
+        "isArray": false,
+        "isRequired": false
+    },
+    "subjectType": {
+        "type": "code",
+        "isArray": true,
+        "isRequired": false
+    },
+    "date": {
+        "type": "dateTime",
+        "isArray": false,
+        "isRequired": false
+    },
+    "publisher": {
+        "type": "string",
+        "isArray": false,
+        "isRequired": false
+    },
+    "contact": {
+        "type": "ContactDetail",
+        "isArray": true,
+        "isRequired": false
+    },
+    "description": {
+        "type": "markdown",
+        "isArray": false,
+        "isRequired": false
+    },
+    "useContext": {
+        "type": "UsageContext",
+        "isArray": true,
+        "isRequired": false
+    },
+    "jurisdiction": {
+        "type": "CodeableConcept",
+        "isArray": true,
+        "isRequired": false
+    },
+    "purpose": {
+        "type": "markdown",
+        "isArray": false,
+        "isRequired": false
+    },
+    "copyright": {
+        "type": "markdown",
+        "isArray": false,
+        "isRequired": false
+    },
+    "approvalDate": {
+        "type": "date",
+        "isArray": false,
+        "isRequired": false
+    },
+    "lastReviewDate": {
+        "type": "date",
+        "isArray": false,
+        "isRequired": false
+    },
+    "effectivePeriod": {
+        "type": "Period",
+        "isArray": false,
+        "isRequired": false
+    },
+    "code": {
+        "type": "Coding",
+        "isArray": true,
+        "isRequired": false
+    },
+    "item": {
+        "type": {
+            "type": "code",
+            "isArray": false,
+            "isRequired": true
+        },
+        "isArray": true,
+        "isRequired": false,
+        "linkId": {
+            "type": "string",
+            "isArray": false,
+            "isRequired": true
+        },
+        "definition": {
+            "type": "uri",
+            "isArray": false,
+            "isRequired": false
+        },
+        "code": {
+            "type": "Coding",
+            "isArray": true,
+            "isRequired": false
+        },
+        "prefix": {
+            "type": "string",
+            "isArray": false,
+            "isRequired": false
+        },
+        "text": {
+            "type": "string",
+            "isArray": false,
+            "isRequired": false
+        },
+        "enableWhen": {
+            "type": "BackboneElement",
+            "isArray": true,
+            "isRequired": false,
+            "question": {
+                "type": "string",
+                "isArray": false,
+                "isRequired": true
+            },
+            "operator": {
+                "type": "code",
+                "isArray": false,
+                "isRequired": true
+            },
+            "answerBoolean": {
+                "type": "boolean",
+                "isArray": false,
+                "isRequired": true
+            },
+            "answerDecimal": {
+                "type": "decimal",
+                "isArray": false,
+                "isRequired": true
+            },
+            "answerInteger": {
+                "type": "integer",
+                "isArray": false,
+                "isRequired": true
+            },
+            "answerDate": {
+                "type": "date",
+                "isArray": false,
+                "isRequired": true
+            },
+            "answerDateTime": {
+                "type": "dateTime",
+                "isArray": false,
+                "isRequired": true
+            },
+            "answerTime": {
+                "type": "time",
+                "isArray": false,
+                "isRequired": true
+            },
+            "answerString": {
+                "type": "string",
+                "isArray": false,
+                "isRequired": true
+            },
+            "answerCoding": {
+                "type": "Coding",
+                "isArray": false,
+                "isRequired": true
+            },
+            "answerQuantity": {
+                "type": "Quantity",
+                "isArray": false,
+                "isRequired": true
+            },
+            "answerReference": {
+                "type": "Reference",
+                "isArray": false,
+                "isRequired": true
+            }
+        },
+        "enableBehavior": {
+            "type": "code",
+            "isArray": false,
+            "isRequired": false
+        },
+        "required": {
+            "type": "boolean",
+            "isArray": false,
+            "isRequired": false
+        },
+        "repeats": {
+            "type": "boolean",
+            "isArray": false,
+            "isRequired": false
+        },
+        "readOnly": {
+            "type": "boolean",
+            "isArray": false,
+            "isRequired": false
+        },
+        "maxLength": {
+            "type": "integer",
+            "isArray": false,
+            "isRequired": false
+        },
+        "answerValueSet": {
+            "type": "canonical",
+            "isArray": false,
+            "isRequired": false
+        },
+        "answerOption": {
+            "type": "BackboneElement",
+            "isArray": true,
+            "isRequired": false,
+            "valueInteger": {
+                "type": "integer",
+                "isArray": false,
+                "isRequired": true
+            },
+            "valueDate": {
+                "type": "date",
+                "isArray": false,
+                "isRequired": true
+            },
+            "valueTime": {
+                "type": "time",
+                "isArray": false,
+                "isRequired": true
+            },
+            "valueString": {
+                "type": "string",
+                "isArray": false,
+                "isRequired": true
+            },
+            "valueCoding": {
+                "type": "Coding",
+                "isArray": false,
+                "isRequired": true
+            },
+            "valueReference": {
+                "type": "Reference",
+                "isArray": false,
+                "isRequired": true
+            },
+            "initialSelected": {
+                "type": "boolean",
+                "isArray": false,
+                "isRequired": false
+            }
+        },
+        "initial": {
+            "type": "BackboneElement",
+            "isArray": true,
+            "isRequired": false,
+            "valueBoolean": {
+                "type": "boolean",
+                "isArray": false,
+                "isRequired": true
+            },
+            "valueDecimal": {
+                "type": "decimal",
+                "isArray": false,
+                "isRequired": true
+            },
+            "valueInteger": {
+                "type": "integer",
+                "isArray": false,
+                "isRequired": true
+            },
+            "valueDate": {
+                "type": "date",
+                "isArray": false,
+                "isRequired": true
+            },
+            "valueDateTime": {
+                "type": "dateTime",
+                "isArray": false,
+                "isRequired": true
+            },
+            "valueTime": {
+                "type": "time",
+                "isArray": false,
+                "isRequired": true
+            },
+            "valueString": {
+                "type": "string",
+                "isArray": false,
+                "isRequired": true
+            },
+            "valueUri": {
+                "type": "uri",
+                "isArray": false,
+                "isRequired": true
+            },
+            "valueAttachment": {
+                "type": "Attachment",
+                "isArray": false,
+                "isRequired": true
+            },
+            "valueCoding": {
+                "type": "Coding",
+                "isArray": false,
+                "isRequired": true
+            },
+            "valueQuantity": {
+                "type": "Quantity",
+                "isArray": false,
+                "isRequired": true
+            },
+            "valueReference": {
+                "type": "Reference",
+                "isArray": false,
+                "isRequired": true
+            }
+        },
+        "item": {
+            "type": "",
+            "isArray": true,
+            "isRequired": false,
+            "ref": "#Questionnaire.item"
+        }
+    }
+}

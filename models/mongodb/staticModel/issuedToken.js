@@ -62,7 +62,7 @@ module.exports = function (mongodb) {
         }
     },{
         strict: false,
-        versionKey : false,
+        versionKey : false
     });
 
     issuedTokenSchema.index({
@@ -71,4 +71,4 @@ module.exports = function (mongodb) {
 
     let issuedToken = mongodb.model('issuedToken', issuedTokenSchema, 'issuedToken');
     return issuedToken;
-}
+};

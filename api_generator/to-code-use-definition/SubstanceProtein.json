@@ -1,0 +1,102 @@
+{
+    "id": {
+        "type": "string",
+        "isArray": false,
+        "isRequired": false
+    },
+    "meta": {
+        "type": "Meta",
+        "isArray": false,
+        "isRequired": false
+    },
+    "implicitRules": {
+        "type": "uri",
+        "isArray": false,
+        "isRequired": false
+    },
+    "language": {
+        "type": "code",
+        "isArray": false,
+        "isRequired": false
+    },
+    "text": {
+        "type": "Narrative",
+        "isArray": false,
+        "isRequired": false
+    },
+    "contained": {
+        "type": "Resource",
+        "isArray": true,
+        "isRequired": false
+    },
+    "extension": {
+        "type": "Extension",
+        "isArray": true,
+        "isRequired": false
+    },
+    "modifierExtension": {
+        "type": "Extension",
+        "isArray": true,
+        "isRequired": false
+    },
+    "sequenceType": {
+        "type": "CodeableConcept",
+        "isArray": false,
+        "isRequired": false
+    },
+    "numberOfSubunits": {
+        "type": "integer",
+        "isArray": false,
+        "isRequired": false
+    },
+    "disulfideLinkage": {
+        "type": "string",
+        "isArray": true,
+        "isRequired": false
+    },
+    "subunit": {
+        "type": "BackboneElement",
+        "isArray": true,
+        "isRequired": false,
+        "subunit": {
+            "type": "integer",
+            "isArray": false,
+            "isRequired": false
+        },
+        "sequence": {
+            "type": "string",
+            "isArray": false,
+            "isRequired": false
+        },
+        "length": {
+            "type": "integer",
+            "isArray": false,
+            "isRequired": false
+        },
+        "sequenceAttachment": {
+            "type": "Attachment",
+            "isArray": false,
+            "isRequired": false
+        },
+        "nTerminalModificationId": {
+            "type": "Identifier",
+            "isArray": false,
+            "isRequired": false
+        },
+        "nTerminalModification": {
+            "type": "string",
+            "isArray": false,
+            "isRequired": false
+        },
+        "cTerminalModificationId": {
+            "type": "Identifier",
+            "isArray": false,
+            "isRequired": false
+        },
+        "cTerminalModification": {
+            "type": "string",
+            "isArray": false,
+            "isRequired": false
+        }
+    }
+}

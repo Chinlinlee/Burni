@@ -1,7 +1,13 @@
 const mongoose = require('mongoose');
-const Extension = require('./Extension');
-const string = require('./string');
-module.exports = new mongoose.Schema({
+const {
+    Extension
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const string = require('../FHIRDataTypesSchema/string');
+
+const {
+    ElementDefinition_Discriminator
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+ElementDefinition_Discriminator.add({
     extension: {
         type: [Extension],
         default: void 0
@@ -16,10 +22,5 @@ module.exports = new mongoose.Schema({
         default: void 0
     },
     path: string
-}, {
-    _id: false,
-    id: false,
-    toObject: {
-        getters: true
-    }
 });
+module.exports.ElementDefinition_Discriminator = ElementDefinition_Discriminator;

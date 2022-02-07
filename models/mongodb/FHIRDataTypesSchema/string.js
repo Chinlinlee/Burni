@@ -7,4 +7,4 @@ module.exports = {
         message: props => `${props.value} is not a valid string!`
     },
     default: void 0
-}
+};

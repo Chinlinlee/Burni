@@ -1,8 +1,18 @@
 const mongoose = require('mongoose');
-const Extension = require('./Extension');
-const Range = require('./Range');
-const CodeableConcept = require('./CodeableConcept');
-module.exports = new mongoose.Schema({
+const {
+    Extension
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Range
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    CodeableConcept
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+
+const {
+    Population
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+Population.add({
     extension: {
         type: [Extension],
         default: void 0
@@ -31,10 +41,5 @@ module.exports = new mongoose.Schema({
         type: CodeableConcept,
         default: void 0
     }
-}, {
-    _id: false,
-    id: false,
-    toObject: {
-        getters: true
-    }
 });
+module.exports.Population = Population;

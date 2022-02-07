@@ -1,9 +1,15 @@
 const mongoose = require('mongoose');
-const Extension = require('./Extension');
-const id = require('./id');
-const string = require('./string');
-const canonical = require('./canonical');
-module.exports = new mongoose.Schema({
+const {
+    Extension
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const id = require('../FHIRDataTypesSchema/id');
+const string = require('../FHIRDataTypesSchema/string');
+const canonical = require('../FHIRDataTypesSchema/canonical');
+
+const {
+    ElementDefinition_Constraint
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+ElementDefinition_Constraint.add({
     extension: {
         type: [Extension],
         default: void 0
@@ -23,10 +29,5 @@ module.exports = new mongoose.Schema({
     expression: string,
     xpath: string,
     source: canonical
-}, {
-    _id: false,
-    id: false,
-    toObject: {
-        getters: true
-    }
 });
+module.exports.ElementDefinition_Constraint = ElementDefinition_Constraint;

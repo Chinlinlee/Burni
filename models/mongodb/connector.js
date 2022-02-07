@@ -15,24 +15,20 @@ module.exports = exports = function(config) {
     let databaseUrl = "";
 
     hosts.forEach((host, index) => {
-        if (index === 0) {
-            if (id == undefined && pwd == "undefined") {
-                databaseUrl += "mongodb://" + host + ":" + ports[0];
-            } else {
-                databaseUrl += "mongodb://" + id + ":" + pwd + "@" + host + ":" + ports[0];
-            }
+        if (index == 0) {
+            databaseUrl += `mongodb://${host}:${ports[0]}`;
         } else {
-            databaseUrl += "," + host + ":" + ports[index];
+            databaseUrl += `,${host}:${ports[index]}`;
         }
     });
-
-    databaseUrl += "/" + dbName + "?slaveOk=" + slave;
+    databaseUrl += `/${dbName}`;
 
     console.log(databaseUrl);
     mongoose.connect(databaseUrl, {
         useCreateIndex: true,
         useNewUrlParser: true,
         useFindAndModify: false,
+        useUnifiedTopology: true,
         auth: {
             authSource: 'admin',
             user: id,
@@ -45,13 +41,13 @@ module.exports = exports = function(config) {
             })
             .then(res=> {
                 console.log(`sharding database ${dbName} successfully`);
+                shardCollection('/model');
+                shardCollection('/staticModel');
             })
             .catch(err=> {
                 console.error(err);
             });
         }
-        shardCollection('/model');
-        shardCollection('/staticModel');
     }).catch(err => {
         console.error(err);
         process.exit(1);
@@ -70,18 +66,18 @@ module.exports = exports = function(config) {
 
 function getCollections (dirname, collectionObj) {
     let jsFilesInDir = fs.readdirSync(__dirname + dirname)
-    .filter((file) => (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js'))
+    .filter((file) => (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js'));
     for (let file of jsFilesInDir) {
         const moduleName = file.split('.')[0];
         console.log('moduleName :: ', moduleName);
-        console.log('path : ', __dirname + dirname)
+        console.log('path : ', __dirname + dirname);
         collectionObj[moduleName] = require(__dirname + dirname +'/' + moduleName)(mongoose);
     }
 }
 
 function shardCollection(dirname) {
     let jsFilesInDir = fs.readdirSync(__dirname + dirname)
-    .filter((file) => (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js'))
+    .filter((file) => (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js'));
     for (let file of jsFilesInDir) {
         const moduleName = file.split('.')[0];
         if (process.env.MONGODB_IS_SHARDING_MODE == "true") {

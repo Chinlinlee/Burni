@@ -18,6 +18,23 @@ function getDeepKeys(obj) {
     }
     return keys;
 }
+/**
+ * Check item is real object.
+ * 1. Is Object
+ * 2. then check is array and check some element in array is object 
+ * @param {*} obj 
+ * @return {boolean}
+ */
+function isRealObject(obj) {
+    if (_.isObject(obj)) {
+        if (_.isArray(obj)) {
+            return obj.some(v => isRealObject(v));
+        }
+        return true;
+    }
+    return false;
+}
+
 async function findResourceById(resource, id) {
     try {
         let doc = await mongodb[resource].findOne(
@@ -128,7 +145,7 @@ async function checkReference(resourceData) {
         return {
             status : checkedReferenceList.every(v=> v.exist),
             checkedReferenceList: checkedReferenceList
-        }
+        };
     }
     return {
         status: true,
@@ -179,11 +196,11 @@ const user = {
                             if (err.name == "TokenExpiredError") {
                                 return res.status(401).send(handleError.expired("token expired"));
                             }
-                            return res.status(401).send(handleError.security(err.message))
+                            return res.status(401).send(handleError.security(err.message));
                         } 
                         req.tokenObj = decoded;
                         return next();
-                    })
+                    });
                 } else {
                     return res.status(401).send(handleError.security("the token not found"));
                 }
@@ -215,7 +232,7 @@ const user = {
             return false;
         }
     }
-}
+};
 /**
  * 
  * @param {import('express').Request} req 
@@ -233,12 +250,13 @@ user["checkTokenPermission"] = async (req, resourceType, interaction) => {
         }
     }
     return false;
-}
+};
 
 module.exports = {
     getDeepKeys: getDeepKeys,
+    isRealObject: isRealObject,
     findResourceById: findResourceById,
     checkReference: checkReference , 
     getNotExistReferenceList: getNotExistReferenceList,
     user : user
-}
+};

@@ -7,7 +7,7 @@ const {
     handleError
 } = require('models/FHIR/httpMessage');
 const FHIR = require('../../models/FHIR/fhir/fhir').Fhir;
-const { user } = require('../apiService');
+const { user, isRealObject } = require('../apiService');
 
 /**
  * 
@@ -25,7 +25,7 @@ module.exports = async function(req, res,resourceType,paramsSearch) {
             return res.status(code).send(xmlItem);
         }
         return res.status(code).send(item);
-    }
+    };
     if (!user.checkTokenPermission(req, resourceType, "search-type")) {
         return doRes(403,handleError.forbidden("Your token doesn't have permission with this API"));
     }
@@ -37,7 +37,7 @@ module.exports = async function(req, res,resourceType,paramsSearch) {
     delete queryParameter['_count'];
     delete queryParameter['_offset'];
     Object.keys(queryParameter).forEach(key => {
-        if (!queryParameter[key] || _.isObject(queryParameter[key])) {
+        if (!queryParameter[key] || isRealObject(queryParameter[key])) {
             delete queryParameter[key];
         }
     });
@@ -66,12 +66,17 @@ module.exports = async function(req, res,resourceType,paramsSearch) {
         docs = docs.map(v => {
             return v.getFHIRField();
         });
-        let count = await mongodb[resourceType].countDocuments(queryParameter);
+        let count = 0;
+        if (_.isEmpty(queryParameter)) {
+            count = await mongodb[resourceType].estimatedDocumentCount();
+        } else {
+            count = await mongodb[resourceType].countDocuments(queryParameter);
+        }
         let bundle = createBundle(req, docs, count, paginationSkip, paginationLimit, resourceType);
         res.header('Last-Modified', new Date().toUTCString());
         return doRes(200 , bundle);
     } catch (e) {
-        console.log(`api ${process.env.FHIRSERVER_APIPATH}/${resourceType}/ has error, `, e)
+        console.log(`api ${process.env.FHIRSERVER_APIPATH}/${resourceType}/ has error, `, e);
         let operationOutcomeError = handleError.exception(e);
         return doRes(500 , operationOutcomeError);
     }

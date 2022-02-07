@@ -1,11 +1,21 @@
 const mongoose = require('mongoose');
-const Extension = require('./Extension');
-const Coding = require('./Coding');
-const instant = require('./instant');
-const Reference = require('./Reference');
-const code = require('./code');
-const base64Binary = require('./base64Binary');
-module.exports = new mongoose.Schema({
+const {
+    Extension
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Coding
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const instant = require('../FHIRDataTypesSchema/instant');
+const {
+    Reference
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const code = require('../FHIRDataTypesSchema/code');
+const base64Binary = require('../FHIRDataTypesSchema/base64Binary');
+
+const {
+    Signature
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+Signature.add({
     extension: {
         type: [Extension],
         default: void 0
@@ -28,10 +38,5 @@ module.exports = new mongoose.Schema({
     targetFormat: code,
     sigFormat: code,
     data: base64Binary
-}, {
-    _id: false,
-    id: false,
-    toObject: {
-        getters: true
-    }
 });
+module.exports.Signature = Signature;

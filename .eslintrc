@@ -1,0 +1,19 @@
+{
+    "parserOptions": {
+        "ecmaVersion": 2018
+    },
+    "env": {
+        "browser": true,
+        "node": true,
+        "es6": true
+    },
+    "extends": ["eslint:recommended"],
+    "rules": {
+        "semi": ["error", "always"],
+        "comma-dangle": ["error", "never"], 
+        "no-unused-vars": "off",
+        "no-console": 0 ,
+        "no-useless-escape": "off"
+    },
+    "ignorePatterns": ["public/**", "temp/**", "models/FHIR/fhir/**"]
+}

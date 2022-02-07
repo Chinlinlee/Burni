@@ -14,7 +14,7 @@ module.exports = async function (needSignData,expiresIn='1y') {
             token: token,
             id: `Bearer ${id}`,
             refresh_token: refresh_token
-        })
+        });
         await tokenObj.save();
         return {
             status : true,
@@ -27,4 +27,4 @@ module.exports = async function (needSignData,expiresIn='1y') {
             data: e
         };
     }
-}
+};

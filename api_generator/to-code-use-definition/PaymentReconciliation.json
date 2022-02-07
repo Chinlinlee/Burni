@@ -1,0 +1,175 @@
+{
+    "id": {
+        "type": "string",
+        "isArray": false,
+        "isRequired": false
+    },
+    "meta": {
+        "type": "Meta",
+        "isArray": false,
+        "isRequired": false
+    },
+    "implicitRules": {
+        "type": "uri",
+        "isArray": false,
+        "isRequired": false
+    },
+    "language": {
+        "type": "code",
+        "isArray": false,
+        "isRequired": false
+    },
+    "text": {
+        "type": "Narrative",
+        "isArray": false,
+        "isRequired": false
+    },
+    "contained": {
+        "type": "Resource",
+        "isArray": true,
+        "isRequired": false
+    },
+    "extension": {
+        "type": "Extension",
+        "isArray": true,
+        "isRequired": false
+    },
+    "modifierExtension": {
+        "type": "Extension",
+        "isArray": true,
+        "isRequired": false
+    },
+    "identifier": {
+        "type": "Identifier",
+        "isArray": true,
+        "isRequired": false
+    },
+    "status": {
+        "type": "code",
+        "isArray": false,
+        "isRequired": true
+    },
+    "period": {
+        "type": "Period",
+        "isArray": false,
+        "isRequired": false
+    },
+    "created": {
+        "type": "dateTime",
+        "isArray": false,
+        "isRequired": true
+    },
+    "paymentIssuer": {
+        "type": "Reference",
+        "isArray": false,
+        "isRequired": false
+    },
+    "request": {
+        "type": "Reference",
+        "isArray": false,
+        "isRequired": false
+    },
+    "requestor": {
+        "type": "Reference",
+        "isArray": false,
+        "isRequired": false
+    },
+    "outcome": {
+        "type": "code",
+        "isArray": false,
+        "isRequired": false
+    },
+    "disposition": {
+        "type": "string",
+        "isArray": false,
+        "isRequired": false
+    },
+    "paymentDate": {
+        "type": "date",
+        "isArray": false,
+        "isRequired": true
+    },
+    "paymentAmount": {
+        "type": "Money",
+        "isArray": false,
+        "isRequired": true
+    },
+    "paymentIdentifier": {
+        "type": "Identifier",
+        "isArray": false,
+        "isRequired": false
+    },
+    "detail": {
+        "type": {
+            "type": "CodeableConcept",
+            "isArray": false,
+            "isRequired": true
+        },
+        "isArray": true,
+        "isRequired": false,
+        "identifier": {
+            "type": "Identifier",
+            "isArray": false,
+            "isRequired": false
+        },
+        "predecessor": {
+            "type": "Identifier",
+            "isArray": false,
+            "isRequired": false
+        },
+        "request": {
+            "type": "Reference",
+            "isArray": false,
+            "isRequired": false
+        },
+        "submitter": {
+            "type": "Reference",
+            "isArray": false,
+            "isRequired": false
+        },
+        "response": {
+            "type": "Reference",
+            "isArray": false,
+            "isRequired": false
+        },
+        "date": {
+            "type": "date",
+            "isArray": false,
+            "isRequired": false
+        },
+        "responsible": {
+            "type": "Reference",
+            "isArray": false,
+            "isRequired": false
+        },
+        "payee": {
+            "type": "Reference",
+            "isArray": false,
+            "isRequired": false
+        },
+        "amount": {
+            "type": "Money",
+            "isArray": false,
+            "isRequired": false
+        }
+    },
+    "formCode": {
+        "type": "CodeableConcept",
+        "isArray": false,
+        "isRequired": false
+    },
+    "processNote": {
+        "type": {
+            "type": "code",
+            "isArray": false,
+            "isRequired": false
+        },
+        "isArray": true,
+        "isRequired": false,
+        "text": {
+            "type": "string",
+            "isArray": false,
+            "isRequired": false
+        }
+    }
+}

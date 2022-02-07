@@ -1,9 +1,17 @@
 const mongoose = require('mongoose');
-const Extension = require('./Extension');
-const string = require('./string');
-const uri = require('./uri');
-const Identifier = require('./Identifier');
-module.exports = new mongoose.Schema({
+const {
+    Extension
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const string = require('../FHIRDataTypesSchema/string');
+const uri = require('../FHIRDataTypesSchema/uri');
+const {
+    Identifier
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+
+const {
+    Reference
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+Reference.add({
     extension: {
         type: [Extension],
         default: void 0
@@ -15,10 +23,5 @@ module.exports = new mongoose.Schema({
         default: void 0
     },
     display: string
-}, {
-    _id: false,
-    id: false,
-    toObject: {
-        getters: true
-    }
 });
+module.exports.Reference = Reference;

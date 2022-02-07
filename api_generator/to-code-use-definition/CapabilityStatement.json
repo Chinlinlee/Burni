@@ -1,0 +1,452 @@
+{
+    "id": {
+        "type": "string",
+        "isArray": false,
+        "isRequired": false
+    },
+    "meta": {
+        "type": "Meta",
+        "isArray": false,
+        "isRequired": false
+    },
+    "implicitRules": {
+        "type": "uri",
+        "isArray": false,
+        "isRequired": false
+    },
+    "language": {
+        "type": "code",
+        "isArray": false,
+        "isRequired": false
+    },
+    "text": {
+        "type": "Narrative",
+        "isArray": false,
+        "isRequired": false
+    },
+    "contained": {
+        "type": "Resource",
+        "isArray": true,
+        "isRequired": false
+    },
+    "extension": {
+        "type": "Extension",
+        "isArray": true,
+        "isRequired": false
+    },
+    "modifierExtension": {
+        "type": "Extension",
+        "isArray": true,
+        "isRequired": false
+    },
+    "url": {
+        "type": "uri",
+        "isArray": false,
+        "isRequired": false
+    },
+    "version": {
+        "type": "string",
+        "isArray": false,
+        "isRequired": false
+    },
+    "name": {
+        "type": "string",
+        "isArray": false,
+        "isRequired": false
+    },
+    "title": {
+        "type": "string",
+        "isArray": false,
+        "isRequired": false
+    },
+    "status": {
+        "type": "code",
+        "isArray": false,
+        "isRequired": true
+    },
+    "experimental": {
+        "type": "boolean",
+        "isArray": false,
+        "isRequired": false
+    },
+    "date": {
+        "type": "dateTime",
+        "isArray": false,
+        "isRequired": true
+    },
+    "publisher": {
+        "type": "string",
+        "isArray": false,
+        "isRequired": false
+    },
+    "contact": {
+        "type": "ContactDetail",
+        "isArray": true,
+        "isRequired": false
+    },
+    "description": {
+        "type": "markdown",
+        "isArray": false,
+        "isRequired": false
+    },
+    "useContext": {
+        "type": "UsageContext",
+        "isArray": true,
+        "isRequired": false
+    },
+    "jurisdiction": {
+        "type": "CodeableConcept",
+        "isArray": true,
+        "isRequired": false
+    },
+    "purpose": {
+        "type": "markdown",
+        "isArray": false,
+        "isRequired": false
+    },
+    "copyright": {
+        "type": "markdown",
+        "isArray": false,
+        "isRequired": false
+    },
+    "kind": {
+        "type": "code",
+        "isArray": false,
+        "isRequired": true
+    },
+    "instantiates": {
+        "type": "canonical",
+        "isArray": true,
+        "isRequired": false
+    },
+    "imports": {
+        "type": "canonical",
+        "isArray": true,
+        "isRequired": false
+    },
+    "software": {
+        "type": "BackboneElement",
+        "isArray": false,
+        "isRequired": false,
+        "name": {
+            "type": "string",
+            "isArray": false,
+            "isRequired": true
+        },
+        "version": {
+            "type": "string",
+            "isArray": false,
+            "isRequired": false
+        },
+        "releaseDate": {
+            "type": "dateTime",
+            "isArray": false,
+            "isRequired": false
+        }
+    },
+    "implementation": {
+        "type": "BackboneElement",
+        "isArray": false,
+        "isRequired": false,
+        "description": {
+            "type": "string",
+            "isArray": false,
+            "isRequired": true
+        },
+        "url": {
+            "type": "url",
+            "isArray": false,
+            "isRequired": false
+        },
+        "custodian": {
+            "type": "Reference",
+            "isArray": false,
+            "isRequired": false
+        }
+    },
+    "fhirVersion": {
+        "type": "code",
+        "isArray": false,
+        "isRequired": true
+    },
+    "format": {
+        "type": "code",
+        "isArray": true,
+        "isRequired": true
+    },
+    "patchFormat": {
+        "type": "code",
+        "isArray": true,
+        "isRequired": false
+    },
+    "implementationGuide": {
+        "type": "canonical",
+        "isArray": true,
+        "isRequired": false
+    },
+    "rest": {
+        "type": "BackboneElement",
+        "isArray": true,
+        "isRequired": false,
+        "mode": {
+            "type": "code",
+            "isArray": false,
+            "isRequired": true
+        },
+        "documentation": {
+            "type": "markdown",
+            "isArray": false,
+            "isRequired": false
+        },
+        "security": {
+            "type": "BackboneElement",
+            "isArray": false,
+            "isRequired": false,
+            "cors": {
+                "type": "boolean",
+                "isArray": false,
+                "isRequired": false
+            },
+            "service": {
+                "type": "CodeableConcept",
+                "isArray": true,
+                "isRequired": false
+            },
+            "description": {
+                "type": "markdown",
+                "isArray": false,
+                "isRequired": false
+            }
+        },
+        "resource": {
+            "type": {
+                "type": "code",
+                "isArray": false,
+                "isRequired": true
+            },
+            "isArray": true,
+            "isRequired": false,
+            "profile": {
+                "type": "canonical",
+                "isArray": false,
+                "isRequired": false
+            },
+            "supportedProfile": {
+                "type": "canonical",
+                "isArray": true,
+                "isRequired": false
+            },
+            "documentation": {
+                "type": "markdown",
+                "isArray": false,
+                "isRequired": false
+            },
+            "interaction": {
+                "type": "BackboneElement",
+                "isArray": true,
+                "isRequired": false,
+                "code": {
+                    "type": "code",
+                    "isArray": false,
+                    "isRequired": true
+                },
+                "documentation": {
+                    "type": "markdown",
+                    "isArray": false,
+                    "isRequired": false
+                }
+            },
+            "versioning": {
+                "type": "code",
+                "isArray": false,
+                "isRequired": false
+            },
+            "readHistory": {
+                "type": "boolean",
+                "isArray": false,
+                "isRequired": false
+            },
+            "updateCreate": {
+                "type": "boolean",
+                "isArray": false,
+                "isRequired": false
+            },
+            "conditionalCreate": {
+                "type": "boolean",
+                "isArray": false,
+                "isRequired": false
+            },
+            "conditionalRead": {
+                "type": "code",
+                "isArray": false,
+                "isRequired": false
+            },
+            "conditionalUpdate": {
+                "type": "boolean",
+                "isArray": false,
+                "isRequired": false
+            },
+            "conditionalDelete": {
+                "type": "code",
+                "isArray": false,
+                "isRequired": false
+            },
+            "referencePolicy": {
+                "type": "code",
+                "isArray": true,
+                "isRequired": false
+            },
+            "searchInclude": {
+                "type": "string",
+                "isArray": true,
+                "isRequired": false
+            },
+            "searchRevInclude": {
+                "type": "string",
+                "isArray": true,
+                "isRequired": false
+            },
+            "searchParam": {
+                "type": {
+                    "type": "code",
+                    "isArray": false,
+                    "isRequired": true
+                },
+                "isArray": true,
+                "isRequired": false,
+                "name": {
+                    "type": "string",
+                    "isArray": false,
+                    "isRequired": true
+                },
+                "definition": {
+                    "type": "canonical",
+                    "isArray": false,
+                    "isRequired": false
+                },
+                "documentation": {
+                    "type": "markdown",
+                    "isArray": false,
+                    "isRequired": false
+                }
+            },
+            "operation": {
+                "type": "BackboneElement",
+                "isArray": true,
+                "isRequired": false,
+                "name": {
+                    "type": "string",
+                    "isArray": false,
+                    "isRequired": true
+                },
+                "definition": {
+                    "type": "canonical",
+                    "isArray": false,
+                    "isRequired": true
+                },
+                "documentation": {
+                    "type": "markdown",
+                    "isArray": false,
+                    "isRequired": false
+                }
+            }
+        },
+        "interaction": {
+            "type": "BackboneElement",
+            "isArray": true,
+            "isRequired": false,
+            "code": {
+                "type": "code",
+                "isArray": false,
+                "isRequired": true
+            },
+            "documentation": {
+                "type": "markdown",
+                "isArray": false,
+                "isRequired": false
+            }
+        },
+        "searchParam": {
+            "type": "",
+            "isArray": true,
+            "isRequired": false,
+            "ref": "#CapabilityStatement.rest.resource.searchParam"
+        },
+        "operation": {
+            "type": "",
+            "isArray": true,
+            "isRequired": false,
+            "ref": "#CapabilityStatement.rest.resource.operation"
+        },
+        "compartment": {
+            "type": "canonical",
+            "isArray": true,
+            "isRequired": false
+        }
+    },
+    "messaging": {
+        "type": "BackboneElement",
+        "isArray": true,
+        "isRequired": false,
+        "endpoint": {
+            "type": "BackboneElement",
+            "isArray": true,
+            "isRequired": false,
+            "protocol": {
+                "type": "Coding",
+                "isArray": false,
+                "isRequired": true
+            },
+            "address": {
+                "type": "url",
+                "isArray": false,
+                "isRequired": true
+            }
+        },
+        "reliableCache": {
+            "type": "unsignedInt",
+            "isArray": false,
+            "isRequired": false
+        },
+        "documentation": {
+            "type": "markdown",
+            "isArray": false,
+            "isRequired": false
+        },
+        "supportedMessage": {
+            "type": "BackboneElement",
+            "isArray": true,
+            "isRequired": false,
+            "mode": {
+                "type": "code",
+                "isArray": false,
+                "isRequired": true
+            },
+            "definition": {
+                "type": "canonical",
+                "isArray": false,
+                "isRequired": true
+            }
+        }
+    },
+    "document": {
+        "type": "BackboneElement",
+        "isArray": true,
+        "isRequired": false,
+        "mode": {
+            "type": "code",
+            "isArray": false,
+            "isRequired": true
+        },
+        "documentation": {
+            "type": "markdown",
+            "isArray": false,
+            "isRequired": false
+        },
+        "profile": {
+            "type": "canonical",
+            "isArray": false,
+            "isRequired": true
+        }
+    }
+}

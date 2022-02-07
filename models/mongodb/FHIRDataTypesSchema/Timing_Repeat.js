@@ -1,14 +1,26 @@
 const mongoose = require('mongoose');
-const Extension = require('./Extension');
-const Duration = require('./Duration');
-const Range = require('./Range');
-const Period = require('./Period');
-const positiveInt = require('./positiveInt');
-const decimal = require('./decimal');
-const code = require('./code');
-const time = require('./time');
-const unsignedInt = require('./unsignedInt');
-module.exports = new mongoose.Schema({
+const {
+    Extension
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Duration
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Range
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Period
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const positiveInt = require('../FHIRDataTypesSchema/positiveInt');
+const decimal = require('../FHIRDataTypesSchema/decimal');
+const code = require('../FHIRDataTypesSchema/code');
+const time = require('../FHIRDataTypesSchema/time');
+const unsignedInt = require('../FHIRDataTypesSchema/unsignedInt');
+
+const {
+    Timing_Repeat
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+Timing_Repeat.add({
     extension: {
         type: [Extension],
         default: void 0
@@ -60,10 +72,5 @@ module.exports = new mongoose.Schema({
         default: void 0
     },
     offset: unsignedInt
-}, {
-    _id: false,
-    id: false,
-    toObject: {
-        getters: true
-    }
 });
+module.exports.Timing_Repeat = Timing_Repeat;

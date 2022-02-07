@@ -22,7 +22,7 @@ module.exports = async function (req, res, resourceType) {
             return res.status(code).send(xmlItem);
         }
         return res.status(code).send(item);
-    }
+    };
     if (!user.checkTokenPermission(req, resourceType, "update")) {
         return doRes(403,handleError.forbidden("Your token doesn't have permission with this API"));
     }
@@ -33,6 +33,7 @@ module.exports = async function (req, res, resourceType) {
                 let fullAbsoluteUrl = new URL(req.originalUrl, reqBaseUrl).href;
                 res.set("Location", fullAbsoluteUrl);
             }
+            res.append("Last-Modified", (new Date()).toUTCString());
             return doRes(data.code, data.doc);
         },
         "false": (err) => {
@@ -41,32 +42,32 @@ module.exports = async function (req, res, resourceType) {
                     operationOutcomeMessage = {
                         code : 409 ,
                         msg : handleError.duplicate(err.message)
-                    }
+                    };
                 } else if (err.stack.includes("ValidationError")) {
                     operationOutcomeMessage = {
                         code : 400 ,
                         msg : handleError.processing(err.message)
-                    }
+                    };
                 } else if (err.stack.includes("stored by resource")) {
                     operationOutcomeMessage = {
                         code : 400 ,
                         msg : handleError.processing(err.message)
-                    }
+                    };
                 } else {
                     operationOutcomeMessage = {
                         code : 500 ,
                         msg : handleError.exception(err.message)
-                    }
+                    };
                 }
                 return doRes(operationOutcomeMessage.code , operationOutcomeMessage.msg);
         }
-    }
+    };
     let updateData = req.body;
     if (_.get(updateData, "contained")) {
         let containedResources = _.get(updateData, "contained");
         for (let index in containedResources) {
             let resource = containedResources[index];
-            let validation = validateContained(resource, index);
+            let validation = await validateContained(resource, index);
             if (!validation.status) {
                 let operationOutcomeError = handleError.processing(`The resource in contained error. ${validation.message}`);
                 return doRes(400, operationOutcomeError);
@@ -76,7 +77,7 @@ module.exports = async function (req, res, resourceType) {
     if (process.env.ENABLE_CHECK_REFERENCE == "true") {
         let checkReferenceRes = await checkReference(updateData);
         if (!checkReferenceRes.status) {
-            let notExistReferenceList = getNotExistReferenceList(checkReferenceRes)
+            let notExistReferenceList = getNotExistReferenceList(checkReferenceRes);
             let operationOutcomeError = handleError.processing(`The reference not found : ${_.map(notExistReferenceList , "value").join(",")}`);
             _.set(operationOutcomeError , "issue.0.location" , _.map(notExistReferenceList , "path"));
             return doRes(400, operationOutcomeError);
@@ -84,7 +85,7 @@ module.exports = async function (req, res, resourceType) {
     }
     let dataExist = await isDocExist(req.params.id, resourceType);
     if (dataExist.status == 0) {
-        return doRes(500, handleError.exception(dataExist.error))
+        return doRes(500, handleError.exception(dataExist.error));
     }
     let dataFuncAfterCheckExist = {
         0: (req,resourceType) => {
@@ -92,36 +93,32 @@ module.exports = async function (req, res, resourceType) {
         },
         1: doUpdateData,
         2: doInsertData
-    }
+    };
     let [status, result] = await dataFuncAfterCheckExist[dataExist.status](req,resourceType);
     
     return resFunc[status](result);
-}
+};
 
-function isDocExist(id,resourceType) {
-    return new Promise(async (resolve, reject) => {
-        mongodb[resourceType].findOne({
-            id: id
-        }, async function (err, doc) {
-            if (err) {
-                return resolve({
-                    status: 0,
-                    error: err
-                }); //error
-            }
-            if (doc) {
-                return resolve({
-                    status: 1,
-                    error: ""
-                }); //have doc
-            } else {
-                return resolve({
-                    status: 2,
-                    error: ""
-                }); //no doc
-            }
-        });
-    });
+async function isDocExist(id,resourceType) {
+    try {
+        let doc = await mongodb[resourceType].findOne({ id: id });
+        if (doc) {
+            return {
+                status: 1,
+                error: ""
+            }; //have doc
+        } else {
+            return {
+                status: 2,
+                error: ""
+            }; //no doc
+        }
+    } catch(e) {
+        return {
+            status: 0,
+            error: e
+        }; //error
+    }
 }
 
 function doUpdateData(req,resourceType) {

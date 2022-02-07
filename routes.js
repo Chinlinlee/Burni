@@ -27,4 +27,4 @@ module.exports = function (app, passport) {
             message: "not found"
         });
     });
-}
+};

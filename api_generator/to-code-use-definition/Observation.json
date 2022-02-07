@@ -1,0 +1,332 @@
+{
+    "id": {
+        "type": "string",
+        "isArray": false,
+        "isRequired": false
+    },
+    "meta": {
+        "type": "Meta",
+        "isArray": false,
+        "isRequired": false
+    },
+    "implicitRules": {
+        "type": "uri",
+        "isArray": false,
+        "isRequired": false
+    },
+    "language": {
+        "type": "code",
+        "isArray": false,
+        "isRequired": false
+    },
+    "text": {
+        "type": "Narrative",
+        "isArray": false,
+        "isRequired": false
+    },
+    "contained": {
+        "type": "Resource",
+        "isArray": true,
+        "isRequired": false
+    },
+    "extension": {
+        "type": "Extension",
+        "isArray": true,
+        "isRequired": false
+    },
+    "modifierExtension": {
+        "type": "Extension",
+        "isArray": true,
+        "isRequired": false
+    },
+    "identifier": {
+        "type": "Identifier",
+        "isArray": true,
+        "isRequired": false
+    },
+    "basedOn": {
+        "type": "Reference",
+        "isArray": true,
+        "isRequired": false
+    },
+    "partOf": {
+        "type": "Reference",
+        "isArray": true,
+        "isRequired": false
+    },
+    "status": {
+        "type": "code",
+        "isArray": false,
+        "isRequired": true
+    },
+    "category": {
+        "type": "CodeableConcept",
+        "isArray": true,
+        "isRequired": false
+    },
+    "code": {
+        "type": "CodeableConcept",
+        "isArray": false,
+        "isRequired": true
+    },
+    "subject": {
+        "type": "Reference",
+        "isArray": false,
+        "isRequired": false
+    },
+    "focus": {
+        "type": "Reference",
+        "isArray": true,
+        "isRequired": false
+    },
+    "encounter": {
+        "type": "Reference",
+        "isArray": false,
+        "isRequired": false
+    },
+    "effectiveDateTime": {
+        "type": "dateTime",
+        "isArray": false,
+        "isRequired": false
+    },
+    "effectivePeriod": {
+        "type": "Period",
+        "isArray": false,
+        "isRequired": false
+    },
+    "effectiveTiming": {
+        "type": "Timing",
+        "isArray": false,
+        "isRequired": false
+    },
+    "effectiveInstant": {
+        "type": "instant",
+        "isArray": false,
+        "isRequired": false
+    },
+    "issued": {
+        "type": "instant",
+        "isArray": false,
+        "isRequired": false
+    },
+    "performer": {
+        "type": "Reference",
+        "isArray": true,
+        "isRequired": false
+    },
+    "valueQuantity": {
+        "type": "Quantity",
+        "isArray": false,
+        "isRequired": false
+    },
+    "valueCodeableConcept": {
+        "type": "CodeableConcept",
+        "isArray": false,
+        "isRequired": false
+    },
+    "valueString": {
+        "type": "string",
+        "isArray": false,
+        "isRequired": false
+    },
+    "valueBoolean": {
+        "type": "boolean",
+        "isArray": false,
+        "isRequired": false
+    },
+    "valueInteger": {
+        "type": "integer",
+        "isArray": false,
+        "isRequired": false
+    },
+    "valueRange": {
+        "type": "Range",
+        "isArray": false,
+        "isRequired": false
+    },
+    "valueRatio": {
+        "type": "Ratio",
+        "isArray": false,
+        "isRequired": false
+    },
+    "valueSampledData": {
+        "type": "SampledData",
+        "isArray": false,
+        "isRequired": false
+    },
+    "valueTime": {
+        "type": "time",
+        "isArray": false,
+        "isRequired": false
+    },
+    "valueDateTime": {
+        "type": "dateTime",
+        "isArray": false,
+        "isRequired": false
+    },
+    "valuePeriod": {
+        "type": "Period",
+        "isArray": false,
+        "isRequired": false
+    },
+    "dataAbsentReason": {
+        "type": "CodeableConcept",
+        "isArray": false,
+        "isRequired": false
+    },
+    "interpretation": {
+        "type": "CodeableConcept",
+        "isArray": true,
+        "isRequired": false
+    },
+    "note": {
+        "type": "Annotation",
+        "isArray": true,
+        "isRequired": false
+    },
+    "bodySite": {
+        "type": "CodeableConcept",
+        "isArray": false,
+        "isRequired": false
+    },
+    "method": {
+        "type": "CodeableConcept",
+        "isArray": false,
+        "isRequired": false
+    },
+    "specimen": {
+        "type": "Reference",
+        "isArray": false,
+        "isRequired": false
+    },
+    "device": {
+        "type": "Reference",
+        "isArray": false,
+        "isRequired": false
+    },
+    "referenceRange": {
+        "type": {
+            "type": "CodeableConcept",
+            "isArray": false,
+            "isRequired": false
+        },
+        "isArray": true,
+        "isRequired": false,
+        "low": {
+            "type": "Quantity",
+            "isArray": false,
+            "isRequired": false
+        },
+        "high": {
+            "type": "Quantity",
+            "isArray": false,
+            "isRequired": false
+        },
+        "appliesTo": {
+            "type": "CodeableConcept",
+            "isArray": true,
+            "isRequired": false
+        },
+        "age": {
+            "type": "Range",
+            "isArray": false,
+            "isRequired": false
+        },
+        "text": {
+            "type": "string",
+            "isArray": false,
+            "isRequired": false
+        }
+    },
+    "hasMember": {
+        "type": "Reference",
+        "isArray": true,
+        "isRequired": false
+    },
+    "derivedFrom": {
+        "type": "Reference",
+        "isArray": true,
+        "isRequired": false
+    },
+    "component": {
+        "type": "BackboneElement",
+        "isArray": true,
+        "isRequired": false,
+        "code": {
+            "type": "CodeableConcept",
+            "isArray": false,
+            "isRequired": true
+        },
+        "valueQuantity": {
+            "type": "Quantity",
+            "isArray": false,
+            "isRequired": false
+        },
+        "valueCodeableConcept": {
+            "type": "CodeableConcept",
+            "isArray": false,
+            "isRequired": false
+        },
+        "valueString": {
+            "type": "string",
+            "isArray": false,
+            "isRequired": false
+        },
+        "valueBoolean": {
+            "type": "boolean",
+            "isArray": false,
+            "isRequired": false
+        },
+        "valueInteger": {
+            "type": "integer",
+            "isArray": false,
+            "isRequired": false
+        },
+        "valueRange": {
+            "type": "Range",
+            "isArray": false,
+            "isRequired": false
+        },
+        "valueRatio": {
+            "type": "Ratio",
+            "isArray": false,
+            "isRequired": false
+        },
+        "valueSampledData": {
+            "type": "SampledData",
+            "isArray": false,
+            "isRequired": false
+        },
+        "valueTime": {
+            "type": "time",
+            "isArray": false,
+            "isRequired": false
+        },
+        "valueDateTime": {
+            "type": "dateTime",
+            "isArray": false,
+            "isRequired": false
+        },
+        "valuePeriod": {
+            "type": "Period",
+            "isArray": false,
+            "isRequired": false
+        },
+        "dataAbsentReason": {
+            "type": "CodeableConcept",
+            "isArray": false,
+            "isRequired": false
+        },
+        "interpretation": {
+            "type": "CodeableConcept",
+            "isArray": true,
+            "isRequired": false
+        },
+        "referenceRange": {
+            "type": "",
+            "isArray": true,
+            "isRequired": false,
+            "ref": "#Observation.referenceRange"
+        }
+    }
+}

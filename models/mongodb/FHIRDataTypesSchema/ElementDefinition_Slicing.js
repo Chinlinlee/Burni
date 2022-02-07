@@ -1,9 +1,17 @@
 const mongoose = require('mongoose');
-const Extension = require('./Extension');
-const ElementDefinition_Discriminator = require('./ElementDefinition_Discriminator');
-const string = require('./string');
-const boolean = require('./boolean');
-module.exports = new mongoose.Schema({
+const {
+    Extension
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    ElementDefinition_Discriminator
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const string = require('../FHIRDataTypesSchema/string');
+const boolean = require('../FHIRDataTypesSchema/boolean');
+
+const {
+    ElementDefinition_Slicing
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+ElementDefinition_Slicing.add({
     extension: {
         type: [Extension],
         default: void 0
@@ -23,10 +31,5 @@ module.exports = new mongoose.Schema({
         enum: ["closed", "open", "openAtEnd"],
         default: void 0
     }
-}, {
-    _id: false,
-    id: false,
-    toObject: {
-        getters: true
-    }
 });
+module.exports.ElementDefinition_Slicing = ElementDefinition_Slicing;

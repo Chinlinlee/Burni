@@ -1,0 +1,77 @@
+{
+    "id": {
+        "type": "string",
+        "isArray": false,
+        "isRequired": false
+    },
+    "meta": {
+        "type": "Meta",
+        "isArray": false,
+        "isRequired": false
+    },
+    "implicitRules": {
+        "type": "uri",
+        "isArray": false,
+        "isRequired": false
+    },
+    "language": {
+        "type": "code",
+        "isArray": false,
+        "isRequired": false
+    },
+    "text": {
+        "type": "Narrative",
+        "isArray": false,
+        "isRequired": false
+    },
+    "contained": {
+        "type": "Resource",
+        "isArray": true,
+        "isRequired": false
+    },
+    "extension": {
+        "type": "Extension",
+        "isArray": true,
+        "isRequired": false
+    },
+    "modifierExtension": {
+        "type": "Extension",
+        "isArray": true,
+        "isRequired": false
+    },
+    "issue": {
+        "type": "BackboneElement",
+        "isArray": true,
+        "isRequired": true,
+        "severity": {
+            "type": "code",
+            "isArray": false,
+            "isRequired": true
+        },
+        "code": {
+            "type": "code",
+            "isArray": false,
+            "isRequired": true
+        },
+        "details": {
+            "type": "CodeableConcept",
+            "isArray": false,
+            "isRequired": false
+        },
+        "diagnostics": {
+            "type": "string",
+            "isArray": false,
+            "isRequired": false
+        },
+        "location": {
+            "type": "string",
+            "isArray": true,
+            "isRequired": false
+        },
+        "expression": {
+            "type": "string",
+            "isArray": true,
+            "isRequired": false
+        }
+    }
+}

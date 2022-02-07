@@ -1,0 +1,37 @@
+{
+    "id": {
+        "type": "string",
+        "isArray": false,
+        "isRequired": false
+    },
+    "meta": {
+        "type": "Meta",
+        "isArray": false,
+        "isRequired": false
+    },
+    "implicitRules": {
+        "type": "uri",
+        "isArray": false,
+        "isRequired": false
+    },
+    "language": {
+        "type": "code",
+        "isArray": false,
+        "isRequired": false
+    },
+    "contentType": {
+        "type": "code",
+        "isArray": false,
+        "isRequired": true
+    },
+    "securityContext": {
+        "type": "Reference",
+        "isArray": false,
+        "isRequired": false
+    },
+    "data": {
+        "type": "base64Binary",
+        "isArray": false,
+        "isRequired": false
+    }
+}

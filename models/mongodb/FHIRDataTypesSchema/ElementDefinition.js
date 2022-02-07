@@ -1,51 +1,133 @@
 const mongoose = require('mongoose');
-const Extension = require('./Extension');
-const string = require('./string');
-const boolean = require('./boolean');
-const Coding = require('./Coding');
-const ElementDefinition_Slicing = require('./ElementDefinition_Slicing');
-const markdown = require('./markdown');
-const unsignedInt = require('./unsignedInt');
-const ElementDefinition_Base = require('./ElementDefinition_Base');
-const uri = require('./uri');
-const ElementDefinition_Type = require('./ElementDefinition_Type');
-const Address = require('./Address');
-const Age = require('./Age');
-const Annotation = require('./Annotation');
-const Attachment = require('./Attachment');
-const CodeableConcept = require('./CodeableConcept');
-const ContactPoint = require('./ContactPoint');
-const Count = require('./Count');
-const Distance = require('./Distance');
-const Duration = require('./Duration');
-const HumanName = require('./HumanName');
-const Identifier = require('./Identifier');
-const Money = require('./Money');
-const Period = require('./Period');
-const Quantity = require('./Quantity');
-const Range = require('./Range');
-const Ratio = require('./Ratio');
-const Reference = require('./Reference');
-const SampledData = require('./SampledData');
-const Signature = require('./Signature');
-const Timing = require('./Timing');
-const ContactDetail = require('./ContactDetail');
-const Contributor = require('./Contributor');
-const DataRequirement = require('./DataRequirement');
-const Expression = require('./Expression');
-const ParameterDefinition = require('./ParameterDefinition');
-const RelatedArtifact = require('./RelatedArtifact');
-const TriggerDefinition = require('./TriggerDefinition');
-const UsageContext = require('./UsageContext');
-const Dosage = require('./Dosage');
-const Meta = require('./Meta');
-const ElementDefinition_Example = require('./ElementDefinition_Example');
-const integer = require('./integer');
-const id = require('./id');
-const ElementDefinition_Constraint = require('./ElementDefinition_Constraint');
-const ElementDefinition_Binding = require('./ElementDefinition_Binding');
-const ElementDefinition_Mapping = require('./ElementDefinition_Mapping');
-module.exports = new mongoose.Schema({
+const {
+    Extension
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const string = require('../FHIRDataTypesSchema/string');
+const boolean = require('../FHIRDataTypesSchema/boolean');
+const {
+    Coding
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    ElementDefinition_Slicing
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const markdown = require('../FHIRDataTypesSchema/markdown');
+const unsignedInt = require('../FHIRDataTypesSchema/unsignedInt');
+const {
+    ElementDefinition_Base
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const uri = require('../FHIRDataTypesSchema/uri');
+const {
+    ElementDefinition_Type
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Address
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Age
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Annotation
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Attachment
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    CodeableConcept
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    ContactPoint
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Count
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Distance
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Duration
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    HumanName
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Identifier
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Money
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Period
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Quantity
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Range
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Ratio
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Reference
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    SampledData
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Signature
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Timing
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    ContactDetail
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Contributor
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    DataRequirement
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Expression
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    ParameterDefinition
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    RelatedArtifact
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    TriggerDefinition
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    UsageContext
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Dosage
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Meta
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    ElementDefinition_Example
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const integer = require('../FHIRDataTypesSchema/integer');
+const id = require('../FHIRDataTypesSchema/id');
+const {
+    ElementDefinition_Constraint
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    ElementDefinition_Binding
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    ElementDefinition_Mapping
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+
+const {
+    ElementDefinition
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+ElementDefinition.add({
     extension: {
         type: [Extension],
         default: void 0
@@ -629,10 +711,5 @@ module.exports = new mongoose.Schema({
         type: [ElementDefinition_Mapping],
         default: void 0
     }
-}, {
-    _id: false,
-    id: false,
-    toObject: {
-        getters: true
-    }
 });
+module.exports.ElementDefinition = ElementDefinition;

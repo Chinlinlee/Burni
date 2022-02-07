@@ -43,8 +43,7 @@ module.exports = async function(req, res) {
         console.error(e);
         return res.status(500).send();
     }
-    
-}
+};
 
 function getDecodedTokenObj(token) {
     return new Promise((resolve , reject)=> {
@@ -55,13 +54,12 @@ function getDecodedTokenObj(token) {
             if (err) {
                 if (err.name != "TokenExpiredError") {
                     reject(err);
-                    return res.status(401).send(handleError.expired("token expired"));
                 } else {
                     tokenObj.status = false;
                     tokenObj.message = "token expired";
                 }
             } 
             resolve(tokenObj);
-        })
-    })
+        });
+    });
 }

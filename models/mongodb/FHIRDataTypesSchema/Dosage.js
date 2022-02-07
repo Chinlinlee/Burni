@@ -1,14 +1,30 @@
 const mongoose = require('mongoose');
-const Extension = require('./Extension');
-const integer = require('./integer');
-const string = require('./string');
-const CodeableConcept = require('./CodeableConcept');
-const Timing = require('./Timing');
-const boolean = require('./boolean');
-const Dosage_DoseAndRate = require('./Dosage_DoseAndRate');
-const Ratio = require('./Ratio');
-const Quantity = require('./Quantity');
-module.exports = new mongoose.Schema({
+const {
+    Extension
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const integer = require('../FHIRDataTypesSchema/integer');
+const string = require('../FHIRDataTypesSchema/string');
+const {
+    CodeableConcept
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Timing
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const boolean = require('../FHIRDataTypesSchema/boolean');
+const {
+    Dosage_DoseAndRate
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Ratio
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Quantity
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+
+const {
+    Dosage
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+Dosage.add({
     extension: {
         type: [Extension],
         default: void 0
@@ -61,10 +77,5 @@ module.exports = new mongoose.Schema({
         type: Quantity,
         default: void 0
     }
-}, {
-    _id: false,
-    id: false,
-    toObject: {
-        getters: true
-    }
 });
+module.exports.Dosage = Dosage;

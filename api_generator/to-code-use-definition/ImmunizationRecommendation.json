@@ -1,0 +1,147 @@
+{
+    "id": {
+        "type": "string",
+        "isArray": false,
+        "isRequired": false
+    },
+    "meta": {
+        "type": "Meta",
+        "isArray": false,
+        "isRequired": false
+    },
+    "implicitRules": {
+        "type": "uri",
+        "isArray": false,
+        "isRequired": false
+    },
+    "language": {
+        "type": "code",
+        "isArray": false,
+        "isRequired": false
+    },
+    "text": {
+        "type": "Narrative",
+        "isArray": false,
+        "isRequired": false
+    },
+    "contained": {
+        "type": "Resource",
+        "isArray": true,
+        "isRequired": false
+    },
+    "extension": {
+        "type": "Extension",
+        "isArray": true,
+        "isRequired": false
+    },
+    "modifierExtension": {
+        "type": "Extension",
+        "isArray": true,
+        "isRequired": false
+    },
+    "identifier": {
+        "type": "Identifier",
+        "isArray": true,
+        "isRequired": false
+    },
+    "patient": {
+        "type": "Reference",
+        "isArray": false,
+        "isRequired": true
+    },
+    "date": {
+        "type": "dateTime",
+        "isArray": false,
+        "isRequired": true
+    },
+    "authority": {
+        "type": "Reference",
+        "isArray": false,
+        "isRequired": false
+    },
+    "recommendation": {
+        "type": "BackboneElement",
+        "isArray": true,
+        "isRequired": true,
+        "vaccineCode": {
+            "type": "CodeableConcept",
+            "isArray": true,
+            "isRequired": false
+        },
+        "targetDisease": {
+            "type": "CodeableConcept",
+            "isArray": false,
+            "isRequired": false
+        },
+        "contraindicatedVaccineCode": {
+            "type": "CodeableConcept",
+            "isArray": true,
+            "isRequired": false
+        },
+        "forecastStatus": {
+            "type": "CodeableConcept",
+            "isArray": false,
+            "isRequired": true
+        },
+        "forecastReason": {
+            "type": "CodeableConcept",
+            "isArray": true,
+            "isRequired": false
+        },
+        "dateCriterion": {
+            "type": "BackboneElement",
+            "isArray": true,
+            "isRequired": false,
+            "code": {
+                "type": "CodeableConcept",
+                "isArray": false,
+                "isRequired": true
+            },
+            "value": {
+                "type": "dateTime",
+                "isArray": false,
+                "isRequired": true
+            }
+        },
+        "description": {
+            "type": "string",
+            "isArray": false,
+            "isRequired": false
+        },
+        "series": {
+            "type": "string",
+            "isArray": false,
+            "isRequired": false
+        },
+        "doseNumberPositiveInt": {
+            "type": "positiveInt",
+            "isArray": false,
+            "isRequired": false
+        },
+        "doseNumberString": {
+            "type": "string",
+            "isArray": false,
+            "isRequired": false
+        },
+        "seriesDosesPositiveInt": {
+            "type": "positiveInt",
+            "isArray": false,
+            "isRequired": false
+        },
+        "seriesDosesString": {
+            "type": "string",
+            "isArray": false,
+            "isRequired": false
+        },
+        "supportingImmunization": {
+            "type": "Reference",
+            "isArray": true,
+            "isRequired": false
+        },
+        "supportingPatientInformation": {
+            "type": "Reference",
+            "isArray": true,
+            "isRequired": false
+        }
+    }
+}
