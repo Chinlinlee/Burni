@@ -434,6 +434,7 @@ class ReferenceParameter {
     constructor(param, field) {
         this.Param = param;
         this.Field = field;
+        this.FixedType=""; //using in `RelatedArtifact`, expression: relatedArtifact.where(type='composed-of').resource(Any)
     }
 
     getCodeString() {
@@ -443,7 +444,15 @@ class ReferenceParameter {
         searchFields = searchFields.map(v=> {
             if (v.includes("where")) {
                 let lastIndexFieldInField = v.lastIndexOf(".");
-                v = v.substring(0, lastIndexFieldInField) + ".reference";
+                if (!v.includes("type=")) {
+                    v = v.substring(0, lastIndexFieldInField) + ".reference";
+                } else {
+                    let firstDotIndex = v.indexOf(".");
+                    let fieldName = v.substring(0, firstDotIndex);
+                    let type = v.substring(v.indexOf("type=")+5, v.lastIndexOf("'")).replace("'", "");
+                    this.FixedType = type;
+                    v = fieldName + v.substring(lastIndexFieldInField);
+                }
             } else if (v.includes(" as ")) {
                 v = v.substr(0, v.indexOf(" as "));
             } else {
@@ -455,7 +464,7 @@ class ReferenceParameter {
         codeStr += `
         paramsSearch["${this.Param}"] = (query) => {
             try {
-                queryHandler.getReferenceQuery(query, paramsSearchFields, "${this.Param}");
+                queryHandler.getReferenceQuery(query, paramsSearchFields, "${this.Param}"${(this.FixedType) ? `, "${this.FixedType}"`: ""});
             } catch(e) {
                 console.error(e);
                 throw e;

@@ -424,7 +424,7 @@ function instantQuery(value, field) {
     return queryBuilder;
 }
 
-function referenceQuery (query , field) {
+function referenceQuery (query , field, type="") {
     const urlRegex = /^(http|https):\/\/(.*)\/(\w+\/.+)$/;
     const isUrl = query.match(urlRegex);
     let typeAndId = query.split("/");
@@ -437,6 +437,20 @@ function referenceQuery (query , field) {
         queryBuilder[field] = `${typeAndId[0]}/${typeAndId[1]}`;
     } else {
         queryBuilder[field] = {$regex : new RegExp(query)};
+    }
+    if (type) {
+        let andQuery = {
+            $and: []
+        };
+        let typeField = field.substring(0, field.lastIndexOf(".")) + ".type";
+        queryBuilder[typeField] = type;
+        andQuery.$and.push({
+            [typeField]: queryBuilder[typeField]
+        });
+        andQuery.$and.push({
+            [field]: queryBuilder[field]
+        });
+        return andQuery;
     }
     return queryBuilder;
 }

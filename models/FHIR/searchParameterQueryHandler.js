@@ -337,7 +337,7 @@ function getPolyDateQuery(query, paramsSearchFields, queryFieldName, paramsSearc
     delete query[queryFieldName];
 }
 
-function getReferenceQuery(query, paramsSearchFields, queryFieldName) {
+function getReferenceQuery(query, paramsSearchFields, queryFieldName, type="") {
     if (!_.isArray(query[queryFieldName])) {
         query[queryFieldName] = [query[queryFieldName]];
     }
@@ -346,7 +346,7 @@ function getReferenceQuery(query, paramsSearchFields, queryFieldName) {
             $or : []
         };
         for (let field of paramsSearchFields[queryFieldName]) {
-            let buildResult =queryBuild.referenceQuery(item , field);
+            let buildResult =queryBuild.referenceQuery(item , field, type);
             buildQs.$or.push(buildResult);
         }
         query.$and.push({
