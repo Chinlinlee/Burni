@@ -66,7 +66,12 @@ module.exports = async function(req, res,resourceType,paramsSearch) {
         docs = docs.map(v => {
             return v.getFHIRField();
         });
-        let count = await mongodb[resourceType].countDocuments(queryParameter);
+        let count = 0;
+        if (_.isEmpty(queryParameter)) {
+            count = await mongodb[resourceType].estimatedDocumentCount();
+        } else {
+            count = await mongodb[resourceType].countDocuments(queryParameter);
+        }
         let bundle = createBundle(req, docs, count, paginationSkip, paginationLimit, resourceType);
         res.header('Last-Modified', new Date().toUTCString());
         return doRes(200 , bundle);
