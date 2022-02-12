@@ -7,6 +7,53 @@ require('dotenv').config();
 const { genParamFunc } = require('./searchParametersCodeGenerator');
 
 /**
+ * @param {string} resource resource type
+ */
+function getCodeGetById(resource) {
+    const comment = `
+    /**
+     * 
+     * @api {get} /fhir/${resource}/:id read
+     * @apiParam {string} id Resource ID in server
+     * @apiName read${resource}
+     * @apiGroup ${resource}
+     * @apiVersion  v2.1.0
+     * 
+     * @apiExample {cURL} cURL
+     * curl --location --request GET 'http://burni.example.com/fhir/${resource}/1'
+     * @apiExample {javascript} javascript Axios
+    const axios = require('axios');
+    const config = {
+        method: 'get',
+        url: 'http://burni.example.com/fhir/${resource}/1'
+    };
+
+    axios(config)
+    .then(function (response) {
+        console.log(JSON.stringify(response.data));
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
+    * @apiSuccess {${resource}} response-body <a href="https://www.hl7.org/fhir/${resource.toLowerCase()}.html#resource">${resource} JSON Content</a>
+    * @apiSuccessExample {json} Success-Response:
+    * {
+    *   "resourceType": "${resource}"
+    * }
+    * 
+    */
+    `;
+    const getById = `
+    const read = require('../../../FHIRApiService/read');
+    
+    module.exports = async function(req, res) {
+        return await read(req , res , "${resource}");
+    };
+    `;
+    return `${comment}${getById}`;
+}
+
+/**
  * 
  * @param {Object} option 
  * @param {Array} option.resources the resources want to use
@@ -86,13 +133,7 @@ function generateAPI(option) {
         //#endregion
 
         //#region getById
-        const getById = `
-        const read = require('../../../FHIRApiService/read');
-        
-        module.exports = async function(req, res) {
-            return await read(req , res , "${res}");
-        };
-        `;
+        const getById = getCodeGetById(res);
         //#endregion
 
         //#region getHistory
