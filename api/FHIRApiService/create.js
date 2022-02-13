@@ -27,13 +27,14 @@ module.exports = async function(req, res , resourceType) {
     if (!user.checkTokenPermission(req, resourceType, "create")) {
         return doRes(403,handleError.forbidden("Your token doesn't have permission with this API"));
     }
-    console.log("doPost-create", req.body);
+    console.log(`doPost-create ${resourceType}`);
     try {
         let resFunc = {
             "true": (doc) => {
                 let reqBaseUrl = `${req.protocol}://${req.get('host')}/`;
                 let fullAbsoluteUrl = new URL(req.originalUrl, reqBaseUrl).href;
                 res.set("Location", fullAbsoluteUrl);
+                console.log(`create ${resourceType} id: ${doc.id} successfully`);
                 return doRes(201 , doc);
             },
             "false": (err) => {
