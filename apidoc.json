@@ -1,8 +1,8 @@
 {
-    "name": "Burni Api documentation",
+    "name": "Burni API documentation",
     "version": "v2.1.0",
-    "description": "Documentation for the REST api",
-    "title": "Burni Api documentation",
+    "description": "Documentation for the REST API",
+    "title": "Burni API documentation",
     "template": {
         "forceLanguage": "en",
         "showRequiredLabels": false,
