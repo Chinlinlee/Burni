@@ -1,0 +1,45 @@
+{
+    "resourceType": "DiagnosticReport",
+    "id": "1473dfe1-9401-49cd-9a6e-a065951deb65",
+    "status": "final",
+    "code": {
+        "coding": [
+            {
+                "system": "http://loinc.org",
+                "code": "38269-7"
+            }
+        ],
+        "text": "DXA BONE DENSITOMETRY"
+    },
+    "subject": {
+        "reference": "Patient/pat2"
+    },
+    "effectiveDateTime": "2008-06-17T08:00:00+08:00",
+    "issued": "2008-06-18T07:23:00.000+08:00",
+    "performer": [
+        {
+            "reference": "Practitioner/3ad0687e-f477-468c-afd5-fcc2bf897809",
+            "display": "Dr Henry Seven"
+        }
+    ],
+    "result": [
+        {
+            "reference": "Observation/bmd"
+        }
+    ],
+    "conclusionCode": [
+        {
+            "coding": [
+                {
+                    "system": "http://snomed.info/sct",
+                    "code": "391040000",
+                    "display": "At risk of osteoporotic fracture"
+                }
+            ]
+        }
+    ],
+    "meta": {
+        "versionId": "1",
+        "lastUpdated": "2022-02-13T22:30:15.725+08:00"
+    }
+}

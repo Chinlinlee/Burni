@@ -1,0 +1,22 @@
+{
+    "resourceType": "RiskEvidenceSynthesis",
+    "id": "d20a1c45-d1d1-4590-9470-e9835a6c3247",
+    "status": "draft",
+    "population": {
+        "reference": "EvidenceVariable/example"
+    },
+    "outcome": {
+        "reference": "EvidenceVariable/example"
+    },
+    "meta": {
+        "tag": [
+            {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+                "code": "HTEST",
+                "display": "test health data"
+            }
+        ],
+        "versionId": "1",
+        "lastUpdated": "2022-02-13T22:30:19.271+08:00"
+    }
+}

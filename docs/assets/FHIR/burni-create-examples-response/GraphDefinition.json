@@ -1,0 +1,61 @@
+{
+    "resourceType": "GraphDefinition",
+    "id": "9e3f07ad-cd63-4c32-9cf2-120d4d4fd987",
+    "url": "http://h7.org/fhir/GraphDefinition/example",
+    "name": "Document Generation Template",
+    "status": "draft",
+    "date": "2015-08-04T08:00:00+08:00",
+    "publisher": "FHIR Project",
+    "contact": [
+        {
+            "telecom": [
+                {
+                    "system": "url",
+                    "value": "http://hl7.org/fhir"
+                }
+            ]
+        }
+    ],
+    "description": "Specify to include list references when generating a document using the $document operation",
+    "start": "Composition",
+    "link": [
+        {
+            "path": "Composition.section.entry",
+            "description": "Link to List",
+            "target": [
+                {
+                    "type": "List",
+                    "compartment": [
+                        {
+                            "use": "requirement",
+                            "code": "Patient",
+                            "rule": "identical"
+                        }
+                    ],
+                    "link": [
+                        {
+                            "path": "List.entry.item",
+                            "description": "Include any list entries",
+                            "target": [
+                                {
+                                    "type": "Resource",
+                                    "compartment": [
+                                        {
+                                            "use": "requirement",
+                                            "code": "Patient",
+                                            "rule": "identical"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "meta": {
+        "versionId": "1",
+        "lastUpdated": "2022-02-13T22:30:16.504+08:00"
+    }
+}

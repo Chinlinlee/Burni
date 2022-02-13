@@ -10,6 +10,7 @@ const { genParamFunc } = require('./searchParametersCodeGenerator');
  * @param {string} resource resource type
  */
 function getCodeGetById(resource) {
+    const responseExampleBody = require(`../docs/assets/FHIR/burni-create-examples-response/${resource}.json`);
     const comment = `
     /**
      * 
@@ -20,12 +21,12 @@ function getCodeGetById(resource) {
      * @apiVersion  v2.1.0
      * 
      * @apiExample {cURL} cURL
-     * curl --location --request GET 'http://burni.example.com/fhir/${resource}/1'
+     * curl --location --request GET 'http://burni.example.com/fhir/${resource}/${responseExampleBody.id}'
      * @apiExample {javascript} javascript Axios
     const axios = require('axios');
     const config = {
         method: 'get',
-        url: 'http://burni.example.com/fhir/${resource}/1'
+        url: 'http://burni.example.com/fhir/${resource}/${responseExampleBody.id}'
     };
 
     axios(config)
@@ -37,9 +38,7 @@ function getCodeGetById(resource) {
     });
     * @apiSuccess {${resource}} response-body <a href="https://www.hl7.org/fhir/${resource.toLowerCase()}.html#resource">${resource} JSON Content</a>
     * @apiSuccessExample {json} Success-Response:
-    * {
-    *   "resourceType": "${resource}"
-    * }
+    ${JSON.stringify(responseExampleBody, null, 4)}
     * 
     */
     `;
