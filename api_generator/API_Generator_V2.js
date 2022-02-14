@@ -14,12 +14,14 @@ function getCodeGetById(resource) {
     const comment = `
     /**
      * 
-     * @api {get} /fhir/${resource}/:id read
+     * @api {get} /fhir/${resource}/:id read ${resource}
      * @apiParam {string} id Resource ID in server
      * @apiName read${resource}
      * @apiGroup ${resource}
      * @apiVersion  v2.1.0
+     * @apiDescription read ${resource} resource by id.
      * 
+     * example from: <a href="https://chinlinlee.github.io/Burni/assets/FHIR/fhir-resource-examples/${resource.toLowerCase()}-example.json">${resource} example</a>
      * @apiExample {cURL} cURL
      * curl --location --request GET 'http://burni.example.com/fhir/${resource}/${responseExampleBody.id}'
      * @apiExample {javascript} javascript Axios
@@ -36,8 +38,7 @@ function getCodeGetById(resource) {
     .catch(function (error) {
         console.log(error);
     });
-    * @apiSuccess {${resource}} response-body <a href="https://www.hl7.org/fhir/${resource.toLowerCase()}.html#resource">${resource} JSON Content</a>
-    * @apiSuccessExample {json} Success-Response:
+    * @apiSuccessExample {json} (200) Success-Response:
     ${JSON.stringify(responseExampleBody, null, 4)}
     * 
     */

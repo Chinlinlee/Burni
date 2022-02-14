@@ -1,11 +1,13 @@
 /**
      * 
-     * @api {get} /fhir/Patient/:id read
+     * @api {get} /fhir/Patient/:id read Patient
      * @apiParam {string} id Resource ID in server
      * @apiName readPatient
      * @apiGroup Patient
      * @apiVersion  v2.1.0
+     * @apiDescription read Patient resource by id.
      * 
+     * example from: <a href="https://chinlinlee.github.io/Burni/assets/FHIR/fhir-resource-examples/patient-example.json">Patient example</a>
      * @apiExample {cURL} cURL
      * curl --location --request GET 'http://burni.example.com/fhir/Patient/b254dcb5-32e2-41d0-91fe-3442feaccfed'
      * @apiExample {javascript} javascript Axios
@@ -22,8 +24,7 @@
     .catch(function (error) {
         console.log(error);
     });
-    * @apiSuccess {Patient} response-body <a href="https://www.hl7.org/fhir/patient.html#resource">Patient JSON Content</a>
-    * @apiSuccessExample {json} Success-Response:
+    * @apiSuccessExample {json} (200) Success-Response:
     {
     "resourceType": "Patient",
     "id": "b254dcb5-32e2-41d0-91fe-3442feaccfed",
