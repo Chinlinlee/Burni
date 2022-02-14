@@ -21,10 +21,11 @@ function getCodeGetById(resource) {
      * @apiVersion  v2.1.0
      * @apiDescription read ${resource} resource by id.
      * 
-     * example from: <a href="https://chinlinlee.github.io/Burni/assets/FHIR/fhir-resource-examples/${resource.toLowerCase()}-example.json">${resource} example</a>
      * @apiExample {cURL} cURL
+     * #example from: https://chinlinlee.github.io/Burni/assets/FHIR/fhir-resource-examples/${resource.toLowerCase()}-example.json
      * curl --location --request GET 'http://burni.example.com/fhir/${resource}/${responseExampleBody.id}'
      * @apiExample {javascript} javascript Axios
+     //example from: https://chinlinlee.github.io/Burni/assets/FHIR/fhir-resource-examples/${resource.toLowerCase()}-example.json
     const axios = require('axios');
     const config = {
         method: 'get',
@@ -38,9 +39,22 @@ function getCodeGetById(resource) {
     .catch(function (error) {
         console.log(error);
     });
+    * @apiSuccess (Success 200) {object} FHIR-JSON-RESOURCE
     * @apiSuccessExample {json} (200) Success-Response:
     ${JSON.stringify(responseExampleBody, null, 4)}
     * 
+    * @apiError (Error Not Found 404) {object} FHIR-JSON-RESOURCE
+    * @apiErrorExample {json} (404) Not Found-Response:
+    {
+        "resourceType": "OperationOutcome",
+        "issue": [
+            {
+                "severity": "error",
+                "code": "exception",
+                "diagnostics": "not found ${resource}/${responseExampleBody.id}"
+            }
+        ]
+    }
     */
     `;
     const getById = `
