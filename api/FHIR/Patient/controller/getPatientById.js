@@ -7,10 +7,10 @@
      * @apiVersion  v2.1.0
      * @apiDescription read Patient resource by id.
      * 
-     * @apiExample {cURL} cURL
+     * @apiExample {Shell} cURL
      * #example from: https://chinlinlee.github.io/Burni/assets/FHIR/fhir-resource-examples/patient-example.json
      * curl --location --request GET 'http://burni.example.com/fhir/Patient/b254dcb5-32e2-41d0-91fe-3442feaccfed'
-     * @apiExample {javascript} javascript Axios
+     * @apiExample {JavaScript} javascript Axios
      //example from: https://chinlinlee.github.io/Burni/assets/FHIR/fhir-resource-examples/patient-example.json
     const axios = require('axios');
     const config = {
@@ -25,8 +25,8 @@
     .catch(function (error) {
         console.log(error);
     });
-    * @apiSuccess (Success 200) {object} FHIR-JSON-RESOURCE
-    * @apiSuccessExample {json} (200) Success-Response:
+    * @apiSuccess (Success 200 Content-Type: application/fhir+json) {object} FHIR-JSON-RESOURCE
+    * @apiSuccessExample {json} (200) name: Success-Response Content-Type: application/fhir+json
     {
     "resourceType": "Patient",
     "id": "b254dcb5-32e2-41d0-91fe-3442feaccfed",
@@ -184,8 +184,8 @@
     }
 }
     * 
-    * @apiError (Error Not Found 404) {object} FHIR-JSON-RESOURCE
-    * @apiErrorExample {json} (404) Not Found-Response:
+    * @apiError (Error Not Found 404 Content-Type: application/fhir+json) {object} FHIR-JSON-RESOURCE
+    * @apiErrorExample {json} (404) name: Not Found-Response Content-Type: application/fhir+json
     {
         "resourceType": "OperationOutcome",
         "issue": [

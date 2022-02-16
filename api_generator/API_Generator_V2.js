@@ -5,6 +5,7 @@ const beautify = require('js-beautify').js;
 const _ = require('lodash');
 require('dotenv').config();
 const { genParamFunc } = require('./searchParametersCodeGenerator');
+const GENERATE_API_DOC = true;
 
 /**
  * @param {string} resource resource type
@@ -21,10 +22,10 @@ function getCodeGetById(resource) {
      * @apiVersion  v2.1.0
      * @apiDescription read ${resource} resource by id.
      * 
-     * @apiExample {cURL} cURL
+     * @apiExample {Shell} cURL
      * #example from: https://chinlinlee.github.io/Burni/assets/FHIR/fhir-resource-examples/${resource.toLowerCase()}-example.json
      * curl --location --request GET 'http://burni.example.com/fhir/${resource}/${responseExampleBody.id}'
-     * @apiExample {javascript} javascript Axios
+     * @apiExample {JavaScript} javascript Axios
      //example from: https://chinlinlee.github.io/Burni/assets/FHIR/fhir-resource-examples/${resource.toLowerCase()}-example.json
     const axios = require('axios');
     const config = {
@@ -39,12 +40,12 @@ function getCodeGetById(resource) {
     .catch(function (error) {
         console.log(error);
     });
-    * @apiSuccess (Success 200) {object} FHIR-JSON-RESOURCE
-    * @apiSuccessExample {json} (200) Success-Response:
+    * @apiSuccess (Success 200 Content-Type: application/fhir+json) {object} FHIR-JSON-RESOURCE
+    * @apiSuccessExample {json} (200) name: Success-Response Content-Type: application/fhir+json
     ${JSON.stringify(responseExampleBody, null, 4)}
     * 
-    * @apiError (Error Not Found 404) {object} FHIR-JSON-RESOURCE
-    * @apiErrorExample {json} (404) Not Found-Response:
+    * @apiError (Error Not Found 404 Content-Type: application/fhir+json) {object} FHIR-JSON-RESOURCE
+    * @apiErrorExample {json} (404) name: Not Found-Response Content-Type: application/fhir+json
     {
         "resourceType": "OperationOutcome",
         "issue": [
@@ -64,7 +65,98 @@ function getCodeGetById(resource) {
         return await read(req , res , "${resource}");
     };
     `;
-    return `${comment}${getById}`;
+    if (GENERATE_API_DOC) return `${comment}${getById}`;
+    return `${getById}`;
+}
+
+function getCodeCreate(resource) {
+    const responseExampleBody = require(`../docs/assets/FHIR/burni-create-examples-response/${resource}.json`);
+    const comment = `
+    /**
+     * 
+     * @api {post} /fhir/${resource} create ${resource}
+     * @apiName create${resource}
+     * @apiGroup ${resource}
+     * @apiVersion  v2.1.0
+     * @apiDescription create ${resource} resource.
+     * 
+     * @apiParam {string=${resource}} resourceType 
+     * @apiParamExample {json} name: json-example Content-Type: application/fhir+json
+     * 
+     ${JSON.stringify(responseExampleBody, null, 4)}
+     * 
+     * @apiExample {Shell} cURL
+     * #example from: https://chinlinlee.github.io/Burni/assets/FHIR/fhir-resource-examples/${resource.toLowerCase()}-example.json
+     * curl --location --request POST 'http://burni.example.com/fhir/${resource} \\' 
+     * --header 'Content-Type: application/fhir+json' \\
+     * --data-raw '${JSON.stringify(responseExampleBody)}'
+     * @apiExample {JavaScript} javascript Axios
+     //example from: https://chinlinlee.github.io/Burni/assets/FHIR/fhir-resource-examples/${resource.toLowerCase()}-example.json
+    const axios = require('axios');
+    const data = ${JSON.stringify(responseExampleBody)}
+    const config = {
+        method: 'post',
+        url: 'http://burni.example.com/fhir/${resource}',
+        headers: { 
+            'Content-Type': 'application/fhir+json'
+        },
+        data: data
+    };
+
+    axios(config)
+    .then(function (response) {
+        console.log(JSON.stringify(response.data));
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
+    * @apiSuccess (Success 200 Content-Type: application/fhir+json) {object} FHIR-JSON-RESOURCE
+    * @apiSuccess (Success 200 Content-Type: application/fhir+xml) {object} FHIR-XML-RESOURCE
+    * @apiSuccessExample {json} (200) name: json-example Content-Type: application/fhir+json
+    ${JSON.stringify(responseExampleBody, null, 4)}
+    * 
+    * @apiError (Error Not Found 400 Content-Type: application/fhir+json) {object} FHIR-JSON-RESOURCE
+    * @apiErrorExample {json} (400) name: Bad-Request-Response Content-Type: application/fhir+json
+    {
+        "resourceType": "OperationOutcome",
+        "issue": [
+            {
+                "severity": "error",
+                "code": "exception",
+                "diagnostics": "validation error, path \`resourceType\` is required"
+            }
+        ]
+    }
+    */
+    `;
+    let post = `
+    const create = require('../../../FHIRApiService/create');
+    module.exports = async function(req, res) {
+        return await create(req , res , "${resource}");
+    };
+    `;
+    if (resource == "List") {
+        post = `
+        const create = require('../../../FHIRApiService/create');
+        const _ = require('lodash');
+        module.exports = async function(req, res) {
+            let resourceData = req.body;
+            if (_.isArray(resourceData.entry) && resourceData.entry.length > 0) {
+                for (let index in resourceData.entry) {
+                    let entry = resourceData.entry[index];
+                    if (resourceData.mode != "changes") {
+                        delete entry.delete;
+                    } else if (resourceData.mode != "working") {
+                        delete entry.date;
+                    }
+                }
+            }
+            return await create(req , res , "${resource}");
+        };
+        `;
+    }
+    if (GENERATE_API_DOC) return `${comment}${post}`;
+    return `${post}`;
 }
 
 /**
@@ -171,32 +263,7 @@ function generateAPI(option) {
         //#endregion
 
         //#region create resource (post)
-        let post = `
-        const create = require('../../../FHIRApiService/create');
-        module.exports = async function(req, res) {
-            return await create(req , res , "${res}");
-        };
-        `;
-        if (res == "List") {
-            post = `
-            const create = require('../../../FHIRApiService/create');
-            const _ = require('lodash');
-            module.exports = async function(req, res) {
-                let resourceData = req.body;
-                if (_.isArray(resourceData.entry) && resourceData.entry.length > 0) {
-                    for (let index in resourceData.entry) {
-                        let entry = resourceData.entry[index];
-                        if (resourceData.mode != "changes") {
-                            delete entry.delete;
-                        } else if (resourceData.mode != "working") {
-                            delete entry.date;
-                        }
-                    }
-                }
-                return await create(req , res , "${res}");
-            };
-            `;
-        }
+        let post = getCodeCreate(res);
         //#endregion
 
         //#region update (put)
