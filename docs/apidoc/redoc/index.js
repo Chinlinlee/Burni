@@ -2,6 +2,12 @@
  * @param specUrl {string}
  */
 function redocInit(specUrl, btnId) {
+    let redocObj = document.querySelector("redoc");
+    redocObj.remove();
+    let redocElement = document.createElement("redoc");
+    redocElement.id = "redoc";
+    let mainElement = document.querySelector("div.main");
+    mainElement.appendChild(redocElement);
     Redoc.init(specUrl, {
         scrollYOffset: 80
     }, document.getElementById("redoc"));

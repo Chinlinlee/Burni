@@ -5,11 +5,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link href="index.css" rel="stylesheet">
 </head>
 <body>
-    <div class="container-fluid main mt-3">
-    <div class="card text-center mb-5">
+    <div class="main mt-3">
+    <div class="text-center mb-5">
         <div class="card-header">
         Resources
         </div>
@@ -20,46 +20,46 @@
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-allergyintolerance" onclick="redocInit('AllergyIntolerance/swagger.json', 'btn-allergyintolerance')">AllergyIntolerance</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-appointment" onclick="redocInit('Appointment/swagger.json', 'btn-appointment')">Appointment</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-appointmentresponse" onclick="redocInit('AppointmentResponse/swagger.json', 'btn-appointmentresponse')">AppointmentResponse</button>
-        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-basic" onclick="redocInit('Basic/swagger.json', 'btn-basic')">Basic</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-auditevent" onclick="redocInit('AuditEvent/swagger.json', 'btn-auditevent')">AuditEvent</button>
-        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-binary" onclick="redocInit('Binary/swagger.json', 'btn-binary')">Binary</button>
-        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-bundle" onclick="redocInit('Bundle/swagger.json', 'btn-bundle')">Bundle</button>
+        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-basic" onclick="redocInit('Basic/swagger.json', 'btn-basic')">Basic</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-biologicallyderivedproduct" onclick="redocInit('BiologicallyDerivedProduct/swagger.json', 'btn-biologicallyderivedproduct')">BiologicallyDerivedProduct</button>
+        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-binary" onclick="redocInit('Binary/swagger.json', 'btn-binary')">Binary</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-bodystructure" onclick="redocInit('BodyStructure/swagger.json', 'btn-bodystructure')">BodyStructure</button>
+        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-bundle" onclick="redocInit('Bundle/swagger.json', 'btn-bundle')">Bundle</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-capabilitystatement" onclick="redocInit('CapabilityStatement/swagger.json', 'btn-capabilitystatement')">CapabilityStatement</button>
-        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-careplan" onclick="redocInit('CarePlan/swagger.json', 'btn-careplan')">CarePlan</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-careteam" onclick="redocInit('CareTeam/swagger.json', 'btn-careteam')">CareTeam</button>
+        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-careplan" onclick="redocInit('CarePlan/swagger.json', 'btn-careplan')">CarePlan</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-catalogentry" onclick="redocInit('CatalogEntry/swagger.json', 'btn-catalogentry')">CatalogEntry</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-chargeitem" onclick="redocInit('ChargeItem/swagger.json', 'btn-chargeitem')">ChargeItem</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-chargeitemdefinition" onclick="redocInit('ChargeItemDefinition/swagger.json', 'btn-chargeitemdefinition')">ChargeItemDefinition</button>
-        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-claimresponse" onclick="redocInit('ClaimResponse/swagger.json', 'btn-claimresponse')">ClaimResponse</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-claim" onclick="redocInit('Claim/swagger.json', 'btn-claim')">Claim</button>
-        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-codesystem" onclick="redocInit('CodeSystem/swagger.json', 'btn-codesystem')">CodeSystem</button>
+        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-claimresponse" onclick="redocInit('ClaimResponse/swagger.json', 'btn-claimresponse')">ClaimResponse</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-clinicalimpression" onclick="redocInit('ClinicalImpression/swagger.json', 'btn-clinicalimpression')">ClinicalImpression</button>
+        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-codesystem" onclick="redocInit('CodeSystem/swagger.json', 'btn-codesystem')">CodeSystem</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-communication" onclick="redocInit('Communication/swagger.json', 'btn-communication')">Communication</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-communicationrequest" onclick="redocInit('CommunicationRequest/swagger.json', 'btn-communicationrequest')">CommunicationRequest</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-compartmentdefinition" onclick="redocInit('CompartmentDefinition/swagger.json', 'btn-compartmentdefinition')">CompartmentDefinition</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-composition" onclick="redocInit('Composition/swagger.json', 'btn-composition')">Composition</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-conceptmap" onclick="redocInit('ConceptMap/swagger.json', 'btn-conceptmap')">ConceptMap</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-condition" onclick="redocInit('Condition/swagger.json', 'btn-condition')">Condition</button>
-        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-coverage" onclick="redocInit('Coverage/swagger.json', 'btn-coverage')">Coverage</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-consent" onclick="redocInit('Consent/swagger.json', 'btn-consent')">Consent</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-contract" onclick="redocInit('Contract/swagger.json', 'btn-contract')">Contract</button>
+        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-coverage" onclick="redocInit('Coverage/swagger.json', 'btn-coverage')">Coverage</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-coverageeligibilityrequest" onclick="redocInit('CoverageEligibilityRequest/swagger.json', 'btn-coverageeligibilityrequest')">CoverageEligibilityRequest</button>
-        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-coverageeligibilityresponse" onclick="redocInit('CoverageEligibilityResponse/swagger.json', 'btn-coverageeligibilityresponse')">CoverageEligibilityResponse</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-detectedissue" onclick="redocInit('DetectedIssue/swagger.json', 'btn-detectedissue')">DetectedIssue</button>
+        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-coverageeligibilityresponse" onclick="redocInit('CoverageEligibilityResponse/swagger.json', 'btn-coverageeligibilityresponse')">CoverageEligibilityResponse</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-device" onclick="redocInit('Device/swagger.json', 'btn-device')">Device</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-devicedefinition" onclick="redocInit('DeviceDefinition/swagger.json', 'btn-devicedefinition')">DeviceDefinition</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-devicemetric" onclick="redocInit('DeviceMetric/swagger.json', 'btn-devicemetric')">DeviceMetric</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-devicerequest" onclick="redocInit('DeviceRequest/swagger.json', 'btn-devicerequest')">DeviceRequest</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-deviceusestatement" onclick="redocInit('DeviceUseStatement/swagger.json', 'btn-deviceusestatement')">DeviceUseStatement</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-diagnosticreport" onclick="redocInit('DiagnosticReport/swagger.json', 'btn-diagnosticreport')">DiagnosticReport</button>
-        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-documentmanifest" onclick="redocInit('DocumentManifest/swagger.json', 'btn-documentmanifest')">DocumentManifest</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-documentreference" onclick="redocInit('DocumentReference/swagger.json', 'btn-documentreference')">DocumentReference</button>
-        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-encounter" onclick="redocInit('Encounter/swagger.json', 'btn-encounter')">Encounter</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-effectevidencesynthesis" onclick="redocInit('EffectEvidenceSynthesis/swagger.json', 'btn-effectevidencesynthesis')">EffectEvidenceSynthesis</button>
-        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-endpoint" onclick="redocInit('Endpoint/swagger.json', 'btn-endpoint')">Endpoint</button>
+        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-documentmanifest" onclick="redocInit('DocumentManifest/swagger.json', 'btn-documentmanifest')">DocumentManifest</button>
+        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-encounter" onclick="redocInit('Encounter/swagger.json', 'btn-encounter')">Encounter</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-enrollmentrequest" onclick="redocInit('EnrollmentRequest/swagger.json', 'btn-enrollmentrequest')">EnrollmentRequest</button>
+        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-endpoint" onclick="redocInit('Endpoint/swagger.json', 'btn-endpoint')">Endpoint</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-enrollmentresponse" onclick="redocInit('EnrollmentResponse/swagger.json', 'btn-enrollmentresponse')">EnrollmentResponse</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-episodeofcare" onclick="redocInit('EpisodeOfCare/swagger.json', 'btn-episodeofcare')">EpisodeOfCare</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-eventdefinition" onclick="redocInit('EventDefinition/swagger.json', 'btn-eventdefinition')">EventDefinition</button>
@@ -67,97 +67,98 @@
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-evidencevariable" onclick="redocInit('EvidenceVariable/swagger.json', 'btn-evidencevariable')">EvidenceVariable</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-examplescenario" onclick="redocInit('ExampleScenario/swagger.json', 'btn-examplescenario')">ExampleScenario</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-explanationofbenefit" onclick="redocInit('ExplanationOfBenefit/swagger.json', 'btn-explanationofbenefit')">ExplanationOfBenefit</button>
-        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-familymemberhistory" onclick="redocInit('FamilyMemberHistory/swagger.json', 'btn-familymemberhistory')">FamilyMemberHistory</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-flag" onclick="redocInit('Flag/swagger.json', 'btn-flag')">Flag</button>
-        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-graphdefinition" onclick="redocInit('GraphDefinition/swagger.json', 'btn-graphdefinition')">GraphDefinition</button>
+        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-familymemberhistory" onclick="redocInit('FamilyMemberHistory/swagger.json', 'btn-familymemberhistory')">FamilyMemberHistory</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-goal" onclick="redocInit('Goal/swagger.json', 'btn-goal')">Goal</button>
-        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-group" onclick="redocInit('Group/swagger.json', 'btn-group')">Group</button>
+        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-graphdefinition" onclick="redocInit('GraphDefinition/swagger.json', 'btn-graphdefinition')">GraphDefinition</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-guidanceresponse" onclick="redocInit('GuidanceResponse/swagger.json', 'btn-guidanceresponse')">GuidanceResponse</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-healthcareservice" onclick="redocInit('HealthcareService/swagger.json', 'btn-healthcareservice')">HealthcareService</button>
+        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-group" onclick="redocInit('Group/swagger.json', 'btn-group')">Group</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-imagingstudy" onclick="redocInit('ImagingStudy/swagger.json', 'btn-imagingstudy')">ImagingStudy</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-immunization" onclick="redocInit('Immunization/swagger.json', 'btn-immunization')">Immunization</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-immunizationrecommendation" onclick="redocInit('ImmunizationRecommendation/swagger.json', 'btn-immunizationrecommendation')">ImmunizationRecommendation</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-immunizationevaluation" onclick="redocInit('ImmunizationEvaluation/swagger.json', 'btn-immunizationevaluation')">ImmunizationEvaluation</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-implementationguide" onclick="redocInit('ImplementationGuide/swagger.json', 'btn-implementationguide')">ImplementationGuide</button>
+        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-invoice" onclick="redocInit('Invoice/swagger.json', 'btn-invoice')">Invoice</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-insuranceplan" onclick="redocInit('InsurancePlan/swagger.json', 'btn-insuranceplan')">InsurancePlan</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-library" onclick="redocInit('Library/swagger.json', 'btn-library')">Library</button>
-        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-invoice" onclick="redocInit('Invoice/swagger.json', 'btn-invoice')">Invoice</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-linkage" onclick="redocInit('Linkage/swagger.json', 'btn-linkage')">Linkage</button>
-        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-measure" onclick="redocInit('Measure/swagger.json', 'btn-measure')">Measure</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-list" onclick="redocInit('List/swagger.json', 'btn-list')">List</button>
+        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-measure" onclick="redocInit('Measure/swagger.json', 'btn-measure')">Measure</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-location" onclick="redocInit('Location/swagger.json', 'btn-location')">Location</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-measurereport" onclick="redocInit('MeasureReport/swagger.json', 'btn-measurereport')">MeasureReport</button>
-        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-medication" onclick="redocInit('Medication/swagger.json', 'btn-medication')">Medication</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-media" onclick="redocInit('Media/swagger.json', 'btn-media')">Media</button>
+        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-medication" onclick="redocInit('Medication/swagger.json', 'btn-medication')">Medication</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-medicationadministration" onclick="redocInit('MedicationAdministration/swagger.json', 'btn-medicationadministration')">MedicationAdministration</button>
-        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-medicationstatement" onclick="redocInit('MedicationStatement/swagger.json', 'btn-medicationstatement')">MedicationStatement</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-medicationdispense" onclick="redocInit('MedicationDispense/swagger.json', 'btn-medicationdispense')">MedicationDispense</button>
-        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-medicationrequest" onclick="redocInit('MedicationRequest/swagger.json', 'btn-medicationrequest')">MedicationRequest</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-medicationknowledge" onclick="redocInit('MedicationKnowledge/swagger.json', 'btn-medicationknowledge')">MedicationKnowledge</button>
+        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-medicationrequest" onclick="redocInit('MedicationRequest/swagger.json', 'btn-medicationrequest')">MedicationRequest</button>
+        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-medicationstatement" onclick="redocInit('MedicationStatement/swagger.json', 'btn-medicationstatement')">MedicationStatement</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-medicinalproduct" onclick="redocInit('MedicinalProduct/swagger.json', 'btn-medicinalproduct')">MedicinalProduct</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-medicinalproductauthorization" onclick="redocInit('MedicinalProductAuthorization/swagger.json', 'btn-medicinalproductauthorization')">MedicinalProductAuthorization</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-medicinalproductcontraindication" onclick="redocInit('MedicinalProductContraindication/swagger.json', 'btn-medicinalproductcontraindication')">MedicinalProductContraindication</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-medicinalproductindication" onclick="redocInit('MedicinalProductIndication/swagger.json', 'btn-medicinalproductindication')">MedicinalProductIndication</button>
-        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-medicinalproductinteraction" onclick="redocInit('MedicinalProductInteraction/swagger.json', 'btn-medicinalproductinteraction')">MedicinalProductInteraction</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-medicinalproductingredient" onclick="redocInit('MedicinalProductIngredient/swagger.json', 'btn-medicinalproductingredient')">MedicinalProductIngredient</button>
-        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-medicinalproductpackaged" onclick="redocInit('MedicinalProductPackaged/swagger.json', 'btn-medicinalproductpackaged')">MedicinalProductPackaged</button>
+        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-medicinalproductinteraction" onclick="redocInit('MedicinalProductInteraction/swagger.json', 'btn-medicinalproductinteraction')">MedicinalProductInteraction</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-medicinalproductmanufactured" onclick="redocInit('MedicinalProductManufactured/swagger.json', 'btn-medicinalproductmanufactured')">MedicinalProductManufactured</button>
-        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-medicinalproductundesirableeffect" onclick="redocInit('MedicinalProductUndesirableEffect/swagger.json', 'btn-medicinalproductundesirableeffect')">MedicinalProductUndesirableEffect</button>
+        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-medicinalproductpackaged" onclick="redocInit('MedicinalProductPackaged/swagger.json', 'btn-medicinalproductpackaged')">MedicinalProductPackaged</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-medicinalproductpharmaceutical" onclick="redocInit('MedicinalProductPharmaceutical/swagger.json', 'btn-medicinalproductpharmaceutical')">MedicinalProductPharmaceutical</button>
-        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-messageheader" onclick="redocInit('MessageHeader/swagger.json', 'btn-messageheader')">MessageHeader</button>
+        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-medicinalproductundesirableeffect" onclick="redocInit('MedicinalProductUndesirableEffect/swagger.json', 'btn-medicinalproductundesirableeffect')">MedicinalProductUndesirableEffect</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-messagedefinition" onclick="redocInit('MessageDefinition/swagger.json', 'btn-messagedefinition')">MessageDefinition</button>
+        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-messageheader" onclick="redocInit('MessageHeader/swagger.json', 'btn-messageheader')">MessageHeader</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-molecularsequence" onclick="redocInit('MolecularSequence/swagger.json', 'btn-molecularsequence')">MolecularSequence</button>
-        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-observation" onclick="redocInit('Observation/swagger.json', 'btn-observation')">Observation</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-namingsystem" onclick="redocInit('NamingSystem/swagger.json', 'btn-namingsystem')">NamingSystem</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-nutritionorder" onclick="redocInit('NutritionOrder/swagger.json', 'btn-nutritionorder')">NutritionOrder</button>
-        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-operationdefinition" onclick="redocInit('OperationDefinition/swagger.json', 'btn-operationdefinition')">OperationDefinition</button>
-        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-operationoutcome" onclick="redocInit('OperationOutcome/swagger.json', 'btn-operationoutcome')">OperationOutcome</button>
-        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-organization" onclick="redocInit('Organization/swagger.json', 'btn-organization')">Organization</button>
+        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-observation" onclick="redocInit('Observation/swagger.json', 'btn-observation')">Observation</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-observationdefinition" onclick="redocInit('ObservationDefinition/swagger.json', 'btn-observationdefinition')">ObservationDefinition</button>
-        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-parameters" onclick="redocInit('Parameters/swagger.json', 'btn-parameters')">Parameters</button>
+        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-operationoutcome" onclick="redocInit('OperationOutcome/swagger.json', 'btn-operationoutcome')">OperationOutcome</button>
+        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-operationdefinition" onclick="redocInit('OperationDefinition/swagger.json', 'btn-operationdefinition')">OperationDefinition</button>
+        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-organization" onclick="redocInit('Organization/swagger.json', 'btn-organization')">Organization</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-organizationaffiliation" onclick="redocInit('OrganizationAffiliation/swagger.json', 'btn-organizationaffiliation')">OrganizationAffiliation</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-paymentnotice" onclick="redocInit('PaymentNotice/swagger.json', 'btn-paymentnotice')">PaymentNotice</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-patient" onclick="redocInit('Patient/swagger.json', 'btn-patient')">Patient</button>
+        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-parameters" onclick="redocInit('Parameters/swagger.json', 'btn-parameters')">Parameters</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-paymentreconciliation" onclick="redocInit('PaymentReconciliation/swagger.json', 'btn-paymentreconciliation')">PaymentReconciliation</button>
-        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-practitioner" onclick="redocInit('Practitioner/swagger.json', 'btn-practitioner')">Practitioner</button>
-        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-plandefinition" onclick="redocInit('PlanDefinition/swagger.json', 'btn-plandefinition')">PlanDefinition</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-person" onclick="redocInit('Person/swagger.json', 'btn-person')">Person</button>
+        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-plandefinition" onclick="redocInit('PlanDefinition/swagger.json', 'btn-plandefinition')">PlanDefinition</button>
+        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-practitioner" onclick="redocInit('Practitioner/swagger.json', 'btn-practitioner')">Practitioner</button>
+        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-procedure" onclick="redocInit('Procedure/swagger.json', 'btn-procedure')">Procedure</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-practitionerrole" onclick="redocInit('PractitionerRole/swagger.json', 'btn-practitionerrole')">PractitionerRole</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-provenance" onclick="redocInit('Provenance/swagger.json', 'btn-provenance')">Provenance</button>
-        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-procedure" onclick="redocInit('Procedure/swagger.json', 'btn-procedure')">Procedure</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-questionnaire" onclick="redocInit('Questionnaire/swagger.json', 'btn-questionnaire')">Questionnaire</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-questionnaireresponse" onclick="redocInit('QuestionnaireResponse/swagger.json', 'btn-questionnaireresponse')">QuestionnaireResponse</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-relatedperson" onclick="redocInit('RelatedPerson/swagger.json', 'btn-relatedperson')">RelatedPerson</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-requestgroup" onclick="redocInit('RequestGroup/swagger.json', 'btn-requestgroup')">RequestGroup</button>
-        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-researchelementdefinition" onclick="redocInit('ResearchElementDefinition/swagger.json', 'btn-researchelementdefinition')">ResearchElementDefinition</button>
-        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-researchstudy" onclick="redocInit('ResearchStudy/swagger.json', 'btn-researchstudy')">ResearchStudy</button>
-        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-researchsubject" onclick="redocInit('ResearchSubject/swagger.json', 'btn-researchsubject')">ResearchSubject</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-researchdefinition" onclick="redocInit('ResearchDefinition/swagger.json', 'btn-researchdefinition')">ResearchDefinition</button>
+        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-researchelementdefinition" onclick="redocInit('ResearchElementDefinition/swagger.json', 'btn-researchelementdefinition')">ResearchElementDefinition</button>
+        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-researchsubject" onclick="redocInit('ResearchSubject/swagger.json', 'btn-researchsubject')">ResearchSubject</button>
+        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-researchstudy" onclick="redocInit('ResearchStudy/swagger.json', 'btn-researchstudy')">ResearchStudy</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-riskassessment" onclick="redocInit('RiskAssessment/swagger.json', 'btn-riskassessment')">RiskAssessment</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-riskevidencesynthesis" onclick="redocInit('RiskEvidenceSynthesis/swagger.json', 'btn-riskevidencesynthesis')">RiskEvidenceSynthesis</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-schedule" onclick="redocInit('Schedule/swagger.json', 'btn-schedule')">Schedule</button>
-        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-searchparameter" onclick="redocInit('SearchParameter/swagger.json', 'btn-searchparameter')">SearchParameter</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-servicerequest" onclick="redocInit('ServiceRequest/swagger.json', 'btn-servicerequest')">ServiceRequest</button>
+        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-searchparameter" onclick="redocInit('SearchParameter/swagger.json', 'btn-searchparameter')">SearchParameter</button>
+        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-slot" onclick="redocInit('Slot/swagger.json', 'btn-slot')">Slot</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-specimen" onclick="redocInit('Specimen/swagger.json', 'btn-specimen')">Specimen</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-structuredefinition" onclick="redocInit('StructureDefinition/swagger.json', 'btn-structuredefinition')">StructureDefinition</button>
+        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-structuremap" onclick="redocInit('StructureMap/swagger.json', 'btn-structuremap')">StructureMap</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-specimendefinition" onclick="redocInit('SpecimenDefinition/swagger.json', 'btn-specimendefinition')">SpecimenDefinition</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-subscription" onclick="redocInit('Subscription/swagger.json', 'btn-subscription')">Subscription</button>
-        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-structuremap" onclick="redocInit('StructureMap/swagger.json', 'btn-structuremap')">StructureMap</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-substance" onclick="redocInit('Substance/swagger.json', 'btn-substance')">Substance</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-substancenucleicacid" onclick="redocInit('SubstanceNucleicAcid/swagger.json', 'btn-substancenucleicacid')">SubstanceNucleicAcid</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-substancepolymer" onclick="redocInit('SubstancePolymer/swagger.json', 'btn-substancepolymer')">SubstancePolymer</button>
-        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-slot" onclick="redocInit('Slot/swagger.json', 'btn-slot')">Slot</button>
-        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-substancereferenceinformation" onclick="redocInit('SubstanceReferenceInformation/swagger.json', 'btn-substancereferenceinformation')">SubstanceReferenceInformation</button>
-        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-substancespecification" onclick="redocInit('SubstanceSpecification/swagger.json', 'btn-substancespecification')">SubstanceSpecification</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-substanceprotein" onclick="redocInit('SubstanceProtein/swagger.json', 'btn-substanceprotein')">SubstanceProtein</button>
+        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-substancereferenceinformation" onclick="redocInit('SubstanceReferenceInformation/swagger.json', 'btn-substancereferenceinformation')">SubstanceReferenceInformation</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-substancesourcematerial" onclick="redocInit('SubstanceSourceMaterial/swagger.json', 'btn-substancesourcematerial')">SubstanceSourceMaterial</button>
+        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-substancespecification" onclick="redocInit('SubstanceSpecification/swagger.json', 'btn-substancespecification')">SubstanceSpecification</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-supplydelivery" onclick="redocInit('SupplyDelivery/swagger.json', 'btn-supplydelivery')">SupplyDelivery</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-supplyrequest" onclick="redocInit('SupplyRequest/swagger.json', 'btn-supplyrequest')">SupplyRequest</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-task" onclick="redocInit('Task/swagger.json', 'btn-task')">Task</button>
-        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-testreport" onclick="redocInit('TestReport/swagger.json', 'btn-testreport')">TestReport</button>
-        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-valueset" onclick="redocInit('ValueSet/swagger.json', 'btn-valueset')">ValueSet</button>
-        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-verificationresult" onclick="redocInit('VerificationResult/swagger.json', 'btn-verificationresult')">VerificationResult</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-terminologycapabilities" onclick="redocInit('TerminologyCapabilities/swagger.json', 'btn-terminologycapabilities')">TerminologyCapabilities</button>
+        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-testscript" onclick="redocInit('TestScript/swagger.json', 'btn-testscript')">TestScript</button>
+        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-valueset" onclick="redocInit('ValueSet/swagger.json', 'btn-valueset')">ValueSet</button>
+        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-testreport" onclick="redocInit('TestReport/swagger.json', 'btn-testreport')">TestReport</button>
+        <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-verificationresult" onclick="redocInit('VerificationResult/swagger.json', 'btn-verificationresult')">VerificationResult</button>
         <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-visionprescription" onclick="redocInit('VisionPrescription/swagger.json', 'btn-visionprescription')">VisionPrescription</button>
         
         </div>
@@ -166,7 +167,6 @@
     </div>
 </body>
 </html>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/redoc@latest/bundles/redoc.standalone.js"></script>
 <script src="index.js"></script>
     
