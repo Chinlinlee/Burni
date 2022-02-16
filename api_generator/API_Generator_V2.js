@@ -45,7 +45,7 @@ function getCodeGetById(resource) {
     ${JSON.stringify(responseExampleBody, null, 4)}
     * 
     * @apiError (Error Not Found 404 Content-Type: application/fhir+json) {object} FHIR-JSON-RESOURCE
-    * @apiErrorExample {json} (404) name: Not Found-Response Content-Type: application/fhir+json
+    * @apiErrorExample {json} (404) name: Not-Found-Response Content-Type: application/fhir+json
     {
         "resourceType": "OperationOutcome",
         "issue": [
