@@ -3,6 +3,11 @@
     "version": "v2.1.0",
     "description": "Documentation for the REST API",
     "title": "Burni API documentation",
+    "servers": [
+        {
+            "url": "https://dev.burni.xn--7-c56d.com/"
+        }
+    ],
     "template": {
         "forceLanguage": "en",
         "showRequiredLabels": false,
