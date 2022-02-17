@@ -1,0 +1,128 @@
+{
+    "resourceType": "ImplementationGuide",
+    "id": "ImplementationGuide-example",
+    "url": "http://hl7.org/fhir/us/daf",
+    "version": "0",
+    "name": "Data Access Framework (DAF)",
+    "status": "draft",
+    "experimental": false,
+    "date": "2015-01-01T08:00:00+08:00",
+    "publisher": "ONC / HL7 Joint project",
+    "contact": [
+        {
+            "name": "Deborah Kiehn",
+            "telecom": [
+                {
+                    "system": "url",
+                    "value": "sH4Ki4kPU0ncUKF"
+                }
+            ]
+        },
+        {
+            "name": "Barbara Windler",
+            "telecom": [
+                {
+                    "system": "url",
+                    "value": "MxIj4a5XUepPdC"
+                }
+            ]
+        }
+    ],
+    "description": "The Data Access Framework (DAF) Initiative leverages the HL7 FHIR standards to standardize access to Meaningful Use Stage 2 structured information both within the organization and from external organizations",
+    "jurisdiction": [
+        {
+            "coding": [
+                {
+                    "system": "urn:iso:std:iso:3166",
+                    "code": "US"
+                }
+            ]
+        }
+    ],
+    "copyright": "Published by ONC under the standard FHIR license (CC0)",
+    "packageId": "hl7.fhir.us.daf",
+    "license": "CC0-1.0",
+    "fhirVersion": [
+        "4.0.1"
+    ],
+    "dependsOn": [
+        {
+            "uri": "http://hl7.org/fhir/ImplementationGuide/uscore"
+        }
+    ],
+    "global": [
+        {
+            "type": "Patient",
+            "profile": "http://hl7.org/fhir/us/core/StructureDefinition/patient"
+        }
+    ],
+    "definition": {
+        "grouping": [
+            {
+                "name": "Karen Baumbach",
+                "description": "Base package (not broken up into multiple packages)"
+            }
+        ],
+        "resource": [
+            {
+                "reference": {
+                    "reference": "Patient/test"
+                },
+                "name": "Hector Schowalter",
+                "description": "A test example to show how an implementation guide works",
+                "exampleCanonical": "http://hl7.org/fhir/us/core/StructureDefinition/patient"
+            }
+        ],
+        "page": {
+            "nameUrl": "patient-example.html",
+            "title": "Example Patient Page",
+            "generation": "html",
+            "page": [
+                {
+                    "nameUrl": "list.html",
+                    "title": "Value Set Page",
+                    "generation": "html"
+                }
+            ]
+        },
+        "parameter": [
+            {
+                "code": "apply",
+                "value": "7ahnEUWZ5nh8u1laf"
+            }
+        ]
+    },
+    "manifest": {
+        "rendering": "http://hl7.org/fhir/us/daf",
+        "resource": [
+            {
+                "reference": {
+                    "reference": "Patient/test"
+                },
+                "exampleCanonical": "http://hl7.org/fhir/us/core/StructureDefinition/patient",
+                "relativePath": "patient-test.html#patient-test"
+            }
+        ],
+        "page": [
+            {
+                "name": "Barbara Fisher",
+                "title": "Test Patient Example",
+                "anchor": [
+                    "patient-test",
+                    "tx",
+                    "uml"
+                ]
+            }
+        ],
+        "image": [
+            "fhir.png"
+        ],
+        "other": [
+            "fhir.css"
+        ]
+    },
+    "meta": {
+        "versionId": "20",
+        "lastUpdated": "2022-02-17T23:28:15.921+08:00"
+    }
+}

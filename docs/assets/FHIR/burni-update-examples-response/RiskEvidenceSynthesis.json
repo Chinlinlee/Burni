@@ -1,0 +1,15 @@
+{
+    "resourceType": "RiskEvidenceSynthesis",
+    "id": "RiskEvidenceSynthesis-example",
+    "status": "draft",
+    "population": {
+        "reference": "EvidenceVariable/example"
+    },
+    "outcome": {
+        "reference": "EvidenceVariable/example"
+    },
+    "meta": {
+        "versionId": "20",
+        "lastUpdated": "2022-02-17T23:28:40.487+08:00"
+    }
+}

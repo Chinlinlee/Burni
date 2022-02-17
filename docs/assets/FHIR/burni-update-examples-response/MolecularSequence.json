@@ -1,0 +1,42 @@
+{
+    "resourceType": "MolecularSequence",
+    "id": "MolecularSequence-example",
+    "type": "dna",
+    "coordinateSystem": 0,
+    "patient": {
+        "reference": "Patient/example"
+    },
+    "referenceSeq": {
+        "referenceSeqId": {
+            "coding": [
+                {
+                    "system": "http://www.ncbi.nlm.nih.gov/nuccore",
+                    "code": "NC_000009.11"
+                }
+            ]
+        },
+        "strand": "watson",
+        "windowStart": 22125500,
+        "windowEnd": 22125510
+    },
+    "variant": [
+        {
+            "start": 22125503,
+            "end": 22125504,
+            "observedAllele": "C",
+            "referenceAllele": "G"
+        }
+    ],
+    "repository": [
+        {
+            "type": "openapi",
+            "url": "http://grch37.rest.ensembl.org/ga4gh/variants/3:rs1333049?content-type=application/json",
+            "name": "Sidney Bergstrom",
+            "variantsetId": "3:rs1333049"
+        }
+    ],
+    "meta": {
+        "versionId": "20",
+        "lastUpdated": "2022-02-17T23:28:28.595+08:00"
+    }
+}

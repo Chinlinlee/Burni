@@ -1,0 +1,33 @@
+{
+    "resourceType": "MedicinalProductUndesirableEffect",
+    "id": "MedicinalProductUndesirableEffect-example",
+    "symptomConditionEffect": {
+        "coding": [
+            {
+                "system": "http://ema.europa.eu/example/undesirableeffectassymptom-condition-effect",
+                "code": "Anaemia"
+            }
+        ],
+        "text": "ExnCgo7NC0vibG"
+    },
+    "classification": {
+        "coding": [
+            {
+                "system": "http://ema.europa.eu/example/symptom-condition-effectclassification",
+                "code": "Bloodandlymphaticsystemdisorders"
+            }
+        ]
+    },
+    "frequencyOfOccurrence": {
+        "coding": [
+            {
+                "system": "http://ema.europa.eu/example/frequencyofoccurrence",
+                "code": "Common"
+            }
+        ]
+    },
+    "meta": {
+        "versionId": "20",
+        "lastUpdated": "2022-02-17T23:28:27.735+08:00"
+    }
+}

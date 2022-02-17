@@ -1,0 +1,77 @@
+{
+    "resourceType": "StructureMap",
+    "id": "StructureMap-example",
+    "url": "http://hl7.org/fhir/StructureMap/example",
+    "identifier": [
+        {
+            "system": "urn:ietf:rfc:3986",
+            "value": "XEgv2Ugk8OK"
+        }
+    ],
+    "version": "0.1",
+    "name": "ExampleMap",
+    "title": "Example Map",
+    "status": "draft",
+    "date": "2017-03-09T08:00:00+08:00",
+    "publisher": "HL7 FHIR Standard",
+    "contact": [
+        {
+            "telecom": [
+                {
+                    "system": "url",
+                    "value": "0wY6pG0vFkUtGJKT"
+                }
+            ]
+        }
+    ],
+    "description": "Example Structure Map",
+    "jurisdiction": [
+        {
+            "coding": [
+                {
+                    "system": "http://unstats.un.org/unsd/methods/m49/m49.htm",
+                    "code": "009",
+                    "display": "9sbIkoOpdpdReQV"
+                }
+            ]
+        }
+    ],
+    "group": [
+        {
+            "name": "Steve-Koss-PhD",
+            "typeMode": "none",
+            "documentation": "test -> testValue",
+            "input": [
+                {
+                    "name": "Franklin-Mills",
+                    "mode": "source"
+                }
+            ],
+            "rule": [
+                {
+                    "name": "Theodore-Koelpin",
+                    "source": [
+                        {
+                            "context": "Source",
+                            "type": "SourceClassA",
+                            "element": "test",
+                            "variable": "t"
+                        }
+                    ],
+                    "target": [
+                        {
+                            "context": "Destination",
+                            "contextType": "variable",
+                            "element": "testValue",
+                            "transform": "copy"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "meta": {
+        "versionId": "20",
+        "lastUpdated": "2022-02-17T23:28:52.844+08:00"
+    }
+}

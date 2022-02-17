@@ -1,0 +1,42 @@
+{
+    "resourceType": "Organization",
+    "id": "Organization-example",
+    "name": "Health Level Seven International",
+    "alias": [
+        "HL7 International"
+    ],
+    "telecom": [
+        {
+            "system": "phone",
+            "value": "F7lgV5HoZkGMEk0p"
+        },
+        {
+            "system": "fax",
+            "value": "NRJJu2x1lo4ea"
+        },
+        {
+            "system": "email",
+            "value": "NvEWqjGYNIFa"
+        }
+    ],
+    "address": [
+        {
+            "line": [
+                "3300 Washtenaw Avenue, Suite 227"
+            ],
+            "city": "Ann Arbor",
+            "state": "MI",
+            "postalCode": "48104",
+            "country": "USA"
+        }
+    ],
+    "endpoint": [
+        {
+            "reference": "Endpoint/example"
+        }
+    ],
+    "meta": {
+        "versionId": "20",
+        "lastUpdated": "2022-02-17T23:28:31.272+08:00"
+    }
+}

@@ -1,0 +1,13 @@
+{
+    "resourceType": "DeviceDefinition",
+    "id": "DeviceDefinition-example",
+    "identifier": [
+        {
+            "value": "2qoBfh3sBHkRy5"
+        }
+    ],
+    "meta": {
+        "versionId": "22",
+        "lastUpdated": "2022-02-17T23:28:03.150+08:00"
+    }
+}

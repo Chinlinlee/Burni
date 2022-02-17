@@ -1,0 +1,50 @@
+{
+    "resourceType": "PaymentNotice",
+    "id": "PaymentNotice-example",
+    "identifier": [
+        {
+            "system": "http://benefitsinc.com/paymentnotice",
+            "value": "SnF2VsnZ4PraUv"
+        }
+    ],
+    "status": "active",
+    "request": {
+        "reference": "http://benefitsinc.com/fhir/claim/12345"
+    },
+    "response": {
+        "reference": "http://benefitsinc.com/fhir/claimresponse/CR12345"
+    },
+    "created": "2014-08-16T08:00:00+08:00",
+    "provider": {
+        "reference": "Organization/1"
+    },
+    "payment": {
+        "reference": "PaymentReconciliation/ER2500"
+    },
+    "paymentDate": "2014-08-15",
+    "payee": {
+        "reference": "Organization/1"
+    },
+    "recipient": {
+        "identifier": {
+            "system": "http://regulators.gov",
+            "value": "9TfBykNZd"
+        }
+    },
+    "amount": {
+        "value": 75040,
+        "currency": "USD"
+    },
+    "paymentStatus": {
+        "coding": [
+            {
+                "system": "http://terminology.hl7.org/CodeSystem/paymentstatus",
+                "code": "paid"
+            }
+        ]
+    },
+    "meta": {
+        "versionId": "20",
+        "lastUpdated": "2022-02-17T23:28:33.301+08:00"
+    }
+}

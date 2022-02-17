@@ -1,0 +1,207 @@
+{
+    "resourceType": "MedicationStatement",
+    "id": "example001",
+    "text": {
+        "status": "generated",
+        "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><b>Generated Narrative with Details</b></p><p><b>id</b>: example001</p><p><b>contained</b>: </p><p><b>identifier</b>: 12345689 (OFFICIAL)</p><p><b>status</b>: active</p><p><b>category</b>: Inpatient <span>(Details : {http://terminology.hl7.org/CodeSystem/medication-statement-category code 'inpatient' = 'Inpatient', given as 'Inpatient'})</span></p><p><b>medication</b>: id: med0309; Tylenol PM <span>(Details : {http://hl7.org/fhir/sid/ndc code '50580-506-02' = 'n/a', given as 'Tylenol PM'})</span>; Film-coated tablet (qualifier value) <span>(Details : {SNOMED CT code '385057009' = 'Film-coated tablet', given as 'Film-coated tablet (qualifier value)'})</span></p><p><b>subject</b>: <a>Donald Duck</a></p><p><b>effective</b>: 23/01/2015</p><p><b>dateAsserted</b>: 22/02/2015</p><p><b>informationSource</b>: <a>Donald Duck</a></p><p><b>derivedFrom</b>: <a>MedicationRequest/medrx002</a></p><p><b>reasonCode</b>: Restless Legs <span>(Details : {SNOMED CT code '32914008' = 'Restless legs', given as 'Restless Legs'})</span></p><p><b>note</b>: Patient indicates they miss the occasional dose</p><p><b>dosage</b>: </p></div>"
+    },
+    "contained": [
+        {
+            "resourceType": "Medication",
+            "id": "med0309",
+            "code": {
+                "coding": [
+                    {
+                        "system": "http://hl7.org/fhir/sid/ndc",
+                        "code": "50580-506-02",
+                        "display": "0pXASRAuL9cZLG"
+                    }
+                ]
+            },
+            "form": {
+                "coding": [
+                    {
+                        "system": "http://snomed.info/sct",
+                        "code": "385057009",
+                        "display": "8GzTz68FlND"
+                    }
+                ]
+            },
+            "ingredient": [
+                {
+                    "itemCodeableConcept": {
+                        "coding": [
+                            {
+                                "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+                                "code": "315266",
+                                "display": "bXmdEUzwmK3"
+                            }
+                        ]
+                    },
+                    "strength": {
+                        "numerator": {
+                            "value": 33905,
+                            "system": "http://unitsofmeasure.org",
+                            "code": "mg"
+                        },
+                        "denominator": {
+                            "value": 75834,
+                            "system": "http://terminology.hl7.org/CodeSystem/v3-orderableDrugForm",
+                            "code": "Tab"
+                        }
+                    }
+                },
+                {
+                    "itemCodeableConcept": {
+                        "coding": [
+                            {
+                                "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+                                "code": "901813",
+                                "display": "C9HHumm3L5cG4uIx"
+                            }
+                        ]
+                    },
+                    "strength": {
+                        "numerator": {
+                            "value": 7110,
+                            "system": "http://unitsofmeasure.org",
+                            "code": "mg"
+                        },
+                        "denominator": {
+                            "value": 22059,
+                            "system": "http://terminology.hl7.org/CodeSystem/v3-orderableDrugForm",
+                            "code": "Tab"
+                        }
+                    }
+                }
+            ],
+            "batch": {
+                "lotNumber": "9494788",
+                "expirationDate": "2017-05-22"
+            }
+        }
+    ],
+    "identifier": [
+        {
+            "use": "official",
+            "system": "http://www.bmc.nl/portal/medstatements",
+            "value": "g0ddXhRcy"
+        }
+    ],
+    "status": "active",
+    "category": {
+        "coding": [
+            {
+                "system": "http://terminology.hl7.org/CodeSystem/medication-statement-category",
+                "code": "inpatient",
+                "display": "K0i24Jma06Q"
+            }
+        ]
+    },
+    "medicationReference": {
+        "reference": "#med0309"
+    },
+    "subject": {
+        "reference": "Patient/pat1",
+        "display": "zCE0HfxdiyZMgq"
+    },
+    "effectiveDateTime": "2015-01-23",
+    "dateAsserted": "2015-02-22",
+    "informationSource": {
+        "reference": "Patient/pat1",
+        "display": "qiz0i7rYTsqt5x"
+    },
+    "derivedFrom": [
+        {
+            "reference": "MedicationRequest/medrx002"
+        }
+    ],
+    "reasonCode": [
+        {
+            "coding": [
+                {
+                    "system": "http://snomed.info/sct",
+                    "code": "32914008",
+                    "display": "nc8M2Ms25EX"
+                }
+            ]
+        }
+    ],
+    "note": [
+        {
+            "text": "MW1XwbMFo"
+        }
+    ],
+    "dosage": [
+        {
+            "sequence": 1,
+            "text": "eYY1MWGSrxM2CApzut",
+            "additionalInstruction": [
+                {
+                    "text": "iL4DvRB7l9SfX6uhs"
+                }
+            ],
+            "timing": {
+                "repeat": {
+                    "frequency": 1,
+                    "period": 1,
+                    "periodUnit": "d"
+                }
+            },
+            "asNeededCodeableConcept": {
+                "coding": [
+                    {
+                        "system": "http://snomed.info/sct",
+                        "code": "32914008",
+                        "display": "fgqqE9POtbK9"
+                    }
+                ]
+            },
+            "route": {
+                "coding": [
+                    {
+                        "system": "http://snomed.info/sct",
+                        "code": "26643006",
+                        "display": "p1AmjkCLLzxPl"
+                    }
+                ]
+            },
+            "doseAndRate": [
+                {
+                    "type": {
+                        "coding": [
+                            {
+                                "system": "http://terminology.hl7.org/CodeSystem/dose-rate-type",
+                                "code": "ordered",
+                                "display": "fhgPpfgR45jsTn"
+                            }
+                        ]
+                    },
+                    "doseRange": {
+                        "low": {
+                            "value": 85889,
+                            "unit": "TAB",
+                            "system": "http://terminology.hl7.org/CodeSystem/v3-orderableDrugForm",
+                            "code": "TAB"
+                        },
+                        "high": {
+                            "value": 71575,
+                            "unit": "TAB",
+                            "system": "http://terminology.hl7.org/CodeSystem/v3-orderableDrugForm",
+                            "code": "TAB"
+                        }
+                    }
+                }
+            ]
+        }
+    ],
+    "meta": {
+        "tag": [
+            {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+                "code": "HTEST",
+                "display": "FbF6d0npWiFMfcFs"
+            }
+        ]
+    }
+}

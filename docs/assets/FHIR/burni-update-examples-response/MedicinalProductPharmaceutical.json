@@ -1,0 +1,47 @@
+{
+    "resourceType": "MedicinalProductPharmaceutical",
+    "id": "MedicinalProductPharmaceutical-example",
+    "identifier": [
+        {
+            "system": "http://ema.europa.eu/example/phpididentifiersets",
+            "value": "SZRYy3hZCCo"
+        }
+    ],
+    "administrableDoseForm": {
+        "coding": [
+            {
+                "system": "http://ema.europa.eu/example/administrabledoseform",
+                "code": "Film-coatedtablet"
+            }
+        ]
+    },
+    "unitOfPresentation": {
+        "coding": [
+            {
+                "system": "http://ema.europa.eu/example/unitofpresentation",
+                "code": "Tablet"
+            }
+        ]
+    },
+    "ingredient": [
+        {
+            "reference": "MedicinalProductIngredient/example"
+        }
+    ],
+    "routeOfAdministration": [
+        {
+            "code": {
+                "coding": [
+                    {
+                        "system": "http://ema.europa.eu/example/routeofadministration",
+                        "code": "OralUse"
+                    }
+                ]
+            }
+        }
+    ],
+    "meta": {
+        "versionId": "20",
+        "lastUpdated": "2022-02-17T23:28:27.524+08:00"
+    }
+}

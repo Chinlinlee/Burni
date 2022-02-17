@@ -1,0 +1,17 @@
+{
+    "resourceType": "ResearchElementDefinition",
+    "id": "ResearchElementDefinition-example",
+    "status": "draft",
+    "type": "population",
+    "characteristic": [
+        {
+            "definitionCodeableConcept": {
+                "text": "19XalMLOia"
+            }
+        }
+    ],
+    "meta": {
+        "versionId": "20",
+        "lastUpdated": "2022-02-17T23:28:39.024+08:00"
+    }
+}

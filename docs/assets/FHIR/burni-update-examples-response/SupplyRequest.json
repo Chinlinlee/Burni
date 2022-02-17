@@ -1,0 +1,60 @@
+{
+    "resourceType": "SupplyRequest",
+    "id": "SupplyRequest-example",
+    "identifier": [
+        {
+            "value": "cZBIR332kX4Y"
+        }
+    ],
+    "status": "active",
+    "category": {
+        "coding": [
+            {
+                "code": "central",
+                "display": "M2NfThn425h8w50"
+            }
+        ]
+    },
+    "priority": "asap",
+    "itemCodeableConcept": {
+        "coding": [
+            {
+                "code": "BlueTubes",
+                "display": "kGJKdeJwJepDgF"
+            }
+        ]
+    },
+    "quantity": {
+        "value": 73331
+    },
+    "occurrenceDateTime": "2016-12-31T08:00:00+08:00",
+    "authoredOn": "2016-12-31T08:00:00+08:00",
+    "requester": {
+        "display": "CZkPYqzaa9AQbw7qi"
+    },
+    "supplier": [
+        {
+            "display": "SQ6tFGObAbkS"
+        }
+    ],
+    "reasonCode": [
+        {
+            "coding": [
+                {
+                    "code": "stock_low",
+                    "display": "PbGFFuEuBzkB"
+                }
+            ]
+        }
+    ],
+    "deliverFrom": {
+        "display": "XzeuGO65NANAkb"
+    },
+    "deliverTo": {
+        "display": "H9LUslrsO1p4lv54"
+    },
+    "meta": {
+        "versionId": "20",
+        "lastUpdated": "2022-02-17T23:28:56.424+08:00"
+    }
+}

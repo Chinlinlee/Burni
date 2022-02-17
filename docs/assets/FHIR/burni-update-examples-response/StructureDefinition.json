@@ -1,0 +1,79 @@
+{
+    "resourceType": "StructureDefinition",
+    "id": "StructureDefinition-example",
+    "url": "http://hl7.org/fhir/StructureDefinition/example-composition",
+    "name": "DocumentStructure",
+    "title": "Document Structure (For testing section templates)",
+    "status": "active",
+    "experimental": false,
+    "date": "2018-11-05T14:47:00+08:00",
+    "kind": "complex-type",
+    "abstract": false,
+    "type": "Composition",
+    "baseDefinition": "http://hl7.org/fhir/StructureDefinition/Composition",
+    "derivation": "constraint",
+    "differential": {
+        "element": [
+            {
+                "path": "Composition"
+            },
+            {
+                "path": "Composition.section",
+                "slicing": {
+                    "discriminator": [
+                        {
+                            "type": "pattern",
+                            "path": "code"
+                        }
+                    ],
+                    "description": "Slice by .section.code",
+                    "ordered": true,
+                    "rules": "closed"
+                }
+            },
+            {
+                "path": "Composition.section",
+                "sliceName": "procedure",
+                "min": 1,
+                "type": [
+                    {
+                        "code": "BackboneElement",
+                        "profile": [
+                            "http://hl7.org/fhir/StructureDefinition/document-section-library"
+                        ]
+                    }
+                ]
+            },
+            {
+                "path": "Composition.section",
+                "sliceName": "medications",
+                "min": 1,
+                "type": [
+                    {
+                        "code": "BackboneElement",
+                        "profile": [
+                            "http://hl7.org/fhir/StructureDefinition/document-section-library"
+                        ]
+                    }
+                ]
+            },
+            {
+                "path": "Composition.section",
+                "sliceName": "plan",
+                "min": 0,
+                "type": [
+                    {
+                        "code": "BackboneElement",
+                        "profile": [
+                            "http://hl7.org/fhir/StructureDefinition/document-section-library"
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "meta": {
+        "versionId": "20",
+        "lastUpdated": "2022-02-17T23:28:50.325+08:00"
+    }
+}

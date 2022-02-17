@@ -1,0 +1,24 @@
+{
+    "resourceType": "ResearchSubject",
+    "id": "ResearchSubject-example",
+    "identifier": [
+        {
+            "type": {
+                "text": "QciEFpO"
+            },
+            "system": "http://example.org/studysubjectids",
+            "value": "elPJGrFcPFgYu58W"
+        }
+    ],
+    "status": "candidate",
+    "study": {
+        "reference": "ResearchStudy/example"
+    },
+    "individual": {
+        "reference": "Patient/example"
+    },
+    "meta": {
+        "versionId": "20",
+        "lastUpdated": "2022-02-17T23:28:39.596+08:00"
+    }
+}

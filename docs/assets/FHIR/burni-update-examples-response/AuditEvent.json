@@ -1,0 +1,121 @@
+{
+    "resourceType": "AuditEvent",
+    "id": "AuditEvent-example",
+    "type": {
+        "system": "http://dicom.nema.org/resources/ontology/DCM",
+        "code": "110100",
+        "display": "ekaNV8nVo7a"
+    },
+    "subtype": [
+        {
+            "system": "http://dicom.nema.org/resources/ontology/DCM",
+            "code": "110120",
+            "display": "Y5ghAojhsz91gH"
+        }
+    ],
+    "action": "E",
+    "recorded": "2012-10-25T19:04:27.000+08:00",
+    "outcome": "0",
+    "agent": [
+        {
+            "type": {
+                "coding": [
+                    {
+                        "system": "http://terminology.hl7.org/CodeSystem/extra-security-role-type",
+                        "code": "humanuser",
+                        "display": "3afmcE0LRdk4ccr"
+                    }
+                ]
+            },
+            "role": [
+                {
+                    "text": "DeL2qcTaRX3qFlbB"
+                }
+            ],
+            "who": {
+                "identifier": {
+                    "value": "bWtQ4RyV8ipbwH"
+                }
+            },
+            "requestor": false,
+            "network": {
+                "address": "127.0.0.1",
+                "type": "2"
+            }
+        },
+        {
+            "type": {
+                "coding": [
+                    {
+                        "system": "http://dicom.nema.org/resources/ontology/DCM",
+                        "code": "110153",
+                        "display": "2u1jZXmRPR4ku"
+                    }
+                ]
+            },
+            "who": {
+                "identifier": {
+                    "system": "urn:oid:2.16.840.1.113883.4.2",
+                    "value": "fjlTBapVhKXoaNyLd"
+                }
+            },
+            "altId": "6580",
+            "requestor": false,
+            "network": {
+                "address": "Workstation1.ehr.familyclinic.com",
+                "type": "1"
+            }
+        }
+    ],
+    "source": {
+        "site": "Development",
+        "observer": {
+            "display": "0gnGABO9PF6p3"
+        },
+        "type": [
+            {
+                "system": "http://dicom.nema.org/resources/ontology/DCM",
+                "code": "110122",
+                "display": "8OS9v2lUIBKtr"
+            }
+        ]
+    },
+    "entity": [
+        {
+            "what": {
+                "identifier": {
+                    "type": {
+                        "coding": [
+                            {
+                                "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+                                "code": "SNO"
+                            }
+                        ],
+                        "text": "lJqTeidcQUKXkWxh"
+                    },
+                    "value": "m2w7ZSy8PUy"
+                }
+            },
+            "type": {
+                "system": "http://terminology.hl7.org/CodeSystem/audit-entity-type",
+                "code": "4",
+                "display": "7F29SXKPUtlKY"
+            },
+            "role": {
+                "system": "http://terminology.hl7.org/CodeSystem/object-role",
+                "code": "4",
+                "display": "hnFNGZFuNFS2j"
+            },
+            "lifecycle": {
+                "system": "http://terminology.hl7.org/CodeSystem/dicom-audit-lifecycle",
+                "code": "6",
+                "display": "YDPjPffmcecK8B"
+            },
+            "name": "Mrs. Troy Batz"
+        }
+    ],
+    "meta": {
+        "versionId": "22",
+        "lastUpdated": "2022-02-17T23:27:47.884+08:00"
+    }
+}

@@ -1,0 +1,61 @@
+{
+    "resourceType": "GraphDefinition",
+    "id": "GraphDefinition-example",
+    "url": "http://h7.org/fhir/GraphDefinition/example",
+    "name": "Document Generation Template",
+    "status": "draft",
+    "date": "2015-08-04T08:00:00+08:00",
+    "publisher": "FHIR Project",
+    "contact": [
+        {
+            "telecom": [
+                {
+                    "system": "url",
+                    "value": "z7KFmdXb6bUJ6z"
+                }
+            ]
+        }
+    ],
+    "description": "Specify to include list references when generating a document using the $document operation",
+    "start": "Composition",
+    "link": [
+        {
+            "path": "Composition.section.entry",
+            "description": "Link to List",
+            "target": [
+                {
+                    "type": "List",
+                    "compartment": [
+                        {
+                            "use": "requirement",
+                            "code": "Patient",
+                            "rule": "identical"
+                        }
+                    ],
+                    "link": [
+                        {
+                            "path": "List.entry.item",
+                            "description": "Include any list entries",
+                            "target": [
+                                {
+                                    "type": "Resource",
+                                    "compartment": [
+                                        {
+                                            "use": "requirement",
+                                            "code": "Patient",
+                                            "rule": "identical"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "meta": {
+        "versionId": "20",
+        "lastUpdated": "2022-02-17T23:28:12.988+08:00"
+    }
+}

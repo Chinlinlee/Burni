@@ -1,0 +1,57 @@
+{
+    "resourceType": "Schedule",
+    "id": "Schedule-example",
+    "identifier": [
+        {
+            "use": "usual",
+            "system": "http://example.org/scheduleid",
+            "value": "lUwx4vKLBfO"
+        }
+    ],
+    "active": true,
+    "serviceCategory": [
+        {
+            "coding": [
+                {
+                    "code": "17",
+                    "display": "hxHOX5xqUM"
+                }
+            ]
+        }
+    ],
+    "serviceType": [
+        {
+            "coding": [
+                {
+                    "code": "57",
+                    "display": "Ez7BroaHsxPdMe"
+                }
+            ]
+        }
+    ],
+    "specialty": [
+        {
+            "coding": [
+                {
+                    "code": "408480009",
+                    "display": "J10A6ZfrCxTm"
+                }
+            ]
+        }
+    ],
+    "actor": [
+        {
+            "reference": "Location/1",
+            "display": "Ky4E5rQGvB8Y"
+        }
+    ],
+    "planningHorizon": {
+        "start": "2013-12-25T17:15:00+08:00",
+        "end": "2013-12-25T17:30:00+08:00"
+    },
+    "comment": "The slots attached to this schedule should be specialized to cover immunizations within the clinic",
+    "meta": {
+        "versionId": "20",
+        "lastUpdated": "2022-02-17T23:28:40.699+08:00"
+    }
+}

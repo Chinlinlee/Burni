@@ -1,0 +1,17 @@
+{
+    "resourceType": "ObservationDefinition",
+    "id": "ObservationDefinition-example",
+    "code": {
+        "coding": [
+            {
+                "system": "http://loinc.org",
+                "code": "15074-8",
+                "display": "SKVHlcAK5nzw9L"
+            }
+        ]
+    },
+    "meta": {
+        "versionId": "20",
+        "lastUpdated": "2022-02-17T23:28:30.546+08:00"
+    }
+}

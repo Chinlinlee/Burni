@@ -1,0 +1,45 @@
+{
+    "resourceType": "MedicinalProductIndication",
+    "id": "MedicinalProductIndication-example",
+    "diseaseSymptomProcedure": {
+        "coding": [
+            {
+                "system": "http://ema.europa.eu/example/indicationasdisease-symptom-procedure",
+                "code": "Venousthromboembolismprophylaxis"
+            }
+        ],
+        "text": "pq7TgegGiaq"
+    },
+    "comorbidity": [
+        {
+            "coding": [
+                {
+                    "system": "http://ema.europa.eu/example/comorbidity",
+                    "code": "Hipsurgery"
+                }
+            ]
+        }
+    ],
+    "intendedEffect": {
+        "coding": [
+            {
+                "system": "http://ema.europa.eu/example/intendedeffect",
+                "code": "PRYLX"
+            }
+        ]
+    },
+    "population": [
+        {
+            "ageRange": {
+                "low": {
+                    "value": 57693,
+                    "unit": "a"
+                }
+            }
+        }
+    ],
+    "meta": {
+        "versionId": "20",
+        "lastUpdated": "2022-02-17T23:28:25.651+08:00"
+    }
+}

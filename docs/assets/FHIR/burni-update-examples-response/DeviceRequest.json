@@ -1,0 +1,16 @@
+{
+    "resourceType": "DeviceRequest",
+    "id": "DeviceRequest-example",
+    "status": "completed",
+    "intent": "original-order",
+    "codeReference": {
+        "reference": "Device/example"
+    },
+    "subject": {
+        "reference": "Patient/example"
+    },
+    "meta": {
+        "versionId": "22",
+        "lastUpdated": "2022-02-17T23:28:03.864+08:00"
+    }
+}

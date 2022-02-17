@@ -1,0 +1,29 @@
+{
+    "resourceType": "Substance",
+    "id": "Substance-example",
+    "identifier": [
+        {
+            "system": "http://acme.org/identifiers/substances",
+            "value": "nL7eGUgIcd7Wir"
+        }
+    ],
+    "status": "active",
+    "category": [
+        {
+            "coding": [
+                {
+                    "system": "http://terminology.hl7.org/CodeSystem/substance-category",
+                    "code": "allergen",
+                    "display": "SNRyvKuKZ3fvtF"
+                }
+            ]
+        }
+    ],
+    "code": {
+        "text": "xTNwCrMqNwmfi"
+    },
+    "meta": {
+        "versionId": "20",
+        "lastUpdated": "2022-02-17T23:28:53.307+08:00"
+    }
+}

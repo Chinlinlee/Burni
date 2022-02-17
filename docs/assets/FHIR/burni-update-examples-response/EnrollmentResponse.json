@@ -1,0 +1,27 @@
+{
+    "resourceType": "EnrollmentResponse",
+    "id": "EnrollmentResponse-example",
+    "identifier": [
+        {
+            "system": "http://www.BenefitsInc.com/fhir/enrollmentresponse",
+            "value": "CG8zZPPlNmDGvJZA"
+        }
+    ],
+    "status": "active",
+    "request": {
+        "reference": "http://www.BenefitsInc.com/fhir/eligibility/225476332402"
+    },
+    "outcome": "complete",
+    "disposition": "Dependant added to policy.",
+    "created": "2014-08-16T08:00:00+08:00",
+    "organization": {
+        "reference": "Organization/2"
+    },
+    "requestProvider": {
+        "reference": "Organization/1"
+    },
+    "meta": {
+        "versionId": "22",
+        "lastUpdated": "2022-02-17T23:28:07.284+08:00"
+    }
+}

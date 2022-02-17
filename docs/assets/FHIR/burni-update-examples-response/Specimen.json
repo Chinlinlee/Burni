@@ -1,0 +1,81 @@
+{
+    "resourceType": "Specimen",
+    "id": "Specimen-example",
+    "contained": [
+        {
+            "resourceType": "Substance",
+            "id": "hep",
+            "code": {
+                "coding": [
+                    {
+                        "system": "http://terminology.hl7.org/CodeSystem/v3-EntityCode",
+                        "code": "HEPL"
+                    }
+                ]
+            }
+        }
+    ],
+    "identifier": [
+        {
+            "system": "http://ehr.acme.org/identifiers/collections",
+            "value": "pyAZkxT3"
+        }
+    ],
+    "accessionIdentifier": {
+        "system": "http://lab.acme.org/specimens/2011",
+        "value": "VRCdaQ0kkuj0s"
+    },
+    "status": "available",
+    "type": {
+        "coding": [
+            {
+                "system": "http://snomed.info/sct",
+                "code": "122555007",
+                "display": "TGsh0ZlEc1Lrom"
+            }
+        ]
+    },
+    "subject": {
+        "reference": "Patient/example",
+        "display": "2k0fLvjkDBM2l8"
+    },
+    "receivedTime": "2011-03-04T15:03:00+08:00",
+    "request": [
+        {
+            "reference": "ServiceRequest/example"
+        }
+    ],
+    "container": [
+        {
+            "identifier": [
+                {
+                    "value": "ykZGhPsKcp"
+                }
+            ],
+            "description": "Green Gel tube",
+            "type": {
+                "text": "j6kx5nYpnTe6Ga"
+            },
+            "capacity": {
+                "value": 76186,
+                "unit": "mL"
+            },
+            "specimenQuantity": {
+                "value": 31636,
+                "unit": "mL"
+            },
+            "additiveReference": {
+                "reference": "#hep"
+            }
+        }
+    ],
+    "note": [
+        {
+            "text": "sx2QIExNzhOIDq"
+        }
+    ],
+    "meta": {
+        "versionId": "20",
+        "lastUpdated": "2022-02-17T23:28:41.941+08:00"
+    }
+}

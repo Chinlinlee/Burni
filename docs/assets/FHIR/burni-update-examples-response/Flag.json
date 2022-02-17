@@ -1,0 +1,48 @@
+{
+    "resourceType": "Flag",
+    "id": "Flag-example",
+    "identifier": [
+        {
+            "value": "BmOYmQfNra6VMs"
+        }
+    ],
+    "status": "inactive",
+    "category": [
+        {
+            "coding": [
+                {
+                    "system": "http://terminology.hl7.org/CodeSystem/flag-category",
+                    "code": "safety",
+                    "display": "4JcQln64NkK"
+                }
+            ],
+            "text": "ErBBqtM9CXF"
+        }
+    ],
+    "code": {
+        "coding": [
+            {
+                "system": "http://example.org/local",
+                "code": "bigdog",
+                "display": "Tchg9q5sC4Qy"
+            }
+        ],
+        "text": "3xV6ZprWqNLs"
+    },
+    "subject": {
+        "reference": "Patient/example",
+        "display": "97YBk6xwq6OqD"
+    },
+    "period": {
+        "start": "2015-01-17T08:00:00+08:00",
+        "end": "2016-12-01T08:00:00+08:00"
+    },
+    "author": {
+        "reference": "Practitioner/example",
+        "display": "P7WLJ2Y5J"
+    },
+    "meta": {
+        "versionId": "20",
+        "lastUpdated": "2022-02-17T23:28:12.409+08:00"
+    }
+}

@@ -1,0 +1,52 @@
+{
+    "resourceType": "Invoice",
+    "id": "Invoice-example",
+    "identifier": [
+        {
+            "system": "http://myHospital.org/Invoices",
+            "value": "riJuY8c7E3W6"
+        }
+    ],
+    "status": "issued",
+    "subject": {
+        "reference": "Patient/example"
+    },
+    "date": "2017-01-25T15:00:00+08:00",
+    "participant": [
+        {
+            "role": {
+                "coding": [
+                    {
+                        "system": "http://snomed.info/sct",
+                        "code": "17561000",
+                        "display": "iy4dOgV1GEO8M0"
+                    }
+                ]
+            },
+            "actor": {
+                "reference": "Practitioner/example"
+            }
+        }
+    ],
+    "issuer": {
+        "identifier": {
+            "system": "http://myhospital/NamingSystem/departments",
+            "value": "bcAWJQUnuXqUn2m"
+        }
+    },
+    "account": {
+        "reference": "Account/example"
+    },
+    "totalNet": {
+        "value": 64009,
+        "currency": "EUR"
+    },
+    "totalGross": {
+        "value": 99198,
+        "currency": "EUR"
+    },
+    "meta": {
+        "versionId": "20",
+        "lastUpdated": "2022-02-17T23:28:16.880+08:00"
+    }
+}

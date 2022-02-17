@@ -1,0 +1,104 @@
+{
+    "resourceType": "PractitionerRole",
+    "id": "PractitionerRole-example",
+    "identifier": [
+        {
+            "system": "http://www.acme.org/practitioners",
+            "value": "abSYKEtsDPewOVh"
+        }
+    ],
+    "active": true,
+    "period": {
+        "start": "2012-01-01T08:00:00+08:00",
+        "end": "2012-03-31T08:00:00+08:00"
+    },
+    "practitioner": {
+        "reference": "Practitioner/example",
+        "display": "8NsIbrA4mOHAvCyY"
+    },
+    "organization": {
+        "reference": "Organization/f001"
+    },
+    "code": [
+        {
+            "coding": [
+                {
+                    "system": "http://terminology.hl7.org/CodeSystem/v2-0286",
+                    "code": "RP"
+                }
+            ]
+        }
+    ],
+    "specialty": [
+        {
+            "coding": [
+                {
+                    "system": "http://snomed.info/sct",
+                    "code": "408443003",
+                    "display": "ixk5tA1qPyIbO8N"
+                }
+            ]
+        }
+    ],
+    "location": [
+        {
+            "reference": "Location/1",
+            "display": "xkwDaoBfoHpH"
+        }
+    ],
+    "healthcareService": [
+        {
+            "reference": "HealthcareService/example"
+        }
+    ],
+    "telecom": [
+        {
+            "system": "phone",
+            "value": "LSn1zWQddvhz4H",
+            "use": "work"
+        },
+        {
+            "system": "email",
+            "value": "a2T7mjb",
+            "use": "work"
+        }
+    ],
+    "availableTime": [
+        {
+            "daysOfWeek": [
+                "mon",
+                "tue",
+                "wed"
+            ],
+            "availableStartTime": "09:00:00",
+            "availableEndTime": "16:30:00"
+        },
+        {
+            "daysOfWeek": [
+                "thu",
+                "fri"
+            ],
+            "availableStartTime": "09:00:00",
+            "availableEndTime": "12:00:00"
+        }
+    ],
+    "notAvailable": [
+        {
+            "description": "Adam will be on extended leave during May 2017",
+            "during": {
+                "start": "2017-05-01T08:00:00+08:00",
+                "end": "2017-05-20T08:00:00+08:00"
+            }
+        }
+    ],
+    "availabilityExceptions": "Adam is generally unavailable on public holidays and during the Christmas/New Year break",
+    "endpoint": [
+        {
+            "reference": "Endpoint/example"
+        }
+    ],
+    "meta": {
+        "versionId": "20",
+        "lastUpdated": "2022-02-17T23:28:35.719+08:00"
+    }
+}

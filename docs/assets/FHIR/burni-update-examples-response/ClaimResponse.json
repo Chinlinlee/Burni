@@ -1,0 +1,170 @@
+{
+    "resourceType": "ClaimResponse",
+    "id": "ClaimResponse-example",
+    "identifier": [
+        {
+            "system": "http://www.BenefitsInc.com/fhir/remittance",
+            "value": "rBFhZtJTlROw1j1d"
+        }
+    ],
+    "status": "active",
+    "type": {
+        "coding": [
+            {
+                "system": "http://terminology.hl7.org/CodeSystem/claim-type",
+                "code": "oral"
+            }
+        ]
+    },
+    "subType": {
+        "coding": [
+            {
+                "system": "http://terminology.hl7.org/CodeSystem/ex-claimsubtype",
+                "code": "emergency"
+            }
+        ]
+    },
+    "use": "claim",
+    "patient": {
+        "reference": "Patient/1"
+    },
+    "created": "2014-08-16T08:00:00+08:00",
+    "insurer": {
+        "identifier": {
+            "system": "http://www.jurisdiction.org/insurers",
+            "value": "Ik94PXcpKYDWqi39"
+        }
+    },
+    "requestor": {
+        "reference": "Organization/1"
+    },
+    "request": {
+        "reference": "http://www.BenefitsInc.com/fhir/oralhealthclaim/15476332402"
+    },
+    "outcome": "complete",
+    "disposition": "Claim settled as per contract.",
+    "payeeType": {
+        "coding": [
+            {
+                "system": "http://terminology.hl7.org/CodeSystem/payeetype",
+                "code": "provider"
+            }
+        ]
+    },
+    "item": [
+        {
+            "itemSequence": 1,
+            "adjudication": [
+                {
+                    "category": {
+                        "coding": [
+                            {
+                                "code": "eligible"
+                            }
+                        ]
+                    },
+                    "amount": {
+                        "value": 47446,
+                        "currency": "USD"
+                    }
+                },
+                {
+                    "category": {
+                        "coding": [
+                            {
+                                "code": "copay"
+                            }
+                        ]
+                    },
+                    "amount": {
+                        "value": 36238,
+                        "currency": "USD"
+                    }
+                },
+                {
+                    "category": {
+                        "coding": [
+                            {
+                                "code": "eligpercent"
+                            }
+                        ]
+                    },
+                    "value": 43278
+                },
+                {
+                    "category": {
+                        "coding": [
+                            {
+                                "code": "benefit"
+                            }
+                        ]
+                    },
+                    "reason": {
+                        "coding": [
+                            {
+                                "system": "http://terminology.hl7.org/CodeSystem/adjudication-reason",
+                                "code": "ar002",
+                                "display": "nBnfWOuzQCWR6nSg"
+                            }
+                        ]
+                    },
+                    "amount": {
+                        "value": 95225,
+                        "currency": "USD"
+                    }
+                }
+            ]
+        }
+    ],
+    "total": [
+        {
+            "category": {
+                "coding": [
+                    {
+                        "code": "submitted"
+                    }
+                ]
+            },
+            "amount": {
+                "value": 64052,
+                "currency": "USD"
+            }
+        },
+        {
+            "category": {
+                "coding": [
+                    {
+                        "code": "benefit"
+                    }
+                ]
+            },
+            "amount": {
+                "value": 64106,
+                "currency": "USD"
+            }
+        }
+    ],
+    "payment": {
+        "type": {
+            "coding": [
+                {
+                    "system": "http://terminology.hl7.org/CodeSystem/ex-paymenttype",
+                    "code": "complete"
+                }
+            ]
+        },
+        "date": "2014-08-31",
+        "amount": {
+            "value": 36874,
+            "currency": "USD"
+        },
+        "identifier": {
+            "system": "http://www.BenefitsInc.com/fhir/paymentidentifier",
+            "value": "URbWY9kz0ZMf"
+        }
+    },
+    "meta": {
+        "versionId": "22",
+        "lastUpdated": "2022-02-17T23:27:54.579+08:00"
+    }
+}

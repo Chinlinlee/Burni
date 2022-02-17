@@ -1,0 +1,128 @@
+{
+    "resourceType": "NutritionOrder",
+    "id": "NutritionOrder-example",
+    "identifier": [
+        {
+            "system": "http://goodhealthhospital.org/nutrition-requests",
+            "value": "HzpDN0iQg9f4S"
+        }
+    ],
+    "status": "active",
+    "intent": "order",
+    "patient": {
+        "reference": "Patient/example",
+        "display": "5KgVGOAFPnq4mVEDN"
+    },
+    "encounter": {
+        "reference": "Encounter/example",
+        "display": "CvLHH2EmMHjgFr"
+    },
+    "dateTime": "2014-09-17T08:00:00+08:00",
+    "orderer": {
+        "reference": "Practitioner/example",
+        "display": "eZyqCxkzDt48DK0Sm"
+    },
+    "allergyIntolerance": [
+        {
+            "reference": "AllergyIntolerance/example",
+            "display": "RpZ6wX7NIAcYkdkR"
+        }
+    ],
+    "foodPreferenceModifier": [
+        {
+            "coding": [
+                {
+                    "system": "http://terminology.hl7.org/CodeSystem/diet",
+                    "code": "dairy-free"
+                }
+            ]
+        }
+    ],
+    "excludeFoodModifier": [
+        {
+            "coding": [
+                {
+                    "system": "http://snomed.info/sct",
+                    "version": "20140730",
+                    "code": "227493005",
+                    "display": "tMb786ROsqXeiO"
+                }
+            ]
+        }
+    ],
+    "oralDiet": {
+        "type": [
+            {
+                "coding": [
+                    {
+                        "system": "http://snomed.info/sct",
+                        "code": "386619000",
+                        "display": "spkcozn3w8k3BF"
+                    },
+                    {
+                        "system": "http://goodhealthhospital.org/diet-type-codes",
+                        "code": "1040",
+                        "display": "N3Cn2rOU2Ursz"
+                    }
+                ],
+                "text": "jfKlKcJ9cmwI"
+            },
+            {
+                "coding": [
+                    {
+                        "system": "http://snomed.info/sct",
+                        "code": "226208002",
+                        "display": "HTSxcLdQiiAzR"
+                    },
+                    {
+                        "system": "http://goodhealthhospital.org/diet-type-codes",
+                        "code": "1040",
+                        "display": "RBxLfXrSEzKXw"
+                    }
+                ],
+                "text": "fpPNMa9lh4ck"
+            }
+        ],
+        "nutrient": [
+            {
+                "modifier": {
+                    "coding": [
+                        {
+                            "system": "http://snomed.info/sct",
+                            "code": "39972003",
+                            "display": "D2XoaUK6TSADMFl"
+                        }
+                    ]
+                },
+                "amount": {
+                    "value": 82031,
+                    "unit": "grams",
+                    "system": "http://unitsofmeasure.org",
+                    "code": "g"
+                }
+            },
+            {
+                "modifier": {
+                    "coding": [
+                        {
+                            "system": "http://snomed.info/sct",
+                            "code": "33463005",
+                            "display": "XyA7vvE4ifZJ0Q6Ys"
+                        }
+                    ]
+                },
+                "amount": {
+                    "value": 16786,
+                    "unit": "milliliter",
+                    "system": "http://unitsofmeasure.org",
+                    "code": "mL"
+                }
+            }
+        ],
+        "instruction": "Starting on 2/10 breakfast, maximum 400 ml fluids per meal"
+    },
+    "meta": {
+        "versionId": "20",
+        "lastUpdated": "2022-02-17T23:28:29.336+08:00"
+    }
+}

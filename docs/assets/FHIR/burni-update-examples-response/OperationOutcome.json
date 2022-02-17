@@ -1,0 +1,24 @@
+{
+    "resourceType": "OperationOutcome",
+    "id": "OperationOutcome-example",
+    "issue": [
+        {
+            "severity": "error",
+            "code": "code-invalid",
+            "details": {
+                "text": "Q0f4QLnXzvL"
+            },
+            "diagnostics": "Acme.Interop.FHIRProcessors.Patient.processGender line 2453",
+            "location": [
+                "/f:Patient/f:gender"
+            ],
+            "expression": [
+                "Patient.gender"
+            ]
+        }
+    ],
+    "meta": {
+        "versionId": "20",
+        "lastUpdated": "2022-02-17T23:28:31.077+08:00"
+    }
+}

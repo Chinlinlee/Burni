@@ -1,0 +1,38 @@
+{
+    "resourceType": "CoverageEligibilityResponse",
+    "id": "CoverageEligibilityResponse-example",
+    "identifier": [
+        {
+            "system": "http://www.BenefitsInc.com/fhir/coverageeligibilityresponse",
+            "value": "1h6XX7buvh4"
+        }
+    ],
+    "status": "active",
+    "purpose": [
+        "validation"
+    ],
+    "patient": {
+        "reference": "Patient/pat1"
+    },
+    "created": "2014-08-16T08:00:00+08:00",
+    "request": {
+        "reference": "http://www.BenefitsInc.com/fhir/coverageeligibilityrequest/225476332402"
+    },
+    "outcome": "complete",
+    "disposition": "Policy is currently in-force.",
+    "insurer": {
+        "reference": "Organization/2"
+    },
+    "insurance": [
+        {
+            "coverage": {
+                "reference": "Coverage/9876B1"
+            },
+            "inforce": true
+        }
+    ],
+    "meta": {
+        "versionId": "22",
+        "lastUpdated": "2022-02-17T23:28:01.870+08:00"
+    }
+}

@@ -1,0 +1,65 @@
+{
+    "resourceType": "VisionPrescription",
+    "id": "VisionPrescription-example",
+    "identifier": [
+        {
+            "system": "http://www.happysight.com/prescription",
+            "value": "VPulx7lLxjchanGxeUE"
+        }
+    ],
+    "status": "active",
+    "created": "2014-06-15T08:00:00+08:00",
+    "patient": {
+        "reference": "Patient/example"
+    },
+    "dateWritten": "2014-06-15T08:00:00+08:00",
+    "prescriber": {
+        "reference": "Practitioner/example"
+    },
+    "lensSpecification": [
+        {
+            "product": {
+                "coding": [
+                    {
+                        "system": "http://terminology.hl7.org/CodeSystem/ex-visionprescriptionproduct",
+                        "code": "lens"
+                    }
+                ]
+            },
+            "eye": "right",
+            "sphere": -2,
+            "prism": [
+                {
+                    "amount": 0.5,
+                    "base": "down"
+                }
+            ],
+            "add": 2
+        },
+        {
+            "product": {
+                "coding": [
+                    {
+                        "system": "http://terminology.hl7.org/CodeSystem/ex-visionprescriptionproduct",
+                        "code": "lens"
+                    }
+                ]
+            },
+            "eye": "left",
+            "sphere": -1,
+            "cylinder": -0.5,
+            "axis": 180,
+            "prism": [
+                {
+                    "amount": 0.5,
+                    "base": "up"
+                }
+            ],
+            "add": 2
+        }
+    ],
+    "meta": {
+        "versionId": "20",
+        "lastUpdated": "2022-02-17T23:29:01.294+08:00"
+    }
+}

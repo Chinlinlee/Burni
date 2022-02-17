@@ -1,0 +1,12 @@
+{
+    "resourceType": "Evidence",
+    "id": "Evidence-example",
+    "status": "draft",
+    "exposureBackground": {
+        "reference": "EvidenceVariable/example"
+    },
+    "meta": {
+        "versionId": "22",
+        "lastUpdated": "2022-02-17T23:28:08.329+08:00"
+    }
+}

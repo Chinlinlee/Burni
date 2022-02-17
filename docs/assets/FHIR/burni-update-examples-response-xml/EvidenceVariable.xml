@@ -1,0 +1,1 @@
+<?xml version="1.0" encoding="UTF-8"?><EvidenceVariable xmlns="http://hl7.org/fhir"><id value="EvidenceVariable-example"/><meta><versionId value="24"/><lastUpdated value="2022-02-18T00:39:18.646+08:00"/></meta><status value="draft"/><characteristic><definitionCodeableConcept><text value="P9nvsXT36V9Naf6p"/></definitionCodeableConcept></characteristic></EvidenceVariable>

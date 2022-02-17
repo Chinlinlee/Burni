@@ -1,0 +1,45 @@
+{
+    "resourceType": "ImmunizationEvaluation",
+    "id": "ImmunizationEvaluation-example",
+    "identifier": [
+        {
+            "system": "urn:ietf:rfc:3986",
+            "value": "Ok36ta80b1"
+        }
+    ],
+    "status": "completed",
+    "patient": {
+        "reference": "Patient/example"
+    },
+    "date": "2013-01-10T08:00:00+08:00",
+    "authority": {
+        "reference": "Organization/hl7"
+    },
+    "targetDisease": {
+        "coding": [
+            {
+                "system": "http://snomed.info/sct",
+                "code": "1857005"
+            }
+        ]
+    },
+    "immunizationEvent": {
+        "reference": "Immunization/example"
+    },
+    "doseStatus": {
+        "coding": [
+            {
+                "system": "http://terminology.hl7.org/CodeSystem/immunization-evaluation-dose-status",
+                "code": "valid",
+                "display": "dkRGRwLVVpNnxBZ"
+            }
+        ]
+    },
+    "series": "Vaccination Series 1",
+    "doseNumberPositiveInt": 1,
+    "seriesDosesPositiveInt": 3,
+    "meta": {
+        "versionId": "20",
+        "lastUpdated": "2022-02-17T23:28:15.260+08:00"
+    }
+}

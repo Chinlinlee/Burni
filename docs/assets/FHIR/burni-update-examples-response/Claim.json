@@ -1,0 +1,107 @@
+{
+    "resourceType": "Claim",
+    "id": "Claim-example",
+    "identifier": [
+        {
+            "system": "http://happyvalley.com/claim",
+            "value": "VRmLCURg0gSmhV"
+        }
+    ],
+    "status": "active",
+    "type": {
+        "coding": [
+            {
+                "system": "http://terminology.hl7.org/CodeSystem/claim-type",
+                "code": "oral"
+            }
+        ]
+    },
+    "use": "claim",
+    "patient": {
+        "reference": "Patient/1"
+    },
+    "created": "2014-08-16T08:00:00+08:00",
+    "insurer": {
+        "reference": "Organization/2"
+    },
+    "provider": {
+        "reference": "Organization/1"
+    },
+    "priority": {
+        "coding": [
+            {
+                "code": "normal"
+            }
+        ]
+    },
+    "payee": {
+        "type": {
+            "coding": [
+                {
+                    "code": "provider"
+                }
+            ]
+        }
+    },
+    "careTeam": [
+        {
+            "sequence": 1,
+            "provider": {
+                "reference": "Practitioner/example"
+            }
+        }
+    ],
+    "diagnosis": [
+        {
+            "sequence": 1,
+            "diagnosisCodeableConcept": {
+                "coding": [
+                    {
+                        "code": "123456"
+                    }
+                ]
+            }
+        }
+    ],
+    "insurance": [
+        {
+            "sequence": 1,
+            "focal": true,
+            "identifier": {
+                "system": "http://happyvalley.com/claim",
+                "value": "mrsPEYYycuf9"
+            },
+            "coverage": {
+                "reference": "Coverage/9876B1"
+            }
+        }
+    ],
+    "item": [
+        {
+            "sequence": 1,
+            "careTeamSequence": [
+                1
+            ],
+            "productOrService": {
+                "coding": [
+                    {
+                        "code": "1200"
+                    }
+                ]
+            },
+            "servicedDate": "2014-08-16",
+            "unitPrice": {
+                "value": 12122,
+                "currency": "USD"
+            },
+            "net": {
+                "value": 47245,
+                "currency": "USD"
+            }
+        }
+    ],
+    "meta": {
+        "versionId": "22",
+        "lastUpdated": "2022-02-17T23:27:53.430+08:00"
+    }
+}

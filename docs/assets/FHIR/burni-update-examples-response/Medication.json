@@ -1,0 +1,11 @@
+{
+    "resourceType": "Medication",
+    "id": "Medication-example",
+    "code": {
+        "text": "EVhgG3BFT3B"
+    },
+    "meta": {
+        "versionId": "20",
+        "lastUpdated": "2022-02-17T23:28:20.478+08:00"
+    }
+}

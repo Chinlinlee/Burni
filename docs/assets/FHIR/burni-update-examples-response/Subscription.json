@@ -1,0 +1,26 @@
+{
+    "resourceType": "Subscription",
+    "id": "Subscription-example",
+    "status": "requested",
+    "contact": [
+        {
+            "system": "phone",
+            "value": "oxK0MZKV"
+        }
+    ],
+    "end": "2021-01-01T08:00:00.000+08:00",
+    "reason": "Monitor new neonatal function",
+    "criteria": "Observation?code=http://loinc.org|1975-2",
+    "channel": {
+        "type": "rest-hook",
+        "endpoint": "https://biliwatch.com/customers/mount-auburn-miu/on-result",
+        "payload": "application/fhir+json",
+        "header": [
+            "Authorization: Bearer secret-token-abc-123"
+        ]
+    },
+    "meta": {
+        "versionId": "20",
+        "lastUpdated": "2022-02-17T23:28:53.116+08:00"
+    }
+}

@@ -1,0 +1,27 @@
+{
+    "resourceType": "MedicinalProductContraindication",
+    "id": "MedicinalProductContraindication-example",
+    "disease": {
+        "coding": [
+            {
+                "system": "http://ema.europa.eu/example/contraindicationsasdisease-symptom-procedure",
+                "code": "Coagulopathiesandbleedingdiatheses(exclthrombocytopenic)"
+            }
+        ],
+        "text": "7CSpvqgrW14hCn"
+    },
+    "comorbidity": [
+        {
+            "coding": [
+                {
+                    "system": "http://ema.europa.eu/example/comorbidity",
+                    "code": "Hepaticdisease"
+                }
+            ]
+        }
+    ],
+    "meta": {
+        "versionId": "20",
+        "lastUpdated": "2022-02-17T23:28:25.385+08:00"
+    }
+}

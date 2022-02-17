@@ -1,0 +1,1 @@
+<?xml version="1.0" encoding="UTF-8"?><Device xmlns="http://hl7.org/fhir"><id value="Device-example"/><meta><versionId value="24"/><lastUpdated value="2022-02-18T00:39:11.770+08:00"/></meta><identifier><system value="http://goodcare.org/devices/id"/><value value="5oXXWN6R1B80xcc5"/></identifier></Device>

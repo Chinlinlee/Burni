@@ -1,0 +1,45 @@
+{
+    "resourceType": "List",
+    "id": "List-example",
+    "identifier": [
+        {
+            "system": "urn:uuid:a9fcea7c-fcdf-4d17-a5e0-f26dda030b59",
+            "value": "gWfHN91XKAp"
+        }
+    ],
+    "status": "current",
+    "mode": "changes",
+    "subject": {
+        "reference": "Patient/example"
+    },
+    "encounter": {
+        "reference": "Encounter/example"
+    },
+    "date": "2012-11-25T19:17:00+08:00",
+    "source": {
+        "reference": "Patient/example"
+    },
+    "entry": [
+        {
+            "flag": {
+                "text": "aXudyLjCq8w"
+            },
+            "deleted": true,
+            "item": {
+                "reference": "Condition/example"
+            }
+        },
+        {
+            "flag": {
+                "text": "S5ixwcDs6sqdyTLU"
+            },
+            "item": {
+                "reference": "Condition/example2"
+            }
+        }
+    ],
+    "meta": {
+        "versionId": "20",
+        "lastUpdated": "2022-02-17T23:28:17.835+08:00"
+    }
+}

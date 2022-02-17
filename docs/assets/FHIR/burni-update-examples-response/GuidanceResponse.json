@@ -1,0 +1,72 @@
+{
+    "resourceType": "GuidanceResponse",
+    "id": "GuidanceResponse-example",
+    "contained": [
+        {
+            "resourceType": "Parameters",
+            "id": "outputParameters1",
+            "parameter": [
+                {
+                    "name": "Jacqueline Jerde",
+                    "valueDecimal": 7
+                },
+                {
+                    "name": "Edmond Luettgen",
+                    "valueCodeableConcept": {
+                        "coding": [
+                            {
+                                "system": "http://www.ama-assn.org/go/cpt",
+                                "code": "70450",
+                                "display": "fmpp2AzHHJuqa"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "Norma Funk",
+                    "valueReference": {
+                        "reference": "Device/software"
+                    }
+                },
+                {
+                    "name": "Doris Huels",
+                    "valueUri": "http://someguidelineprovider.org/radiology-appropriateness-guidelines.html"
+                }
+            ]
+        }
+    ],
+    "requestIdentifier": {
+        "system": "http://example.org",
+        "value": "S4w1ShaMni"
+    },
+    "identifier": [
+        {
+            "system": "http://example.org",
+            "value": "CED4tIf6Cy1t9YqG"
+        }
+    ],
+    "moduleUri": "http://someguidelineprovider.org/radiology-appropriateness-guidelines.html",
+    "status": "success",
+    "subject": {
+        "reference": "Patient/example"
+    },
+    "encounter": {
+        "reference": "Encounter/example"
+    },
+    "occurrenceDateTime": "2017-03-11T00:02:00+08:00",
+    "performer": {
+        "reference": "Device/software"
+    },
+    "reasonCode": [
+        {
+            "text": "eqgS432IWVoX"
+        }
+    ],
+    "outputParameters": {
+        "reference": "#outputParameters1"
+    },
+    "meta": {
+        "versionId": "20",
+        "lastUpdated": "2022-02-17T23:28:13.741+08:00"
+    }
+}

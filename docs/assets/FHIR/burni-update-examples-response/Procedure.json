@@ -1,0 +1,54 @@
+{
+    "resourceType": "Procedure",
+    "id": "Procedure-example",
+    "status": "completed",
+    "code": {
+        "coding": [
+            {
+                "system": "http://snomed.info/sct",
+                "code": "80146002",
+                "display": "4IGsHYbSEvjs"
+            }
+        ],
+        "text": "KHwY0XtCQh"
+    },
+    "subject": {
+        "reference": "Patient/example"
+    },
+    "performedDateTime": "2013-04-05T08:00:00+08:00",
+    "recorder": {
+        "reference": "Practitioner/example",
+        "display": "pRAQKlnaYXvX"
+    },
+    "asserter": {
+        "reference": "Practitioner/example",
+        "display": "Pd9jnFL5JO4aqd"
+    },
+    "performer": [
+        {
+            "actor": {
+                "reference": "Practitioner/example",
+                "display": "8MEL0Fgyvm6"
+            }
+        }
+    ],
+    "reasonCode": [
+        {
+            "text": "KATEbVQz"
+        }
+    ],
+    "followUp": [
+        {
+            "text": "NDdqOn7VVVqTvcaH"
+        }
+    ],
+    "note": [
+        {
+            "text": "OcKDbMEBGKv9C"
+        }
+    ],
+    "meta": {
+        "versionId": "20",
+        "lastUpdated": "2022-02-17T23:28:36.255+08:00"
+    }
+}

@@ -1,0 +1,54 @@
+{
+    "resourceType": "Library",
+    "id": "Library-example",
+    "identifier": [
+        {
+            "use": "official",
+            "value": "pHyQXimWCeu"
+        }
+    ],
+    "version": "2.0.0",
+    "title": "Chlamydia Screening Common Library",
+    "status": "draft",
+    "type": {
+        "coding": [
+            {
+                "code": "logic-library"
+            }
+        ]
+    },
+    "date": "2015-07-22T08:00:00+08:00",
+    "description": "Common Logic for adherence to Chlamydia Screening guidelines",
+    "topic": [
+        {
+            "text": "6QhDyT1p90xmc"
+        }
+    ],
+    "relatedArtifact": [
+        {
+            "type": "depends-on",
+            "resource": "Library/library-quick-model-definition"
+        }
+    ],
+    "dataRequirement": [
+        {
+            "type": "Condition",
+            "codeFilter": [
+                {
+                    "path": "code",
+                    "valueSet": "urn:oid:2.16.840.1.113883.3.464.1003.111.12.1006"
+                }
+            ]
+        }
+    ],
+    "content": [
+        {
+            "contentType": "text/cql",
+            "url": "library-example-content.cql"
+        }
+    ],
+    "meta": {
+        "versionId": "20",
+        "lastUpdated": "2022-02-17T23:28:17.264+08:00"
+    }
+}

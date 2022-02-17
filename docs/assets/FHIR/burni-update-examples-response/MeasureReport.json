@@ -1,0 +1,490 @@
+{
+    "resourceType": "MeasureReport",
+    "id": "MeasureReport-example",
+    "contained": [
+        {
+            "resourceType": "Organization",
+            "id": "reporter",
+            "name": "Theresa Homenick"
+        }
+    ],
+    "identifier": [
+        {
+            "value": "u2KdVyuJxl76"
+        }
+    ],
+    "status": "complete",
+    "type": "individual",
+    "measure": "Measure/CMS146",
+    "subject": {
+        "reference": "Patient/123"
+    },
+    "date": "2014-04-01T08:00:00+08:00",
+    "reporter": {
+        "reference": "#reporter"
+    },
+    "period": {
+        "start": "2014-01-01T08:00:00+08:00",
+        "end": "2014-03-31T08:00:00+08:00"
+    },
+    "group": [
+        {
+            "population": [
+                {
+                    "code": {
+                        "coding": [
+                            {
+                                "code": "initial-population"
+                            }
+                        ]
+                    },
+                    "count": 1
+                },
+                {
+                    "code": {
+                        "coding": [
+                            {
+                                "code": "numerator"
+                            }
+                        ]
+                    },
+                    "count": 1
+                },
+                {
+                    "code": {
+                        "coding": [
+                            {
+                                "code": "denominator"
+                            }
+                        ]
+                    },
+                    "count": 1
+                },
+                {
+                    "code": {
+                        "coding": [
+                            {
+                                "code": "denominator-exclusion"
+                            }
+                        ]
+                    },
+                    "count": 0
+                }
+            ],
+            "stratifier": [
+                {
+                    "code": [
+                        {
+                            "text": "hW8R2rD2UqnQrC"
+                        }
+                    ],
+                    "stratum": [
+                        {
+                            "value": {
+                                "text": "sGyu1yhNxit0ELL"
+                            },
+                            "population": [
+                                {
+                                    "code": {
+                                        "coding": [
+                                            {
+                                                "code": "initial-population"
+                                            }
+                                        ]
+                                    },
+                                    "count": 1
+                                },
+                                {
+                                    "code": {
+                                        "coding": [
+                                            {
+                                                "code": "numerator"
+                                            }
+                                        ]
+                                    },
+                                    "count": 1
+                                },
+                                {
+                                    "code": {
+                                        "coding": [
+                                            {
+                                                "code": "denominator"
+                                            }
+                                        ]
+                                    },
+                                    "count": 1
+                                },
+                                {
+                                    "code": {
+                                        "coding": [
+                                            {
+                                                "code": "denominator-exclusion"
+                                            }
+                                        ]
+                                    },
+                                    "count": 0
+                                }
+                            ]
+                        },
+                        {
+                            "value": {
+                                "text": "djLbQmxgfqL08zA4"
+                            },
+                            "population": [
+                                {
+                                    "code": {
+                                        "coding": [
+                                            {
+                                                "code": "initial-population"
+                                            }
+                                        ]
+                                    },
+                                    "count": 0
+                                },
+                                {
+                                    "code": {
+                                        "coding": [
+                                            {
+                                                "code": "numerator"
+                                            }
+                                        ]
+                                    },
+                                    "count": 0
+                                },
+                                {
+                                    "code": {
+                                        "coding": [
+                                            {
+                                                "code": "denominator"
+                                            }
+                                        ]
+                                    },
+                                    "count": 0
+                                },
+                                {
+                                    "code": {
+                                        "coding": [
+                                            {
+                                                "code": "denominator-exclusion"
+                                            }
+                                        ]
+                                    },
+                                    "count": 0
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "code": [
+                        {
+                            "text": "2zEzA8m7KUI"
+                        }
+                    ],
+                    "stratum": [
+                        {
+                            "value": {
+                                "text": "eMphgMqWIIr8"
+                            },
+                            "population": [
+                                {
+                                    "code": {
+                                        "coding": [
+                                            {
+                                                "code": "initial-population"
+                                            }
+                                        ]
+                                    },
+                                    "count": 0
+                                },
+                                {
+                                    "code": {
+                                        "coding": [
+                                            {
+                                                "code": "numerator"
+                                            }
+                                        ]
+                                    },
+                                    "count": 0
+                                },
+                                {
+                                    "code": {
+                                        "coding": [
+                                            {
+                                                "code": "denominator"
+                                            }
+                                        ]
+                                    },
+                                    "count": 0
+                                },
+                                {
+                                    "code": {
+                                        "coding": [
+                                            {
+                                                "code": "denominator-exclusion"
+                                            }
+                                        ]
+                                    },
+                                    "count": 0
+                                }
+                            ]
+                        },
+                        {
+                            "value": {
+                                "text": "fkF0wAumkRhRT"
+                            },
+                            "population": [
+                                {
+                                    "code": {
+                                        "coding": [
+                                            {
+                                                "code": "initial-population"
+                                            }
+                                        ]
+                                    },
+                                    "count": 1
+                                },
+                                {
+                                    "code": {
+                                        "coding": [
+                                            {
+                                                "code": "numerator"
+                                            }
+                                        ]
+                                    },
+                                    "count": 1
+                                },
+                                {
+                                    "code": {
+                                        "coding": [
+                                            {
+                                                "code": "denominator"
+                                            }
+                                        ]
+                                    },
+                                    "count": 1
+                                },
+                                {
+                                    "code": {
+                                        "coding": [
+                                            {
+                                                "code": "denominator-exclusion"
+                                            }
+                                        ]
+                                    },
+                                    "count": 0
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "code": [
+                        {
+                            "text": "Jb802B0PFbvRu4"
+                        }
+                    ],
+                    "stratum": [
+                        {
+                            "value": {
+                                "text": "2MrCEr4drL4MIq"
+                            },
+                            "population": [
+                                {
+                                    "code": {
+                                        "coding": [
+                                            {
+                                                "code": "initial-population"
+                                            }
+                                        ]
+                                    },
+                                    "count": 1
+                                },
+                                {
+                                    "code": {
+                                        "coding": [
+                                            {
+                                                "code": "numerator"
+                                            }
+                                        ]
+                                    },
+                                    "count": 1
+                                },
+                                {
+                                    "code": {
+                                        "coding": [
+                                            {
+                                                "code": "denominator"
+                                            }
+                                        ]
+                                    },
+                                    "count": 1
+                                },
+                                {
+                                    "code": {
+                                        "coding": [
+                                            {
+                                                "code": "denominator-exclusion"
+                                            }
+                                        ]
+                                    },
+                                    "count": 0
+                                }
+                            ]
+                        },
+                        {
+                            "value": {
+                                "text": "In0p2mAZIgo2HD4"
+                            },
+                            "population": [
+                                {
+                                    "code": {
+                                        "coding": [
+                                            {
+                                                "code": "initial-population"
+                                            }
+                                        ]
+                                    },
+                                    "count": 0
+                                },
+                                {
+                                    "code": {
+                                        "coding": [
+                                            {
+                                                "code": "numerator"
+                                            }
+                                        ]
+                                    },
+                                    "count": 0
+                                },
+                                {
+                                    "code": {
+                                        "coding": [
+                                            {
+                                                "code": "denominator"
+                                            }
+                                        ]
+                                    },
+                                    "count": 0
+                                },
+                                {
+                                    "code": {
+                                        "coding": [
+                                            {
+                                                "code": "denominator-exclusion"
+                                            }
+                                        ]
+                                    },
+                                    "count": 0
+                                }
+                            ]
+                        },
+                        {
+                            "value": {
+                                "text": "m6jgHCR2Pa8sj"
+                            },
+                            "population": [
+                                {
+                                    "code": {
+                                        "coding": [
+                                            {
+                                                "code": "initial-population"
+                                            }
+                                        ]
+                                    },
+                                    "count": 0
+                                },
+                                {
+                                    "code": {
+                                        "coding": [
+                                            {
+                                                "code": "numerator"
+                                            }
+                                        ]
+                                    },
+                                    "count": 0
+                                },
+                                {
+                                    "code": {
+                                        "coding": [
+                                            {
+                                                "code": "denominator"
+                                            }
+                                        ]
+                                    },
+                                    "count": 0
+                                },
+                                {
+                                    "code": {
+                                        "coding": [
+                                            {
+                                                "code": "denominator-exclusion"
+                                            }
+                                        ]
+                                    },
+                                    "count": 0
+                                }
+                            ]
+                        },
+                        {
+                            "value": {
+                                "text": "Qqj42g2CWbWl"
+                            },
+                            "population": [
+                                {
+                                    "code": {
+                                        "coding": [
+                                            {
+                                                "code": "initial-population"
+                                            }
+                                        ]
+                                    },
+                                    "count": 0
+                                },
+                                {
+                                    "code": {
+                                        "coding": [
+                                            {
+                                                "code": "numerator"
+                                            }
+                                        ]
+                                    },
+                                    "count": 0
+                                },
+                                {
+                                    "code": {
+                                        "coding": [
+                                            {
+                                                "code": "denominator"
+                                            }
+                                        ]
+                                    },
+                                    "count": 0
+                                },
+                                {
+                                    "code": {
+                                        "coding": [
+                                            {
+                                                "code": "denominator-exclusion"
+                                            }
+                                        ]
+                                    },
+                                    "count": 0
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "evaluatedResource": [
+        {
+            "reference": "Condition/123"
+        }
+    ],
+    "meta": {
+        "versionId": "20",
+        "lastUpdated": "2022-02-17T23:28:19.500+08:00"
+    }
+}

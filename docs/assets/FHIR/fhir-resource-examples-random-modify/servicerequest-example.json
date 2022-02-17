@@ -1,0 +1,43 @@
+{
+    "resourceType": "ServiceRequest",
+    "id": "example",
+    "text": {
+        "status": "generated",
+        "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">To be added</div>"
+    },
+    "status": "completed",
+    "intent": "order",
+    "category": [
+        {
+            "coding": [
+                {
+                    "system": "http://snomed.info/sct",
+                    "code": "103693007",
+                    "display": "OeEmvVjn6wauU"
+                }
+            ],
+            "text": "uLXLmZT5r7MawSQ2"
+        }
+    ],
+    "code": {
+        "coding": [
+            {
+                "system": "http://snomed.info/sct",
+                "code": "303653007",
+                "display": "BHKgAJ5AxYGDpI"
+            }
+        ]
+    },
+    "subject": {
+        "reference": "Patient/example"
+    },
+    "meta": {
+        "tag": [
+            {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+                "code": "HTEST",
+                "display": "Gnh6o9RVuJ2whtgXyt"
+            }
+        ]
+    }
+}

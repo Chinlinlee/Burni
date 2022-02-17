@@ -1,0 +1,9 @@
+{
+    "resourceType": "InsurancePlan",
+    "id": "InsurancePlan-example",
+    "name": "foo",
+    "meta": {
+        "versionId": "20",
+        "lastUpdated": "2022-02-17T23:28:16.487+08:00"
+    }
+}

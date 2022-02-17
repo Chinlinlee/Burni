@@ -1,0 +1,27 @@
+{
+    "resourceType": "Linkage",
+    "id": "Linkage-example",
+    "author": {
+        "reference": "Practitioner/f201"
+    },
+    "item": [
+        {
+            "type": "source",
+            "resource": {
+                "reference": "Condition/example",
+                "display": "tj32ZFMaVJAv"
+            }
+        },
+        {
+            "type": "alternate",
+            "resource": {
+                "reference": "Condition/condition-example",
+                "display": "KEaf8I0J"
+            }
+        }
+    ],
+    "meta": {
+        "versionId": "20",
+        "lastUpdated": "2022-02-17T23:28:17.438+08:00"
+    }
+}

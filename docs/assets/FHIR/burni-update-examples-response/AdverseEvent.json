@@ -1,0 +1,66 @@
+{
+    "resourceType": "AdverseEvent",
+    "id": "AdverseEvent-example",
+    "identifier": {
+        "system": "http://acme.com/ids/patients/risks",
+        "value": "HD50Mzn3Cjm"
+    },
+    "actuality": "actual",
+    "category": [
+        {
+            "coding": [
+                {
+                    "system": "http://terminology.hl7.org/CodeSystem/adverse-event-category",
+                    "code": "product-use-error",
+                    "display": "tR9gqyXG8WApxtHO"
+                }
+            ]
+        }
+    ],
+    "event": {
+        "coding": [
+            {
+                "system": "http://snomed.info/sct",
+                "code": "304386008",
+                "display": "SCgEDBDcLJHS"
+            }
+        ],
+        "text": "lEKQkJjVSzCnz7"
+    },
+    "subject": {
+        "reference": "Patient/example"
+    },
+    "date": "2017-01-29T20:34:56+08:00",
+    "seriousness": {
+        "coding": [
+            {
+                "system": "http://terminology.hl7.org/CodeSystem/adverse-event-seriousness",
+                "code": "Non-serious",
+                "display": "NbUl42O1iCFg"
+            }
+        ]
+    },
+    "severity": {
+        "coding": [
+            {
+                "system": "http://terminology.hl7.org/CodeSystem/adverse-event-severity",
+                "code": "mild",
+                "display": "cExOkHzFn2KecO"
+            }
+        ]
+    },
+    "recorder": {
+        "reference": "Practitioner/example"
+    },
+    "suspectEntity": [
+        {
+            "instance": {
+                "reference": "Medication/example"
+            }
+        }
+    ],
+    "meta": {
+        "versionId": "22",
+        "lastUpdated": "2022-02-17T23:27:46.117+08:00"
+    }
+}
