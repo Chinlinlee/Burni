@@ -195,6 +195,98 @@ function getCodeCreate(resource) {
     return `${post}`;
 }
 
+function getCodeUpdate(resource) {
+    const requestExampleBody = require(`../docs/assets/FHIR/fhir-resource-examples-random-modify/${resource.toLowerCase()}-example.json`);
+    const responseExampleBody = require(`../docs/assets/FHIR/burni-update-examples-response/${resource}.json`);
+    const requestXMLExampleBody = fs.readFileSync(path.join(__dirname, `../docs/assets/FHIR/fhir-resource-examples-random-modify-xml/${resource.toLowerCase()}-example.xml`), { encoding: 'utf8'});
+    const responseXMLExampleBody = fs.readFileSync(path.join(__dirname, `../docs/assets/FHIR/burni-update-examples-response-xml/${resource}.xml`), { encoding: 'utf8'});
+    const comment = `
+    /**
+     * 
+     * @api {put} /fhir/${resource}/:id update ${resource}
+     * @apiName update${resource}
+     * @apiGroup ${resource}
+     * @apiVersion  v2.1.0
+     * @apiDescription update ${resource} resource.
+     * 
+     * @apiParam {string=${resource}} resourceType 
+     * @apiParamExample {json} name: json-example Content-Type: application/fhir+json
+     * 
+     ${JSON.stringify(requestExampleBody, null, 4)}
+     *
+     * @apiParamExample {xml} name: xml-example Content-Type: application/fhir+xml
+     * 
+     ${requestXMLExampleBody}
+     *
+     * @apiExample {Shell} cURL
+     * #example from: https://chinlinlee.github.io/Burni/assets/FHIR/fhir-resource-examples/${resource.toLowerCase()}-example.json
+     * curl --location --request PUT 'http://burni.example.com/fhir/${resource}/${resource}-example \\' 
+     * --header 'Content-Type: application/fhir+json' \\
+     * --data-raw '${JSON.stringify(requestExampleBody)}'
+     * @apiExample {JavaScript} javascript Axios
+     //example from: https://chinlinlee.github.io/Burni/assets/FHIR/fhir-resource-examples/${resource.toLowerCase()}-example.json
+    const axios = require('axios');
+    const data = ${JSON.stringify(responseExampleBody)}
+    const config = {
+        method: 'put',
+        url: 'http://burni.example.com/fhir/${resource}/${resource}-example',
+        headers: { 
+            'Content-Type': 'application/fhir+json'
+        },
+        data: data
+    };
+
+    axios(config)
+    .then(function (response) {
+        console.log(JSON.stringify(response.data));
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
+    * @apiSuccess (Success 200 Content-Type: application/fhir+json) {object} FHIR-JSON-RESOURCE
+    * @apiSuccessExample {json} (200) name: json-example Content-Type: application/fhir+json
+    ${JSON.stringify(responseExampleBody, null, 4)}
+    *
+    * @apiSuccess (Success 200 Content-Type: application/fhir+xml) {object} FHIR-XML-RESOURCE 
+    * @apiSuccessExample {xml} (200) name: xml-example Content-Type: application/fhir+xml
+    ${responseXMLExampleBody}
+    *
+    * @apiError (Error Not Found 400 Content-Type: application/fhir+json) {object} FHIR-JSON-RESOURCE
+    * @apiErrorExample {json} (400) name: Bad-Request-Response Content-Type: application/fhir+json
+    {
+        "resourceType": "OperationOutcome",
+        "issue": [
+            {
+                "severity": "error",
+                "code": "exception",
+                "diagnostics": "validation error, path \`resourceType\` is required"
+            }
+        ]
+    }
+    * @apiError (Error Not Found 400 Content-Type: application/fhir+xml) {object} FHIR-XML-RESOURCE
+    * @apiErrorExample {xml} (400) name: Bad-Request-Response Content-Type: application/fhir+xml
+    * 
+    <OperationOutcome xmlns='http://hl7.org/fhir'>
+    <issue>
+        <severity value='error'/>
+        <code value='exception'/>
+        <diagnostics value='validation error, path \`resourceType\` is required'/>
+    </issue>
+    </OperationOutcome>
+    * 
+    */
+    `;
+    let put = `
+    const update = require('../../../FHIRApiService/update.js');
+
+    module.exports = async function(req, res) {
+        return await update(req, res, "${resource}");
+    };
+    `;
+    if (GENERATE_API_DOC) return `${comment}${put}`;
+    return `${put}`;
+}
+
 /**
  * 
  * @param {Object} option 
@@ -303,13 +395,7 @@ function generateAPI(option) {
         //#endregion
 
         //#region update (put)
-        let put = `
-        const update = require('../../../FHIRApiService/update.js');
-
-        module.exports = async function(req, res) {
-            return await update(req, res, "${res}");
-        };
-        `;
+        let put = getCodeUpdate(res);
         if (res == "List") {
             put = `
             const update = require('../../../FHIRApiService/update.js');
