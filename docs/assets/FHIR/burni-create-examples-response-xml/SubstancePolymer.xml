@@ -1,0 +1,1 @@
+<?xml version="1.0" encoding="UTF-8"?><SubstancePolymer xmlns="http://hl7.org/fhir"><id value="794de181-9cb9-4345-8f99-5d0e14588540"/><meta><versionId value="1"/><lastUpdated value="2022-02-17T17:34:56.414+08:00"/><tag><system value="http://terminology.hl7.org/CodeSystem/v3-ActReason"/><code value="HTEST"/><display value="test health data"/></tag></meta></SubstancePolymer>

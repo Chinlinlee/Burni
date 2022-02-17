@@ -1,5 +1,6 @@
 const fhirgen = require('../FHIR-mongoose-Models-Generator/resourceGenerator');
 const fs = require('fs');
+const path = require('path');
 const mkdirp = require('mkdirp');
 const beautify = require('js-beautify').js;
 const _ = require('lodash');
@@ -12,6 +13,7 @@ const GENERATE_API_DOC = true;
  */
 function getCodeGetById(resource) {
     const responseExampleBody = require(`../docs/assets/FHIR/burni-create-examples-response/${resource}.json`);
+    const responseXMLExampleBody = fs.readFileSync(path.join(__dirname, `../docs/assets/FHIR/burni-create-examples-response-xml/${resource}.xml`), { encoding: 'utf8'});
     const comment = `
     /**
      * 
@@ -44,6 +46,10 @@ function getCodeGetById(resource) {
     * @apiSuccessExample {json} (200) name: Success-Response Content-Type: application/fhir+json
     ${JSON.stringify(responseExampleBody, null, 4)}
     * 
+    * @apiSuccess (Success 200 Content-Type: application/fhir+xml) {object} FHIR-XML-RESOURCE
+    * @apiSuccessExample {xml} (200) name: Success-Response-XML Content-Type: application/fhir+xml
+    ${responseXMLExampleBody}
+    *
     * @apiError (Error Not Found 404 Content-Type: application/fhir+json) {object} FHIR-JSON-RESOURCE
     * @apiErrorExample {json} (404) name: Not-Found-Response Content-Type: application/fhir+json
     {
@@ -56,6 +62,17 @@ function getCodeGetById(resource) {
             }
         ]
     }
+    *
+    * @apiError (Error Not Found 404 Content-Type: application/fhir+xml) {object} FHIR-XML-RESOURCE
+    * @apiErrorExample {xml} (404) name: Not-Found-Response-XML Content-Type: application/fhir+xml
+    <OperationOutcome xmlns='http://hl7.org/fhir'>
+    <issue>
+        <severity value='error'/>
+        <code value='exception'/>
+        <diagnostics value='not found ${resource}/${responseExampleBody.id}'/>
+    </issue>
+    </OperationOutcome>
+    *
     */
     `;
     const getById = `
@@ -71,6 +88,7 @@ function getCodeGetById(resource) {
 
 function getCodeCreate(resource) {
     const responseExampleBody = require(`../docs/assets/FHIR/burni-create-examples-response/${resource}.json`);
+    const responseXMLExampleBody = fs.readFileSync(path.join(__dirname,`../docs/assets/FHIR/burni-create-examples-response-xml/${resource}.xml`), { encoding: 'utf8'});
     const comment = `
     /**
      * 
@@ -84,7 +102,11 @@ function getCodeCreate(resource) {
      * @apiParamExample {json} name: json-example Content-Type: application/fhir+json
      * 
      ${JSON.stringify(responseExampleBody, null, 4)}
+     *
+     * @apiParamExample {xml} name: xml-example Content-Type: application/fhir+xml
      * 
+     ${responseXMLExampleBody}
+     *
      * @apiExample {Shell} cURL
      * #example from: https://chinlinlee.github.io/Burni/assets/FHIR/fhir-resource-examples/${resource.toLowerCase()}-example.json
      * curl --location --request POST 'http://burni.example.com/fhir/${resource} \\' 
@@ -111,10 +133,13 @@ function getCodeCreate(resource) {
         console.log(error);
     });
     * @apiSuccess (Success 200 Content-Type: application/fhir+json) {object} FHIR-JSON-RESOURCE
-    * @apiSuccess (Success 200 Content-Type: application/fhir+xml) {object} FHIR-XML-RESOURCE
     * @apiSuccessExample {json} (200) name: json-example Content-Type: application/fhir+json
     ${JSON.stringify(responseExampleBody, null, 4)}
-    * 
+    *
+    * @apiSuccess (Success 200 Content-Type: application/fhir+xml) {object} FHIR-XML-RESOURCE 
+    * @apiSuccessExample {xml} (200) name: xml-example Content-Type: application/fhir+xml
+    ${responseXMLExampleBody}
+    *
     * @apiError (Error Not Found 400 Content-Type: application/fhir+json) {object} FHIR-JSON-RESOURCE
     * @apiErrorExample {json} (400) name: Bad-Request-Response Content-Type: application/fhir+json
     {
@@ -127,6 +152,17 @@ function getCodeCreate(resource) {
             }
         ]
     }
+    * @apiError (Error Not Found 400 Content-Type: application/fhir+xml) {object} FHIR-XML-RESOURCE
+    * @apiErrorExample {xml} (400) name: Bad-Request-Response Content-Type: application/fhir+xml
+    * 
+    <OperationOutcome xmlns='http://hl7.org/fhir'>
+    <issue>
+        <severity value='error'/>
+        <code value='exception'/>
+        <diagnostics value='validation error, path \`resourceType\` is required'/>
+    </issue>
+    </OperationOutcome>
+    * 
     */
     `;
     let post = `
