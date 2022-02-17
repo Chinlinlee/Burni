@@ -6,7 +6,6 @@ module.exports = {
         if (v) {
             let timeDate = moment(v, "hh:mm:ss.SSS").toDate();
             let storeTime = timeDate.getHours() * 3600000 + timeDate.getMinutes() * 60000+ timeDate.getSeconds() * 1000 + timeDate.getMilliseconds();
-            console.log(storeTime);
             return storeTime;
         } 
     },
