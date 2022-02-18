@@ -3,7 +3,6 @@ const path = require('path');
 const mkdirp = require('mkdirp');
 const beautify = require('js-beautify').js;
 const _ = require('lodash');
-const GENERATE_API_DOC = true;
 
 /**
  * @param {string} resource resource type
@@ -168,6 +167,7 @@ function getDocCodeUpdate(resource) {
     /**
      * 
      * @api {put} /fhir/${resource}/:id update ${resource}
+     * @apiParam {string} id Resource ID that you want to update
      * @apiName update${resource}
      * @apiGroup ${resource}
      * @apiVersion  v2.1.0
@@ -243,6 +243,86 @@ function getDocCodeUpdate(resource) {
     return `${comment}`;
 }
 
+function getDocCodeDelete(resource) {
+    const responseExampleBody = require(`../docs/assets/FHIR/burni-create-examples-response/${resource}.json`);
+    const comment = `
+    /**
+     * 
+     * @api {delete} /fhir/${resource}/:id delete ${resource} by id
+     * @apiParam {string} id Resource ID in server
+     * @apiName delete${resource}
+     * @apiGroup ${resource}
+     * @apiVersion  v2.1.0
+     * @apiDescription delete ${resource} resource by id.
+     * 
+     * @apiExample {Shell} cURL
+     * #example from: https://chinlinlee.github.io/Burni/assets/FHIR/fhir-resource-examples/${resource.toLowerCase()}-example.json
+     * curl --location --request DELETE 'http://burni.example.com/fhir/${resource}/${responseExampleBody.id}'
+     * @apiExample {JavaScript} javascript Axios
+     //example from: https://chinlinlee.github.io/Burni/assets/FHIR/fhir-resource-examples/${resource.toLowerCase()}-example.json
+    const axios = require('axios');
+    const config = {
+        method: 'delete',
+        url: 'http://burni.example.com/fhir/${resource}/${responseExampleBody.id}'
+    };
+
+    axios(config)
+    .then(function (response) {
+        console.log(JSON.stringify(response.data));
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
+    * @apiSuccess (Success 200 Content-Type: application/fhir+json) {object} FHIR-JSON-RESOURCE
+    * @apiSuccessExample {json} (200) name: Success-Response Content-Type: application/fhir+json
+    {
+        "resourceType": "OperationOutcome",
+        "issue": [
+            {
+                "severity": "information",
+                "code": "informational",
+                "diagnostics": "delete ${resource}/${responseExampleBody.id} successfully"
+            }
+        ]
+    }
+    * 
+    * @apiSuccess (Success 200 Content-Type: application/fhir+xml) {object} FHIR-XML-RESOURCE
+    * @apiSuccessExample {xml} (200) name: Success-Response-XML Content-Type: application/fhir+xml
+    <OperationOutcome xmlns='http://hl7.org/fhir'>
+        <issue>
+        <severity value='information'/>
+        <code value='informational'/>
+        <diagnostics value='delete ${resource}/${responseExampleBody.id} successfully'/>
+        </issue>
+    </OperationOutcome>
+    *
+    * @apiError (Error Not Found 404 Content-Type: application/fhir+json) {object} FHIR-JSON-RESOURCE
+    * @apiErrorExample {json} (404) name: Not-Found-Response Content-Type: application/fhir+json
+    {
+        "resourceType": "OperationOutcome",
+        "issue": [
+            {
+                "severity": "error",
+                "code": "exception",
+                "diagnostics": "The id->${responseExampleBody.id} not found in ${resource} resource"
+            }
+        ]
+    }
+    *
+    * @apiError (Error Not Found 404 Content-Type: application/fhir+xml) {object} FHIR-XML-RESOURCE
+    * @apiErrorExample {xml} (404) name: Not-Found-Response-XML Content-Type: application/fhir+xml
+    <OperationOutcome xmlns='http://hl7.org/fhir'>
+        <issue>
+        <severity value='error'/>
+        <code value='not-found'/>
+        <diagnostics value='The id-&gt;${responseExampleBody.id}  not found in ${resource} resource'/>
+        </issue>
+    </OperationOutcome>
+    *
+    */
+    `;
+    return `${comment}`;
+}
 
 /**
  * 
@@ -265,6 +345,11 @@ function generateDoc(resources) {
         //#region update (put)
         const updateCode = getDocCodeUpdate(res);
         fs.writeFileSync(`./docs/apidoc/apidoc-sources/${res}/put${res}.js`, beautify(updateCode));
+        //#endregion
+
+        //#region delete
+        const deleteCode = getDocCodeDelete(res);
+        fs.writeFileSync(`./docs/apidoc/apidoc-sources/${res}/delete${res}.js`, beautify(deleteCode));
         //#endregion
     }
 }

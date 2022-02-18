@@ -55,7 +55,7 @@
     ],
     "type": "token",
     "expression": "id",
-    "xpath": "f:*/f:id",
+    "xpath": "f:*\\f:id",
     "xpathUsage": "normal",
     "comparator": [
         "eq"
