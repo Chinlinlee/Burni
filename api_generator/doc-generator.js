@@ -3,6 +3,108 @@ const path = require('path');
 const mkdirp = require('mkdirp');
 const beautify = require('js-beautify').js;
 const _ = require('lodash');
+const currentSupportParams = require('./currentSupportParameters.json');
+
+function getDocCodeSearch(resource) {
+    const responseExampleBody = require(`../docs/assets/FHIR/burni-create-examples-response/${resource}.json`);
+    const responseXMLExampleBody = fs.readFileSync(path.join(__dirname, `../docs/assets/FHIR/burni-create-examples-response-xml/${resource}.xml`), { encoding: 'utf8'});
+    const params = currentSupportParams[resource];
+    let paramsComment = "";
+    for (let param of params) {
+        paramsComment += `* @apiQuery {string} [${param.parameter}] ${param.description}
+        `;
+    }
+    const comment = `
+    /**
+     * 
+     * @api {get} /fhir/${resource}/ search-type ${resource}
+     * @apiName search-type${resource}
+     * @apiGroup ${resource}
+     * @apiVersion  v2.1.0
+     * @apiDescription search-type ${resource} resource by id.
+     * 
+     ${paramsComment}
+     * 
+     * @apiExample {Shell} cURL
+     * curl --location --request GET 'http://burni.example.com/fhir/${resource}'
+     * @apiExample {JavaScript} javascript Axios
+    const axios = require('axios');
+    const config = {
+        method: 'get',
+        url: 'http://burni.example.com/fhir/${resource}'
+    };
+
+    axios(config)
+    .then(function (response) {
+        console.log(JSON.stringify(response.data));
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
+    * @apiSuccess (Success 200 Content-Type: application/fhir+json) {object} FHIR-JSON-RESOURCE
+    * @apiSuccessExample {json} (200) name: Success-Response Content-Type: application/fhir+json
+    {
+        "resourceType": "Bundle",
+        "type": "searchset",
+        "total": 1,
+        "link": [
+            {
+                "relation": "self",
+                "url": "http://burni.example.com/fhir/${resource}?_offset=0&_count=100"
+            }
+        ],
+        "entry": [
+            {
+                "fullUrl": "http://burni.example.com/fhir/${resource}/${responseExampleBody.id}",
+                "resource": ${JSON.stringify(responseExampleBody, null, 4)}
+            }
+        ]
+    }
+    * @apiSuccessExample {json} (200) name: No-Match Content-Type: application/fhir+json
+    {
+        "resourceType": "Bundle",
+        "type": "searchset",
+        "total": 0,
+        "link": [
+            {
+                "relation": "self",
+                "url": "http://localhost:8090/fhir/Patient?name=1&_offset=0&_count=100"
+            }
+        ]
+    } 
+    *
+    * @apiSuccess (Success 200 Content-Type: application/fhir+xml) {object} FHIR-XML-RESOURCE
+    * @apiSuccessExample {xml} (200) name: Success-Response-XML Content-Type: application/fhir+xml
+    <?xml version="1.0" encoding="UTF-8"?>
+    <Bundle xmlns="http://hl7.org/fhir">
+        <type value="searchset"/>
+        <total value="1"/>
+        <link>
+            <relation value="self"/>
+            <url value="http://burni.example.com/fhir/${resource}?_offset=0&amp;_count=100"/>
+        </link>
+        <entry>
+            <fullUrl value="http://burni.example.com/fhir/${resource}/${responseExampleBody.id}"/>
+            <resource>
+                ${responseXMLExampleBody}
+            </resource>
+        </entry>
+    </Bundle>
+    *
+    * @apiSuccessExample {xml} (200) name: No-Match Content-Type: application/fhir+xml
+    <?xml version="1.0" encoding="UTF-8"?>
+    <Bundle xmlns="http://hl7.org/fhir">
+        <type value="searchset"/>
+        <total value="0"/>
+        <link>
+            <relation value="self"/>
+            <url value="http://burni.example.com/fhir/${resource}?_offset=0&amp;_count=100"/>
+        </link>
+    </Bundle>
+    */
+    `;
+    return `${comment}`;
+}
 
 /**
  * @param {string} resource resource type
@@ -331,6 +433,11 @@ function getDocCodeDelete(resource) {
 function generateDoc(resources) {
     for (let res in resources) {
         mkdirp.sync(`./docs/apidoc/apidoc-sources/${res}`);
+
+        //#region 
+        const search = getDocCodeSearch(res);
+        fs.writeFileSync(`./docs/apidoc/apidoc-sources/${res}/get${res}.js`, beautify(search));
+        //#endregion
 
         //#region getById
         const getById = getDocCodeGetById(res);
