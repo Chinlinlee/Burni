@@ -51,7 +51,7 @@ async function generateReDocHtml() {
             let resourcesBtnHtml = "";
             for(let resource of existResources) {
                 let btnId = `btn-${resource.resourceType.toLowerCase()}`;
-                resourcesBtnHtml += `<button class="btn btn-outline-secondary mt-2 mb-2" id="${btnId}" onclick="redocInit('${resource.resourceType}/swagger.json', '${btnId}')">${resource.resourceType}</button>\r\n        `;
+                resourcesBtnHtml += `<button class="btn btn-outline-secondary mt-2 mb-2" id="${btnId}" onclick="changeResource('${resource.resourceType}')">${resource.resourceType}</button>\r\n        `;
             }
             return resourcesBtnHtml;
         })()}

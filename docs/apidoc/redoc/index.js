@@ -1,27 +1,7 @@
-/**
- * @param specUrl {string}
- */
- function redocInit(specUrl, btnId) {
-    let redocObj = document.getElementById("redoc-container");
-    redocObj.remove();
-    let redocElement = document.createElement("redoc-container");
-    redocElement.id = "redoc-container";
-    let mainElement = document.querySelector("div.main");
-    mainElement.appendChild(redocElement);
-    initTry({
-        openApi: specUrl
-    });
-    let btn = document.getElementById(btnId);
-    const btnList = document.querySelectorAll("button.btn");
-    btnList.forEach((element, index , parent) => {
-        element.classList.remove("btn-outline-secondary");
-        element.classList.add("btn-outline-secondary");
-        element.classList.remove("btn-secondary");
-        if (index == btnList.length - 1) {
-            btn.classList.add("btn-secondary");
-            btn.classList.remove("btn-outline-secondary");
-        }
-    });
+function changeResource(resource) {
+    let url = new URL(window.location.href);
+    url.searchParams.set("resource", resource);
+    window.location.href = url.href;
 }
 
 function filterResourcesBtn(id) {
@@ -48,6 +28,18 @@ function init() {
         let input = document.getElementById("resource-filter");
         input.value = "";
         filterResourcesBtn("resource-filter");
+    }
+    let url = new URL(window.location.href);
+    let resourceType = url.searchParams.get("resource");
+    if (resourceType) {
+        let btnId = `btn-${resourceType.toLowerCase()}`;
+        let btn = document.getElementById(btnId);
+        btn.classList.remove("btn-outline-secondary");
+        btn.classList.add("btn-secondary");
+        let specUrl = `${resourceType}/swagger.json`;
+        initTry({
+            openApi: specUrl
+        });
     }
 }
 
