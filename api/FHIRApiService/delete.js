@@ -22,7 +22,7 @@ module.exports = async function(req, res, resourceType) {
         }
         return res.status(code).send(item);
     };
-    if (!user.checkTokenPermission(req, resourceType, "detele")) {
+    if (!user.checkTokenPermission(req, resourceType, "delete")) {
         return doRes(403,handleError.forbidden("Your token doesn't have permission with this API"));
     }
     let resFunc = {

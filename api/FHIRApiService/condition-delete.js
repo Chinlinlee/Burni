@@ -23,7 +23,7 @@ module.exports = async function(req, res, resourceType, paramsSearch) {
         }
         return res.status(code).send(item);
     };
-    if (!user.checkTokenPermission(req, resourceType, "search-type")) {
+    if (!user.checkTokenPermission(req, resourceType, "delete")) {
         return doRes(403,handleError.forbidden("Your token doesn't have permission with this API"));
     }
     let queryParameter = _.cloneDeep(req.query);
