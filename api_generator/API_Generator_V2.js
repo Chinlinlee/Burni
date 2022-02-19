@@ -138,6 +138,7 @@ function generateAPI(option) {
         }
         resourceParameterHandler += `
         module.exports.paramsSearch = paramsSearch;
+        module.exports.paramsSearchFields = paramsSearchFields;
         `;
         //#endregion
 
