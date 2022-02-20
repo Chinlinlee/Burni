@@ -39,7 +39,7 @@ module.exports = async function(req, res, resourceType, paramsSearch) {
     delete queryParameter['_count'];
     delete queryParameter['_offset'];
     Object.keys(queryParameter).forEach(key => {
-        if (!queryParameter[key] || isRealObject(queryParameter[key]) || key == "_include") {
+        if (!queryParameter[key] || isRealObject(queryParameter[key]) || key == "_include" || key == "_revinclude") {
             delete queryParameter[key];
         }
     });
@@ -75,6 +75,7 @@ module.exports = async function(req, res, resourceType, paramsSearch) {
             count = await mongodb[resourceType].countDocuments(queryParameter);
         }
         await searchResultParametersHandler["_include"](req.query, docs);
+        await searchResultParametersHandler["_revIncludes"](req.query, docs, resourceType);
         let bundle = createBundle(req, docs, count, paginationSkip, paginationLimit, resourceType);
         res.header('Last-Modified', new Date().toUTCString());
         return doRes(200 , bundle);
@@ -112,6 +113,28 @@ function getResourceSupportIncludeParams(resourceType) {
         return prev;
     } , []);
     return referenceParams;
+}
+
+function checkIsReferenceTypeSearchParameter(resourceName, searchParam, paramName, queryString) {
+    if (!isReferenceTypeSearchParameter(resourceName, searchParam)) {
+        let resourceReferenceParams = getResourceSupportIncludeParams(resourceName);
+        let error = new ErrorOperationOutcome(400, handleError.processing(`Invalid ${paramName} parameter: \`${queryString}\`. Invalid search parameter: \`${searchParam}\`. The search parameter type must be a reference type. Valid search parameters are: \`${JSON.stringify(resourceReferenceParams)}\``));
+        throw error;
+    }
+}
+
+function checkResourceIsExistInMongoDB(resourceName, paramName, queryString) {
+    if (!mongodb[resourceName]) {
+        let error = new ErrorOperationOutcome(400, handleError.processing(`Invalid ${paramName} parameter: \`${queryString}\`. Invalid/unsupported resource type: \`${resourceName}\``));
+        throw error;
+    }
+}
+
+function checkSearchParameterName(searchParamFields, resourceName, searchParam, paramName, queryString) {
+    if (!searchParamFields) {
+        let error = new ErrorOperationOutcome(400, handleError.processing(`Invalid ${paramName} parameter \`${queryString}\`. Unknown search parameter \`${searchParam}\` for resource ${resourceName}`));
+        throw error;
+    }
 }
 
 //#region _include
@@ -182,21 +205,11 @@ async function getIncludeValueInDB(referenceValue, specificType, mongoSearchResu
 async function pushIncludeDoc(includeQuery, doc, mongoSearchResult) {
     try {
         let [resourceName, searchParam, specificType] = includeQuery.split(":");
-        if (!mongodb[resourceName]) {
-            let error = new ErrorOperationOutcome(400, handleError.processing(`Invalid _include parameter: \`${includeQuery}\`. Invalid/unsupported resource type: \`${resourceName}\``));
-            throw error;
-        }
-        if (!isReferenceTypeSearchParameter(resourceName, searchParam)) {
-            let resourceReferenceParams = getResourceSupportIncludeParams(resourceName);
-            let error = new ErrorOperationOutcome(400, handleError.processing(`Invalid _include parameter: \`${includeQuery}\`. Invalid search parameter: \`${searchParam}\`. The search parameter type must be a reference type. Valid search parameters are: \`${JSON.stringify(resourceReferenceParams)}\``));
-            throw error;
-        }
+        checkResourceIsExistInMongoDB(resourceName, "_include", includeQuery);
+        checkIsReferenceTypeSearchParameter(resourceName, searchParam, "_include", includeQuery);
         const paramsSearchFields = require(`../FHIR/${resourceName}/${resourceName}ParametersHandler.js`).paramsSearchFields;
         let searchParamFields = paramsSearchFields[searchParam];
-        if (!searchParamFields) {
-            let error = new ErrorOperationOutcome(400, handleError.processing(`Invalid _include parameter \`${includeQuery}\`. Unknown search parameter \`${searchParam}\` for resource ${resourceName}`));
-            throw error;
-        }
+        checkSearchParameterName(searchParamFields, resourceName, searchParam, "_include", includeQuery);
         for (let fieldIndex = 0; fieldIndex < searchParamFields.length; fieldIndex++) {
             let field = searchParamFields[fieldIndex];
             let referenceValue = _.get(doc, field, false);
@@ -228,8 +241,50 @@ async function handleIncludeParam(query, mongoSearchResult) {
 }
 //#endregion
 
+//#region _revinclude
+async function getRevIncludeValueInDB(targetResource, referenceValue, field, mongoSearchResult) {
+    let doc = await mongodb[targetResource].findOne({ [field] : referenceValue }).exec();
+    if (doc) mongoSearchResult.push(doc.getFHIRField());
+}
+async function pushRevIncludeDoc(revIncludeQuery, doc, mongoSearchResult, resourceType) {
+    try {
+        let [resourceName, searchParam, specificType] = revIncludeQuery.split(":");
+        checkResourceIsExistInMongoDB(resourceName, "_revinclude", revIncludeQuery);
+        checkIsReferenceTypeSearchParameter(resourceName, searchParam, "_revinclude", revIncludeQuery);
+        const paramsSearchFields = require(`../FHIR/${resourceName}/${resourceName}ParametersHandler.js`).paramsSearchFields;
+        let searchParamFields = paramsSearchFields[searchParam];
+        checkSearchParameterName(searchParamFields, resourceName, searchParam, "_include", revIncludeQuery);
+        let referenceValue = `${resourceType}/${doc.id}`;
+        for (let fieldIndex = 0; fieldIndex < searchParamFields.length; fieldIndex++) { 
+            let field = searchParamFields[fieldIndex];
+            await getRevIncludeValueInDB(resourceName, referenceValue,field, mongoSearchResult);
+        }
+        
+    } catch(e) {
+        console.error(e);
+        throw e;
+    }
+}
+
+async function handleRevIncludeParam(query, mongoSearchResult, resourceType) {
+    let revinclude = _.get(query, "_revinclude", false);
+    if (revinclude) {
+        if (!_.isArray(revinclude)) revinclude = [revinclude];
+        for (let index = 0; index < revinclude.length; index++) {
+            let revincludeQuery = revinclude[index];
+            for (let doc of mongoSearchResult) {
+                await pushRevIncludeDoc(revincludeQuery, doc, mongoSearchResult, resourceType);
+            }
+        }
+    }
+}
+//#endregion
+
 const searchResultParametersHandler = {
     "_include": async (query, mongoSearchResult) => { 
         await handleIncludeParam(query,mongoSearchResult);
+    },
+    "_revIncludes": async (query, mongoSearchResult, resourceType) => {
+        await handleRevIncludeParam(query, mongoSearchResult, resourceType);
     }
 };
