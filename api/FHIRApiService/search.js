@@ -102,7 +102,7 @@ function isReferenceTypeSearchParameter(resourceType, parameter) {
     let parameterList = require('../../api_generator/FHIRParametersClean.json');
     let resourceParameterObj = _.get(parameterList,resourceType);
     let parameterObj = resourceParameterObj.find(v=> v.parameter == parameter);
-    return _.get(parameterObj, "type") === "reference";
+    return _.get(parameterObj, "type") === "reference" || parameter === "*";
 }
 
 function getResourceSupportIncludeParams(resourceType) {
@@ -196,6 +196,20 @@ async function getIncludeValueInDB(referenceValue, specificType, mongoSearchResu
     }
 }
 
+async function pushIncludeDocWithField(searchParamFields, doc, specificType, mongoSearchResult) {
+    for (let fieldIndex = 0; fieldIndex < searchParamFields.length; fieldIndex++) {
+        let field = searchParamFields[fieldIndex];
+        let referenceValue = _.get(doc, field, false);
+        if (referenceValue) {
+            if (isValidHttpUrl(referenceValue)) {
+                await getIncludeValueByFetch(referenceValue, specificType, mongoSearchResult);
+            } else {
+                await getIncludeValueInDB(referenceValue, specificType, mongoSearchResult);
+            }
+        }
+    }
+}
+
 /**
  * Find the doc by reference value then push the doc to original result.
  * @param {string} includeQuery 
@@ -209,16 +223,15 @@ async function pushIncludeDoc(includeQuery, doc, mongoSearchResult) {
         checkIsReferenceTypeSearchParameter(resourceName, searchParam, "_include", includeQuery);
         const paramsSearchFields = require(`../FHIR/${resourceName}/${resourceName}ParametersHandler.js`).paramsSearchFields;
         let searchParamFields = paramsSearchFields[searchParam];
-        checkSearchParameterName(searchParamFields, resourceName, searchParam, "_include", includeQuery);
-        for (let fieldIndex = 0; fieldIndex < searchParamFields.length; fieldIndex++) {
-            let field = searchParamFields[fieldIndex];
-            let referenceValue = _.get(doc, field, false);
-            if (referenceValue) {
-                if (isValidHttpUrl(referenceValue)) {
-                    await getIncludeValueByFetch(referenceValue, specificType, mongoSearchResult);
-                } else {
-                    await getIncludeValueInDB(referenceValue, specificType, mongoSearchResult);
-                }
+        if (searchParam !== "*") {
+            checkSearchParameterName(searchParamFields, resourceName, searchParam, "_include", includeQuery);
+            await pushIncludeDocWithField(searchParamFields, doc, specificType, mongoSearchResult);
+        } else if (searchParam === "*") {
+            let resourceReferenceParams = getResourceSupportIncludeParams(resourceName);
+            for (let index = 0 ; index < resourceReferenceParams.length; index++) {
+                let param = resourceReferenceParams[index];
+                let paramFields = paramsSearchFields[param];
+                await pushIncludeDocWithField(paramFields, doc, specificType, mongoSearchResult);
             }
         }
     } catch(e) {
@@ -243,23 +256,37 @@ async function handleIncludeParam(query, mongoSearchResult) {
 
 //#region _revinclude
 async function getRevIncludeValueInDB(targetResource, referenceValue, field, mongoSearchResult) {
-    let doc = await mongodb[targetResource].findOne({ [field] : referenceValue }).exec();
+    let doc = await mongodb[targetResource].findOne({ 
+        [field] : referenceValue 
+    }).exec();
     if (doc) mongoSearchResult.push(doc.getFHIRField());
+}
+
+async function pushRevIncludeDocWithField(searchParamFields, targetResource, referenceValue, mongoSearchResult) {
+    for (let fieldIndex = 0; fieldIndex < searchParamFields.length; fieldIndex++) { 
+        let field = searchParamFields[fieldIndex];
+        await getRevIncludeValueInDB(targetResource, referenceValue, field, mongoSearchResult);
+    }
 }
 async function pushRevIncludeDoc(revIncludeQuery, doc, mongoSearchResult, resourceType) {
     try {
+        let referenceValue = `${resourceType}/${doc.id}`;
         let [resourceName, searchParam, specificType] = revIncludeQuery.split(":");
         checkResourceIsExistInMongoDB(resourceName, "_revinclude", revIncludeQuery);
         checkIsReferenceTypeSearchParameter(resourceName, searchParam, "_revinclude", revIncludeQuery);
         const paramsSearchFields = require(`../FHIR/${resourceName}/${resourceName}ParametersHandler.js`).paramsSearchFields;
         let searchParamFields = paramsSearchFields[searchParam];
-        checkSearchParameterName(searchParamFields, resourceName, searchParam, "_include", revIncludeQuery);
-        let referenceValue = `${resourceType}/${doc.id}`;
-        for (let fieldIndex = 0; fieldIndex < searchParamFields.length; fieldIndex++) { 
-            let field = searchParamFields[fieldIndex];
-            await getRevIncludeValueInDB(resourceName, referenceValue,field, mongoSearchResult);
+        if (searchParam !== "*") {
+            checkSearchParameterName(searchParamFields, resourceName, searchParam, "_include", revIncludeQuery);
+            await pushRevIncludeDocWithField(searchParamFields, resourceName, referenceValue, mongoSearchResult);
+        } else if (searchParam === "*") {
+            let resourceReferenceParams = getResourceSupportIncludeParams(resourceName);
+            for (let index = 0 ; index < resourceReferenceParams.length; index++) {
+                let param = resourceReferenceParams[index];
+                let paramFields = paramsSearchFields[param];
+                await pushRevIncludeDocWithField(paramFields, resourceName, referenceValue, mongoSearchResult);
+            }
         }
-        
     } catch(e) {
         console.error(e);
         throw e;
