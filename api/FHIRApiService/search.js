@@ -74,8 +74,9 @@ module.exports = async function(req, res, resourceType, paramsSearch) {
         } else {
             count = await mongodb[resourceType].countDocuments(queryParameter);
         }
-        await searchResultParametersHandler["_include"](req.query, docs);
-        await searchResultParametersHandler["_revIncludes"](req.query, docs, resourceType);
+        let includeDocs = await searchResultParametersHandler["_include"](req.query, docs);
+        let reincludeDocs = await searchResultParametersHandler["_revIncludes"](req.query, docs, resourceType);
+        docs = [...docs, ...includeDocs, ...reincludeDocs];
         let bundle = createBundle(req, docs, count, paginationSkip, paginationLimit, resourceType);
         res.header('Last-Modified', new Date().toUTCString());
         return doRes(200 , bundle);
@@ -242,15 +243,17 @@ async function pushIncludeDoc(includeQuery, doc, mongoSearchResult) {
 
 async function handleIncludeParam(query, mongoSearchResult) {
     let include = _.get(query, "_include", false);
+    let includeDocs = [];
     if (include) {
         if (!_.isArray(include)) include = [include];
         for (let index = 0; index < include.length; index++) {
             let includeQuery = include[index];
             for (let doc of mongoSearchResult) {
-                await pushIncludeDoc(includeQuery, doc, mongoSearchResult);
+                await pushIncludeDoc(includeQuery, doc, includeDocs);
             }
         }
     }
+    return includeDocs;
 }
 //#endregion
 
@@ -270,6 +273,7 @@ async function pushRevIncludeDocWithField(searchParamFields, targetResource, ref
 }
 async function pushRevIncludeDoc(revIncludeQuery, doc, mongoSearchResult, resourceType) {
     try {
+        if (doc.resourceType != resourceType) return;
         let referenceValue = `${resourceType}/${doc.id}`;
         let [resourceName, searchParam, specificType] = revIncludeQuery.split(":");
         checkResourceIsExistInMongoDB(resourceName, "_revinclude", revIncludeQuery);
@@ -295,23 +299,25 @@ async function pushRevIncludeDoc(revIncludeQuery, doc, mongoSearchResult, resour
 
 async function handleRevIncludeParam(query, mongoSearchResult, resourceType) {
     let revinclude = _.get(query, "_revinclude", false);
+    let revincludeDocs = [];
     if (revinclude) {
         if (!_.isArray(revinclude)) revinclude = [revinclude];
         for (let index = 0; index < revinclude.length; index++) {
             let revincludeQuery = revinclude[index];
             for (let doc of mongoSearchResult) {
-                await pushRevIncludeDoc(revincludeQuery, doc, mongoSearchResult, resourceType);
+                await pushRevIncludeDoc(revincludeQuery, doc, revincludeDocs, resourceType);
             }
         }
     }
+    return revincludeDocs;
 }
 //#endregion
 
 const searchResultParametersHandler = {
     "_include": async (query, mongoSearchResult) => { 
-        await handleIncludeParam(query,mongoSearchResult);
+        return await handleIncludeParam(query,mongoSearchResult);
     },
     "_revIncludes": async (query, mongoSearchResult, resourceType) => {
-        await handleRevIncludeParam(query, mongoSearchResult, resourceType);
+        return await handleRevIncludeParam(query, mongoSearchResult, resourceType);
     }
 };
