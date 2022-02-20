@@ -116,7 +116,10 @@ function createBundle(req, docs, count, skip, limit, resource, option) {
         for (let i in docs) {
             let entry = new bundleClass.entry(getEntryFullUrl(docs[i], req.protocol, docs[i].resourceType), docs[i]);
             _.set(entry, "search.mode", "match");
-            if (docs[i].resourceType != resource) _.set(entry, "search.mode", "include");
+            if (_.get(docs[i], "myPointToCheckIsInclude")) {
+                delete docs[i]["myPointToCheckIsInclude"];
+                _.set(entry, "search.mode", "include");
+            } 
             bundle.entry.push(entry);
         }
     }

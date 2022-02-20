@@ -179,7 +179,11 @@ async function getIncludeValueInDB(referenceValue, specificType, mongoSearchResu
     if ( (!specificType) || specificTypeCondition) {
         if (referenceValueSplit.length === 2) {
             let doc = await mongodb[resourceInValue].findOne({ id : id }).exec();
-            if (doc) mongoSearchResult.push(doc.getFHIRField());
+            if (doc) {
+                doc = doc.getFHIRField();
+                _.set(doc, "myPointToCheckIsInclude", true);
+                mongoSearchResult.push(doc);
+            }
         } else if (referenceValue.includes("_history") && referenceValueSplit.length === 4) {
             let versionId = referenceValueSplit[3];
             let doc = await mongodb[resourceInValue].findOne({ 
@@ -192,7 +196,11 @@ async function getIncludeValueInDB(referenceValue, specificType, mongoSearchResu
                     }
                 ]
             }).exec();
-            if(doc) mongoSearchResult.push(doc.getFHIRField());
+            if (doc) {
+                doc = doc.getFHIRField();
+                _.set(doc, "myPointToCheckIsInclude", true);
+                mongoSearchResult.push(doc);
+            }
         }
     }
 }
@@ -262,7 +270,11 @@ async function getRevIncludeValueInDB(targetResource, referenceValue, field, mon
     let doc = await mongodb[targetResource].findOne({ 
         [field] : referenceValue 
     }).exec();
-    if (doc) mongoSearchResult.push(doc.getFHIRField());
+    if (doc) {
+        doc = doc.getFHIRField();
+        _.set(doc, "myPointToCheckIsInclude", true);
+        mongoSearchResult.push(doc);
+    }
 }
 
 async function pushRevIncludeDocWithField(searchParamFields, targetResource, referenceValue, mongoSearchResult) {
