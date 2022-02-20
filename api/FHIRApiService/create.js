@@ -34,6 +34,7 @@ module.exports = async function(req, res , resourceType) {
                 let reqBaseUrl = `${req.protocol}://${req.get('host')}/`;
                 let fullAbsoluteUrl = new URL(req.originalUrl, reqBaseUrl).href;
                 res.set("Location", fullAbsoluteUrl);
+                res.append("Last-Modified", (new Date()).toUTCString());
                 console.log(`create ${resourceType} id: ${doc.id} successfully`);
                 return doRes(201 , doc);
             },
