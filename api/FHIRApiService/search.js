@@ -9,7 +9,8 @@ const {
     ErrorOperationOutcome
 } = require('models/FHIR/httpMessage');
 const FHIR = require('../../models/FHIR/fhir/fhir').Fhir;
-const { user, isRealObject } = require('../apiService');
+const { isRealObject } = require('../apiService');
+const user = require('../APIservices/user.service');
 
 /**
  * 
@@ -28,7 +29,7 @@ module.exports = async function(req, res, resourceType, paramsSearch) {
         }
         return res.status(code).send(item);
     };
-    if (!user.checkTokenPermission(req, resourceType, "search-type")) {
+    if (!await user.checkTokenPermission(req, resourceType, "search-type")) {
         return doRes(403,handleError.forbidden("Your token doesn't have permission with this API"));
     }
     let queryParameter = _.cloneDeep(req.query);

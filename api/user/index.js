@@ -1,21 +1,21 @@
 const express = require('express');
 const Joi = require('joi');
 const router = express.Router();
-const { user } = require('../apiService');
+const user = require('../APIservices/user.service');
 const { validateParams } = require('../validator');
 const resourceTypeList = require('../../models/FHIR/resourceType');
 
 router.post('/adminLogin', function (req , res , next) {
     let passport = require('passport');
-    passport.authenticate('admin-login', function (err, user, info) {
+    passport.authenticate('admin-login', function (err, userObj, info) {
         if (err) { return next(err); }
-        if (!user) { 
+        if (!userObj) { 
             return res.status(401).json(info);
         }
-        req.logIn(user, function (err) {
+        req.logIn(userObj, function (err) {
             // Should not cause any errors
             if (err) { return next(err); }
-            return res.json(user);
+            return res.json(userObj);
         });
     })(req, res, next);
     //next(new Error("missing username or password"));

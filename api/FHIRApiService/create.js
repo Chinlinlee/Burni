@@ -6,7 +6,7 @@ const uuid = require('uuid');
 const _ = require('lodash');
 const { checkReference, getNotExistReferenceList } = require('../apiService');
 const FHIR = require('../../models/FHIR/fhir/fhir').Fhir;
-const { user } = require('../apiService');
+const user = require('../APIservices/user.service');
 const validateContained = require('./validateContained');
 
 /**
@@ -24,7 +24,7 @@ module.exports = async function(req, res , resourceType) {
         }
         return res.status(code).send(item);
     };
-    if (!user.checkTokenPermission(req, resourceType, "create")) {
+    if (!await user.checkTokenPermission(req, resourceType, "create")) {
         return doRes(403,handleError.forbidden("Your token doesn't have permission with this API"));
     }
     console.log(`doPost-create ${resourceType}`);

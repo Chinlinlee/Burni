@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const path = require('path');
-const { user } = require('../../api/apiService');
+const user = require('../../api/APIservices/user.service');
 
 
 router.get('/', function (req, res) {
