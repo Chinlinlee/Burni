@@ -79,6 +79,7 @@ module.exports = async function(req, res, resourceType, paramsSearch) {
         docs = [...docs, ...includeDocs, ...reincludeDocs];
         let bundle = createBundle(req, docs, count, paginationSkip, paginationLimit, resourceType);
         res.header('Last-Modified', new Date().toUTCString());
+        bundle.entry = _.uniqBy(bundle.entry, "fullUrl");
         return doRes(200 , bundle);
     } catch (e) {
         console.error(`api ${process.env.FHIRSERVER_APIPATH}/${resourceType}/ has error, `, e);
@@ -89,7 +90,7 @@ module.exports = async function(req, res, resourceType, paramsSearch) {
         return doRes(500 , operationOutcomeError);
     }
 };
-
+//#region custom functions use in `include` and `revinclude`
 function isValidHttpUrl(str) {
     try {
         let url = new URL(str);
@@ -137,6 +138,7 @@ function checkSearchParameterName(searchParamFields, resourceName, searchParam, 
         throw error;
     }
 }
+//#endregion
 
 //#region _include
 /**
