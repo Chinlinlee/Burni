@@ -84,7 +84,7 @@ async function checkTokenPermission(req, resourceType, interaction) {
             return false;
         }
     }
-    return false;
+    return true;
 }
 
 function verifyJWT(jwtString, secretOrPublicKey, option= {}) {
