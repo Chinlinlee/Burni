@@ -2,6 +2,36 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.5.0](https://github.com/Chinlinlee/Burni/compare/v2.4.0...v2.5.0) (2022-02-24)
+
+
+### Features
+
+* `*` wildcard for `_include` and `revinclude` ([0361c7d](https://github.com/Chinlinlee/Burni/commit/0361c7d49ceec844be861e82663d81fdea30a696))
+* add custom error class and `_include` param ([44af66f](https://github.com/Chinlinlee/Burni/commit/44af66f567cbf5334bb5aaab5f069a76d5b32623))
+* add search mode in entry and change url ([2a9d2e8](https://github.com/Chinlinlee/Burni/commit/2a9d2e8e302f0e68f053e6bc6978de578ab03f67))
+* handle `_revinclude` param in `search` API ([eb1e37c](https://github.com/Chinlinlee/Burni/commit/eb1e37c915ed845194f6cf8b15181bea083b9f36))
+* **api-generate:** add apidoc in `create` api ([a83808b](https://github.com/Chinlinlee/Burni/commit/a83808bb1065178b976c7bbe79f02769c15377b0))
+* **api-generate:** add apidoc in `update` api ([14fd32e](https://github.com/Chinlinlee/Burni/commit/14fd32e189815ea9e35ea8f0488464551843f2f8))
+* **api-generator:** add `read` api doc comment ([e155de7](https://github.com/Chinlinlee/Burni/commit/e155de73496a497f24db0123ab3398e9b8cedbeb))
+* **apidoc:** `delete`, swagger try in redoc, resource filter, layout ([bc57589](https://github.com/Chinlinlee/Burni/commit/bc57589845c16cc32a15b658ec782fda2f41c5d6))
+* **apidoc:** add `search` api doc ([cc770a2](https://github.com/Chinlinlee/Burni/commit/cc770a297f05f27fe8979bff9fa8ea16842ffbd4))
+* **docs:** reload page when click resource button ([d09547d](https://github.com/Chinlinlee/Burni/commit/d09547d872460111da924130e963386f8fa53437))
+* **schema:** completly validate reference string ([d0a615c](https://github.com/Chinlinlee/Burni/commit/d0a615c39ac5c6479e4abd48464baca68e158af8))
+
+
+### Bug Fixes
+
+* cannot access even disable the token control ([2434a8e](https://github.com/Chinlinlee/Burni/commit/2434a8e1c162e68a4d84a86332c131c35a3d8b9b))
+* cofused condition set search mode is include ([92e7659](https://github.com/Chinlinlee/Burni/commit/92e7659714774963c4589660e44bf7a87b6e8690))
+* duplicate resource in bundle entry ([1567a12](https://github.com/Chinlinlee/Burni/commit/1567a1219d3506d12c6191f38b654c9c561a8e85))
+* incorrect name in premision of `delete` API ([d9a4f9a](https://github.com/Chinlinlee/Burni/commit/d9a4f9a37b6af3ea1fec8fa9057dc1df8ea95d0d))
+* infinite loop in `reinlcude` and `include` ([62ce4a0](https://github.com/Chinlinlee/Burni/commit/62ce4a086addaf516e2dbc1c4afb5b66663a91f0))
+* missing `Last-Modified` in headers ([1fc14df](https://github.com/Chinlinlee/Burni/commit/1fc14df18a23ad0a7d809bb6062cb31f5df42624))
+* missing handle error coming from express ([2fe878e](https://github.com/Chinlinlee/Burni/commit/2fe878e632f372817ba1cc2888b9958bc11cb5d5))
+* not allowed `#id` contained reference id ([381fc0b](https://github.com/Chinlinlee/Burni/commit/381fc0bfbd80081272c25a24f930406e65ad557d))
+* token permission not working ([750709f](https://github.com/Chinlinlee/Burni/commit/750709f8501efeb2a0caa755d0eadec60ef15825))
+
 ## [2.4.0](https://github.com/Chinlinlee/Burni/compare/v2.3.1...v2.4.0) (2022-02-07)
 
 
