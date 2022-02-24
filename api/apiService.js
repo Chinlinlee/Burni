@@ -166,97 +166,10 @@ function getNotExistReferenceList(checkReferenceRes) {
     return notExistReferenceList;
 }
 
-const user = {
-    /**
-     * 
-     * @param {import('express').Request} req 
-     * @param {import('express').Response} res
-     * @param {import('express').NextFunction} next
-     * @returns 
-     */
-    checkIsLoggedIn: (req, res, next) => {
-        if (!req.isAuthenticated()) {
-            return res.status(401).send();
-        }
-        return next();
-    } ,
-    tokenAuthentication: async (req, res, next) => {
-        try {
-            if (process.env.ENABLE_TOKEN_AUTH == "true") {
-                let token = _.get(req.headers, "authorization",false);
-                if (!token) {
-                    return res.status(400).send(handleError.security("missing authorization in headers"));
-                }
-                let tokenInDb = await mongodb.issuedToken.findOne({
-                    id: token
-                });
-                if (tokenInDb) {
-                    jwt.verify(tokenInDb.token, process.env.JWT_SECRET_KEY, function(err, decoded) {
-                        if (err) {
-                            if (err.name == "TokenExpiredError") {
-                                return res.status(401).send(handleError.expired("token expired"));
-                            }
-                            return res.status(401).send(handleError.security(err.message));
-                        } 
-                        req.tokenObj = decoded;
-                        return next();
-                    });
-                } else {
-                    return res.status(401).send(handleError.security("the token not found"));
-                }
-            } else {
-                return next();
-            }
-        } catch(e) {
-            console.error(e);
-            return res.status(500).send(handleError.exception(e));
-        }
-    },
-    getTokenPermission: async (token,resourceType, interaction) => {
-        try {
-            let tokenInDb = await mongodb.issuedToken.findOne({
-                token: token
-            });
-            if (tokenInDb) {
-                let accessList = _.get(tokenInDb._doc,"accessList");
-                let resourceTypeInteractionList = accessList.find(v=> v.resourceType === resourceType);
-                if (resourceTypeInteractionList) {
-                    let permission = _.get(resourceTypeInteractionList, interaction, false);
-                    return permission;
-                }
-                return false;
-            }
-            return false;
-        } catch(e) {
-            console.error(e);
-            return false;
-        }
-    }
-};
-/**
- * 
- * @param {import('express').Request} req 
- * @param {import('express').Response} res 
- * @param {import('express').NextFunction} next 
- * @returns 
- */
-user["checkTokenPermission"] = async (req, resourceType, interaction) => {
-    if (process.env.ENABLE_TOKEN_AUTH == "true") {
-        let permission = await user.getTokenPermission(req.tokenObj.id, resourceType, interaction);
-        if (permission) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-    return false;
-};
-
 module.exports = {
     getDeepKeys: getDeepKeys,
     isRealObject: isRealObject,
     findResourceById: findResourceById,
     checkReference: checkReference , 
-    getNotExistReferenceList: getNotExistReferenceList,
-    user : user
+    getNotExistReferenceList: getNotExistReferenceList
 };

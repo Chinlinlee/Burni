@@ -1,0 +1,17 @@
+{
+    "resourceType": "SubstanceReferenceInformation",
+    "id": "example",
+    "text": {
+        "status": "generated",
+        "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><b>Generated Narrative with Details</b></p><p><b>id</b>: example</p></div>"
+    },
+    "meta": {
+        "tag": [
+            {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+                "code": "HTEST",
+                "display": "Lq0IYruoDjM"
+            }
+        ]
+    }
+}

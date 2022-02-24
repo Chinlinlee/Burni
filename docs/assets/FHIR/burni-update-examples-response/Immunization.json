@@ -1,0 +1,132 @@
+{
+    "resourceType": "Immunization",
+    "id": "Immunization-example",
+    "identifier": [
+        {
+            "system": "urn:ietf:rfc:3986",
+            "value": "TEZqXWXhvR4L4"
+        }
+    ],
+    "status": "completed",
+    "vaccineCode": {
+        "coding": [
+            {
+                "system": "urn:oid:1.2.36.1.2001.1005.17",
+                "code": "FLUVAX"
+            }
+        ],
+        "text": "HPKfbNjrg2lQWDZRh"
+    },
+    "patient": {
+        "reference": "Patient/example"
+    },
+    "encounter": {
+        "reference": "Encounter/example"
+    },
+    "occurrenceDateTime": "2013-01-10T08:00:00+08:00",
+    "primarySource": true,
+    "location": {
+        "reference": "Location/1"
+    },
+    "manufacturer": {
+        "reference": "Organization/hl7"
+    },
+    "lotNumber": "AAJN11K",
+    "expirationDate": "2015-02-15",
+    "site": {
+        "coding": [
+            {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActSite",
+                "code": "LA",
+                "display": "CuW31DhzmcM"
+            }
+        ]
+    },
+    "route": {
+        "coding": [
+            {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RouteOfAdministration",
+                "code": "IM",
+                "display": "i582tSmP7h4Z8"
+            }
+        ]
+    },
+    "doseQuantity": {
+        "value": 39209,
+        "system": "http://unitsofmeasure.org",
+        "code": "mg"
+    },
+    "performer": [
+        {
+            "function": {
+                "coding": [
+                    {
+                        "system": "http://terminology.hl7.org/CodeSystem/v2-0443",
+                        "code": "OP"
+                    }
+                ]
+            },
+            "actor": {
+                "reference": "Practitioner/example"
+            }
+        },
+        {
+            "function": {
+                "coding": [
+                    {
+                        "system": "http://terminology.hl7.org/CodeSystem/v2-0443",
+                        "code": "AP"
+                    }
+                ]
+            },
+            "actor": {
+                "reference": "Practitioner/example"
+            }
+        }
+    ],
+    "note": [
+        {
+            "text": "CIVEXMkOhvfQ2"
+        }
+    ],
+    "reasonCode": [
+        {
+            "coding": [
+                {
+                    "system": "http://snomed.info/sct",
+                    "code": "429060002"
+                }
+            ]
+        }
+    ],
+    "isSubpotent": true,
+    "education": [
+        {
+            "documentType": "253088698300010311120702",
+            "publicationDate": "2012-07-02T08:00:00+08:00",
+            "presentationDate": "2013-01-10T08:00:00+08:00"
+        }
+    ],
+    "programEligibility": [
+        {
+            "coding": [
+                {
+                    "system": "http://terminology.hl7.org/CodeSystem/immunization-program-eligibility",
+                    "code": "ineligible"
+                }
+            ]
+        }
+    ],
+    "fundingSource": {
+        "coding": [
+            {
+                "system": "http://terminology.hl7.org/CodeSystem/immunization-funding-source",
+                "code": "private"
+            }
+        ]
+    },
+    "meta": {
+        "versionId": "20",
+        "lastUpdated": "2022-02-17T23:28:15.004+08:00"
+    }
+}

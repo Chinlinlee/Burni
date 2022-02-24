@@ -1,0 +1,111 @@
+{
+    "resourceType": "EpisodeOfCare",
+    "id": "example",
+    "text": {
+        "status": "generated",
+        "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">\n      HACC Program for Peter James Chalmers at HL7 Healthcare 15 Sept 2014 - current<br/>\n\t\t\twas on leave from 22 Sept - 24 Sept while in respite care\n    </div>"
+    },
+    "identifier": [
+        {
+            "system": "http://example.org/sampleepisodeofcare-identifier",
+            "value": "JK3BPQNOcXRU"
+        }
+    ],
+    "status": "active",
+    "statusHistory": [
+        {
+            "status": "planned",
+            "period": {
+                "start": "2014-09-01",
+                "end": "2014-09-14"
+            }
+        },
+        {
+            "status": "active",
+            "period": {
+                "start": "2014-09-15",
+                "end": "2014-09-21"
+            }
+        },
+        {
+            "status": "onhold",
+            "period": {
+                "start": "2014-09-22",
+                "end": "2014-09-24"
+            }
+        },
+        {
+            "status": "active",
+            "period": {
+                "start": "2014-09-25"
+            }
+        }
+    ],
+    "type": [
+        {
+            "coding": [
+                {
+                    "system": "http://terminology.hl7.org/CodeSystem/episodeofcare-type",
+                    "code": "hacc",
+                    "display": "EWJ8wOmpbrfdk"
+                }
+            ]
+        }
+    ],
+    "diagnosis": [
+        {
+            "condition": {
+                "reference": "Condition/stroke"
+            },
+            "role": {
+                "coding": [
+                    {
+                        "system": "http://terminology.hl7.org/CodeSystem/diagnosis-role",
+                        "code": "CC",
+                        "display": "z2deO4AxEuZqmM"
+                    }
+                ]
+            },
+            "rank": 1
+        }
+    ],
+    "patient": {
+        "reference": "Patient/example"
+    },
+    "managingOrganization": {
+        "reference": "Organization/hl7"
+    },
+    "period": {
+        "start": "2014-09-01"
+    },
+    "referralRequest": [
+        {
+            "display": "2mCk6ADFdjIF"
+        }
+    ],
+    "careManager": {
+        "reference": "Practitioner/14",
+        "display": "UtkMP2CHXOdjcht"
+    },
+    "team": [
+        {
+            "reference": "CareTeam/example",
+            "display": "lPkPh2sIs1AEov"
+        }
+    ],
+    "account": [
+        {
+            "reference": "Account/example",
+            "display": "od7pnyH3jJyPily"
+        }
+    ],
+    "meta": {
+        "tag": [
+            {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+                "code": "HTEST",
+                "display": "C81PX04UjBtAXBo"
+            }
+        ]
+    }
+}

@@ -1,0 +1,45 @@
+{
+    "resourceType": "DiagnosticReport",
+    "id": "DiagnosticReport-example",
+    "status": "final",
+    "code": {
+        "coding": [
+            {
+                "system": "http://loinc.org",
+                "code": "38269-7"
+            }
+        ],
+        "text": "ysrequ31OejiE"
+    },
+    "subject": {
+        "reference": "Patient/pat2"
+    },
+    "effectiveDateTime": "2008-06-17T08:00:00+08:00",
+    "issued": "2008-06-18T07:23:00.000+08:00",
+    "performer": [
+        {
+            "reference": "Practitioner/3ad0687e-f477-468c-afd5-fcc2bf897809",
+            "display": "KyYYImJca15mu4"
+        }
+    ],
+    "result": [
+        {
+            "reference": "Observation/bmd"
+        }
+    ],
+    "conclusionCode": [
+        {
+            "coding": [
+                {
+                    "system": "http://snomed.info/sct",
+                    "code": "391040000",
+                    "display": "Ul7LgOeLc2C4eIf8"
+                }
+            ]
+        }
+    ],
+    "meta": {
+        "versionId": "22",
+        "lastUpdated": "2022-02-17T23:28:04.542+08:00"
+    }
+}

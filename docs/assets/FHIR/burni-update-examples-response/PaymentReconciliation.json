@@ -1,0 +1,134 @@
+{
+    "resourceType": "PaymentReconciliation",
+    "id": "PaymentReconciliation-example",
+    "identifier": [
+        {
+            "system": "http://www.BenefitsInc.com/fhir/enrollmentresponse",
+            "value": "0ZPCZH5e9qE8Wz7f9N"
+        }
+    ],
+    "status": "active",
+    "period": {
+        "start": "2014-08-16T08:00:00+08:00",
+        "end": "2014-08-31T08:00:00+08:00"
+    },
+    "created": "2014-08-16T08:00:00+08:00",
+    "paymentIssuer": {
+        "reference": "Organization/2"
+    },
+    "request": {
+        "reference": "http://www.BenefitsInc.com/fhir/eligibility/225476332402"
+    },
+    "requestor": {
+        "reference": "Organization/1"
+    },
+    "outcome": "complete",
+    "disposition": "2014 August mid-month settlement.",
+    "paymentDate": "2014-08-01",
+    "paymentAmount": {
+        "value": 95099,
+        "currency": "USD"
+    },
+    "paymentIdentifier": {
+        "system": "http://www.BenefitsInc.com/payment/2018",
+        "value": "jDzr9rOn6ZQy"
+    },
+    "detail": [
+        {
+            "identifier": {
+                "system": "http://www.BenefitsInc.com/payment/2018/detail",
+                "value": "8IIVVP6bNIC6MkYu"
+            },
+            "type": {
+                "coding": [
+                    {
+                        "system": "http://terminology.hl7.org/CodeSystem/payment-type",
+                        "code": "payment"
+                    }
+                ]
+            },
+            "request": {
+                "identifier": {
+                    "system": "http://happyvalleyclinic.com/claim",
+                    "value": "8p1ZU9PznRqzW"
+                }
+            },
+            "submitter": {
+                "reference": "Organization/1"
+            },
+            "response": {
+                "identifier": {
+                    "system": "http://www.BenefitsInc.com/fhir/claimresponse",
+                    "value": "6MKs620fY0sXo"
+                }
+            },
+            "date": "2014-08-16",
+            "payee": {
+                "reference": "Organization/1"
+            },
+            "amount": {
+                "value": 25772,
+                "currency": "USD"
+            }
+        },
+        {
+            "identifier": {
+                "system": "http://www.BenefitsInc.com/payment/2018/detail",
+                "value": "EQO6Q0tBIxt"
+            },
+            "type": {
+                "coding": [
+                    {
+                        "system": "http://terminology.hl7.org/CodeSystem/payment-type",
+                        "code": "payment"
+                    }
+                ]
+            },
+            "request": {
+                "reference": "http://www.BenefitsInc.com/fhir/oralhealthclaim/225476332699"
+            },
+            "date": "2014-08-12",
+            "amount": {
+                "value": 82641,
+                "currency": "USD"
+            }
+        },
+        {
+            "identifier": {
+                "system": "http://www.BenefitsInc.com/payment/2018/detail",
+                "value": "Pg8zR2miy4h16N"
+            },
+            "type": {
+                "coding": [
+                    {
+                        "system": "http://terminology.hl7.org/CodeSystem/payment-type",
+                        "code": "advance"
+                    }
+                ]
+            },
+            "date": "2014-08-16",
+            "amount": {
+                "value": 95136,
+                "currency": "USD"
+            }
+        }
+    ],
+    "formCode": {
+        "coding": [
+            {
+                "system": "http://ncforms.org/formid",
+                "code": "PAYREC/2016/01B"
+            }
+        ]
+    },
+    "processNote": [
+        {
+            "type": "display",
+            "text": "mPe1QHM5RFFtS"
+        }
+    ],
+    "meta": {
+        "versionId": "20",
+        "lastUpdated": "2022-02-17T23:28:33.720+08:00"
+    }
+}

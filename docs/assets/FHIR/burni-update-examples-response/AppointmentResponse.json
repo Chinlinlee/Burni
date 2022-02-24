@@ -1,0 +1,17 @@
+{
+    "resourceType": "AppointmentResponse",
+    "id": "AppointmentResponse-example",
+    "appointment": {
+        "reference": "Appointment/example",
+        "display": "KQg68PSVz60qhV"
+    },
+    "actor": {
+        "reference": "Patient/example",
+        "display": "MGRRLuK0GPz"
+    },
+    "participantStatus": "accepted",
+    "meta": {
+        "versionId": "22",
+        "lastUpdated": "2022-02-17T23:27:47.357+08:00"
+    }
+}

@@ -479,3 +479,4 @@ paramsSearch["organization"] = (query) => {
 //#endregion
 
 module.exports.paramsSearch = paramsSearch;
+module.exports.paramsSearchFields = paramsSearchFields;

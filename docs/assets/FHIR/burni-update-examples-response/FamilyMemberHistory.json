@@ -1,0 +1,66 @@
+{
+    "resourceType": "FamilyMemberHistory",
+    "id": "FamilyMemberHistory-example",
+    "identifier": [
+        {
+            "value": "Lkzeh1KkYtdA"
+        }
+    ],
+    "instantiatesUri": [
+        "http://example.org/family-member-history-questionnaire"
+    ],
+    "status": "completed",
+    "patient": {
+        "reference": "Patient/example",
+        "display": "Tq17MyZIhE9W"
+    },
+    "date": "2011-03-18T08:00:00+08:00",
+    "relationship": {
+        "coding": [
+            {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+                "code": "FTH",
+                "display": "Q79eEHj4yL"
+            }
+        ]
+    },
+    "sex": {
+        "coding": [
+            {
+                "system": "http://hl7.org/fhir/administrative-gender",
+                "code": "male",
+                "display": "07vRO86efOP3J8a"
+            }
+        ]
+    },
+    "condition": [
+        {
+            "code": {
+                "coding": [
+                    {
+                        "system": "http://snomed.info/sct",
+                        "code": "315619001",
+                        "display": "VgKOPDNIzQrjkP"
+                    }
+                ],
+                "text": "EDgEGwUpX8Qi4bQ"
+            },
+            "contributedToDeath": true,
+            "onsetAge": {
+                "value": 25093,
+                "unit": "yr",
+                "system": "http://unitsofmeasure.org",
+                "code": "a"
+            },
+            "note": [
+                {
+                    "text": "B3T0EahE9hFG"
+                }
+            ]
+        }
+    ],
+    "meta": {
+        "versionId": "20",
+        "lastUpdated": "2022-02-17T23:28:12.187+08:00"
+    }
+}

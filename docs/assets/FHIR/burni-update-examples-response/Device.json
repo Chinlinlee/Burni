@@ -1,0 +1,14 @@
+{
+    "resourceType": "Device",
+    "id": "Device-example",
+    "identifier": [
+        {
+            "system": "http://goodcare.org/devices/id",
+            "value": "5oXXWN6R1B80xcc5"
+        }
+    ],
+    "meta": {
+        "versionId": "22",
+        "lastUpdated": "2022-02-17T23:28:02.718+08:00"
+    }
+}

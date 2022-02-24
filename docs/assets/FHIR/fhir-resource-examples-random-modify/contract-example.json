@@ -1,0 +1,91 @@
+{
+    "resourceType": "Contract",
+    "id": "C-123",
+    "text": {
+        "status": "generated",
+        "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">A human-readable rendering of the contract</div>"
+    },
+    "identifier": [
+        {
+            "system": "http://happyvalley.com/contract",
+            "value": "4YH7nUCVvVWiC"
+        }
+    ],
+    "term": [
+        {
+            "offer": {
+                "text": "9lzmBeTfjDX9Ev"
+            },
+            "asset": [
+                {
+                    "type": [
+                        {
+                            "coding": [
+                                {
+                                    "system": "urn:ietf:rfc:3986",
+                                    "code": "RicardianContract"
+                                }
+                            ]
+                        }
+                    ],
+                    "subtype": [
+                        {
+                            "text": "JWxWHK0LadXd4TqNe"
+                        }
+                    ],
+                    "period": [
+                        {
+                            "start": "2017-06-01"
+                        }
+                    ],
+                    "valuedItem": [
+                        {
+                            "entityCodeableConcept": {
+                                "text": "VJ15FbdI5GcuEgVfE"
+                            },
+                            "identifier": {
+                                "system": "http://somewhere.motor-vehicle.com/vin",
+                                "value": "1K4c1MRUJRc"
+                            },
+                            "effectiveTime": "1995",
+                            "quantity": {
+                                "value": 32562
+                            },
+                            "unitPrice": {
+                                "value": 89736,
+                                "currency": "CAD"
+                            },
+                            "factor": 1,
+                            "points": 1,
+                            "net": {
+                                "value": 37749,
+                                "currency": "CAD"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "rule": [
+        {
+            "contentAttachment": {
+                "contentType": "application/txt",
+                "url": "http://www.rfc-editor.org/bcp/bcp13.txt"
+            }
+        }
+    ],
+    "legallyBindingAttachment": {
+        "contentType": "application/pdf",
+        "url": "http://www.aws3.com/storage/doc.pdf"
+    },
+    "meta": {
+        "tag": [
+            {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+                "code": "HTEST",
+                "display": "XDEQovcTrl2"
+            }
+        ]
+    }
+}

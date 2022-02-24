@@ -13,6 +13,12 @@ class OperationOutcome	{
     }
 }
 
+class ErrorOperationOutcome {
+    constructor(code, operationOutcome) {
+        this.code = code;
+        this.operationOutcome = operationOutcome;
+    }
+}
 
 function getDeleteMessage (resource , id) {
     let message = new issue("information" , "informational" ,`delete ${resource}/${id} successfully` );
@@ -54,5 +60,6 @@ const handleError = {
 
 module.exports = {
     getDeleteMessage : getDeleteMessage , 
-    handleError : handleError
+    handleError : handleError,
+    ErrorOperationOutcome: ErrorOperationOutcome
 };

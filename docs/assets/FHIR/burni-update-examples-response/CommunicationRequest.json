@@ -1,0 +1,15 @@
+{
+    "resourceType": "CommunicationRequest",
+    "id": "CommunicationRequest-example",
+    "status": "active",
+    "subject": {
+        "reference": "Patient/example"
+    },
+    "encounter": {
+        "reference": "Encounter/example"
+    },
+    "meta": {
+        "versionId": "22",
+        "lastUpdated": "2022-02-17T23:27:56.558+08:00"
+    }
+}

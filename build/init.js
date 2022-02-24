@@ -28,6 +28,7 @@ ADMIN_USERNAME="admin"
 ADMIN_PASSWORD="password"
 
 ENABLE_CHECK_ALL_RESOURCE_ID=false
+ENABLE_CHECK_REFERENCE=false
 `;
         fs.writeFileSync(".env" , envText);
         console.log("Please config dotenv file first, the example dotenv file generated in root path");

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Burni FHIR API Document</title>
+    <link href="index.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="main mt-3">
+        <div class="text-center mb-5">
+            <div class="card-header">
+                Resources
+            </div>
+            <div>
+                <i class="filter-clear" id="filter-clear">×</i>
+                <svg class="filter-search-icon search-icon" version="1.1" viewBox="0 0 1000 1000" x="0px" xmlns="http://www.w3.org/2000/svg" y="0px">
+                    <path d="M968.2,849.4L667.3,549c83.9-136.5,66.7-317.4-51.7-435.6C477.1-25,252.5-25,113.9,113.4c-138.5,138.3-138.5,362.6,0,501C219.2,730.1,413.2,743,547.6,666.5l301.9,301.4c43.6,43.6,76.9,14.9,104.2-12.4C981,928.3,1011.8,893,968.2,849.4z M524.5,522c-88.9,88.7-233,88.7-321.8,0c-88.9-88.7-88.9-232.6,0-321.3c88.9-88.7,233-88.7,321.8,0C613.4,289.4,613.4,433.3,524.5,522z"></path>
+                </svg>
+                <input class="filter-input" type="text" placeholder="resource name" id="resource-filter" oninput="filterResourcesBtn(this.id)">
+            </div>
+            <div class="card-body">
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-account" onclick="changeResource('Account')">Account</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-adverseevent" onclick="changeResource('AdverseEvent')">AdverseEvent</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-activitydefinition" onclick="changeResource('ActivityDefinition')">ActivityDefinition</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-appointment" onclick="changeResource('Appointment')">Appointment</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-allergyintolerance" onclick="changeResource('AllergyIntolerance')">AllergyIntolerance</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-appointmentresponse" onclick="changeResource('AppointmentResponse')">AppointmentResponse</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-auditevent" onclick="changeResource('AuditEvent')">AuditEvent</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-basic" onclick="changeResource('Basic')">Basic</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-binary" onclick="changeResource('Binary')">Binary</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-biologicallyderivedproduct" onclick="changeResource('BiologicallyDerivedProduct')">BiologicallyDerivedProduct</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-bodystructure" onclick="changeResource('BodyStructure')">BodyStructure</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-bundle" onclick="changeResource('Bundle')">Bundle</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-careteam" onclick="changeResource('CareTeam')">CareTeam</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-capabilitystatement" onclick="changeResource('CapabilityStatement')">CapabilityStatement</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-careplan" onclick="changeResource('CarePlan')">CarePlan</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-catalogentry" onclick="changeResource('CatalogEntry')">CatalogEntry</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-chargeitem" onclick="changeResource('ChargeItem')">ChargeItem</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-claim" onclick="changeResource('Claim')">Claim</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-chargeitemdefinition" onclick="changeResource('ChargeItemDefinition')">ChargeItemDefinition</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-claimresponse" onclick="changeResource('ClaimResponse')">ClaimResponse</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-codesystem" onclick="changeResource('CodeSystem')">CodeSystem</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-clinicalimpression" onclick="changeResource('ClinicalImpression')">ClinicalImpression</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-communication" onclick="changeResource('Communication')">Communication</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-communicationrequest" onclick="changeResource('CommunicationRequest')">CommunicationRequest</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-compartmentdefinition" onclick="changeResource('CompartmentDefinition')">CompartmentDefinition</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-conceptmap" onclick="changeResource('ConceptMap')">ConceptMap</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-composition" onclick="changeResource('Composition')">Composition</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-condition" onclick="changeResource('Condition')">Condition</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-consent" onclick="changeResource('Consent')">Consent</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-contract" onclick="changeResource('Contract')">Contract</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-coverage" onclick="changeResource('Coverage')">Coverage</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-coverageeligibilityrequest" onclick="changeResource('CoverageEligibilityRequest')">CoverageEligibilityRequest</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-detectedissue" onclick="changeResource('DetectedIssue')">DetectedIssue</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-coverageeligibilityresponse" onclick="changeResource('CoverageEligibilityResponse')">CoverageEligibilityResponse</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-devicedefinition" onclick="changeResource('DeviceDefinition')">DeviceDefinition</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-device" onclick="changeResource('Device')">Device</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-devicemetric" onclick="changeResource('DeviceMetric')">DeviceMetric</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-deviceusestatement" onclick="changeResource('DeviceUseStatement')">DeviceUseStatement</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-devicerequest" onclick="changeResource('DeviceRequest')">DeviceRequest</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-diagnosticreport" onclick="changeResource('DiagnosticReport')">DiagnosticReport</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-documentmanifest" onclick="changeResource('DocumentManifest')">DocumentManifest</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-effectevidencesynthesis" onclick="changeResource('EffectEvidenceSynthesis')">EffectEvidenceSynthesis</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-documentreference" onclick="changeResource('DocumentReference')">DocumentReference</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-endpoint" onclick="changeResource('Endpoint')">Endpoint</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-encounter" onclick="changeResource('Encounter')">Encounter</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-enrollmentrequest" onclick="changeResource('EnrollmentRequest')">EnrollmentRequest</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-enrollmentresponse" onclick="changeResource('EnrollmentResponse')">EnrollmentResponse</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-episodeofcare" onclick="changeResource('EpisodeOfCare')">EpisodeOfCare</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-evidence" onclick="changeResource('Evidence')">Evidence</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-eventdefinition" onclick="changeResource('EventDefinition')">EventDefinition</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-evidencevariable" onclick="changeResource('EvidenceVariable')">EvidenceVariable</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-explanationofbenefit" onclick="changeResource('ExplanationOfBenefit')">ExplanationOfBenefit</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-examplescenario" onclick="changeResource('ExampleScenario')">ExampleScenario</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-flag" onclick="changeResource('Flag')">Flag</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-familymemberhistory" onclick="changeResource('FamilyMemberHistory')">FamilyMemberHistory</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-graphdefinition" onclick="changeResource('GraphDefinition')">GraphDefinition</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-goal" onclick="changeResource('Goal')">Goal</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-group" onclick="changeResource('Group')">Group</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-immunization" onclick="changeResource('Immunization')">Immunization</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-healthcareservice" onclick="changeResource('HealthcareService')">HealthcareService</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-guidanceresponse" onclick="changeResource('GuidanceResponse')">GuidanceResponse</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-imagingstudy" onclick="changeResource('ImagingStudy')">ImagingStudy</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-immunizationevaluation" onclick="changeResource('ImmunizationEvaluation')">ImmunizationEvaluation</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-immunizationrecommendation" onclick="changeResource('ImmunizationRecommendation')">ImmunizationRecommendation</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-implementationguide" onclick="changeResource('ImplementationGuide')">ImplementationGuide</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-insuranceplan" onclick="changeResource('InsurancePlan')">InsurancePlan</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-invoice" onclick="changeResource('Invoice')">Invoice</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-library" onclick="changeResource('Library')">Library</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-linkage" onclick="changeResource('Linkage')">Linkage</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-list" onclick="changeResource('List')">List</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-location" onclick="changeResource('Location')">Location</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-measure" onclick="changeResource('Measure')">Measure</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-measurereport" onclick="changeResource('MeasureReport')">MeasureReport</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-media" onclick="changeResource('Media')">Media</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-medication" onclick="changeResource('Medication')">Medication</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-medicationknowledge" onclick="changeResource('MedicationKnowledge')">MedicationKnowledge</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-medicationadministration" onclick="changeResource('MedicationAdministration')">MedicationAdministration</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-medicationrequest" onclick="changeResource('MedicationRequest')">MedicationRequest</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-medicationdispense" onclick="changeResource('MedicationDispense')">MedicationDispense</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-medicationstatement" onclick="changeResource('MedicationStatement')">MedicationStatement</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-medicinalproductauthorization" onclick="changeResource('MedicinalProductAuthorization')">MedicinalProductAuthorization</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-medicinalproduct" onclick="changeResource('MedicinalProduct')">MedicinalProduct</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-medicinalproductcontraindication" onclick="changeResource('MedicinalProductContraindication')">MedicinalProductContraindication</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-medicinalproductindication" onclick="changeResource('MedicinalProductIndication')">MedicinalProductIndication</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-medicinalproductingredient" onclick="changeResource('MedicinalProductIngredient')">MedicinalProductIngredient</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-medicinalproductinteraction" onclick="changeResource('MedicinalProductInteraction')">MedicinalProductInteraction</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-medicinalproductmanufactured" onclick="changeResource('MedicinalProductManufactured')">MedicinalProductManufactured</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-medicinalproductpackaged" onclick="changeResource('MedicinalProductPackaged')">MedicinalProductPackaged</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-medicinalproductpharmaceutical" onclick="changeResource('MedicinalProductPharmaceutical')">MedicinalProductPharmaceutical</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-medicinalproductundesirableeffect" onclick="changeResource('MedicinalProductUndesirableEffect')">MedicinalProductUndesirableEffect</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-messagedefinition" onclick="changeResource('MessageDefinition')">MessageDefinition</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-messageheader" onclick="changeResource('MessageHeader')">MessageHeader</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-molecularsequence" onclick="changeResource('MolecularSequence')">MolecularSequence</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-namingsystem" onclick="changeResource('NamingSystem')">NamingSystem</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-observationdefinition" onclick="changeResource('ObservationDefinition')">ObservationDefinition</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-observation" onclick="changeResource('Observation')">Observation</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-nutritionorder" onclick="changeResource('NutritionOrder')">NutritionOrder</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-operationdefinition" onclick="changeResource('OperationDefinition')">OperationDefinition</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-operationoutcome" onclick="changeResource('OperationOutcome')">OperationOutcome</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-organization" onclick="changeResource('Organization')">Organization</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-organizationaffiliation" onclick="changeResource('OrganizationAffiliation')">OrganizationAffiliation</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-patient" onclick="changeResource('Patient')">Patient</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-parameters" onclick="changeResource('Parameters')">Parameters</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-paymentnotice" onclick="changeResource('PaymentNotice')">PaymentNotice</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-paymentreconciliation" onclick="changeResource('PaymentReconciliation')">PaymentReconciliation</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-person" onclick="changeResource('Person')">Person</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-plandefinition" onclick="changeResource('PlanDefinition')">PlanDefinition</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-practitioner" onclick="changeResource('Practitioner')">Practitioner</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-practitionerrole" onclick="changeResource('PractitionerRole')">PractitionerRole</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-provenance" onclick="changeResource('Provenance')">Provenance</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-questionnaire" onclick="changeResource('Questionnaire')">Questionnaire</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-procedure" onclick="changeResource('Procedure')">Procedure</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-questionnaireresponse" onclick="changeResource('QuestionnaireResponse')">QuestionnaireResponse</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-requestgroup" onclick="changeResource('RequestGroup')">RequestGroup</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-relatedperson" onclick="changeResource('RelatedPerson')">RelatedPerson</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-researchdefinition" onclick="changeResource('ResearchDefinition')">ResearchDefinition</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-researchelementdefinition" onclick="changeResource('ResearchElementDefinition')">ResearchElementDefinition</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-researchsubject" onclick="changeResource('ResearchSubject')">ResearchSubject</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-researchstudy" onclick="changeResource('ResearchStudy')">ResearchStudy</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-riskassessment" onclick="changeResource('RiskAssessment')">RiskAssessment</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-riskevidencesynthesis" onclick="changeResource('RiskEvidenceSynthesis')">RiskEvidenceSynthesis</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-servicerequest" onclick="changeResource('ServiceRequest')">ServiceRequest</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-schedule" onclick="changeResource('Schedule')">Schedule</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-searchparameter" onclick="changeResource('SearchParameter')">SearchParameter</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-slot" onclick="changeResource('Slot')">Slot</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-specimen" onclick="changeResource('Specimen')">Specimen</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-structuredefinition" onclick="changeResource('StructureDefinition')">StructureDefinition</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-structuremap" onclick="changeResource('StructureMap')">StructureMap</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-specimendefinition" onclick="changeResource('SpecimenDefinition')">SpecimenDefinition</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-subscription" onclick="changeResource('Subscription')">Subscription</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-substancenucleicacid" onclick="changeResource('SubstanceNucleicAcid')">SubstanceNucleicAcid</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-substance" onclick="changeResource('Substance')">Substance</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-substancepolymer" onclick="changeResource('SubstancePolymer')">SubstancePolymer</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-substanceprotein" onclick="changeResource('SubstanceProtein')">SubstanceProtein</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-substancereferenceinformation" onclick="changeResource('SubstanceReferenceInformation')">SubstanceReferenceInformation</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-substancesourcematerial" onclick="changeResource('SubstanceSourceMaterial')">SubstanceSourceMaterial</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-substancespecification" onclick="changeResource('SubstanceSpecification')">SubstanceSpecification</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-supplydelivery" onclick="changeResource('SupplyDelivery')">SupplyDelivery</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-task" onclick="changeResource('Task')">Task</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-supplyrequest" onclick="changeResource('SupplyRequest')">SupplyRequest</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-terminologycapabilities" onclick="changeResource('TerminologyCapabilities')">TerminologyCapabilities</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-testreport" onclick="changeResource('TestReport')">TestReport</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-testscript" onclick="changeResource('TestScript')">TestScript</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-valueset" onclick="changeResource('ValueSet')">ValueSet</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-verificationresult" onclick="changeResource('VerificationResult')">VerificationResult</button>
+                <button class="btn btn-outline-secondary mt-2 mb-2" id="btn-visionprescription" onclick="changeResource('VisionPrescription')">VisionPrescription</button>
+
+            </div>
+        </div>
+        <div id="redoc-container"></div>
+    </div>
+</body>
+
+</html>
+<script src="https://cdn.jsdelivr.net/npm/redoc@2.0.0-rc.63/bundles/redoc.standalone.min.js"> </script>
+<script src="https://cdn.jsdelivr.net/gh/wll8/redoc-try@1.4.0/dist/try.js"></script>
+<script src="index.js"></script>

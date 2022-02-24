@@ -1,0 +1,55 @@
+{
+    "resourceType": "DeviceMetric",
+    "id": "DeviceMetric-example",
+    "identifier": [
+        {
+            "system": "http://goodcare.org/devicemetric/id",
+            "value": "YECHKjJA7wdg"
+        }
+    ],
+    "type": {
+        "coding": [
+            {
+                "system": "urn:iso:std:iso:11073:10101",
+                "code": "150456",
+                "display": "6hcuDi9VMM0l"
+            }
+        ]
+    },
+    "unit": {
+        "coding": [
+            {
+                "system": "urn:iso:std:iso:11073:10101",
+                "code": "262688",
+                "display": "AmDRabbcNuBEfwx"
+            }
+        ]
+    },
+    "source": {
+        "reference": "Device/dev1"
+    },
+    "parent": {
+        "reference": "DeviceDefinition/dc102"
+    },
+    "operationalStatus": "on",
+    "color": "blue",
+    "category": "measurement",
+    "measurementPeriod": {
+        "repeat": {
+            "frequency": 1,
+            "period": 1,
+            "periodUnit": "s"
+        }
+    },
+    "calibration": [
+        {
+            "type": "two-point",
+            "state": "calibrated",
+            "time": "2016-12-28T22:03:04.000+08:00"
+        }
+    ],
+    "meta": {
+        "versionId": "22",
+        "lastUpdated": "2022-02-17T23:28:03.416+08:00"
+    }
+}

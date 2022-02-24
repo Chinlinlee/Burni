@@ -1,0 +1,1 @@
+<?xml version="1.0" encoding="UTF-8"?><SubstanceProtein xmlns="http://hl7.org/fhir"><id value="bb9b77b3-d4f7-4f00-be4e-8d5e0a191bb8"/><meta><versionId value="1"/><lastUpdated value="2022-02-17T17:34:56.435+08:00"/><tag><system value="http://terminology.hl7.org/CodeSystem/v3-ActReason"/><code value="HTEST"/><display value="test health data"/></tag></meta></SubstanceProtein>

@@ -1,0 +1,48 @@
+{
+    "resourceType": "Parameters",
+    "parameter": [
+        {
+            "name": "Mitchell Abshire",
+            "valueBoolean": true
+        },
+        {
+            "name": "Alfredo Maggio",
+            "part": [
+                {
+                    "name": "Mrs. Virginia Conroy",
+                    "valueCode": "focus"
+                },
+                {
+                    "name": "Ray Quigley",
+                    "valueCode": "top"
+                }
+            ]
+        },
+        {
+            "name": "Patti Stark",
+            "resource": {
+                "resourceType": "Patient",
+                "id": "example",
+                "name": [
+                    {
+                        "use": "official",
+                        "family": "Chalmers",
+                        "given": [
+                            "Peter",
+                            "James"
+                        ]
+                    }
+                ]
+            }
+        }
+    ],
+    "meta": {
+        "tag": [
+            {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+                "code": "HTEST",
+                "display": "qzKyUfoi5qNne"
+            }
+        ]
+    }
+}

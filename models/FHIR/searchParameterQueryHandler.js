@@ -25,7 +25,7 @@ const { getCommaSplitArray } = require('./queryBuild');
  *    "$and": []
  * }, ["address.city"], "address-city");
  * @param {string} query The request query object 
- * @param {Array<string>} paramsSearchFields The fields of search parameters that in resource
+ * @param {Array<string>} paramsSearchFields The fields of search parameter that in resource
  * @param {string} queryFieldName The name of search parameter
  */
 function getStringQuery(query, paramsSearchFields, queryFieldName) {
@@ -160,13 +160,13 @@ function getAddressQuery(query, queryFieldName) {
  * //         }
  * //     ]
  * // }
+ * @example
  * getNameQuery(
  * {
  *     "name": "Chalmers"
  * }, ["name"], "name");
- * @param {string} query The request query object 
- * that in resource
- *  * @param {string} queryFieldName The name of search parameter
+ * @param {string} query The request query object
+ * @param {string} queryFieldName The name of search parameter
  */
 function getNameQuery(query, queryFieldName) {
     if (!_.isArray(query[queryFieldName])) {
@@ -187,9 +187,9 @@ function getNameQuery(query, queryFieldName) {
 
 /**
  * 
- * @param {string} query 
- * @param {Array<string>} paramsSearchFields 
- * @param {string} queryFieldName 
+ * @param {string} query The request query object that in resource
+ * @param {Array<string>} paramsSearchFields The fields of search parameter that in resource
+ * @param {string} queryFieldName The name of search parameter
  */
 function getTokenQuery(query, paramsSearchFields, queryFieldName) {
     if (!_.isArray(query[queryFieldName])) {
@@ -312,7 +312,33 @@ function getNumberQuery(query, paramsSearchFields, queryFieldName) {
 }
 
 /**
+ * @example 
+ * // refresh query object to 
+ * // {
+ * //     "$and": [
+ * //         {
+ * //             "$or": [
+ * //                 {
+ * //                     "birthDate": {
+ * //                         "$gte": ISODate("Sun Dec 12 1999 00:00:00 GMT+0800"),
+                              "$lte": ISODate("Sun Dec 12 1999 23:59:59 GMT+0800")
  * 
+ * //                     }
+ * //                 }
+ * //             ]
+ * //         }
+ * //     ]
+ * // }
+ * @example
+ * getPolyDateQuery(
+ * {
+ *     "birthdate": "1999-12-12"
+ * }, ["birthDate"], "birthdate", 
+ * {
+ *     "birthDate" : (value, field) => {
+ *         return queryBuild.dateQuery(value, field);
+ *     }
+ * });
  * @param {Object} query The request query object
  * @param {string} paramsSearchFields The fields of search parameters that in resource
  * @param {string} queryFieldName The name of search parameter

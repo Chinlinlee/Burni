@@ -1,0 +1,53 @@
+{
+    "resourceType": "SupplyDelivery",
+    "id": "SupplyDelivery-example",
+    "identifier": [
+        {
+            "value": "q0EOqsE4Z24B"
+        }
+    ],
+    "basedOn": [
+        {
+            "reference": "SupplyRequest/simpleorder"
+        }
+    ],
+    "partOf": [
+        {
+            "display": "7NVYZF4zWDHw"
+        }
+    ],
+    "status": "completed",
+    "type": {
+        "coding": [
+            {
+                "system": "http://terminology.hl7.org/CodeSystem/supply-item-type",
+                "code": "device"
+            }
+        ],
+        "text": "y0zfm9P4ykTpy20Xv"
+    },
+    "suppliedItem": {
+        "quantity": {
+            "value": 35286
+        },
+        "itemCodeableConcept": {
+            "coding": [
+                {
+                    "code": "BlueTubes",
+                    "display": "fr3olfxsgO5j1u"
+                }
+            ]
+        }
+    },
+    "occurrenceDateTime": "2016-12-31T08:00:00+08:00",
+    "supplier": {
+        "display": "9CXeqguvcoX9K"
+    },
+    "destination": {
+        "display": "FtqTNlmHDqANjvR"
+    },
+    "meta": {
+        "versionId": "20",
+        "lastUpdated": "2022-02-17T23:28:56.051+08:00"
+    }
+}

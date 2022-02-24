@@ -1,0 +1,57 @@
+{
+    "resourceType": "Observation",
+    "id": "Observation-example",
+    "status": "final",
+    "category": [
+        {
+            "coding": [
+                {
+                    "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                    "code": "vital-signs",
+                    "display": "JZ0FXvh"
+                }
+            ]
+        }
+    ],
+    "code": {
+        "coding": [
+            {
+                "system": "http://loinc.org",
+                "code": "29463-7",
+                "display": "MjGhtz2eaEUljH"
+            },
+            {
+                "system": "http://loinc.org",
+                "code": "3141-9",
+                "display": "Ozgt7dyEGa4SfSb"
+            },
+            {
+                "system": "http://snomed.info/sct",
+                "code": "27113001",
+                "display": "2Uqt8NLRl4U"
+            },
+            {
+                "system": "http://acme.org/devices/clinical-codes",
+                "code": "body-weight",
+                "display": "EkFnUkeVFEbpgP"
+            }
+        ]
+    },
+    "subject": {
+        "reference": "Patient/example"
+    },
+    "encounter": {
+        "reference": "Encounter/example"
+    },
+    "effectiveDateTime": "2016-03-28T08:00:00+08:00",
+    "valueQuantity": {
+        "value": 93527,
+        "unit": "lbs",
+        "system": "http://unitsofmeasure.org",
+        "code": "[lb_av]"
+    },
+    "meta": {
+        "versionId": "20",
+        "lastUpdated": "2022-02-17T23:28:30.031+08:00"
+    }
+}

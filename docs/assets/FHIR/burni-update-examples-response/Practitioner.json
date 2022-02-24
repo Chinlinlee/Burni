@@ -1,0 +1,63 @@
+{
+    "resourceType": "Practitioner",
+    "id": "Practitioner-example",
+    "identifier": [
+        {
+            "system": "http://www.acme.org/practitioners",
+            "value": "aDzCylRT7O4N"
+        }
+    ],
+    "active": true,
+    "name": [
+        {
+            "family": "Careful",
+            "given": [
+                "Adam"
+            ],
+            "prefix": [
+                "Dr"
+            ]
+        }
+    ],
+    "address": [
+        {
+            "use": "home",
+            "line": [
+                "534 Erewhon St"
+            ],
+            "city": "PleasantVille",
+            "state": "Vic",
+            "postalCode": "3999"
+        }
+    ],
+    "qualification": [
+        {
+            "identifier": [
+                {
+                    "system": "http://example.org/UniversityIdentifier",
+                    "value": "h2A9l25kvRp"
+                }
+            ],
+            "code": {
+                "coding": [
+                    {
+                        "system": "http://terminology.hl7.org/CodeSystem/v2-0360/2.7",
+                        "code": "BS",
+                        "display": "nFrbjNTeSg47Ba"
+                    }
+                ],
+                "text": "MkGL4d9pcuetlVu"
+            },
+            "period": {
+                "start": "1995-01-01T08:00:00+08:00"
+            },
+            "issuer": {
+                "display": "q1szzKsDUNyWz"
+            }
+        }
+    ],
+    "meta": {
+        "versionId": "20",
+        "lastUpdated": "2022-02-17T23:28:35.436+08:00"
+    }
+}

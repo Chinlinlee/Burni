@@ -10,9 +10,7 @@ const {
 } = require('../../../models/FHIR/httpMessage');
 const _ = require('lodash');
 const config = require('../../../config/config');
-const {
-    user
-} = require('../../apiService');
+const user = require('../../APIservices/user.service.js');
 
 function setFormatWhenQuery(req, res) {
     let format = _.get(req, "query._format");

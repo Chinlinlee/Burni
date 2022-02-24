@@ -1,0 +1,31 @@
+{
+    "resourceType": "MessageDefinition",
+    "id": "05e10ff4-c654-42bb-9379-613da3eb414e",
+    "url": "http://hl7.org/fhir/MessageDefinition/example",
+    "name": "EXAMPLE",
+    "title": "Message definition base example",
+    "status": "draft",
+    "experimental": true,
+    "date": "2016-11-09T08:00:00+08:00",
+    "publisher": "Health Level Seven, Int'l",
+    "contact": [
+        {
+            "telecom": [
+                {
+                    "system": "url",
+                    "value": "http://hl7.org"
+                }
+            ]
+        }
+    ],
+    "purpose": "Defines a base example for other MessageDefinition instances.",
+    "eventCoding": {
+        "system": "http://example.org/fhir/message-events",
+        "code": "admin-notify"
+    },
+    "category": "notification",
+    "meta": {
+        "versionId": "1",
+        "lastUpdated": "2022-02-13T22:30:18.168+08:00"
+    }
+}

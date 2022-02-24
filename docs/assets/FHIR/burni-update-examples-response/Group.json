@@ -1,0 +1,41 @@
+{
+    "resourceType": "Group",
+    "id": "Group-example",
+    "identifier": [
+        {
+            "system": "http://someveterinarianclinic.org/fhir/NamingSystem/herds",
+            "value": "RlSuBObHdtKv"
+        }
+    ],
+    "type": "animal",
+    "actual": true,
+    "code": {
+        "text": "shNhL5Ldi7zumcrq"
+    },
+    "name": "John's herd",
+    "quantity": 25,
+    "characteristic": [
+        {
+            "code": {
+                "text": "ZpAdCm2L3uiDJBqU"
+            },
+            "valueCodeableConcept": {
+                "text": "fozdkaUyM08O"
+            },
+            "exclude": false
+        },
+        {
+            "code": {
+                "text": "O5WY5OswE83fkZYE"
+            },
+            "valueCodeableConcept": {
+                "text": "me9WdyAg4My317df"
+            },
+            "exclude": false
+        }
+    ],
+    "meta": {
+        "versionId": "20",
+        "lastUpdated": "2022-02-17T23:28:13.399+08:00"
+    }
+}

@@ -5,7 +5,7 @@ const {
 } = require('../../models/FHIR/httpMessage');
 const _ = require('lodash');
 const FHIR = require('../../models/FHIR/fhir/fhir').Fhir;
-const { user } = require('../apiService');
+const user = require('../APIservices/user.service');
 
 /**
  * @param {import("express").Request} req 
@@ -22,7 +22,7 @@ module.exports = async function(req, res, resourceType) {
         }
         return res.status(code).send(item);
     };
-    if (!user.checkTokenPermission(req, resourceType, "detele")) {
+    if (!await user.checkTokenPermission(req, resourceType, "delete")) {
         return doRes(403,handleError.forbidden("Your token doesn't have permission with this API"));
     }
     let resFunc = {

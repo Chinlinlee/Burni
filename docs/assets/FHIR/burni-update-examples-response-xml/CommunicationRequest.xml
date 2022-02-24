@@ -1,0 +1,1 @@
+<?xml version="1.0" encoding="UTF-8"?><CommunicationRequest xmlns="http://hl7.org/fhir"><id value="CommunicationRequest-example"/><meta><versionId value="24"/><lastUpdated value="2022-02-18T00:39:05.862+08:00"/></meta><status value="active"/><subject><reference value="Patient/example"/></subject><encounter><reference value="Encounter/example"/></encounter></CommunicationRequest>

@@ -1,0 +1,125 @@
+{
+    "resourceType": "RequestGroup",
+    "id": "RequestGroup-example",
+    "contained": [
+        {
+            "resourceType": "MedicationRequest",
+            "id": "medicationrequest-1",
+            "status": "unknown",
+            "intent": "proposal",
+            "medicationCodeableConcept": {
+                "text": "HmrCa0TObhMSe"
+            },
+            "subject": {
+                "reference": "Patient/example"
+            }
+        },
+        {
+            "resourceType": "MedicationRequest",
+            "id": "medicationrequest-2",
+            "status": "unknown",
+            "intent": "proposal",
+            "medicationCodeableConcept": {
+                "text": "3RaaO78iOSY"
+            },
+            "subject": {
+                "reference": "Patient/example"
+            }
+        }
+    ],
+    "identifier": [
+        {
+            "value": "SUW8W4Nm8q5hQf"
+        }
+    ],
+    "groupIdentifier": {
+        "system": "http://example.org/treatment-group",
+        "value": "Bktg9Rhbsq"
+    },
+    "status": "draft",
+    "intent": "plan",
+    "priority": "routine",
+    "subject": {
+        "reference": "Patient/example"
+    },
+    "encounter": {
+        "reference": "Encounter/example"
+    },
+    "authoredOn": "2017-03-07T01:31:00+08:00",
+    "author": {
+        "reference": "Practitioner/1"
+    },
+    "reasonCode": [
+        {
+            "text": "tgPWXyVXkjV7yaT"
+        }
+    ],
+    "note": [
+        {
+            "text": "JDHCBC5KvUM"
+        }
+    ],
+    "action": [
+        {
+            "prefix": "1",
+            "title": "Administer Medications",
+            "description": "Administer medications at the appropriate time",
+            "textEquivalent": "Administer medication 1, followed an hour later by medication 2",
+            "timingDateTime": "2017-03-06T19:00:00Z",
+            "participant": [
+                {
+                    "reference": "Practitioner/1"
+                }
+            ],
+            "groupingBehavior": "logical-group",
+            "selectionBehavior": "all",
+            "requiredBehavior": "must",
+            "precheckBehavior": "yes",
+            "cardinalityBehavior": "single",
+            "action": [
+                {
+                    "id": "medication-action-1",
+                    "description": "Administer medication 1",
+                    "type": {
+                        "coding": [
+                            {
+                                "code": "create"
+                            }
+                        ]
+                    },
+                    "resource": {
+                        "reference": "#medicationrequest-1"
+                    }
+                },
+                {
+                    "id": "medication-action-2",
+                    "description": "Administer medication 2",
+                    "relatedAction": [
+                        {
+                            "actionId": "medication-action-1",
+                            "relationship": "after-end",
+                            "offsetDuration": {
+                                "value": 23164,
+                                "unit": "h"
+                            }
+                        }
+                    ],
+                    "type": {
+                        "coding": [
+                            {
+                                "code": "create"
+                            }
+                        ]
+                    },
+                    "resource": {
+                        "reference": "#medicationrequest-2"
+                    }
+                }
+            ]
+        }
+    ],
+    "meta": {
+        "versionId": "20",
+        "lastUpdated": "2022-02-17T23:28:37.947+08:00"
+    }
+}

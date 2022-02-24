@@ -1,0 +1,65 @@
+{
+    "resourceType": "MedicinalProductIngredient",
+    "id": "MedicinalProductIngredient-example",
+    "role": {
+        "coding": [
+            {
+                "system": "http://ema.europa.eu/example/ingredientRole",
+                "code": "ActiveBase"
+            }
+        ]
+    },
+    "manufacturer": [
+        {
+            "reference": "Organization/example"
+        }
+    ],
+    "specifiedSubstance": [
+        {
+            "code": {
+                "coding": [
+                    {
+                        "system": "http://ema.europa.eu/example/specifiedSubstance",
+                        "code": "equixabanCompanyequixaban1"
+                    }
+                ]
+            },
+            "group": {
+                "coding": [
+                    {
+                        "system": "http://ema.europa.eu/example/specifiedSubstanceGroup",
+                        "code": "2"
+                    }
+                ]
+            }
+        }
+    ],
+    "substance": {
+        "code": {
+            "coding": [
+                {
+                    "system": "http://ema.europa.eu/example/substance",
+                    "code": "EQUIXABAN"
+                }
+            ]
+        },
+        "strength": [
+            {
+                "presentation": {
+                    "numerator": {
+                        "value": 42949,
+                        "unit": "mg"
+                    },
+                    "denominator": {
+                        "value": 99418,
+                        "unit": "{tablet}"
+                    }
+                }
+            }
+        ]
+    },
+    "meta": {
+        "versionId": "20",
+        "lastUpdated": "2022-02-17T23:28:26.100+08:00"
+    }
+}

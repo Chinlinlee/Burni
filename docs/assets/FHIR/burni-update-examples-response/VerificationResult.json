@@ -1,0 +1,9 @@
+{
+    "resourceType": "VerificationResult",
+    "id": "VerificationResult-example",
+    "status": "attested",
+    "meta": {
+        "versionId": "20",
+        "lastUpdated": "2022-02-17T23:29:00.962+08:00"
+    }
+}

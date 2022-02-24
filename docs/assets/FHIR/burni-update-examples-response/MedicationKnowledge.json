@@ -1,0 +1,44 @@
+{
+    "resourceType": "MedicationKnowledge",
+    "id": "MedicationKnowledge-example",
+    "contained": [
+        {
+            "resourceType": "Organization",
+            "id": "org4",
+            "name": "Nettie Willms"
+        }
+    ],
+    "code": {
+        "coding": [
+            {
+                "system": "http://hl7.org/fhir/sid/ndc",
+                "code": "0069-2587-10",
+                "display": "JrVM5zIz2bX"
+            }
+        ]
+    },
+    "status": "active",
+    "manufacturer": {
+        "reference": "#org4"
+    },
+    "doseForm": {
+        "coding": [
+            {
+                "system": "http://snomed.info/sct",
+                "code": "385219001",
+                "display": "Qgx8id0x5R8sO"
+            }
+        ]
+    },
+    "amount": {
+        "value": 59001,
+        "unit": "mg/ml"
+    },
+    "synonym": [
+        "Vancomycin Hydrochloride (VANCOMYCIN HYDROCHLORIDE)"
+    ],
+    "meta": {
+        "versionId": "20",
+        "lastUpdated": "2022-02-17T23:28:22.340+08:00"
+    }
+}

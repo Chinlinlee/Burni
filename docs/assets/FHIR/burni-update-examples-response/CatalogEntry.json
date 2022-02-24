@@ -1,0 +1,21 @@
+{
+    "resourceType": "CatalogEntry",
+    "id": "CatalogEntry-example",
+    "identifier": [
+        {
+            "system": "http://example.com/identifier",
+            "value": "DbmBOFtS3BVqXjvyb"
+        }
+    ],
+    "type": {
+        "text": "1BSR1WLIgLws"
+    },
+    "orderable": true,
+    "referencedItem": {
+        "reference": "Medication/123"
+    },
+    "meta": {
+        "versionId": "22",
+        "lastUpdated": "2022-02-17T23:27:51.050+08:00"
+    }
+}

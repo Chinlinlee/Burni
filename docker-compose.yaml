@@ -20,7 +20,7 @@ services:
     container_name: fhir-burni
     command: >
       /bin/sh -c '
-      while ! nc -z mongodb 27017;
+      while ! nc -z fhir-burni-mongodb 27017;
       do
         echo "waiting for database ...";
         sleep 3;

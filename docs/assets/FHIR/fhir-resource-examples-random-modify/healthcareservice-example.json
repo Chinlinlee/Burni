@@ -1,0 +1,233 @@
+{
+    "resourceType": "HealthcareService",
+    "id": "example",
+    "text": {
+        "status": "generated",
+        "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">\n\t\t\t25 Dec 2013 9:15am - 9:30am: <b>Busy</b> Physiotherapy\n\t\t</div>"
+    },
+    "contained": [
+        {
+            "resourceType": "Location",
+            "id": "DenBurg",
+            "description": "Greater Denburg area",
+            "mode": "instance",
+            "physicalType": {
+                "coding": [
+                    {
+                        "code": "area",
+                        "display": "FvEaHkZFmW4E7"
+                    }
+                ]
+            }
+        }
+    ],
+    "identifier": [
+        {
+            "system": "http://example.org/shared-ids",
+            "value": "nbpKGfnjIfWVz"
+        }
+    ],
+    "active": true,
+    "providedBy": {
+        "reference": "Organization/f001",
+        "display": "i1FfYjGW4h"
+    },
+    "category": [
+        {
+            "coding": [
+                {
+                    "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                    "code": "8",
+                    "display": "akXbOLPTjzBrn"
+                }
+            ],
+            "text": "9YVBTsNHeD6pb"
+        }
+    ],
+    "type": [
+        {
+            "coding": [
+                {
+                    "system": "http://snomed.info/sct",
+                    "code": "394913002",
+                    "display": "9hlxvbx77EnBAC"
+                }
+            ]
+        },
+        {
+            "coding": [
+                {
+                    "system": "http://snomed.info/sct",
+                    "code": "394587001",
+                    "display": "dRZBkuWLup4qG"
+                }
+            ]
+        }
+    ],
+    "specialty": [
+        {
+            "coding": [
+                {
+                    "system": "http://snomed.info/sct",
+                    "code": "47505003",
+                    "display": "apnp3wC4pWfv"
+                }
+            ]
+        }
+    ],
+    "location": [
+        {
+            "reference": "Location/1"
+        }
+    ],
+    "name": "Consulting psychologists and/or psychology services",
+    "comment": "Providing Specialist psychology services to the greater Den Burg area, many years of experience dealing with PTSD issues",
+    "extraDetails": "Several assessments are required for these specialist services, and the waiting times can be greater than 3 months at times. Existing patients are prioritized when requesting appointments on the schedule.",
+    "telecom": [
+        {
+            "system": "phone",
+            "value": "vruuhHz6R1GCs",
+            "use": "work"
+        },
+        {
+            "system": "email",
+            "value": "6rNsZ806Ihn",
+            "use": "work"
+        }
+    ],
+    "coverageArea": [
+        {
+            "reference": "#DenBurg",
+            "display": "OjjuuyX6Pqp37eG3"
+        }
+    ],
+    "serviceProvisionCode": [
+        {
+            "coding": [
+                {
+                    "system": "http://terminology.hl7.org/CodeSystem/service-provision-conditions",
+                    "code": "cost",
+                    "display": "w7cRJln6hdUQ"
+                }
+            ]
+        }
+    ],
+    "eligibility": [
+        {
+            "code": {
+                "coding": [
+                    {
+                        "display": "qcRX3LCr7yc"
+                    }
+                ]
+            },
+            "comment": "Evidence of application for DVA status may be sufficient for commencing assessment"
+        }
+    ],
+    "program": [
+        {
+            "text": "T2vh9wAdi7Ee"
+        }
+    ],
+    "characteristic": [
+        {
+            "coding": [
+                {
+                    "display": "6rS9a1bvMGsTjU"
+                }
+            ]
+        }
+    ],
+    "referralMethod": [
+        {
+            "coding": [
+                {
+                    "code": "phone",
+                    "display": "vMI4mDaNZoae"
+                }
+            ]
+        },
+        {
+            "coding": [
+                {
+                    "code": "fax",
+                    "display": "6kUheon20SEQyTLZUd"
+                }
+            ]
+        },
+        {
+            "coding": [
+                {
+                    "code": "elec",
+                    "display": "Y93lK8xbbKSpH1Q"
+                }
+            ]
+        },
+        {
+            "coding": [
+                {
+                    "code": "semail",
+                    "display": "V2OhRUXF7Ktli"
+                }
+            ]
+        }
+    ],
+    "appointmentRequired": false,
+    "availableTime": [
+        {
+            "daysOfWeek": [
+                "wed"
+            ],
+            "allDay": true
+        },
+        {
+            "daysOfWeek": [
+                "mon",
+                "tue",
+                "thu",
+                "fri"
+            ],
+            "availableStartTime": "08:30:00",
+            "availableEndTime": "05:30:00"
+        },
+        {
+            "daysOfWeek": [
+                "sat",
+                "fri"
+            ],
+            "availableStartTime": "09:30:00",
+            "availableEndTime": "04:30:00"
+        }
+    ],
+    "notAvailable": [
+        {
+            "description": "Christmas/Boxing Day",
+            "during": {
+                "start": "2015-12-25",
+                "end": "2015-12-26"
+            }
+        },
+        {
+            "description": "New Years Day",
+            "during": {
+                "start": "2016-01-01",
+                "end": "2016-01-01"
+            }
+        }
+    ],
+    "availabilityExceptions": "Reduced capacity is available during the Christmas period",
+    "endpoint": [
+        {
+            "reference": "Endpoint/example"
+        }
+    ],
+    "meta": {
+        "tag": [
+            {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+                "code": "HTEST",
+                "display": "eYNnv6NW0bNwd"
+            }
+        ]
+    }
+}

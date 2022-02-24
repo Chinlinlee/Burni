@@ -1,0 +1,91 @@
+{
+    "resourceType": "ImmunizationRecommendation",
+    "id": "ImmunizationRecommendation-example",
+    "identifier": [
+        {
+            "system": "urn:ietf:rfc:3986",
+            "value": "eoBDakS3pEBbUVi"
+        }
+    ],
+    "patient": {
+        "reference": "Patient/example"
+    },
+    "date": "2015-02-10T00:04:15+08:00",
+    "authority": {
+        "reference": "Organization/hl7"
+    },
+    "recommendation": [
+        {
+            "vaccineCode": [
+                {
+                    "coding": [
+                        {
+                            "system": "http://snomed.info/sct",
+                            "code": "14745005",
+                            "display": "ja3m3tXF75L"
+                        }
+                    ]
+                }
+            ],
+            "forecastStatus": {
+                "text": "2ewrrTzwVTARB"
+            },
+            "dateCriterion": [
+                {
+                    "code": {
+                        "coding": [
+                            {
+                                "system": "http://example.org/fhir/CodeSystem/immunization-recommendation-date-criterion",
+                                "code": "earliest",
+                                "display": "QW643m3wFFMn8D"
+                            }
+                        ]
+                    },
+                    "value": "2015-12-01T13:00:00+08:00"
+                },
+                {
+                    "code": {
+                        "coding": [
+                            {
+                                "system": "http://example.org/fhir/CodeSystem/immunization-recommendation-date-criterion",
+                                "code": "recommended",
+                                "display": "eBfZM4ezz4jrDgX"
+                            }
+                        ]
+                    },
+                    "value": "2015-12-01T13:00:00+08:00"
+                },
+                {
+                    "code": {
+                        "coding": [
+                            {
+                                "system": "http://example.org/fhir/CodeSystem/immunization-recommendation-date-criterion",
+                                "code": "overdue",
+                                "display": "LRZPGttrww281M"
+                            }
+                        ]
+                    },
+                    "value": "2016-12-28T13:00:00+08:00"
+                }
+            ],
+            "description": "First sequence in protocol",
+            "series": "Vaccination Series 1",
+            "doseNumberPositiveInt": 1,
+            "seriesDosesPositiveInt": 3,
+            "supportingImmunization": [
+                {
+                    "reference": "Immunization/example"
+                }
+            ],
+            "supportingPatientInformation": [
+                {
+                    "reference": "Observation/example"
+                }
+            ]
+        }
+    ],
+    "meta": {
+        "versionId": "14",
+        "lastUpdated": "2022-02-17T23:28:15.534+08:00"
+    }
+}

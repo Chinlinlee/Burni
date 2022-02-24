@@ -1,0 +1,28 @@
+{
+    "resourceType": "BodyStructure",
+    "id": "BodyStructure-example",
+    "identifier": [
+        {
+            "system": "http://goodhealth.org/bodystructure/identifiers",
+            "value": "j3RftwxNNTMx"
+        }
+    ],
+    "location": {
+        "coding": [
+            {
+                "system": "http://snomed.info/sct",
+                "code": "83418008",
+                "display": "ZR3f2cGeUvWNM4l"
+            }
+        ],
+        "text": "vMyfVrGaNG"
+    },
+    "description": "EDD 1/1/2017 confirmation by LMP",
+    "patient": {
+        "reference": "Patient/example"
+    },
+    "meta": {
+        "versionId": "22",
+        "lastUpdated": "2022-02-17T23:27:48.873+08:00"
+    }
+}

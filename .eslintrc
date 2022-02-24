@@ -15,5 +15,5 @@
         "no-console": 0 ,
         "no-useless-escape": "off"
     },
-    "ignorePatterns": ["public/**", "temp/**", "models/FHIR/fhir/**"]
+    "ignorePatterns": ["public/**", "temp/**", "models/FHIR/fhir/**", "docs/**"]
 }

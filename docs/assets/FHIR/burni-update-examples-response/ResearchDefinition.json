@@ -1,0 +1,12 @@
+{
+    "resourceType": "ResearchDefinition",
+    "id": "ResearchDefinition-example",
+    "status": "draft",
+    "population": {
+        "reference": "ResearchElementDefinition/example"
+    },
+    "meta": {
+        "versionId": "20",
+        "lastUpdated": "2022-02-17T23:28:38.315+08:00"
+    }
+}

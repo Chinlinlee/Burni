@@ -1,0 +1,134 @@
+{
+    "resourceType": "MedicationDispense",
+    "id": "MedicationDispense-example",
+    "contained": [
+        {
+            "resourceType": "Medication",
+            "id": "med0301",
+            "code": {
+                "coding": [
+                    {
+                        "system": "http://hl7.org/fhir/sid/ndc",
+                        "code": "0069-2587-10",
+                        "display": "ek6IiALFZVHT"
+                    }
+                ]
+            }
+        }
+    ],
+    "status": "in-progress",
+    "medicationReference": {
+        "reference": "#med0301",
+        "display": "diuwVNMH7h1"
+    },
+    "subject": {
+        "reference": "Patient/pat1",
+        "display": "Q6oiY6weW20aFHF"
+    },
+    "supportingInformation": [
+        {
+            "reference": "Condition/f203"
+        }
+    ],
+    "performer": [
+        {
+            "actor": {
+                "reference": "Practitioner/f006"
+            }
+        }
+    ],
+    "location": {
+        "reference": "Location/ukp",
+        "display": "3WtMacxg1VAWTuH"
+    },
+    "authorizingPrescription": [
+        {
+            "reference": "MedicationRequest/medrx0318"
+        }
+    ],
+    "type": {
+        "coding": [
+            {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+                "code": "EM",
+                "display": "X1Q0VoHz0UdNNvnI6"
+            }
+        ]
+    },
+    "quantity": {
+        "value": 73134,
+        "unit": "Vial",
+        "system": "http://terminology.hl7.org/CodeSystem/v3-orderableDrugForm",
+        "code": "Vial"
+    },
+    "daysSupply": {
+        "value": 92176,
+        "unit": "Day",
+        "system": "http://unitsofmeasure.org",
+        "code": "d"
+    },
+    "whenPrepared": "2015-01-15T18:20:00+08:00",
+    "destination": {
+        "reference": "Location/ph"
+    },
+    "receiver": [
+        {
+            "reference": "Patient/pat1",
+            "display": "nC9GbDYlRGrcSZ"
+        }
+    ],
+    "dosageInstruction": [
+        {
+            "sequence": 1,
+            "text": "uggk1mPmeQPrK9R",
+            "timing": {
+                "repeat": {
+                    "frequency": 1,
+                    "period": 6,
+                    "periodUnit": "h"
+                }
+            },
+            "route": {
+                "coding": [
+                    {
+                        "system": "http://snomed.info/sct",
+                        "code": "255560000",
+                        "display": "Srn6N6k5QZDJq9"
+                    }
+                ]
+            },
+            "method": {
+                "coding": [
+                    {
+                        "system": "http://snomed.info/sct",
+                        "code": "420620005",
+                        "display": "Wm1VeiMTNLFB"
+                    }
+                ]
+            },
+            "doseAndRate": [
+                {
+                    "type": {
+                        "coding": [
+                            {
+                                "system": "http://terminology.hl7.org/CodeSystem/dose-rate-type",
+                                "code": "ordered",
+                                "display": "Feb8NXytENa3"
+                            }
+                        ]
+                    },
+                    "doseQuantity": {
+                        "value": 85860,
+                        "unit": "mg",
+                        "system": "http://unitsofmeasure.org",
+                        "code": "mg"
+                    }
+                }
+            ]
+        }
+    ],
+    "meta": {
+        "versionId": "20",
+        "lastUpdated": "2022-02-17T23:28:21.525+08:00"
+    }
+}

@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const http = require('http');
 const compress = require('compression');
+const { handleError } = require('./models/FHIR/httpMessage');
 //login
 const cookieParser = require('cookie-parser');
 const passport = require('passport');
@@ -37,13 +38,18 @@ app.use((err, req, res, next) => {
     // This check makes sure this is a JSON parsing issue, but it might be
     // coming from any middleware, not just body-parser:
 
-    if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
+    // if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
+    //     console.error(err);
+    //     return res.sendStatus(400); // Bad request
+    // }
+    if (err) {
         console.error(err);
-        return res.sendStatus(400); // Bad request
+        return res.status(400).send(handleError.processing(err));
     }
 
     next();
 });
+
 app.use(cookieParser());
 //login
 app.use(session({

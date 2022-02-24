@@ -1,0 +1,44 @@
+{
+    "resourceType": "Parameters",
+    "parameter": [
+        {
+            "name": "Mitchell Abshire",
+            "valueBoolean": true
+        },
+        {
+            "name": "Alfredo Maggio",
+            "part": [
+                {
+                    "name": "Mrs. Virginia Conroy",
+                    "valueCode": "focus"
+                },
+                {
+                    "name": "Ray Quigley",
+                    "valueCode": "top"
+                }
+            ]
+        },
+        {
+            "name": "Patti Stark",
+            "resource": {
+                "resourceType": "Patient",
+                "id": "example",
+                "name": [
+                    {
+                        "use": "official",
+                        "family": "Chalmers",
+                        "given": [
+                            "Peter",
+                            "James"
+                        ]
+                    }
+                ]
+            }
+        }
+    ],
+    "id": "Parameters-example",
+    "meta": {
+        "versionId": "20",
+        "lastUpdated": "2022-02-17T23:28:32.551+08:00"
+    }
+}

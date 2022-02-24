@@ -1,0 +1,1 @@
+<?xml version="1.0" encoding="UTF-8"?><ObservationDefinition xmlns="http://hl7.org/fhir"><id value="ObservationDefinition-example"/><meta><versionId value="22"/><lastUpdated value="2022-02-18T00:39:44.066+08:00"/></meta><code><coding><system value="http://loinc.org"/><code value="15074-8"/><display value="SKVHlcAK5nzw9L"/></coding></code></ObservationDefinition>

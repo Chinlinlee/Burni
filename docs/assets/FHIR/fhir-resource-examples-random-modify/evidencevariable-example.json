@@ -1,0 +1,25 @@
+{
+    "resourceType": "EvidenceVariable",
+    "id": "example",
+    "text": {
+        "status": "generated",
+        "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">[Put rendering here]</div>"
+    },
+    "status": "draft",
+    "characteristic": [
+        {
+            "definitionCodeableConcept": {
+                "text": "P9nvsXT36V9Naf6p"
+            }
+        }
+    ],
+    "meta": {
+        "tag": [
+            {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+                "code": "HTEST",
+                "display": "rqkNVEym2Wvh"
+            }
+        ]
+    }
+}

@@ -1,0 +1,118 @@
+{
+    "resourceType": "MedicinalProductAuthorization",
+    "id": "MedicinalProductAuthorization-example",
+    "identifier": [
+        {
+            "system": "http://ema.europa.eu/example/marketingAuthorisationNumber",
+            "value": "r0LvpgGIQyVbyT"
+        }
+    ],
+    "country": [
+        {
+            "coding": [
+                {
+                    "system": "http://ema.europa.eu/example/country",
+                    "code": "EU"
+                }
+            ]
+        }
+    ],
+    "status": {
+        "coding": [
+            {
+                "system": "http://ema.europa.eu/example/authorisationstatus",
+                "code": "active"
+            }
+        ]
+    },
+    "statusDate": "2015-01-14T08:00:00+08:00",
+    "validityPeriod": {
+        "start": "2015-08-16T08:00:00+08:00",
+        "end": "2020-05-20T08:00:00+08:00"
+    },
+    "dataExclusivityPeriod": {
+        "start": "2010-08-15T08:00:00+08:00",
+        "end": "2020-08-15T08:00:00+08:00"
+    },
+    "dateOfFirstAuthorization": "2010-08-15T08:00:00+08:00",
+    "internationalBirthDate": "2010-08-15T08:00:00+08:00",
+    "jurisdictionalAuthorization": [
+        {
+            "identifier": [
+                {
+                    "system": "http://ema.europa.eu/example/marketingauthorisationnumber",
+                    "value": "FAe0MIDSSUHm3"
+                }
+            ],
+            "country": {
+                "coding": [
+                    {
+                        "system": "http://ema.europa.eu/example/countryCode",
+                        "code": "NO"
+                    }
+                ]
+            }
+        },
+        {
+            "identifier": [
+                {
+                    "system": "http://ema.europa.eu/example/marketingauthorisationnumber",
+                    "value": "GWdnLaojvoq197a1"
+                }
+            ],
+            "country": {
+                "coding": [
+                    {
+                        "system": "http://ema.europa.eu/example/countryCode",
+                        "code": "NO"
+                    }
+                ]
+            }
+        }
+    ],
+    "holder": {
+        "reference": "Organization/example"
+    },
+    "regulator": {
+        "reference": "Organization/example"
+    },
+    "procedure": {
+        "identifier": {
+            "system": "http://ema.europa.eu/example/procedureidentifier-number",
+            "value": "5mAYOAQRr5"
+        },
+        "type": {
+            "coding": [
+                {
+                    "system": "http://ema.europa.eu/example/marketingAuthorisationProcedureType",
+                    "code": "VariationTypeIA"
+                }
+            ]
+        },
+        "datePeriod": {
+            "start": "2015-08-02T08:00:00+08:00",
+            "end": "2015-08-21T08:00:00+08:00"
+        },
+        "application": [
+            {
+                "identifier": {
+                    "system": "http://ema.europa.eu/example/applicationidentifier-number",
+                    "value": "S65nnsBeix0ZhEm"
+                },
+                "type": {
+                    "coding": [
+                        {
+                            "system": "http://ema.europa.eu/example/marketingAuthorisationApplicationType",
+                            "code": "GroupTypeIAVariationNotification"
+                        }
+                    ]
+                },
+                "dateDateTime": "2015-08-01"
+            }
+        ]
+    },
+    "meta": {
+        "versionId": "20",
+        "lastUpdated": "2022-02-17T23:28:25.112+08:00"
+    }
+}

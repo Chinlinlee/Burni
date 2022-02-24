@@ -1,0 +1,37 @@
+{
+    "resourceType": "NamingSystem",
+    "id": "NamingSystem-example",
+    "name": "SNOMED CT",
+    "status": "active",
+    "kind": "codesystem",
+    "date": "2014-12-13T08:00:00+08:00",
+    "publisher": "HL7 International on behalf of IHTSDO",
+    "contact": [
+        {
+            "name": "Troy Waters",
+            "telecom": [
+                {
+                    "system": "url",
+                    "value": "wpLcR9jHif01b"
+                }
+            ]
+        }
+    ],
+    "responsible": "IHTSDO & affiliates",
+    "description": "SNOMED CT is a concept-based, scientifically validated terminology that provides a unique and permanent concept identifier that can be included in multiple HL7 data types including CD and CE.  The concepts are managed to avoid \"semantic drift\" so the meaning remains constant.  If the concept is found to be ambiguous or the meaning changes, the concept is inactivated but still retained and the identifier is never reused.    SNOMED CT's concepts are interrelated hierarchically and using description logic.    SNOMED CT concepts have a unique \"fully-specified name\", a preferred term, and, optionally, synonyms.  The description languages include English and Spanish.",
+    "uniqueId": [
+        {
+            "type": "oid",
+            "value": "Vc0DiIhchb3upU"
+        },
+        {
+            "type": "uri",
+            "value": "Emm50grbXWZ",
+            "preferred": true
+        }
+    ],
+    "meta": {
+        "versionId": "20",
+        "lastUpdated": "2022-02-17T23:28:28.806+08:00"
+    }
+}

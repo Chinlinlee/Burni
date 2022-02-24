@@ -1,0 +1,63 @@
+{
+    "resourceType": "Procedure",
+    "id": "example",
+    "text": {
+        "status": "generated",
+        "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Routine Appendectomy</div>"
+    },
+    "status": "completed",
+    "code": {
+        "coding": [
+            {
+                "system": "http://snomed.info/sct",
+                "code": "80146002",
+                "display": "4IGsHYbSEvjs"
+            }
+        ],
+        "text": "KHwY0XtCQh"
+    },
+    "subject": {
+        "reference": "Patient/example"
+    },
+    "performedDateTime": "2013-04-05",
+    "recorder": {
+        "reference": "Practitioner/example",
+        "display": "pRAQKlnaYXvX"
+    },
+    "asserter": {
+        "reference": "Practitioner/example",
+        "display": "Pd9jnFL5JO4aqd"
+    },
+    "performer": [
+        {
+            "actor": {
+                "reference": "Practitioner/example",
+                "display": "8MEL0Fgyvm6"
+            }
+        }
+    ],
+    "reasonCode": [
+        {
+            "text": "KATEbVQz"
+        }
+    ],
+    "followUp": [
+        {
+            "text": "NDdqOn7VVVqTvcaH"
+        }
+    ],
+    "note": [
+        {
+            "text": "OcKDbMEBGKv9C"
+        }
+    ],
+    "meta": {
+        "tag": [
+            {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+                "code": "HTEST",
+                "display": "DmYUGL2x4fW5"
+            }
+        ]
+    }
+}

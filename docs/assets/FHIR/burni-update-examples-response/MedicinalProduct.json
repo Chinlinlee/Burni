@@ -1,0 +1,112 @@
+{
+    "resourceType": "MedicinalProduct",
+    "id": "MedicinalProduct-example",
+    "identifier": [
+        {
+            "system": "http://ema.europa.eu/example/MPID",
+            "value": "89yQuncxc4"
+        }
+    ],
+    "productClassification": [
+        {
+            "coding": [
+                {
+                    "system": "http://ema.europa.eu/example/WHOAnatomicalTherapeuticChemicalATCClassificationSystem",
+                    "code": "WHOAnatomicalTherapeuticChemicalATCClassificationSystem|B01AF02"
+                }
+            ]
+        }
+    ],
+    "attachedDocument": [
+        {
+            "reference": "DocumentReference/example"
+        }
+    ],
+    "masterFile": [
+        {
+            "reference": "DocumentReference/example"
+        }
+    ],
+    "name": [
+        {
+            "productName": "Equilidem 2.5 mg film-coated tablets",
+            "namePart": [
+                {
+                    "part": "Equilidem",
+                    "type": {
+                        "code": "INV"
+                    }
+                },
+                {
+                    "part": "2.5 mg",
+                    "type": {
+                        "code": "STR"
+                    }
+                },
+                {
+                    "part": "film-coated tablets",
+                    "type": {
+                        "code": "FRM"
+                    }
+                }
+            ],
+            "countryLanguage": [
+                {
+                    "country": {
+                        "coding": [
+                            {
+                                "system": "http://ema.europa.eu/example/countryCode",
+                                "code": "EU"
+                            }
+                        ]
+                    },
+                    "jurisdiction": {
+                        "coding": [
+                            {
+                                "system": "http://ema.europa.eu/example/jurisdictionCode",
+                                "code": "EU"
+                            }
+                        ]
+                    },
+                    "language": {
+                        "coding": [
+                            {
+                                "system": "http://ema.europa.eu/example/languageCode",
+                                "code": "EN"
+                            }
+                        ]
+                    }
+                }
+            ]
+        }
+    ],
+    "manufacturingBusinessOperation": [
+        {
+            "operationType": {
+                "coding": [
+                    {
+                        "system": "http://ema.europa.eu/example/manufacturingOperationType",
+                        "code": "Batchrelease"
+                    }
+                ]
+            },
+            "authorisationReferenceNumber": {
+                "system": "http://ema.europa.eu/example/manufacturingAuthorisationReferenceNumber",
+                "value": "o1Xxl76YgpaDdL"
+            },
+            "effectiveDate": "2013-03-15T08:00:00+08:00",
+            "manufacturer": [
+                {
+                    "reference": "Organization/example"
+                }
+            ],
+            "regulator": {
+                "reference": "Organization/example"
+            }
+        }
+    ],
+    "meta": {
+        "versionId": "20",
+        "lastUpdated": "2022-02-17T23:28:24.680+08:00"
+    }
+}

@@ -1,0 +1,27 @@
+{
+    "resourceType": "DeviceUseStatement",
+    "id": "DeviceUseStatement-example",
+    "identifier": [
+        {
+            "system": "http:goodhealth.org/identifiers",
+            "value": "4utxFLQ6VnDSGG"
+        }
+    ],
+    "status": "active",
+    "subject": {
+        "reference": "Patient/example"
+    },
+    "device": {
+        "reference": "Device/example"
+    },
+    "reasonReference": [
+        {
+            "reference": "Procedure/example",
+            "display": "iwpwoZHQfa7"
+        }
+    ],
+    "meta": {
+        "versionId": "22",
+        "lastUpdated": "2022-02-17T23:28:04.219+08:00"
+    }
+}

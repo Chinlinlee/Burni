@@ -1,0 +1,5010 @@
+{
+    "Account": [
+        {
+            "path": "subject",
+            "resourceList": [
+                "Patient",
+                "Device",
+                "Practitioner",
+                "PractitionerRole",
+                "Location",
+                "HealthcareService",
+                "Organization"
+            ]
+        },
+        {
+            "path": "coverage.coverage",
+            "resourceList": [
+                "Coverage"
+            ]
+        },
+        {
+            "path": "owner",
+            "resourceList": [
+                "Organization"
+            ]
+        },
+        {
+            "path": "guarantor.party",
+            "resourceList": [
+                "Patient",
+                "RelatedPerson",
+                "Organization"
+            ]
+        },
+        {
+            "path": "partOf",
+            "resourceList": [
+                "Account"
+            ]
+        }
+    ],
+    "ActivityDefinition": [
+        {
+            "path": "location",
+            "resourceList": [
+                "Location"
+            ]
+        },
+        {
+            "path": "productReference",
+            "resourceList": [
+                "Medication",
+                "Substance"
+            ]
+        },
+        {
+            "path": "specimenRequirement",
+            "resourceList": [
+                "SpecimenDefinition"
+            ]
+        },
+        {
+            "path": "observationRequirement",
+            "resourceList": [
+                "ObservationDefinition"
+            ]
+        },
+        {
+            "path": "observationResultRequirement",
+            "resourceList": [
+                "ObservationDefinition"
+            ]
+        }
+    ],
+    "AdverseEvent": [
+        {
+            "path": "subject",
+            "resourceList": [
+                "Patient",
+                "Group",
+                "Practitioner",
+                "RelatedPerson"
+            ]
+        },
+        {
+            "path": "encounter",
+            "resourceList": [
+                "Encounter"
+            ]
+        },
+        {
+            "path": "resultingCondition",
+            "resourceList": [
+                "Condition"
+            ]
+        },
+        {
+            "path": "location",
+            "resourceList": [
+                "Location"
+            ]
+        },
+        {
+            "path": "recorder",
+            "resourceList": [
+                "Patient",
+                "Practitioner",
+                "PractitionerRole",
+                "RelatedPerson"
+            ]
+        },
+        {
+            "path": "contributor",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole",
+                "Device"
+            ]
+        },
+        {
+            "path": "suspectEntity.instance",
+            "resourceList": [
+                "Immunization",
+                "Procedure",
+                "Substance",
+                "Medication",
+                "MedicationAdministration",
+                "MedicationStatement",
+                "Device"
+            ]
+        },
+        {
+            "path": "suspectEntity.causality.author",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole"
+            ]
+        },
+        {
+            "path": "subjectMedicalHistory",
+            "resourceList": [
+                "Condition",
+                "Observation",
+                "AllergyIntolerance",
+                "FamilyMemberHistory",
+                "Immunization",
+                "Procedure",
+                "Media",
+                "DocumentReference"
+            ]
+        },
+        {
+            "path": "referenceDocument",
+            "resourceList": [
+                "DocumentReference"
+            ]
+        },
+        {
+            "path": "study",
+            "resourceList": [
+                "ResearchStudy"
+            ]
+        }
+    ],
+    "AllergyIntolerance": [
+        {
+            "path": "patient",
+            "resourceList": [
+                "Patient"
+            ]
+        },
+        {
+            "path": "encounter",
+            "resourceList": [
+                "Encounter"
+            ]
+        },
+        {
+            "path": "recorder",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole",
+                "Patient",
+                "RelatedPerson"
+            ]
+        },
+        {
+            "path": "asserter",
+            "resourceList": [
+                "Patient",
+                "RelatedPerson",
+                "Practitioner",
+                "PractitionerRole"
+            ]
+        }
+    ],
+    "Appointment": [
+        {
+            "path": "reasonReference",
+            "resourceList": [
+                "Condition",
+                "Procedure",
+                "Observation",
+                "ImmunizationRecommendation"
+            ]
+        },
+        {
+            "path": "supportingInformation",
+            "resourceList": [
+                "Resource"
+            ]
+        },
+        {
+            "path": "slot",
+            "resourceList": [
+                "Slot"
+            ]
+        },
+        {
+            "path": "basedOn",
+            "resourceList": [
+                "ServiceRequest"
+            ]
+        },
+        {
+            "path": "participant.actor",
+            "resourceList": [
+                "Patient",
+                "Practitioner",
+                "PractitionerRole",
+                "RelatedPerson",
+                "Device",
+                "HealthcareService",
+                "Location"
+            ]
+        }
+    ],
+    "AppointmentResponse": [
+        {
+            "path": "appointment",
+            "resourceList": [
+                "Appointment"
+            ]
+        },
+        {
+            "path": "actor",
+            "resourceList": [
+                "Patient",
+                "Practitioner",
+                "PractitionerRole",
+                "RelatedPerson",
+                "Device",
+                "HealthcareService",
+                "Location"
+            ]
+        }
+    ],
+    "AuditEvent": [
+        {
+            "path": "agent.who",
+            "resourceList": [
+                "PractitionerRole",
+                "Practitioner",
+                "Organization",
+                "Device",
+                "Patient",
+                "RelatedPerson"
+            ]
+        },
+        {
+            "path": "agent.location",
+            "resourceList": [
+                "Location"
+            ]
+        },
+        {
+            "path": "source.observer",
+            "resourceList": [
+                "PractitionerRole",
+                "Practitioner",
+                "Organization",
+                "Device",
+                "Patient",
+                "RelatedPerson"
+            ]
+        },
+        {
+            "path": "entity.what",
+            "resourceList": [
+                "Resource"
+            ]
+        }
+    ],
+    "Basic": [
+        {
+            "path": "subject",
+            "resourceList": [
+                "Resource"
+            ]
+        },
+        {
+            "path": "author",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole",
+                "Patient",
+                "RelatedPerson",
+                "Organization"
+            ]
+        }
+    ],
+    "Binary": [
+        {
+            "path": "securityContext",
+            "resourceList": [
+                "Resource"
+            ]
+        }
+    ],
+    "BiologicallyDerivedProduct": [
+        {
+            "path": "request",
+            "resourceList": [
+                "ServiceRequest"
+            ]
+        },
+        {
+            "path": "parent",
+            "resourceList": [
+                "BiologicallyDerivedProduct"
+            ]
+        },
+        {
+            "path": "collection.collector",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole"
+            ]
+        },
+        {
+            "path": "collection.source",
+            "resourceList": [
+                "Patient",
+                "Organization"
+            ]
+        },
+        {
+            "path": "processing.additive",
+            "resourceList": [
+                "Substance"
+            ]
+        }
+    ],
+    "BodyStructure": [
+        {
+            "path": "patient",
+            "resourceList": [
+                "Patient"
+            ]
+        }
+    ],
+    "Bundle": [],
+    "CapabilityStatement": [
+        {
+            "path": "implementation.custodian",
+            "resourceList": [
+                "Organization"
+            ]
+        }
+    ],
+    "CarePlan": [
+        {
+            "path": "basedOn",
+            "resourceList": [
+                "CarePlan"
+            ]
+        },
+        {
+            "path": "replaces",
+            "resourceList": [
+                "CarePlan"
+            ]
+        },
+        {
+            "path": "partOf",
+            "resourceList": [
+                "CarePlan"
+            ]
+        },
+        {
+            "path": "subject",
+            "resourceList": [
+                "Patient",
+                "Group"
+            ]
+        },
+        {
+            "path": "encounter",
+            "resourceList": [
+                "Encounter"
+            ]
+        },
+        {
+            "path": "author",
+            "resourceList": [
+                "Patient",
+                "Practitioner",
+                "PractitionerRole",
+                "Device",
+                "RelatedPerson",
+                "Organization",
+                "CareTeam"
+            ]
+        },
+        {
+            "path": "contributor",
+            "resourceList": [
+                "Patient",
+                "Practitioner",
+                "PractitionerRole",
+                "Device",
+                "RelatedPerson",
+                "Organization",
+                "CareTeam"
+            ]
+        },
+        {
+            "path": "careTeam",
+            "resourceList": [
+                "CareTeam"
+            ]
+        },
+        {
+            "path": "addresses",
+            "resourceList": [
+                "Condition"
+            ]
+        },
+        {
+            "path": "supportingInfo",
+            "resourceList": [
+                "Resource"
+            ]
+        },
+        {
+            "path": "goal",
+            "resourceList": [
+                "Goal"
+            ]
+        },
+        {
+            "path": "activity.outcomeReference",
+            "resourceList": [
+                "Resource"
+            ]
+        },
+        {
+            "path": "activity.reference",
+            "resourceList": [
+                "Appointment",
+                "CommunicationRequest",
+                "DeviceRequest",
+                "MedicationRequest",
+                "NutritionOrder",
+                "Task",
+                "ServiceRequest",
+                "VisionPrescription",
+                "RequestGroup"
+            ]
+        },
+        {
+            "path": "activity.detail.reasonReference",
+            "resourceList": [
+                "Condition",
+                "Observation",
+                "DiagnosticReport",
+                "DocumentReference"
+            ]
+        },
+        {
+            "path": "activity.detail.goal",
+            "resourceList": [
+                "Goal"
+            ]
+        },
+        {
+            "path": "activity.detail.location",
+            "resourceList": [
+                "Location"
+            ]
+        },
+        {
+            "path": "activity.detail.performer",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole",
+                "Organization",
+                "RelatedPerson",
+                "Patient",
+                "CareTeam",
+                "HealthcareService",
+                "Device"
+            ]
+        }
+    ],
+    "CareTeam": [
+        {
+            "path": "subject",
+            "resourceList": [
+                "Patient",
+                "Group"
+            ]
+        },
+        {
+            "path": "encounter",
+            "resourceList": [
+                "Encounter"
+            ]
+        },
+        {
+            "path": "participant.member",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole",
+                "RelatedPerson",
+                "Patient",
+                "Organization",
+                "CareTeam"
+            ]
+        },
+        {
+            "path": "participant.onBehalfOf",
+            "resourceList": [
+                "Organization"
+            ]
+        },
+        {
+            "path": "reasonReference",
+            "resourceList": [
+                "Condition"
+            ]
+        },
+        {
+            "path": "managingOrganization",
+            "resourceList": [
+                "Organization"
+            ]
+        }
+    ],
+    "CatalogEntry": [
+        {
+            "path": "referencedItem",
+            "resourceList": [
+                "Medication",
+                "Device",
+                "Organization",
+                "Practitioner",
+                "PractitionerRole",
+                "HealthcareService",
+                "ActivityDefinition",
+                "PlanDefinition",
+                "SpecimenDefinition",
+                "ObservationDefinition",
+                "Binary"
+            ]
+        },
+        {
+            "path": "relatedEntry.item",
+            "resourceList": [
+                "CatalogEntry"
+            ]
+        }
+    ],
+    "ChargeItem": [
+        {
+            "path": "partOf",
+            "resourceList": [
+                "ChargeItem"
+            ]
+        },
+        {
+            "path": "subject",
+            "resourceList": [
+                "Patient",
+                "Group"
+            ]
+        },
+        {
+            "path": "context",
+            "resourceList": [
+                "Encounter",
+                "EpisodeOfCare"
+            ]
+        },
+        {
+            "path": "performer.actor",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole",
+                "Organization",
+                "CareTeam",
+                "Patient",
+                "Device",
+                "RelatedPerson"
+            ]
+        },
+        {
+            "path": "performingOrganization",
+            "resourceList": [
+                "Organization"
+            ]
+        },
+        {
+            "path": "requestingOrganization",
+            "resourceList": [
+                "Organization"
+            ]
+        },
+        {
+            "path": "costCenter",
+            "resourceList": [
+                "Organization"
+            ]
+        },
+        {
+            "path": "enterer",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole",
+                "Organization",
+                "Patient",
+                "Device",
+                "RelatedPerson"
+            ]
+        },
+        {
+            "path": "service",
+            "resourceList": [
+                "DiagnosticReport",
+                "ImagingStudy",
+                "Immunization",
+                "MedicationAdministration",
+                "MedicationDispense",
+                "Observation",
+                "Procedure",
+                "SupplyDelivery"
+            ]
+        },
+        {
+            "path": "productReference",
+            "resourceList": [
+                "Device",
+                "Medication",
+                "Substance"
+            ]
+        },
+        {
+            "path": "account",
+            "resourceList": [
+                "Account"
+            ]
+        },
+        {
+            "path": "supportingInformation",
+            "resourceList": [
+                "Resource"
+            ]
+        }
+    ],
+    "ChargeItemDefinition": [
+        {
+            "path": "instance",
+            "resourceList": [
+                "Medication",
+                "Substance",
+                "Device"
+            ]
+        }
+    ],
+    "Claim": [
+        {
+            "path": "patient",
+            "resourceList": [
+                "Patient"
+            ]
+        },
+        {
+            "path": "enterer",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole"
+            ]
+        },
+        {
+            "path": "insurer",
+            "resourceList": [
+                "Organization"
+            ]
+        },
+        {
+            "path": "provider",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole",
+                "Organization"
+            ]
+        },
+        {
+            "path": "related.claim",
+            "resourceList": [
+                "Claim"
+            ]
+        },
+        {
+            "path": "prescription",
+            "resourceList": [
+                "DeviceRequest",
+                "MedicationRequest",
+                "VisionPrescription"
+            ]
+        },
+        {
+            "path": "originalPrescription",
+            "resourceList": [
+                "DeviceRequest",
+                "MedicationRequest",
+                "VisionPrescription"
+            ]
+        },
+        {
+            "path": "payee.party",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole",
+                "Organization",
+                "Patient",
+                "RelatedPerson"
+            ]
+        },
+        {
+            "path": "referral",
+            "resourceList": [
+                "ServiceRequest"
+            ]
+        },
+        {
+            "path": "facility",
+            "resourceList": [
+                "Location"
+            ]
+        },
+        {
+            "path": "careTeam.provider",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole",
+                "Organization"
+            ]
+        },
+        {
+            "path": "procedure.udi",
+            "resourceList": [
+                "Device"
+            ]
+        },
+        {
+            "path": "insurance.coverage",
+            "resourceList": [
+                "Coverage"
+            ]
+        },
+        {
+            "path": "insurance.claimResponse",
+            "resourceList": [
+                "ClaimResponse"
+            ]
+        },
+        {
+            "path": "item.udi",
+            "resourceList": [
+                "Device"
+            ]
+        },
+        {
+            "path": "item.encounter",
+            "resourceList": [
+                "Encounter"
+            ]
+        },
+        {
+            "path": "item.detail.udi",
+            "resourceList": [
+                "Device"
+            ]
+        },
+        {
+            "path": "item.detail.subDetail.udi",
+            "resourceList": [
+                "Device"
+            ]
+        }
+    ],
+    "ClaimResponse": [
+        {
+            "path": "patient",
+            "resourceList": [
+                "Patient"
+            ]
+        },
+        {
+            "path": "insurer",
+            "resourceList": [
+                "Organization"
+            ]
+        },
+        {
+            "path": "requestor",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole",
+                "Organization"
+            ]
+        },
+        {
+            "path": "request",
+            "resourceList": [
+                "Claim"
+            ]
+        },
+        {
+            "path": "addItem.provider",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole",
+                "Organization"
+            ]
+        },
+        {
+            "path": "communicationRequest",
+            "resourceList": [
+                "CommunicationRequest"
+            ]
+        },
+        {
+            "path": "insurance.coverage",
+            "resourceList": [
+                "Coverage"
+            ]
+        },
+        {
+            "path": "insurance.claimResponse",
+            "resourceList": [
+                "ClaimResponse"
+            ]
+        }
+    ],
+    "ClinicalImpression": [
+        {
+            "path": "subject",
+            "resourceList": [
+                "Patient",
+                "Group"
+            ]
+        },
+        {
+            "path": "encounter",
+            "resourceList": [
+                "Encounter"
+            ]
+        },
+        {
+            "path": "assessor",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole"
+            ]
+        },
+        {
+            "path": "previous",
+            "resourceList": [
+                "ClinicalImpression"
+            ]
+        },
+        {
+            "path": "problem",
+            "resourceList": [
+                "Condition",
+                "AllergyIntolerance"
+            ]
+        },
+        {
+            "path": "investigation.item",
+            "resourceList": [
+                "Observation",
+                "QuestionnaireResponse",
+                "FamilyMemberHistory",
+                "DiagnosticReport",
+                "RiskAssessment",
+                "ImagingStudy",
+                "Media"
+            ]
+        },
+        {
+            "path": "finding.itemReference",
+            "resourceList": [
+                "Condition",
+                "Observation",
+                "Media"
+            ]
+        },
+        {
+            "path": "prognosisReference",
+            "resourceList": [
+                "RiskAssessment"
+            ]
+        },
+        {
+            "path": "supportingInfo",
+            "resourceList": [
+                "Resource"
+            ]
+        }
+    ],
+    "CodeSystem": [],
+    "Communication": [
+        {
+            "path": "basedOn",
+            "resourceList": [
+                "Resource"
+            ]
+        },
+        {
+            "path": "partOf",
+            "resourceList": [
+                "Resource"
+            ]
+        },
+        {
+            "path": "inResponseTo",
+            "resourceList": [
+                "Communication"
+            ]
+        },
+        {
+            "path": "subject",
+            "resourceList": [
+                "Patient",
+                "Group"
+            ]
+        },
+        {
+            "path": "about",
+            "resourceList": [
+                "Resource"
+            ]
+        },
+        {
+            "path": "encounter",
+            "resourceList": [
+                "Encounter"
+            ]
+        },
+        {
+            "path": "recipient",
+            "resourceList": [
+                "Device",
+                "Organization",
+                "Patient",
+                "Practitioner",
+                "PractitionerRole",
+                "RelatedPerson",
+                "Group",
+                "CareTeam",
+                "HealthcareService"
+            ]
+        },
+        {
+            "path": "sender",
+            "resourceList": [
+                "Device",
+                "Organization",
+                "Patient",
+                "Practitioner",
+                "PractitionerRole",
+                "RelatedPerson",
+                "HealthcareService"
+            ]
+        },
+        {
+            "path": "reasonReference",
+            "resourceList": [
+                "Condition",
+                "Observation",
+                "DiagnosticReport",
+                "DocumentReference"
+            ]
+        }
+    ],
+    "CommunicationRequest": [
+        {
+            "path": "basedOn",
+            "resourceList": [
+                "Resource"
+            ]
+        },
+        {
+            "path": "replaces",
+            "resourceList": [
+                "CommunicationRequest"
+            ]
+        },
+        {
+            "path": "subject",
+            "resourceList": [
+                "Patient",
+                "Group"
+            ]
+        },
+        {
+            "path": "about",
+            "resourceList": [
+                "Resource"
+            ]
+        },
+        {
+            "path": "encounter",
+            "resourceList": [
+                "Encounter"
+            ]
+        },
+        {
+            "path": "requester",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole",
+                "Organization",
+                "Patient",
+                "RelatedPerson",
+                "Device"
+            ]
+        },
+        {
+            "path": "recipient",
+            "resourceList": [
+                "Device",
+                "Organization",
+                "Patient",
+                "Practitioner",
+                "PractitionerRole",
+                "RelatedPerson",
+                "Group",
+                "CareTeam",
+                "HealthcareService"
+            ]
+        },
+        {
+            "path": "sender",
+            "resourceList": [
+                "Device",
+                "Organization",
+                "Patient",
+                "Practitioner",
+                "PractitionerRole",
+                "RelatedPerson",
+                "HealthcareService"
+            ]
+        },
+        {
+            "path": "reasonReference",
+            "resourceList": [
+                "Condition",
+                "Observation",
+                "DiagnosticReport",
+                "DocumentReference"
+            ]
+        }
+    ],
+    "CompartmentDefinition": [],
+    "Composition": [
+        {
+            "path": "subject",
+            "resourceList": [
+                "Resource"
+            ]
+        },
+        {
+            "path": "encounter",
+            "resourceList": [
+                "Encounter"
+            ]
+        },
+        {
+            "path": "author",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole",
+                "Device",
+                "Patient",
+                "RelatedPerson",
+                "Organization"
+            ]
+        },
+        {
+            "path": "attester.party",
+            "resourceList": [
+                "Patient",
+                "RelatedPerson",
+                "Practitioner",
+                "PractitionerRole",
+                "Organization"
+            ]
+        },
+        {
+            "path": "custodian",
+            "resourceList": [
+                "Organization"
+            ]
+        },
+        {
+            "path": "event.detail",
+            "resourceList": [
+                "Resource"
+            ]
+        },
+        {
+            "path": "section.author",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole",
+                "Device",
+                "Patient",
+                "RelatedPerson",
+                "Organization"
+            ]
+        },
+        {
+            "path": "section.focus",
+            "resourceList": [
+                "Resource"
+            ]
+        },
+        {
+            "path": "section.entry",
+            "resourceList": [
+                "Resource"
+            ]
+        }
+    ],
+    "ConceptMap": [],
+    "Condition": [
+        {
+            "path": "subject",
+            "resourceList": [
+                "Patient",
+                "Group"
+            ]
+        },
+        {
+            "path": "encounter",
+            "resourceList": [
+                "Encounter"
+            ]
+        },
+        {
+            "path": "recorder",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole",
+                "Patient",
+                "RelatedPerson"
+            ]
+        },
+        {
+            "path": "asserter",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole",
+                "Patient",
+                "RelatedPerson"
+            ]
+        },
+        {
+            "path": "stage.assessment",
+            "resourceList": [
+                "ClinicalImpression",
+                "DiagnosticReport",
+                "Observation"
+            ]
+        },
+        {
+            "path": "evidence.detail",
+            "resourceList": [
+                "Resource"
+            ]
+        }
+    ],
+    "Consent": [
+        {
+            "path": "patient",
+            "resourceList": [
+                "Patient"
+            ]
+        },
+        {
+            "path": "performer",
+            "resourceList": [
+                "Organization",
+                "Patient",
+                "Practitioner",
+                "RelatedPerson",
+                "PractitionerRole"
+            ]
+        },
+        {
+            "path": "organization",
+            "resourceList": [
+                "Organization"
+            ]
+        },
+        {
+            "path": "verification.verifiedWith",
+            "resourceList": [
+                "Patient",
+                "RelatedPerson"
+            ]
+        },
+        {
+            "path": "provision.actor.reference",
+            "resourceList": [
+                "Device",
+                "Group",
+                "CareTeam",
+                "Organization",
+                "Patient",
+                "Practitioner",
+                "RelatedPerson",
+                "PractitionerRole"
+            ]
+        },
+        {
+            "path": "provision.data.reference",
+            "resourceList": [
+                "Resource"
+            ]
+        }
+    ],
+    "Contract": [
+        {
+            "path": "instantiatesCanonical",
+            "resourceList": [
+                "Contract"
+            ]
+        },
+        {
+            "path": "subject",
+            "resourceList": [
+                "Resource"
+            ]
+        },
+        {
+            "path": "authority",
+            "resourceList": [
+                "Organization"
+            ]
+        },
+        {
+            "path": "domain",
+            "resourceList": [
+                "Location"
+            ]
+        },
+        {
+            "path": "site",
+            "resourceList": [
+                "Location"
+            ]
+        },
+        {
+            "path": "author",
+            "resourceList": [
+                "Patient",
+                "Practitioner",
+                "PractitionerRole",
+                "Organization"
+            ]
+        },
+        {
+            "path": "contentDefinition.publisher",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole",
+                "Organization"
+            ]
+        },
+        {
+            "path": "term.offer.party.reference",
+            "resourceList": [
+                "Patient",
+                "RelatedPerson",
+                "Practitioner",
+                "PractitionerRole",
+                "Device",
+                "Group",
+                "Organization"
+            ]
+        },
+        {
+            "path": "term.offer.topic",
+            "resourceList": [
+                "Resource"
+            ]
+        },
+        {
+            "path": "term.asset.typeReference",
+            "resourceList": [
+                "Resource"
+            ]
+        },
+        {
+            "path": "term.asset.context.reference",
+            "resourceList": [
+                "Resource"
+            ]
+        },
+        {
+            "path": "term.asset.valuedItem.responsible",
+            "resourceList": [
+                "Organization",
+                "Patient",
+                "Practitioner",
+                "PractitionerRole",
+                "RelatedPerson"
+            ]
+        },
+        {
+            "path": "term.asset.valuedItem.recipient",
+            "resourceList": [
+                "Organization",
+                "Patient",
+                "Practitioner",
+                "PractitionerRole",
+                "RelatedPerson"
+            ]
+        },
+        {
+            "path": "term.action.subject.reference",
+            "resourceList": [
+                "Patient",
+                "RelatedPerson",
+                "Practitioner",
+                "PractitionerRole",
+                "Device",
+                "Group",
+                "Organization"
+            ]
+        },
+        {
+            "path": "term.action.context",
+            "resourceList": [
+                "Encounter",
+                "EpisodeOfCare"
+            ]
+        },
+        {
+            "path": "term.action.requester",
+            "resourceList": [
+                "Patient",
+                "RelatedPerson",
+                "Practitioner",
+                "PractitionerRole",
+                "Device",
+                "Group",
+                "Organization"
+            ]
+        },
+        {
+            "path": "term.action.performer",
+            "resourceList": [
+                "RelatedPerson",
+                "Patient",
+                "Practitioner",
+                "PractitionerRole",
+                "CareTeam",
+                "Device",
+                "Substance",
+                "Organization",
+                "Location"
+            ]
+        },
+        {
+            "path": "term.action.reasonReference",
+            "resourceList": [
+                "Condition",
+                "Observation",
+                "DiagnosticReport",
+                "DocumentReference",
+                "Questionnaire",
+                "QuestionnaireResponse"
+            ]
+        },
+        {
+            "path": "supportingInfo",
+            "resourceList": [
+                "Resource"
+            ]
+        },
+        {
+            "path": "relevantHistory",
+            "resourceList": [
+                "Provenance"
+            ]
+        },
+        {
+            "path": "signer.party",
+            "resourceList": [
+                "Organization",
+                "Patient",
+                "Practitioner",
+                "PractitionerRole",
+                "RelatedPerson"
+            ]
+        }
+    ],
+    "Coverage": [
+        {
+            "path": "policyHolder",
+            "resourceList": [
+                "Patient",
+                "RelatedPerson",
+                "Organization"
+            ]
+        },
+        {
+            "path": "subscriber",
+            "resourceList": [
+                "Patient",
+                "RelatedPerson"
+            ]
+        },
+        {
+            "path": "beneficiary",
+            "resourceList": [
+                "Patient"
+            ]
+        },
+        {
+            "path": "payor",
+            "resourceList": [
+                "Organization",
+                "Patient",
+                "RelatedPerson"
+            ]
+        },
+        {
+            "path": "contract",
+            "resourceList": [
+                "Contract"
+            ]
+        }
+    ],
+    "CoverageEligibilityRequest": [
+        {
+            "path": "patient",
+            "resourceList": [
+                "Patient"
+            ]
+        },
+        {
+            "path": "enterer",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole"
+            ]
+        },
+        {
+            "path": "provider",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole",
+                "Organization"
+            ]
+        },
+        {
+            "path": "insurer",
+            "resourceList": [
+                "Organization"
+            ]
+        },
+        {
+            "path": "facility",
+            "resourceList": [
+                "Location"
+            ]
+        },
+        {
+            "path": "supportingInfo.information",
+            "resourceList": [
+                "Resource"
+            ]
+        },
+        {
+            "path": "insurance.coverage",
+            "resourceList": [
+                "Coverage"
+            ]
+        },
+        {
+            "path": "item.provider",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole"
+            ]
+        },
+        {
+            "path": "item.facility",
+            "resourceList": [
+                "Location",
+                "Organization"
+            ]
+        },
+        {
+            "path": "item.detail",
+            "resourceList": [
+                "Resource"
+            ]
+        }
+    ],
+    "CoverageEligibilityResponse": [
+        {
+            "path": "patient",
+            "resourceList": [
+                "Patient"
+            ]
+        },
+        {
+            "path": "requestor",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole",
+                "Organization"
+            ]
+        },
+        {
+            "path": "request",
+            "resourceList": [
+                "CoverageEligibilityRequest"
+            ]
+        },
+        {
+            "path": "insurer",
+            "resourceList": [
+                "Organization"
+            ]
+        },
+        {
+            "path": "insurance.coverage",
+            "resourceList": [
+                "Coverage"
+            ]
+        },
+        {
+            "path": "insurance.item.provider",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole"
+            ]
+        }
+    ],
+    "DetectedIssue": [
+        {
+            "path": "patient",
+            "resourceList": [
+                "Patient"
+            ]
+        },
+        {
+            "path": "author",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole",
+                "Device"
+            ]
+        },
+        {
+            "path": "implicated",
+            "resourceList": [
+                "Resource"
+            ]
+        },
+        {
+            "path": "evidence.detail",
+            "resourceList": [
+                "Resource"
+            ]
+        },
+        {
+            "path": "mitigation.author",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole"
+            ]
+        }
+    ],
+    "Device": [
+        {
+            "path": "definition",
+            "resourceList": [
+                "DeviceDefinition"
+            ]
+        },
+        {
+            "path": "patient",
+            "resourceList": [
+                "Patient"
+            ]
+        },
+        {
+            "path": "owner",
+            "resourceList": [
+                "Organization"
+            ]
+        },
+        {
+            "path": "location",
+            "resourceList": [
+                "Location"
+            ]
+        },
+        {
+            "path": "parent",
+            "resourceList": [
+                "Device"
+            ]
+        }
+    ],
+    "DeviceDefinition": [
+        {
+            "path": "owner",
+            "resourceList": [
+                "Organization"
+            ]
+        },
+        {
+            "path": "parentDevice",
+            "resourceList": [
+                "DeviceDefinition"
+            ]
+        }
+    ],
+    "DeviceMetric": [
+        {
+            "path": "source",
+            "resourceList": [
+                "Device"
+            ]
+        },
+        {
+            "path": "parent",
+            "resourceList": [
+                "Device"
+            ]
+        }
+    ],
+    "DeviceRequest": [
+        {
+            "path": "basedOn",
+            "resourceList": [
+                "Resource"
+            ]
+        },
+        {
+            "path": "priorRequest",
+            "resourceList": [
+                "Resource"
+            ]
+        },
+        {
+            "path": "codeReference",
+            "resourceList": [
+                "Device"
+            ]
+        },
+        {
+            "path": "subject",
+            "resourceList": [
+                "Patient",
+                "Group",
+                "Location",
+                "Device"
+            ]
+        },
+        {
+            "path": "encounter",
+            "resourceList": [
+                "Encounter"
+            ]
+        },
+        {
+            "path": "requester",
+            "resourceList": [
+                "Device",
+                "Practitioner",
+                "PractitionerRole",
+                "Organization"
+            ]
+        },
+        {
+            "path": "performer",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole",
+                "Organization",
+                "CareTeam",
+                "HealthcareService",
+                "Patient",
+                "Device",
+                "RelatedPerson"
+            ]
+        },
+        {
+            "path": "reasonReference",
+            "resourceList": [
+                "Condition",
+                "Observation",
+                "DiagnosticReport",
+                "DocumentReference"
+            ]
+        },
+        {
+            "path": "insurance",
+            "resourceList": [
+                "Coverage",
+                "ClaimResponse"
+            ]
+        },
+        {
+            "path": "supportingInfo",
+            "resourceList": [
+                "Resource"
+            ]
+        },
+        {
+            "path": "relevantHistory",
+            "resourceList": [
+                "Provenance"
+            ]
+        }
+    ],
+    "DeviceUseStatement": [
+        {
+            "path": "basedOn",
+            "resourceList": [
+                "ServiceRequest"
+            ]
+        },
+        {
+            "path": "subject",
+            "resourceList": [
+                "Patient",
+                "Group"
+            ]
+        },
+        {
+            "path": "derivedFrom",
+            "resourceList": [
+                "ServiceRequest",
+                "Procedure",
+                "Claim",
+                "Observation",
+                "QuestionnaireResponse",
+                "DocumentReference"
+            ]
+        },
+        {
+            "path": "source",
+            "resourceList": [
+                "Patient",
+                "Practitioner",
+                "PractitionerRole",
+                "RelatedPerson"
+            ]
+        },
+        {
+            "path": "device",
+            "resourceList": [
+                "Device"
+            ]
+        },
+        {
+            "path": "reasonReference",
+            "resourceList": [
+                "Condition",
+                "Observation",
+                "DiagnosticReport",
+                "DocumentReference",
+                "Media"
+            ]
+        }
+    ],
+    "DiagnosticReport": [
+        {
+            "path": "basedOn",
+            "resourceList": [
+                "CarePlan",
+                "ImmunizationRecommendation",
+                "MedicationRequest",
+                "NutritionOrder",
+                "ServiceRequest"
+            ]
+        },
+        {
+            "path": "subject",
+            "resourceList": [
+                "Patient",
+                "Group",
+                "Device",
+                "Location"
+            ]
+        },
+        {
+            "path": "encounter",
+            "resourceList": [
+                "Encounter"
+            ]
+        },
+        {
+            "path": "performer",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole",
+                "Organization",
+                "CareTeam"
+            ]
+        },
+        {
+            "path": "resultsInterpreter",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole",
+                "Organization",
+                "CareTeam"
+            ]
+        },
+        {
+            "path": "specimen",
+            "resourceList": [
+                "Specimen"
+            ]
+        },
+        {
+            "path": "result",
+            "resourceList": [
+                "Observation"
+            ]
+        },
+        {
+            "path": "imagingStudy",
+            "resourceList": [
+                "ImagingStudy"
+            ]
+        },
+        {
+            "path": "media.link",
+            "resourceList": [
+                "Media"
+            ]
+        }
+    ],
+    "DocumentManifest": [
+        {
+            "path": "subject",
+            "resourceList": [
+                "Patient",
+                "Practitioner",
+                "Group",
+                "Device"
+            ]
+        },
+        {
+            "path": "author",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole",
+                "Organization",
+                "Device",
+                "Patient",
+                "RelatedPerson"
+            ]
+        },
+        {
+            "path": "recipient",
+            "resourceList": [
+                "Patient",
+                "Practitioner",
+                "PractitionerRole",
+                "RelatedPerson",
+                "Organization"
+            ]
+        },
+        {
+            "path": "content",
+            "resourceList": [
+                "Resource"
+            ]
+        },
+        {
+            "path": "related.ref",
+            "resourceList": [
+                "Resource"
+            ]
+        }
+    ],
+    "DocumentReference": [
+        {
+            "path": "subject",
+            "resourceList": [
+                "Patient",
+                "Practitioner",
+                "Group",
+                "Device"
+            ]
+        },
+        {
+            "path": "author",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole",
+                "Organization",
+                "Device",
+                "Patient",
+                "RelatedPerson"
+            ]
+        },
+        {
+            "path": "authenticator",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole",
+                "Organization"
+            ]
+        },
+        {
+            "path": "custodian",
+            "resourceList": [
+                "Organization"
+            ]
+        },
+        {
+            "path": "relatesTo.target",
+            "resourceList": [
+                "DocumentReference"
+            ]
+        },
+        {
+            "path": "context.encounter",
+            "resourceList": [
+                "Encounter",
+                "EpisodeOfCare"
+            ]
+        },
+        {
+            "path": "context.sourcePatientInfo",
+            "resourceList": [
+                "Patient"
+            ]
+        },
+        {
+            "path": "context.related",
+            "resourceList": [
+                "Resource"
+            ]
+        }
+    ],
+    "EffectEvidenceSynthesis": [
+        {
+            "path": "population",
+            "resourceList": [
+                "EvidenceVariable"
+            ]
+        },
+        {
+            "path": "exposure",
+            "resourceList": [
+                "EvidenceVariable"
+            ]
+        },
+        {
+            "path": "exposureAlternative",
+            "resourceList": [
+                "EvidenceVariable"
+            ]
+        },
+        {
+            "path": "outcome",
+            "resourceList": [
+                "EvidenceVariable"
+            ]
+        },
+        {
+            "path": "resultsByExposure.riskEvidenceSynthesis",
+            "resourceList": [
+                "RiskEvidenceSynthesis"
+            ]
+        }
+    ],
+    "Encounter": [
+        {
+            "path": "subject",
+            "resourceList": [
+                "Patient",
+                "Group"
+            ]
+        },
+        {
+            "path": "episodeOfCare",
+            "resourceList": [
+                "EpisodeOfCare"
+            ]
+        },
+        {
+            "path": "basedOn",
+            "resourceList": [
+                "ServiceRequest"
+            ]
+        },
+        {
+            "path": "participant.individual",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole",
+                "RelatedPerson"
+            ]
+        },
+        {
+            "path": "appointment",
+            "resourceList": [
+                "Appointment"
+            ]
+        },
+        {
+            "path": "reasonReference",
+            "resourceList": [
+                "Condition",
+                "Procedure",
+                "Observation",
+                "ImmunizationRecommendation"
+            ]
+        },
+        {
+            "path": "diagnosis.condition",
+            "resourceList": [
+                "Condition",
+                "Procedure"
+            ]
+        },
+        {
+            "path": "account",
+            "resourceList": [
+                "Account"
+            ]
+        },
+        {
+            "path": "hospitalization.origin",
+            "resourceList": [
+                "Location",
+                "Organization"
+            ]
+        },
+        {
+            "path": "hospitalization.destination",
+            "resourceList": [
+                "Location",
+                "Organization"
+            ]
+        },
+        {
+            "path": "location.location",
+            "resourceList": [
+                "Location"
+            ]
+        },
+        {
+            "path": "serviceProvider",
+            "resourceList": [
+                "Organization"
+            ]
+        },
+        {
+            "path": "partOf",
+            "resourceList": [
+                "Encounter"
+            ]
+        }
+    ],
+    "Endpoint": [
+        {
+            "path": "managingOrganization",
+            "resourceList": [
+                "Organization"
+            ]
+        }
+    ],
+    "EnrollmentRequest": [
+        {
+            "path": "insurer",
+            "resourceList": [
+                "Organization"
+            ]
+        },
+        {
+            "path": "provider",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole",
+                "Organization"
+            ]
+        },
+        {
+            "path": "candidate",
+            "resourceList": [
+                "Patient"
+            ]
+        },
+        {
+            "path": "coverage",
+            "resourceList": [
+                "Coverage"
+            ]
+        }
+    ],
+    "EnrollmentResponse": [
+        {
+            "path": "request",
+            "resourceList": [
+                "EnrollmentRequest"
+            ]
+        },
+        {
+            "path": "organization",
+            "resourceList": [
+                "Organization"
+            ]
+        },
+        {
+            "path": "requestProvider",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole",
+                "Organization"
+            ]
+        }
+    ],
+    "EpisodeOfCare": [
+        {
+            "path": "diagnosis.condition",
+            "resourceList": [
+                "Condition"
+            ]
+        },
+        {
+            "path": "patient",
+            "resourceList": [
+                "Patient"
+            ]
+        },
+        {
+            "path": "managingOrganization",
+            "resourceList": [
+                "Organization"
+            ]
+        },
+        {
+            "path": "referralRequest",
+            "resourceList": [
+                "ServiceRequest"
+            ]
+        },
+        {
+            "path": "careManager",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole"
+            ]
+        },
+        {
+            "path": "team",
+            "resourceList": [
+                "CareTeam"
+            ]
+        },
+        {
+            "path": "account",
+            "resourceList": [
+                "Account"
+            ]
+        }
+    ],
+    "EventDefinition": [],
+    "Evidence": [
+        {
+            "path": "exposureBackground",
+            "resourceList": [
+                "EvidenceVariable"
+            ]
+        },
+        {
+            "path": "exposureVariant",
+            "resourceList": [
+                "EvidenceVariable"
+            ]
+        },
+        {
+            "path": "outcome",
+            "resourceList": [
+                "EvidenceVariable"
+            ]
+        }
+    ],
+    "EvidenceVariable": [
+        {
+            "path": "characteristic.definitionReference",
+            "resourceList": [
+                "Group"
+            ]
+        }
+    ],
+    "ExampleScenario": [],
+    "ExplanationOfBenefit": [
+        {
+            "path": "patient",
+            "resourceList": [
+                "Patient"
+            ]
+        },
+        {
+            "path": "enterer",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole"
+            ]
+        },
+        {
+            "path": "insurer",
+            "resourceList": [
+                "Organization"
+            ]
+        },
+        {
+            "path": "provider",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole",
+                "Organization"
+            ]
+        },
+        {
+            "path": "related.claim",
+            "resourceList": [
+                "Claim"
+            ]
+        },
+        {
+            "path": "prescription",
+            "resourceList": [
+                "MedicationRequest",
+                "VisionPrescription"
+            ]
+        },
+        {
+            "path": "originalPrescription",
+            "resourceList": [
+                "MedicationRequest"
+            ]
+        },
+        {
+            "path": "payee.party",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole",
+                "Organization",
+                "Patient",
+                "RelatedPerson"
+            ]
+        },
+        {
+            "path": "referral",
+            "resourceList": [
+                "ServiceRequest"
+            ]
+        },
+        {
+            "path": "facility",
+            "resourceList": [
+                "Location"
+            ]
+        },
+        {
+            "path": "claim",
+            "resourceList": [
+                "Claim"
+            ]
+        },
+        {
+            "path": "claimResponse",
+            "resourceList": [
+                "ClaimResponse"
+            ]
+        },
+        {
+            "path": "careTeam.provider",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole",
+                "Organization"
+            ]
+        },
+        {
+            "path": "procedure.udi",
+            "resourceList": [
+                "Device"
+            ]
+        },
+        {
+            "path": "insurance.coverage",
+            "resourceList": [
+                "Coverage"
+            ]
+        },
+        {
+            "path": "item.udi",
+            "resourceList": [
+                "Device"
+            ]
+        },
+        {
+            "path": "item.encounter",
+            "resourceList": [
+                "Encounter"
+            ]
+        },
+        {
+            "path": "item.detail.udi",
+            "resourceList": [
+                "Device"
+            ]
+        },
+        {
+            "path": "item.detail.subDetail.udi",
+            "resourceList": [
+                "Device"
+            ]
+        },
+        {
+            "path": "addItem.provider",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole",
+                "Organization"
+            ]
+        }
+    ],
+    "FamilyMemberHistory": [
+        {
+            "path": "patient",
+            "resourceList": [
+                "Patient"
+            ]
+        },
+        {
+            "path": "reasonReference",
+            "resourceList": [
+                "Condition",
+                "Observation",
+                "AllergyIntolerance",
+                "QuestionnaireResponse",
+                "DiagnosticReport",
+                "DocumentReference"
+            ]
+        }
+    ],
+    "Flag": [
+        {
+            "path": "subject",
+            "resourceList": [
+                "Patient",
+                "Location",
+                "Group",
+                "Organization",
+                "Practitioner",
+                "PlanDefinition",
+                "Medication",
+                "Procedure"
+            ]
+        },
+        {
+            "path": "encounter",
+            "resourceList": [
+                "Encounter"
+            ]
+        },
+        {
+            "path": "author",
+            "resourceList": [
+                "Device",
+                "Organization",
+                "Patient",
+                "Practitioner",
+                "PractitionerRole"
+            ]
+        }
+    ],
+    "Goal": [
+        {
+            "path": "subject",
+            "resourceList": [
+                "Patient",
+                "Group",
+                "Organization"
+            ]
+        },
+        {
+            "path": "expressedBy",
+            "resourceList": [
+                "Patient",
+                "Practitioner",
+                "PractitionerRole",
+                "RelatedPerson"
+            ]
+        },
+        {
+            "path": "addresses",
+            "resourceList": [
+                "Condition",
+                "Observation",
+                "MedicationStatement",
+                "NutritionOrder",
+                "ServiceRequest",
+                "RiskAssessment"
+            ]
+        },
+        {
+            "path": "outcomeReference",
+            "resourceList": [
+                "Observation"
+            ]
+        }
+    ],
+    "GraphDefinition": [],
+    "Group": [
+        {
+            "path": "managingEntity",
+            "resourceList": [
+                "Organization",
+                "RelatedPerson",
+                "Practitioner",
+                "PractitionerRole"
+            ]
+        },
+        {
+            "path": "member.entity",
+            "resourceList": [
+                "Patient",
+                "Practitioner",
+                "PractitionerRole",
+                "Device",
+                "Medication",
+                "Substance",
+                "Group"
+            ]
+        }
+    ],
+    "GuidanceResponse": [
+        {
+            "path": "subject",
+            "resourceList": [
+                "Patient",
+                "Group"
+            ]
+        },
+        {
+            "path": "encounter",
+            "resourceList": [
+                "Encounter"
+            ]
+        },
+        {
+            "path": "performer",
+            "resourceList": [
+                "Device"
+            ]
+        },
+        {
+            "path": "reasonReference",
+            "resourceList": [
+                "Condition",
+                "Observation",
+                "DiagnosticReport",
+                "DocumentReference"
+            ]
+        },
+        {
+            "path": "evaluationMessage",
+            "resourceList": [
+                "OperationOutcome"
+            ]
+        },
+        {
+            "path": "outputParameters",
+            "resourceList": [
+                "Parameters"
+            ]
+        },
+        {
+            "path": "result",
+            "resourceList": [
+                "CarePlan",
+                "RequestGroup"
+            ]
+        }
+    ],
+    "HealthcareService": [
+        {
+            "path": "providedBy",
+            "resourceList": [
+                "Organization"
+            ]
+        },
+        {
+            "path": "location",
+            "resourceList": [
+                "Location"
+            ]
+        },
+        {
+            "path": "coverageArea",
+            "resourceList": [
+                "Location"
+            ]
+        },
+        {
+            "path": "endpoint",
+            "resourceList": [
+                "Endpoint"
+            ]
+        }
+    ],
+    "ImagingStudy": [
+        {
+            "path": "subject",
+            "resourceList": [
+                "Patient",
+                "Device",
+                "Group"
+            ]
+        },
+        {
+            "path": "encounter",
+            "resourceList": [
+                "Encounter"
+            ]
+        },
+        {
+            "path": "basedOn",
+            "resourceList": [
+                "CarePlan",
+                "ServiceRequest",
+                "Appointment",
+                "AppointmentResponse",
+                "Task"
+            ]
+        },
+        {
+            "path": "referrer",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole"
+            ]
+        },
+        {
+            "path": "interpreter",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole"
+            ]
+        },
+        {
+            "path": "endpoint",
+            "resourceList": [
+                "Endpoint"
+            ]
+        },
+        {
+            "path": "procedureReference",
+            "resourceList": [
+                "Procedure"
+            ]
+        },
+        {
+            "path": "location",
+            "resourceList": [
+                "Location"
+            ]
+        },
+        {
+            "path": "reasonReference",
+            "resourceList": [
+                "Condition",
+                "Observation",
+                "Media",
+                "DiagnosticReport",
+                "DocumentReference"
+            ]
+        },
+        {
+            "path": "series.endpoint",
+            "resourceList": [
+                "Endpoint"
+            ]
+        },
+        {
+            "path": "series.specimen",
+            "resourceList": [
+                "Specimen"
+            ]
+        },
+        {
+            "path": "series.performer.actor",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole",
+                "Organization",
+                "CareTeam",
+                "Patient",
+                "Device",
+                "RelatedPerson"
+            ]
+        }
+    ],
+    "Immunization": [
+        {
+            "path": "patient",
+            "resourceList": [
+                "Patient"
+            ]
+        },
+        {
+            "path": "encounter",
+            "resourceList": [
+                "Encounter"
+            ]
+        },
+        {
+            "path": "location",
+            "resourceList": [
+                "Location"
+            ]
+        },
+        {
+            "path": "manufacturer",
+            "resourceList": [
+                "Organization"
+            ]
+        },
+        {
+            "path": "performer.actor",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole",
+                "Organization"
+            ]
+        },
+        {
+            "path": "reasonReference",
+            "resourceList": [
+                "Condition",
+                "Observation",
+                "DiagnosticReport"
+            ]
+        },
+        {
+            "path": "reaction.detail",
+            "resourceList": [
+                "Observation"
+            ]
+        },
+        {
+            "path": "protocolApplied.authority",
+            "resourceList": [
+                "Organization"
+            ]
+        }
+    ],
+    "ImmunizationEvaluation": [
+        {
+            "path": "patient",
+            "resourceList": [
+                "Patient"
+            ]
+        },
+        {
+            "path": "authority",
+            "resourceList": [
+                "Organization"
+            ]
+        },
+        {
+            "path": "immunizationEvent",
+            "resourceList": [
+                "Immunization"
+            ]
+        }
+    ],
+    "ImmunizationRecommendation": [
+        {
+            "path": "patient",
+            "resourceList": [
+                "Patient"
+            ]
+        },
+        {
+            "path": "authority",
+            "resourceList": [
+                "Organization"
+            ]
+        },
+        {
+            "path": "recommendation.supportingImmunization",
+            "resourceList": [
+                "Immunization",
+                "ImmunizationEvaluation"
+            ]
+        },
+        {
+            "path": "recommendation.supportingPatientInformation",
+            "resourceList": [
+                "Resource"
+            ]
+        }
+    ],
+    "ImplementationGuide": [
+        {
+            "path": "definition.resource.reference",
+            "resourceList": [
+                "Resource"
+            ]
+        },
+        {
+            "path": "manifest.resource.reference",
+            "resourceList": [
+                "Resource"
+            ]
+        }
+    ],
+    "InsurancePlan": [
+        {
+            "path": "ownedBy",
+            "resourceList": [
+                "Organization"
+            ]
+        },
+        {
+            "path": "administeredBy",
+            "resourceList": [
+                "Organization"
+            ]
+        },
+        {
+            "path": "coverageArea",
+            "resourceList": [
+                "Location"
+            ]
+        },
+        {
+            "path": "endpoint",
+            "resourceList": [
+                "Endpoint"
+            ]
+        },
+        {
+            "path": "network",
+            "resourceList": [
+                "Organization"
+            ]
+        },
+        {
+            "path": "coverage.network",
+            "resourceList": [
+                "Organization"
+            ]
+        },
+        {
+            "path": "plan.coverageArea",
+            "resourceList": [
+                "Location"
+            ]
+        },
+        {
+            "path": "plan.network",
+            "resourceList": [
+                "Organization"
+            ]
+        }
+    ],
+    "Invoice": [
+        {
+            "path": "subject",
+            "resourceList": [
+                "Patient",
+                "Group"
+            ]
+        },
+        {
+            "path": "recipient",
+            "resourceList": [
+                "Organization",
+                "Patient",
+                "RelatedPerson"
+            ]
+        },
+        {
+            "path": "participant.actor",
+            "resourceList": [
+                "Practitioner",
+                "Organization",
+                "Patient",
+                "PractitionerRole",
+                "Device",
+                "RelatedPerson"
+            ]
+        },
+        {
+            "path": "issuer",
+            "resourceList": [
+                "Organization"
+            ]
+        },
+        {
+            "path": "account",
+            "resourceList": [
+                "Account"
+            ]
+        },
+        {
+            "path": "lineItem.chargeItemReference",
+            "resourceList": [
+                "ChargeItem"
+            ]
+        }
+    ],
+    "Library": [],
+    "Linkage": [
+        {
+            "path": "author",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole",
+                "Organization"
+            ]
+        },
+        {
+            "path": "item.resource",
+            "resourceList": [
+                "Resource"
+            ]
+        }
+    ],
+    "List": [
+        {
+            "path": "subject",
+            "resourceList": [
+                "Patient",
+                "Group",
+                "Device",
+                "Location"
+            ]
+        },
+        {
+            "path": "encounter",
+            "resourceList": [
+                "Encounter"
+            ]
+        },
+        {
+            "path": "source",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole",
+                "Patient",
+                "Device"
+            ]
+        },
+        {
+            "path": "entry.item",
+            "resourceList": [
+                "Resource"
+            ]
+        }
+    ],
+    "Location": [
+        {
+            "path": "managingOrganization",
+            "resourceList": [
+                "Organization"
+            ]
+        },
+        {
+            "path": "partOf",
+            "resourceList": [
+                "Location"
+            ]
+        },
+        {
+            "path": "endpoint",
+            "resourceList": [
+                "Endpoint"
+            ]
+        }
+    ],
+    "Measure": [],
+    "MeasureReport": [
+        {
+            "path": "subject",
+            "resourceList": [
+                "Patient",
+                "Practitioner",
+                "PractitionerRole",
+                "Location",
+                "Device",
+                "RelatedPerson",
+                "Group"
+            ]
+        },
+        {
+            "path": "reporter",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole",
+                "Location",
+                "Organization"
+            ]
+        },
+        {
+            "path": "group.population.subjectResults",
+            "resourceList": [
+                "List"
+            ]
+        },
+        {
+            "path": "group.stratifier.stratum.population.subjectResults",
+            "resourceList": [
+                "List"
+            ]
+        },
+        {
+            "path": "evaluatedResource",
+            "resourceList": [
+                "Resource"
+            ]
+        }
+    ],
+    "Media": [
+        {
+            "path": "basedOn",
+            "resourceList": [
+                "ServiceRequest",
+                "CarePlan"
+            ]
+        },
+        {
+            "path": "partOf",
+            "resourceList": [
+                "Resource"
+            ]
+        },
+        {
+            "path": "subject",
+            "resourceList": [
+                "Patient",
+                "Practitioner",
+                "PractitionerRole",
+                "Group",
+                "Device",
+                "Specimen",
+                "Location"
+            ]
+        },
+        {
+            "path": "encounter",
+            "resourceList": [
+                "Encounter"
+            ]
+        },
+        {
+            "path": "operator",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole",
+                "Organization",
+                "CareTeam",
+                "Patient",
+                "Device",
+                "RelatedPerson"
+            ]
+        },
+        {
+            "path": "device",
+            "resourceList": [
+                "Device",
+                "DeviceMetric",
+                "Device"
+            ]
+        }
+    ],
+    "Medication": [
+        {
+            "path": "manufacturer",
+            "resourceList": [
+                "Organization"
+            ]
+        }
+    ],
+    "MedicationAdministration": [
+        {
+            "path": "partOf",
+            "resourceList": [
+                "MedicationAdministration",
+                "Procedure"
+            ]
+        },
+        {
+            "path": "subject",
+            "resourceList": [
+                "Patient",
+                "Group"
+            ]
+        },
+        {
+            "path": "context",
+            "resourceList": [
+                "Encounter",
+                "EpisodeOfCare"
+            ]
+        },
+        {
+            "path": "supportingInformation",
+            "resourceList": [
+                "Resource"
+            ]
+        },
+        {
+            "path": "performer.actor",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole",
+                "Patient",
+                "RelatedPerson",
+                "Device"
+            ]
+        },
+        {
+            "path": "reasonReference",
+            "resourceList": [
+                "Condition",
+                "Observation",
+                "DiagnosticReport"
+            ]
+        },
+        {
+            "path": "request",
+            "resourceList": [
+                "MedicationRequest"
+            ]
+        },
+        {
+            "path": "device",
+            "resourceList": [
+                "Device"
+            ]
+        },
+        {
+            "path": "eventHistory",
+            "resourceList": [
+                "Provenance"
+            ]
+        }
+    ],
+    "MedicationDispense": [
+        {
+            "path": "partOf",
+            "resourceList": [
+                "Procedure"
+            ]
+        },
+        {
+            "path": "subject",
+            "resourceList": [
+                "Patient",
+                "Group"
+            ]
+        },
+        {
+            "path": "context",
+            "resourceList": [
+                "Encounter",
+                "EpisodeOfCare"
+            ]
+        },
+        {
+            "path": "supportingInformation",
+            "resourceList": [
+                "Resource"
+            ]
+        },
+        {
+            "path": "performer.actor",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole",
+                "Organization",
+                "Patient",
+                "Device",
+                "RelatedPerson"
+            ]
+        },
+        {
+            "path": "location",
+            "resourceList": [
+                "Location"
+            ]
+        },
+        {
+            "path": "authorizingPrescription",
+            "resourceList": [
+                "MedicationRequest"
+            ]
+        },
+        {
+            "path": "destination",
+            "resourceList": [
+                "Location"
+            ]
+        },
+        {
+            "path": "receiver",
+            "resourceList": [
+                "Patient",
+                "Practitioner"
+            ]
+        },
+        {
+            "path": "substitution.responsibleParty",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole"
+            ]
+        },
+        {
+            "path": "detectedIssue",
+            "resourceList": [
+                "DetectedIssue"
+            ]
+        },
+        {
+            "path": "eventHistory",
+            "resourceList": [
+                "Provenance"
+            ]
+        }
+    ],
+    "MedicationKnowledge": [
+        {
+            "path": "manufacturer",
+            "resourceList": [
+                "Organization"
+            ]
+        },
+        {
+            "path": "relatedMedicationKnowledge.reference",
+            "resourceList": [
+                "MedicationKnowledge"
+            ]
+        },
+        {
+            "path": "associatedMedication",
+            "resourceList": [
+                "Medication"
+            ]
+        },
+        {
+            "path": "monograph.source",
+            "resourceList": [
+                "DocumentReference",
+                "Media"
+            ]
+        },
+        {
+            "path": "contraindication",
+            "resourceList": [
+                "DetectedIssue"
+            ]
+        },
+        {
+            "path": "regulatory.regulatoryAuthority",
+            "resourceList": [
+                "Organization"
+            ]
+        }
+    ],
+    "MedicationRequest": [
+        {
+            "path": "subject",
+            "resourceList": [
+                "Patient",
+                "Group"
+            ]
+        },
+        {
+            "path": "encounter",
+            "resourceList": [
+                "Encounter"
+            ]
+        },
+        {
+            "path": "supportingInformation",
+            "resourceList": [
+                "Resource"
+            ]
+        },
+        {
+            "path": "requester",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole",
+                "Organization",
+                "Patient",
+                "RelatedPerson",
+                "Device"
+            ]
+        },
+        {
+            "path": "performer",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole",
+                "Organization",
+                "Patient",
+                "Device",
+                "RelatedPerson",
+                "CareTeam"
+            ]
+        },
+        {
+            "path": "recorder",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole"
+            ]
+        },
+        {
+            "path": "reasonReference",
+            "resourceList": [
+                "Condition",
+                "Observation"
+            ]
+        },
+        {
+            "path": "basedOn",
+            "resourceList": [
+                "CarePlan",
+                "MedicationRequest",
+                "ServiceRequest",
+                "ImmunizationRecommendation"
+            ]
+        },
+        {
+            "path": "insurance",
+            "resourceList": [
+                "Coverage",
+                "ClaimResponse"
+            ]
+        },
+        {
+            "path": "dispenseRequest.performer",
+            "resourceList": [
+                "Organization"
+            ]
+        },
+        {
+            "path": "priorPrescription",
+            "resourceList": [
+                "MedicationRequest"
+            ]
+        },
+        {
+            "path": "detectedIssue",
+            "resourceList": [
+                "DetectedIssue"
+            ]
+        },
+        {
+            "path": "eventHistory",
+            "resourceList": [
+                "Provenance"
+            ]
+        }
+    ],
+    "MedicationStatement": [
+        {
+            "path": "basedOn",
+            "resourceList": [
+                "MedicationRequest",
+                "CarePlan",
+                "ServiceRequest"
+            ]
+        },
+        {
+            "path": "partOf",
+            "resourceList": [
+                "MedicationAdministration",
+                "MedicationDispense",
+                "MedicationStatement",
+                "Procedure",
+                "Observation"
+            ]
+        },
+        {
+            "path": "subject",
+            "resourceList": [
+                "Patient",
+                "Group"
+            ]
+        },
+        {
+            "path": "context",
+            "resourceList": [
+                "Encounter",
+                "EpisodeOfCare"
+            ]
+        },
+        {
+            "path": "informationSource",
+            "resourceList": [
+                "Patient",
+                "Practitioner",
+                "PractitionerRole",
+                "RelatedPerson",
+                "Organization"
+            ]
+        },
+        {
+            "path": "derivedFrom",
+            "resourceList": [
+                "Resource"
+            ]
+        },
+        {
+            "path": "reasonReference",
+            "resourceList": [
+                "Condition",
+                "Observation",
+                "DiagnosticReport"
+            ]
+        }
+    ],
+    "MedicinalProduct": [
+        {
+            "path": "pharmaceuticalProduct",
+            "resourceList": [
+                "MedicinalProductPharmaceutical"
+            ]
+        },
+        {
+            "path": "packagedMedicinalProduct",
+            "resourceList": [
+                "MedicinalProductPackaged"
+            ]
+        },
+        {
+            "path": "attachedDocument",
+            "resourceList": [
+                "DocumentReference"
+            ]
+        },
+        {
+            "path": "masterFile",
+            "resourceList": [
+                "DocumentReference"
+            ]
+        },
+        {
+            "path": "contact",
+            "resourceList": [
+                "Organization",
+                "PractitionerRole"
+            ]
+        },
+        {
+            "path": "clinicalTrial",
+            "resourceList": [
+                "ResearchStudy"
+            ]
+        },
+        {
+            "path": "manufacturingBusinessOperation.manufacturer",
+            "resourceList": [
+                "Organization"
+            ]
+        },
+        {
+            "path": "manufacturingBusinessOperation.regulator",
+            "resourceList": [
+                "Organization"
+            ]
+        }
+    ],
+    "MedicinalProductAuthorization": [
+        {
+            "path": "subject",
+            "resourceList": [
+                "MedicinalProduct",
+                "MedicinalProductPackaged"
+            ]
+        },
+        {
+            "path": "holder",
+            "resourceList": [
+                "Organization"
+            ]
+        },
+        {
+            "path": "regulator",
+            "resourceList": [
+                "Organization"
+            ]
+        }
+    ],
+    "MedicinalProductContraindication": [
+        {
+            "path": "subject",
+            "resourceList": [
+                "MedicinalProduct",
+                "Medication"
+            ]
+        },
+        {
+            "path": "therapeuticIndication",
+            "resourceList": [
+                "MedicinalProductIndication"
+            ]
+        }
+    ],
+    "MedicinalProductIndication": [
+        {
+            "path": "subject",
+            "resourceList": [
+                "MedicinalProduct",
+                "Medication"
+            ]
+        },
+        {
+            "path": "undesirableEffect",
+            "resourceList": [
+                "MedicinalProductUndesirableEffect"
+            ]
+        }
+    ],
+    "MedicinalProductIngredient": [
+        {
+            "path": "manufacturer",
+            "resourceList": [
+                "Organization"
+            ]
+        }
+    ],
+    "MedicinalProductInteraction": [
+        {
+            "path": "subject",
+            "resourceList": [
+                "MedicinalProduct",
+                "Medication",
+                "Substance"
+            ]
+        },
+        {
+            "path": "interactant.itemReference",
+            "resourceList": [
+                "MedicinalProduct",
+                "Medication",
+                "Substance",
+                "ObservationDefinition"
+            ]
+        }
+    ],
+    "MedicinalProductManufactured": [
+        {
+            "path": "manufacturer",
+            "resourceList": [
+                "Organization"
+            ]
+        },
+        {
+            "path": "ingredient",
+            "resourceList": [
+                "MedicinalProductIngredient"
+            ]
+        }
+    ],
+    "MedicinalProductPackaged": [
+        {
+            "path": "subject",
+            "resourceList": [
+                "MedicinalProduct"
+            ]
+        },
+        {
+            "path": "marketingAuthorization",
+            "resourceList": [
+                "MedicinalProductAuthorization"
+            ]
+        },
+        {
+            "path": "manufacturer",
+            "resourceList": [
+                "Organization"
+            ]
+        },
+        {
+            "path": "packageItem.device",
+            "resourceList": [
+                "DeviceDefinition"
+            ]
+        },
+        {
+            "path": "packageItem.manufacturedItem",
+            "resourceList": [
+                "MedicinalProductManufactured"
+            ]
+        },
+        {
+            "path": "packageItem.manufacturer",
+            "resourceList": [
+                "Organization"
+            ]
+        }
+    ],
+    "MedicinalProductPharmaceutical": [
+        {
+            "path": "ingredient",
+            "resourceList": [
+                "MedicinalProductIngredient"
+            ]
+        },
+        {
+            "path": "device",
+            "resourceList": [
+                "DeviceDefinition"
+            ]
+        }
+    ],
+    "MedicinalProductUndesirableEffect": [
+        {
+            "path": "subject",
+            "resourceList": [
+                "MedicinalProduct",
+                "Medication"
+            ]
+        }
+    ],
+    "MessageDefinition": [],
+    "MessageHeader": [
+        {
+            "path": "destination.target",
+            "resourceList": [
+                "Device"
+            ]
+        },
+        {
+            "path": "destination.receiver",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole",
+                "Organization"
+            ]
+        },
+        {
+            "path": "sender",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole",
+                "Organization"
+            ]
+        },
+        {
+            "path": "enterer",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole"
+            ]
+        },
+        {
+            "path": "author",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole"
+            ]
+        },
+        {
+            "path": "responsible",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole",
+                "Organization"
+            ]
+        },
+        {
+            "path": "response.details",
+            "resourceList": [
+                "OperationOutcome"
+            ]
+        },
+        {
+            "path": "focus",
+            "resourceList": [
+                "Resource"
+            ]
+        }
+    ],
+    "MolecularSequence": [
+        {
+            "path": "patient",
+            "resourceList": [
+                "Patient"
+            ]
+        },
+        {
+            "path": "specimen",
+            "resourceList": [
+                "Specimen"
+            ]
+        },
+        {
+            "path": "device",
+            "resourceList": [
+                "Device"
+            ]
+        },
+        {
+            "path": "performer",
+            "resourceList": [
+                "Organization"
+            ]
+        },
+        {
+            "path": "referenceSeq.referenceSeqPointer",
+            "resourceList": [
+                "MolecularSequence"
+            ]
+        },
+        {
+            "path": "variant.variantPointer",
+            "resourceList": [
+                "Observation"
+            ]
+        },
+        {
+            "path": "pointer",
+            "resourceList": [
+                "MolecularSequence"
+            ]
+        }
+    ],
+    "NamingSystem": [],
+    "NutritionOrder": [
+        {
+            "path": "patient",
+            "resourceList": [
+                "Patient"
+            ]
+        },
+        {
+            "path": "encounter",
+            "resourceList": [
+                "Encounter"
+            ]
+        },
+        {
+            "path": "orderer",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole"
+            ]
+        },
+        {
+            "path": "allergyIntolerance",
+            "resourceList": [
+                "AllergyIntolerance"
+            ]
+        }
+    ],
+    "Observation": [
+        {
+            "path": "basedOn",
+            "resourceList": [
+                "CarePlan",
+                "DeviceRequest",
+                "ImmunizationRecommendation",
+                "MedicationRequest",
+                "NutritionOrder",
+                "ServiceRequest"
+            ]
+        },
+        {
+            "path": "partOf",
+            "resourceList": [
+                "MedicationAdministration",
+                "MedicationDispense",
+                "MedicationStatement",
+                "Procedure",
+                "Immunization",
+                "ImagingStudy"
+            ]
+        },
+        {
+            "path": "subject",
+            "resourceList": [
+                "Patient",
+                "Group",
+                "Device",
+                "Location"
+            ]
+        },
+        {
+            "path": "focus",
+            "resourceList": [
+                "Resource"
+            ]
+        },
+        {
+            "path": "encounter",
+            "resourceList": [
+                "Encounter"
+            ]
+        },
+        {
+            "path": "performer",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole",
+                "Organization",
+                "CareTeam",
+                "Patient",
+                "RelatedPerson"
+            ]
+        },
+        {
+            "path": "specimen",
+            "resourceList": [
+                "Specimen"
+            ]
+        },
+        {
+            "path": "device",
+            "resourceList": [
+                "Device",
+                "DeviceMetric"
+            ]
+        },
+        {
+            "path": "hasMember",
+            "resourceList": [
+                "Observation",
+                "QuestionnaireResponse",
+                "MolecularSequence"
+            ]
+        },
+        {
+            "path": "derivedFrom",
+            "resourceList": [
+                "DocumentReference",
+                "ImagingStudy",
+                "Media",
+                "QuestionnaireResponse",
+                "Observation",
+                "MolecularSequence"
+            ]
+        }
+    ],
+    "ObservationDefinition": [
+        {
+            "path": "validCodedValueSet",
+            "resourceList": [
+                "ValueSet"
+            ]
+        },
+        {
+            "path": "normalCodedValueSet",
+            "resourceList": [
+                "ValueSet"
+            ]
+        },
+        {
+            "path": "abnormalCodedValueSet",
+            "resourceList": [
+                "ValueSet"
+            ]
+        },
+        {
+            "path": "criticalCodedValueSet",
+            "resourceList": [
+                "ValueSet"
+            ]
+        }
+    ],
+    "OperationDefinition": [],
+    "OperationOutcome": [],
+    "Organization": [
+        {
+            "path": "partOf",
+            "resourceList": [
+                "Organization"
+            ]
+        },
+        {
+            "path": "endpoint",
+            "resourceList": [
+                "Endpoint"
+            ]
+        }
+    ],
+    "OrganizationAffiliation": [
+        {
+            "path": "organization",
+            "resourceList": [
+                "Organization"
+            ]
+        },
+        {
+            "path": "participatingOrganization",
+            "resourceList": [
+                "Organization"
+            ]
+        },
+        {
+            "path": "network",
+            "resourceList": [
+                "Organization"
+            ]
+        },
+        {
+            "path": "location",
+            "resourceList": [
+                "Location"
+            ]
+        },
+        {
+            "path": "healthcareService",
+            "resourceList": [
+                "HealthcareService"
+            ]
+        },
+        {
+            "path": "endpoint",
+            "resourceList": [
+                "Endpoint"
+            ]
+        }
+    ],
+    "Parameters": [],
+    "Patient": [
+        {
+            "path": "contact.organization",
+            "resourceList": [
+                "Organization"
+            ]
+        },
+        {
+            "path": "generalPractitioner",
+            "resourceList": [
+                "Organization",
+                "Practitioner",
+                "PractitionerRole"
+            ]
+        },
+        {
+            "path": "managingOrganization",
+            "resourceList": [
+                "Organization"
+            ]
+        },
+        {
+            "path": "link.other",
+            "resourceList": [
+                "Patient",
+                "RelatedPerson"
+            ]
+        }
+    ],
+    "PaymentNotice": [
+        {
+            "path": "request",
+            "resourceList": [
+                "Resource"
+            ]
+        },
+        {
+            "path": "response",
+            "resourceList": [
+                "Resource"
+            ]
+        },
+        {
+            "path": "provider",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole",
+                "Organization"
+            ]
+        },
+        {
+            "path": "payment",
+            "resourceList": [
+                "PaymentReconciliation"
+            ]
+        },
+        {
+            "path": "payee",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole",
+                "Organization"
+            ]
+        },
+        {
+            "path": "recipient",
+            "resourceList": [
+                "Organization"
+            ]
+        }
+    ],
+    "PaymentReconciliation": [
+        {
+            "path": "paymentIssuer",
+            "resourceList": [
+                "Organization"
+            ]
+        },
+        {
+            "path": "request",
+            "resourceList": [
+                "Task"
+            ]
+        },
+        {
+            "path": "requestor",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole",
+                "Organization"
+            ]
+        },
+        {
+            "path": "detail.request",
+            "resourceList": [
+                "Resource"
+            ]
+        },
+        {
+            "path": "detail.submitter",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole",
+                "Organization"
+            ]
+        },
+        {
+            "path": "detail.response",
+            "resourceList": [
+                "Resource"
+            ]
+        },
+        {
+            "path": "detail.responsible",
+            "resourceList": [
+                "PractitionerRole"
+            ]
+        },
+        {
+            "path": "detail.payee",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole",
+                "Organization"
+            ]
+        }
+    ],
+    "Person": [
+        {
+            "path": "managingOrganization",
+            "resourceList": [
+                "Organization"
+            ]
+        },
+        {
+            "path": "link.target",
+            "resourceList": [
+                "Patient",
+                "Practitioner",
+                "RelatedPerson",
+                "Person"
+            ]
+        }
+    ],
+    "PlanDefinition": [],
+    "Practitioner": [
+        {
+            "path": "qualification.issuer",
+            "resourceList": [
+                "Organization"
+            ]
+        }
+    ],
+    "PractitionerRole": [
+        {
+            "path": "practitioner",
+            "resourceList": [
+                "Practitioner"
+            ]
+        },
+        {
+            "path": "organization",
+            "resourceList": [
+                "Organization"
+            ]
+        },
+        {
+            "path": "location",
+            "resourceList": [
+                "Location"
+            ]
+        },
+        {
+            "path": "healthcareService",
+            "resourceList": [
+                "HealthcareService"
+            ]
+        },
+        {
+            "path": "endpoint",
+            "resourceList": [
+                "Endpoint"
+            ]
+        }
+    ],
+    "Procedure": [
+        {
+            "path": "basedOn",
+            "resourceList": [
+                "CarePlan",
+                "ServiceRequest"
+            ]
+        },
+        {
+            "path": "partOf",
+            "resourceList": [
+                "Procedure",
+                "Observation",
+                "MedicationAdministration"
+            ]
+        },
+        {
+            "path": "subject",
+            "resourceList": [
+                "Patient",
+                "Group"
+            ]
+        },
+        {
+            "path": "encounter",
+            "resourceList": [
+                "Encounter"
+            ]
+        },
+        {
+            "path": "recorder",
+            "resourceList": [
+                "Patient",
+                "RelatedPerson",
+                "Practitioner",
+                "PractitionerRole"
+            ]
+        },
+        {
+            "path": "asserter",
+            "resourceList": [
+                "Patient",
+                "RelatedPerson",
+                "Practitioner",
+                "PractitionerRole"
+            ]
+        },
+        {
+            "path": "performer.actor",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole",
+                "Organization",
+                "Patient",
+                "RelatedPerson",
+                "Device"
+            ]
+        },
+        {
+            "path": "performer.onBehalfOf",
+            "resourceList": [
+                "Organization"
+            ]
+        },
+        {
+            "path": "location",
+            "resourceList": [
+                "Location"
+            ]
+        },
+        {
+            "path": "reasonReference",
+            "resourceList": [
+                "Condition",
+                "Observation",
+                "Procedure",
+                "DiagnosticReport",
+                "DocumentReference"
+            ]
+        },
+        {
+            "path": "report",
+            "resourceList": [
+                "DiagnosticReport",
+                "DocumentReference",
+                "Composition"
+            ]
+        },
+        {
+            "path": "complicationDetail",
+            "resourceList": [
+                "Condition"
+            ]
+        },
+        {
+            "path": "focalDevice.manipulated",
+            "resourceList": [
+                "Device"
+            ]
+        },
+        {
+            "path": "usedReference",
+            "resourceList": [
+                "Device",
+                "Medication",
+                "Substance"
+            ]
+        }
+    ],
+    "Provenance": [
+        {
+            "path": "target",
+            "resourceList": [
+                "Resource"
+            ]
+        },
+        {
+            "path": "location",
+            "resourceList": [
+                "Location"
+            ]
+        },
+        {
+            "path": "agent.who",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole",
+                "RelatedPerson",
+                "Patient",
+                "Device",
+                "Organization"
+            ]
+        },
+        {
+            "path": "agent.onBehalfOf",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole",
+                "RelatedPerson",
+                "Patient",
+                "Device",
+                "Organization"
+            ]
+        },
+        {
+            "path": "entity.what",
+            "resourceList": [
+                "Resource"
+            ]
+        }
+    ],
+    "Questionnaire": [],
+    "QuestionnaireResponse": [
+        {
+            "path": "basedOn",
+            "resourceList": [
+                "CarePlan",
+                "ServiceRequest"
+            ]
+        },
+        {
+            "path": "partOf",
+            "resourceList": [
+                "Observation",
+                "Procedure"
+            ]
+        },
+        {
+            "path": "subject",
+            "resourceList": [
+                "Resource"
+            ]
+        },
+        {
+            "path": "encounter",
+            "resourceList": [
+                "Encounter"
+            ]
+        },
+        {
+            "path": "author",
+            "resourceList": [
+                "Device",
+                "Practitioner",
+                "PractitionerRole",
+                "Patient",
+                "RelatedPerson",
+                "Organization"
+            ]
+        },
+        {
+            "path": "source",
+            "resourceList": [
+                "Patient",
+                "Practitioner",
+                "PractitionerRole",
+                "RelatedPerson"
+            ]
+        }
+    ],
+    "RelatedPerson": [
+        {
+            "path": "patient",
+            "resourceList": [
+                "Patient"
+            ]
+        }
+    ],
+    "RequestGroup": [
+        {
+            "path": "basedOn",
+            "resourceList": [
+                "Resource"
+            ]
+        },
+        {
+            "path": "replaces",
+            "resourceList": [
+                "Resource"
+            ]
+        },
+        {
+            "path": "subject",
+            "resourceList": [
+                "Patient",
+                "Group"
+            ]
+        },
+        {
+            "path": "encounter",
+            "resourceList": [
+                "Encounter"
+            ]
+        },
+        {
+            "path": "author",
+            "resourceList": [
+                "Device",
+                "Practitioner",
+                "PractitionerRole"
+            ]
+        },
+        {
+            "path": "reasonReference",
+            "resourceList": [
+                "Condition",
+                "Observation",
+                "DiagnosticReport",
+                "DocumentReference"
+            ]
+        },
+        {
+            "path": "action.participant",
+            "resourceList": [
+                "Patient",
+                "Practitioner",
+                "PractitionerRole",
+                "RelatedPerson",
+                "Device"
+            ]
+        },
+        {
+            "path": "action.resource",
+            "resourceList": [
+                "Resource"
+            ]
+        }
+    ],
+    "ResearchDefinition": [
+        {
+            "path": "population",
+            "resourceList": [
+                "ResearchElementDefinition"
+            ]
+        },
+        {
+            "path": "exposure",
+            "resourceList": [
+                "ResearchElementDefinition"
+            ]
+        },
+        {
+            "path": "exposureAlternative",
+            "resourceList": [
+                "ResearchElementDefinition"
+            ]
+        },
+        {
+            "path": "outcome",
+            "resourceList": [
+                "ResearchElementDefinition"
+            ]
+        }
+    ],
+    "ResearchElementDefinition": [],
+    "ResearchStudy": [
+        {
+            "path": "protocol",
+            "resourceList": [
+                "PlanDefinition"
+            ]
+        },
+        {
+            "path": "partOf",
+            "resourceList": [
+                "ResearchStudy"
+            ]
+        },
+        {
+            "path": "enrollment",
+            "resourceList": [
+                "Group"
+            ]
+        },
+        {
+            "path": "sponsor",
+            "resourceList": [
+                "Organization"
+            ]
+        },
+        {
+            "path": "principalInvestigator",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole"
+            ]
+        },
+        {
+            "path": "site",
+            "resourceList": [
+                "Location"
+            ]
+        }
+    ],
+    "ResearchSubject": [
+        {
+            "path": "study",
+            "resourceList": [
+                "ResearchStudy"
+            ]
+        },
+        {
+            "path": "individual",
+            "resourceList": [
+                "Patient"
+            ]
+        },
+        {
+            "path": "consent",
+            "resourceList": [
+                "Consent"
+            ]
+        }
+    ],
+    "RiskAssessment": [
+        {
+            "path": "basedOn",
+            "resourceList": [
+                "Resource"
+            ]
+        },
+        {
+            "path": "parent",
+            "resourceList": [
+                "Resource"
+            ]
+        },
+        {
+            "path": "subject",
+            "resourceList": [
+                "Patient",
+                "Group"
+            ]
+        },
+        {
+            "path": "encounter",
+            "resourceList": [
+                "Encounter"
+            ]
+        },
+        {
+            "path": "condition",
+            "resourceList": [
+                "Condition"
+            ]
+        },
+        {
+            "path": "performer",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole",
+                "Device"
+            ]
+        },
+        {
+            "path": "reasonReference",
+            "resourceList": [
+                "Condition",
+                "Observation",
+                "DiagnosticReport",
+                "DocumentReference"
+            ]
+        },
+        {
+            "path": "basis",
+            "resourceList": [
+                "Resource"
+            ]
+        }
+    ],
+    "RiskEvidenceSynthesis": [
+        {
+            "path": "population",
+            "resourceList": [
+                "EvidenceVariable"
+            ]
+        },
+        {
+            "path": "exposure",
+            "resourceList": [
+                "EvidenceVariable"
+            ]
+        },
+        {
+            "path": "outcome",
+            "resourceList": [
+                "EvidenceVariable"
+            ]
+        }
+    ],
+    "Schedule": [
+        {
+            "path": "actor",
+            "resourceList": [
+                "Patient",
+                "Practitioner",
+                "PractitionerRole",
+                "RelatedPerson",
+                "Device",
+                "HealthcareService",
+                "Location"
+            ]
+        }
+    ],
+    "SearchParameter": [],
+    "ServiceRequest": [
+        {
+            "path": "basedOn",
+            "resourceList": [
+                "CarePlan",
+                "ServiceRequest",
+                "MedicationRequest"
+            ]
+        },
+        {
+            "path": "replaces",
+            "resourceList": [
+                "ServiceRequest"
+            ]
+        },
+        {
+            "path": "subject",
+            "resourceList": [
+                "Patient",
+                "Group",
+                "Location",
+                "Device"
+            ]
+        },
+        {
+            "path": "encounter",
+            "resourceList": [
+                "Encounter"
+            ]
+        },
+        {
+            "path": "requester",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole",
+                "Organization",
+                "Patient",
+                "RelatedPerson",
+                "Device"
+            ]
+        },
+        {
+            "path": "performer",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole",
+                "Organization",
+                "CareTeam",
+                "HealthcareService",
+                "Patient",
+                "Device",
+                "RelatedPerson"
+            ]
+        },
+        {
+            "path": "locationReference",
+            "resourceList": [
+                "Location"
+            ]
+        },
+        {
+            "path": "reasonReference",
+            "resourceList": [
+                "Condition",
+                "Observation",
+                "DiagnosticReport",
+                "DocumentReference"
+            ]
+        },
+        {
+            "path": "insurance",
+            "resourceList": [
+                "Coverage",
+                "ClaimResponse"
+            ]
+        },
+        {
+            "path": "supportingInfo",
+            "resourceList": [
+                "Resource"
+            ]
+        },
+        {
+            "path": "specimen",
+            "resourceList": [
+                "Specimen"
+            ]
+        },
+        {
+            "path": "relevantHistory",
+            "resourceList": [
+                "Provenance"
+            ]
+        }
+    ],
+    "Slot": [
+        {
+            "path": "schedule",
+            "resourceList": [
+                "Schedule"
+            ]
+        }
+    ],
+    "Specimen": [
+        {
+            "path": "subject",
+            "resourceList": [
+                "Patient",
+                "Group",
+                "Device",
+                "Substance",
+                "Location"
+            ]
+        },
+        {
+            "path": "parent",
+            "resourceList": [
+                "Specimen"
+            ]
+        },
+        {
+            "path": "request",
+            "resourceList": [
+                "ServiceRequest"
+            ]
+        },
+        {
+            "path": "collection.collector",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole"
+            ]
+        },
+        {
+            "path": "processing.additive",
+            "resourceList": [
+                "Substance"
+            ]
+        }
+    ],
+    "SpecimenDefinition": [],
+    "StructureDefinition": [],
+    "StructureMap": [],
+    "Subscription": [],
+    "Substance": [],
+    "SubstanceNucleicAcid": [],
+    "SubstancePolymer": [],
+    "SubstanceProtein": [],
+    "SubstanceReferenceInformation": [
+        {
+            "path": "gene.source",
+            "resourceList": [
+                "DocumentReference"
+            ]
+        },
+        {
+            "path": "geneElement.source",
+            "resourceList": [
+                "DocumentReference"
+            ]
+        },
+        {
+            "path": "classification.source",
+            "resourceList": [
+                "DocumentReference"
+            ]
+        },
+        {
+            "path": "target.source",
+            "resourceList": [
+                "DocumentReference"
+            ]
+        }
+    ],
+    "SubstanceSourceMaterial": [],
+    "SubstanceSpecification": [
+        {
+            "path": "source",
+            "resourceList": [
+                "DocumentReference"
+            ]
+        },
+        {
+            "path": "property.definingSubstanceReference",
+            "resourceList": [
+                "SubstanceSpecification",
+                "Substance"
+            ]
+        },
+        {
+            "path": "referenceInformation",
+            "resourceList": [
+                "SubstanceReferenceInformation"
+            ]
+        },
+        {
+            "path": "structure.source",
+            "resourceList": [
+                "DocumentReference"
+            ]
+        },
+        {
+            "path": "code.source",
+            "resourceList": [
+                "DocumentReference"
+            ]
+        },
+        {
+            "path": "name.source",
+            "resourceList": [
+                "DocumentReference"
+            ]
+        },
+        {
+            "path": "relationship.substanceReference",
+            "resourceList": [
+                "SubstanceSpecification"
+            ]
+        },
+        {
+            "path": "relationship.source",
+            "resourceList": [
+                "DocumentReference"
+            ]
+        },
+        {
+            "path": "nucleicAcid",
+            "resourceList": [
+                "SubstanceNucleicAcid"
+            ]
+        },
+        {
+            "path": "polymer",
+            "resourceList": [
+                "SubstancePolymer"
+            ]
+        },
+        {
+            "path": "protein",
+            "resourceList": [
+                "SubstanceProtein"
+            ]
+        },
+        {
+            "path": "sourceMaterial",
+            "resourceList": [
+                "SubstanceSourceMaterial"
+            ]
+        }
+    ],
+    "SupplyDelivery": [
+        {
+            "path": "basedOn",
+            "resourceList": [
+                "SupplyRequest"
+            ]
+        },
+        {
+            "path": "partOf",
+            "resourceList": [
+                "SupplyDelivery",
+                "Contract"
+            ]
+        },
+        {
+            "path": "patient",
+            "resourceList": [
+                "Patient"
+            ]
+        },
+        {
+            "path": "supplier",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole",
+                "Organization"
+            ]
+        },
+        {
+            "path": "destination",
+            "resourceList": [
+                "Location"
+            ]
+        },
+        {
+            "path": "receiver",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole"
+            ]
+        }
+    ],
+    "SupplyRequest": [
+        {
+            "path": "requester",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole",
+                "Organization",
+                "Patient",
+                "RelatedPerson",
+                "Device"
+            ]
+        },
+        {
+            "path": "supplier",
+            "resourceList": [
+                "Organization",
+                "HealthcareService"
+            ]
+        },
+        {
+            "path": "reasonReference",
+            "resourceList": [
+                "Condition",
+                "Observation",
+                "DiagnosticReport",
+                "DocumentReference"
+            ]
+        },
+        {
+            "path": "deliverFrom",
+            "resourceList": [
+                "Organization",
+                "Location"
+            ]
+        },
+        {
+            "path": "deliverTo",
+            "resourceList": [
+                "Organization",
+                "Location",
+                "Patient"
+            ]
+        }
+    ],
+    "Task": [
+        {
+            "path": "basedOn",
+            "resourceList": [
+                "Resource"
+            ]
+        },
+        {
+            "path": "partOf",
+            "resourceList": [
+                "Task"
+            ]
+        },
+        {
+            "path": "focus",
+            "resourceList": [
+                "Resource"
+            ]
+        },
+        {
+            "path": "for",
+            "resourceList": [
+                "Resource"
+            ]
+        },
+        {
+            "path": "encounter",
+            "resourceList": [
+                "Encounter"
+            ]
+        },
+        {
+            "path": "requester",
+            "resourceList": [
+                "Device",
+                "Organization",
+                "Patient",
+                "Practitioner",
+                "PractitionerRole",
+                "RelatedPerson"
+            ]
+        },
+        {
+            "path": "owner",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole",
+                "Organization",
+                "CareTeam",
+                "HealthcareService",
+                "Patient",
+                "Device",
+                "RelatedPerson"
+            ]
+        },
+        {
+            "path": "location",
+            "resourceList": [
+                "Location"
+            ]
+        },
+        {
+            "path": "reasonReference",
+            "resourceList": [
+                "Resource"
+            ]
+        },
+        {
+            "path": "insurance",
+            "resourceList": [
+                "Coverage",
+                "ClaimResponse"
+            ]
+        },
+        {
+            "path": "relevantHistory",
+            "resourceList": [
+                "Provenance"
+            ]
+        },
+        {
+            "path": "restriction.recipient",
+            "resourceList": [
+                "Patient",
+                "Practitioner",
+                "PractitionerRole",
+                "RelatedPerson",
+                "Group",
+                "Organization"
+            ]
+        }
+    ],
+    "TerminologyCapabilities": [],
+    "TestReport": [
+        {
+            "path": "testScript",
+            "resourceList": [
+                "TestScript"
+            ]
+        }
+    ],
+    "TestScript": [
+        {
+            "path": "fixture.resource",
+            "resourceList": [
+                "Resource"
+            ]
+        },
+        {
+            "path": "profile",
+            "resourceList": [
+                "Resource"
+            ]
+        }
+    ],
+    "ValueSet": [],
+    "VerificationResult": [
+        {
+            "path": "target",
+            "resourceList": [
+                "Resource"
+            ]
+        },
+        {
+            "path": "primarySource.who",
+            "resourceList": [
+                "Organization",
+                "Practitioner",
+                "PractitionerRole"
+            ]
+        },
+        {
+            "path": "attestation.who",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole",
+                "Organization"
+            ]
+        },
+        {
+            "path": "attestation.onBehalfOf",
+            "resourceList": [
+                "Organization",
+                "Practitioner",
+                "PractitionerRole"
+            ]
+        },
+        {
+            "path": "validator.organization",
+            "resourceList": [
+                "Organization"
+            ]
+        }
+    ],
+    "VisionPrescription": [
+        {
+            "path": "patient",
+            "resourceList": [
+                "Patient"
+            ]
+        },
+        {
+            "path": "encounter",
+            "resourceList": [
+                "Encounter"
+            ]
+        },
+        {
+            "path": "prescriber",
+            "resourceList": [
+                "Practitioner",
+                "PractitionerRole"
+            ]
+        }
+    ]
+}

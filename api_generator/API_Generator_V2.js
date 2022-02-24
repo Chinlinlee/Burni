@@ -1,10 +1,66 @@
 const fhirgen = require('../FHIR-mongoose-Models-Generator/resourceGenerator');
 const fs = require('fs');
+const path = require('path');
 const mkdirp = require('mkdirp');
 const beautify = require('js-beautify').js;
 const _ = require('lodash');
 require('dotenv').config();
 const { genParamFunc } = require('./searchParametersCodeGenerator');
+
+/**
+ * @param {string} resource resource type
+ */
+function getCodeGetById(resource) {
+    const getById = `
+    const read = require('../../../FHIRApiService/read');
+    
+    module.exports = async function(req, res) {
+        return await read(req , res , "${resource}");
+    };
+    `;
+    return `${getById}`;
+}
+
+function getCodeCreate(resource) {
+    let post = `
+    const create = require('../../../FHIRApiService/create');
+    module.exports = async function(req, res) {
+        return await create(req , res , "${resource}");
+    };
+    `;
+    if (resource == "List") {
+        post = `
+        const create = require('../../../FHIRApiService/create');
+        const _ = require('lodash');
+        module.exports = async function(req, res) {
+            let resourceData = req.body;
+            if (_.isArray(resourceData.entry) && resourceData.entry.length > 0) {
+                for (let index in resourceData.entry) {
+                    let entry = resourceData.entry[index];
+                    if (resourceData.mode != "changes") {
+                        delete entry.delete;
+                    } else if (resourceData.mode != "working") {
+                        delete entry.date;
+                    }
+                }
+            }
+            return await create(req , res , "${resource}");
+        };
+        `;
+    }
+    return `${post}`;
+}
+
+function getCodeUpdate(resource) {
+    let put = `
+    const update = require('../../../FHIRApiService/update.js');
+
+    module.exports = async function(req, res) {
+        return await update(req, res, "${resource}");
+    };
+    `;
+    return `${put}`;
+}
 
 /**
  * 
@@ -82,17 +138,12 @@ function generateAPI(option) {
         }
         resourceParameterHandler += `
         module.exports.paramsSearch = paramsSearch;
+        module.exports.paramsSearchFields = paramsSearchFields;
         `;
         //#endregion
 
         //#region getById
-        const getById = `
-        const read = require('../../../FHIRApiService/read');
-        
-        module.exports = async function(req, res) {
-            return await read(req , res , "${res}");
-        };
-        `;
+        const getById = getCodeGetById(res);
         //#endregion
 
         //#region getHistory
@@ -116,42 +167,11 @@ function generateAPI(option) {
         //#endregion
 
         //#region create resource (post)
-        let post = `
-        const create = require('../../../FHIRApiService/create');
-        module.exports = async function(req, res) {
-            return await create(req , res , "${res}");
-        };
-        `;
-        if (res == "List") {
-            post = `
-            const create = require('../../../FHIRApiService/create');
-            const _ = require('lodash');
-            module.exports = async function(req, res) {
-                let resourceData = req.body;
-                if (_.isArray(resourceData.entry) && resourceData.entry.length > 0) {
-                    for (let index in resourceData.entry) {
-                        let entry = resourceData.entry[index];
-                        if (resourceData.mode != "changes") {
-                            delete entry.delete;
-                        } else if (resourceData.mode != "working") {
-                            delete entry.date;
-                        }
-                    }
-                }
-                return await create(req , res , "${res}");
-            };
-            `;
-        }
+        let post = getCodeCreate(res);
         //#endregion
 
         //#region update (put)
-        let put = `
-        const update = require('../../../FHIRApiService/update.js');
-
-        module.exports = async function(req, res) {
-            return await update(req, res, "${res}");
-        };
-        `;
+        let put = getCodeUpdate(res);
         if (res == "List") {
             put = `
             const update = require('../../../FHIRApiService/update.js');
@@ -225,7 +245,7 @@ function generateAPI(option) {
         const { handleError } = require('../../../models/FHIR/httpMessage');
         const _ = require('lodash');
         const config = require('../../../config/config');
-        const { user } = require('../../apiService');
+        const user = require('../../APIservices/user.service.js');
 
         function setFormatWhenQuery (req , res) {
             let format = _.get(req , "query._format");

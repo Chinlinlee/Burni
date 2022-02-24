@@ -1,0 +1,75 @@
+{
+    "resourceType": "OrganizationAffiliation",
+    "id": "OrganizationAffiliation-example",
+    "identifier": [
+        {
+            "system": "http://www.acme.org/practitioners",
+            "value": "uO8GnhbOeBkf"
+        }
+    ],
+    "active": true,
+    "period": {
+        "start": "2012-01-01T08:00:00+08:00",
+        "end": "2012-03-31T08:00:00+08:00"
+    },
+    "organization": {
+        "reference": "Organization/hl7pay"
+    },
+    "participatingOrganization": {
+        "reference": "Organization/f001"
+    },
+    "network": [
+        {
+            "reference": "Organization/hl7pay",
+            "display": "lEoHFbbmrthkae"
+        }
+    ],
+    "code": [
+        {
+            "coding": [
+                {
+                    "system": "http://terminology.hl7.org/CodeSystem/organization-role",
+                    "code": "provider"
+                }
+            ]
+        }
+    ],
+    "specialty": [
+        {
+            "coding": [
+                {
+                    "system": "http://snomed.info/sct",
+                    "code": "408443003",
+                    "display": "sknntHARQlvl1R"
+                }
+            ]
+        }
+    ],
+    "location": [
+        {
+            "reference": "Location/1",
+            "display": "QmdIi1ssebJs"
+        }
+    ],
+    "healthcareService": [
+        {
+            "reference": "HealthcareService/example"
+        }
+    ],
+    "telecom": [
+        {
+            "system": "email",
+            "value": "jeRomuKXG2GJiBb",
+            "use": "work"
+        }
+    ],
+    "endpoint": [
+        {
+            "reference": "Endpoint/example"
+        }
+    ],
+    "meta": {
+        "versionId": "20",
+        "lastUpdated": "2022-02-17T23:28:31.519+08:00"
+    }
+}
