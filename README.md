@@ -16,8 +16,6 @@ This server supported FHIR RESTFul API below:
 - delete (e.g. DELETE http://example.com/fhir/Patient/example)
 - search (e.g. http://example.com/fhir/Patient?_id=example)
 
-**The search API now only suppurt _id & empty parameter**
-
 **The resources don't have `text` field**
 
 <font color=red>**Don't remove Bundle.js in models/mongodb/FHIRTypeSchema**</font>
@@ -564,10 +562,10 @@ Then GET by id
 ![](https://i.imgur.com/M9V5xaF.png)
 
 # TODO
-- [x] metadata
-- [ ] history
-- [x] search parameters
-- [x] support FHIR implementation guide(IG)
+- Search parameters
+    - [ ] composite
+    - [ ] uri  
+- [ ] Validation
 
 ## Special project
 - [Raccoon](https://github.com/cylab-tw/raccoon) - a noSQL-based DICOMWeb Server.
