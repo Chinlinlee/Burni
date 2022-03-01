@@ -28,3 +28,7 @@ config/config.js
 
 #ignore apidoc comment files
 docs/apidoc/apidoc-sources
+
+#ignore log files
+/log
+/pm2log
