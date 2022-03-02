@@ -85,7 +85,6 @@ module.exports = async function(req, res, resourceType, paramsSearch) {
         docs = [...docs, ...includeDocs, ...reincludeDocs];
         let bundle = createBundle(req, docs, count, paginationSkip, paginationLimit, resourceType);
         res.header('Last-Modified', new Date().toUTCString());
-        bundle.entry = _.uniqBy(bundle.entry, "fullUrl");
         return doRes(200 , bundle);
     } catch (e) {
         let errorStr = JSON.stringify(e, Object.getOwnPropertyNames(e));
