@@ -6,6 +6,9 @@ const {
 const FHIR = require('../../models/FHIR/fhir/fhir').Fhir;
 const { handleError } = require('../../models/FHIR/httpMessage');
 const user = require('../APIservices/user.service');
+const { logger } = require('../../utils/log');
+const path = require('path');
+const PWD_FILENAME = path.relative(process.cwd(), __filename);
 
 /**
  * @param {import("express").Request} req 
@@ -14,6 +17,7 @@ const user = require('../APIservices/user.service');
  * @returns 
  */
 module.exports = async function(req, res, resourceType) {
+    logger.info(`[Info: do history-instance by id, id: ${req.params.id}] [Resource Type: ${resourceType}] [From-File: ${PWD_FILENAME}] [Content-Type: ${res.getHeader("content-type")}] [Url-SearchParam: ${req.url}] `);
     let doRes = function (code , item) {
         if (res.getHeader("content-type").includes("xml")) {
             let fhir = new FHIR();
@@ -23,6 +27,7 @@ module.exports = async function(req, res, resourceType) {
         return res.status(code).send(item);
     };
     if (!await user.checkTokenPermission(req, resourceType, "history")) {
+        logger.warn(`[Warn: Request token doesn't have permission with this API] [From-File: ${PWD_FILENAME}] [From-IP: ${req.socket.remoteAddress}]`);
         return doRes(403,handleError.forbidden("Your token doesn't have permission with this API"));
     }
     let queryParameter = _.cloneDeep(req.query);
@@ -31,7 +36,6 @@ module.exports = async function(req, res, resourceType) {
     let paginationLimit = queryParameter['_count'] == undefined ? 100 : queryParameter['_count'];
     _.set(req.query, "_offset", paginationSkip);
     _.set(req.query, "_count", paginationLimit);
-    let realLimit = paginationLimit + paginationSkip;
     delete queryParameter['_count'];
     delete queryParameter['_offset'];
     try {
@@ -60,7 +64,8 @@ module.exports = async function(req, res, resourceType) {
         res.header('Last-Modified', new Date().toUTCString());
         return doRes(200, bundle);
     } catch (e) {
-        console.log(`api ${process.env.FHIRSERVER_APIPATH}/${resourceType}/:id/history has error, `, e);
+        let errorStr = JSON.stringify(e, Object.getOwnPropertyNames(e));
+        logger.error(`[Error: ${errorStr})}] [Resource Type: ${resourceType}] [From-File: ${PWD_FILENAME}]`);
         let operationOutcomeError = handleError.exception(e);
         return doRes(500, operationOutcomeError);
     }

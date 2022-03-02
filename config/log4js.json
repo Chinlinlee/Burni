@@ -3,12 +3,20 @@
         "burni-info": {
             "type": "file",
             "filename": "log/burni-info.log",
-            "maxLogSize": 10485760,
-            "numBackups": 3
+            "maxLogSize": 104857600,
+            "backups": 3
         },
         "burni-error": {
             "type": "file",
-            "filename": "log/errors.log"
+            "filename": "log/errors.log",
+            "maxLogSize": 104857600,
+            "backups": 3
+        },
+        "burni-warning": {
+            "type": "file",
+            "filename": "log/warn.log",
+            "maxLogSize": 104857600,
+            "backups": 3
         },
         "errors": {
             "type": "logLevelFilter",
@@ -21,6 +29,12 @@
             "maxLevel": "INFO",
             "appender": "burni-info"
         },
+        "warns": {
+            "type": "logLevelFilter",
+            "level": "WARN",
+            "maxLevel": "WARN",
+            "appender": "burni-warning"
+        },
         "console": {
             "type": "console"
         }
@@ -29,6 +43,7 @@
         "default": {
             "appenders": [
                 "infos",
+                "warns",
                 "errors",
                 "console"
             ],
