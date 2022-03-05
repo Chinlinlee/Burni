@@ -3,7 +3,7 @@ const mongodb = require('models/mongodb');
 const {
     handleError
 } = require('../../models/FHIR/httpMessage');
-const FHIR = require('../../models/FHIR/fhir/fhir').Fhir;
+const FHIR = require('fhir').Fhir;
 const { isRealObject } = require('../apiService');
 const user = require('../APIservices/user.service');
 const { logger } = require('../../utils/log');

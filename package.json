@@ -32,6 +32,7 @@
         "ejs": "^3.1.2",
         "express": "^4.16.3",
         "express-session": "^1.16.2",
+        "fhir": "^4.11.1",
         "joi": "^17.3.0",
         "js-beautify": "^1.13.0",
         "jsonwebtoken": "^8.5.1",

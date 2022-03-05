@@ -3,7 +3,7 @@ const mongodb = require('models/mongodb');
 const {
     createBundle
 } = require('models/FHIR/func');
-const FHIR = require('../../models/FHIR/fhir/fhir').Fhir;
+const FHIR = require('fhir').Fhir;
 const { handleError } = require('../../models/FHIR/httpMessage');
 const user = require('../APIservices/user.service');
 const { logger } = require('../../utils/log');

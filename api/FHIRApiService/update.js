@@ -4,7 +4,7 @@ const {
 } = require('models/FHIR/httpMessage');
 const _ = require('lodash');
 const user = require('../APIservices/user.service');
-const FHIR = require('../../models/FHIR/fhir').Fhir;
+const FHIR = require('fhir').Fhir;
 const validateContained = require('./validateContained');
 const { checkReference, getNotExistReferenceList } = require('../apiService');
 const { logger } = require('../../utils/log');

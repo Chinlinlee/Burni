@@ -4,7 +4,7 @@ const joi = require('joi');
 const {
     FHIRValidateParams
 } = require('api/validator');
-const FHIR = require('../../../models/FHIR/fhir/fhir').Fhir;
+const FHIR = require('fhir').Fhir;
 const {
     handleError
 } = require('../../../models/FHIR/httpMessage');

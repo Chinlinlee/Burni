@@ -241,7 +241,7 @@ function generateAPI(option) {
         const {
             FHIRValidateParams
         } = require('api/validator');
-        const FHIR = require('../../../models/FHIR/fhir/fhir').Fhir;
+        const FHIR = require('fhir').Fhir;
         const { handleError } = require('../../../models/FHIR/httpMessage');
         const _ = require('lodash');
         const config = require('../../../config/config');

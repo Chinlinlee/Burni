@@ -5,7 +5,7 @@ const {
 const uuid = require('uuid');
 const _ = require('lodash');
 const { checkReference, getNotExistReferenceList } = require('../apiService');
-const FHIR = require('../../models/FHIR/fhir/fhir').Fhir;
+const FHIR = require('fhir').Fhir;
 const user = require('../APIservices/user.service');
 const validateContained = require('./validateContained');
 const { logger } = require('../../utils/log');

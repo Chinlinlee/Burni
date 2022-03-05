@@ -4,7 +4,7 @@ const {
     handleError
 } = require('../../models/FHIR/httpMessage');
 const _ = require('lodash');
-const FHIR = require('../../models/FHIR/fhir/fhir').Fhir;
+const FHIR = require('fhir').Fhir;
 const user = require('../APIservices/user.service');
 const { logger } = require('../../utils/log');
 const path = require('path');

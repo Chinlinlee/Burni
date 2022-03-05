@@ -61,5 +61,7 @@ const handleError = {
 module.exports = {
     getDeleteMessage : getDeleteMessage , 
     handleError : handleError,
-    ErrorOperationOutcome: ErrorOperationOutcome
+    ErrorOperationOutcome: ErrorOperationOutcome,
+    issue: issue,
+    OperationOutcome: OperationOutcome
 };
