@@ -317,7 +317,7 @@ function generateAPI(option) {
             router.post('/', require('./controller/post${res}'));
         }
 
-        //router.post('/([\\$])validate', require('./controller/post${res}Validate'));
+        router.post('/([\\$])validate', require('./controller/post${res}Validate'));
 
         if (_.get(config, "${res}.interaction.update", true)) {
             router.put('/:id', require("./controller/put${res}"));

@@ -82,7 +82,7 @@ if (_.get(config, "Patient.interaction.create", true)) {
     router.post('/', require('./controller/postPatient'));
 }
 
-//router.post('/([\$])validate', require('./controller/postPatientValidate'));
+router.post('/([\$])validate', require('./controller/postPatientValidate'));
 
 if (_.get(config, "Patient.interaction.update", true)) {
     router.put('/:id', require("./controller/putPatient"));
