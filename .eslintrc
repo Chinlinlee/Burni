@@ -13,7 +13,8 @@
         "comma-dangle": ["error", "never"], 
         "no-unused-vars": "off",
         "no-console": 0 ,
-        "no-useless-escape": "off"
+        "no-useless-escape": "off",
+        "no-useless-catch": "off"
     },
     "ignorePatterns": ["public/**", "temp/**", "models/FHIR/fhir/**", "docs/**"]
 }
