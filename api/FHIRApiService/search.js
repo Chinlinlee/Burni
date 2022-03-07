@@ -8,9 +8,12 @@ const {
     handleError,
     ErrorOperationOutcome
 } = require('models/FHIR/httpMessage');
-const FHIR = require('../../models/FHIR/fhir/fhir').Fhir;
+const FHIR = require('fhir').Fhir;
 const { isRealObject } = require('../apiService');
 const user = require('../APIservices/user.service');
+const { logger } = require('../../utils/log');
+const path = require('path');
+const PWD_FILENAME = path.relative(process.cwd(), __filename);
 
 /**
  * 
@@ -21,6 +24,7 @@ const user = require('../APIservices/user.service');
  * @returns 
  */
 module.exports = async function(req, res, resourceType, paramsSearch) {
+    logger.info(`[Info: do search] [Resource Type: ${resourceType}] [From-File: ${PWD_FILENAME}] [Content-Type: ${res.getHeader("content-type")}] [Url-SearchParam: ${req.url}]`);
     let doRes = function (code , item) {
         if (res.getHeader("content-type").includes("xml")) {
             let fhir = new FHIR();
@@ -30,7 +34,8 @@ module.exports = async function(req, res, resourceType, paramsSearch) {
         return res.status(code).send(item);
     };
     if (!await user.checkTokenPermission(req, resourceType, "search-type")) {
-        return doRes(403,handleError.forbidden("Your token doesn't have permission with this API"));
+        logger.warn(`[Warn: Request token doesn't have permission with this API] [From-File: ${PWD_FILENAME}] [From-IP: ${req.socket.remoteAddress}]`);
+        return doRes(403,handleError.forbidden("token doesn't have permission with this API"));
     }
     let queryParameter = _.cloneDeep(req.query);
     let paginationSkip = queryParameter['_offset'] == undefined ? 0 : queryParameter['_offset'];
@@ -50,7 +55,7 @@ module.exports = async function(req, res, resourceType, paramsSearch) {
             paramsSearch[key](queryParameter);
         } catch (e) {
             if (key != "$and") {
-                console.error(e);
+                logger.error(`[Error: Unknown search parameter ${key} or value ${queryParameter[key]}] [Resource Type: ${resourceType}] [From-File: ${PWD_FILENAME}] [${e}]`);
                 return doRes(400 , handleError.processing(`Unknown search parameter ${key} or value ${queryParameter[key]}`));
             }
         }
@@ -80,10 +85,10 @@ module.exports = async function(req, res, resourceType, paramsSearch) {
         docs = [...docs, ...includeDocs, ...reincludeDocs];
         let bundle = createBundle(req, docs, count, paginationSkip, paginationLimit, resourceType);
         res.header('Last-Modified', new Date().toUTCString());
-        bundle.entry = _.uniqBy(bundle.entry, "fullUrl");
         return doRes(200 , bundle);
     } catch (e) {
-        console.error(`api ${process.env.FHIRSERVER_APIPATH}/${resourceType}/ has error, `, e);
+        let errorStr = JSON.stringify(e, Object.getOwnPropertyNames(e));
+        logger.error(`[Error: ${errorStr}] [Resource Type: ${resourceType}] [From-File: ${PWD_FILENAME}]`);
         if (_.get(e, "code")) {
             return doRes(e.code , e.operationOutcome);
         }

@@ -241,7 +241,7 @@ function generateAPI(option) {
         const {
             FHIRValidateParams
         } = require('api/validator');
-        const FHIR = require('../../../models/FHIR/fhir/fhir').Fhir;
+        const FHIR = require('fhir').Fhir;
         const { handleError } = require('../../../models/FHIR/httpMessage');
         const _ = require('lodash');
         const config = require('../../../config/config');
@@ -317,7 +317,7 @@ function generateAPI(option) {
             router.post('/', require('./controller/post${res}'));
         }
 
-        //router.post('/([\\$])validate', require('./controller/post${res}Validate'));
+        router.post('/([\\$])validate', require('./controller/post${res}Validate'));
 
         if (_.get(config, "${res}.interaction.update", true)) {
             router.put('/:id', require("./controller/put${res}"));
@@ -359,20 +359,7 @@ function generateMetaData() {
         metaData.rest[0].resource.push({
             "type": resource,
             "profile": `${fhirUrl}/${resource.toLocaleLowerCase()}.html`,
-            "interaction": [
-                {
-                    "code": "read"
-                },
-                {
-                    "code": "update"
-                },
-                {
-                    "code": "delete"
-                },
-                {
-                    'code': "create"
-                }
-            ],
+            "interaction": getInteractionForResource(resource),
             "versioning": "versioned",
             "updateCreate": true,
             "conditionalDelete": "single",
@@ -430,11 +417,52 @@ function generateMetaData() {
             "fhirVersion": "4.0.1",
             "format": [ "json" ],
             "rest" : ${JSON.stringify(metaData.rest, null, 4)}
-        }
+        };
         res.json(metaData);
-    }
+    };
     `;
     fs.writeFileSync("./api/FHIR/metadata/controller/getMetadata.js", beautify(metadataText));
+}
+
+function getInteractionForResource(resourceType) {
+    let resourceConfig = require("../config/config");
+    let interactionConfig = _.get(resourceConfig, `${resourceType}.interaction`);
+    let interaction = [];
+    let mapping = {
+        "read": "read",
+        "vread": "vread",
+        "update": "update",
+        "delete": "delete",
+        "history": "history-instance",
+        "create": "create",
+        "search": "search-type"
+    };
+    if (interaction) {
+        for (let interactionName in interactionConfig) {
+            interaction.push({
+                "code": mapping[interactionName]
+            });
+        }
+        return interaction;
+    } else {
+        return [
+            {
+                "code": "read"
+            },
+            {
+                "code": "update"
+            },
+            {
+                "code": "delete"
+            },
+            {
+                "code": "create"
+            },
+            {
+                "code": "vread"
+            }
+        ];
+    }
 }
 /*generateAPI({
     resources : ["Patient" , "MedicationRequest" , "Observation" , "ImagingStudy" , "Claim"]

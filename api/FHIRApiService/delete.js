@@ -4,8 +4,49 @@ const {
     handleError
 } = require('../../models/FHIR/httpMessage');
 const _ = require('lodash');
-const FHIR = require('../../models/FHIR/fhir/fhir').Fhir;
+const FHIR = require('fhir').Fhir;
 const user = require('../APIservices/user.service');
+const { logger } = require('../../utils/log');
+const path = require('path');
+const PWD_FILENAME = path.relative(process.cwd(), __filename);
+
+const responseFunc = {
+    /**
+     * 
+     * @param {Object} doc 
+     * @param {import('express').Request} req express request
+     * @param {import('express').Response} res express response
+     * @param {string} resourceType resource type
+     * @param {function} doResCallback callback function 
+     * @returns 
+     */
+    "true": (doc, req, res, resourceType, doCallback) => {
+        if (!doc) {
+            let errorMessage = `not found ${resourceType}/${req.params.id}`;
+            logger.warn(`[Warn: ${errorMessage}] [Resource-Type: ${resourceType}]`);
+            return doCallback(404, handleError["not-found"](errorMessage));
+        }
+        return doCallback(200, getDeleteMessage(resourceType, req.params.id));
+    },
+    /**
+     * 
+     * @param {Object} err 
+     * @param {import('express').Request} req express request
+     * @param {import('express').Response} res express response
+     * @param {string} resourceType resource type
+     * @param {function} doResCallback callback function 
+     * @returns 
+     */
+    "false": (err, req, res, resourceType, doCallback) => {
+        if (_.isString(err)) {
+            if (err.includes("not found")) {
+                return doCallback(404, handleError['not-found'](err));
+            }
+            return doCallback(500, handleError.exception(err));
+        }
+        return doCallback(500, handleError.exception(err.message));
+    }
+};
 
 /**
  * @param {import("express").Request} req 
@@ -13,8 +54,9 @@ const user = require('../APIservices/user.service');
  * @param {String} resourceType 
  * @returns 
  */
-module.exports = async function(req, res, resourceType) {
-    let doRes = function (code , item) {
+module.exports = async function (req, res, resourceType) {
+    logger.info(`[Info: do delete by id, id: ${req.params.id}] [Resource Type: ${resourceType}] [From-File: ${PWD_FILENAME}] [Content-Type: ${res.getHeader("content-type")}]`);
+    let doRes = function (code, item) {
         if (res.getHeader("content-type").includes("xml")) {
             let fhir = new FHIR();
             let xmlItem = fhir.objToXml(item);
@@ -23,28 +65,11 @@ module.exports = async function(req, res, resourceType) {
         return res.status(code).send(item);
     };
     if (!await user.checkTokenPermission(req, resourceType, "delete")) {
+        logger.warn(`[Warn: Request token doesn't have permission with this API] [From-File: ${PWD_FILENAME}] [From-IP: ${req.socket.remoteAddress}]`);
         return doRes(403,handleError.forbidden("Your token doesn't have permission with this API"));
     }
-    let resFunc = {
-        "true": (doc) => {
-            if (!doc) {
-                let errorMessage = `not found ${resourceType}/${req.params.id}`;
-                return doRes(404,handleError["not-found"](errorMessage));
-            }
-            return doRes(200,getDeleteMessage(resourceType, req.params.id));
-        },
-        "false": (err) => {
-            if (_.isString(err)) {
-                if (err.includes("not found")) {
-                    return doRes(404, handleError['not-found'](err));
-                }
-                return doRes(500,handleError.exception(err));
-            }
-            return doRes(500,handleError.exception(err.message));
-        }
-    };
     let [status, doc] = await doDeleteData(req, resourceType);
-    return resFunc[status.toString()](doc);
+    return responseFunc[status.toString()](doc, req, res, resourceType, doRes);
 };
 
 async function doDeleteData(req, resourceType) {
@@ -54,7 +79,8 @@ async function doDeleteData(req, resourceType) {
             id: id
         }, (err, doc) => {
             if (err) {
-                console.error(err);
+                let errorStr = JSON.stringify(err, Object.getOwnPropertyNames(err));
+                logger.error(`[Error ${errorStr}] [Resource Type: ${resourceType}] [From-File: ${PWD_FILENAME}]`);
                 return resolve([false, err]);
             }
             return resolve([true, doc]);

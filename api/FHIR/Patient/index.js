@@ -4,7 +4,7 @@ const joi = require('joi');
 const {
     FHIRValidateParams
 } = require('api/validator');
-const FHIR = require('../../../models/FHIR/fhir/fhir').Fhir;
+const FHIR = require('fhir').Fhir;
 const {
     handleError
 } = require('../../../models/FHIR/httpMessage');
@@ -82,7 +82,7 @@ if (_.get(config, "Patient.interaction.create", true)) {
     router.post('/', require('./controller/postPatient'));
 }
 
-//router.post('/([\$])validate', require('./controller/postPatientValidate'));
+router.post('/([\$])validate', require('./controller/postPatientValidate'));
 
 if (_.get(config, "Patient.interaction.update", true)) {
     router.put('/:id', require("./controller/putPatient"));

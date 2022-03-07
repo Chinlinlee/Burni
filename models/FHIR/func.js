@@ -123,7 +123,8 @@ function createBundle(req, docs, count, skip, limit, resource, option) {
             bundle.entry.push(entry);
         }
     }
-    if (bundle.total == 0) {
+    bundle.entry = _.uniqBy(bundle.entry, "fullUrl");
+    if (bundle.entry.length == 0) {
         delete bundle.entry;
     }
     for (let index in bundle.link) {

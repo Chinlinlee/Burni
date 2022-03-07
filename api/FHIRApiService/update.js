@@ -4,9 +4,12 @@ const {
 } = require('models/FHIR/httpMessage');
 const _ = require('lodash');
 const user = require('../APIservices/user.service');
-const FHIR = require('../../models/FHIR/fhir').Fhir;
+const FHIR = require('fhir').Fhir;
 const validateContained = require('./validateContained');
 const { checkReference, getNotExistReferenceList } = require('../apiService');
+const { logger } = require('../../utils/log');
+const path = require('path');
+const PWD_FILENAME = path.relative(process.cwd(), __filename);
 
 /**
  * @param {import("express").Request} req 
@@ -15,6 +18,7 @@ const { checkReference, getNotExistReferenceList } = require('../apiService');
  * @returns 
  */
 module.exports = async function (req, res, resourceType) {
+    logger.info(`[Info: do create] [Resource Type: ${resourceType}] [From-File: ${PWD_FILENAME}] [Content-Type: ${res.getHeader("content-type")}]`);
     let doRes = function (code, item) {
         if (res.getHeader("content-type").includes("xml")) {
             let fhir = new FHIR();
@@ -24,6 +28,7 @@ module.exports = async function (req, res, resourceType) {
         return res.status(code).send(item);
     };
     if (!await user.checkTokenPermission(req, resourceType, "update")) {
+        logger.warn(`[Warn: Request token doesn't have permission with this API] [From-File: ${PWD_FILENAME}] [From-IP: ${req.socket.remoteAddress}]`);
         return doRes(403,handleError.forbidden("Your token doesn't have permission with this API"));
     }
     let resFunc = {
@@ -85,12 +90,11 @@ module.exports = async function (req, res, resourceType) {
     }
     let dataExist = await isDocExist(req.params.id, resourceType);
     if (dataExist.status == 0) {
+        let errorStr = JSON.stringify(dataExist.error, Object.getOwnPropertyNames(dataExist.error));
+        logger.error(`[Error: ${errorStr})}] [Resource Type: ${resourceType}] [From-File: ${PWD_FILENAME}]`);
         return doRes(500, handleError.exception(dataExist.error));
     }
     let dataFuncAfterCheckExist = {
-        0: (req,resourceType) => {
-            return ["false", ""];
-        },
         1: doUpdateData,
         2: doInsertData
     };
