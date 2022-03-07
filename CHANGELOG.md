@@ -2,6 +2,44 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.6.0](https://github.com/Chinlinlee/Burni/compare/v2.5.0...v2.6.0) (2022-03-07)
+
+
+### Features
+
+* add logger ([ce60bf2](https://github.com/Chinlinlee/Burni/commit/ce60bf22dae8e4f25aafa31cd4acaa8d247b952d))
+    - use log4js for logger
+* add logger in FHIRAPI and refactor resFunc ([bff8643](https://github.com/Chinlinlee/Burni/commit/bff8643c56e8e8ca8d509c46c7d858b2c1642f27))
+    - extract resFunc to global variable
+    - add warn logger
+* add new method for `$validate` API ([5b82908](https://github.com/Chinlinlee/Burni/commit/5b8290871767fa41f24f872e1824975836f021bb))
+    - add `fhir-validator`
+        - add `refreshResourceResolver` to call C# API to reload profiles
+    	- add `storeValidationFile` to store `StructureDefinition`, `ValueSet`,
+    	`CodeSystem`
+    	- add `fetchValueSet` to get `ValueSet` resource by URL
+    	- add `fetchCodeSystem` to get `CodeSystem` resource by URL
+    	- add `validateByProfile` to validate resource by specific profile URL in URL path
+    	- add `validateByMetaProfile` to validate resource by profiles URL from meta.profile
+    - add `FHIRValidationFiles` MongoDB schema to store data about validation files
+    - add schedule to update validation files in MongoDB
+    - The validation workflow note can retrieve from 
+![](https://i.imgur.com/68MBmp3.png)
+
+* remove custom `fhir.js` and $validate API ([867e2b4](https://github.com/Chinlinlee/Burni/commit/867e2b4ca8823c8f7838e35b30f3ead37e926d51))
+    - The fhir.js is not completly to do
+    validation, need to find another solution
+    - implement validator by self is too hard...
+* resource interaction in metadata from config ([9c59674](https://github.com/Chinlinlee/Burni/commit/9c59674f43a3c203ca5c79717ca6fdcbc7ca0f83))
+    - The interation of resource in metadata correspond to config
+
+### Bug Fixes
+
+* empty array entry of Bundle present ([fddf2f6](https://github.com/Chinlinlee/Burni/commit/fddf2f64c50743f23139d6db0657b50c1b59736c))
+    - refact unique to bundle function
+    - replace condition of total to entry length. I
+think check entry length better than total
+
 ## [2.5.0](https://github.com/Chinlinlee/Burni/compare/v2.4.0...v2.5.0) (2022-02-24)
 
 
