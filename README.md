@@ -103,6 +103,11 @@ node server.js
 
 The details of postman's request body and response: [Examples Using Postman](https://github.com/Chinlinlee/Burni/blob/main/examples/Examples.md)
 
+# Validation
+Thanks to [FirelyTeam/firely-net-sdk](https://github.com/FirelyTeam/firely-net-sdk) implement the excellent validator by C#.
+    
+Currently, Burni use the C# Web API to do validation. The repository : [Chinlinlee/FHIR-Validator-API](https://github.com/Chinlinlee/FHIR-Validator-API)
+
 # TODO
 - Search parameters
     - [ ] composite
