@@ -4,16 +4,19 @@
     <span> | </span>
     <a href="README.zh-TW.md">繁體中文</a>
     <br />
-    Burni is an implementation of the FHIR server with Node, Express, and MongoDB providing very simple ways to customize the <a href="https://www.hl7.org/fhir/">HL7 FHIR® specification</a> Currently, Burni support both Windows and Linux environment to enable developers to rapidly deploy a FHIR service. Burni also supports to import your <a href="https://www.hl7.org/fhir/implementationguide.html">Implementation Guide<a> to store FHIR Resources and create FHIR RESTful API as well.    
-    Burni use version 4.0.1 (R4) of the HL7 FHIR specification.
+    Burni 使用 Node.JS 、Express 框架以及 MongoDB 實作 FHIR R4 Server，經由簡單的設定即可產生指定 FHIR Resource的 Mongoose Schema、API程式碼並可自行更改，滿足需求。目前Burni支援Windows以及Linux，讓開發人員可以快速架設 FHIR Server。
+
+    Burni 所使用的 FHIR 版本為 v4.0.1。
 </div>
 
-## Conformance Statement 
-Burni has been tested  by AEGIS Touchstone Basic-R4-Server. The conformance results show below: 
+## Server 能力聲明
+Burni 使用 AEGIS Touchstone Basic-R4-Server 測試.
+
+測試結果:
 * [FHIR4-0-1-Basic-Server version 18](https://touchstone.aegis.net/touchstone/conformance/detail?suite=FHIR4-0-1-Basic-Server&sVersion=18&testSystem=5f9518730a120e4edef042ae&supportedOnly=false&cb=%2fFHIR4-0-1-Basic&format=ALL&published=true) (2,216 tests has been passed, 100% Pass)
 * [FHIR4-0-1-Basic-Server version 14](https://touchstone.aegis.net/touchstone/conformance/detail?suite=FHIR4-0-1-Basic-Server&sVersion=14&testSystem=5f9518730a120e4edef042ae&supportedOnly=false&cb=%2FFHIR4-0-1-Basic&published=true) (1,948 tests has been passed, 100% Pass)
    
-## features
+## 支援功能
 This server supported FHIR RESTFul API below:
 - read (e.g. GET http://example.com/fhir/Patient/example)
 - update (e.g. PUT http://example.com/fhir/Patient/example)
@@ -22,18 +25,19 @@ This server supported FHIR RESTFul API below:
 - history-type (e.g. http://example.com/fhir/Patient/1/_history)
 - history-type-version (e.g. e.g. http://example.com/fhir/Patient/1/_history/1)
 
+**resource 不包含`text`欄位**
 **The resources don't have `text` field**
 
 <font color=red>**Don't remove Bundle.js in models/mongodb/FHIRTypeSchema**</font>
 
-## Installation
+## 安裝
 ```bash=
 npm install
 ```
 
-## configure
+## 設定
 
-The resources config in `config\config.js`
+設定檔位於 `config\config.js`
 ```javascript=
 module.exports = {
     // add the resource name that you need
@@ -79,12 +83,12 @@ ENABLE_CSHARP_VALIDATOR=false
 VALIDATION_FILES_ROOT_PATH="FHIRValidatorAPI/FHIRValidatorAPI/assets/validationResources" # Please config the path corresponded to CSharp assets/validationResources directory
 VALIDATION_API_URL="https://localhost:44381/api/validate"
 ```
-After configuration, run `npm run build` to generate resources
+設定後, 執行 `npm run build` 產生 resource 相關程式碼
 ```
 npm run build
 ```
-> TypeError: genParamFunc[type] is not a function mean that search parameter method not support
-## Usage
+> TypeError: genParamFunc[type] is not a function 代表此類型的搜尋參數目前不支援。
+## 啟動服務
 ```
 node server.js
 ```
@@ -109,14 +113,13 @@ node server.js
 - deleteById (delete)
 > DELETE http://example.com/fhir/Patient/1
 
-### Examples
+### 範例
+詳細使用 Postman 的範例： [Examples Using Postman](https://github.com/Chinlinlee/Burni/blob/main/examples/Examples.md)
 
-The details of postman's request body and response: [Examples Using Postman](https://github.com/Chinlinlee/Burni/blob/main/examples/Examples.md)
+# FHIR 驗證
+感謝[FirelyTeam/firely-net-sdk](https://github.com/FirelyTeam/firely-net-sdk)使用C#實作了讚讚的驗證器。
 
-# Validation
-Thanks to [FirelyTeam/firely-net-sdk](https://github.com/FirelyTeam/firely-net-sdk) implement the excellent validator by C#.
-    
-Currently, Burni use the C# Web API to do validation. The repository : [Chinlinlee/FHIR-Validator-API](https://github.com/Chinlinlee/FHIR-Validator-API)
+Burni 目前使用 C# Web API 去做驗證。使用專案： [Chinlinlee/FHIR-Validator-API](https://github.com/Chinlinlee/FHIR-Validator-API)
 
 # TODO
 - Search parameters
