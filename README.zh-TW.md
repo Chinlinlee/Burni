@@ -79,9 +79,9 @@ ADMIN_PASSWORD="adminPassword"
 ENABLE_CHECK_ALL_RESOURCE_ID=false #true that want to check resource id cross all resource
 ENABLE_CHECK_REFERENCE #true that want to check reference is exist in resource content
     
-ENABLE_CSHARP_VALIDATOR=false 
-VALIDATION_FILES_ROOT_PATH="FHIRValidatorAPI/FHIRValidatorAPI/assets/validationResources" # Please config the path corresponded to CSharp assets/validationResources directory
-VALIDATION_API_URL="https://localhost:44381/api/validate"
+ENABLE_CSHARP_VALIDATOR=false
+VALIDATION_FILES_ROOT_PATH="/validationResources"
+VALIDATION_API_URL="http://burni-fhir-validator-api:7414"
 ```
 設定後, 執行 `npm run build` 產生 resource 相關程式碼
 ```
