@@ -29,6 +29,10 @@ ADMIN_PASSWORD="password"
 
 ENABLE_CHECK_ALL_RESOURCE_ID=false
 ENABLE_CHECK_REFERENCE=false
+
+ENABLE_CSHARP_VALIDATOR=false
+VALIDATION_FILES_ROOT_PATH="/validationResources"
+VALIDATION_API_URL="http://burni-fhir-validator-api:7414"
 `;
         fs.writeFileSync(".env" , envText);
         console.log("Please config dotenv file first, the example dotenv file generated in root path");
