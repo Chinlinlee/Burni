@@ -133,10 +133,11 @@ async function refreshResourceResolver() {
             rejectUnauthorized: false
         }); 
         let APIUrl = new nodeUrl.URL("/api/refreshresourceresolver" , VALIDATION_API_URL).href;
-        let fetchRes = await fetch(APIUrl, {
-            method: "POST",
-            agent: httpsAgent
-        });
+        let fetchConfig = {
+            method: "POST"
+        };
+        if (APIUrl.startsWith("https://")) fetchConfig.agent = httpsAgent;
+        let fetchRes = await fetch(APIUrl, fetchConfig);
         logger.info(`[Info: Refresh C# Validator Resource Resolver] [Content: ${JSON.stringify(await fetchRes.json())}]`);
     } catch(e) {
         throw e;
@@ -159,14 +160,15 @@ async function validate(profile, resourceContent) {
             profile: profile,
             resourceJson: JSON.stringify(resourceContent)
         };
-        let fetchRes = await fetch(APIUrl, {
+        let fetchConfig = {
             method: "POST",
             body: JSON.stringify(body),
-            agent: httpsAgent,
             headers: {
                 'content-type': 'application/json'
             }
-        });
+        };
+        if (APIUrl.startsWith("https://")) fetchConfig.agent = httpsAgent;
+        let fetchRes = await fetch(APIUrl, fetchConfig);
         let fetchResJson = await fetchRes.json();
         logger.info(`[Info: Call Validation function from C# successfully] [URL: ${APIUrl}]`);
         return fetchResJson;
