@@ -74,12 +74,13 @@ async function validateByMetaProfile(resourceContent) {
                 await fetchCodeSystem(resJson);
             }
             let contentHash = hash(resJson);
-            let storePath = path.join(process.env.VALIDATION_FILES_ROOT_PATH, hash({url:url}) + ".json");
+            let urlHash = hash({url:url});
+            let storePath = path.join(process.env.VALIDATION_FILES_ROOT_PATH,  urlHash + ".json");
             fs.writeFile(path.resolve(storePath), JSON.stringify(resJson), ()=> {});
             let validationFileObj = {
                 url: url,
                 hash: contentHash,
-                path: storePath,
+                path: `${urlHash}.json`,
                 id: resJson.id
             };
             await mongodb.FHIRValidationFiles.findOneAndUpdate({
@@ -148,7 +149,7 @@ async function refreshResourceResolver() {
  * Call C# API server to validate with profiles.
  * @param {Array<string>} profile The string array of profiles URL.
  * @param {JSON} resourceContent The FHIR resource JSON object.
- * @return {JSON}
+ * @return {Promise<JSON>}
  */
 async function validate(profile, resourceContent) {
     try {
