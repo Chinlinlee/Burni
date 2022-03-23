@@ -53,7 +53,7 @@ app.use((err, req, res, next) => {
 app.use(cookieParser());
 //login
 app.use(session({
-    secret: 'micalasecret',
+    secret: process.env.SERVER_SESSION_SECRET_KEY || 'secretKey',
     resave: true,
     saveUninitialized: true,
     store: new MongoStore({
