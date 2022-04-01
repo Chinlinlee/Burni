@@ -8,7 +8,6 @@ const { isRealObject } = require('../apiService');
 const user = require('../APIservices/user.service');
 const { logger } = require('../../utils/log');
 const path = require('path');
-const PWD_FILENAME = path.relative(process.cwd(), __filename);
 
 /**
  * 
@@ -19,7 +18,7 @@ const PWD_FILENAME = path.relative(process.cwd(), __filename);
  * @returns 
  */
 module.exports = async function(req, res, resourceType, paramsSearch) {
-    logger.info(`[Info: do condition-delete] [Resource Type: ${resourceType}] [From-File: ${PWD_FILENAME}] [Content-Type: ${res.getHeader("content-type")}] [Url-SearchParam: ${req.url}] `);
+    logger.info(`[Info: do condition-delete] [Resource Type: ${resourceType}] [Content-Type: ${res.getHeader("content-type")}] [Url-SearchParam: ${req.url}] `);
     let doRes = function (code , item) {
         if (res.getHeader("content-type").includes("xml")) {
             let fhir = new FHIR();
@@ -28,8 +27,9 @@ module.exports = async function(req, res, resourceType, paramsSearch) {
         }
         return res.status(code).send(item);
     };
-    if (!await user.checkTokenPermission(req, resourceType, "delete")) {
-        logger.warn(`[Warn: Request token doesn't have permission with this API] [From-File: ${PWD_FILENAME}] [From-IP: ${req.socket.remoteAddress}]`);
+    let hasPermission = await user.checkTokenPermission(req, resourceType, "delete")
+    if (!hasPermission) {
+        logger.warn(`[Warn: Request token doesn't have permission with this API] [From-IP: ${req.socket.remoteAddress}]`);
         return doRes(403,handleError.forbidden("Your token doesn't have permission with this API"));
     }
     let queryParameter = _.cloneDeep(req.query);
@@ -50,7 +50,7 @@ module.exports = async function(req, res, resourceType, paramsSearch) {
             paramsSearch[key](queryParameter);
         } catch (e) {
             if (key != "$and") {
-                logger.error(`[Error: Unknown search parameter ${key} or value ${queryParameter[key]}] [Resource Type: ${resourceType}] [From-File: ${PWD_FILENAME}] [${e}]`);
+                logger.error(`[Error: Unknown search parameter ${key} or value ${queryParameter[key]}] [Resource Type: ${resourceType}] [${e}]`);
                 return doRes(400 , handleError.processing(`Unknown search parameter ${key} or value ${queryParameter[key]}`));
             }
         }
@@ -65,7 +65,7 @@ module.exports = async function(req, res, resourceType, paramsSearch) {
         return doRes(200 , info);
     } catch (e) {
         let errorStr = JSON.stringify(e, Object.getOwnPropertyNames(e));
-        logger.error(`[Error: ${errorStr}] [Resource Type: ${resourceType}] [From-File: ${PWD_FILENAME}]`);
+        logger.error(`[Error: ${errorStr}] [Resource Type: ${resourceType}]`);
         let operationOutcomeError = handleError.exception(e);
         return doRes(500 , operationOutcomeError);
     }

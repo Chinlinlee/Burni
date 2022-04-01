@@ -9,7 +9,6 @@ const fs = require('fs');
 const { fetchCodeSystem, fetchValueSet, refreshResourceResolver } = require('./fhir-validator');
 const { logger } = require('../../utils/log');
 const path = require('path');
-const PWD_FILENAME = path.relative(process.cwd(), __filename);
 const schedule = require('node-schedule');
 
 /**

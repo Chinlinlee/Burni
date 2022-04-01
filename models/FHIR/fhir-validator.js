@@ -9,7 +9,6 @@ const nodeUrl = require('url');
 const https = require('https');
 const { logger } = require('../../utils/log');
 const path = require('path');
-const PWD_FILENAME = path.relative(process.cwd(), __filename);
 const VALIDATION_API_URL = process.env.VALIDATION_API_URL;
 
 /**
@@ -33,12 +32,15 @@ async function validateByProfile(profileUrl, resourceContent) {
 async function validateByMetaProfile(resourceContent) {
     try {
         let metaProfile = _.get(resourceContent, "meta.profile");
+        let storeValidationFileResultList = [];
         if (metaProfile) {
             for (let i = 0 ; i< metaProfile.length; i++) {
                 let profileUrl = metaProfile[i];
-                await storeValidationFile(profileUrl);
+                let storeValidationFileResult = await storeValidationFile(profileUrl);
+                storeValidationFileResultList.push(storeValidationFileResult);
             }
-            await refreshResourceResolver();
+            let haveNewValidationFile = storeValidationFileResultList.findIndex(v=> v.new) >= 0;
+            if (haveNewValidationFile) await refreshResourceResolver();
             let validation = await validate(metaProfile, resourceContent);
             if (validation.status) {
                 return JSON.parse(validation.data);
@@ -88,7 +90,13 @@ async function validateByMetaProfile(resourceContent) {
             }, { $set: validationFileObj}, {
                 upsert: true
             });
+            return {
+                new: true
+            };
         }
+        return {
+            new: false
+        };
     } catch(e) {
         throw e;
     }
@@ -178,8 +186,41 @@ async function validate(profile, resourceContent) {
     }
 }
 
+/**
+ * 
+ * @param {import('express').Request} req 
+ * @param {string} resourceType 
+ */
+ async function getValidateResult(req, resourceType) {
+    try {
+        let profileUrl = _.get(req.query, "profile");
+        let metaProfiles = _.get(req.body, "meta.profile", false);
+        if (profileUrl) {
+            return await validateByProfile(profileUrl, req.body);
+        } else if (metaProfiles) {
+            return await validateByMetaProfile(req.body);
+        }
+        let validation = await mongodb[resourceType].validate(req.body);
+    } catch(e) {
+        let name = _.get(e, "name");
+        if (name === "ValidationError") {
+            let operationOutcomeError = new OperationOutcome([]);
+            for (let errorKey in e.errors) {
+                let error = e.errors[errorKey];
+                let message = _.get(error, "message", `${error} invalid`);
+                let errorIssue = new issue("error", "invalid", message);
+                _.set(errorIssue, "Location", [errorKey]);
+                operationOutcomeError.issue.push(errorIssue);
+            }
+            return operationOutcomeError;
+        }
+        throw e;
+    }
+}
+
 module.exports.validateByProfile = validateByProfile;
 module.exports.validateByMetaProfile = validateByMetaProfile;
 module.exports.refreshResourceResolver = refreshResourceResolver;
 module.exports.fetchValueSet = fetchValueSet;
 module.exports.fetchCodeSystem = fetchCodeSystem;
+module.exports.getValidateResult = getValidateResult;
