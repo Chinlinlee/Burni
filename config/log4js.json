@@ -4,19 +4,31 @@
             "type": "file",
             "filename": "log/burni-info.log",
             "maxLogSize": 104857600,
-            "backups": 3
+            "backups": 3,
+            "layout": {
+                "type": "pattern",
+                "pattern": "%[[%d] [%p] [file: %f] [line: %l]%] %c - %m"
+            }
         },
         "burni-error": {
             "type": "file",
             "filename": "log/errors.log",
             "maxLogSize": 104857600,
-            "backups": 3
+            "backups": 3,
+            "layout": {
+                "type": "pattern",
+                "pattern": "%[[%d] [%p] [file: %f] [line: %l]%] %c - %m"
+            }
         },
         "burni-warning": {
             "type": "file",
             "filename": "log/warn.log",
             "maxLogSize": 104857600,
-            "backups": 3
+            "backups": 3,
+            "layout": {
+                "type": "pattern",
+                "pattern": "%[[%d] [%p] [file: %f] [line: %l]%] %c - %m"
+            }
         },
         "errors": {
             "type": "logLevelFilter",
@@ -36,7 +48,11 @@
             "appender": "burni-warning"
         },
         "console": {
-            "type": "console"
+            "type": "console", 
+            "layout": {
+                "type": "pattern",
+                "pattern": "%[[%d] [%p] [file: %f] [line: %l]%] %c - %m"
+            }
         }
     },
     "categories": {
@@ -47,7 +63,8 @@
                 "errors",
                 "console"
             ],
-            "level": "DEBUG"
+            "level": "DEBUG",
+            "enableCallStack": true
         }
     }
 }
