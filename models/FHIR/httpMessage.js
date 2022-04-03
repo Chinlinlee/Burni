@@ -54,7 +54,8 @@ const handleError = {
     "not-supported" : (err) => getOperationOutCome(err,"not-supported"),
     "security": (err)  => getOperationOutCome(err, "security"),
     "expired": (err) => getOperationOutCome(err, "expired"),
-    "forbidden": (err) => getOperationOutCome(err, "forbidden")
+    "forbidden": (err) => getOperationOutCome(err, "forbidden"),
+    "invalid": (err) => getOperationOutCome(err, "invalid")
 };
 
 

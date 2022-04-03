@@ -16,6 +16,7 @@ MONGODB_IS_SHARDING_MODE=false
 MONGODB_SLAVEMODE=false
 
 SERVER_PORT=8080
+SERVER_SESSION_SECRET_KEY="secretKey"
 
 FHIRSERVER_HOST="localhost"
 FHIRSERVER_PORT=8080
@@ -29,6 +30,10 @@ ADMIN_PASSWORD="password"
 
 ENABLE_CHECK_ALL_RESOURCE_ID=false
 ENABLE_CHECK_REFERENCE=false
+
+ENABLE_CSHARP_VALIDATOR=false
+VALIDATION_FILES_ROOT_PATH="/validationResources"
+VALIDATION_API_URL="http://burni-fhir-validator-api:7414"
 `;
         fs.writeFileSync(".env" , envText);
         console.log("Please config dotenv file first, the example dotenv file generated in root path");

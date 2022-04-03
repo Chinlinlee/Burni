@@ -9,7 +9,6 @@ const fs = require('fs');
 const { fetchCodeSystem, fetchValueSet, refreshResourceResolver } = require('./fhir-validator');
 const { logger } = require('../../utils/log');
 const path = require('path');
-const PWD_FILENAME = path.relative(process.cwd(), __filename);
 const schedule = require('node-schedule');
 
 /**
@@ -23,12 +22,13 @@ const schedule = require('node-schedule');
         } else if (resJson.resourceType === "ValueSet") {
             await fetchCodeSystem(resJson);
         }
-        let storePath = path.join(process.env.VALIDATION_FILES_ROOT_PATH, hash({url:url}) + ".json");
+        let urlHash = hash({url:url});
+        let storePath = path.join(process.env.VALIDATION_FILES_ROOT_PATH, urlHash + ".json");
         fs.writeFile(path.resolve(storePath), JSON.stringify(resJson), ()=> {});
         let validationFileObj = {
             url: url,
             hash: contentHash,
-            path: storePath,
+            path: `${urlHash}.json`,
             id: resJson.id
         };
         await mongodb.FHIRValidationFiles.findOneAndUpdate({

@@ -31,6 +31,7 @@ services:
     volumes :
       - ./:/nodejs/fhir-burni
       - /nodejs/fhir-burni/node_modules
+      - ./validation-files:/validationResources
     ports:
       - 8080:8080
     depends_on:
@@ -38,3 +39,9 @@ services:
     tty : true
     restart: on-failure:3
     stdin_open : true
+
+  burni-fhir-validator-api:
+    image: a5566qq123/fhir-validator-api
+    container_name: burni-fhir-validator-api
+    volumes: 
+      - ./validation-files:/app/assets/validationResources

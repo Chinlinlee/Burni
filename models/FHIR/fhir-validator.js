@@ -9,7 +9,6 @@ const nodeUrl = require('url');
 const https = require('https');
 const { logger } = require('../../utils/log');
 const path = require('path');
-const PWD_FILENAME = path.relative(process.cwd(), __filename);
 const VALIDATION_API_URL = process.env.VALIDATION_API_URL;
 
 /**
@@ -33,12 +32,15 @@ async function validateByProfile(profileUrl, resourceContent) {
 async function validateByMetaProfile(resourceContent) {
     try {
         let metaProfile = _.get(resourceContent, "meta.profile");
+        let storeValidationFileResultList = [];
         if (metaProfile) {
             for (let i = 0 ; i< metaProfile.length; i++) {
                 let profileUrl = metaProfile[i];
-                await storeValidationFile(profileUrl);
+                let storeValidationFileResult = await storeValidationFile(profileUrl);
+                storeValidationFileResultList.push(storeValidationFileResult);
             }
-            await refreshResourceResolver();
+            let haveNewValidationFile = storeValidationFileResultList.findIndex(v=> v.new) >= 0;
+            if (haveNewValidationFile) await refreshResourceResolver();
             let validation = await validate(metaProfile, resourceContent);
             if (validation.status) {
                 return JSON.parse(validation.data);
@@ -74,12 +76,13 @@ async function validateByMetaProfile(resourceContent) {
                 await fetchCodeSystem(resJson);
             }
             let contentHash = hash(resJson);
-            let storePath = path.join(process.env.VALIDATION_FILES_ROOT_PATH, hash({url:url}) + ".json");
+            let urlHash = hash({url:url});
+            let storePath = path.join(process.env.VALIDATION_FILES_ROOT_PATH,  urlHash + ".json");
             fs.writeFile(path.resolve(storePath), JSON.stringify(resJson), ()=> {});
             let validationFileObj = {
                 url: url,
                 hash: contentHash,
-                path: storePath,
+                path: `${urlHash}.json`,
                 id: resJson.id
             };
             await mongodb.FHIRValidationFiles.findOneAndUpdate({
@@ -87,7 +90,13 @@ async function validateByMetaProfile(resourceContent) {
             }, { $set: validationFileObj}, {
                 upsert: true
             });
+            return {
+                new: true
+            };
         }
+        return {
+            new: false
+        };
     } catch(e) {
         throw e;
     }
@@ -133,10 +142,11 @@ async function refreshResourceResolver() {
             rejectUnauthorized: false
         }); 
         let APIUrl = new nodeUrl.URL("/api/refreshresourceresolver" , VALIDATION_API_URL).href;
-        let fetchRes = await fetch(APIUrl, {
-            method: "POST",
-            agent: httpsAgent
-        });
+        let fetchConfig = {
+            method: "POST"
+        };
+        if (APIUrl.startsWith("https://")) fetchConfig.agent = httpsAgent;
+        let fetchRes = await fetch(APIUrl, fetchConfig);
         logger.info(`[Info: Refresh C# Validator Resource Resolver] [Content: ${JSON.stringify(await fetchRes.json())}]`);
     } catch(e) {
         throw e;
@@ -147,7 +157,7 @@ async function refreshResourceResolver() {
  * Call C# API server to validate with profiles.
  * @param {Array<string>} profile The string array of profiles URL.
  * @param {JSON} resourceContent The FHIR resource JSON object.
- * @return {JSON}
+ * @return {Promise<JSON>}
  */
 async function validate(profile, resourceContent) {
     try {
@@ -159,18 +169,51 @@ async function validate(profile, resourceContent) {
             profile: profile,
             resourceJson: JSON.stringify(resourceContent)
         };
-        let fetchRes = await fetch(APIUrl, {
+        let fetchConfig = {
             method: "POST",
             body: JSON.stringify(body),
-            agent: httpsAgent,
             headers: {
                 'content-type': 'application/json'
             }
-        });
+        };
+        if (APIUrl.startsWith("https://")) fetchConfig.agent = httpsAgent;
+        let fetchRes = await fetch(APIUrl, fetchConfig);
         let fetchResJson = await fetchRes.json();
         logger.info(`[Info: Call Validation function from C# successfully] [URL: ${APIUrl}]`);
         return fetchResJson;
     } catch(e) {
+        throw e;
+    }
+}
+
+/**
+ * 
+ * @param {import('express').Request} req 
+ * @param {string} resourceType 
+ */
+ async function getValidateResult(req, resourceType) {
+    try {
+        let profileUrl = _.get(req.query, "profile");
+        let metaProfiles = _.get(req.body, "meta.profile", false);
+        if (profileUrl) {
+            return await validateByProfile(profileUrl, req.body);
+        } else if (metaProfiles) {
+            return await validateByMetaProfile(req.body);
+        }
+        let validation = await mongodb[resourceType].validate(req.body);
+    } catch(e) {
+        let name = _.get(e, "name");
+        if (name === "ValidationError") {
+            let operationOutcomeError = new OperationOutcome([]);
+            for (let errorKey in e.errors) {
+                let error = e.errors[errorKey];
+                let message = _.get(error, "message", `${error} invalid`);
+                let errorIssue = new issue("error", "invalid", message);
+                _.set(errorIssue, "Location", [errorKey]);
+                operationOutcomeError.issue.push(errorIssue);
+            }
+            return operationOutcomeError;
+        }
         throw e;
     }
 }
@@ -180,3 +223,4 @@ module.exports.validateByMetaProfile = validateByMetaProfile;
 module.exports.refreshResourceResolver = refreshResourceResolver;
 module.exports.fetchValueSet = fetchValueSet;
 module.exports.fetchCodeSystem = fetchCodeSystem;
+module.exports.getValidateResult = getValidateResult;

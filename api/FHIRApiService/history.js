@@ -8,7 +8,6 @@ const { handleError } = require('../../models/FHIR/httpMessage');
 const user = require('../APIservices/user.service');
 const { logger } = require('../../utils/log');
 const path = require('path');
-const PWD_FILENAME = path.relative(process.cwd(), __filename);
 
 /**
  * @param {import("express").Request} req 
@@ -17,7 +16,7 @@ const PWD_FILENAME = path.relative(process.cwd(), __filename);
  * @returns 
  */
 module.exports = async function(req, res, resourceType) {
-    logger.info(`[Info: do history-instance by id, id: ${req.params.id}] [Resource Type: ${resourceType}] [From-File: ${PWD_FILENAME}] [Content-Type: ${res.getHeader("content-type")}] [Url-SearchParam: ${req.url}] `);
+    logger.info(`[Info: do history-instance by id, id: ${req.params.id}] [Resource Type: ${resourceType}] [Content-Type: ${res.getHeader("content-type")}] [Url-SearchParam: ${req.url}] `);
     let doRes = function (code , item) {
         if (res.getHeader("content-type").includes("xml")) {
             let fhir = new FHIR();
@@ -26,8 +25,9 @@ module.exports = async function(req, res, resourceType) {
         }
         return res.status(code).send(item);
     };
-    if (!await user.checkTokenPermission(req, resourceType, "history")) {
-        logger.warn(`[Warn: Request token doesn't have permission with this API] [From-File: ${PWD_FILENAME}] [From-IP: ${req.socket.remoteAddress}]`);
+    let hasPermission = await user.checkTokenPermission(req, resourceType, "history");
+    if (!hasPermission) {
+        logger.warn(`[Warn: Request token doesn't have permission with this API] [From-IP: ${req.socket.remoteAddress}]`);
         return doRes(403,handleError.forbidden("Your token doesn't have permission with this API"));
     }
     let queryParameter = _.cloneDeep(req.query);
@@ -65,7 +65,7 @@ module.exports = async function(req, res, resourceType) {
         return doRes(200, bundle);
     } catch (e) {
         let errorStr = JSON.stringify(e, Object.getOwnPropertyNames(e));
-        logger.error(`[Error: ${errorStr})}] [Resource Type: ${resourceType}] [From-File: ${PWD_FILENAME}]`);
+        logger.error(`[Error: ${errorStr})}] [Resource Type: ${resourceType}]`);
         let operationOutcomeError = handleError.exception(e);
         return doRes(500, operationOutcomeError);
     }
