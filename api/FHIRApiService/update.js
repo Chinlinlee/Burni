@@ -110,73 +110,69 @@ module.exports = async function (req, res, resourceType) {
     return resFunc[status](result);
 };
 
-async function isDocExist(id,resourceType) {
+async function isDocExist(id, resourceType) {
     try {
-        let doc = await mongodb[resourceType].findOne({ id: id });
-        if (doc) {
+        let data = await mongodb[resourceType].countDocuments({id: id}).limit(1);
+        if (data > 0) {
             return {
                 status: 1,
                 error: ""
-            }; //have doc
-        } else {
-            return {
-                status: 2,
-                error: ""
-            }; //no doc
+            };
         }
+        return {
+            status: 2,
+            error: ""
+        };
     } catch(e) {
+        console.error(e);
         return {
             status: 0,
             error: e
-        }; //error
+        };
     }
 }
 
-function doUpdateData(req,resourceType) {
-    return new Promise((resolve, reject) => {
+async function doUpdateData(req, resourceType) {
+    try {
         let data = req.body;
         let id = req.params.id;
         delete data._id;
         delete data.text;
         delete data.meta;
         data.id = id;
-        mongodb[resourceType].findOneAndUpdate({
+        let newDoc = await mongodb[resourceType].findOneAndUpdate({
             id: id
         }, {
             $set: data
         }, {
             new: true,
             rawResult: true
-        }, function (err, newDoc) {
-            if (err) {
-                console.error(err);
-                return resolve(["false", err]);
-            }
-            return resolve(["true", {
-                id: id,
-                doc: newDoc.value.getFHIRField(),
-                code: 200
-            }]);
         });
-    });
+        return ["true", {
+            id: id,
+            doc: newDoc.value.getFHIRField(),
+            code: 200
+        }];
+    } catch(e) {
+        console.error(e);
+        return ["false", e];
+    }
 }
 
-function doInsertData(req,resourceType) {
-    return new Promise((resolve) => {
+async function doInsertData(req, resourceType) {
+    try {
         let data = req.body;
         data.id = req.params.id;
         delete data.text;
         delete data.meta;
         let updateData = new mongodb[resourceType](data);
-        updateData.save(function (err, doc) {
-            if (err) {
-                console.error(err);
-                return resolve(["false", err]);
-            }
-            return resolve(["true", {
-                code: 201,
-                doc: doc.getFHIRField()
-            }]);
-        });
-    });
+        let doc = await updateData.save();
+        return ["true", {
+            code: 201,
+            doc: doc.getFHIRField()
+        }];
+    } catch(e) {
+        console.error(e);
+        return ["false", e];
+    }
 }
