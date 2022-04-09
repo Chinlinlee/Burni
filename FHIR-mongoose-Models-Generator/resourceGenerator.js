@@ -290,10 +290,10 @@ function generateResourceSchema (type) {
 
     ${type}Schema.pre('save', async function (next) {
         let mongodb = require('../index');
-        let storedID = await mongodb.FHIRStoredID.findOne({
-            id: this.id
-        });
-        if (storedID && process.env.ENABLE_CHECK_ALL_RESOURCE_ID== "true") {
+        if (process.env.ENABLE_CHECK_ALL_RESOURCE_ID== "true") {
+            let storedID = await mongodb.FHIRStoredID.findOne({
+                id: this.id
+            });
             if (storedID.resourceType == "${type}") {
                 const docInHistory = await mongodb.${type}_history.findOne({
                     id: this.id
