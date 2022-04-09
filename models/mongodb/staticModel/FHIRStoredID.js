@@ -13,8 +13,6 @@ module.exports = function (mongodb) {
     });
     FHIRStoredIDSchema.index({
         "id": 1
-    }, {
-        unique: true
     });
     FHIRStoredIDSchema.index({
         "resourceType" : 1
