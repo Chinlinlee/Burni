@@ -2,6 +2,7 @@ FROM keymetrics/pm2:latest-alpine
 
 WORKDIR /
 RUN mkdir -p /nodejs/fhir-burni/
+RUN chown -R node:node /nodejs
 WORKDIR /nodejs/fhir-burni/
 # Bundle APP files
 COPY --chown=node:node package*.json /nodejs/fhir-burni/
