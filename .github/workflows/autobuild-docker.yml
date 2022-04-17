@@ -1,0 +1,55 @@
+name: burni-build-docker
+on:
+  push:
+    branches:
+      - "main"
+    tags:
+      - "*"
+jobs:
+  publish_docker_image:
+    runs-on: ubuntu-20.04
+    steps:
+    - 
+      name: Checkout
+      uses: actions/checkout@v3
+    -
+      name: Setup node
+      uses: actions/setup-node@v3
+      with:
+        node-version: '14'
+    -
+      name: burni Generate Source Code
+      run: |
+        npm install --only=production
+        node ./config/generate-config-allResources.js
+        cp ./.env.template ./.env
+        npm run build
+    -
+      name: Set up QEMU
+      uses: docker/setup-qemu-action@v1
+    -
+      name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+    -
+      name: Login to DockerHub
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+    -
+      name: Docker meta
+      id: meta
+      uses: docker/metadata-action@v3
+      with:
+        images: a5566qq123/burni
+        tags: |
+          type=semver,pattern={{raw}}
+          type=ref,event=branch
+    -
+      name: Build and push
+      uses: docker/build-push-action@v2
+      with:
+        context: ./
+        push: ${{ github.event_name != 'pull_request' }}
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
