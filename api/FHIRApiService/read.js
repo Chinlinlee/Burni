@@ -14,7 +14,6 @@ const path = require('path');
  * @returns 
  */
 module.exports = async function (req , res , resourceType) {
-    logger.info(`[Info: do create] [Resource Type: ${resourceType}] [Content-Type: ${res.getHeader("content-type")}]`);
     let doRes = function (code, item) {
         if (res.getHeader("content-type").includes("xml")) {
             let fhir = new FHIR();
@@ -29,6 +28,7 @@ module.exports = async function (req , res , resourceType) {
         return doRes(403,handleError.forbidden("Your token doesn't have permission with this API"));
     }
     let id = req.params.id;
+    logger.info(`[Info: do read] [Resource Type: ${resourceType}] [ID: ${id}] [Content-Type: ${res.getHeader("content-type")}]`);
     try {
         let docs = await mongodb[resourceType].findOne({
             id: id

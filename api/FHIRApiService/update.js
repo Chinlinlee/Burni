@@ -17,7 +17,7 @@ const path = require('path');
  * @returns 
  */
 module.exports = async function (req, res, resourceType) {
-    logger.info(`[Info: do create] [Resource Type: ${resourceType}] [Content-Type: ${res.getHeader("content-type")}]`);
+    logger.info(`[Info: do update] [Resource Type: ${resourceType}] [Content-Type: ${res.getHeader("content-type")}]`);
     let doRes = function (code, item) {
         if (res.getHeader("content-type").includes("xml")) {
             let fhir = new FHIR();
