@@ -31,10 +31,10 @@ module.exports = exports = function(config) {
         // useNewUrlParser: true,
         // useFindAndModify: false,
         // useUnifiedTopology: true,
-        
+
         auth: {
             authSource: 'admin',
-            user: id,
+            username: id,
             password: pwd
         }
     }).then(()=> {
