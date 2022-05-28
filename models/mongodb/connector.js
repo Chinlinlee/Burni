@@ -25,10 +25,13 @@ module.exports = exports = function(config) {
 
     console.log(databaseUrl);
     mongoose.connect(databaseUrl, {
-        useCreateIndex: true,
-        useNewUrlParser: true,
-        useFindAndModify: false,
-        useUnifiedTopology: true,
+        // The following parameters are no longer supported by mongoose 6.x
+
+        // useCreateIndex: true,
+        // useNewUrlParser: true,
+        // useFindAndModify: false,
+        // useUnifiedTopology: true,
+        
         auth: {
             authSource: 'admin',
             user: id,
