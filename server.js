@@ -26,9 +26,12 @@ app.use(express.static('public'));
 app.use(express.urlencoded({
     extended: true
 }));
-app.use(express.json());
 app.use(express.json({
-    "type": "application/fhir+json"
+    "limit": "50mb"
+}));
+app.use(express.json({
+    "type": "application/fhir+json",
+    "limit": "50mb"
 }));
 app.use(express.text({
     "type": ["text/*", "/_xml", "xml", "+xml"]
