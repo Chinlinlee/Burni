@@ -31,7 +31,7 @@ module.exports = exports = function(config) {
         // useNewUrlParser: true,
         // useFindAndModify: false,
         // useUnifiedTopology: true,
-
+        authSource: "admin",
         auth: {
             authSource: 'admin',
             username: id,
