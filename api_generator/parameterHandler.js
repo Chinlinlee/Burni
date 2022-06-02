@@ -17,6 +17,11 @@ function getSearchFields(field) {
             let [field , asType] = searchField.split(" as ");
             asType = capitalizeFirstLetter(asType);
             searchFields[key] = `${field}${asType}`;
+        } else if (searchField.includes(".as(")) {
+            searchField = searchField.replace(")" , "");
+            let [field , asType] = searchField.split(".as(");
+            asType = capitalizeFirstLetter(asType);
+            searchFields[key] = `${field}${asType}`;
         } else if (searchField.includes(".exists")) {
             searchFields[key] = `${searchField.substr(searchField, searchField.indexOf("."))}Boolean`;
         }
@@ -402,6 +407,9 @@ class DateParameter {
         `;
     }
 
+    /**
+     * TODO: handle the choice type 
+     */
     getCodeString() {
         let searchFields = getSearchFields(this.Field);
         let paramsSearchFieldTxt = `//#region ${this.Param}\r\nparamsSearchFields["${this.Param}"]= ${JSON.stringify(searchFields)};\r\n`;
@@ -413,7 +421,7 @@ class DateParameter {
             try {
                 codeStr += this[`handle${capitalizeFirstLetter(typeOfField)}`](field);
             } catch(e) {
-                console.error(e);
+                console.error(`field: ${this.Field}, type of field: ${typeOfField}, search fields ${searchFields}`, e , this.ResourceDef);
             }
         }
         codeStr += `
