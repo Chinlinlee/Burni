@@ -9,6 +9,7 @@ const FHIR = require('fhir').Fhir;
 const user = require('../APIservices/user.service');
 const validateContained = require('./validateContained');
 const { getValidateResult } = require('../../models/FHIR/fhir-validator.js');
+const { renameCollectionFieldName } = require("../apiService");
 const { logger } = require('../../utils/log');
 const path = require('path');
 
@@ -89,6 +90,7 @@ module.exports = async function(req, res , resourceType) {
     }
     try {
         let insertData = req.body;
+        let cloneInsertData = _.cloneDeep(insertData);
         if (_.get(insertData, "contained")) {
             let containedResources = _.get(insertData, "contained");
             for (let index in containedResources) {
@@ -118,7 +120,7 @@ module.exports = async function(req, res , resourceType) {
                 return doRes(412, operationOutcomeMessage);
             }
         }
-        let [status, doc] = await doInsertData(insertData, resourceType);
+        let [status, doc] = await doInsertData(cloneInsertData, resourceType);
         return responseFunc[status](doc, req, res, resourceType, doRes);
     } catch (e) {
         let errorStr = JSON.stringify(e, Object.getOwnPropertyNames(e));
@@ -131,6 +133,7 @@ module.exports = async function(req, res , resourceType) {
 async function doInsertData(insertData , resourceType) {
     try {
         delete insertData.text;
+        renameCollectionFieldName(insertData);
         //delete insertData.meta;
         insertData.id = uuid.v4();
         let insertDataObject = new mongodb[resourceType](insertData);

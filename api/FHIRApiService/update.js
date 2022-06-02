@@ -8,6 +8,7 @@ const FHIR = require('fhir').Fhir;
 const validateContained = require('./validateContained');
 const { checkReference, getNotExistReferenceList } = require('../apiService');
 const { getValidateResult } = require('../../models/FHIR/fhir-validator.js');
+const { renameCollectionFieldName } = require("../apiService");
 const { logger } = require('../../utils/log');
 const path = require('path');
 /**
@@ -68,6 +69,7 @@ module.exports = async function (req, res, resourceType) {
         }
     };
     let updateData = req.body;
+    let updateDataClone = _.cloneDeep(updateData);
     if (_.get(updateData, "contained")) {
         let containedResources = _.get(updateData, "contained");
         for (let index in containedResources) {
@@ -105,7 +107,7 @@ module.exports = async function (req, res, resourceType) {
         1: doUpdateData,
         2: doInsertData
     };
-    let [status, result] = await dataFuncAfterCheckExist[dataExist.status](req,resourceType);
+    let [status, result] = await dataFuncAfterCheckExist[dataExist.status](updateDataClone, req.params.id, resourceType);
     
     return resFunc[status](result);
 };
@@ -132,13 +134,12 @@ async function isDocExist(id, resourceType) {
     }
 }
 
-async function doUpdateData(req, resourceType) {
+async function doUpdateData(data, id, resourceType) {
     try {
-        let data = req.body;
-        let id = req.params.id;
         delete data._id;
         delete data.text;
         delete data.meta;
+        renameCollectionFieldName(data);
         data.id = id;
         let newDoc = await mongodb[resourceType].findOneAndUpdate({
             id: id
@@ -159,12 +160,12 @@ async function doUpdateData(req, resourceType) {
     }
 }
 
-async function doInsertData(req, resourceType) {
+async function doInsertData(data, id, resourceType) {
     try {
-        let data = req.body;
-        data.id = req.params.id;
+        data.id = id;
         delete data.text;
         delete data.meta;
+        renameCollectionFieldName(data);
         let updateData = new mongodb[resourceType](data);
         let doc = await updateData.save();
         return ["true", {

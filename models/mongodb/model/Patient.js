@@ -164,9 +164,11 @@ module.exports = function() {
         let result = this;
         delete result._doc._id;
         delete result._doc.__v;
-        if (_.get(result, "myCollection")) {
-            let tempCollectionField = _.cloneDeep(result["myCollection"]);
-            _.set(result, "collection", tempCollectionField);
+        let myCollectionField = _.get(result, "_doc.myCollection");
+        if (myCollectionField) {
+            let tempCollectionField = _.cloneDeep(myCollectionField);
+            _.set(result, "_doc.collection", tempCollectionField);
+            delete result._doc.myCollection;
         }
         return result;
     };

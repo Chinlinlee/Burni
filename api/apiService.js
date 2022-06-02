@@ -5,6 +5,7 @@ const AbortController = require('abort-controller');
 const FHIR = require('fhir').Fhir;
 const { handleError } = require('../models/FHIR/httpMessage');
 const jwt = require('jsonwebtoken');
+const jsonPath = require("jsonPath");
 function getDeepKeys(obj) {
     let keys = [];
     for (let key in obj) {
@@ -166,10 +167,27 @@ function getNotExistReferenceList(checkReferenceRes) {
     return notExistReferenceList;
 }
 
+function renameCollectionFieldName(data) {
+    let collectionNodes = jsonPath.nodes(data, "$..collection");
+    for (let node of collectionNodes) {
+        node.path.shift();
+        let originalPath = node.path.join(".");
+        _.omit(data, originalPath); 
+        node.path = node.path.map( v=> {
+            if (v === "collection") return "myCollection";
+            return v;
+        });
+        let collectionPath = node.path.join(".");
+        let collectionItem = _.cloneDeep(node.value);
+        _.set(data, collectionPath, collectionItem);
+    }
+}
+
 module.exports = {
     getDeepKeys: getDeepKeys,
     isRealObject: isRealObject,
     findResourceById: findResourceById,
     checkReference: checkReference , 
-    getNotExistReferenceList: getNotExistReferenceList
+    getNotExistReferenceList: getNotExistReferenceList,
+    renameCollectionFieldName: renameCollectionFieldName
 };
