@@ -278,9 +278,9 @@ function generateResourceSchema (type) {
     const ${type}Schema = new mongoose.Schema(${type} , schemaConfig);\r\n
 
     ${type}Schema.methods.getFHIRField = function () {
-        let result = this.toObject();
-        delete result._id;
-        delete result.__v;
+        let result = this;
+        delete result._doc._id;
+        delete result._doc.__v;
         if (_.get(result, "myCollection")) {
             let tempCollectionField = _.cloneDeep(result["myCollection"]);
             _.set(result, "collection", tempCollectionField);

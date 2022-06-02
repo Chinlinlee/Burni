@@ -161,9 +161,9 @@ module.exports = function() {
 
 
     PatientSchema.methods.getFHIRField = function() {
-        let result = this.toObject();
-        delete result._id;
-        delete result.__v;
+        let result = this;
+        delete result._doc._id;
+        delete result._doc.__v;
         if (_.get(result, "myCollection")) {
             let tempCollectionField = _.cloneDeep(result["myCollection"]);
             _.set(result, "collection", tempCollectionField);
@@ -173,10 +173,10 @@ module.exports = function() {
 
     PatientSchema.pre('save', async function(next) {
         let mongodb = require('../index');
-        let storedID = await mongodb.FHIRStoredID.findOne({
-            id: this.id
-        });
-        if (storedID && process.env.ENABLE_CHECK_ALL_RESOURCE_ID == "true") {
+        if (process.env.ENABLE_CHECK_ALL_RESOURCE_ID == "true") {
+            let storedID = await mongodb.FHIRStoredID.findOne({
+                id: this.id
+            });
             if (storedID.resourceType == "Patient") {
                 const docInHistory = await mongodb.Patient_history.findOne({
                         id: this.id
