@@ -1,5 +1,6 @@
 <div>
-    <h1>Burni FHIR Server</h1>
+    <div style="float: left;width: 15%;"><img src="https://github.com/Chinlinlee/Burni/blob/main/public/logo.png?raw=true" width="90px">
+     <h1>Burni FHIR Server</h1>
     <a href="README.md">English</a>
     <span> | </span>
     <a href="README.zh-TW.md">繁體中文</a>
