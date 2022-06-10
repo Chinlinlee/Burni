@@ -10,7 +10,7 @@ module.exports = exports = function(config) {
     const hosts = JSON.parse(config.MONGODB_HOSTS);
     const ports = JSON.parse(config.MONGODB_PORTS);
     const dbName = config.MONGODB_NAME;
-    const slave = config.MONGODB_SLAVEMODE;
+    const authDB = config.MONGODB_AUTH_DB;
     const collection = {};
     let databaseUrl = "";
 
@@ -31,9 +31,9 @@ module.exports = exports = function(config) {
         // useNewUrlParser: true,
         // useFindAndModify: false,
         // useUnifiedTopology: true,
-        authSource: "admin",
+        authSource: authDB,
         auth: {
-            authSource: 'admin',
+            authSource: authDB,
             username: id,
             password: pwd
         }
