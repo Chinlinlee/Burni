@@ -13,11 +13,6 @@
 | FHIRSERVER_HOST              | String         | The hostname use in bundle URL                                                                            |
 | FHIRSERVER_PORT              | Number         | The port use in bundle URL                                                                                |
 | FHIRSERVER_APIPATH           | String         | The FHIR API path e.g. "api/fhir" is http://xxx.com/api/fhir/Patient                                      |
-| ENABLE_TOKEN_AUTH            | Boolean        | whether enable token authentication                                                                       |
-| JWT_SECRET_KEY               | String         | Secret key of JWT                                                                                         |
-| ADMIN_LOGIN_PATH             | String         | URL path for login page of issuing token, e.g. adminLogin => http://localhost/adminLogin                  |
-| ADMIN_USERNAME               | String         | Administration username for login page of issuing token                                                   |
-| ADMIN_PASSWORD               | String         | Password of administration user for login page of issuing token                                           |
 | ENABLE_CHECK_ALL_RESOURCE_ID | Boolean        | Unique ID of resources of crossing whole system, e.g. Patient/123 and Organization/123 is invalid         |
 | ENABLE_CHECK_REFERENCE       | Boolean        | Validate reference in resource is exists                                                                  |
 | ENABLE_CSHARP_VALIDATOR      | Boolean        | whether enable Csharp validator, use in $validate API                                                     |

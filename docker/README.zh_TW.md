@@ -15,11 +15,6 @@ The full resources burni FHIR server.
 |FHIRSERVER_HOST             |String        |FHIR Server 對外連接的 IP 或網域名稱，用於產生回傳資料的 URL                                       |"localhost"                           |
 |FHIRSERVER_PORT             |Number        |FHIR Server 對外連接的 Port，用於產生回傳資料的 URL                                           |8080                                |
 |FHIRSERVER_APIPATH          |String        |使用 FHIR API 的前綴字，e.g. api/fhir ，代表查詢 Patient 使用 http://xxx.com/api/fhir/Patient|"fhir"                                |
-|ENABLE_TOKEN_AUTH           |Boolean       |是否開啟驗證機制                                                                       |false                               |
-|JWT_SECRET_KEY              |String        |JWT 的 secret key                                                               |"secret-key"                          |
-|ADMIN_LOGIN_PATH            |String        |核發 Token 登入頁面的 URL 路徑，e.g. adminLogin即 http://localhost/adminLogin             |"adminLogin"                          |
-|ADMIN_USERNAME              |String        |核發 Token 管理者登入帳號                                                               |"admin"                               |
-|ADMIN_PASSWORD              |String        |核發 Token 管理者登入密碼                                                               |"password"                            |
 |ENABLE_CHECK_ALL_RESOURCE_ID|Boolean       |是否驗證跨 Resource 的 ID ，即 Patient/123 以及 Organization/123 不應該同時存在                 |false                               |
 |ENABLE_CHECK_REFERENCE      |Boolean       |是否驗證 Resource 內的 Reference 是否存在                                                |false                               |
 |ENABLE_CSHARP_VALIDATOR     |Boolean       |是否開啟 C# 的 API                                                                  |false                               |
