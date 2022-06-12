@@ -1,9 +1,3 @@
-
-const jwt = require('jsonwebtoken');
-const uuid = require('uuid');
-const UIDGenerator = require('uid-generator');
-const uidGenerator = new UIDGenerator(256);
-const mongodb = require('../../../models/mongodb');
 const refreshTokenService = require('../service/refreshTokenService');
 
 /**

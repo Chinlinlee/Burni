@@ -3,7 +3,6 @@ const {
     handleError
 } = require('../../models/FHIR/httpMessage');
 const FHIR = require('fhir').Fhir;
-const user = require('../APIservices/user.service');
 const { logger } = require('../../utils/log');
 const path = require('path');
 
@@ -22,11 +21,6 @@ module.exports = async function (req , res , resourceType) {
         }
         return res.status(code).send(item);
     };
-    let hasPermission = await user.checkTokenPermission(req, resourceType, "read");
-    if (!hasPermission) {
-        logger.warn(`[Warn: Request token doesn't have permission with this API] [From-IP: ${req.socket.remoteAddress}]`);
-        return doRes(403,handleError.forbidden("Your token doesn't have permission with this API"));
-    }
     let id = req.params.id;
     logger.info(`[Info: do read] [Resource Type: ${resourceType}] [ID: ${id}] [Content-Type: ${res.getHeader("content-type")}]`);
     try {

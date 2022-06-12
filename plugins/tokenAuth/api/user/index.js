@@ -1,9 +1,9 @@
 const express = require('express');
 const Joi = require('joi');
 const router = express.Router();
-const user = require('../APIservices/user.service');
-const { validateParams } = require('../validator');
-const resourceTypeList = require('../../models/FHIR/resourceType');
+const user = require('./service/user.service');
+const { validateParams } = require('../../../../api/validator');
+const resourceTypeList = require('../../../../models/FHIR/resourceType');
 
 router.post('/adminLogin', function (req , res , next) {
     let passport = require('passport');

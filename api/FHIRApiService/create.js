@@ -6,7 +6,6 @@ const uuid = require('uuid');
 const _ = require('lodash');
 const { checkReference, getNotExistReferenceList } = require('../apiService');
 const FHIR = require('fhir').Fhir;
-const user = require('../APIservices/user.service');
 const validateContained = require('./validateContained');
 const { getValidateResult } = require('../../models/FHIR/fhir-validator.js');
 const { renameCollectionFieldName } = require("../apiService");
@@ -83,11 +82,6 @@ module.exports = async function(req, res , resourceType) {
         }
         return res.status(code).send(item);
     };
-    let hasPermission = await user.checkTokenPermission(req, resourceType, "create");
-    if (!hasPermission) {
-        logger.warn(`[Warn: Request token doesn't have permission with this API] [From-IP: ${req.socket.remoteAddress}]`);
-        return doRes(403,handleError.forbidden("Your token doesn't have permission with this API"));
-    }
     try {
         let insertData = req.body;
         let cloneInsertData = _.cloneDeep(insertData);

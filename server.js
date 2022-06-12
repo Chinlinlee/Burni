@@ -5,7 +5,6 @@ const compress = require('compression');
 const { handleError } = require('./models/FHIR/httpMessage');
 //login
 const cookieParser = require('cookie-parser');
-const passport = require('passport');
 const session = require('express-session');
 const flash = require('connect-flash');
 const mongodb = require('./models/mongodb');
@@ -67,8 +66,6 @@ app.use(session({
         maxAge: 60 * 60 * 1000
     }
 }));
-app.use(passport.initialize());
-app.use(passport.session());
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept ,Authorization");
@@ -79,8 +76,7 @@ app.use((req, res, next) => {
 });
 
 //login
-require('models/user/passport.js')(passport);
-require("routes.js")(app, passport);
+require("routes.js")(app);
 app.engine('html', require('ejs').renderFile);
 //
 http.createServer(app).listen(port, function() {

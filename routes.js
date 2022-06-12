@@ -1,15 +1,15 @@
 const fs = require('fs');
+const { pluginsConfig } = require("./plugins/config");
 
-module.exports = function (app, passport) {
+module.exports = function (app) {
+
+    for(let pluginName in pluginsConfig) {
+        let plugin = pluginsConfig[pluginName];
+        if (plugin.before && plugin.enable) require(`plugins/${pluginName}`)(app);
+    }
+
     app.set('json spaces', 4);
     app.use('/', require('web/index'));
-    if (process.env.ENABLE_TOKEN_AUTH == "true") {
-        if (!process.env.ADMIN_USERNAME || !process.env.ADMIN_PASSWORD) {
-            console.error("please set ADMIN_USERNAME and ADMIN_PASSWORD in dotenv file");
-            process.exit(1);
-        }
-        app.use('/user' , require('./api/user'));
-    }
     
 
     //#region fhir
@@ -20,11 +20,16 @@ module.exports = function (app, passport) {
             app.use(`/${process.env.FHIRSERVER_APIPATH}/${dir}`, require(`./api/FHIR/${dir}`));
         }
     }
-    ////#endregion
+    //#endregion
     app.route('/:url(api|auth|web)/*').get((req, res) => {
         res.status(404).json({
             status: 404,
             message: "not found"
         });
     });
+
+    for (let pluginName in pluginsConfig) {
+        let plugin = pluginsConfig[pluginName];
+        if(!plugin.before && plugin.enable) require(`plugins/${pluginName}`)(app);
+    }
 };

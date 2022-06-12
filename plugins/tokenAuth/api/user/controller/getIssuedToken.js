@@ -1,6 +1,7 @@
 const _ = require('lodash');
-const mongodb = require('../../../models/mongodb');
 const jwt = require('jsonwebtoken');
+const mongoose = require("mongoose");
+const tokenAuthPluginConfig = require("../../../../config").pluginsConfig.tokenAuth;
 /**
  * 
  * @param {import('express').Request} req 
@@ -8,7 +9,7 @@ const jwt = require('jsonwebtoken');
  */
 module.exports = async function(req, res) {
     try {
-        if (req.user != process.env.ADMIN_USERNAME) {
+        if (req.user != tokenAuthPluginConfig.admin.username) {
             return res.status(403).send();
         }
         let queryParameter = _.cloneDeep(req.query);
@@ -18,7 +19,7 @@ module.exports = async function(req, res) {
         _.set(req.query, "_count", paginationLimit);
         delete queryParameter['_count'];
         delete queryParameter['_offset'];
-        let docs = await mongodb.issuedToken.find({} , {
+        let docs = await mongoose.model("issuedToken").find({} , {
             token:1,
             refresh_token: 1,
             _id: 1
@@ -34,7 +35,7 @@ module.exports = async function(req, res) {
             let decodedObj = await getDecodedTokenObj(doc.token);
             decodedTokenList.push(Object.assign(doc, decodedObj));
         }
-        let count = await mongodb.issuedToken.countDocuments({});
+        let count = await mongoose.model("issuedToken").countDocuments({});
         return res.send({
             tokenList : decodedTokenList,
             total: count
@@ -47,7 +48,7 @@ module.exports = async function(req, res) {
 
 function getDecodedTokenObj(token) {
     return new Promise((resolve , reject)=> {
-        jwt.verify(token, process.env.JWT_SECRET_KEY, function(err, decoded) {
+        jwt.verify(token, tokenAuthPluginConfig.jwt.secretKey, function(err, decoded) {
             let tokenObj = decoded;
             tokenObj.status = true;
             tokenObj.message = "good";

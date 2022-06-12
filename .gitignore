@@ -23,6 +23,7 @@ models/mongodb/FHIRDataTypesSchema-New
 
 #ignore self config
 config/config.js
+/plugins/config.js
 
 #ignore apidoc comment files
 docs/apidoc/apidoc-sources

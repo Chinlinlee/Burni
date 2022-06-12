@@ -1,4 +1,4 @@
-const mongodb = require('../../../models/mongodb');
+const mongoose = require("mongoose");
 
 /**
  * 
@@ -7,7 +7,7 @@ const mongodb = require('../../../models/mongodb');
  */
 module.exports = async function(req, res) {
     try {
-        await mongodb.issuedToken.deleteOne({
+        await mongoose.model("issuedToken").deleteOne({
             _id: req.params._id
         });
         return res.status(200).send({

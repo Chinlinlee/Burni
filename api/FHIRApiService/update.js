@@ -3,7 +3,6 @@ const {
     handleError
 } = require('models/FHIR/httpMessage');
 const _ = require('lodash');
-const user = require('../APIservices/user.service');
 const FHIR = require('fhir').Fhir;
 const validateContained = require('./validateContained');
 const { checkReference, getNotExistReferenceList } = require('../apiService');
@@ -27,11 +26,6 @@ module.exports = async function (req, res, resourceType) {
         }
         return res.status(code).send(item);
     };
-    let hasPermission = await user.checkTokenPermission(req, resourceType, "update");
-    if (!hasPermission) {
-        logger.warn(`[Warn: Request token doesn't have permission with this API] [From-IP: ${req.socket.remoteAddress}]`);
-        return doRes(403,handleError.forbidden("Your token doesn't have permission with this API"));
-    }
     let resFunc = {
         "true": (data) => {
             if (data.code == 201) {

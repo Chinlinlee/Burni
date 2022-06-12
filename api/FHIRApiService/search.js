@@ -10,7 +10,6 @@ const {
 } = require('models/FHIR/httpMessage');
 const FHIR = require('fhir').Fhir;
 const { isRealObject } = require('../apiService');
-const user = require('../APIservices/user.service');
 const { logger } = require('../../utils/log');
 const path = require('path');
 
@@ -32,11 +31,6 @@ module.exports = async function(req, res, resourceType, paramsSearch) {
         }
         return res.status(code).send(item);
     };
-    let hasPermission = await user.checkTokenPermission(req, resourceType, "search-type");
-    if (!hasPermission) {
-        logger.warn(`[Warn: Request token doesn't have permission with this API] [From-IP: ${req.socket.remoteAddress}]`);
-        return doRes(403,handleError.forbidden("token doesn't have permission with this API"));
-    }
     let queryParameter = _.cloneDeep(req.query);
     let paginationSkip = queryParameter['_offset'] == undefined ? 0 : queryParameter['_offset'];
     let paginationLimit = queryParameter['_count'] == undefined ? 100 : queryParameter['_count'];

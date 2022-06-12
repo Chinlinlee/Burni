@@ -1,10 +1,6 @@
 
-const jwt = require('jsonwebtoken');
-const uuid = require('uuid');
-const UIDGenerator = require('uid-generator');
-const uidGenerator = new UIDGenerator(256);
-const mongodb = require('../../../models/mongodb');
 const tokenIssueService = require('../service/tokenIssueService');
+const tokenAuthPluginConfig = require("../../../../config").pluginsConfig.tokenAuth;
 
 /**
  * @param {import('express').Request} req
@@ -12,7 +8,7 @@ const tokenIssueService = require('../service/tokenIssueService');
  */
 module.exports = async function (req , res) {
     try {
-        if (req.user != process.env.ADMIN_USERNAME) {
+        if (req.user != tokenAuthPluginConfig.admin.username) {
             return res.status(403).send();
         }
         let tokenObj = await tokenIssueService(req.body);
