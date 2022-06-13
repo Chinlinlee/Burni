@@ -1,4 +1,5 @@
 const FHIR = require("fhir").Fhir;
+const _ = require("lodash");
 
 /**
  * 
@@ -9,7 +10,8 @@ const FHIR = require("fhir").Fhir;
  * @returns 
  */
  let doRes = function (req, res, code, item) {
-    if (req.headers.accept.includes("xml")) {
+    let acceptHeader = _.get(req.headers, "accept", "");
+    if (acceptHeader.includes("xml")) {
         let fhir = new FHIR();
         let xmlItem = fhir.objToXml(item);
         return res.status(code).send(xmlItem);
