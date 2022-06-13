@@ -30,7 +30,7 @@ function checkIsLoggedIn(req, res, next) {
  */
 async function tokenAuthentication(req, res, next) {
     try {
-        let token = _.get(req.headers, "authorization", false);
+        let token = _.get(req.headers, "authorization", "");
         if (!token) {
             return res
                 .status(400)
@@ -89,7 +89,7 @@ async function getTokenPermission(token, resourceType, interaction) {
 }
 
 async function checkTokenPermission(req, resourceType, interaction) {
-    let token = _.get(req.headers, "authorization", false);
+    let token = _.get(req.headers, "authorization", "");
     token = token.replace("Bearer ", "");
     let permission = await getTokenPermission(token, resourceType, interaction);
     if (permission) {
