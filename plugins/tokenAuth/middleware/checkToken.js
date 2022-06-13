@@ -1,27 +1,10 @@
 const _ = require("lodash");
 const user = require("../api/user/service/user.service");
 const { logger } = require("../../../utils/log");
-const FHIR = require("fhir").Fhir;
+const { doRes } = require("../../../utils/response");
 const {
     handleError
 } = require('../../../models/FHIR/httpMessage');
-
-/**
- * 
- * @param {import("express").Request} req 
- * @param {import("express").Response} res 
- * @param {string} code 
- * @param {Object} item 
- * @returns 
- */
-let doRes = function (req, res, code, item) {
-    if (req.headers.accept.includes("xml")) {
-        let fhir = new FHIR();
-        let xmlItem = fhir.objToXml(item);
-        return res.status(code).send(xmlItem);
-    }
-    return res.status(code).send(item);
-};
 
 /**
  * 
