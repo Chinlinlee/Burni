@@ -16,5 +16,9 @@ module.exports.pluginsConfig = {
         jwt: {
             secretKey: ""
         }
+    },
+    checkReference: {
+        enable: true,
+        before: true
     }
 };

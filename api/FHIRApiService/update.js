@@ -75,15 +75,6 @@ module.exports = async function (req, res, resourceType) {
             }
         }
     }
-    if (process.env.ENABLE_CHECK_REFERENCE == "true") {
-        let checkReferenceRes = await checkReference(updateData);
-        if (!checkReferenceRes.status) {
-            let notExistReferenceList = getNotExistReferenceList(checkReferenceRes);
-            let operationOutcomeError = handleError.processing(`The reference not found : ${_.map(notExistReferenceList , "value").join(",")}`);
-            _.set(operationOutcomeError , "issue.0.location" , _.map(notExistReferenceList , "path"));
-            return doRes(400, operationOutcomeError);
-        }
-    }
     if (process.env.ENABLE_VALIDATION_WHEN_OP === "true" && process.env.ENABLE_CSHARP_VALIDATOR === "true") {
         let operationOutcomeMessage = await getValidateResult(req, resourceType);
         let haveError = (_.get(operationOutcomeMessage, "issue")) ? operationOutcomeMessage.issue.find(v=> v.severity === "error") : false;
