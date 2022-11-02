@@ -116,9 +116,7 @@ module.exports = async function(req, res , resourceType) {
 
 async function doInsertData(insertData , resourceType) {
     try {
-        delete insertData.text;
         renameCollectionFieldName(insertData);
-        //delete insertData.meta;
         insertData.id = uuid.v4();
         let insertDataObject = new mongodb[resourceType](insertData);
         let doc = await insertDataObject.save();

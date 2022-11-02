@@ -122,8 +122,6 @@ async function isDocExist(id, resourceType) {
 async function doUpdateData(data, id, resourceType) {
     try {
         delete data._id;
-        delete data.text;
-        delete data.meta;
         renameCollectionFieldName(data);
         data.id = id;
         let newDoc = await mongodb[resourceType].findOneAndUpdate({
@@ -148,8 +146,6 @@ async function doUpdateData(data, id, resourceType) {
 async function doInsertData(data, id, resourceType) {
     try {
         data.id = id;
-        delete data.text;
-        delete data.meta;
         renameCollectionFieldName(data);
         let updateData = new mongodb[resourceType](data);
         let doc = await updateData.save();
