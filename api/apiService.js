@@ -5,7 +5,7 @@ const AbortController = require('abort-controller');
 const FHIR = require('fhir').Fhir;
 const { handleError } = require('../models/FHIR/httpMessage');
 const jwt = require('jsonwebtoken');
-const jsonPath = require("jsonPath");
+const jsonPath = require("jsonpath");
 function getDeepKeys(obj) {
     let keys = [];
     for (let key in obj) {
