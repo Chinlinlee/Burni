@@ -5,7 +5,8 @@ const {
     handleError
 } = require('../../../models/FHIR/httpMessage');
 const FHIR = require("fhir").Fhir;
-const { getDeepKeys, findResourceById } = require("../../../api/apiService");
+const { isDocExist } = require("../../../api/apiService");
+const jp = require("jsonpath");
 
 async function checkAbsoluteUrlRef(key, referenceValue, checkedReferenceList) {
     //do fetch to get response
@@ -54,11 +55,8 @@ async function checkAbsoluteUrlRef(key, referenceValue, checkedReferenceList) {
 
 async function checkReference(resourceData) {
     let checkedReferenceList = [];
-    let resourceDeepKeys = getDeepKeys(resourceData);
-    let referenceKeys = resourceDeepKeys.filter(
-        v => v.endsWith(".reference")
-    );
-    for (let key of referenceKeys) {
+    let referenceKeysJp = jp.paths(resourceData, "$..reference").map( v=> v.join(".").substring(2));
+    for (let key of referenceKeysJp) {
         let referenceValue = _.get(resourceData, key);
         let referenceValueSplit = referenceValue.split('|')[0].split('/');
         if (/^(http|https):\/\//g.test(referenceValue)) {
@@ -66,8 +64,8 @@ async function checkReference(resourceData) {
         } else if (referenceValueSplit.length >= 2) {
             let resourceName = referenceValueSplit[referenceValueSplit.length - 2];
             let resourceId = referenceValueSplit[referenceValueSplit.length - 1];
-            let doc = await findResourceById(resourceName, resourceId);
-            if (doc) {
+            let doc = await isDocExist(resourceId, resourceName);
+            if (doc.status === 1) {
                 checkedReferenceList.push({
                     exist: true,
                     path: key,
@@ -83,10 +81,7 @@ async function checkReference(resourceData) {
         } else if (/urn:oid:[0-2](\.[1-9]\d*)+/i.test(referenceValue) ||
             /^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(referenceValue)) {
             //Only Bundle entry have OID or UUID reference?
-            let referenceTargetFullUrl = resourceDeepKeys.find(
-                v => _.get(resourceData, v) == referenceValue &&
-                    v.endsWith("fullUrl")
-            );
+            let referenceTargetFullUrl = jp.nodes(resourceData, "$..fullUrl").find( v=> v.value === referenceValue);
             if (referenceTargetFullUrl) {
                 checkedReferenceList.push({
                     exist: true,

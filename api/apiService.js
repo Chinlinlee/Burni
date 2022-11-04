@@ -51,108 +51,34 @@ async function findResourceById(resource, id) {
     }
 }
 
-async function checkReference(resourceData) {
-    let checkedReferenceList = [];
-    let resourceDeepKeys = getDeepKeys(resourceData);
-    let referenceKeys = resourceDeepKeys.filter(
-        v => v.endsWith(".reference")
-    );
-    for (let key of referenceKeys) {
-        let referenceValue = _.get(resourceData, key);
-        let referenceValueSplit = referenceValue.split('|')[0].split('/');
-        if (/^(http|https):\/\//g.test(referenceValue)) {
-            //do fetch to get response
-            const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 1268 + 1231);
-            try {
-                let fetchRes = await fetch(referenceValue, {
-                    headers: {
-                        accept: "application/fhir+json"
-                    } ,
-                    signal: controller.signal
-                });
-                if (fetchRes.status == 200) {
-                    let referenceJson = await fetchRes.json();
-                    let fhir = new FHIR();
-                    if (fhir.validate(referenceJson).valid) {
-                        checkedReferenceList.push({
-                            exist: true,
-                            path: key,
-                            value: referenceValue
-                        });
-                    } else {
-                        checkedReferenceList.push({
-                            exist: false,
-                            path: key,
-                            value: referenceValue
-                        });
-                    }
-                } else {
-                    checkedReferenceList.push({
-                        exist: false,
-                        path: key,
-                        value: referenceValue
-                    });
-                }
-            } catch (e) {
-                checkedReferenceList.push({
-                    exist: false,
-                    path: key,
-                    value: referenceValue
-                });
-            } finally {
-                clearTimeout(timeoutId);
-            }
-        } else if (referenceValueSplit.length >= 2) {
-            let resourceName = referenceValueSplit[referenceValueSplit.length - 2];
-            let resourceId = referenceValueSplit[referenceValueSplit.length - 1];
-            let doc = await findResourceById(resourceName, resourceId);
-            if (doc) {
-                checkedReferenceList.push({
-                    exist: true,
-                    path: key,
-                    value: referenceValue
-                });
-            } else {
-                checkedReferenceList.push({
-                    exist: false,
-                    path: key,
-                    value: referenceValue
-                });
-            }
-        } else if (/urn:oid:[0-2](\.[1-9]\d*)+/i.test(referenceValue) ||
-            /^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(referenceValue)) {
-            //Only Bundle entry have OID or UUID reference?
-            let referenceTargetFullUrl = resourceDeepKeys.find(
-                v => _.get(resourceData, v) == referenceValue &&
-                    v.endsWith("fullUrl")
-            );
-            if (referenceTargetFullUrl) {
-                checkedReferenceList.push({
-                    exist: true,
-                    path: key,
-                    value: referenceValue
-                });
-            } else {
-                checkedReferenceList.push({
-                    exist: false,
-                    path: key,
-                    value: referenceValue
-                });
-            }
+/**
+ * 
+ * @param {string} id The resource id
+ * @param {string} resourceType Resource type
+ * @returns status: 1 mean "exist", 2 mean "not exist", 0 mean "another error"
+ */
+async function isDocExist(id, resourceType) {
+    try {
+        let data = await mongodb[resourceType].countDocuments({id: id}).limit(1);
+        if (data > 0) {
+            return {
+                status: 1,
+                error: ""
+            };
         }
-    }
-    if (checkedReferenceList.length > 0) {
         return {
-            status : checkedReferenceList.every(v=> v.exist),
-            checkedReferenceList: checkedReferenceList
+            status: 2,
+            error: ""
+        };
+    } catch(e) {
+        console.error(e);
+        return {
+            status: 0,
+            error: e
         };
     }
-    return {
-        status: true,
-        checkedReferenceList: checkedReferenceList
-    };
 }
+
 
 function getNotExistReferenceList(checkReferenceRes) {
     let notExistReferenceList = [];
@@ -187,7 +113,7 @@ module.exports = {
     getDeepKeys: getDeepKeys,
     isRealObject: isRealObject,
     findResourceById: findResourceById,
-    checkReference: checkReference , 
+    isDocExist: isDocExist,
     getNotExistReferenceList: getNotExistReferenceList,
     renameCollectionFieldName: renameCollectionFieldName
 };
