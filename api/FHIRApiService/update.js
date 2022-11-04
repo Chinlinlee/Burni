@@ -5,7 +5,7 @@ const {
 const _ = require('lodash');
 const FHIR = require('fhir').Fhir;
 const validateContained = require('./validateContained');
-const { checkReference, getNotExistReferenceList } = require('../apiService');
+const { getNotExistReferenceList } = require('../apiService');
 const { getValidateResult } = require('../../models/FHIR/fhir-validator.js');
 const { renameCollectionFieldName } = require("../apiService");
 const { logger } = require('../../utils/log');
@@ -21,7 +21,7 @@ module.exports = async function (req, res, resourceType) {
     let doRes = function (code, item) {
         if (res.getHeader("content-type").includes("xml")) {
             let fhir = new FHIR();
-            let xmlItem = fhir.objToXml(item);
+            let xmlItem = fhir.objToXml(item._doc);
             return res.status(code).send(xmlItem);
         }
         return res.status(code).send(item);
