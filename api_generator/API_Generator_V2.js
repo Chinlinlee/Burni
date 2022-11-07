@@ -92,6 +92,10 @@ function generateAPI(option) {
         const _ = require('lodash');
         const queryBuild = require('../../../models/FHIR/queryBuild.js');
         const queryHandler = require('../../../models/FHIR/searchParameterQueryHandler');
+        const jp = require("jsonpath");
+        let resourceInclude = require("../../../api_generator/resource-reference/resourceInclude.json");
+        const { chainSearch } = require('../../../models/FHIR/queryBuild.js');
+        const path = require("path");
 
         let paramsSearchFields = {};
 
@@ -136,6 +140,72 @@ function generateAPI(option) {
                 }
             }
         }
+        resourceParameterHandler +=`
+        // #region chain search
+        let ${res.toLocaleLowerCase()}RefItem = resourceInclude["${res}"];
+        for (let refItem of ${res.toLocaleLowerCase()}RefItem) {
+            let refSearch = Object.keys(paramsSearchFields).map( v => {
+                if (paramsSearchFields[v].find( field => field.includes(refItem.path))) {
+                    return v;
+                }
+            });
+            
+            refSearch = _.compact(refSearch);
+            if (refSearch.length > 0) {
+                let refSearchParam = refSearch[0];
+                let refSearchParamField = paramsSearchFields[refSearchParam][0];
+                let refResources = refItem.resourceList;
+                for (let refResource of refResources) {
+                    if (refResource === "Resource") continue;
+                    if (refResource === path.basename(__dirname)) {
+                        parameterHandler = {
+                            paramsSearch: paramsSearch,
+                            paramsSearchFields: paramsSearchFields
+                        };
+                    }
+                    else {
+                        parameterHandler = require(\`../\${refResource}/\${refResource}ParametersHandler\`);
+                    }
+                    if (_.isEmpty(parameterHandler)) continue;
+                    
+                    let refParamSearch = parameterHandler.paramsSearch;
+                    Object.keys(refParamSearch).forEach( v => {
+                        paramsSearch[\`\${refSearchParam}.\${v}\`] = function(query) {
+                            let targetSearchParamsFields = parameterHandler.paramsSearchFields[v];
+                            query["isChain"] = true;
+                            let queryForChain = {
+                                $and: [],
+                                [v]: query[\`\${refSearchParam}.\${v}\`]
+                            };
+                            refParamSearch[v](queryForChain);
+                            for (let targetField of targetSearchParamsFields) {
+                                let originalPath = jp.nodes(queryForChain, \`\$..\${targetField}\`);
+                                let cleanPath = originalPath[0].path.slice(1);
+                                cleanPath.pop();
+                                let replacePath = [...cleanPath, \`ref\${refResource}.\${targetField}\`];
+                                let searchValue = originalPath[0].value;
+                                _.set(queryForChain, replacePath, searchValue);
+                                queryForChain = _.omit(queryForChain, [\`\${cleanPath.join(".")}.\${targetField}\`]);
+                            }
+
+                            let chainAggregate = chainSearch(refResource, refSearchParamField);
+                            chainAggregate.push({
+                                "$match" : {
+                                    ...queryForChain
+                                }
+                            });
+
+                            if (!_.get(query, "chain")) query["chain"] = [];
+                            query["chain"] = [...query["chain"], chainAggregate];
+                            delete query[\`\${refSearchParam}.\${v}\`]
+                        }
+                    });
+                }
+            }
+        }
+        //#endregion\r\n
+        `;
+
         resourceParameterHandler += `
         module.exports.paramsSearch = paramsSearch;
         module.exports.paramsSearchFields = paramsSearchFields;

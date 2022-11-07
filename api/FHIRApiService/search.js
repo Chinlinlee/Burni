@@ -58,22 +58,53 @@ module.exports = async function(req, res, resourceType, paramsSearch) {
         delete queryParameter["$and"];
     }
     try {
-        let docs = await mongodb[resourceType].find(queryParameter).
-        limit(paginationLimit).
-        skip(paginationSkip).
-        sort({
-            _id: -1
-        }).
-        exec();
-        docs = docs.map(v => {
-            return v.getFHIRField();
-        });
+        let docs;
+        let isChain = _.get(queryParameter, "isChain", false);
         let count = 0;
+
+        if (isChain) {
+            let aggregateQuery = [];
+            if (_.get(queryParameter, "$and", []).length > 0) {
+                let selfMatch = {
+                    "$match" : {
+                        ...queryParameter.$and
+                    }
+                }
+                aggregateQuery.push(selfMatch);
+            }
+            aggregateQuery.push(...queryParameter["chain"]);
+            docs = await mongodb[resourceType].aggregate(aggregateQuery).exec();
+
+            aggregateQuery[0].push({ "$count": "totalDocs" });
+            let totalDocs = count = await mongodb[resourceType].aggregate(aggregateQuery).exec();
+            count = _.get(totalDocs, "0.totalDocs", 0);
+        } else {
+            docs = await mongodb[resourceType].find(queryParameter).
+            limit(paginationLimit).
+            skip(paginationSkip).
+            sort({
+                _id: -1
+            }).
+            exec();
+        }
+
+        
         if (_.isEmpty(queryParameter)) {
             count = await mongodb[resourceType].estimatedDocumentCount();
-        } else {
+        } else if (!isChain) {
             count = await mongodb[resourceType].countDocuments(queryParameter);
         }
+
+        if (isChain) {
+            docs = docs.map(v => {
+                return new mongodb[resourceType](v).getFHIRField();
+            });
+        } else {
+            docs = docs.map(v => {
+                return v.getFHIRField();
+            });
+        }
+
         let includeDocs = await searchResultParametersHandler["_include"](req.query, docs);
         let reincludeDocs = await searchResultParametersHandler["_revIncludes"](req.query, docs, resourceType);
         docs = [...docs, ...includeDocs, ...reincludeDocs];
