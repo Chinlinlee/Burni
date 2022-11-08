@@ -3302,6 +3302,12 @@
             "resourceList": [
                 "Provenance"
             ]
+        },
+        {
+            "path": "medicationReference",
+            "resourceList": [
+                "Medication"
+            ]
         }
     ],
     "MedicationStatement": [

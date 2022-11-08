@@ -12,7 +12,9 @@ const FHIR = require('fhir').Fhir;
 const { isRealObject } = require('../apiService');
 const { logger } = require('../../utils/log');
 const path = require('path');
-
+const jp = require("jsonpath");
+const resourceIncludeRef = require("../../api_generator/resource-reference/resourceInclude.json");
+const { chainSearch } = require('../../models/FHIR/queryBuild');
 /**
  * 
  * @param {import('express').Request} req 
@@ -21,9 +23,9 @@ const path = require('path');
  * @param {*} paramsSearch 
  * @returns 
  */
-module.exports = async function(req, res, resourceType, paramsSearch) {
+module.exports = async function (req, res, resourceType, paramsSearch) {
     logger.info(`[Info: do search] [Resource Type: ${resourceType}] [Content-Type: ${res.getHeader("content-type")}] [Url-SearchParam: ${req.url}]`);
-    let doRes = function (code , item) {
+    let doRes = function (code, item) {
         if (res.getHeader("content-type").includes("xml")) {
             let fhir = new FHIR();
             let xmlItem = fhir.objToXml(item);
@@ -46,11 +48,57 @@ module.exports = async function(req, res, resourceType, paramsSearch) {
     queryParameter.$and = [];
     for (let key in queryParameter) {
         try {
-            paramsSearch[key](queryParameter);
+            let isChain = checkIsChain(resourceType, key);
+            if (isChain.status) {
+                queryParameter["isChain"] = true;
+                for (let i = 0 ; i < isChain.chainList.length; i++) {
+                    let chainItem = isChain.chainList[i];
+
+                    let queryForChain = {
+                        $and: [],
+                        [chainItem.chainParam]: queryParameter[key]
+                    };
+                    chainItem.chainSearch(queryForChain);
+    
+                    // replace chain target search object path to reference path
+                    let newQueryForChain = {};
+                    for (let targetField of chainItem.chainSearchField) {
+                        
+
+                        //get search field with mongodb query
+                        let queryStr = JSON.stringify(queryForChain);
+                        let replaceRegex = new RegExp(`(?<=\")(${targetField}.*?)(?=\")`, "gm");
+                        let matchFields = queryStr.match(replaceRegex);
+
+                        for (let matchField of matchFields ) {
+                            let originalPath = jp.nodes(queryForChain, `$..["${matchField}"]`);
+                            let cleanPath = originalPath[0].path.slice(1);
+                            cleanPath.pop();
+                            let replacePath = [...cleanPath, `ref${chainItem.chainResource}.${matchField}`];
+                            let searchValue = originalPath[0].value;
+                            _.set(newQueryForChain, replacePath, searchValue);
+                        }
+                    }
+    
+                    let chainAggregate = chainSearch(chainItem.chainResource, chainItem.refField);
+                    chainAggregate.push({
+                        "$match": {
+                            ...newQueryForChain
+                        }
+                    });
+    
+                    if (!_.get(queryParameter, "chain")) queryParameter["chain"] = [];
+                    queryParameter["chain"] = [...queryParameter["chain"], chainAggregate];
+                    delete queryParameter[key];
+                }
+            } else {
+                paramsSearch[key](queryParameter);
+            }
+
         } catch (e) {
             if (key != "$and") {
                 logger.error(`[Error: Unknown search parameter ${key} or value ${queryParameter[key]}] [Resource Type: ${resourceType}] [${e}]`);
-                return doRes(400 , handleError.processing(`Unknown search parameter ${key} or value ${queryParameter[key]}`));
+                return doRes(400, handleError.processing(`Unknown search parameter ${key} or value ${queryParameter[key]}`));
             }
         }
     }
@@ -66,29 +114,33 @@ module.exports = async function(req, res, resourceType, paramsSearch) {
             let aggregateQuery = [];
             if (_.get(queryParameter, "$and", []).length > 0) {
                 let selfMatch = {
-                    "$match" : {
-                        ...queryParameter.$and
+                    "$match": {
+                        $and: queryParameter.$and
                     }
                 }
                 aggregateQuery.push(selfMatch);
             }
-            aggregateQuery.push(...queryParameter["chain"]);
+            aggregateQuery.push(...queryParameter["chain"].flat());
+            
+            aggregateQuery.push({$skip: paginationSkip});
+            aggregateQuery.push({$limit: paginationLimit});
+            
             docs = await mongodb[resourceType].aggregate(aggregateQuery).exec();
 
-            aggregateQuery[0].push({ "$count": "totalDocs" });
+            aggregateQuery.push({ "$count": "totalDocs" });
             let totalDocs = count = await mongodb[resourceType].aggregate(aggregateQuery).exec();
             count = _.get(totalDocs, "0.totalDocs", 0);
         } else {
             docs = await mongodb[resourceType].find(queryParameter).
-            limit(paginationLimit).
-            skip(paginationSkip).
-            sort({
-                _id: -1
-            }).
-            exec();
+                limit(paginationLimit).
+                skip(paginationSkip).
+                sort({
+                    _id: -1
+                }).
+                exec();
         }
 
-        
+
         if (_.isEmpty(queryParameter)) {
             count = await mongodb[resourceType].estimatedDocumentCount();
         } else if (!isChain) {
@@ -110,15 +162,15 @@ module.exports = async function(req, res, resourceType, paramsSearch) {
         docs = [...docs, ...includeDocs, ...reincludeDocs];
         let bundle = createBundle(req, docs, count, paginationSkip, paginationLimit, resourceType);
         res.header('Last-Modified', new Date().toUTCString());
-        return doRes(200 , bundle);
+        return doRes(200, bundle);
     } catch (e) {
         let errorStr = JSON.stringify(e, Object.getOwnPropertyNames(e));
         logger.error(`[Error: ${errorStr}] [Resource Type: ${resourceType}]`);
         if (_.get(e, "code")) {
-            return doRes(e.code , e.operationOutcome);
+            return doRes(e.code, e.operationOutcome);
         }
         let operationOutcomeError = handleError.exception(e);
-        return doRes(500 , operationOutcomeError);
+        return doRes(500, operationOutcomeError);
     }
 };
 //#region custom functions use in `include` and `revinclude`
@@ -126,25 +178,25 @@ function isValidHttpUrl(str) {
     try {
         let url = new URL(str);
         return url.protocol === "http:" || url.protocol === "https:";
-    } catch(e) {
+    } catch (e) {
         return false;
     }
 }
 
 function isReferenceTypeSearchParameter(resourceType, parameter) {
     let parameterList = require('../../api_generator/FHIRParametersClean.json');
-    let resourceParameterObj = _.get(parameterList,resourceType);
-    let parameterObj = resourceParameterObj.find(v=> v.parameter == parameter);
+    let resourceParameterObj = _.get(parameterList, resourceType);
+    let parameterObj = resourceParameterObj.find(v => v.parameter == parameter);
     return _.get(parameterObj, "type") === "reference" || parameter === "*";
 }
 
 function getResourceSupportIncludeParams(resourceType) {
     let parameterList = require('../../api_generator/FHIRParametersClean.json');
-    let resourceParameterObj = _.get(parameterList,resourceType);
-    let referenceParams = resourceParameterObj.reduce((prev, current)=> {
+    let resourceParameterObj = _.get(parameterList, resourceType);
+    let referenceParams = resourceParameterObj.reduce((prev, current) => {
         if (current.type === "reference") prev.push(current.parameter);
         return prev;
-    } , []);
+    }, []);
     return referenceParams;
 }
 
@@ -181,7 +233,7 @@ function checkSearchParameterName(searchParamFields, resourceName, searchParam, 
 async function getIncludeValueByFetch(url, specificType, mongoSearchResult) {
     try {
         let specificTypeCondition = specificType && url.includes(specificType);
-        if ( (!specificType) || specificTypeCondition) {
+        if ((!specificType) || specificTypeCondition) {
             let refResourceResponse = await fetch(url, {
                 headers: {
                     "accept": "application/fhir+json"
@@ -192,7 +244,7 @@ async function getIncludeValueByFetch(url, specificType, mongoSearchResult) {
                 mongoSearchResult.push(refResource);
             }
         }
-    } catch(e) {
+    } catch (e) {
         console.error(e);
         throw e;
     }
@@ -209,9 +261,9 @@ async function getIncludeValueInDB(referenceValue, specificType, mongoSearchResu
     let referenceValueSplit = referenceValue.split("/");
     let resourceInValue = referenceValueSplit[0];
     let id = referenceValueSplit[1];
-    if ( (!specificType) || specificTypeCondition) {
+    if ((!specificType) || specificTypeCondition) {
         if (referenceValueSplit.length === 2) {
-            let doc = await mongodb[resourceInValue].findOne({ id : id }).exec();
+            let doc = await mongodb[resourceInValue].findOne({ id: id }).exec();
             if (doc) {
                 doc = doc.getFHIRField();
                 _.set(doc, "myPointToCheckIsInclude", true);
@@ -219,10 +271,10 @@ async function getIncludeValueInDB(referenceValue, specificType, mongoSearchResu
             }
         } else if (referenceValue.includes("_history") && referenceValueSplit.length === 4) {
             let versionId = referenceValueSplit[3];
-            let doc = await mongodb[resourceInValue].findOne({ 
+            let doc = await mongodb[resourceInValue].findOne({
                 $and: [
                     {
-                        id : id
+                        id: id
                     },
                     {
                         "meta.versionId": versionId
@@ -270,13 +322,13 @@ async function pushIncludeDoc(includeQuery, doc, mongoSearchResult) {
             await pushIncludeDocWithField(searchParamFields, doc, specificType, mongoSearchResult);
         } else if (searchParam === "*") {
             let resourceReferenceParams = getResourceSupportIncludeParams(resourceName);
-            for (let index = 0 ; index < resourceReferenceParams.length; index++) {
+            for (let index = 0; index < resourceReferenceParams.length; index++) {
                 let param = resourceReferenceParams[index];
                 let paramFields = paramsSearchFields[param];
                 await pushIncludeDocWithField(paramFields, doc, specificType, mongoSearchResult);
             }
         }
-    } catch(e) {
+    } catch (e) {
         console.error(e);
         throw e;
     }
@@ -300,8 +352,8 @@ async function handleIncludeParam(query, mongoSearchResult) {
 
 //#region _revinclude
 async function getRevIncludeValueInDB(targetResource, referenceValue, field, mongoSearchResult) {
-    let doc = await mongodb[targetResource].findOne({ 
-        [field] : referenceValue 
+    let doc = await mongodb[targetResource].findOne({
+        [field]: referenceValue
     }).exec();
     if (doc) {
         doc = doc.getFHIRField();
@@ -311,7 +363,7 @@ async function getRevIncludeValueInDB(targetResource, referenceValue, field, mon
 }
 
 async function pushRevIncludeDocWithField(searchParamFields, targetResource, referenceValue, mongoSearchResult) {
-    for (let fieldIndex = 0; fieldIndex < searchParamFields.length; fieldIndex++) { 
+    for (let fieldIndex = 0; fieldIndex < searchParamFields.length; fieldIndex++) {
         let field = searchParamFields[fieldIndex];
         await getRevIncludeValueInDB(targetResource, referenceValue, field, mongoSearchResult);
     }
@@ -330,13 +382,13 @@ async function pushRevIncludeDoc(revIncludeQuery, doc, mongoSearchResult, resour
             await pushRevIncludeDocWithField(searchParamFields, resourceName, referenceValue, mongoSearchResult);
         } else if (searchParam === "*") {
             let resourceReferenceParams = getResourceSupportIncludeParams(resourceName);
-            for (let index = 0 ; index < resourceReferenceParams.length; index++) {
+            for (let index = 0; index < resourceReferenceParams.length; index++) {
                 let param = resourceReferenceParams[index];
                 let paramFields = paramsSearchFields[param];
                 await pushRevIncludeDocWithField(paramFields, resourceName, referenceValue, mongoSearchResult);
             }
         }
-    } catch(e) {
+    } catch (e) {
         console.error(e);
         throw e;
     }
@@ -359,10 +411,131 @@ async function handleRevIncludeParam(query, mongoSearchResult, resourceType) {
 //#endregion
 
 const searchResultParametersHandler = {
-    "_include": async (query, mongoSearchResult) => { 
-        return await handleIncludeParam(query,mongoSearchResult);
+    "_include": async (query, mongoSearchResult) => {
+        return await handleIncludeParam(query, mongoSearchResult);
     },
     "_revIncludes": async (query, mongoSearchResult, resourceType) => {
         return await handleRevIncludeParam(query, mongoSearchResult, resourceType);
     }
 };
+
+/**
+ * 
+ * @param {string} resourceType 
+ * @param {string} param 
+ */
+function checkIsChain(resourceType, param) {
+    if (param.includes(":")) {
+        return checkIsColonChain(resourceType, param);
+    }
+    try {
+        let chainList = [];
+
+        let paramSplit = param.split(".");
+        if (paramSplit.length <= 1) return {
+            status: false
+        };
+        let firstParam = paramSplit[0];
+    
+        delete require.cache[require.resolve(`../FHIR/${resourceType}/${resourceType}ParametersHandler.js`)]
+        const { paramsSearchFields } = require(`../FHIR/${resourceType}/${resourceType}ParametersHandler.js`);
+        let parameterList = require('../../api_generator/FHIRParametersClean.json')[resourceType];
+    
+        if (firstParam in paramsSearchFields) {
+            let theParam = parameterList.find(v => v.parameter === firstParam);
+            if (!theParam) return {
+                status: false
+            };
+            let paramType = theParam.type;
+            if (paramType === "reference") {
+                
+                let paramRefResources = resourceIncludeRef[resourceType].find(
+                    v => paramsSearchFields[firstParam][0].startsWith(v.path)
+                ).resourceList;
+                for (let refResource of paramRefResources) {
+                    if (refResource === "Resource") continue;
+                    let chainParam = paramSplit.slice(1).join(".");
+    
+                    delete require.cache[require.resolve(`../FHIR/${refResource}/${refResource}ParametersHandler.js`)]
+                    const chainParametersHandler = require(`../FHIR/${refResource}/${refResource}ParametersHandler.js`);
+                    // TODO multiple resourceType(Polymorphism) of reference
+                    if (chainParam in chainParametersHandler.paramsSearch) {
+                        chainList.push({
+                            "status": true,
+                            "chainSearch": chainParametersHandler.paramsSearch[chainParam],
+                            "chainSearchField": chainParametersHandler.paramsSearchFields[chainParam],
+                            "chainParam": chainParam,
+                            "chainResource": refResource,
+                            "refField": paramsSearchFields[firstParam].pop()
+                        });
+                    }
+                    return {
+                        status: true,
+                        chainList: chainList
+                    };
+                }
+            }
+        }
+    
+        return {
+            status: false
+        };
+    } catch(e) {
+        console.error(e);
+        return {
+            status: false
+        };
+    }
+}
+
+function checkIsColonChain(resourceType, param) {
+    delete require.cache[require.resolve(`../FHIR/${resourceType}/${resourceType}ParametersHandler.js`)]
+    const paramsSearchFields = require(`../FHIR/${resourceType}/${resourceType}ParametersHandler.js`).paramsSearchFields;
+    let parameterList = require('../../api_generator/FHIRParametersClean.json')[resourceType];
+
+    let chainList = [];
+
+    let paramSplit = param.split(":");
+    if (paramSplit.length <= 1) return {
+        status: false
+    };
+    let firstParam = paramSplit[0];
+    
+    let chainInfo = paramSplit[1];
+    let chainInfoSplit = chainInfo.split(".");
+    let chainResource = chainInfoSplit[0];
+    let chainParam = chainInfoSplit[1];
+    
+    if (firstParam in paramsSearchFields) {
+        let theParam = parameterList.find(v => v.parameter === firstParam);
+        if (!theParam) return {
+            status: false
+        };
+        let paramType = theParam.type;
+        if (paramType === "reference") {
+
+            if (chainResource === "Resource") return {
+                status: false
+            };
+
+            delete require.cache[require.resolve(`../FHIR/${chainResource}/${chainResource}ParametersHandler.js`)]
+            const chainParametersHandler = require(`../FHIR/${chainResource}/${chainResource}ParametersHandler.js`);
+            // TODO multiple resourceType(Polymorphism) of reference
+            if (chainParam in chainParametersHandler.paramsSearch) {
+                chainList.push({
+                    "status": true,
+                    "chainSearch": chainParametersHandler.paramsSearch[chainParam],
+                    "chainSearchField": chainParametersHandler.paramsSearchFields[chainParam],
+                    "chainParam": chainParam,
+                    "chainResource": chainResource,
+                    "refField": paramsSearchFields[firstParam].pop()
+                });
+            }
+            return {
+                status: true,
+                chainList: chainList
+            };
+        }
+    }
+    
+}
