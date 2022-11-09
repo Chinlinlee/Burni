@@ -15,6 +15,7 @@ const path = require('path');
 const jp = require("jsonpath");
 const resourceIncludeRef = require("../../api_generator/resource-reference/resourceInclude.json");
 const { chainSearch } = require('../../models/FHIR/queryBuild');
+const { findParamType } = require("../../utils/fhir-param");
 /**
  * 
  * @param {import('express').Request} req 
@@ -435,18 +436,17 @@ function checkIsChain(resourceType, param) {
         if (paramSplit.length <= 1) return {
             status: false
         };
-        let firstParam = paramSplit[0];
+        let firstParam = paramSplit.shift();
     
         delete require.cache[require.resolve(`../FHIR/${resourceType}/${resourceType}ParametersHandler.js`)]
         const { paramsSearchFields } = require(`../FHIR/${resourceType}/${resourceType}ParametersHandler.js`);
-        let parameterList = require('../../api_generator/FHIRParametersClean.json')[resourceType];
     
         if (firstParam in paramsSearchFields) {
-            let theParam = parameterList.find(v => v.parameter === firstParam);
-            if (!theParam) return {
+            let paramType = findParamType(resourceType, firstParam);
+            if (!paramType) return {
                 status: false
             };
-            let paramType = theParam.type;
+
             if (paramType === "reference") {
                 
                 let paramRefResources = resourceIncludeRef[resourceType].find(
@@ -454,8 +454,10 @@ function checkIsChain(resourceType, param) {
                 ).resourceList;
                 for (let refResource of paramRefResources) {
                     if (refResource === "Resource") continue;
-                    let chainParam = paramSplit.slice(1).join(".");
-    
+
+                    // TODO: Support recursive chain search, e.g. MedicationRequest?patient.organization.name=name
+                    let chainParam = paramSplit.join(".");
+                    
                     delete require.cache[require.resolve(`../FHIR/${refResource}/${refResource}ParametersHandler.js`)]
                     const chainParametersHandler = require(`../FHIR/${refResource}/${refResource}ParametersHandler.js`);
                     // TODO multiple resourceType(Polymorphism) of reference
