@@ -25,6 +25,9 @@ module.exports = function (app) {
         if (isDir) {
             app.use(`/${process.env.FHIRSERVER_APIPATH}/${dir}`, (req, res, next) => {
                 try {
+                    // default JSON format
+                    res.set('Content-Type', 'application/fhir+json');
+
                     if (req.headers["content-type"]) {
                         if (req.headers["content-type"].includes("xml")) {
                             res.set('Content-Type', 'application/fhir+xml');
@@ -37,7 +40,14 @@ module.exports = function (app) {
                     _.get(req.headers, "accept") ? "" : (() => {
                         _.get(req.headers, "content-type") ? _.set(req.headers, "accept", _.get(req.headers, "content-type")) : _.set(req.headers, "accept", "application/fhir+json");
                     })();
-                    if (req.headers.accept.includes("xml")) {
+
+                    let xmlAcceptList = [
+                        "application/xml",
+                        "application/fhir+xml",
+                        "xml"
+                    ];
+
+                    if (xmlAcceptList.includes(req.headers.accept)) {
                         res.set('Content-Type', 'application/fhir+xml');
                     } else {
                         res.set('Content-Type', 'application/fhir+json');
