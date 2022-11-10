@@ -538,42 +538,6 @@ function numberQuery (value, field) {
     }   
 }
 
-/**
- * 
- * @param {string} targetResource 
- * @param {string} targetField
- */
-function chainSearch(targetResource, targetField, queryValue) {
-    let aggregate = [
-        {
-            "$lookup": {
-                "from": targetResource,
-                "let": {
-                    "refId": {
-                        "$substr": [`$${targetField}`, targetResource.length+1, -1]
-                    }
-                },
-                "pipeline": [
-                    {
-                        "$match": {
-                            "$expr": {
-                                "$eq": [
-                                    "$id", "$$refId"
-                                ]
-                            }
-                        }
-                    }
-                ],
-                "as": `ref${targetResource}`
-            }
-        },
-        {
-            "$unwind": `$ref${targetResource}`
-        }
-    ];
-    return aggregate;
-}
-
 module.exports = {
     stringQuery: stringQuery,
     numberQuery : numberQuery ,
@@ -588,6 +552,5 @@ module.exports = {
     quantityQuery : quantityQuery , 
     referenceQuery : referenceQuery , 
     arrayStringBuild : arrayStringBuild,
-    getCommaSplitArray: getCommaSplitArray,
-    chainSearch: chainSearch
+    getCommaSplitArray: getCommaSplitArray
 };

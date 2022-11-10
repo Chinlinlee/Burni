@@ -11,11 +11,7 @@ const {
 const FHIR = require('fhir').Fhir;
 const { isRealObject } = require('../apiService');
 const { logger } = require('../../utils/log');
-const path = require('path');
-const jp = require("jsonpath");
-const resourceIncludeRef = require("../../api_generator/resource-reference/resourceInclude.json");
-const { chainSearch } = require('../../models/FHIR/queryBuild');
-const { findParamType } = require("../../utils/fhir-param");
+const { checkIsChainAndGetChainParent, getChainParentJoinQuery }  = require("./search/chain-params");
 /**
  * 
  * @param {import('express').Request} req 
@@ -49,47 +45,15 @@ module.exports = async function (req, res, resourceType, paramsSearch) {
     queryParameter.$and = [];
     for (let key in queryParameter) {
         try {
-            let isChain = checkIsChain(resourceType, key);
-            if (isChain.status) {
-                queryParameter["isChain"] = true;
-                for (let i = 0 ; i < isChain.chainList.length; i++) {
-                    let chainItem = isChain.chainList[i];
+            if (key.includes(".")) {
+                let isChain = checkIsChainAndGetChainParent(resourceType, key);
+                if (isChain.status) {
+                    queryParameter["isChain"] = true;
 
-                    let queryForChain = {
-                        $and: [],
-                        [chainItem.chainParam]: queryParameter[key]
-                    };
-                    chainItem.chainSearch(queryForChain);
-    
-                    // replace chain target search object path to reference path
-                    let newQueryForChain = {};
-                    for (let targetField of chainItem.chainSearchField) {
-                        
+                    let joinQuery = getChainParentJoinQuery(isChain.chainParent, queryParameter[key]);
 
-                        //get search field with mongodb query
-                        let queryStr = JSON.stringify(queryForChain);
-                        let replaceRegex = new RegExp(`(?<=\")(${targetField}.*?)(?=\")`, "gm");
-                        let matchFields = queryStr.match(replaceRegex);
-
-                        for (let matchField of matchFields ) {
-                            let originalPath = jp.nodes(queryForChain, `$..["${matchField}"]`);
-                            let cleanPath = originalPath[0].path.slice(1);
-                            cleanPath.pop();
-                            let replacePath = [...cleanPath, `ref${chainItem.chainResource}.${matchField}`];
-                            let searchValue = originalPath[0].value;
-                            _.set(newQueryForChain, replacePath, searchValue);
-                        }
-                    }
-    
-                    let chainAggregate = chainSearch(chainItem.chainResource, chainItem.refField);
-                    chainAggregate.push({
-                        "$match": {
-                            ...newQueryForChain
-                        }
-                    });
-    
                     if (!_.get(queryParameter, "chain")) queryParameter["chain"] = [];
-                    queryParameter["chain"] = [...queryParameter["chain"], chainAggregate];
+                    queryParameter["chain"] = [...queryParameter["chain"], joinQuery];
                     delete queryParameter[key];
                 }
             } else {
@@ -98,9 +62,10 @@ module.exports = async function (req, res, resourceType, paramsSearch) {
 
         } catch (e) {
             if (key != "$and") {
+                logger.error(e);
                 logger.error(`[Error: Unknown search parameter ${key} or value ${queryParameter[key]}] [Resource Type: ${resourceType}] [${e}]`);
                 return doRes(400, handleError.processing(`Unknown search parameter ${key} or value ${queryParameter[key]}`));
-            }
+            } 
         }
     }
     if (queryParameter.$and.length == 0) {
@@ -118,7 +83,7 @@ module.exports = async function (req, res, resourceType, paramsSearch) {
                     "$match": {
                         $and: queryParameter.$and
                     }
-                }
+                };
                 aggregateQuery.push(selfMatch);
             }
             aggregateQuery.push(...queryParameter["chain"].flat());
@@ -131,6 +96,7 @@ module.exports = async function (req, res, resourceType, paramsSearch) {
             aggregateQuery.push({ "$count": "totalDocs" });
             let totalDocs = count = await mongodb[resourceType].aggregate(aggregateQuery).exec();
             count = _.get(totalDocs, "0.totalDocs", 0);
+
         } else {
             docs = await mongodb[resourceType].find(queryParameter).
                 limit(paginationLimit).
@@ -140,7 +106,6 @@ module.exports = async function (req, res, resourceType, paramsSearch) {
                 }).
                 exec();
         }
-
 
         if (_.isEmpty(queryParameter)) {
             count = await mongodb[resourceType].estimatedDocumentCount();
@@ -419,125 +384,3 @@ const searchResultParametersHandler = {
         return await handleRevIncludeParam(query, mongoSearchResult, resourceType);
     }
 };
-
-/**
- * 
- * @param {string} resourceType 
- * @param {string} param 
- */
-function checkIsChain(resourceType, param) {
-    if (param.includes(":")) {
-        return checkIsColonChain(resourceType, param);
-    }
-    try {
-        let chainList = [];
-
-        let paramSplit = param.split(".");
-        if (paramSplit.length <= 1) return {
-            status: false
-        };
-        let firstParam = paramSplit.shift();
-    
-        delete require.cache[require.resolve(`../FHIR/${resourceType}/${resourceType}ParametersHandler.js`)]
-        const { paramsSearchFields } = require(`../FHIR/${resourceType}/${resourceType}ParametersHandler.js`);
-    
-        if (firstParam in paramsSearchFields) {
-            let paramType = findParamType(resourceType, firstParam);
-            if (!paramType) return {
-                status: false
-            };
-
-            if (paramType === "reference") {
-                
-                let paramRefResources = resourceIncludeRef[resourceType].find(
-                    v => paramsSearchFields[firstParam][0].startsWith(v.path)
-                ).resourceList;
-                for (let refResource of paramRefResources) {
-                    if (refResource === "Resource") continue;
-
-                    // TODO: Support recursive chain search, e.g. MedicationRequest?patient.organization.name=name
-                    let chainParam = paramSplit.join(".");
-                    
-                    delete require.cache[require.resolve(`../FHIR/${refResource}/${refResource}ParametersHandler.js`)]
-                    const chainParametersHandler = require(`../FHIR/${refResource}/${refResource}ParametersHandler.js`);
-                    // TODO multiple resourceType(Polymorphism) of reference
-                    if (chainParam in chainParametersHandler.paramsSearch) {
-                        chainList.push({
-                            "status": true,
-                            "chainSearch": chainParametersHandler.paramsSearch[chainParam],
-                            "chainSearchField": chainParametersHandler.paramsSearchFields[chainParam],
-                            "chainParam": chainParam,
-                            "chainResource": refResource,
-                            "refField": paramsSearchFields[firstParam].pop()
-                        });
-                    }
-                    return {
-                        status: true,
-                        chainList: chainList
-                    };
-                }
-            }
-        }
-    
-        return {
-            status: false
-        };
-    } catch(e) {
-        console.error(e);
-        return {
-            status: false
-        };
-    }
-}
-
-function checkIsColonChain(resourceType, param) {
-    delete require.cache[require.resolve(`../FHIR/${resourceType}/${resourceType}ParametersHandler.js`)]
-    const paramsSearchFields = require(`../FHIR/${resourceType}/${resourceType}ParametersHandler.js`).paramsSearchFields;
-    let parameterList = require('../../api_generator/FHIRParametersClean.json')[resourceType];
-
-    let chainList = [];
-
-    let paramSplit = param.split(":");
-    if (paramSplit.length <= 1) return {
-        status: false
-    };
-    let firstParam = paramSplit[0];
-    
-    let chainInfo = paramSplit[1];
-    let chainInfoSplit = chainInfo.split(".");
-    let chainResource = chainInfoSplit[0];
-    let chainParam = chainInfoSplit[1];
-    
-    if (firstParam in paramsSearchFields) {
-        let theParam = parameterList.find(v => v.parameter === firstParam);
-        if (!theParam) return {
-            status: false
-        };
-        let paramType = theParam.type;
-        if (paramType === "reference") {
-
-            if (chainResource === "Resource") return {
-                status: false
-            };
-
-            delete require.cache[require.resolve(`../FHIR/${chainResource}/${chainResource}ParametersHandler.js`)]
-            const chainParametersHandler = require(`../FHIR/${chainResource}/${chainResource}ParametersHandler.js`);
-            // TODO multiple resourceType(Polymorphism) of reference
-            if (chainParam in chainParametersHandler.paramsSearch) {
-                chainList.push({
-                    "status": true,
-                    "chainSearch": chainParametersHandler.paramsSearch[chainParam],
-                    "chainSearchField": chainParametersHandler.paramsSearchFields[chainParam],
-                    "chainParam": chainParam,
-                    "chainResource": chainResource,
-                    "refField": paramsSearchFields[firstParam].pop()
-                });
-            }
-            return {
-                status: true,
-                chainList: chainList
-            };
-        }
-    }
-    
-}

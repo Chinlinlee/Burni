@@ -1,4 +1,5 @@
 let parameterList = require('../api_generator/currentSupportParameters.json');
+const resourceTypeList = require("../models/FHIR/fhir.resourceList.json");
 
 /**
  * @example
@@ -14,5 +15,10 @@ function findParamType(resourceType, paramName) {
     return theParam.type;
 }
 
+function isResourceType(resourceType) {
+    return resourceTypeList.includes(resourceType);
+}
+
 
 module.exports.findParamType = findParamType;
+module.exports.isResourceType = isResourceType;
