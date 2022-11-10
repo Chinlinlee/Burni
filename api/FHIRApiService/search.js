@@ -23,14 +23,15 @@ const xmlFormatter = require('xml-formatter');
  */
 module.exports = async function (req, res, resourceType, paramsSearch) {
     logger.info(`[Info: do search] [Resource Type: ${resourceType}] [Content-Type: ${res.getHeader("content-type")}] [Url-SearchParam: ${req.url}]`);
-    let { _pretty } = req.query;
+    let { _pretty, _total } = req.query;
     delete req.query["_pretty"];
+    delete req.query["_total"];
 
     let doRes = function (code, item) {
         if (res.getHeader("content-type").includes("xml")) {
             let fhir = new FHIR();
             let xmlItem = fhir.objToXml(item);
-            if ("" + _pretty === "true") xmlItem = xmlFormatter(xmlItem);
+            if (_pretty) xmlItem = xmlFormatter(xmlItem);
             return res.status(code).send(xmlItem);
         }
         return res.status(code).send(item);
@@ -113,9 +114,11 @@ module.exports = async function (req, res, resourceType, paramsSearch) {
             
             docs = await mongodb[resourceType].aggregate(aggregateQuery).exec();
 
-            aggregateQuery.push({ "$count": "totalDocs" });
-            let totalDocs = count = await mongodb[resourceType].aggregate(aggregateQuery).exec();
-            count = _.get(totalDocs, "0.totalDocs", 0);
+            if (_total !== "none") {
+                aggregateQuery.push({ "$count": "totalDocs" });
+                let totalDocs = count = await mongodb[resourceType].aggregate(aggregateQuery).exec();
+                count = _.get(totalDocs, "0.totalDocs", 0);
+            }
 
         } else {
             docs = await mongodb[resourceType].find(queryParameter).
@@ -127,10 +130,18 @@ module.exports = async function (req, res, resourceType, paramsSearch) {
                 exec();
         }
 
-        if (_.isEmpty(queryParameter)) {
-            count = await mongodb[resourceType].estimatedDocumentCount();
-        } else if (!isChain) {
-            count = await mongodb[resourceType].countDocuments(queryParameter);
+        if (_total !== "none") {
+            if (_.isEmpty(queryParameter)) {
+
+                if (_total === "estimate") {
+                    count = await mongodb[resourceType].estimatedDocumentCount();
+                } else if (_total === "accurate"){
+                    count = await mongodb[resourceType].countDocuments();
+                }
+                
+            } else if (!isChain) {
+                count = await mongodb[resourceType].countDocuments(queryParameter);
+            }
         }
 
         if (isChain) {
