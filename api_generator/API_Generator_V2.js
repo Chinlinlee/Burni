@@ -251,7 +251,9 @@ function generateAPI(option) {
         if (_.get(config, "${res}.interaction.search", true)) {
             router.get('/', FHIRValidateParams({
                 "_offset": joi.number().integer(),
-                "_count": joi.number().integer()
+                "_count": joi.number().integer(),
+                "_pretty": joi.boolean().default(true),
+                "_total": joi.string().allow("none", "estimate", "accurate").default("estimate")
             }, "query", {
                 allowUnknown: true
             }), require('./controller/get${res}'));

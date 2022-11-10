@@ -10,7 +10,9 @@ const config = require('../../../config/config');
 if (_.get(config, "Patient.interaction.search", true)) {
     router.get('/', FHIRValidateParams({
         "_offset": joi.number().integer(),
-        "_count": joi.number().integer()
+        "_count": joi.number().integer(),
+        "_pretty": joi.boolean().default(true),
+        "_total": joi.string().allow("none", "estimate", "accurate").default("estimate")
     }, "query", {
         allowUnknown: true
     }), require('./controller/getPatient'));
