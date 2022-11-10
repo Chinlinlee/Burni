@@ -12,6 +12,7 @@ const FHIR = require('fhir').Fhir;
 const { isRealObject } = require('../apiService');
 const { logger } = require('../../utils/log');
 const { checkIsChainAndGetChainParent, getChainParentJoinQuery }  = require("./search/chain-params");
+const xmlFormatter = require('xml-formatter');
 /**
  * 
  * @param {import('express').Request} req 
@@ -22,14 +23,19 @@ const { checkIsChainAndGetChainParent, getChainParentJoinQuery }  = require("./s
  */
 module.exports = async function (req, res, resourceType, paramsSearch) {
     logger.info(`[Info: do search] [Resource Type: ${resourceType}] [Content-Type: ${res.getHeader("content-type")}] [Url-SearchParam: ${req.url}]`);
+    let { _pretty } = req.query;
+    delete req.query["_pretty"];
+
     let doRes = function (code, item) {
         if (res.getHeader("content-type").includes("xml")) {
             let fhir = new FHIR();
             let xmlItem = fhir.objToXml(item);
+            if ("" + _pretty === "true") xmlItem = xmlFormatter(xmlItem);
             return res.status(code).send(xmlItem);
         }
         return res.status(code).send(item);
     };
+
     let queryParameter = _.cloneDeep(req.query);
     let paginationSkip = queryParameter['_offset'] == undefined ? 0 : queryParameter['_offset'];
     let paginationLimit = queryParameter['_count'] == undefined ? 100 : queryParameter['_count'];
@@ -101,7 +107,7 @@ module.exports = async function (req, res, resourceType, paramsSearch) {
                     "newRoot": "$groupItem"
                 }
             });
-            
+
             aggregateQuery.push({$skip: paginationSkip});
             aggregateQuery.push({$limit: paginationLimit});
             

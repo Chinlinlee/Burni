@@ -57,6 +57,7 @@
         "rootpath": "^0.1.2",
         "uid-generator": "^2.0.0",
         "uuid": "^8.3.2",
+        "xml-formatter": "^2.6.1",
         "xml-js": "^1.6.11"
     },
     "devDependencies": {

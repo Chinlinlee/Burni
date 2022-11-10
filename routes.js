@@ -16,7 +16,18 @@ function setFormatWhenQuery(req, res) {
     delete req['query']['_format'];
 }
 
+function doPrettyJson(app, req) {
+    let pretty = _.get(req, "query._pretty", false);
+    if (pretty === "true") {
+        app.set('json spaces', 4);
+    } else {
+        app.set('json spaces', 0);
+    }
+}
+
 module.exports = function (app) {
+
+    app.set('json spaces', 4);
 
     //#region fhir
     let fhirDir = fs.readdirSync("./api/FHIR");
@@ -53,6 +64,7 @@ module.exports = function (app) {
                         res.set('Content-Type', 'application/fhir+json');
                     }
                     setFormatWhenQuery(req, res);
+                    doPrettyJson(app, req);
                     next();
                 } catch (e) {
                     return res.send(handleError.exception(e));
@@ -67,7 +79,7 @@ module.exports = function (app) {
         if (plugin.before && plugin.enable) require(`plugins/${pluginName}`)(app);
     }
 
-    app.set('json spaces', 4);
+    
     app.use('/', require('web/index'));
     
 
