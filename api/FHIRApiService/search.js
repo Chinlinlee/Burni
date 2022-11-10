@@ -88,6 +88,20 @@ module.exports = async function (req, res, resourceType, paramsSearch) {
             }
             aggregateQuery.push(...queryParameter["chain"].flat());
             
+            aggregateQuery.push({
+                $group: {
+                    "_id": "$_id",
+                    "groupItem": {
+                        "$first": "$$ROOT"
+                    }
+                }
+            });
+            aggregateQuery.push({
+                "$replaceRoot": {
+                    "newRoot": "$groupItem"
+                }
+            });
+            
             aggregateQuery.push({$skip: paginationSkip});
             aggregateQuery.push({$limit: paginationLimit});
             
