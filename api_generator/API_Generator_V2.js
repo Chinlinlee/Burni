@@ -135,7 +135,8 @@ function generateAPI(option) {
                 resourceParameterHandler += (searchFuncTxt);
             } catch (e) {
                 if (e.message.includes("not a function")) {
-                    console.log(type);
+                    console.error(`The parameter type "${type}" is not support`);
+                } else {
                     console.error(e);
                 }
             }
@@ -317,7 +318,7 @@ function generateMetaData() {
             }
         ]
     };
-    console.log(dirInFHIRAPI);
+    
     for (let resource of dirInFHIRAPI) {
         metaData.rest[0].resource.push({
             "type": resource,

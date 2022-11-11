@@ -1,5 +1,6 @@
 const _ = require('lodash');
 const { capitalizeFirstLetter } = require('normalize-text');
+const jp = require("jsonpath");
 
 /**
  * get clean fields of search parameter
@@ -407,21 +408,58 @@ class DateParameter {
         `;
     }
 
+    refreshChoiceTypeSearchFields(searchFields) {
+        let choiceFields = [];
+        const dateTypeList = [
+            "Date",
+            "DateTime",
+            "Instant",
+            "Period",
+            "Timing"
+        ];
+
+        for(let field of searchFields) {
+            let count = jp.query(this.ResourceDef, `$..${field}`).length;
+            if (count === 0 ) {
+                for (let dateType of dateTypeList) {
+                    let choiceField = `${field}${dateType}`;
+                    let choiceCount = jp.query(this.ResourceDef, `$..${choiceField}`);
+                    if (choiceCount.length > 0) {
+                        choiceFields.push(choiceField);
+                    }
+                }
+            }
+        }
+
+        if (choiceFields.length > 0) {
+            return choiceFields;
+        }
+
+        return searchFields;
+    }
+
     /**
      * TODO: handle the choice type 
      */
     getCodeString() {
         let searchFields = getSearchFields(this.Field);
+        searchFields = this.refreshChoiceTypeSearchFields(searchFields);
+
         let paramsSearchFieldTxt = `//#region ${this.Param}\r\nparamsSearchFields["${this.Param}"]= ${JSON.stringify(searchFields)};\r\n`;
         let codeStr = paramsSearchFieldTxt;
         codeStr += `const ${this.NormalizeParamName}SearchFunc = {};`;
         for (let i = 0 ; i < searchFields.length; i++) { 
             let field = searchFields[i];
             let typeOfField = _.get(this.ResourceDef, `${field}.type`);
+
+            if (!typeOfField && field.includes("timing")) {
+                typeOfField = "timing";
+            }
+
             try {
                 codeStr += this[`handle${capitalizeFirstLetter(typeOfField)}`](field);
             } catch(e) {
-                console.error(`field: ${this.Field}, type of field: ${typeOfField}, search fields ${searchFields}`, e , this.ResourceDef);
+                console.error(`field: ${this.Field}, clean field: ${field}, type of field: ${typeOfField}, search fields ${searchFields}`, e , this.ResourceDef);
             }
         }
         codeStr += `

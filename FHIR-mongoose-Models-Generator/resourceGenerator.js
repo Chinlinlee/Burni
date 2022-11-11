@@ -226,7 +226,6 @@ function generateResourceSchema (type) {
         process.exit(1);
     }
     let result = getSchema(FHIRJson[type]);
-    console.log("The resource schema" , type , result);
     for (let i in result) {
         if (_.get(result[i] , "type")) {
             // let cleanType = result[i].type.replace(/[\[\]]/gm , '');
