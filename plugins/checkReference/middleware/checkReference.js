@@ -7,6 +7,7 @@ const {
 const FHIR = require("fhir").Fhir;
 const { isDocExist } = require("../../../api/apiService");
 const jp = require("jsonpath");
+const uuid = require("uuid");
 
 async function checkAbsoluteUrlRef(key, referenceValue, checkedReferenceList) {
     //do fetch to get response
@@ -61,6 +62,7 @@ async function checkReference(resourceData) {
         let referenceValueSplit = referenceValue.split('|')[0].split('/');
         if (/^(http|https):\/\//g.test(referenceValue)) {
             await checkAbsoluteUrlRef(key, referenceValue, checkedReferenceList);
+
         } else if (referenceValueSplit.length >= 2) {
             let resourceName = referenceValueSplit[referenceValueSplit.length - 2];
             let resourceId = referenceValueSplit[referenceValueSplit.length - 1];
@@ -79,7 +81,8 @@ async function checkReference(resourceData) {
                 });
             }
         } else if (/urn:oid:[0-2](\.[1-9]\d*)+/i.test(referenceValue) ||
-            /^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(referenceValue)) {
+                   uuid.validate(referenceValue.replace(/^urn:uuid:/, ""))
+        ) {
             //Only Bundle entry have OID or UUID reference?
             let referenceTargetFullUrl = jp.nodes(resourceData, "$..fullUrl").find( v=> v.value === referenceValue);
             if (referenceTargetFullUrl) {
