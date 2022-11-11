@@ -9,9 +9,11 @@ const {
     ErrorOperationOutcome
 } = require('models/FHIR/httpMessage');
 const FHIR = require('fhir').Fhir;
-const { isRealObject } = require('../apiService');
 const { logger } = require('../../utils/log');
-const { checkIsChainAndGetChainParent, getChainParentJoinQuery }  = require("./search/chain-params");
+const {
+    SearchParameterCreator,
+    UnknownSearchParameterError
+} = require("./search/searchParameterCreator");
 const xmlFormatter = require('xml-formatter');
 /**
  * 
@@ -22,7 +24,8 @@ const xmlFormatter = require('xml-formatter');
  * @returns 
  */
 module.exports = async function (req, res, resourceType, paramsSearch) {
-    logger.info(`[Info: do search] [Resource Type: ${resourceType}] [Content-Type: ${res.getHeader("content-type")}] [Url-SearchParam: ${req.url}]`);
+    let loggerInfo = `[Info: do search] [Resource Type: ${resourceType}] [Content-Type: ${res.getHeader("content-type")}] [Url-SearchParam: ${req.url}]`;
+    
     let { _pretty, _total } = req.query;
     delete req.query["_pretty"];
     delete req.query["_total"];
@@ -44,40 +47,25 @@ module.exports = async function (req, res, resourceType, paramsSearch) {
     _.set(req.query, "_count", paginationLimit);
     delete queryParameter['_count'];
     delete queryParameter['_offset'];
-    Object.keys(queryParameter).forEach(key => {
-        if (!queryParameter[key] || isRealObject(queryParameter[key]) || key == "_include" || key == "_revinclude") {
-            delete queryParameter[key];
-        }
-    });
-    queryParameter.$and = [];
-    for (let key in queryParameter) {
-        try {
-            if (key.includes(".")) {
-                let isChain = checkIsChainAndGetChainParent(resourceType, key);
-                if (isChain.status) {
-                    queryParameter["isChain"] = true;
 
-                    let joinQuery = getChainParentJoinQuery(isChain.chainParent, queryParameter[key]);
+    try {
 
-                    if (!_.get(queryParameter, "chain")) queryParameter["chain"] = [];
-                    queryParameter["chain"] = [...queryParameter["chain"], joinQuery];
-                    delete queryParameter[key];
-                }
-            } else {
-                paramsSearch[key](queryParameter);
-            }
+        let searchParameterCreator = new SearchParameterCreator({
+            resourceType: resourceType,
+            query: queryParameter,
+            paramsSearch: paramsSearch,
+            logger: logger
+        });
 
-        } catch (e) {
-            if (key != "$and") {
-                logger.error(e);
-                logger.error(`[Error: Unknown search parameter ${key} or value ${queryParameter[key]}] [Resource Type: ${resourceType}] [${e}]`);
-                return doRes(400, handleError.processing(`Unknown search parameter ${key} or value ${queryParameter[key]}`));
-            } 
+        queryParameter = searchParameterCreator.create();
+    } catch(e) {
+        if (e instanceof UnknownSearchParameterError) {
+            return doRes(400, handleError.processing(e.message));
         }
     }
-    if (queryParameter.$and.length == 0) {
-        delete queryParameter["$and"];
-    }
+    loggerInfo += ` [mongo query ${JSON.stringify(queryParameter)}]`;
+    logger.info(loggerInfo);
+
     try {
         let docs;
         let isChain = _.get(queryParameter, "isChain", false);
