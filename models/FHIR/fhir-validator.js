@@ -209,7 +209,7 @@ async function validate(profile, resourceContent) {
                 let error = e.errors[errorKey];
                 let message = _.get(error, "message", `${error} invalid`);
                 let errorIssue = new issue("error", "invalid", message);
-                _.set(errorIssue, "Location", [errorKey]);
+                _.set(errorIssue, "location", [errorKey]);
                 operationOutcomeError.issue.push(errorIssue);
             }
             return operationOutcomeError;
