@@ -83,4 +83,16 @@ http.createServer(app).listen(port, function() {
     console.log(`http server is listening on port:${port}`);
 });
 
+// Require(cache) validator when bootstrap
+if (process.env.ENABLE_VALIDATOR === "true") {
+    let waitDbConnection = setInterval(() => {
+        if (mongoose.connection.readyState === 1) {
+            require("./utils/validator").validator;
+            clearInterval(waitDbConnection);
+        } else {
+            console.log("validator is waiting for DB connecting...");
+        }
+    }, 250);
+}
+
 module.exports = app;

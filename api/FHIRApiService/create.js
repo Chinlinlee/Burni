@@ -1,16 +1,17 @@
 const mongodb = require('models/mongodb');
-const {
-    handleError
-} = require('../../models/FHIR/httpMessage');
 const uuid = require('uuid');
 const _ = require('lodash');
 const { getNotExistReferenceList } = require('../apiService');
 const FHIR = require('fhir').Fhir;
 const validateContained = require('./validateContained');
-const { getValidateResult } = require('../../models/FHIR/fhir-validator.js');
 const { renameCollectionFieldName } = require("../apiService");
 const { logger } = require('../../utils/log');
 const path = require('path');
+const {
+    issue,
+    OperationOutcome,
+    handleError
+} = require("../../models/FHIR/httpMessage");
 
 const responseFunc = {
     /**
@@ -47,10 +48,20 @@ const responseFunc = {
                 msg : handleError.duplicate(err.message)
             };
         } else if (err.stack.includes("ValidationError")) {
+
+            let operationOutcomeError = new OperationOutcome([]);
+            for (let errorKey in err.errors) {
+                let error = err.errors[errorKey];
+                let message = _.get(error, "message", `${error} invalid`);
+                let errorIssue = new issue("error", "invalid", message);
+                _.set(errorIssue, "location", [errorKey]);
+                operationOutcomeError.issue.push(errorIssue);
+            }
             operationOutcomeMessage = {
                 code : 400 ,
-                msg : handleError.processing(err.message)
+                msg : operationOutcomeError
             };
+
         } else if (err.stack.includes("stored by resource")) {
             operationOutcomeMessage = {
                 code : 400 ,
@@ -97,13 +108,15 @@ module.exports = async function(req, res , resourceType) {
                 }
             }
         }
-        if (process.env.ENABLE_VALIDATION_WHEN_OP === "true" && process.env.ENABLE_CSHARP_VALIDATOR === "true") {
-            let operationOutcomeMessage = await getValidateResult(req, resourceType);
-            let haveError = (_.get(operationOutcomeMessage, "issue")) ? operationOutcomeMessage.issue.find(v=> v.severity === "error") : false;
-            if (haveError) {
-                return doRes(412, operationOutcomeMessage);
-            }
+
+        // Validate user request body
+        if (process.env.ENABLE_VALIDATOR) {
+            let { validateResource } = require("../../utils/validator/processor");
+            let validationErrorMessage =  await validateResource(req.body);
+
+            if (validationErrorMessage) return doRes(422, validationErrorMessage);
         }
+
         let [status, doc] = await doInsertData(cloneInsertData, resourceType);
         return responseFunc[status](doc, req, res, resourceType, doRes);
     } catch (e) {

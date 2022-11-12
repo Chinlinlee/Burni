@@ -31,3 +31,7 @@ docs/apidoc/apidoc-sources
 #ignore log files
 /log
 /pm2log
+
+/utils/validator/igs/*
+
+!**/.gitkeep
