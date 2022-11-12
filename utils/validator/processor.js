@@ -18,9 +18,15 @@ const { validator } = require("./index.js");
     if (Object.prototype.hasOwnProperty.call(operationOutcome, "issue")) {
         let isError = operationOutcome.issue.some(v => v.severity === "error");
         if (isError) {
-            return operationOutcome;
+            return {
+                isError: true,
+                message: operationOutcome
+            };
         }
-        return undefined;
+        return {
+            isError: false,
+            message: operationOutcome
+        };
     }
 }
 
