@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.7.2](https://github.com/Chinlinlee/Burni/compare/v2.7.1...v2.7.2) (2022-11-12)
+
+
+### Bug Fixes
+
+* return empty body when pass validation ([fc55319](https://github.com/Chinlinlee/Burni/commit/fc55319637be3aa4060410098476ed101a7e62e2))
+
 ### [2.7.1](https://github.com/Chinlinlee/Burni/compare/v2.7.0...v2.7.1) (2022-11-12)
 
 
