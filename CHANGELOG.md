@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.7.1](https://github.com/Chinlinlee/Burni/compare/v2.7.0...v2.7.1) (2022-11-12)
+
+
+### Bug Fixes
+
+* **ci:** cannot build docker image ([f8afb34](https://github.com/Chinlinlee/Burni/commit/f8afb3417d7bb4cac8ab7ecd9e8134c28ac4f74e))
+
 ## [2.7.0](https://github.com/Chinlinlee/Burni/compare/v2.6.0...v2.7.0) (2022-11-12)
 
 
