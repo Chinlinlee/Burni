@@ -1,4 +1,7 @@
-FROM keymetrics/pm2:latest-alpine
+FROM keymetrics/pm2:16-slim
+
+# Install JDK
+RUN apt update && apt install openjdk-11-jdk-headless make g++ python3 -y
 
 WORKDIR /
 RUN mkdir -p /nodejs/fhir-burni/
@@ -16,4 +19,4 @@ RUN npm ci --only=production
 # Show current folder structure in logs
 #RUN ls -al -R
 USER node
-CMD [ "pm2-runtime", "start", "ecosystem.config.js" ]
+CMD [ "pm2-runtime", "start", "ecosystem.config.js", "--node-args=\"--max-old-space-size=4096\""]

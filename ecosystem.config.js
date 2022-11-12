@@ -7,7 +7,7 @@ module.exports = {
         watch: false,
         exec_mode: 'cluster',
         instances: 2,
-        max_memory_restart: '500M',
+        max_memory_restart: '4G',
         time: true,
         log_date_format: 'YYYY-MM-DD HH:mm Z',
         force: true,
