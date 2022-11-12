@@ -14,6 +14,7 @@ const {
     SearchParameterCreator,
     UnknownSearchParameterError
 } = require("./search/searchParameterCreator");
+const { SearchProcessor } = require("./search/searchProcessor");
 const xmlFormatter = require('xml-formatter');
 /**
  * 
@@ -67,70 +68,16 @@ module.exports = async function (req, res, resourceType, paramsSearch) {
     logger.info(loggerInfo);
 
     try {
-        let docs;
         let isChain = _.get(queryParameter, "isChain", false);
-        let count = 0;
-
-        if (isChain) {
-            let aggregateQuery = [];
-            if (_.get(queryParameter, "$and", []).length > 0) {
-                let selfMatch = {
-                    "$match": {
-                        $and: queryParameter.$and
-                    }
-                };
-                aggregateQuery.push(selfMatch);
-            }
-            aggregateQuery.push(...queryParameter["chain"].flat());
-            
-            aggregateQuery.push({
-                $group: {
-                    "_id": "$_id",
-                    "groupItem": {
-                        "$first": "$$ROOT"
-                    }
-                }
-            });
-            aggregateQuery.push({
-                "$replaceRoot": {
-                    "newRoot": "$groupItem"
-                }
-            });
-
-            aggregateQuery.push({$skip: paginationSkip});
-            aggregateQuery.push({$limit: paginationLimit});
-            
-            docs = await mongodb[resourceType].aggregate(aggregateQuery).exec();
-
-            if (_total !== "none") {
-                aggregateQuery.push({ "$count": "totalDocs" });
-                let totalDocs = count = await mongodb[resourceType].aggregate(aggregateQuery).exec();
-                count = _.get(totalDocs, "0.totalDocs", 0);
-            }
-
-        } else {
-            docs = await mongodb[resourceType].find(queryParameter).
-                limit(paginationLimit).
-                skip(paginationSkip).
-                sort({
-                    _id: -1
-                }).
-                exec();
-        }
-
-        if (_total !== "none") {
-            if (_.isEmpty(queryParameter)) {
-
-                if (_total === "estimate") {
-                    count = await mongodb[resourceType].estimatedDocumentCount();
-                } else if (_total === "accurate"){
-                    count = await mongodb[resourceType].countDocuments();
-                }
-                
-            } else if (!isChain) {
-                count = await mongodb[resourceType].countDocuments(queryParameter);
-            }
-        }
+        let searchProcessor = new SearchProcessor({
+            resourceType: resourceType,
+            isChain: isChain,
+            query: queryParameter,
+            skip: paginationSkip,
+            limit: paginationLimit,
+            totalMode: _total
+        });
+        let { docs, count } = await searchProcessor.search();
 
         if (isChain) {
             docs = docs.map(v => {
