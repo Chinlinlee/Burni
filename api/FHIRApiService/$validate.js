@@ -28,9 +28,10 @@ module.exports = async function (req, res, resourceType) {
 
         if (process.env.ENABLE_VALIDATOR === "true") {
             let { validateResource } = require("../../utils/validator/processor");
-            let operationOutcomeMessage =  await validateResource(req.body);
+            let validationResult = await validateResource(req.body);
 
-            if (operationOutcomeMessage) return doRes(422, operationOutcomeMessage);
+            if (validationResult.isError) return doRes(422, validationResult.message);
+            else operationOutcomeMessage =  validationResult.message;
         } else {
             operationOutcomeMessage = await getValidateResult(req, resourceType);
             let haveError = (_.get(operationOutcomeMessage, "issue")) ? operationOutcomeMessage.issue.find(v=> v.severity === "error") : false;

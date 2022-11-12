@@ -112,9 +112,9 @@ module.exports = async function(req, res , resourceType) {
         // Validate user request body
         if (process.env.ENABLE_VALIDATOR) {
             let { validateResource } = require("../../utils/validator/processor");
-            let validationErrorMessage =  await validateResource(req.body);
+            let validationResult = await validateResource(req.body);
 
-            if (validationErrorMessage) return doRes(422, validationErrorMessage);
+            if (validationResult.isError) return doRes(422, validationResult.message);
         }
 
         let [status, doc] = await doInsertData(cloneInsertData, resourceType);
