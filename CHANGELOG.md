@@ -2,6 +2,55 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.7.0](https://github.com/Chinlinlee/Burni/compare/v2.6.0...v2.7.0) (2022-11-12)
+
+
+### Features
+
+* add _pretty parameter ([a5fcf45](https://github.com/Chinlinlee/Burni/commit/a5fcf45d41d0face9cc4539de527896722131771))
+* add _total parameter ([fc8eb70](https://github.com/Chinlinlee/Burni/commit/fc8eb70fbf2e91c8ee82eb67bc713be132dedd25))
+* add layout for logger ([65b90db](https://github.com/Chinlinlee/Burni/commit/65b90dbe254f4531bbe6014ea2611c88de62f3f9))
+* change token auth into plugin ([3b9ecfd](https://github.com/Chinlinlee/Burni/commit/3b9ecfd371f8d0fb99fdcca7fae64c6b35320bc7))
+* change validator storepath;add empty profile ([36ea1e1](https://github.com/Chinlinlee/Burni/commit/36ea1e1a353ec78a61a257176566e8a2b6b703ba))
+* configure auth source of mongo manually ([3d7799e](https://github.com/Chinlinlee/Burni/commit/3d7799e7636935541ca2fff080dd9930bbf65704))
+* generate search parameter of date choiceType ([abdfb53](https://github.com/Chinlinlee/Burni/commit/abdfb5336b35a6a7fcc9c56ba2bf8843a4db2276))
+* java FHIR validator instead of C# ([3c10036](https://github.com/Chinlinlee/Burni/commit/3c10036e508a9a5ae8502b3631b4dc009c071c5c))
+* move `storedID` variable to if block ([cb84d14](https://github.com/Chinlinlee/Burni/commit/cb84d146f45e097aa6cc160cf7a2d58ea83cd4a6))
+* move FHIR XML to JSON into `route.js` ([5133ae1](https://github.com/Chinlinlee/Burni/commit/5133ae1cecfc0d698c1d96865893ee463d498e99))
+* remove unique of index of id ([3fc33c1](https://github.com/Chinlinlee/Burni/commit/3fc33c188d6048f41d8c7e2628133286ecf656ab))
+* separate check reference process to plugin ([7558cd7](https://github.com/Chinlinlee/Burni/commit/7558cd72c8f7c087e4f91651066c2caaec374c52))
+* support chain search ([3cb4c6f](https://github.com/Chinlinlee/Burni/commit/3cb4c6f8ccd0b7cdb8b10265ed07ae14296b7600))
+* update chain search logic ([687978b](https://github.com/Chinlinlee/Burni/commit/687978bdf7321947cdf199010df33f6a49849787))
+* update chained parameter logic ([a7b6cfa](https://github.com/Chinlinlee/Burni/commit/a7b6cfaaad203b05cb10785d226b69ebc2dc1fa2))
+* use _doc instead of toObject in getFHIRField ([19b05e5](https://github.com/Chinlinlee/Burni/commit/19b05e5daf7fe66fe5d3fbb27560fb37491cadd8))
+* use countDocument to check doc is exist ([ec60904](https://github.com/Chinlinlee/Burni/commit/ec60904dcea975f81a1779807b2bb40bb4703000))
+* use joi control _pretty, _total ([2029166](https://github.com/Chinlinlee/Burni/commit/20291669dd55391816999a43c81b2516aa86a3dd))
+* use jsonpath, countDocuments ([7f88750](https://github.com/Chinlinlee/Burni/commit/7f8875018466a08f399e1a738df615d2c84f4beb))
+* use uuid package to validate reference str ([78e26bb](https://github.com/Chinlinlee/Burni/commit/78e26bb57c4ac4a2b2097fdf973ee9b539f46f24))
+* validation when op (create, update) ([97d5414](https://github.com/Chinlinlee/Burni/commit/97d541434c3459f69c0e03e2b41c7464b10bae18))
+
+
+### Bug Fixes
+
+* accept header undefiend cannot use include ([aeee9ff](https://github.com/Chinlinlee/Burni/commit/aeee9ff5a42fddbfc41c141d3394149870e689e3))
+* cannot access http csharp validator ([2593f98](https://github.com/Chinlinlee/Burni/commit/2593f9854defef9336d57263c5348644a2aef3d3))
+* duplicate doc when use chainedParam ([179c3b9](https://github.com/Chinlinlee/Burni/commit/179c3b97f5deafffa0fe304843659ba825d05854))
+* field `collection` is missing when store ([817fed6](https://github.com/Chinlinlee/Burni/commit/817fed69b40b56b07097eba9800b7e5954e9ed7e))
+* field contains .as(type) not generate ([b17e408](https://github.com/Chinlinlee/Burni/commit/b17e4081d1927bb48314985ad33459a68318ca5d))
+* fix mongodb auth parameter ([97224e3](https://github.com/Chinlinlee/Burni/commit/97224e38fb09e6c1d338919fb424e2552bad8ca1))
+* incorrect log information in read, update ([c88b296](https://github.com/Chinlinlee/Burni/commit/c88b2961179decea40c6e7939aab543d0f73ba9d))
+* increase request body size limit  ([ebc3a79](https://github.com/Chinlinlee/Burni/commit/ebc3a79491a50cddb2adb17fdf5976c292bd2e18))
+* limit of json body not working ([6674105](https://github.com/Chinlinlee/Burni/commit/6674105e1c6cb5c18dc13421b374dfac2a634f99))
+* mongoose `authSource` param not working ([501129a](https://github.com/Chinlinlee/Burni/commit/501129a2589400842aa247f3a3d86ea34abeea12))
+* not accept meta and text field ([15ee9b8](https://github.com/Chinlinlee/Burni/commit/15ee9b85c370f9dd0191d6a90c0ae6482f383ab1))
+* not default json format response ([ace8422](https://github.com/Chinlinlee/Burni/commit/ace84226cac8772f5cc69d56225579c85ccddcb7))
+* not response content with XML format ([b767df5](https://github.com/Chinlinlee/Burni/commit/b767df5da6ae13efb61ffb66726317b8f22c27b7))
+* remove unsupported mongoose parameters ([c081573](https://github.com/Chinlinlee/Burni/commit/c081573c8670760b305e838c5b87e16a3bc7b613))
+* token.replace is not a function ([4b87e27](https://github.com/Chinlinlee/Burni/commit/4b87e27e1a196ef2a7df8fb06c9b74365ae79d63))
+* typo ([86acd98](https://github.com/Chinlinlee/Burni/commit/86acd98f32d4d2f006e2665bbe9021ad96e95301))
+* typo ([8568e0d](https://github.com/Chinlinlee/Burni/commit/8568e0d81b0cff992905224da51dc49d572adade))
+* update mongoose package ([921769a](https://github.com/Chinlinlee/Burni/commit/921769a2620521762aa1c686b02c772df4b0d25d))
+
 ## [2.6.0](https://github.com/Chinlinlee/Burni/compare/v2.5.0...v2.6.0) (2022-03-07)
 
 
