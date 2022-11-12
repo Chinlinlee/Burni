@@ -23,9 +23,13 @@ This server supported FHIR RESTFul API below:
 - history-type (e.g. http://example.com/fhir/Patient/1/_history)
 - history-type-version (e.g. e.g. http://example.com/fhir/Patient/1/_history/1)
 
-**The resources don't have `text` field**
 
 <font color=red>**Don't remove Bundle.js in models/mongodb/FHIRTypeSchema**</font>
+
+## Requirements
+- node.js >= 16
+- MongoDB >= 4
+- Java JDK >= 11 (For validator)
 
 ## Installation
 ```bash=
@@ -77,9 +81,7 @@ ADMIN_PASSWORD="adminPassword"
 ENABLE_CHECK_ALL_RESOURCE_ID=false #true that want to check resource id cross all resource
 ENABLE_CHECK_REFERENCE #true that want to check reference is exist in resource content
     
-ENABLE_CSHARP_VALIDATOR=false
-VALIDATION_FILES_ROOT_PATH="/validationResources"
-VALIDATION_API_URL="http://burni-fhir-validator-api:7414"
+ENABLE_VALIDATOR=true
 ```
 After configuration, run `npm run build` to generate resources
 ```
@@ -115,16 +117,17 @@ node server.js
 
 The details of postman's request body and response: [Examples Using Postman](https://github.com/Chinlinlee/Burni/blob/main/examples/Examples.md)
 
-# Validation
-Thanks to [FirelyTeam/firely-net-sdk](https://github.com/FirelyTeam/firely-net-sdk) implement the excellent validator by C#.
-    
-Currently, Burni use the C# Web API to do validation. The repository : [Chinlinlee/FHIR-Validator-API](https://github.com/Chinlinlee/FHIR-Validator-API)
+## Validation
+Burni use the [node-java-fhir-validator](https://github.com/Chinlinlee/node-java-fhir-validator) to do validation.
+- You can put IG's (package.tgz) or json (StructureDefinition) file in `utils/validator/igs`, and Burni will load it into the validator
+- You must configure `ENABLE_VALIDATOR` in `.env`(dotenv) to true to enable validation feature
 
-# TODO
+## TODO
 - Search parameters
     - [ ] composite
     - [ ] uri  
-- [ ] Validation
+
+- [ ] Narrative generate
 
 ## Special project
 - [Raccoon](https://github.com/cylab-tw/raccoon) - a noSQL-based DICOMWeb Server.

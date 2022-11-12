@@ -25,10 +25,13 @@ This server supported FHIR RESTFul API below:
 - history-type (e.g. http://example.com/fhir/Patient/1/_history)
 - history-type-version (e.g. e.g. http://example.com/fhir/Patient/1/_history/1)
 
-**resource 不包含`text`欄位**
-**The resources don't have `text` field**
 
 <font color=red>**Don't remove Bundle.js in models/mongodb/FHIRTypeSchema**</font>
+
+## 必要環境
+- node.js >= 16
+- MongoDB >= 4
+- Java JDK >= 11 (For validator)
 
 ## 安裝
 ```bash=
@@ -79,9 +82,7 @@ ADMIN_PASSWORD="adminPassword"
 ENABLE_CHECK_ALL_RESOURCE_ID=false #true that want to check resource id cross all resource
 ENABLE_CHECK_REFERENCE #true that want to check reference is exist in resource content
     
-ENABLE_CSHARP_VALIDATOR=false
-VALIDATION_FILES_ROOT_PATH="/validationResources"
-VALIDATION_API_URL="http://burni-fhir-validator-api:7414"
+ENABLE_VALIDATOR=true
 ```
 設定後, 執行 `npm run build` 產生 resource 相關程式碼
 ```
@@ -117,15 +118,16 @@ node server.js
 詳細使用 Postman 的範例： [Examples Using Postman](https://github.com/Chinlinlee/Burni/blob/main/examples/Examples.md)
 
 # FHIR 驗證
-感謝[FirelyTeam/firely-net-sdk](https://github.com/FirelyTeam/firely-net-sdk)使用C#實作了讚讚的驗證器。
-
-Burni 目前使用 C# Web API 去做驗證。使用專案： [Chinlinlee/FHIR-Validator-API](https://github.com/Chinlinlee/FHIR-Validator-API)
+Burni 使用 [node-java-fhir-validator](https://github.com/Chinlinlee/node-java-fhir-validator) 做驗證
+- 您可以將 IG 的 package.tgz 或是 json (StructureDefinition) 檔案放入 `utils/validator/igs`，Burni 將會讀取這些檔案至 validator 當中
+- 您必須將 `.env`(dotenv) 內的 `ENABLE_VALIDATOR` 設定為 true 以開啟驗證功能
 
 # TODO
 - Search parameters
     - [ ] composite
     - [ ] uri  
-- [ ] Validation
+
+- [ ] Narrative generate
 
 ## Special project
 - [Raccoon](https://github.com/cylab-tw/raccoon) - a noSQL-based DICOMWeb Server.
