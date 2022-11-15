@@ -46,6 +46,12 @@ const {
     Patient_Link
 } = require('../FHIRDataTypesSchemaExport/FHIRDataTypesSchemaExport');
 const id = require('../FHIRDataTypesSchema/id');
+const {
+    storeResourceRefBy,
+    updateRefBy,
+    deleteEmptyRefBy,
+    checkResourceHaveReferenceByOthers
+} = require("../common");
 module.exports = function() {
     require('mongoose-schema-jsonschema')(mongoose);
     const Patient = {
@@ -234,6 +240,8 @@ module.exports = function() {
         }, {
             upsert: true
         });
+
+        await storeResourceRefBy(item);
     });
 
     PatientSchema.pre('findOneAndUpdate', async function(next) {
@@ -270,6 +278,9 @@ module.exports = function() {
         } catch (e) {
             console.error(e);
         }
+
+        await storeResourceRefBy(item);
+
         return result;
     });
 
@@ -281,6 +292,11 @@ module.exports = function() {
         let mongodb = require('../index');
         let item = docToDelete.toObject();
         delete item._id;
+
+        if (await checkResourceHaveReferenceByOthers(item)) {
+            next(`The ${item.resourceType}:id->${item.id} is referenced by multiple resource, please do not delete resource that have association`);
+        }
+
         item.meta.versionId = String(Number(item.meta.versionId) + 1);
         let version = item.meta.versionId;
 
@@ -294,6 +310,11 @@ module.exports = function() {
         });
         let createdDocs = await mongodb['Patient_history'].create(item);
         next();
+    });
+
+    PatientSchema.post('findOneAndDelete', async function(resource) {
+        await updateRefBy(resource);
+        await deleteEmptyRefBy();
     });
 
     const PatientModel = mongoose.model("Patient", PatientSchema, "Patient");

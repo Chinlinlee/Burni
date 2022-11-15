@@ -350,6 +350,8 @@ function generateResourceSchema (type) {
         } , {
             upsert : true
         });
+
+        await storeResourceRefBy(item);
     });
 
     ${type}Schema.pre('findOneAndUpdate' , async function (next) {
@@ -386,6 +388,9 @@ function generateResourceSchema (type) {
         } catch (e) {
             console.error(e);
         }
+
+        await storeResourceRefBy(item);
+
         return result;
     });
 
@@ -397,6 +402,11 @@ function generateResourceSchema (type) {
         let mongodb = require('../index');
         let item = docToDelete.toObject();
         delete item._id;
+
+        if (await checkResourceHaveReferenceByOthers(item)) {
+            next(\`The \${item.resourceType}:id->\${item.id} is referenced by multiple resource, please do not delete resource that have association\`);
+        }
+
         item.meta.versionId = String(Number(item.meta.versionId)+1);
         let version = item.meta.versionId;
 
@@ -412,13 +422,19 @@ function generateResourceSchema (type) {
         next();
     });
 
+    ${type}Schema.post('findOneAndDelete', async function (resource) {
+        await updateRefBy(resource);
+        await deleteEmptyRefBy();
+    });
+
     const ${type}Model = mongoose.model("${type}" , ${type}Schema , "${type}");
     return ${type}Model;\r\n}`;
+
     let importLibs = getImportLibs(result);
     if (!importLibs.includes("const id = require")) {
-        importLibs =`const moment = require('moment');\r\nconst _ = require('lodash');\r\n${importLibs}const id = require('${config.requirePath}/id');\r\n`;
+        importLibs =`const moment = require('moment');\r\nconst _ = require('lodash');\r\n${importLibs}const id = require('${config.requirePath}/id');\r\nconst { storeResourceRefBy, updateRefBy, deleteEmptyRefBy, checkResourceHaveReferenceByOthers } = require("../common");\r\n`;
     } else {
-        importLibs =`const moment = require('moment');\r\nconst _ = require('lodash');\r\n${importLibs}\r\n`;
+        importLibs =`const moment = require('moment');\r\nconst _ = require('lodash');\r\n${importLibs}\r\nconst { storeResourceRefBy, updateRefBy, deleteEmptyRefBy, checkResourceHaveReferenceByOthers } = require("../common");\r\n`;
     }
     code = `${importLibs}${code};`;
     mkdirp.sync(config.resourcePath);
