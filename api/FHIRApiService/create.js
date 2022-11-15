@@ -110,7 +110,7 @@ module.exports = async function(req, res , resourceType) {
         }
 
         // Validate user request body
-        if (process.env.ENABLE_VALIDATOR) {
+        if (process.env.ENABLE_VALIDATOR === "true") {
             let { validateResource } = require("../../utils/validator/processor");
             let validationResult = await validateResource(req.body);
 
