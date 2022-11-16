@@ -1,4 +1,5 @@
 const express = require('express');
+const RateLimit = require('express-rate-limit');
 const bodyParser = require('body-parser');
 const http = require('http');
 const compress = require('compression');
@@ -19,6 +20,15 @@ const app = express();
 
 require('rootpath')();
 require('dotenv').config();
+// limit user only can request 1000 in 1 minute over every routers
+let limiter = RateLimit({
+    windowMs: 1 * 60 * 1000,
+    max: 1000,
+    standardHeaders: true,
+    legacyHeaders: false
+});
+app.use(limiter);
+
 app.use(compress());
 app.use(flash());
 app.use(express.static('public'));
