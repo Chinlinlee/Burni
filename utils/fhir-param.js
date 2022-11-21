@@ -1,4 +1,4 @@
-let parameterList = require('../api_generator/currentSupportParameters.json');
+let parameterList = require('../api_generator/FHIRParametersClean.json');
 const resourceTypeList = require("../models/FHIR/fhir.resourceList.json");
 
 /**
