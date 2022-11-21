@@ -291,29 +291,33 @@ function generateResourceSchema (type) {
 
     ${type}Schema.pre('save', async function (next) {
         let mongodb = require('../index');
-        if (process.env.ENABLE_CHECK_ALL_RESOURCE_ID== "true") {
+        if (process.env.ENABLE_CHECK_ALL_RESOURCE_ID == "true") {
             let storedID = await mongodb.FHIRStoredID.findOne({
                 id: this.id
             });
-            if (storedID.resourceType == "${type}") {
-                const docInHistory = await mongodb.${type}_history.findOne({
-                    id: this.id
-                })
-                .sort({
-                    "meta.versionId" : -1
-                });
-                let versionId = Number(_.get(docInHistory , "meta.versionId"))+1;
-                let versionIdStr = String(versionId);
-                _.set(this, "meta.versionId", versionIdStr);
-                _.set(this, "meta.lastUpdated", new Date());
-            } else {
+            if (storedID.resourceType != "${type}") {
                 console.error('err', storedID);
                 return next(new Error(\`The id->\${this.id} stored by resource \${storedID.resourceType}\`));
             }
+        }
+
+        const docInHistory = await mongodb.${type}_history.findOne({
+            id: this.id
+        })
+        .sort({
+            "meta.versionId": -1
+        });
+
+        if (docInHistory) {
+            let versionId = Number(_.get(docInHistory, "meta.versionId")) + 1;
+            let versionIdStr = String(versionId);
+            _.set(this, "meta.versionId", versionIdStr);
+            _.set(this, "meta.lastUpdated", new Date());
         } else {
             _.set(this, "meta.versionId", "1");
             _.set(this, "meta.lastUpdated", new Date());
         }
+        
         return next();
     });
 

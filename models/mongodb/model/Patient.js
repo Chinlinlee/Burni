@@ -185,25 +185,29 @@ module.exports = function() {
             let storedID = await mongodb.FHIRStoredID.findOne({
                 id: this.id
             });
-            if (storedID.resourceType == "Patient") {
-                const docInHistory = await mongodb.Patient_history.findOne({
-                        id: this.id
-                    })
-                    .sort({
-                        "meta.versionId": -1
-                    });
-                let versionId = Number(_.get(docInHistory, "meta.versionId")) + 1;
-                let versionIdStr = String(versionId);
-                _.set(this, "meta.versionId", versionIdStr);
-                _.set(this, "meta.lastUpdated", new Date());
-            } else {
+            if (storedID.resourceType != "Patient") {
                 console.error('err', storedID);
                 return next(new Error(`The id->${this.id} stored by resource ${storedID.resourceType}`));
             }
+        }
+
+        const docInHistory = await mongodb.Patient_history.findOne({
+                id: this.id
+            })
+            .sort({
+                "meta.versionId": -1
+            });
+
+        if (docInHistory) {
+            let versionId = Number(_.get(docInHistory, "meta.versionId")) + 1;
+            let versionIdStr = String(versionId);
+            _.set(this, "meta.versionId", versionIdStr);
+            _.set(this, "meta.lastUpdated", new Date());
         } else {
             _.set(this, "meta.versionId", "1");
             _.set(this, "meta.lastUpdated", new Date());
         }
+
         return next();
     });
 
