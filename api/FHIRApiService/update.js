@@ -1,7 +1,7 @@
 const mongodb = require('models/mongodb');
 const _ = require('lodash');
 const FHIR = require('fhir').Fhir;
-const validateContained = require('./validateContained');
+const { validateContainedList } = require('./validateContained');
 const { renameCollectionFieldName } = require("../apiService");
 const { logger } = require('../../utils/log');
 const path = require('path');
@@ -75,19 +75,9 @@ module.exports = async function (req, res, resourceType) {
             return doRes(operationOutcomeMessage.code , operationOutcomeMessage.msg);
         }
     };
+
     let updateData = req.body;
     let updateDataClone = _.cloneDeep(updateData);
-    if (_.get(updateData, "contained")) {
-        let containedResources = _.get(updateData, "contained");
-        for (let index in containedResources) {
-            let resource = containedResources[index];
-            let validation = await validateContained(resource, index);
-            if (!validation.status) {
-                let operationOutcomeError = handleError.processing(`The resource in contained error. ${validation.message}`);
-                return doRes(400, operationOutcomeError);
-            }
-        }
-    }
 
     // Validate user request body
     if (process.env.ENABLE_VALIDATOR === "true") {
@@ -95,6 +85,13 @@ module.exports = async function (req, res, resourceType) {
         let validationResult = await validateResource(req.body);
 
         if (validationResult.isError) return doRes(422, validationResult.message);
+    } else {
+        let containedValidation = await validateContainedList(updateData);
+        if (!containedValidation.status) {
+            let operationOutcomeError = handleError.processing(`The resource in contained error. ${containedValidation.message}`);
+            logger.error(`[Error: ${JSON.stringify(operationOutcomeError)}] [Resource Type: ${resourceType}]`);
+            return doRes(422, operationOutcomeError);
+        }
     }
 
     let dataExist = await isDocExist(req.params.id, resourceType);
