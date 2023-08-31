@@ -1,9 +1,9 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const markdown = require('../FHIRDataTypesSchema/markdown');
-const canonical = require('../FHIRDataTypesSchema/canonical');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const markdown = require("../FHIRDataTypesSchema/markdown");
+const canonical = require("../FHIRDataTypesSchema/canonical");
 
 const {
     CapabilityStatement_Document

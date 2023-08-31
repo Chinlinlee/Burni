@@ -1,11 +1,9 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const integer = require('../FHIRDataTypesSchema/integer');
-const {
-    Coding
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const integer = require("../FHIRDataTypesSchema/integer");
+const { Coding } = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 
 const {
     TestScript_Destination

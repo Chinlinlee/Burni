@@ -1,10 +1,10 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     Identifier
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 
 const {
     MedicinalProductPackaged_BatchIdentifier
@@ -28,4 +28,5 @@ MedicinalProductPackaged_BatchIdentifier.add({
         default: void 0
     }
 });
-module.exports.MedicinalProductPackaged_BatchIdentifier = MedicinalProductPackaged_BatchIdentifier;
+module.exports.MedicinalProductPackaged_BatchIdentifier =
+    MedicinalProductPackaged_BatchIdentifier;

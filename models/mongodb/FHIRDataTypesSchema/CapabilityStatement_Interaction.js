@@ -1,8 +1,8 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const markdown = require('../FHIRDataTypesSchema/markdown');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const markdown = require("../FHIRDataTypesSchema/markdown");
 
 const {
     CapabilityStatement_Interaction
@@ -18,9 +18,20 @@ CapabilityStatement_Interaction.add({
     },
     code: {
         type: String,
-        enum: ["read", "vread", "update", "patch", "delete", "history-instance", "history-type", "create", "search-type"],
+        enum: [
+            "read",
+            "vread",
+            "update",
+            "patch",
+            "delete",
+            "history-instance",
+            "history-type",
+            "create",
+            "search-type"
+        ],
         default: void 0
     },
     documentation: markdown
 });
-module.exports.CapabilityStatement_Interaction = CapabilityStatement_Interaction;
+module.exports.CapabilityStatement_Interaction =
+    CapabilityStatement_Interaction;

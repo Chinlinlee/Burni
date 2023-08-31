@@ -1,9 +1,9 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const uri = require('../FHIRDataTypesSchema/uri');
-const canonical = require('../FHIRDataTypesSchema/canonical');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const uri = require("../FHIRDataTypesSchema/uri");
+const canonical = require("../FHIRDataTypesSchema/canonical");
 
 const {
     ElementDefinition_Type

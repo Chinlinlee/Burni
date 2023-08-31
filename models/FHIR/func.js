@@ -1,16 +1,15 @@
-
-const _ = require('lodash');
-const bundleClass = require('../mongodb/FHIRTypeSchema/Bundle');
+const _ = require("lodash");
+const bundleClass = require("../mongodb/FHIRTypeSchema/Bundle");
 
 function isFirst(offset) {
     return offset == 0;
 }
 
 function isHaveNext(offset, count, totalCount) {
-    return (offset + count) <= totalCount;
+    return offset + count <= totalCount;
 }
 function isLast(offset, count, totalCount) {
-    return (offset + count) >= totalCount;
+    return offset + count >= totalCount;
 }
 
 function getUrl(params, http = "http", resource) {
@@ -50,31 +49,33 @@ function getPreviousUrl(params, http = "http", resource) {
 }
 
 /**
- * 
- * @param {Object} item 
- * @param {import("express").Request} req 
- * @param {String} resourceType 
+ *
+ * @param {Object} item
+ * @param {import("express").Request} req
+ * @param {String} resourceType
  * @param {String} type
- * @returns 
+ * @returns
  */
-function getEntryFullUrl(item, req, resourceType, type="searchset") {
-    let host = req.headers.host ? req.headers.host : `${process.env.FHIRSERVER_HOST}:${process.env.FHIRSERVER_PORT}`;
+function getEntryFullUrl(item, req, resourceType, type = "searchset") {
+    let host = req.headers.host
+        ? req.headers.host
+        : `${process.env.FHIRSERVER_HOST}:${process.env.FHIRSERVER_PORT}`;
     if (type === "history") {
-        return `${req.protocol}://${host}/${process.env.FHIRSERVER_APIPATH}/${resourceType}/${item.id}/_history/${item.meta.versionId}`; 
+        return `${req.protocol}://${host}/${process.env.FHIRSERVER_APIPATH}/${resourceType}/${item.id}/_history/${item.meta.versionId}`;
     } else {
-        return `${req.protocol}://${host}/${process.env.FHIRSERVER_APIPATH}/${resourceType}/${item.id}`; 
+        return `${req.protocol}://${host}/${process.env.FHIRSERVER_APIPATH}/${resourceType}/${item.id}`;
     }
 }
 
 /**
- * 
- * @param {import('express').Request} req 
- * @param {*} docs 
- * @param {Number} count 
- * @param {Number} skip 
- * @param {Number} limit 
- * @param {*} resource 
- * @param {Object} option 
+ *
+ * @param {import('express').Request} req
+ * @param {*} docs
+ * @param {Number} count
+ * @param {Number} skip
+ * @param {Number} limit
+ * @param {*} resource
+ * @param {Object} option
  * @param {String} option.type
  * @param {string} option.searchMode
  */
@@ -92,7 +93,6 @@ function createBundle(req, docs, count, skip, limit, resource, option) {
             let nextLink = new bundleClass.link("next", nextUrl);
             bundle.link.push(nextLink);
         }
-
     } else if (isLast(skip, limit, count)) {
         let url = getUrl(req.query, req.protocol, resource);
         let link = new bundleClass.link("self", url);
@@ -119,19 +119,25 @@ function createBundle(req, docs, count, skip, limit, resource, option) {
             let responseObj = _.cloneDeep(docs[i].response);
             delete docs[i].request;
             delete docs[i].response;
-            let entry = new bundleClass.entry(getEntryFullUrl(docs[i], req, docs[i].resourceType, "history"), docs[i]);
+            let entry = new bundleClass.entry(
+                getEntryFullUrl(docs[i], req, docs[i].resourceType, "history"),
+                docs[i]
+            );
             entry.request = requestObj;
             entry.response = responseObj;
             bundle.entry.push(entry);
         }
     } else {
         for (let i in docs) {
-            let entry = new bundleClass.entry(getEntryFullUrl(docs[i], req, docs[i].resourceType), docs[i]);
+            let entry = new bundleClass.entry(
+                getEntryFullUrl(docs[i], req, docs[i].resourceType),
+                docs[i]
+            );
             _.set(entry, "search.mode", "match");
             if (_.get(docs[i], "myPointToCheckIsInclude")) {
                 delete docs[i]["myPointToCheckIsInclude"];
                 _.set(entry, "search.mode", "include");
-            } 
+            }
             bundle.entry.push(entry);
         }
     }

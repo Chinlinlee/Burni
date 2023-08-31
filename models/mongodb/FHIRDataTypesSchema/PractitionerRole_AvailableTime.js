@@ -1,10 +1,10 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const code = require('../FHIRDataTypesSchema/code');
-const boolean = require('../FHIRDataTypesSchema/boolean');
-const time = require('../FHIRDataTypesSchema/time');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const code = require("../FHIRDataTypesSchema/code");
+const boolean = require("../FHIRDataTypesSchema/boolean");
+const time = require("../FHIRDataTypesSchema/time");
 
 const {
     PractitionerRole_AvailableTime

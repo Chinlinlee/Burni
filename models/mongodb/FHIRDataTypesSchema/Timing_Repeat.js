@@ -1,21 +1,17 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     Duration
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const {
-    Range
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const {
-    Period
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const positiveInt = require('../FHIRDataTypesSchema/positiveInt');
-const decimal = require('../FHIRDataTypesSchema/decimal');
-const code = require('../FHIRDataTypesSchema/code');
-const time = require('../FHIRDataTypesSchema/time');
-const unsignedInt = require('../FHIRDataTypesSchema/unsignedInt');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const { Range } = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const { Period } = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const positiveInt = require("../FHIRDataTypesSchema/positiveInt");
+const decimal = require("../FHIRDataTypesSchema/decimal");
+const code = require("../FHIRDataTypesSchema/code");
+const time = require("../FHIRDataTypesSchema/time");
+const unsignedInt = require("../FHIRDataTypesSchema/unsignedInt");
 
 const {
     Timing_Repeat

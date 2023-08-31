@@ -1,12 +1,12 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const positiveInt = require('../FHIRDataTypesSchema/positiveInt');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const positiveInt = require("../FHIRDataTypesSchema/positiveInt");
 const {
     Reference
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const boolean = require('../FHIRDataTypesSchema/boolean');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const boolean = require("../FHIRDataTypesSchema/boolean");
 
 const {
     CoverageEligibilityRequest_SupportingInfo
@@ -28,4 +28,5 @@ CoverageEligibilityRequest_SupportingInfo.add({
     },
     appliesToAll: boolean
 });
-module.exports.CoverageEligibilityRequest_SupportingInfo = CoverageEligibilityRequest_SupportingInfo;
+module.exports.CoverageEligibilityRequest_SupportingInfo =
+    CoverageEligibilityRequest_SupportingInfo;

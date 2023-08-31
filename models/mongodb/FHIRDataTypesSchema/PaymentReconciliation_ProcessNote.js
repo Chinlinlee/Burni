@@ -1,8 +1,8 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const string = require('../FHIRDataTypesSchema/string');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const string = require("../FHIRDataTypesSchema/string");
 
 const {
     PaymentReconciliation_ProcessNote
@@ -23,4 +23,5 @@ PaymentReconciliation_ProcessNote.add({
     },
     text: string
 });
-module.exports.PaymentReconciliation_ProcessNote = PaymentReconciliation_ProcessNote;
+module.exports.PaymentReconciliation_ProcessNote =
+    PaymentReconciliation_ProcessNote;

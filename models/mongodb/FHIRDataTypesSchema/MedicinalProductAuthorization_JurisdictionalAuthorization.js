@@ -1,16 +1,14 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     Identifier
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     CodeableConcept
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const {
-    Period
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const { Period } = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 
 const {
     MedicinalProductAuthorization_JurisdictionalAuthorization
@@ -45,4 +43,5 @@ MedicinalProductAuthorization_JurisdictionalAuthorization.add({
         default: void 0
     }
 });
-module.exports.MedicinalProductAuthorization_JurisdictionalAuthorization = MedicinalProductAuthorization_JurisdictionalAuthorization;
+module.exports.MedicinalProductAuthorization_JurisdictionalAuthorization =
+    MedicinalProductAuthorization_JurisdictionalAuthorization;

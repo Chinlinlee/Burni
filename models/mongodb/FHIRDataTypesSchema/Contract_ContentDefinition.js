@@ -1,16 +1,16 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     CodeableConcept
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     Reference
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const dateTime = require('../FHIRDataTypesSchema/dateTime');
-const code = require('../FHIRDataTypesSchema/code');
-const markdown = require('../FHIRDataTypesSchema/markdown');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const dateTime = require("../FHIRDataTypesSchema/dateTime");
+const code = require("../FHIRDataTypesSchema/code");
+const markdown = require("../FHIRDataTypesSchema/markdown");
 
 const {
     Contract_ContentDefinition

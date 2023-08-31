@@ -1,13 +1,13 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     CodeableConcept
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     Annotation
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 
 const {
     EffectEvidenceSynthesis_CertaintySubcomponent
@@ -34,4 +34,5 @@ EffectEvidenceSynthesis_CertaintySubcomponent.add({
         default: void 0
     }
 });
-module.exports.EffectEvidenceSynthesis_CertaintySubcomponent = EffectEvidenceSynthesis_CertaintySubcomponent;
+module.exports.EffectEvidenceSynthesis_CertaintySubcomponent =
+    EffectEvidenceSynthesis_CertaintySubcomponent;

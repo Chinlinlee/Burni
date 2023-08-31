@@ -1,13 +1,13 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     CodeableConcept
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     MedicinalProductPharmaceutical_WithdrawalPeriod
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 
 const {
     MedicinalProductPharmaceutical_TargetSpecies
@@ -31,4 +31,5 @@ MedicinalProductPharmaceutical_TargetSpecies.add({
         default: void 0
     }
 });
-module.exports.MedicinalProductPharmaceutical_TargetSpecies = MedicinalProductPharmaceutical_TargetSpecies;
+module.exports.MedicinalProductPharmaceutical_TargetSpecies =
+    MedicinalProductPharmaceutical_TargetSpecies;

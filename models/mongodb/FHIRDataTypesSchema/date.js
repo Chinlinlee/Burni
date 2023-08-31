@@ -1,8 +1,8 @@
-const moment = require('moment');
+const moment = require("moment");
 module.exports = {
     type: Date,
     default: void 0,
-    get: function(v) {
-        if (v) return moment(v).format('YYYY-MM-DD');
+    get: function (v) {
+        if (v) return moment(v).format("YYYY-MM-DD");
     }
 };

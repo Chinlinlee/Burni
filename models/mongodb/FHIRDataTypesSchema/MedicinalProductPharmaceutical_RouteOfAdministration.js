@@ -1,22 +1,20 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     CodeableConcept
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     Quantity
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const {
-    Ratio
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const { Ratio } = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     Duration
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     MedicinalProductPharmaceutical_TargetSpecies
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 
 const {
     MedicinalProductPharmaceutical_RouteOfAdministration
@@ -60,4 +58,5 @@ MedicinalProductPharmaceutical_RouteOfAdministration.add({
         default: void 0
     }
 });
-module.exports.MedicinalProductPharmaceutical_RouteOfAdministration = MedicinalProductPharmaceutical_RouteOfAdministration;
+module.exports.MedicinalProductPharmaceutical_RouteOfAdministration =
+    MedicinalProductPharmaceutical_RouteOfAdministration;

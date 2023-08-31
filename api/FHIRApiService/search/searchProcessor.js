@@ -36,18 +36,16 @@ class SearchProcessor {
     }
 
     /**
-     * 
+     *
      * @return {SearchResult}
      */
     async search() {
         try {
-
             if (this.isChain) {
                 return await this.searchChain_();
             } else {
                 return await this.searchNormal_();
             }
-
         } catch (e) {
             throw e;
         }
@@ -62,7 +60,7 @@ class SearchProcessor {
             let aggregateQuery = [];
             if (_.get(this.query, "$and", []).length > 0) {
                 let selfMatch = {
-                    "$match": {
+                    $match: {
                         $and: this.query.$and
                     }
                 };
@@ -72,31 +70,33 @@ class SearchProcessor {
 
             aggregateQuery.push({
                 $group: {
-                    "_id": "$_id",
-                    "groupItem": {
-                        "$first": "$$ROOT"
+                    _id: "$_id",
+                    groupItem: {
+                        $first: "$$ROOT"
                     }
                 }
             });
             aggregateQuery.push({
-                "$replaceRoot": {
-                    "newRoot": "$groupItem"
+                $replaceRoot: {
+                    newRoot: "$groupItem"
                 }
             });
 
             aggregateQuery.push({ $skip: this.skip });
             aggregateQuery.push({ $limit: this.limit });
 
-            let docs = await mongoose.model(this.resourceType)
+            let docs = await mongoose
+                .model(this.resourceType)
                 .aggregate(aggregateQuery)
                 .exec();
 
             let count = 0;
             if (this.totalMode !== "none") {
-                aggregateQuery.push({ "$count": "totalDocs" });
-                let totalDocs = count = await mongoose.model(this.resourceType)
+                aggregateQuery.push({ $count: "totalDocs" });
+                let totalDocs = (count = await mongoose
+                    .model(this.resourceType)
                     .aggregate(aggregateQuery)
-                    .exec();
+                    .exec());
 
                 count = _.get(totalDocs, "0.totalDocs", 0);
             }
@@ -116,7 +116,9 @@ class SearchProcessor {
      */
     async searchNormal_() {
         try {
-            let docs = await mongoose.model(this.resourceType).find(this.query)
+            let docs = await mongoose
+                .model(this.resourceType)
+                .find(this.query)
                 .limit(this.limit)
                 .skip(this.skip)
                 .sort({
@@ -124,19 +126,22 @@ class SearchProcessor {
                 })
                 .exec();
 
-
             let count = 0;
             if (this.totalMode !== "none") {
                 if (_.isEmpty(this.query)) {
-
                     if (this.totalMode === "estimate") {
-                        count = await mongoose.model(this.resourceType).estimatedDocumentCount();
+                        count = await mongoose
+                            .model(this.resourceType)
+                            .estimatedDocumentCount();
                     } else if (this.totalMode === "accurate") {
-                        count = await mongoose.model(this.resourceType).countDocuments();
+                        count = await mongoose
+                            .model(this.resourceType)
+                            .countDocuments();
                     }
-
                 } else {
-                    count = await mongoose.model(this.resourceType).countDocuments(this.query);
+                    count = await mongoose
+                        .model(this.resourceType)
+                        .countDocuments(this.query);
                 }
             }
 
@@ -147,7 +152,6 @@ class SearchProcessor {
         } catch (e) {
             throw e;
         }
-
     }
 }
 

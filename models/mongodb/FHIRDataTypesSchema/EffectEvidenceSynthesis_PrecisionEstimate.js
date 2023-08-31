@@ -1,11 +1,11 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     CodeableConcept
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const decimal = require('../FHIRDataTypesSchema/decimal');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const decimal = require("../FHIRDataTypesSchema/decimal");
 
 const {
     EffectEvidenceSynthesis_PrecisionEstimate
@@ -27,4 +27,5 @@ EffectEvidenceSynthesis_PrecisionEstimate.add({
     from: decimal,
     to: decimal
 });
-module.exports.EffectEvidenceSynthesis_PrecisionEstimate = EffectEvidenceSynthesis_PrecisionEstimate;
+module.exports.EffectEvidenceSynthesis_PrecisionEstimate =
+    EffectEvidenceSynthesis_PrecisionEstimate;

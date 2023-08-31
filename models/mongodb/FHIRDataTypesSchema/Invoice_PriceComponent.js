@@ -1,14 +1,12 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     CodeableConcept
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const decimal = require('../FHIRDataTypesSchema/decimal');
-const {
-    Money
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const decimal = require("../FHIRDataTypesSchema/decimal");
+const { Money } = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 
 const {
     Invoice_PriceComponent
@@ -24,7 +22,14 @@ Invoice_PriceComponent.add({
     },
     type: {
         type: String,
-        enum: ["base", "surcharge", "deduction", "discount", "tax", "informational"],
+        enum: [
+            "base",
+            "surcharge",
+            "deduction",
+            "discount",
+            "tax",
+            "informational"
+        ],
         default: void 0
     },
     code: {

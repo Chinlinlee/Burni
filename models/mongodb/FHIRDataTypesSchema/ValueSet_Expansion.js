@@ -1,16 +1,16 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const uri = require('../FHIRDataTypesSchema/uri');
-const dateTime = require('../FHIRDataTypesSchema/dateTime');
-const integer = require('../FHIRDataTypesSchema/integer');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const uri = require("../FHIRDataTypesSchema/uri");
+const dateTime = require("../FHIRDataTypesSchema/dateTime");
+const integer = require("../FHIRDataTypesSchema/integer");
 const {
     ValueSet_Parameter
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     ValueSet_Contains
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 
 const {
     ValueSet_Expansion

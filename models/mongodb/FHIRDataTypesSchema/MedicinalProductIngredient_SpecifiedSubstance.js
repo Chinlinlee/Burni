@@ -1,13 +1,13 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     CodeableConcept
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     MedicinalProductIngredient_Strength
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 
 const {
     MedicinalProductIngredient_SpecifiedSubstance
@@ -40,4 +40,5 @@ MedicinalProductIngredient_SpecifiedSubstance.add({
         default: void 0
     }
 });
-module.exports.MedicinalProductIngredient_SpecifiedSubstance = MedicinalProductIngredient_SpecifiedSubstance;
+module.exports.MedicinalProductIngredient_SpecifiedSubstance =
+    MedicinalProductIngredient_SpecifiedSubstance;

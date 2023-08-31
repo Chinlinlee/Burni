@@ -1,26 +1,26 @@
 module.exports = {
-    PrimitiveTypes : [
-        "instant" , 
-        "time" , 
-        "date" , 
-        "dateTime" , 
-        "base64Binary" ,
-        "decimal" ,
-        "boolean" ,
-        "url" ,
-        "code" ,
-        "string" ,
-        "integer" ,
-        "uri" ,
-        "canonical" ,
-        "markdown" ,
-        "id" ,
-        "oid" ,
-        "uuid" ,
-        "unsignedInt" ,
+    PrimitiveTypes: [
+        "instant",
+        "time",
+        "date",
+        "dateTime",
+        "base64Binary",
+        "decimal",
+        "boolean",
+        "url",
+        "code",
+        "string",
+        "integer",
+        "uri",
+        "canonical",
+        "markdown",
+        "id",
+        "oid",
+        "uuid",
+        "unsignedInt",
         "positiveInt"
-    ] ,
-    GeneralPurposeDataTypes : [
+    ],
+    GeneralPurposeDataTypes: [
         "Ratio",
         "Period",
         "Range",
@@ -44,7 +44,7 @@ module.exports = {
         "Count",
         "MoneyQuantity",
         "SimpleQuantity"
-    ] ,
+    ],
     MetadataTypes: [
         "ContactDetail",
         "Contributor",
@@ -54,15 +54,15 @@ module.exports = {
         "ParameterDefinition",
         "Expression",
         "TriggerDefinition"
-    ] ,
+    ],
     SpecialPurposeDataTypes: [
-        "Reference" ,
-        "Meta" ,
-        "Dosage" ,
-        "xhtml" ,
-        "BackboneElement" ,
-        "Narrative" ,
-        "Extension" ,
+        "Reference",
+        "Meta",
+        "Dosage",
+        "xhtml",
+        "BackboneElement",
+        "Narrative",
+        "Extension",
         "ElementDefinition"
     ]
 };

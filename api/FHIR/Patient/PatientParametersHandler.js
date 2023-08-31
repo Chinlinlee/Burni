@@ -1,17 +1,15 @@
-const _ = require('lodash');
-const queryBuild = require('../../../models/FHIR/queryBuild.js');
-const queryHandler = require('../../../models/FHIR/searchParameterQueryHandler');
+const _ = require("lodash");
+const queryBuild = require("../../../models/FHIR/queryBuild.js");
+const queryHandler = require("../../../models/FHIR/searchParameterQueryHandler");
 const jp = require("jsonpath");
 let resourceInclude = require("../../../api_generator/resource-reference/resourceInclude.json");
-const {
-    chainSearch
-} = require('../../../models/FHIR/queryBuild.js');
+const { chainSearch } = require("../../../models/FHIR/queryBuild.js");
 const path = require("path");
 
 let paramsSearchFields = {};
 
 const paramsSearch = {
-    "_id": (query) => {
+    _id: (query) => {
         query.$and.push({
             id: query["_id"]
         });
@@ -24,7 +22,10 @@ paramsSearch["_lastUpdated"] = (query) => {
         query["_lastUpdated"] = [query["_lastUpdated"]];
     }
     for (let i in query["_lastUpdated"]) {
-        let buildResult = queryBuild.instantQuery(query["_lastUpdated"][i], "meta.lastUpdated");
+        let buildResult = queryBuild.instantQuery(
+            query["_lastUpdated"][i],
+            "meta.lastUpdated"
+        );
         if (!buildResult) {
             throw new Error(`invalid date: ${query["_lastUpdated"]}`);
         }
@@ -61,7 +62,8 @@ paramsSearch["address:exact"] = (query) => {
 //#endregion
 //#region address-city
 paramsSearchFields["address-city"] = ["address.city"];
-paramsSearchFields["address-city:contains"] = paramsSearchFields["address-city"];
+paramsSearchFields["address-city:contains"] =
+    paramsSearchFields["address-city"];
 paramsSearchFields["address-city:exact"] = paramsSearchFields["address-city"];
 paramsSearch["address-city"] = (query) => {
     try {
@@ -73,7 +75,11 @@ paramsSearch["address-city"] = (query) => {
 };
 paramsSearch["address-city:contains"] = (query) => {
     try {
-        queryHandler.getStringQuery(query, paramsSearchFields, "address-city:contains");
+        queryHandler.getStringQuery(
+            query,
+            paramsSearchFields,
+            "address-city:contains"
+        );
     } catch (e) {
         console.error(e);
         throw e;
@@ -81,7 +87,11 @@ paramsSearch["address-city:contains"] = (query) => {
 };
 paramsSearch["address-city:exact"] = (query) => {
     try {
-        queryHandler.getStringQuery(query, paramsSearchFields, "address-city:exact");
+        queryHandler.getStringQuery(
+            query,
+            paramsSearchFields,
+            "address-city:exact"
+        );
     } catch (e) {
         console.error(e);
         throw e;
@@ -90,11 +100,17 @@ paramsSearch["address-city:exact"] = (query) => {
 //#endregion
 //#region address-country
 paramsSearchFields["address-country"] = ["address.country"];
-paramsSearchFields["address-country:contains"] = paramsSearchFields["address-country"];
-paramsSearchFields["address-country:exact"] = paramsSearchFields["address-country"];
+paramsSearchFields["address-country:contains"] =
+    paramsSearchFields["address-country"];
+paramsSearchFields["address-country:exact"] =
+    paramsSearchFields["address-country"];
 paramsSearch["address-country"] = (query) => {
     try {
-        queryHandler.getStringQuery(query, paramsSearchFields, "address-country");
+        queryHandler.getStringQuery(
+            query,
+            paramsSearchFields,
+            "address-country"
+        );
     } catch (e) {
         console.error(e);
         throw e;
@@ -102,7 +118,11 @@ paramsSearch["address-country"] = (query) => {
 };
 paramsSearch["address-country:contains"] = (query) => {
     try {
-        queryHandler.getStringQuery(query, paramsSearchFields, "address-country:contains");
+        queryHandler.getStringQuery(
+            query,
+            paramsSearchFields,
+            "address-country:contains"
+        );
     } catch (e) {
         console.error(e);
         throw e;
@@ -110,7 +130,11 @@ paramsSearch["address-country:contains"] = (query) => {
 };
 paramsSearch["address-country:exact"] = (query) => {
     try {
-        queryHandler.getStringQuery(query, paramsSearchFields, "address-country:exact");
+        queryHandler.getStringQuery(
+            query,
+            paramsSearchFields,
+            "address-country:exact"
+        );
     } catch (e) {
         console.error(e);
         throw e;
@@ -119,11 +143,17 @@ paramsSearch["address-country:exact"] = (query) => {
 //#endregion
 //#region address-postalcode
 paramsSearchFields["address-postalcode"] = ["address.postalCode"];
-paramsSearchFields["address-postalcode:contains"] = paramsSearchFields["address-postalcode"];
-paramsSearchFields["address-postalcode:exact"] = paramsSearchFields["address-postalcode"];
+paramsSearchFields["address-postalcode:contains"] =
+    paramsSearchFields["address-postalcode"];
+paramsSearchFields["address-postalcode:exact"] =
+    paramsSearchFields["address-postalcode"];
 paramsSearch["address-postalcode"] = (query) => {
     try {
-        queryHandler.getStringQuery(query, paramsSearchFields, "address-postalcode");
+        queryHandler.getStringQuery(
+            query,
+            paramsSearchFields,
+            "address-postalcode"
+        );
     } catch (e) {
         console.error(e);
         throw e;
@@ -131,7 +161,11 @@ paramsSearch["address-postalcode"] = (query) => {
 };
 paramsSearch["address-postalcode:contains"] = (query) => {
     try {
-        queryHandler.getStringQuery(query, paramsSearchFields, "address-postalcode:contains");
+        queryHandler.getStringQuery(
+            query,
+            paramsSearchFields,
+            "address-postalcode:contains"
+        );
     } catch (e) {
         console.error(e);
         throw e;
@@ -139,7 +173,11 @@ paramsSearch["address-postalcode:contains"] = (query) => {
 };
 paramsSearch["address-postalcode:exact"] = (query) => {
     try {
-        queryHandler.getStringQuery(query, paramsSearchFields, "address-postalcode:exact");
+        queryHandler.getStringQuery(
+            query,
+            paramsSearchFields,
+            "address-postalcode:exact"
+        );
     } catch (e) {
         console.error(e);
         throw e;
@@ -148,7 +186,8 @@ paramsSearch["address-postalcode:exact"] = (query) => {
 //#endregion
 //#region address-state
 paramsSearchFields["address-state"] = ["address.state"];
-paramsSearchFields["address-state:contains"] = paramsSearchFields["address-state"];
+paramsSearchFields["address-state:contains"] =
+    paramsSearchFields["address-state"];
 paramsSearchFields["address-state:exact"] = paramsSearchFields["address-state"];
 paramsSearch["address-state"] = (query) => {
     try {
@@ -160,7 +199,11 @@ paramsSearch["address-state"] = (query) => {
 };
 paramsSearch["address-state:contains"] = (query) => {
     try {
-        queryHandler.getStringQuery(query, paramsSearchFields, "address-state:contains");
+        queryHandler.getStringQuery(
+            query,
+            paramsSearchFields,
+            "address-state:contains"
+        );
     } catch (e) {
         console.error(e);
         throw e;
@@ -168,7 +211,11 @@ paramsSearch["address-state:contains"] = (query) => {
 };
 paramsSearch["address-state:exact"] = (query) => {
     try {
-        queryHandler.getStringQuery(query, paramsSearchFields, "address-state:exact");
+        queryHandler.getStringQuery(
+            query,
+            paramsSearchFields,
+            "address-state:exact"
+        );
     } catch (e) {
         console.error(e);
         throw e;
@@ -184,7 +231,12 @@ address_useSearchFunc["address.use"] = (item, field) => {
 
 paramsSearch["address-use"] = (query) => {
     try {
-        queryHandler.getPolyTokenQuery(query, paramsSearchFields, "address-use", address_useSearchFunc);
+        queryHandler.getPolyTokenQuery(
+            query,
+            paramsSearchFields,
+            "address-use",
+            address_useSearchFunc
+        );
     } catch (e) {
         console.error(e);
         throw e;
@@ -200,7 +252,12 @@ birthdateSearchFunc["birthDate"] = (value, field) => {
 
 paramsSearch["birthdate"] = (query) => {
     try {
-        queryHandler.getPolyDateQuery(query, paramsSearchFields, "birthdate", birthdateSearchFunc);
+        queryHandler.getPolyDateQuery(
+            query,
+            paramsSearchFields,
+            "birthdate",
+            birthdateSearchFunc
+        );
     } catch (e) {
         console.error(e);
         throw e;
@@ -232,7 +289,11 @@ paramsSearch["family"] = (query) => {
 };
 paramsSearch["family:contains"] = (query) => {
     try {
-        queryHandler.getStringQuery(query, paramsSearchFields, "family:contains");
+        queryHandler.getStringQuery(
+            query,
+            paramsSearchFields,
+            "family:contains"
+        );
     } catch (e) {
         console.error(e);
         throw e;
@@ -256,7 +317,12 @@ genderSearchFunc["gender"] = (item, field) => {
 
 paramsSearch["gender"] = (query) => {
     try {
-        queryHandler.getPolyTokenQuery(query, paramsSearchFields, "gender", genderSearchFunc);
+        queryHandler.getPolyTokenQuery(
+            query,
+            paramsSearchFields,
+            "gender",
+            genderSearchFunc
+        );
     } catch (e) {
         console.error(e);
         throw e;
@@ -277,7 +343,11 @@ paramsSearch["given"] = (query) => {
 };
 paramsSearch["given:contains"] = (query) => {
     try {
-        queryHandler.getStringQuery(query, paramsSearchFields, "given:contains");
+        queryHandler.getStringQuery(
+            query,
+            paramsSearchFields,
+            "given:contains"
+        );
     } catch (e) {
         console.error(e);
         throw e;
@@ -317,7 +387,11 @@ paramsSearch["phonetic"] = (query) => {
 };
 paramsSearch["phonetic:contains"] = (query) => {
     try {
-        queryHandler.getStringQuery(query, paramsSearchFields, "phonetic:contains");
+        queryHandler.getStringQuery(
+            query,
+            paramsSearchFields,
+            "phonetic:contains"
+        );
     } catch (e) {
         console.error(e);
         throw e;
@@ -325,7 +399,11 @@ paramsSearch["phonetic:contains"] = (query) => {
 };
 paramsSearch["phonetic:exact"] = (query) => {
     try {
-        queryHandler.getStringQuery(query, paramsSearchFields, "phonetic:exact");
+        queryHandler.getStringQuery(
+            query,
+            paramsSearchFields,
+            "phonetic:exact"
+        );
     } catch (e) {
         console.error(e);
         throw e;
@@ -341,7 +419,12 @@ telecomSearchFunc["telecom"] = (item, field) => {
 
 paramsSearch["telecom"] = (query) => {
     try {
-        queryHandler.getPolyTokenQuery(query, paramsSearchFields, "telecom", telecomSearchFunc);
+        queryHandler.getPolyTokenQuery(
+            query,
+            paramsSearchFields,
+            "telecom",
+            telecomSearchFunc
+        );
     } catch (e) {
         console.error(e);
         throw e;
@@ -357,7 +440,12 @@ activeSearchFunc["active"] = (item, field) => {
 
 paramsSearch["active"] = (query) => {
     try {
-        queryHandler.getPolyTokenQuery(query, paramsSearchFields, "active", activeSearchFunc);
+        queryHandler.getPolyTokenQuery(
+            query,
+            paramsSearchFields,
+            "active",
+            activeSearchFunc
+        );
     } catch (e) {
         console.error(e);
         throw e;
@@ -373,7 +461,12 @@ death_dateSearchFunc["deceasedDateTime"] = (value, field) => {
 
 paramsSearch["death-date"] = (query) => {
     try {
-        queryHandler.getPolyDateQuery(query, paramsSearchFields, "death-date", death_dateSearchFunc);
+        queryHandler.getPolyDateQuery(
+            query,
+            paramsSearchFields,
+            "death-date",
+            death_dateSearchFunc
+        );
     } catch (e) {
         console.error(e);
         throw e;
@@ -389,7 +482,12 @@ deceasedSearchFunc["deceasedBoolean"] = (item, field) => {
 
 paramsSearch["deceased"] = (query) => {
     try {
-        queryHandler.getPolyTokenQuery(query, paramsSearchFields, "deceased", deceasedSearchFunc);
+        queryHandler.getPolyTokenQuery(
+            query,
+            paramsSearchFields,
+            "deceased",
+            deceasedSearchFunc
+        );
     } catch (e) {
         console.error(e);
         throw e;
@@ -400,7 +498,11 @@ paramsSearch["deceased"] = (query) => {
 paramsSearchFields["general-practitioner"] = ["generalPractitioner.reference"];
 paramsSearch["general-practitioner"] = (query) => {
     try {
-        queryHandler.getReferenceQuery(query, paramsSearchFields, "general-practitioner");
+        queryHandler.getReferenceQuery(
+            query,
+            paramsSearchFields,
+            "general-practitioner"
+        );
     } catch (e) {
         console.error(e);
         throw e;
@@ -427,7 +529,12 @@ languageSearchFunc["communication.language"] = (item, field) => {
 
 paramsSearch["language"] = (query) => {
     try {
-        queryHandler.getPolyTokenQuery(query, paramsSearchFields, "language", languageSearchFunc);
+        queryHandler.getPolyTokenQuery(
+            query,
+            paramsSearchFields,
+            "language",
+            languageSearchFunc
+        );
     } catch (e) {
         console.error(e);
         throw e;
@@ -476,7 +583,11 @@ paramsSearch["name:exact"] = (query) => {
 paramsSearchFields["organization"] = ["managingOrganization.reference"];
 paramsSearch["organization"] = (query) => {
     try {
-        queryHandler.getReferenceQuery(query, paramsSearchFields, "organization");
+        queryHandler.getReferenceQuery(
+            query,
+            paramsSearchFields,
+            "organization"
+        );
     } catch (e) {
         console.error(e);
         throw e;

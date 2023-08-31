@@ -1,23 +1,21 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const positiveInt = require('../FHIRDataTypesSchema/positiveInt');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const positiveInt = require("../FHIRDataTypesSchema/positiveInt");
 const {
     CodeableConcept
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     Reference
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     Quantity
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const {
-    Money
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const { Money } = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     CoverageEligibilityRequest_Diagnosis
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 
 const {
     CoverageEligibilityRequest_Item
@@ -72,4 +70,5 @@ CoverageEligibilityRequest_Item.add({
         default: void 0
     }
 });
-module.exports.CoverageEligibilityRequest_Item = CoverageEligibilityRequest_Item;
+module.exports.CoverageEligibilityRequest_Item =
+    CoverageEligibilityRequest_Item;

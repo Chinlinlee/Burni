@@ -1,15 +1,11 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const string = require('../FHIRDataTypesSchema/string');
-const {
-    Period
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-
-const {
-    Address
 } = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const string = require("../FHIRDataTypesSchema/string");
+const { Period } = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+
+const { Address } = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 Address.add({
     extension: {
         type: [Extension],

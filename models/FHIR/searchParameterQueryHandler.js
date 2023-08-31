@@ -1,10 +1,10 @@
-const queryBuild = require('./queryBuild');
-const _ = require('lodash');
-const { getCommaSplitArray } = require('./queryBuild');
+const queryBuild = require("./queryBuild");
+const _ = require("lodash");
+const { getCommaSplitArray } = require("./queryBuild");
 
 /**
  * @example <caption>Example of `address-city` of search parameter of the Patient resource</caption>
- * // refresh query object to 
+ * // refresh query object to
  * // {
  * //    "$and": [
  * //       {
@@ -24,7 +24,7 @@ const { getCommaSplitArray } = require('./queryBuild');
  *    "gender": "male",
  *    "$and": []
  * }, ["address.city"], "address-city");
- * @param {string} query The request query object 
+ * @param {string} query The request query object
  * @param {Array<string>} paramsSearchFields The fields of search parameter that in resource
  * @param {string} queryFieldName The name of search parameter
  */
@@ -41,7 +41,7 @@ function getStringQuery(query, paramsSearchFields, queryFieldName) {
             for (let index in commaSeparatedValue) {
                 let value = commaSeparatedValue[index];
                 let buildResult = {
-                    [field] : queryBuild.stringQuery(value, queryFieldName)
+                    [field]: queryBuild.stringQuery(value, queryFieldName)
                 };
                 buildQs.$or.push(buildResult);
             }
@@ -55,7 +55,7 @@ function getStringQuery(query, paramsSearchFields, queryFieldName) {
 
 /**
  * @example <caption>Example of `address` of search parameter of the Patient resource</caption>
- * // refresh query object to 
+ * // refresh query object to
  * // {
  * //     "$and": [
  * //         {
@@ -100,8 +100,8 @@ function getStringQuery(query, paramsSearchFields, queryFieldName) {
  *    "gender": "male",
  *    "$and": []
  * }, "address");
- * @param {string} query The request query object 
- * @param {string} queryFieldName The name of search parameter 
+ * @param {string} query The request query object
+ * @param {string} queryFieldName The name of search parameter
  */
 function getAddressQuery(query, queryFieldName) {
     if (!_.isArray(query[queryFieldName])) {
@@ -109,10 +109,10 @@ function getAddressQuery(query, queryFieldName) {
     }
     for (let item of query[queryFieldName]) {
         let buildQs = {
-            $or : []
+            $or: []
         };
         let buildResult = queryBuild.addressQuery(item, queryFieldName);
-        buildQs.$or = [...buildQs.$or , ...buildResult.$or];
+        buildQs.$or = [...buildQs.$or, ...buildResult.$or];
         query.$and.push({
             ...buildQs
         });
@@ -122,7 +122,7 @@ function getAddressQuery(query, queryFieldName) {
 
 /**
  * @example <caption>Example of `name` of search parameter of the Patient resource</caption>
- * // refresh query object to 
+ * // refresh query object to
  * // {
  * //     "$and": [
  * //         {
@@ -174,9 +174,9 @@ function getNameQuery(query, queryFieldName) {
     }
     for (let item of query[queryFieldName]) {
         let buildQs = {
-            $or : []
+            $or: []
         };
-        let buildResult = queryBuild.nameQuery(item , queryFieldName);
+        let buildResult = queryBuild.nameQuery(item, queryFieldName);
         buildQs.$or.push(buildResult);
         query.$and.push({
             ...buildQs
@@ -186,7 +186,7 @@ function getNameQuery(query, queryFieldName) {
 }
 
 /**
- * 
+ *
  * @param {string} query The request query object that in resource
  * @param {Array<string>} paramsSearchFields The fields of search parameter that in resource
  * @param {string} queryFieldName The name of search parameter
@@ -197,10 +197,10 @@ function getTokenQuery(query, paramsSearchFields, queryFieldName) {
     }
     for (let item of query[queryFieldName]) {
         let buildQs = {
-            $or : []
+            $or: []
         };
         for (let field of paramsSearchFields[queryFieldName]) {
-            let buildResult =queryBuild.tokenQuery(item , "value" , field);
+            let buildResult = queryBuild.tokenQuery(item, "value", field);
             buildQs.$or.push(buildResult);
         }
         query.$and.push({
@@ -208,12 +208,12 @@ function getTokenQuery(query, paramsSearchFields, queryFieldName) {
         });
     }
     delete query[queryFieldName];
-    console.log(JSON.stringify(query, null , 4));
+    console.log(JSON.stringify(query, null, 4));
 }
 
 /**
  * @example <caption>Example of `address-use` of search parameter of the Patient resource</caption>
- * // refresh query object to 
+ * // refresh query object to
  * // {
  * //     "$and": [
  * //         {
@@ -221,7 +221,7 @@ function getTokenQuery(query, paramsSearchFields, queryFieldName) {
  * //                 {
  * //                     "$or": [
  * //                         {
- * //                             "address.use.system": "home" //because some data types have system 
+ * //                             "address.use.system": "home" //because some data types have system
  * //                         },
  * //                         {
  * //                             "address.use": "home"
@@ -248,7 +248,12 @@ function getTokenQuery(query, paramsSearchFields, queryFieldName) {
  * @param {string} queryFieldName The name of search parameter
  * @param {function} paramsSearchFunc parameter search function corresponds to data type e.g. code, codeable concept
  */
-function getPolyTokenQuery(query, paramsSearchFields, queryFieldName, paramsSearchFunc) {
+function getPolyTokenQuery(
+    query,
+    paramsSearchFields,
+    queryFieldName,
+    paramsSearchFunc
+) {
     if (!_.isArray(query[queryFieldName])) {
         query[queryFieldName] = [query[queryFieldName]];
     }
@@ -269,7 +274,7 @@ function getPolyTokenQuery(query, paramsSearchFields, queryFieldName, paramsSear
 
 /**
  * @example <caption>Example of `variant-start` of search parameter of the Molecularsequence resource</caption>
- * // refresh query object to 
+ * // refresh query object to
  * // {
  * //     "$and": [
  * //         {
@@ -285,10 +290,10 @@ function getPolyTokenQuery(query, paramsSearchFields, queryFieldName, paramsSear
  * // }
  * getNumberQuery(
  * {
- *     "$and": [], 
+ *     "$and": [],
  *     "variant-start" : 22125503
  * }, ["variant.start"], "variant-start");
- * @param {string} query The request query object 
+ * @param {string} query The request query object
  * @param {Array<string>} paramsSearchFields The fields of search parameters that in resource
  * @param {string} queryFieldName The name of search parameter
  */
@@ -344,7 +349,12 @@ function getNumberQuery(query, paramsSearchFields, queryFieldName) {
  * @param {string} queryFieldName The name of search parameter
  * @param {function} paramsSearchFunc parameter search function corresponds to data type e.g. date, dateTime
  */
-function getPolyDateQuery(query, paramsSearchFields, queryFieldName, paramsSearchFunc) {
+function getPolyDateQuery(
+    query,
+    paramsSearchFields,
+    queryFieldName,
+    paramsSearchFunc
+) {
     if (!_.isArray(query[queryFieldName])) {
         query[queryFieldName] = [query[queryFieldName]];
     }
@@ -363,16 +373,21 @@ function getPolyDateQuery(query, paramsSearchFields, queryFieldName, paramsSearc
     delete query[queryFieldName];
 }
 
-function getReferenceQuery(query, paramsSearchFields, queryFieldName, type="") {
+function getReferenceQuery(
+    query,
+    paramsSearchFields,
+    queryFieldName,
+    type = ""
+) {
     if (!_.isArray(query[queryFieldName])) {
         query[queryFieldName] = [query[queryFieldName]];
     }
     for (let item of query[queryFieldName]) {
         let buildQs = {
-            $or : []
+            $or: []
         };
         for (let field of paramsSearchFields[queryFieldName]) {
-            let buildResult =queryBuild.referenceQuery(item , field, type);
+            let buildResult = queryBuild.referenceQuery(item, field, type);
             buildQs.$or.push(buildResult);
         }
         query.$and.push({
@@ -382,7 +397,7 @@ function getReferenceQuery(query, paramsSearchFields, queryFieldName, type="") {
     delete query[queryFieldName];
 }
 
-function getQuantityQuery (query, paramsSearchFields, queryFieldName) {
+function getQuantityQuery(query, paramsSearchFields, queryFieldName) {
     if (!_.isArray(query[queryFieldName])) {
         query[queryFieldName] = [query[queryFieldName]];
     }

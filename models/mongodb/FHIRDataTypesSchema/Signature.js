@@ -1,16 +1,14 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const {
-    Coding
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const instant = require('../FHIRDataTypesSchema/instant');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const { Coding } = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const instant = require("../FHIRDataTypesSchema/instant");
 const {
     Reference
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const code = require('../FHIRDataTypesSchema/code');
-const base64Binary = require('../FHIRDataTypesSchema/base64Binary');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const code = require("../FHIRDataTypesSchema/code");
+const base64Binary = require("../FHIRDataTypesSchema/base64Binary");
 
 const {
     Signature

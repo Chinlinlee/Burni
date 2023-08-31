@@ -1,17 +1,17 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const code = require('../FHIRDataTypesSchema/code');
-const integer = require('../FHIRDataTypesSchema/integer');
-const string = require('../FHIRDataTypesSchema/string');
-const canonical = require('../FHIRDataTypesSchema/canonical');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const code = require("../FHIRDataTypesSchema/code");
+const integer = require("../FHIRDataTypesSchema/integer");
+const string = require("../FHIRDataTypesSchema/string");
+const canonical = require("../FHIRDataTypesSchema/canonical");
 const {
     OperationDefinition_Binding
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     OperationDefinition_ReferencedFrom
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 
 const {
     OperationDefinition_Parameter
@@ -41,7 +41,17 @@ OperationDefinition_Parameter.add({
     },
     searchType: {
         type: String,
-        enum: ["number", "date", "string", "token", "reference", "composite", "quantity", "uri", "special"],
+        enum: [
+            "number",
+            "date",
+            "string",
+            "token",
+            "reference",
+            "composite",
+            "quantity",
+            "uri",
+            "special"
+        ],
         default: void 0
     },
     binding: {

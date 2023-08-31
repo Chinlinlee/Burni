@@ -1,12 +1,12 @@
-const mongodb = require('models/mongodb');
-const uuid = require('uuid');
-const _ = require('lodash');
-const { getNotExistReferenceList } = require('../apiService');
-const FHIR = require('fhir').Fhir;
-const { validateContainedList } = require('./validateContained');
+const mongodb = require("models/mongodb");
+const uuid = require("uuid");
+const _ = require("lodash");
+const { getNotExistReferenceList } = require("../apiService");
+const FHIR = require("fhir").Fhir;
+const { validateContainedList } = require("./validateContained");
 const { renameCollectionFieldName } = require("../apiService");
-const { logger } = require('../../utils/log');
-const path = require('path');
+const { logger } = require("../../utils/log");
+const path = require("path");
 const {
     issue,
     OperationOutcome,
@@ -15,40 +15,41 @@ const {
 
 const responseFunc = {
     /**
-     * 
-     * @param {Object} doc 
+     *
+     * @param {Object} doc
      * @param {import('express').Request} req express request
      * @param {import('express').Response} res express response
      * @param {string} resourceType resource type
-     * @param {function} doResCallback callback function 
-     * @returns 
+     * @param {function} doResCallback callback function
+     * @returns
      */
-    "true": (doc, req, res, resourceType, doResCallback) => {
-        let reqBaseUrl = `${req.protocol}://${req.get('host')}/`;
+    true: (doc, req, res, resourceType, doResCallback) => {
+        let reqBaseUrl = `${req.protocol}://${req.get("host")}/`;
         let fullAbsoluteUrl = new URL(req.originalUrl, reqBaseUrl).href;
         res.set("Location", fullAbsoluteUrl);
-        res.append("Last-Modified", (new Date()).toUTCString());
-        logger.info(`[Info: create id: ${doc.id} successfully] [Resource Type: ${resourceType}]`);
-        return doResCallback(201 , doc);
+        res.append("Last-Modified", new Date().toUTCString());
+        logger.info(
+            `[Info: create id: ${doc.id} successfully] [Resource Type: ${resourceType}]`
+        );
+        return doResCallback(201, doc);
     },
     /**
-     * 
-     * @param {Object} err 
+     *
+     * @param {Object} err
      * @param {import('express').Request} req express request
      * @param {import('express').Response} res express response
      * @param {string} resourceType resource type
-     * @param {function} doResCallback callback function 
-     * @returns 
+     * @param {function} doResCallback callback function
+     * @returns
      */
-    "false": (err, req, res, resourceType, doResCallback) => {
+    false: (err, req, res, resourceType, doResCallback) => {
         let operationOutcomeMessage;
         if (err.message.code == 11000) {
             operationOutcomeMessage = {
-                code : 409 ,
-                msg : handleError.duplicate(err.message)
+                code: 409,
+                msg: handleError.duplicate(err.message)
             };
         } else if (err.stack.includes("ValidationError")) {
-
             let operationOutcomeError = new OperationOutcome([]);
             for (let errorKey in err.errors) {
                 let error = err.errors[errorKey];
@@ -58,34 +59,44 @@ const responseFunc = {
                 operationOutcomeError.issue.push(errorIssue);
             }
             operationOutcomeMessage = {
-                code : 400 ,
-                msg : operationOutcomeError
+                code: 400,
+                msg: operationOutcomeError
             };
-
         } else if (err.stack.includes("stored by resource")) {
             operationOutcomeMessage = {
-                code : 400 ,
-                msg : handleError.processing(err.message)
+                code: 400,
+                msg: handleError.processing(err.message)
             };
         } else {
             operationOutcomeMessage = {
-                code : 500 ,
-                msg : handleError.exception(err.message)
+                code: 500,
+                msg: handleError.exception(err.message)
             };
         }
-        logger.error(`[Error: ${JSON.stringify(operationOutcomeMessage)}] [Resource Type: ${resourceType}]`);
-        return doResCallback(operationOutcomeMessage.code , operationOutcomeMessage.msg);
+        logger.error(
+            `[Error: ${JSON.stringify(
+                operationOutcomeMessage
+            )}] [Resource Type: ${resourceType}]`
+        );
+        return doResCallback(
+            operationOutcomeMessage.code,
+            operationOutcomeMessage.msg
+        );
     }
 };
 /**
- * @param {import("express").Request} req 
- * @param {import("express").Response} res 
- * @param {String} resourceType 
- * @returns 
+ * @param {import("express").Request} req
+ * @param {import("express").Response} res
+ * @param {String} resourceType
+ * @returns
  */
-module.exports = async function(req, res , resourceType) {
-    logger.info(`[Info: do create] [Resource Type: ${resourceType}] [Content-Type: ${res.getHeader("content-type")}]`);
-    let doRes = function (code , item) {
+module.exports = async function (req, res, resourceType) {
+    logger.info(
+        `[Info: do create] [Resource Type: ${resourceType}] [Content-Type: ${res.getHeader(
+            "content-type"
+        )}]`
+    );
+    let doRes = function (code, item) {
         if (res.getHeader("content-type").includes("xml")) {
             let fhir = new FHIR();
             let xmlItem = fhir.objToXml(item._doc);
@@ -99,15 +110,24 @@ module.exports = async function(req, res , resourceType) {
 
         // Validate user request body
         if (process.env.ENABLE_VALIDATOR === "true") {
-            let { validateResource } = require("../../utils/validator/processor");
+            let {
+                validateResource
+            } = require("../../utils/validator/processor");
             let validationResult = await validateResource(req.body);
 
-            if (validationResult.isError) return doRes(422, validationResult.message);
+            if (validationResult.isError)
+                return doRes(422, validationResult.message);
         } else {
             let containedValidation = await validateContainedList(insertData);
             if (!containedValidation.status) {
-                let operationOutcomeError = handleError.processing(`The resource in contained error. ${containedValidation.message}`);
-                logger.error(`[Error: ${JSON.stringify(operationOutcomeError)}] [Resource Type: ${resourceType}]`);
+                let operationOutcomeError = handleError.processing(
+                    `The resource in contained error. ${containedValidation.message}`
+                );
+                logger.error(
+                    `[Error: ${JSON.stringify(
+                        operationOutcomeError
+                    )}] [Resource Type: ${resourceType}]`
+                );
                 return doRes(422, operationOutcomeError);
             }
         }
@@ -118,11 +138,11 @@ module.exports = async function(req, res , resourceType) {
         let errorStr = JSON.stringify(e, Object.getOwnPropertyNames(e));
         logger.error(`[Error: ${errorStr})}] [Resource Type: ${resourceType}]`);
         let operationOutcomeError = handleError.exception(e);
-        return doRes(500 , operationOutcomeError);
+        return doRes(500, operationOutcomeError);
     }
 };
 
-async function doInsertData(insertData , resourceType) {
+async function doInsertData(insertData, resourceType) {
     try {
         renameCollectionFieldName(insertData);
         insertData.id = uuid.v4();
@@ -132,6 +152,6 @@ async function doInsertData(insertData , resourceType) {
     } catch (e) {
         let errorStr = JSON.stringify(e, Object.getOwnPropertyNames(e));
         logger.error(`[Error: ${errorStr}] [Resource Type: ${resourceType}]`);
-        return [false , e];
+        return [false, e];
     }
 }

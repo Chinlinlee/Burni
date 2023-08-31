@@ -1,8 +1,8 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const integer = require('../FHIRDataTypesSchema/integer');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const integer = require("../FHIRDataTypesSchema/integer");
 
 const {
     MolecularSequence_Outer

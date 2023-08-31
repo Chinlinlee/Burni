@@ -1,11 +1,11 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const id = require('../FHIRDataTypesSchema/id');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const id = require("../FHIRDataTypesSchema/id");
 const {
     Reference
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 
 const {
     MessageHeader_Response

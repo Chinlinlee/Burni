@@ -1,8 +1,8 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const boolean = require('../FHIRDataTypesSchema/boolean');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const boolean = require("../FHIRDataTypesSchema/boolean");
 
 const {
     TerminologyCapabilities_Translation
@@ -18,4 +18,5 @@ TerminologyCapabilities_Translation.add({
     },
     needsMap: boolean
 });
-module.exports.TerminologyCapabilities_Translation = TerminologyCapabilities_Translation;
+module.exports.TerminologyCapabilities_Translation =
+    TerminologyCapabilities_Translation;

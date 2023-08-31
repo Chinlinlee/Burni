@@ -1,18 +1,16 @@
-const mongodb = require('models/mongodb');
-const {
-    handleError
-} = require('../../models/FHIR/httpMessage');
-const FHIR = require('fhir').Fhir;
-const { logger } = require('../../utils/log');
-const path = require('path');
+const mongodb = require("models/mongodb");
+const { handleError } = require("../../models/FHIR/httpMessage");
+const FHIR = require("fhir").Fhir;
+const { logger } = require("../../utils/log");
+const path = require("path");
 
 /**
- * @param {import("express").Request} req 
- * @param {import("express").Response} res 
- * @param {String} resourceType 
- * @returns 
+ * @param {import("express").Request} req
+ * @param {import("express").Response} res
+ * @param {String} resourceType
+ * @returns
  */
-module.exports = async function (req , res , resourceType) {
+module.exports = async function (req, res, resourceType) {
     let doRes = function (code, item) {
         if (res.getHeader("content-type").includes("xml")) {
             let fhir = new FHIR();
@@ -22,14 +20,23 @@ module.exports = async function (req , res , resourceType) {
         return res.status(code).send(item);
     };
     let id = req.params.id;
-    logger.info(`[Info: do read] [Resource Type: ${resourceType}] [ID: ${id}] [Content-Type: ${res.getHeader("content-type")}]`);
+    logger.info(
+        `[Info: do read] [Resource Type: ${resourceType}] [ID: ${id}] [Content-Type: ${res.getHeader(
+            "content-type"
+        )}]`
+    );
     try {
-        let docs = await mongodb[resourceType].findOne({
-            id: id
-        }).exec();
+        let docs = await mongodb[resourceType]
+            .findOne({
+                id: id
+            })
+            .exec();
         if (docs) {
             let responseDoc = docs.getFHIRField();
-            res.header('Last-Modified', new Date(responseDoc.meta.lastUpdated).toUTCString());
+            res.header(
+                "Last-Modified",
+                new Date(responseDoc.meta.lastUpdated).toUTCString()
+            );
             return doRes(200, responseDoc);
         }
         let errorMessage = `not found ${resourceType}/${id}`;

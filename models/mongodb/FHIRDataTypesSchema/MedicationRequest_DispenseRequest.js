@@ -1,23 +1,21 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     MedicationRequest_InitialFill
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     Duration
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const {
-    Period
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const unsignedInt = require('../FHIRDataTypesSchema/unsignedInt');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const { Period } = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const unsignedInt = require("../FHIRDataTypesSchema/unsignedInt");
 const {
     Quantity
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     Reference
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 
 const {
     MedicationRequest_DispenseRequest
@@ -57,4 +55,5 @@ MedicationRequest_DispenseRequest.add({
         default: void 0
     }
 });
-module.exports.MedicationRequest_DispenseRequest = MedicationRequest_DispenseRequest;
+module.exports.MedicationRequest_DispenseRequest =
+    MedicationRequest_DispenseRequest;

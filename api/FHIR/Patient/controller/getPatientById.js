@@ -1,5 +1,5 @@
-const read = require('../../../FHIRApiService/read');
+const read = require("../../../FHIRApiService/read");
 
-module.exports = async function(req, res) {
+module.exports = async function (req, res) {
     return await read(req, res, "Patient");
 };

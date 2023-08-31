@@ -1,14 +1,14 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     CodeableConcept
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const string = require('../FHIRDataTypesSchema/string');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const string = require("../FHIRDataTypesSchema/string");
 const {
     Quantity
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 
 const {
     MedicationKnowledge_DrugCharacteristic
@@ -37,4 +37,5 @@ MedicationKnowledge_DrugCharacteristic.add({
     },
     valueBase64Binary: string
 });
-module.exports.MedicationKnowledge_DrugCharacteristic = MedicationKnowledge_DrugCharacteristic;
+module.exports.MedicationKnowledge_DrugCharacteristic =
+    MedicationKnowledge_DrugCharacteristic;

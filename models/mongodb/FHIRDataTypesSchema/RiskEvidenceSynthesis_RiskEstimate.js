@@ -1,16 +1,16 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const string = require('../FHIRDataTypesSchema/string');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const string = require("../FHIRDataTypesSchema/string");
 const {
     CodeableConcept
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const decimal = require('../FHIRDataTypesSchema/decimal');
-const integer = require('../FHIRDataTypesSchema/integer');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const decimal = require("../FHIRDataTypesSchema/decimal");
+const integer = require("../FHIRDataTypesSchema/integer");
 const {
     RiskEvidenceSynthesis_PrecisionEstimate
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 
 const {
     RiskEvidenceSynthesis_RiskEstimate
@@ -41,4 +41,5 @@ RiskEvidenceSynthesis_RiskEstimate.add({
         default: void 0
     }
 });
-module.exports.RiskEvidenceSynthesis_RiskEstimate = RiskEvidenceSynthesis_RiskEstimate;
+module.exports.RiskEvidenceSynthesis_RiskEstimate =
+    RiskEvidenceSynthesis_RiskEstimate;
