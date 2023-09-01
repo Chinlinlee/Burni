@@ -1,12 +1,12 @@
-'use strict';
-const mongoose = require('mongoose');
+"use strict";
+const mongoose = require("mongoose");
 mongoose.Promise = global.Promise;
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 const basename = path.basename(module.filename);
-module.exports = exports = function(config) {
+module.exports = exports = function (config) {
     const id = config.MONGODB_USER;
-    const pwd = (config.MONGODB_PASSWORD);
+    const pwd = config.MONGODB_PASSWORD;
     const hosts = JSON.parse(config.MONGODB_HOSTS);
     const ports = JSON.parse(config.MONGODB_PORTS);
     const dbName = config.MONGODB_NAME;
@@ -24,76 +24,99 @@ module.exports = exports = function(config) {
     databaseUrl += `/${dbName}`;
 
     console.log(databaseUrl);
-    mongoose.connect(databaseUrl, {
-        // The following parameters are no longer supported by mongoose 6.x
+    mongoose
+        .connect(databaseUrl, {
+            // The following parameters are no longer supported by mongoose 6.x
 
-        // useCreateIndex: true,
-        // useNewUrlParser: true,
-        // useFindAndModify: false,
-        // useUnifiedTopology: true,
-        authSource: authDB,
-        auth: {
+            // useCreateIndex: true,
+            // useNewUrlParser: true,
+            // useFindAndModify: false,
+            // useUnifiedTopology: true,
             authSource: authDB,
-            username: id,
-            password: pwd
-        }
-    }).then(()=> {
-        if (process.env.MONGODB_IS_SHARDING_MODE == "true") {
-            mongoose.connection.db.admin().command({
-                enableSharding: dbName
-            })
-            .then(res=> {
-                console.log(`sharding database ${dbName} successfully`);
-                shardCollection('/model');
-                shardCollection('/staticModel');
-            })
-            .catch(err=> {
-                console.error(err);
-            });
-        }
-    }).catch(err => {
-        console.error(err);
-        process.exit(1);
-    });
-    
+            auth: {
+                authSource: authDB,
+                username: id,
+                password: pwd
+            }
+        })
+        .then(() => {
+            if (process.env.MONGODB_IS_SHARDING_MODE == "true") {
+                mongoose.connection.db
+                    .admin()
+                    .command({
+                        enableSharding: dbName
+                    })
+                    .then((res) => {
+                        console.log(`sharding database ${dbName} successfully`);
+                        shardCollection("/model");
+                        shardCollection("/staticModel");
+                    })
+                    .catch((err) => {
+                        console.error(err);
+                    });
+            }
+        })
+        .catch((err) => {
+            console.error(err);
+            process.exit(1);
+        });
+
     const db = mongoose.connection;
-    db.on('error', console.error.bind(console, 'connection error:'));
-    db.once('open', function() {
+    db.on("error", console.error.bind(console, "connection error:"));
+    db.once("open", function () {
         console.log("we're connected!");
     });
-    getCollections('/model', collection);
-    getCollections('/staticModel', collection);
+    getCollections("/model", collection);
+    getCollections("/staticModel", collection);
 
     return collection;
 };
 
-function getCollections (dirname, collectionObj) {
-    let jsFilesInDir = fs.readdirSync(__dirname + dirname)
-    .filter((file) => (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js'));
+function getCollections(dirname, collectionObj) {
+    let jsFilesInDir = fs
+        .readdirSync(__dirname + dirname)
+        .filter(
+            (file) =>
+                file.indexOf(".") !== 0 &&
+                file !== basename &&
+                file.slice(-3) === ".js"
+        );
     for (let file of jsFilesInDir) {
-        const moduleName = file.split('.')[0];
-        console.log('moduleName :: ', moduleName);
-        console.log('path : ', __dirname + dirname);
-        collectionObj[moduleName] = require(__dirname + dirname +'/' + moduleName)(mongoose);
+        const moduleName = file.split(".")[0];
+        console.log("moduleName :: ", moduleName);
+        console.log("path : ", __dirname + dirname);
+        collectionObj[moduleName] = require(
+            __dirname + dirname + "/" + moduleName
+        )(mongoose);
     }
 }
 
 function shardCollection(dirname) {
-    let jsFilesInDir = fs.readdirSync(__dirname + dirname)
-    .filter((file) => (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js'));
+    let jsFilesInDir = fs
+        .readdirSync(__dirname + dirname)
+        .filter(
+            (file) =>
+                file.indexOf(".") !== 0 &&
+                file !== basename &&
+                file.slice(-3) === ".js"
+        );
     for (let file of jsFilesInDir) {
-        const moduleName = file.split('.')[0];
+        const moduleName = file.split(".")[0];
         if (process.env.MONGODB_IS_SHARDING_MODE == "true") {
-            mongoose.connection.db.admin().command({
-                shardCollection: `${process.env.MONGODB_NAME}.${moduleName}`,
-                key: { id: "hashed" }
-            })
-            .then(res=> {
-                console.log(`sharding collection ${moduleName} successfully`);
-            })
-            .catch(err=> {
-                console.error(err);
-            });
+            mongoose.connection.db
+                .admin()
+                .command({
+                    shardCollection: `${process.env.MONGODB_NAME}.${moduleName}`,
+                    key: { id: "hashed" }
+                })
+                .then((res) => {
+                    console.log(
+                        `sharding collection ${moduleName} successfully`
+                    );
+                })
+                .catch((err) => {
+                    console.error(err);
+                });
         }
     }
 }

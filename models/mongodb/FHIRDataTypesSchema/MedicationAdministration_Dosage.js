@@ -1,17 +1,15 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const string = require('../FHIRDataTypesSchema/string');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const string = require("../FHIRDataTypesSchema/string");
 const {
     CodeableConcept
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     Quantity
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const {
-    Ratio
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const { Ratio } = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 
 const {
     MedicationAdministration_Dosage
@@ -51,4 +49,5 @@ MedicationAdministration_Dosage.add({
         default: void 0
     }
 });
-module.exports.MedicationAdministration_Dosage = MedicationAdministration_Dosage;
+module.exports.MedicationAdministration_Dosage =
+    MedicationAdministration_Dosage;

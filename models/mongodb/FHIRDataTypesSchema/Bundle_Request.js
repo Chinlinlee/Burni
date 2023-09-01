@@ -1,10 +1,10 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const uri = require('../FHIRDataTypesSchema/uri');
-const string = require('../FHIRDataTypesSchema/string');
-const instant = require('../FHIRDataTypesSchema/instant');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const uri = require("../FHIRDataTypesSchema/uri");
+const string = require("../FHIRDataTypesSchema/string");
+const instant = require("../FHIRDataTypesSchema/instant");
 
 const {
     Bundle_Request

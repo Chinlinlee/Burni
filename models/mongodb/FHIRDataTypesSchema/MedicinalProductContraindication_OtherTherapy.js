@@ -1,13 +1,13 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     CodeableConcept
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     Reference
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 
 const {
     MedicinalProductContraindication_OtherTherapy
@@ -35,4 +35,5 @@ MedicinalProductContraindication_OtherTherapy.add({
         default: void 0
     }
 });
-module.exports.MedicinalProductContraindication_OtherTherapy = MedicinalProductContraindication_OtherTherapy;
+module.exports.MedicinalProductContraindication_OtherTherapy =
+    MedicinalProductContraindication_OtherTherapy;

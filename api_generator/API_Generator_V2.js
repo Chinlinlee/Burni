@@ -1,11 +1,11 @@
-const fhirgen = require('../FHIR-mongoose-Models-Generator/resourceGenerator');
-const fs = require('fs');
-const path = require('path');
-const mkdirp = require('mkdirp');
-const beautify = require('js-beautify').js;
-const _ = require('lodash');
-require('dotenv').config();
-const { genParamFunc } = require('./searchParametersCodeGenerator');
+const fhirgen = require("../FHIR-mongoose-Models-Generator/resourceGenerator");
+const fs = require("fs");
+const path = require("path");
+const mkdirp = require("mkdirp");
+const beautify = require("js-beautify").js;
+const _ = require("lodash");
+require("dotenv").config();
+const { genParamFunc } = require("./searchParametersCodeGenerator");
 
 /**
  * @param {string} resource resource type
@@ -63,15 +63,17 @@ function getCodeUpdate(resource) {
 }
 
 /**
- * 
- * @param {Object} option 
+ *
+ * @param {Object} option
  * @param {Array} option.resources the resources want to use
  * @param {Boolean} option.generateAllResources
  */
 function generateAPI(option) {
-
     for (let res in option) {
-        fhirgen(res, { resourcePath: "./models/mongodb/model", typePath: "./models/mongodb/FHIRTypeSchema" });
+        fhirgen(res, {
+            resourcePath: "./models/mongodb/model",
+            typePath: "./models/mongodb/FHIRTypeSchema"
+        });
     }
 
     for (let res in option) {
@@ -122,20 +124,28 @@ function generateAPI(option) {
             delete query["_lastUpdated"];
         };
         `;
-        let searchParameter = require('./FHIRParametersClean.json');
+        let searchParameter = require("./FHIRParametersClean.json");
         let resSearchParams = searchParameter[res];
-        let resourceDefinition = require(`./to-code-use-definition/${res}.json`);
+        let resourceDefinition = require(
+            `./to-code-use-definition/${res}.json`
+        );
         for (let key in resSearchParams) {
             let paramObj = resSearchParams[key];
             let param = paramObj["parameter"];
             let type = paramObj["type"];
             let field = paramObj["field"];
             try {
-                let searchFuncTxt = genParamFunc[type](param, field, resourceDefinition);
-                resourceParameterHandler += (searchFuncTxt);
+                let searchFuncTxt = genParamFunc[type](
+                    param,
+                    field,
+                    resourceDefinition
+                );
+                resourceParameterHandler += searchFuncTxt;
             } catch (e) {
                 if (e.message.includes("not a function")) {
-                    console.error(`The parameter type "${type}" is not support`);
+                    console.error(
+                        `The parameter type "${type}" is not support`
+                    );
                 } else {
                     console.error(e);
                 }
@@ -209,7 +219,7 @@ function generateAPI(option) {
         `;
         //#endregion
 
-        //#region condition delete  
+        //#region condition delete
         const conditionDeleteJs = `
         const conditionDelete = require('../../../FHIRApiService/condition-delete');
         const {
@@ -228,17 +238,47 @@ function generateAPI(option) {
             return await validate(req,res, "${res}");
         };
         `;
-        
-        fs.writeFileSync(`./api/FHIR/${res}/controller/get${res}.js`, beautify(get));
-        fs.writeFileSync(`./api/FHIR/${res}/${res}ParametersHandler.js`, beautify(resourceParameterHandler));
-        fs.writeFileSync(`./api/FHIR/${res}/controller/get${res}ById.js`, beautify(getById));
-        fs.writeFileSync(`./api/FHIR/${res}/controller/get${res}History.js`, beautify(getHistory));
-        fs.writeFileSync(`./api/FHIR/${res}/controller/get${res}HistoryById.js`, beautify(getHistoryById));
-        fs.writeFileSync(`./api/FHIR/${res}/controller/post${res}.js`, beautify(post));
-        fs.writeFileSync(`./api/FHIR/${res}/controller/put${res}.js`, beautify(put));
-        fs.writeFileSync(`./api/FHIR/${res}/controller/delete${res}.js`, beautify(deleteJs));
-        fs.writeFileSync(`./api/FHIR/${res}/controller/condition-delete${res}.js`, beautify(conditionDeleteJs));
-        fs.writeFileSync(`./api/FHIR/${res}/controller/post${res}Validate.js`, beautify(validationScript));
+
+        fs.writeFileSync(
+            `./api/FHIR/${res}/controller/get${res}.js`,
+            beautify(get)
+        );
+        fs.writeFileSync(
+            `./api/FHIR/${res}/${res}ParametersHandler.js`,
+            beautify(resourceParameterHandler)
+        );
+        fs.writeFileSync(
+            `./api/FHIR/${res}/controller/get${res}ById.js`,
+            beautify(getById)
+        );
+        fs.writeFileSync(
+            `./api/FHIR/${res}/controller/get${res}History.js`,
+            beautify(getHistory)
+        );
+        fs.writeFileSync(
+            `./api/FHIR/${res}/controller/get${res}HistoryById.js`,
+            beautify(getHistoryById)
+        );
+        fs.writeFileSync(
+            `./api/FHIR/${res}/controller/post${res}.js`,
+            beautify(post)
+        );
+        fs.writeFileSync(
+            `./api/FHIR/${res}/controller/put${res}.js`,
+            beautify(put)
+        );
+        fs.writeFileSync(
+            `./api/FHIR/${res}/controller/delete${res}.js`,
+            beautify(deleteJs)
+        );
+        fs.writeFileSync(
+            `./api/FHIR/${res}/controller/condition-delete${res}.js`,
+            beautify(conditionDeleteJs)
+        );
+        fs.writeFileSync(
+            `./api/FHIR/${res}/controller/post${res}Validate.js`,
+            beautify(validationScript)
+        );
         let indexJs = `
         const express = require('express');
         const router = express.Router();
@@ -297,9 +337,10 @@ function generateAPI(option) {
     }
 }
 function getDirInFHIRAPI() {
-    let dirInFHIRAPI = fs.readdirSync('./api/FHIR', { withFileTypes: true })
-        .filter(itemInDir => itemInDir.isDirectory())
-        .map(dirItem => {
+    let dirInFHIRAPI = fs
+        .readdirSync("./api/FHIR", { withFileTypes: true })
+        .filter((itemInDir) => itemInDir.isDirectory())
+        .map((dirItem) => {
             if (dirItem.name.toLocaleLowerCase() != "metadata") {
                 return dirItem.name;
             }
@@ -311,28 +352,28 @@ function generateMetaData() {
     let dirInFHIRAPI = getDirInFHIRAPI();
     const fhirUrl = "http://hl7.org/fhir/R4";
     let metaData = {
-        "rest": [
+        rest: [
             {
-                "mode": "server",
-                "resource": []
+                mode: "server",
+                resource: []
             }
         ]
     };
-    
+
     for (let resource of dirInFHIRAPI) {
         metaData.rest[0].resource.push({
-            "type": resource,
-            "profile": `${fhirUrl}/${resource.toLocaleLowerCase()}.html`,
-            "interaction": getInteractionForResource(resource),
-            "versioning": "versioned",
-            "updateCreate": true,
-            "conditionalDelete": "single",
-            "searchInclude": [],
-            "searchRevInclude": [],
-            "searchParam": [
+            type: resource,
+            profile: `${fhirUrl}/${resource.toLocaleLowerCase()}.html`,
+            interaction: getInteractionForResource(resource),
+            versioning: "versioned",
+            updateCreate: true,
+            conditionalDelete: "single",
+            searchInclude: [],
+            searchRevInclude: [],
+            searchParam: [
                 {
-                    "name": "_id",
-                    "type": "string"
+                    name: "_id",
+                    type: "string"
                 }
             ]
         });
@@ -354,7 +395,10 @@ function generateMetaData() {
     router.get('/' , require('./controller/getMetadata'));
     
     module.exports = router;`;
-    fs.writeFileSync("./api/FHIR/metadata/index.js", beautify(metadataRouteIndexText));
+    fs.writeFileSync(
+        "./api/FHIR/metadata/index.js",
+        beautify(metadataRouteIndexText)
+    );
     let metadataText = `
     const uuid = require('uuid');
     const moment = require('moment');
@@ -376,7 +420,9 @@ function generateMetaData() {
             },
             "implementation": {
             "description": "Burni FHIR R4 Server",
-            "url": \`http://${process.env.FHIRSERVER_HOST}/${process.env.FHIRSERVER_APIPATH}\`
+            "url": \`http://${process.env.FHIRSERVER_HOST}/${
+                process.env.FHIRSERVER_APIPATH
+            }\`
             },
             "fhirVersion": "4.0.1",
             "format": [ "json" ],
@@ -385,45 +431,51 @@ function generateMetaData() {
         res.json(metaData);
     };
     `;
-    fs.writeFileSync("./api/FHIR/metadata/controller/getMetadata.js", beautify(metadataText));
+    fs.writeFileSync(
+        "./api/FHIR/metadata/controller/getMetadata.js",
+        beautify(metadataText)
+    );
 }
 
 function getInteractionForResource(resourceType) {
     let resourceConfig = require("../config/config");
-    let interactionConfig = _.get(resourceConfig, `${resourceType}.interaction`);
+    let interactionConfig = _.get(
+        resourceConfig,
+        `${resourceType}.interaction`
+    );
     let interaction = [];
     let mapping = {
-        "read": "read",
-        "vread": "vread",
-        "update": "update",
-        "delete": "delete",
-        "history": "history-instance",
-        "create": "create",
-        "search": "search-type"
+        read: "read",
+        vread: "vread",
+        update: "update",
+        delete: "delete",
+        history: "history-instance",
+        create: "create",
+        search: "search-type"
     };
     if (interaction) {
         for (let interactionName in interactionConfig) {
             interaction.push({
-                "code": mapping[interactionName]
+                code: mapping[interactionName]
             });
         }
         return interaction;
     } else {
         return [
             {
-                "code": "read"
+                code: "read"
             },
             {
-                "code": "update"
+                code: "update"
             },
             {
-                "code": "delete"
+                code: "delete"
             },
             {
-                "code": "create"
+                code: "create"
             },
             {
-                "code": "vread"
+                code: "vread"
             }
         ];
     }
@@ -432,17 +484,32 @@ function getInteractionForResource(resourceType) {
     resources : ["Patient" , "MedicationRequest" , "Observation" , "ImagingStudy" , "Claim"]
 })*/
 function generateConfig() {
-    const interactions = ["read", "vread", "update", "delete", "history", "create","search"];
+    const interactions = [
+        "read",
+        "vread",
+        "update",
+        "delete",
+        "history",
+        "create",
+        "search"
+    ];
     let configJson = require("../config/config");
     let dirInFHIRAPI = getDirInFHIRAPI();
     for (let resource of dirInFHIRAPI) {
         for (let interaction of interactions) {
             if (!_.has(configJson, `${resource}.interaction.${interaction}`)) {
-                _.set(configJson, `${resource}.interaction.${interaction}`, true);
+                _.set(
+                    configJson,
+                    `${resource}.interaction.${interaction}`,
+                    true
+                );
             }
         }
     }
-    fs.writeFileSync("./config/config.js", `module.exports=${JSON.stringify(configJson, null, 4)};`);
+    fs.writeFileSync(
+        "./config/config.js",
+        `module.exports=${JSON.stringify(configJson, null, 4)};`
+    );
 }
 
 module.exports = {
@@ -450,9 +517,3 @@ module.exports = {
     generateMetaData: generateMetaData,
     generateConfig: generateConfig
 };
-
-
-
-
-
-

@@ -1,10 +1,14 @@
-const fs = require('fs');
+const fs = require("fs");
 //const { generateAPI , generateMetaData } =require('../API_Generator');
-const { generateAPI , generateMetaData, generateConfig } =require('../api_generator/API_Generator_V2');
-const { genHistoryModel } = require('../api_generator/history_model_Generator');
-const config  = require('../config/config');
+const {
+    generateAPI,
+    generateMetaData,
+    generateConfig
+} = require("../api_generator/API_Generator_V2");
+const { genHistoryModel } = require("../api_generator/history_model_Generator");
+const config = require("../config/config");
 
-function init () {
+function init() {
     if (!fs.existsSync(".env")) {
         let envText = `
 MONGODB_NAME="dbName"
@@ -32,8 +36,10 @@ ENABLE_CHECK_ALL_RESOURCE_ID=false
 
 ENABLE_VALIDATOR=true
 `;
-        fs.writeFileSync(".env" , envText);
-        console.log("Please config dotenv file first, the example dotenv file generated in root path");
+        fs.writeFileSync(".env", envText);
+        console.log(
+            "Please config dotenv file first, the example dotenv file generated in root path"
+        );
         process.exit(0);
     }
     generateAPI(config);

@@ -1,9 +1,7 @@
 const _ = require("lodash");
 const { logger } = require("../../../utils/log");
 const { doRes } = require("../../../utils/response");
-const {
-    handleError
-} = require('../../../models/FHIR/httpMessage');
+const { handleError } = require("../../../models/FHIR/httpMessage");
 const FHIR = require("fhir").Fhir;
 const { isDocExist } = require("../../../api/apiService");
 const jp = require("jsonpath");
@@ -17,7 +15,7 @@ async function checkAbsoluteUrlRef(key, referenceValue, checkedReferenceList) {
         let fetchRes = await fetch(referenceValue, {
             headers: {
                 accept: "application/fhir+json"
-            } ,
+            },
             signal: controller.signal
         });
         if (fetchRes.status == 200) {
@@ -56,16 +54,23 @@ async function checkAbsoluteUrlRef(key, referenceValue, checkedReferenceList) {
 
 async function checkReference(resourceData) {
     let checkedReferenceList = [];
-    let referenceKeysJp = jp.paths(resourceData, "$..reference").map( v=> v.join(".").substring(2));
+    let referenceKeysJp = jp
+        .paths(resourceData, "$..reference")
+        .map((v) => v.join(".").substring(2));
     for (let key of referenceKeysJp) {
         let referenceValue = _.get(resourceData, key);
-        let referenceValueSplit = referenceValue.split('|')[0].split('/');
+        let referenceValueSplit = referenceValue.split("|")[0].split("/");
         if (/^(http|https):\/\//g.test(referenceValue)) {
-            await checkAbsoluteUrlRef(key, referenceValue, checkedReferenceList);
-
+            await checkAbsoluteUrlRef(
+                key,
+                referenceValue,
+                checkedReferenceList
+            );
         } else if (referenceValueSplit.length >= 2) {
-            let resourceName = referenceValueSplit[referenceValueSplit.length - 2];
-            let resourceId = referenceValueSplit[referenceValueSplit.length - 1];
+            let resourceName =
+                referenceValueSplit[referenceValueSplit.length - 2];
+            let resourceId =
+                referenceValueSplit[referenceValueSplit.length - 1];
             let doc = await isDocExist(resourceId, resourceName);
             if (doc.status === 1) {
                 checkedReferenceList.push({
@@ -80,11 +85,14 @@ async function checkReference(resourceData) {
                     value: referenceValue
                 });
             }
-        } else if (/urn:oid:[0-2](\.[1-9]\d*)+/i.test(referenceValue) ||
-                   uuid.validate(referenceValue.replace(/^urn:uuid:/, ""))
+        } else if (
+            /urn:oid:[0-2](\.[1-9]\d*)+/i.test(referenceValue) ||
+            uuid.validate(referenceValue.replace(/^urn:uuid:/, ""))
         ) {
             //Only Bundle entry have OID or UUID reference?
-            let referenceTargetFullUrl = jp.nodes(resourceData, "$..fullUrl").find( v=> v.value === referenceValue);
+            let referenceTargetFullUrl = jp
+                .nodes(resourceData, "$..fullUrl")
+                .find((v) => v.value === referenceValue);
             if (referenceTargetFullUrl) {
                 checkedReferenceList.push({
                     exist: true,
@@ -102,7 +110,7 @@ async function checkReference(resourceData) {
     }
     if (checkedReferenceList.length > 0) {
         return {
-            status : checkedReferenceList.every(v=> v.exist),
+            status: checkedReferenceList.every((v) => v.exist),
             checkedReferenceList: checkedReferenceList
         };
     }
@@ -117,7 +125,7 @@ function getNotExistReferenceList(checkReferenceRes) {
     for (let reference of checkReferenceRes.checkedReferenceList) {
         if (!reference.exist) {
             notExistReferenceList.push({
-                path: reference.path ,
+                path: reference.path,
                 value: reference.value
             });
         }
@@ -126,11 +134,11 @@ function getNotExistReferenceList(checkReferenceRes) {
 }
 
 /**
- * 
- * @param {import("express").Request} req 
- * @param {import("express").Response} res 
- * @param {import("express").NextFunction} next 
- * @returns 
+ *
+ * @param {import("express").Request} req
+ * @param {import("express").Response} res
+ * @param {import("express").NextFunction} next
+ * @returns
  */
 async function checkReferenceMiddleware(req, res, next) {
     let resourceType = _.get(req.params, "resourceType");
@@ -138,13 +146,25 @@ async function checkReferenceMiddleware(req, res, next) {
     let checkReferenceRes = await checkReference(resourceData);
     if (!checkReferenceRes.status) {
         let notExistReferenceList = getNotExistReferenceList(checkReferenceRes);
-        let operationOutcomeError = handleError.processing(`The reference not found : ${_.map(notExistReferenceList , "value").join(",")}`);
-        _.set(operationOutcomeError , "issue.0.location" , _.map(notExistReferenceList , "path"));
-        logger.error(`[Error: ${JSON.stringify(operationOutcomeError)}] [Resource Type: ${resourceType}]`);
+        let operationOutcomeError = handleError.processing(
+            `The reference not found : ${_.map(
+                notExistReferenceList,
+                "value"
+            ).join(",")}`
+        );
+        _.set(
+            operationOutcomeError,
+            "issue.0.location",
+            _.map(notExistReferenceList, "path")
+        );
+        logger.error(
+            `[Error: ${JSON.stringify(
+                operationOutcomeError
+            )}] [Resource Type: ${resourceType}]`
+        );
         return doRes(req, res, 400, operationOutcomeError);
     }
     next();
 }
-
 
 module.exports.checkReferenceMiddleware = checkReferenceMiddleware;

@@ -1,8 +1,8 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const boolean = require('../FHIRDataTypesSchema/boolean');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const boolean = require("../FHIRDataTypesSchema/boolean");
 
 const {
     TerminologyCapabilities_Closure
@@ -18,4 +18,5 @@ TerminologyCapabilities_Closure.add({
     },
     translation: boolean
 });
-module.exports.TerminologyCapabilities_Closure = TerminologyCapabilities_Closure;
+module.exports.TerminologyCapabilities_Closure =
+    TerminologyCapabilities_Closure;

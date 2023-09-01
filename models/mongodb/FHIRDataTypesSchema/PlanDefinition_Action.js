@@ -1,53 +1,45 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const string = require('../FHIRDataTypesSchema/string');
-const code = require('../FHIRDataTypesSchema/code');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const string = require("../FHIRDataTypesSchema/string");
+const code = require("../FHIRDataTypesSchema/code");
 const {
     CodeableConcept
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     RelatedArtifact
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const id = require('../FHIRDataTypesSchema/id');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const id = require("../FHIRDataTypesSchema/id");
 const {
     Reference
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     TriggerDefinition
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     PlanDefinition_Condition
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     DataRequirement
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     PlanDefinition_RelatedAction
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const {
-    Age
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const {
-    Period
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const { Age } = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const { Period } = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     Duration
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const {
-    Range
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const {
-    Timing
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const { Range } = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const { Timing } = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     PlanDefinition_Participant
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const canonical = require('../FHIRDataTypesSchema/canonical');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const canonical = require("../FHIRDataTypesSchema/canonical");
 const {
     PlanDefinition_DynamicValue
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 
 const {
     PlanDefinition_Action
@@ -146,7 +138,14 @@ PlanDefinition_Action.add({
     },
     selectionBehavior: {
         type: String,
-        enum: ["any", "all", "all-or-none", "exactly-one", "at-most-one", "one-or-more"],
+        enum: [
+            "any",
+            "all",
+            "all-or-none",
+            "exactly-one",
+            "at-most-one",
+            "one-or-more"
+        ],
         default: void 0
     },
     requiredBehavior: {

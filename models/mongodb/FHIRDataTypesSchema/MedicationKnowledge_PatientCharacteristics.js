@@ -1,14 +1,14 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     CodeableConcept
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     Quantity
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const string = require('../FHIRDataTypesSchema/string');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const string = require("../FHIRDataTypesSchema/string");
 
 const {
     MedicationKnowledge_PatientCharacteristics
@@ -35,4 +35,5 @@ MedicationKnowledge_PatientCharacteristics.add({
         default: void 0
     }
 });
-module.exports.MedicationKnowledge_PatientCharacteristics = MedicationKnowledge_PatientCharacteristics;
+module.exports.MedicationKnowledge_PatientCharacteristics =
+    MedicationKnowledge_PatientCharacteristics;

@@ -1,15 +1,13 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const decimal = require('../FHIRDataTypesSchema/decimal');
-const string = require('../FHIRDataTypesSchema/string');
-const uri = require('../FHIRDataTypesSchema/uri');
-const code = require('../FHIRDataTypesSchema/code');
-
-const {
-    Age
 } = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const decimal = require("../FHIRDataTypesSchema/decimal");
+const string = require("../FHIRDataTypesSchema/string");
+const uri = require("../FHIRDataTypesSchema/uri");
+const code = require("../FHIRDataTypesSchema/code");
+
+const { Age } = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 Age.add({
     extension: {
         type: [Extension],

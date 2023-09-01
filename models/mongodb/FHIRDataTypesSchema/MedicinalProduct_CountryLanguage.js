@@ -1,10 +1,10 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     CodeableConcept
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 
 const {
     MedicinalProduct_CountryLanguage
@@ -33,4 +33,5 @@ MedicinalProduct_CountryLanguage.add({
         default: void 0
     }
 });
-module.exports.MedicinalProduct_CountryLanguage = MedicinalProduct_CountryLanguage;
+module.exports.MedicinalProduct_CountryLanguage =
+    MedicinalProduct_CountryLanguage;

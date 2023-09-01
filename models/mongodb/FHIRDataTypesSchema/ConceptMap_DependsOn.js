@@ -1,10 +1,10 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const uri = require('../FHIRDataTypesSchema/uri');
-const canonical = require('../FHIRDataTypesSchema/canonical');
-const string = require('../FHIRDataTypesSchema/string');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const uri = require("../FHIRDataTypesSchema/uri");
+const canonical = require("../FHIRDataTypesSchema/canonical");
+const string = require("../FHIRDataTypesSchema/string");
 
 const {
     ConceptMap_DependsOn

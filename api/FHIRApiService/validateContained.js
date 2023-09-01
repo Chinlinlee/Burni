@@ -1,5 +1,5 @@
-const mongodb = require('../../models/mongodb');
-const _ = require('lodash');
+const mongodb = require("../../models/mongodb");
+const _ = require("lodash");
 
 async function validateContained(resourceItem, index) {
     try {
@@ -23,8 +23,8 @@ async function validateContained(resourceItem, index) {
                 message: `Burni not support this resource type. ${resourceType}`
             };
         }
-    } catch(e) {
-        if (_.get(e,"errors")) {
+    } catch (e) {
+        if (_.get(e, "errors")) {
             return {
                 status: false,
                 message: e.message

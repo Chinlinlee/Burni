@@ -1,11 +1,9 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const unsignedInt = require('../FHIRDataTypesSchema/unsignedInt');
-const {
-    Coding
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const unsignedInt = require("../FHIRDataTypesSchema/unsignedInt");
+const { Coding } = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 
 const {
     Contract_SecurityLabel

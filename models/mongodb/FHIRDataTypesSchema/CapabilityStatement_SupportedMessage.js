@@ -1,8 +1,8 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const canonical = require('../FHIRDataTypesSchema/canonical');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const canonical = require("../FHIRDataTypesSchema/canonical");
 
 const {
     CapabilityStatement_SupportedMessage
@@ -23,4 +23,5 @@ CapabilityStatement_SupportedMessage.add({
     },
     definition: canonical
 });
-module.exports.CapabilityStatement_SupportedMessage = CapabilityStatement_SupportedMessage;
+module.exports.CapabilityStatement_SupportedMessage =
+    CapabilityStatement_SupportedMessage;

@@ -1,11 +1,11 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const dateTime = require('../FHIRDataTypesSchema/dateTime');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const dateTime = require("../FHIRDataTypesSchema/dateTime");
 const {
     Reference
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 
 const {
     Composition_Attester

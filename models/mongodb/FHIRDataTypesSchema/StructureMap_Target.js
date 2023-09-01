@@ -1,12 +1,12 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const id = require('../FHIRDataTypesSchema/id');
-const string = require('../FHIRDataTypesSchema/string');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const id = require("../FHIRDataTypesSchema/id");
+const string = require("../FHIRDataTypesSchema/string");
 const {
     StructureMap_Parameter
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 
 const {
     StructureMap_Target
@@ -35,7 +35,25 @@ StructureMap_Target.add({
     listRuleId: id,
     transform: {
         type: String,
-        enum: ["create", "copy", "truncate", "escape", "cast", "append", "translate", "reference", "dateOp", "uuid", "pointer", "evaluate", "cc", "c", "qty", "id", "cp"],
+        enum: [
+            "create",
+            "copy",
+            "truncate",
+            "escape",
+            "cast",
+            "append",
+            "translate",
+            "reference",
+            "dateOp",
+            "uuid",
+            "pointer",
+            "evaluate",
+            "cc",
+            "c",
+            "qty",
+            "id",
+            "cp"
+        ],
         default: void 0
     },
     parameter: {

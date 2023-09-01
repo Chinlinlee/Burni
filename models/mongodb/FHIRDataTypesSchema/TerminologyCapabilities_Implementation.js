@@ -1,9 +1,9 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const string = require('../FHIRDataTypesSchema/string');
-const url = require('../FHIRDataTypesSchema/url');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const string = require("../FHIRDataTypesSchema/string");
+const url = require("../FHIRDataTypesSchema/url");
 
 const {
     TerminologyCapabilities_Implementation
@@ -20,4 +20,5 @@ TerminologyCapabilities_Implementation.add({
     description: string,
     url: url
 });
-module.exports.TerminologyCapabilities_Implementation = TerminologyCapabilities_Implementation;
+module.exports.TerminologyCapabilities_Implementation =
+    TerminologyCapabilities_Implementation;

@@ -1,9 +1,9 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const canonical = require('../FHIRDataTypesSchema/canonical');
-const markdown = require('../FHIRDataTypesSchema/markdown');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const canonical = require("../FHIRDataTypesSchema/canonical");
+const markdown = require("../FHIRDataTypesSchema/markdown");
 
 const {
     MessageDefinition_AllowedResponse
@@ -20,4 +20,5 @@ MessageDefinition_AllowedResponse.add({
     message: canonical,
     situation: markdown
 });
-module.exports.MessageDefinition_AllowedResponse = MessageDefinition_AllowedResponse;
+module.exports.MessageDefinition_AllowedResponse =
+    MessageDefinition_AllowedResponse;

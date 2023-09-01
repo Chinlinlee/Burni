@@ -1,10 +1,10 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     CodeableConcept
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 
 const {
     CoverageEligibilityResponse_Error
@@ -24,4 +24,5 @@ CoverageEligibilityResponse_Error.add({
         default: void 0
     }
 });
-module.exports.CoverageEligibilityResponse_Error = CoverageEligibilityResponse_Error;
+module.exports.CoverageEligibilityResponse_Error =
+    CoverageEligibilityResponse_Error;

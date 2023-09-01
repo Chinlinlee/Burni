@@ -1,8 +1,8 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const string = require('../FHIRDataTypesSchema/string');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const string = require("../FHIRDataTypesSchema/string");
 
 const {
     DeviceDefinition_DeviceName
@@ -19,7 +19,14 @@ DeviceDefinition_DeviceName.add({
     name: string,
     type: {
         type: String,
-        enum: ["udi-label-name", "user-friendly-name", "patient-reported-name", "manufacturer-name", "model-name", "other"],
+        enum: [
+            "udi-label-name",
+            "user-friendly-name",
+            "patient-reported-name",
+            "manufacturer-name",
+            "model-name",
+            "other"
+        ],
         default: void 0
     }
 });

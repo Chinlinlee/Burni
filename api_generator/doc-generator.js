@@ -1,13 +1,21 @@
-const fs = require('fs');
-const path = require('path');
-const mkdirp = require('mkdirp');
-const beautify = require('js-beautify').js;
-const _ = require('lodash');
-const currentSupportParams = require('./currentSupportParameters.json');
+const fs = require("fs");
+const path = require("path");
+const mkdirp = require("mkdirp");
+const beautify = require("js-beautify").js;
+const _ = require("lodash");
+const currentSupportParams = require("./currentSupportParameters.json");
 
 function getDocCodeSearch(resource) {
-    const responseExampleBody = require(`../docs/assets/FHIR/burni-create-examples-response/${resource}.json`);
-    const responseXMLExampleBody = fs.readFileSync(path.join(__dirname, `../docs/assets/FHIR/burni-create-examples-response-xml/${resource}.xml`), { encoding: 'utf8'});
+    const responseExampleBody = require(
+        `../docs/assets/FHIR/burni-create-examples-response/${resource}.json`
+    );
+    const responseXMLExampleBody = fs.readFileSync(
+        path.join(
+            __dirname,
+            `../docs/assets/FHIR/burni-create-examples-response-xml/${resource}.xml`
+        ),
+        { encoding: "utf8" }
+    );
     const params = currentSupportParams[resource];
     let paramsComment = "";
     for (let param of params) {
@@ -55,7 +63,9 @@ function getDocCodeSearch(resource) {
         ],
         "entry": [
             {
-                "fullUrl": "http://burni.example.com/fhir/${resource}/${responseExampleBody.id}",
+                "fullUrl": "http://burni.example.com/fhir/${resource}/${
+                    responseExampleBody.id
+                }",
                 "resource": ${JSON.stringify(responseExampleBody, null, 4)}
             }
         ]
@@ -84,7 +94,9 @@ function getDocCodeSearch(resource) {
             <url value="http://burni.example.com/fhir/${resource}?_offset=0&amp;_count=100"/>
         </link>
         <entry>
-            <fullUrl value="http://burni.example.com/fhir/${resource}/${responseExampleBody.id}"/>
+            <fullUrl value="http://burni.example.com/fhir/${resource}/${
+                responseExampleBody.id
+            }"/>
             <resource>
                 ${responseXMLExampleBody}
             </resource>
@@ -110,8 +122,16 @@ function getDocCodeSearch(resource) {
  * @param {string} resource resource type
  */
 function getDocCodeGetById(resource) {
-    const responseExampleBody = require(`../docs/assets/FHIR/burni-create-examples-response/${resource}.json`);
-    const responseXMLExampleBody = fs.readFileSync(path.join(__dirname, `../docs/assets/FHIR/burni-create-examples-response-xml/${resource}.xml`), { encoding: 'utf8'});
+    const responseExampleBody = require(
+        `../docs/assets/FHIR/burni-create-examples-response/${resource}.json`
+    );
+    const responseXMLExampleBody = fs.readFileSync(
+        path.join(
+            __dirname,
+            `../docs/assets/FHIR/burni-create-examples-response-xml/${resource}.xml`
+        ),
+        { encoding: "utf8" }
+    );
     const comment = `
     /**
      * 
@@ -124,13 +144,17 @@ function getDocCodeGetById(resource) {
      * 
      * @apiExample {Shell} cURL
      * #example from: https://chinlinlee.github.io/Burni/assets/FHIR/fhir-resource-examples/${resource.toLowerCase()}-example.json
-     * curl --location --request GET 'http://burni.example.com/fhir/${resource}/${responseExampleBody.id}'
+     * curl --location --request GET 'http://burni.example.com/fhir/${resource}/${
+         responseExampleBody.id
+     }'
      * @apiExample {JavaScript} javascript Axios
      //example from: https://chinlinlee.github.io/Burni/assets/FHIR/fhir-resource-examples/${resource.toLowerCase()}-example.json
     const axios = require('axios');
     const config = {
         method: 'get',
-        url: 'http://burni.example.com/fhir/${resource}/${responseExampleBody.id}'
+        url: 'http://burni.example.com/fhir/${resource}/${
+            responseExampleBody.id
+        }'
     };
 
     axios(config)
@@ -177,10 +201,26 @@ function getDocCodeGetById(resource) {
 }
 
 function getDocCodeCreate(resource) {
-    const requestExampleBody = require(`../docs/assets/FHIR/fhir-resource-examples/${resource.toLowerCase()}-example.json`);
-    const responseExampleBody = require(`../docs/assets/FHIR/burni-create-examples-response/${resource}.json`);
-    const requestXMLExampleBody = fs.readFileSync(path.join(__dirname, `../docs/assets/FHIR/fhir-resource-examples-xml/${resource.toLowerCase()}-example.xml`), { encoding : 'utf8' });
-    const responseXMLExampleBody = fs.readFileSync(path.join(__dirname,`../docs/assets/FHIR/burni-create-examples-response-xml/${resource}.xml`), { encoding: 'utf8'});
+    const requestExampleBody = require(
+        `../docs/assets/FHIR/fhir-resource-examples/${resource.toLowerCase()}-example.json`
+    );
+    const responseExampleBody = require(
+        `../docs/assets/FHIR/burni-create-examples-response/${resource}.json`
+    );
+    const requestXMLExampleBody = fs.readFileSync(
+        path.join(
+            __dirname,
+            `../docs/assets/FHIR/fhir-resource-examples-xml/${resource.toLowerCase()}-example.xml`
+        ),
+        { encoding: "utf8" }
+    );
+    const responseXMLExampleBody = fs.readFileSync(
+        path.join(
+            __dirname,
+            `../docs/assets/FHIR/burni-create-examples-response-xml/${resource}.xml`
+        ),
+        { encoding: "utf8" }
+    );
     const comment = `
     /**
      * 
@@ -261,10 +301,26 @@ function getDocCodeCreate(resource) {
 }
 
 function getDocCodeUpdate(resource) {
-    const requestExampleBody = require(`../docs/assets/FHIR/fhir-resource-examples-random-modify/${resource.toLowerCase()}-example.json`);
-    const responseExampleBody = require(`../docs/assets/FHIR/burni-update-examples-response/${resource}.json`);
-    const requestXMLExampleBody = fs.readFileSync(path.join(__dirname, `../docs/assets/FHIR/fhir-resource-examples-random-modify-xml/${resource.toLowerCase()}-example.xml`), { encoding: 'utf8'});
-    const responseXMLExampleBody = fs.readFileSync(path.join(__dirname, `../docs/assets/FHIR/burni-update-examples-response-xml/${resource}.xml`), { encoding: 'utf8'});
+    const requestExampleBody = require(
+        `../docs/assets/FHIR/fhir-resource-examples-random-modify/${resource.toLowerCase()}-example.json`
+    );
+    const responseExampleBody = require(
+        `../docs/assets/FHIR/burni-update-examples-response/${resource}.json`
+    );
+    const requestXMLExampleBody = fs.readFileSync(
+        path.join(
+            __dirname,
+            `../docs/assets/FHIR/fhir-resource-examples-random-modify-xml/${resource.toLowerCase()}-example.xml`
+        ),
+        { encoding: "utf8" }
+    );
+    const responseXMLExampleBody = fs.readFileSync(
+        path.join(
+            __dirname,
+            `../docs/assets/FHIR/burni-update-examples-response-xml/${resource}.xml`
+        ),
+        { encoding: "utf8" }
+    );
     const comment = `
     /**
      * 
@@ -346,7 +402,9 @@ function getDocCodeUpdate(resource) {
 }
 
 function getDocCodeDelete(resource) {
-    const responseExampleBody = require(`../docs/assets/FHIR/burni-create-examples-response/${resource}.json`);
+    const responseExampleBody = require(
+        `../docs/assets/FHIR/burni-create-examples-response/${resource}.json`
+    );
     const comment = `
     /**
      * 
@@ -359,13 +417,17 @@ function getDocCodeDelete(resource) {
      * 
      * @apiExample {Shell} cURL
      * #example from: https://chinlinlee.github.io/Burni/assets/FHIR/fhir-resource-examples/${resource.toLowerCase()}-example.json
-     * curl --location --request DELETE 'http://burni.example.com/fhir/${resource}/${responseExampleBody.id}'
+     * curl --location --request DELETE 'http://burni.example.com/fhir/${resource}/${
+         responseExampleBody.id
+     }'
      * @apiExample {JavaScript} javascript Axios
      //example from: https://chinlinlee.github.io/Burni/assets/FHIR/fhir-resource-examples/${resource.toLowerCase()}-example.json
     const axios = require('axios');
     const config = {
         method: 'delete',
-        url: 'http://burni.example.com/fhir/${resource}/${responseExampleBody.id}'
+        url: 'http://burni.example.com/fhir/${resource}/${
+            responseExampleBody.id
+        }'
     };
 
     axios(config)
@@ -383,7 +445,9 @@ function getDocCodeDelete(resource) {
             {
                 "severity": "information",
                 "code": "informational",
-                "diagnostics": "delete ${resource}/${responseExampleBody.id} successfully"
+                "diagnostics": "delete ${resource}/${
+                    responseExampleBody.id
+                } successfully"
             }
         ]
     }
@@ -394,7 +458,9 @@ function getDocCodeDelete(resource) {
         <issue>
         <severity value='information'/>
         <code value='informational'/>
-        <diagnostics value='delete ${resource}/${responseExampleBody.id} successfully'/>
+        <diagnostics value='delete ${resource}/${
+            responseExampleBody.id
+        } successfully'/>
         </issue>
     </OperationOutcome>
     *
@@ -406,7 +472,9 @@ function getDocCodeDelete(resource) {
             {
                 "severity": "error",
                 "code": "exception",
-                "diagnostics": "The id->${responseExampleBody.id} not found in ${resource} resource"
+                "diagnostics": "The id->${
+                    responseExampleBody.id
+                } not found in ${resource} resource"
             }
         ]
     }
@@ -417,7 +485,9 @@ function getDocCodeDelete(resource) {
         <issue>
         <severity value='error'/>
         <code value='not-found'/>
-        <diagnostics value='The id-&gt;${responseExampleBody.id}  not found in ${resource} resource'/>
+        <diagnostics value='The id-&gt;${
+            responseExampleBody.id
+        }  not found in ${resource} resource'/>
         </issue>
     </OperationOutcome>
     *
@@ -427,41 +497,56 @@ function getDocCodeDelete(resource) {
 }
 
 /**
- * 
+ *
  * @param {Array} resources the resources want to use
  */
 function generateDoc(resources) {
     for (let res in resources) {
         mkdirp.sync(`./docs/apidoc/apidoc-sources/${res}`);
 
-        //#region 
+        //#region
         const search = getDocCodeSearch(res);
-        fs.writeFileSync(`./docs/apidoc/apidoc-sources/${res}/get${res}.js`, beautify(search));
+        fs.writeFileSync(
+            `./docs/apidoc/apidoc-sources/${res}/get${res}.js`,
+            beautify(search)
+        );
         //#endregion
 
         //#region getById
         const getById = getDocCodeGetById(res);
-        fs.writeFileSync(`./docs/apidoc/apidoc-sources/${res}/get${res}ById.js`, beautify(getById));
+        fs.writeFileSync(
+            `./docs/apidoc/apidoc-sources/${res}/get${res}ById.js`,
+            beautify(getById)
+        );
         //#endregion
 
         //#region create
         const createCode = getDocCodeCreate(res);
-        fs.writeFileSync(`./docs/apidoc/apidoc-sources/${res}/post${res}.js`, beautify(createCode));
+        fs.writeFileSync(
+            `./docs/apidoc/apidoc-sources/${res}/post${res}.js`,
+            beautify(createCode)
+        );
         //#endregion
 
         //#region update (put)
         const updateCode = getDocCodeUpdate(res);
-        fs.writeFileSync(`./docs/apidoc/apidoc-sources/${res}/put${res}.js`, beautify(updateCode));
+        fs.writeFileSync(
+            `./docs/apidoc/apidoc-sources/${res}/put${res}.js`,
+            beautify(updateCode)
+        );
         //#endregion
 
         //#region delete
         const deleteCode = getDocCodeDelete(res);
-        fs.writeFileSync(`./docs/apidoc/apidoc-sources/${res}/delete${res}.js`, beautify(deleteCode));
+        fs.writeFileSync(
+            `./docs/apidoc/apidoc-sources/${res}/delete${res}.js`,
+            beautify(deleteCode)
+        );
         //#endregion
     }
 }
 
 //#region exec
-const config = require('../config/config');
+const config = require("../config/config");
 generateDoc(config);
 //#endregion

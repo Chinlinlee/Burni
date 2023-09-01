@@ -1,9 +1,9 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const string = require('../FHIRDataTypesSchema/string');
-const uri = require('../FHIRDataTypesSchema/uri');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const string = require("../FHIRDataTypesSchema/string");
+const uri = require("../FHIRDataTypesSchema/uri");
 
 const {
     DeviceDefinition_UdiDeviceIdentifier
@@ -21,4 +21,5 @@ DeviceDefinition_UdiDeviceIdentifier.add({
     issuer: uri,
     jurisdiction: uri
 });
-module.exports.DeviceDefinition_UdiDeviceIdentifier = DeviceDefinition_UdiDeviceIdentifier;
+module.exports.DeviceDefinition_UdiDeviceIdentifier =
+    DeviceDefinition_UdiDeviceIdentifier;

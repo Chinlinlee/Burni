@@ -7,21 +7,21 @@ const http = require('http');
 const compress = require('compression');
 const { handleError } = require('./models/FHIR/httpMessage');
 //login
-const cookieParser = require('cookie-parser');
-const session = require('express-session');
-const flash = require('connect-flash');
-const mongodb = require('./models/mongodb');
-const mongoose = require('mongoose');
-const MongoStore = require('connect-mongo')({
+const cookieParser = require("cookie-parser");
+const session = require("express-session");
+const flash = require("connect-flash");
+const mongodb = require("./models/mongodb");
+const mongoose = require("mongoose");
+const MongoStore = require("connect-mongo")({
     session: session
 });
 //
-require('dotenv').config();
+require("dotenv").config();
 const port = process.env.SERVER_PORT;
 const app = express();
 
-require('rootpath')();
-require('dotenv').config();
+require("rootpath")();
+require("dotenv").config();
 // limit user only can request 1000 in 1 minute over every routers
 let limiter = RateLimit({
     windowMs: 1 * 60 * 1000,
@@ -33,20 +33,28 @@ app.use(limiter);
 
 app.use(compress());
 app.use(flash());
-app.use(express.static('public'));
-app.use(express.urlencoded({
-    extended: true
-}));
-app.use(express.json({
-    "limit": "50mb"
-}));
-app.use(express.json({
-    "type": "application/fhir+json",
-    "limit": "50mb"
-}));
-app.use(express.text({
-    "type": ["text/*", "/_xml", "xml", "+xml"]
-}));
+app.use(express.static("public"));
+app.use(
+    express.urlencoded({
+        extended: true
+    })
+);
+app.use(
+    express.json({
+        limit: "50mb"
+    })
+);
+app.use(
+    express.json({
+        type: "application/fhir+json",
+        limit: "50mb"
+    })
+);
+app.use(
+    express.text({
+        type: ["text/*", "/_xml", "xml", "+xml"]
+    })
+);
 
 app.use((err, req, res, next) => {
     // This check makes sure this is a JSON parsing issue, but it might be
@@ -66,32 +74,40 @@ app.use((err, req, res, next) => {
 
 app.use(cookieParser());
 //login
-app.use(session({
-    secret: process.env.SERVER_SESSION_SECRET_KEY || 'secretKey',
-    resave: true,
-    saveUninitialized: true,
-    store: new MongoStore({
-        mongooseConnection: mongoose.connection
-    }),
-    cookie: {
-        httpOnly: true,
-        maxAge: 60 * 60 * 1000
-    }
-}));
+app.use(
+    session({
+        secret: process.env.SERVER_SESSION_SECRET_KEY || "secretKey",
+        resave: true,
+        saveUninitialized: true,
+        store: new MongoStore({
+            mongooseConnection: mongoose.connection
+        }),
+        cookie: {
+            httpOnly: true,
+            maxAge: 60 * 60 * 1000
+        }
+    })
+);
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept ,Authorization");
+    res.header(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept ,Authorization"
+    );
     res.header("Vary", "Origin");
-    res.header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
+    res.header(
+        "Access-Control-Allow-Methods",
+        "POST, GET, OPTIONS, PUT, DELETE"
+    );
     res.header("Access-Control-Allow-Credentials", "true");
     next();
 });
 
 //login
 require("routes.js")(app);
-app.engine('html', require('ejs').renderFile);
+app.engine("html", require("ejs").renderFile);
 //
-http.createServer(app).listen(port, function() {
+http.createServer(app).listen(port, function () {
     console.log(`http server is listening on port:${port}`);
 });
 

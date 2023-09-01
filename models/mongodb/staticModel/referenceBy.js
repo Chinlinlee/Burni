@@ -8,33 +8,36 @@ const instant = require("../FHIRDataTypesSchema/instant");
  */
 
 /**
- * 
- * @param {import("mongoose")} mongodb 
- * @returns 
+ *
+ * @param {import("mongoose")} mongodb
+ * @returns
  */
- module.exports = function (mongodb) {
-    let basicInfo = new mongodb.Schema({
-        "resourceType": {
-            type: String,
-            required: true,
-            default: void 0
+module.exports = function (mongodb) {
+    let basicInfo = new mongodb.Schema(
+        {
+            resourceType: {
+                type: String,
+                required: true,
+                default: void 0
+            },
+            id: {
+                type: String,
+                required: true,
+                default: void 0
+            }
         },
-        "id": {
-            type: String,
-            required: true,
-            default: void 0
+        {
+            _id: false,
+            id: false
         }
-    }, {
-        _id : false,
-        id: false
-    });
+    );
 
-    let resourceRefBy = new mongodb.Schema({
-        
-
-    }, {
-        versionKey : false
-    });
+    let resourceRefBy = new mongodb.Schema(
+        {},
+        {
+            versionKey: false
+        }
+    );
 
     resourceRefBy.add(basicInfo);
     resourceRefBy.add({
@@ -43,31 +46,45 @@ const instant = require("../FHIRDataTypesSchema/instant");
             default: Date.now()
         }
     });
-    resourceRefBy.add(new mongodb.Schema({
-        refBy: {
-            type: [basicInfo],
-            default: void 0
+    resourceRefBy.add(
+        new mongodb.Schema(
+            {
+                refBy: {
+                    type: [basicInfo],
+                    default: void 0
+                }
+            },
+            {
+                _id: false,
+                id: false
+            }
+        )
+    );
+
+    resourceRefBy.index(
+        {
+            id: 1,
+            resourceType: 1
+        },
+        {
+            background: true
         }
-    }, {
-        _id : false,
-        id: false
-    }));
+    );
 
-    resourceRefBy.index({
-        "id": 1,
-        "resourceType": 1
-    }, {
-        background: true
-    });
+    resourceRefBy.index(
+        {
+            "refBy.id": 1,
+            "refBy.resourceType": 1
+        },
+        {
+            background: true
+        }
+    );
 
-    resourceRefBy.index({
-        "refBy.id": 1,
-        "refBy.resourceType": 1
-    }, {
-        background: true
-    });
-
-
-    let resourceRefByModel = mongodb.model('resourceRefBy', resourceRefBy, 'resourceRefBy');
+    let resourceRefByModel = mongodb.model(
+        "resourceRefBy",
+        resourceRefBy,
+        "resourceRefBy"
+    );
     return resourceRefByModel;
 };

@@ -1,14 +1,12 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     Quantity
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-
-const {
-    Ratio
 } = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+
+const { Ratio } = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 Ratio.add({
     extension: {
         type: [Extension],

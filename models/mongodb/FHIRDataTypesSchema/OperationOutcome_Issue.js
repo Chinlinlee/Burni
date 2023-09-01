@@ -1,11 +1,11 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     CodeableConcept
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const string = require('../FHIRDataTypesSchema/string');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const string = require("../FHIRDataTypesSchema/string");
 
 const {
     OperationOutcome_Issue
@@ -26,7 +26,39 @@ OperationOutcome_Issue.add({
     },
     code: {
         type: String,
-        enum: ["invalid", "structure", "required", "value", "invariant", "security", "login", "unknown", "expired", "forbidden", "suppressed", "processing", "not-supported", "duplicate", "multiple-matches", "not-found", "deleted", "too-long", "code-invalid", "extension", "too-costly", "business-rule", "conflict", "transient", "lock-error", "no-store", "exception", "timeout", "incomplete", "throttled", "informational"],
+        enum: [
+            "invalid",
+            "structure",
+            "required",
+            "value",
+            "invariant",
+            "security",
+            "login",
+            "unknown",
+            "expired",
+            "forbidden",
+            "suppressed",
+            "processing",
+            "not-supported",
+            "duplicate",
+            "multiple-matches",
+            "not-found",
+            "deleted",
+            "too-long",
+            "code-invalid",
+            "extension",
+            "too-costly",
+            "business-rule",
+            "conflict",
+            "transient",
+            "lock-error",
+            "no-store",
+            "exception",
+            "timeout",
+            "incomplete",
+            "throttled",
+            "informational"
+        ],
         default: void 0
     },
     details: {

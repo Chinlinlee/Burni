@@ -1,11 +1,11 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const string = require('../FHIRDataTypesSchema/string');
-const code = require('../FHIRDataTypesSchema/code');
-const boolean = require('../FHIRDataTypesSchema/boolean');
-const id = require('../FHIRDataTypesSchema/id');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const string = require("../FHIRDataTypesSchema/string");
+const code = require("../FHIRDataTypesSchema/code");
+const boolean = require("../FHIRDataTypesSchema/boolean");
+const id = require("../FHIRDataTypesSchema/id");
 
 const {
     TestScript_Assert
@@ -36,7 +36,19 @@ TestScript_Assert.add({
     navigationLinks: boolean,
     operator: {
         type: String,
-        enum: ["equals", "notEquals", "in", "notIn", "greaterThan", "lessThan", "empty", "notEmpty", "contains", "notContains", "eval"],
+        enum: [
+            "equals",
+            "notEquals",
+            "in",
+            "notIn",
+            "greaterThan",
+            "lessThan",
+            "empty",
+            "notEmpty",
+            "contains",
+            "notContains",
+            "eval"
+        ],
         default: void 0
     },
     path: string,
@@ -49,7 +61,20 @@ TestScript_Assert.add({
     resource: code,
     response: {
         type: String,
-        enum: ["okay", "created", "noContent", "notModified", "bad", "forbidden", "notFound", "methodNotAllowed", "conflict", "gone", "preconditionFailed", "unprocessable"],
+        enum: [
+            "okay",
+            "created",
+            "noContent",
+            "notModified",
+            "bad",
+            "forbidden",
+            "notFound",
+            "methodNotAllowed",
+            "conflict",
+            "gone",
+            "preconditionFailed",
+            "unprocessable"
+        ],
         default: void 0
     },
     responseCode: string,

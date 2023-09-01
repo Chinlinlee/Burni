@@ -1,8 +1,8 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const string = require('../FHIRDataTypesSchema/string');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const string = require("../FHIRDataTypesSchema/string");
 
 const {
     ExampleScenario_ContainedInstance
@@ -19,4 +19,5 @@ ExampleScenario_ContainedInstance.add({
     resourceId: string,
     versionId: string
 });
-module.exports.ExampleScenario_ContainedInstance = ExampleScenario_ContainedInstance;
+module.exports.ExampleScenario_ContainedInstance =
+    ExampleScenario_ContainedInstance;

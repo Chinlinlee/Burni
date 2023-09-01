@@ -1,59 +1,59 @@
-const moment = require('moment');
-const _ = require('lodash');
-const mongoose = require('mongoose');
+const moment = require("moment");
+const _ = require("lodash");
+const mongoose = require("mongoose");
 const {
     Meta
-} = require('../FHIRDataTypesSchemaExport/FHIRDataTypesSchemaExport');
-const uri = require('../FHIRDataTypesSchema/uri');
-const code = require('../FHIRDataTypesSchema/code');
+} = require("../FHIRDataTypesSchemaExport/FHIRDataTypesSchemaExport");
+const uri = require("../FHIRDataTypesSchema/uri");
+const code = require("../FHIRDataTypesSchema/code");
 const {
     Narrative
-} = require('../FHIRDataTypesSchemaExport/FHIRDataTypesSchemaExport');
+} = require("../FHIRDataTypesSchemaExport/FHIRDataTypesSchemaExport");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/FHIRDataTypesSchemaExport');
+} = require("../FHIRDataTypesSchemaExport/FHIRDataTypesSchemaExport");
 const {
     Identifier
-} = require('../FHIRDataTypesSchemaExport/FHIRDataTypesSchemaExport');
-const boolean = require('../FHIRDataTypesSchema/boolean');
+} = require("../FHIRDataTypesSchemaExport/FHIRDataTypesSchemaExport");
+const boolean = require("../FHIRDataTypesSchema/boolean");
 const {
     HumanName
-} = require('../FHIRDataTypesSchemaExport/FHIRDataTypesSchemaExport');
+} = require("../FHIRDataTypesSchemaExport/FHIRDataTypesSchemaExport");
 const {
     ContactPoint
-} = require('../FHIRDataTypesSchemaExport/FHIRDataTypesSchemaExport');
-const date = require('../FHIRDataTypesSchema/date');
-const dateTime = require('../FHIRDataTypesSchema/dateTime');
+} = require("../FHIRDataTypesSchemaExport/FHIRDataTypesSchemaExport");
+const date = require("../FHIRDataTypesSchema/date");
+const dateTime = require("../FHIRDataTypesSchema/dateTime");
 const {
     Address
-} = require('../FHIRDataTypesSchemaExport/FHIRDataTypesSchemaExport');
+} = require("../FHIRDataTypesSchemaExport/FHIRDataTypesSchemaExport");
 const {
     CodeableConcept
-} = require('../FHIRDataTypesSchemaExport/FHIRDataTypesSchemaExport');
+} = require("../FHIRDataTypesSchemaExport/FHIRDataTypesSchemaExport");
 const {
     Attachment
-} = require('../FHIRDataTypesSchemaExport/FHIRDataTypesSchemaExport');
+} = require("../FHIRDataTypesSchemaExport/FHIRDataTypesSchemaExport");
 const {
     Patient_Contact
-} = require('../FHIRDataTypesSchemaExport/FHIRDataTypesSchemaExport');
+} = require("../FHIRDataTypesSchemaExport/FHIRDataTypesSchemaExport");
 const {
     Patient_Communication
-} = require('../FHIRDataTypesSchemaExport/FHIRDataTypesSchemaExport');
+} = require("../FHIRDataTypesSchemaExport/FHIRDataTypesSchemaExport");
 const {
     Reference
-} = require('../FHIRDataTypesSchemaExport/FHIRDataTypesSchemaExport');
+} = require("../FHIRDataTypesSchemaExport/FHIRDataTypesSchemaExport");
 const {
     Patient_Link
-} = require('../FHIRDataTypesSchemaExport/FHIRDataTypesSchemaExport');
-const id = require('../FHIRDataTypesSchema/id');
+} = require("../FHIRDataTypesSchemaExport/FHIRDataTypesSchemaExport");
+const id = require("../FHIRDataTypesSchema/id");
 const {
     storeResourceRefBy,
     updateRefBy,
     deleteEmptyRefBy,
     checkResourceHaveReferenceByOthers
 } = require("../common");
-module.exports = function() {
-    require('mongoose-schema-jsonschema')(mongoose);
+module.exports = function () {
+    require("mongoose-schema-jsonschema")(mongoose);
     const Patient = {
         meta: {
             type: Meta,
@@ -134,9 +134,7 @@ module.exports = function() {
         resourceType: {
             type: String,
             required: true,
-            enum: [
-                "Patient"
-            ]
+            enum: ["Patient"]
         }
     };
 
@@ -165,8 +163,7 @@ module.exports = function() {
     }
     const PatientSchema = new mongoose.Schema(Patient, schemaConfig);
 
-
-    PatientSchema.methods.getFHIRField = function() {
+    PatientSchema.methods.getFHIRField = function () {
         let result = this;
         delete result._doc._id;
         delete result._doc.__v;
@@ -179,24 +176,27 @@ module.exports = function() {
         return result;
     };
 
-    PatientSchema.pre('save', async function(next) {
-        let mongodb = require('../index');
+    PatientSchema.pre("save", async function (next) {
+        let mongodb = require("../index");
         if (process.env.ENABLE_CHECK_ALL_RESOURCE_ID == "true") {
             let storedID = await mongodb.FHIRStoredID.findOne({
                 id: this.id
             });
             if (storedID.resourceType != "Patient") {
-                console.error('err', storedID);
-                return next(new Error(`The id->${this.id} stored by resource ${storedID.resourceType}`));
+                console.error("err", storedID);
+                return next(
+                    new Error(
+                        `The id->${this.id} stored by resource ${storedID.resourceType}`
+                    )
+                );
             }
         }
 
         const docInHistory = await mongodb.Patient_history.findOne({
-                id: this.id
-            })
-            .sort({
-                "meta.versionId": -1
-            });
+            id: this.id
+        }).sort({
+            "meta.versionId": -1
+        });
 
         if (docInHistory) {
             let versionId = Number(_.get(docInHistory, "meta.versionId")) + 1;
@@ -211,44 +211,52 @@ module.exports = function() {
         return next();
     });
 
-    PatientSchema.post('save', async function(result) {
-        let mongodb = require('../index');
+    PatientSchema.post("save", async function (result) {
+        let mongodb = require("../index");
         let item = result.toObject();
         delete item._id;
         let version = item.meta.versionId;
-        let port = (process.env.FHIRSERVER_PORT == "80" || process.env.FHIRSERVER_PORT == "443") ? "" : `:${process.env.FHIRSERVER_PORT}`;
+        let port =
+            process.env.FHIRSERVER_PORT == "80" ||
+            process.env.FHIRSERVER_PORT == "443"
+                ? ""
+                : `:${process.env.FHIRSERVER_PORT}`;
         if (version == "1") {
             _.set(item, "request", {
-                "method": "POST",
+                method: "POST",
                 url: `http://${process.env.FHIRSERVER_HOST}${port}/${process.env.FHIRSERVER_APIPATH}/Patient/${item.id}/_history/${version}`
             });
             _.set(item, "response", {
                 status: "201"
             });
-            let createdDocs = await mongodb['Patient_history'].create(item);
+            let createdDocs = await mongodb["Patient_history"].create(item);
         } else {
             _.set(item, "request", {
-                "method": "PUT",
+                method: "PUT",
                 url: `http://${process.env.FHIRSERVER_HOST}${port}/${process.env.FHIRSERVER_APIPATH}/Patient/${item.id}/_history/${version}`
             });
             _.set(item, "response", {
                 status: "200"
             });
-            let createdDocs = await mongodb['Patient_history'].create(item);
+            let createdDocs = await mongodb["Patient_history"].create(item);
         }
-        await mongodb.FHIRStoredID.findOneAndUpdate({
-            id: result.id
-        }, {
-            id: result.id,
-            resourceType: "Patient"
-        }, {
-            upsert: true
-        });
+        await mongodb.FHIRStoredID.findOneAndUpdate(
+            {
+                id: result.id
+            },
+            {
+                id: result.id,
+                resourceType: "Patient"
+            },
+            {
+                upsert: true
+            }
+        );
 
         await storeResourceRefBy(item);
     });
 
-    PatientSchema.pre('findOneAndUpdate', async function(next) {
+    PatientSchema.pre("findOneAndUpdate", async function (next) {
         const docToUpdate = await this.model.findOne(this.getFilter());
         let version = Number(docToUpdate.meta.versionId);
         this._update.$set.meta = docToUpdate.meta;
@@ -257,8 +265,8 @@ module.exports = function() {
         return next();
     });
 
-    PatientSchema.post('findOneAndUpdate', async function(result) {
-        let mongodb = require('../index');
+    PatientSchema.post("findOneAndUpdate", async function (result) {
+        let mongodb = require("../index");
         let item;
         if (result.value) {
             item = _.cloneDeep(result.value).toObject();
@@ -267,10 +275,14 @@ module.exports = function() {
         }
         let version = item.meta.versionId;
         delete item._id;
-        let port = (process.env.FHIRSERVER_PORT == "80" || process.env.FHIRSERVER_PORT == "443") ? "" : `:${process.env.FHIRSERVER_PORT}`;
+        let port =
+            process.env.FHIRSERVER_PORT == "80" ||
+            process.env.FHIRSERVER_PORT == "443"
+                ? ""
+                : `:${process.env.FHIRSERVER_PORT}`;
 
         _.set(item, "request", {
-            "method": "PUT",
+            method: "PUT",
             url: `http://${process.env.FHIRSERVER_HOST}${port}/${process.env.FHIRSERVER_APIPATH}/Patient/${item.id}/_history/${version}`
         });
         _.set(item, "response", {
@@ -278,7 +290,7 @@ module.exports = function() {
         });
 
         try {
-            let history = await mongodb['Patient_history'].create(item);
+            let history = await mongodb["Patient_history"].create(item);
         } catch (e) {
             console.error(e);
         }
@@ -288,35 +300,43 @@ module.exports = function() {
         return result;
     });
 
-    PatientSchema.pre('findOneAndDelete', async function(next) {
+    PatientSchema.pre("findOneAndDelete", async function (next) {
         const docToDelete = await this.model.findOne(this.getFilter());
         if (!docToDelete) {
-            next(`The id->${this.getFilter().id} not found in Patient resource`);
+            next(
+                `The id->${this.getFilter().id} not found in Patient resource`
+            );
         }
-        let mongodb = require('../index');
+        let mongodb = require("../index");
         let item = docToDelete.toObject();
         delete item._id;
 
         if (await checkResourceHaveReferenceByOthers(item)) {
-            next(`The ${item.resourceType}:id->${item.id} is referenced by multiple resource, please do not delete resource that have association`);
+            next(
+                `The ${item.resourceType}:id->${item.id} is referenced by multiple resource, please do not delete resource that have association`
+            );
         }
 
         item.meta.versionId = String(Number(item.meta.versionId) + 1);
         let version = item.meta.versionId;
 
-        let port = (process.env.FHIRSERVER_PORT == "80" || process.env.FHIRSERVER_PORT == "443") ? "" : `:${process.env.FHIRSERVER_PORT}`;
+        let port =
+            process.env.FHIRSERVER_PORT == "80" ||
+            process.env.FHIRSERVER_PORT == "443"
+                ? ""
+                : `:${process.env.FHIRSERVER_PORT}`;
         _.set(item, "request", {
-            "method": "DELETE",
+            method: "DELETE",
             url: `http://${process.env.FHIRSERVER_HOST}${port}/${process.env.FHIRSERVER_APIPATH}/Patient/${item.id}/_history/${version}`
         });
         _.set(item, "response", {
             status: "200"
         });
-        let createdDocs = await mongodb['Patient_history'].create(item);
+        let createdDocs = await mongodb["Patient_history"].create(item);
         next();
     });
 
-    PatientSchema.post('findOneAndDelete', async function(resource) {
+    PatientSchema.post("findOneAndDelete", async function (resource) {
         await updateRefBy(resource);
         await deleteEmptyRefBy();
     });

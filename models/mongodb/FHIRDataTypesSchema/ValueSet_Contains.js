@@ -1,14 +1,14 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const uri = require('../FHIRDataTypesSchema/uri');
-const boolean = require('../FHIRDataTypesSchema/boolean');
-const string = require('../FHIRDataTypesSchema/string');
-const code = require('../FHIRDataTypesSchema/code');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const uri = require("../FHIRDataTypesSchema/uri");
+const boolean = require("../FHIRDataTypesSchema/boolean");
+const string = require("../FHIRDataTypesSchema/string");
+const code = require("../FHIRDataTypesSchema/code");
 const {
     ValueSet_Designation
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 
 const {
     ValueSet_Contains

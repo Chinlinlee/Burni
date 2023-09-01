@@ -10,11 +10,11 @@ const mongoose = require("mongoose");
  *     refBy: [
  *         {
  *             resourceType: "Patient",
- *             id: 
+ *             id:
  *         }
  *     ]
  * }
- * @param {Object} resource 
+ * @param {Object} resource
  */
 async function storeResourceRefBy(resource) {
     let referenceInItem = jp.nodes(resource, "$..reference");
@@ -23,31 +23,34 @@ async function storeResourceRefBy(resource) {
         let id = referenceSplit[referenceSplit.length - 1];
         let resourceType = referenceSplit[referenceSplit.length - 2];
 
-        await mongoose.model("resourceRefBy").findOneAndUpdate({
-            $and: [
-                {
-                    resourceType: resourceType
-                },
-                {
-                    id: id
-                }
-            ]
-        }, {
-            $set: {
-                resourceType: resourceType,
-                id: id
+        await mongoose.model("resourceRefBy").findOneAndUpdate(
+            {
+                $and: [
+                    {
+                        resourceType: resourceType
+                    },
+                    {
+                        id: id
+                    }
+                ]
             },
-            $addToSet: {
-                refBy: {
-                    resourceType: resource.resourceType,
-                    id: resource.id
+            {
+                $set: {
+                    resourceType: resourceType,
+                    id: id
+                },
+                $addToSet: {
+                    refBy: {
+                        resourceType: resource.resourceType,
+                        id: resource.id
+                    }
                 }
+            },
+            {
+                upsert: true
             }
-        }, {
-            upsert: true
-        });
+        );
     }
-
 }
 
 /**
@@ -57,23 +60,26 @@ async function storeResourceRefBy(resource) {
  */
 async function updateRefBy(resource) {
     try {
-        await mongoose.model("resourceRefBy").updateMany({
-            $and: [
-                {
-                    "refBy.resourceType": resource.resourceType
-                },
-                {
-                    "refBy.id": resource.id
-                }
-            ]
-        }, {
-            $pull: {
-                refBy: {
-                    resourceType: resource.resourceType,
-                    id: resource.id
+        await mongoose.model("resourceRefBy").updateMany(
+            {
+                $and: [
+                    {
+                        "refBy.resourceType": resource.resourceType
+                    },
+                    {
+                        "refBy.id": resource.id
+                    }
+                ]
+            },
+            {
+                $pull: {
+                    refBy: {
+                        resourceType: resource.resourceType,
+                        id: resource.id
+                    }
                 }
             }
-        });
+        );
     } catch (e) {
         throw e;
     }
@@ -112,14 +118,17 @@ async function deleteEmptyRefBy() {
  */
 async function checkResourceHaveReferenceByOthers(resource) {
     try {
-        let data = await mongoose.model("resourceRefBy").countDocuments({
-            $and: [
-                {
-                    resourceType: resource.resourceType,
-                    id: resource.id
-                }
-            ]
-        }).limit(1);
+        let data = await mongoose
+            .model("resourceRefBy")
+            .countDocuments({
+                $and: [
+                    {
+                        resourceType: resource.resourceType,
+                        id: resource.id
+                    }
+                ]
+            })
+            .limit(1);
 
         if (data > 0) {
             return true;
@@ -134,4 +143,5 @@ async function checkResourceHaveReferenceByOthers(resource) {
 module.exports.storeResourceRefBy = storeResourceRefBy;
 module.exports.updateRefBy = updateRefBy;
 module.exports.deleteEmptyRefBy = deleteEmptyRefBy;
-module.exports.checkResourceHaveReferenceByOthers = checkResourceHaveReferenceByOthers;
+module.exports.checkResourceHaveReferenceByOthers =
+    checkResourceHaveReferenceByOthers;
