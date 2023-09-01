@@ -1,3 +1,5 @@
+require("module-alias/register");
+
 const express = require('express');
 const RateLimit = require('express-rate-limit');
 const bodyParser = require('body-parser');

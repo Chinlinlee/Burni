@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+        "module": "CommonJS",
+        "paths": {
+            "@root/*": ["./*"],
+            "@models/*": ["./models/*"],
+            "@mongodb/*": ["./models/mongodb/*"],
+            "@FhirApiService/*": ["./api/FhirApiService/*"]
+        }
+    },
+    "exclude": [
+        "node_modules", "**/node_modules/*"
+    ]
+}

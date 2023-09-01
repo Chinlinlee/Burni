@@ -20,6 +20,12 @@
         "url": "https://github.com/Chinlinlee/Burni"
     },
     "license": "Apache-2.0 License",
+    "_moduleAliases": {
+        "@root": "./",
+        "@models": "./models",
+        "@mongodb": "./models/mongodb/",
+        "@FhirApiService": "./api/FhirApiService"
+    },
     "dependencies": {
         "abort-controller": "^3.0.0",
         "bcrypt": "^5.1.1",
