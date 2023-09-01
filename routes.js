@@ -1,10 +1,16 @@
+const path = require("path");
 const fs = require('fs');
 const _ = require("lodash");
 const {
     handleError
 } = require('./models/FHIR/httpMessage');
 const FHIR = require('fhir').Fhir;
-const { pluginsConfig } = require("./plugins/config");
+let pluginsConfig;
+if (fs.existsSync(path.join(__dirname, "./plugins/config.js"))) {
+    pluginsConfig = require("./plugins/config").pluginsConfig;
+} else {
+    pluginsConfig = require("./plugins/config.template").pluginsConfig;
+}
 
 function setFormatWhenQuery(req, res) {
     let format = _.get(req, "query._format");
