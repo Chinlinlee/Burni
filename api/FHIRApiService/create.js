@@ -12,6 +12,7 @@ const {
     OperationOutcome,
     handleError
 } = require("../../models/FHIR/httpMessage");
+const { CreateService } = require('./services/create.service');
 
 const responseFunc = {
     /**
@@ -85,41 +86,14 @@ const responseFunc = {
  */
 module.exports = async function(req, res , resourceType) {
     logger.info(`[Info: do create] [Resource Type: ${resourceType}] [Content-Type: ${res.getHeader("content-type")}]`);
-    let doRes = function (code , item) {
-        if (res.getHeader("content-type").includes("xml")) {
-            let fhir = new FHIR();
-            let xmlItem = fhir.objToXml(item._doc);
-            return res.status(code).send(xmlItem);
-        }
-        return res.status(code).send(item);
-    };
-    try {
-        let insertData = req.body;
-        let cloneInsertData = _.cloneDeep(insertData);
-
-        // Validate user request body
-        if (process.env.ENABLE_VALIDATOR === "true") {
-            let { validateResource } = require("../../utils/validator/processor");
-            let validationResult = await validateResource(req.body);
-
-            if (validationResult.isError) return doRes(422, validationResult.message);
-        } else {
-            let containedValidation = await validateContainedList(insertData);
-            if (!containedValidation.status) {
-                let operationOutcomeError = handleError.processing(`The resource in contained error. ${containedValidation.message}`);
-                logger.error(`[Error: ${JSON.stringify(operationOutcomeError)}] [Resource Type: ${resourceType}]`);
-                return doRes(422, operationOutcomeError);
-            }
-        }
-
-        let [status, doc] = await doInsertData(cloneInsertData, resourceType);
-        return responseFunc[status](doc, req, res, resourceType, doRes);
-    } catch (e) {
-        let errorStr = JSON.stringify(e, Object.getOwnPropertyNames(e));
-        logger.error(`[Error: ${errorStr})}] [Resource Type: ${resourceType}]`);
-        let operationOutcomeError = handleError.exception(e);
-        return doRes(500 , operationOutcomeError);
+    let createService = new CreateService(req, res, resourceType);
+    let { status, code, result } = await createService.create();
+    
+    if (!status) {
+        return createService.doFailureResponse(result, code);
     }
+
+    return createService.doSuccessResponse(result);
 };
 
 async function doInsertData(insertData , resourceType) {
