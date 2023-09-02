@@ -102,17 +102,3 @@ module.exports = async function(req, res , resourceType) {
 
     return createService.doSuccessResponse(result);
 };
-
-async function doInsertData(insertData, resourceType) {
-    try {
-        renameCollectionFieldName(insertData);
-        insertData.id = uuid.v4();
-        let insertDataObject = new mongodb[resourceType](insertData);
-        let doc = await insertDataObject.save();
-        return [true, doc.getFHIRField()];
-    } catch (e) {
-        let errorStr = JSON.stringify(e, Object.getOwnPropertyNames(e));
-        logger.error(`[Error: ${errorStr}] [Resource Type: ${resourceType}]`);
-        return [false, e];
-    }
-}

@@ -61,7 +61,7 @@ class BaseFhirApiService {
         } else {
             operationOutcomeMessage = {
                 code: 500,
-                msg: handleError.exception(err.message)
+                msg: handleError.exception("Server Error Occurred")
             };
         }
         logger.error(`[Error: ${JSON.stringify(operationOutcomeMessage)}] [Resource Type: ${this.resourceType}]`);

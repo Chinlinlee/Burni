@@ -38,13 +38,10 @@ class CreateService extends BaseFhirApiService {
                 result
             };
         } catch (e) {
-            let errorStr = JSON.stringify(e, Object.getOwnPropertyNames(e));
-            logger.error(`[Error: ${errorStr})}] [Resource Type: ${this.resourceType}]`);
-            let operationOutcomeError = handleError.exception("Server Error Occurred");
             return {
                 status: false,
                 code: 500,
-                result: operationOutcomeError
+                result: e
             };
         }
 
