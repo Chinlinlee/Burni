@@ -11,15 +11,15 @@ const {
     OperationOutcome,
     handleError
 } = require("@models/FHIR/httpMessage");
+const { BaseFhirApiService } = require("./base.service");
 
 
 const { logger } = require("@root/utils/log");
 
-class CreateService {
+
+class CreateService extends BaseFhirApiService {
     constructor(req, res, resourceType) {
-        this.request = req;
-        this.response = res;
-        this.resourceType = resourceType;
+        super(req, res, resourceType);
     }
 
     async create() {
@@ -99,15 +99,6 @@ class CreateService {
         return this.doResponse(operationOutcomeMessage.code, operationOutcomeMessage.msg);
     }
 
-    doResponse(code, item) {
-        if (this.response.getHeader("content-type").includes("xml")) {
-            let fhir = new FHIR();
-            let xmlItem = fhir.objToXml(item._doc);
-            return this.response.status(code).send(xmlItem);
-        }
-        return this.response.status(code).send(item);
-    }
-
     async insertResource(resource) {
         try {
             renameCollectionFieldName(resource);
@@ -128,38 +119,6 @@ class CreateService {
         }
     }
 
-    async validateRequestResource(resource) {
-        // Validate user request body
-        if (process.env.ENABLE_VALIDATOR === "true") {
-            let { validateResource } = require("@root/utils/validator/processor");
-            let validationResult = await validateResource(resource);
-
-            if (validationResult.isError) {
-                return {
-                    status: false,
-                    code: 422,
-                    result: validationResult.message
-                };
-            }
-        } else {
-            let containedValidation = await validateContainedList(resource);
-            if (!containedValidation.status) {
-                let operationOutcomeError = handleError.processing(`The resource in contained error. ${containedValidation.message}`);
-                logger.error(`[Error: ${JSON.stringify(operationOutcomeError)}] [Resource Type: ${this.resourceType}]`);
-                return {
-                    status: false,
-                    code: 422,
-                    result: operationOutcomeError
-                };
-            }
-        }
-        
-        return {
-            status: true,
-            code: 200,
-            result: "All OK"
-        };
-    }
 }
 
 module.exports.CreateService = CreateService;
