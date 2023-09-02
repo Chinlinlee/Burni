@@ -60,43 +60,7 @@ class CreateService extends BaseFhirApiService {
     }
 
     doFailureResponse(err, code) {
-        if (_.get(err, "resourceType", "") === "OperationOutcome")
-            return this.doResponse(code, err);
-
-        let operationOutcomeMessage;
-        if (err.message.code == 11000) {
-            operationOutcomeMessage = {
-                code: 409,
-                msg: handleError.duplicate(err.message)
-            };
-        } else if (err.stack.includes("ValidationError")) {
-
-            let operationOutcomeError = new OperationOutcome([]);
-            for (let errorKey in err.errors) {
-                let error = err.errors[errorKey];
-                let message = _.get(error, "message", `${error} invalid`);
-                let errorIssue = new issue("error", "invalid", message);
-                _.set(errorIssue, "location", [errorKey]);
-                operationOutcomeError.issue.push(errorIssue);
-            }
-            operationOutcomeMessage = {
-                code: 400,
-                msg: operationOutcomeError
-            };
-
-        } else if (err.stack.includes("stored by resource")) {
-            operationOutcomeMessage = {
-                code: 400,
-                msg: handleError.processing(err.message)
-            };
-        } else {
-            operationOutcomeMessage = {
-                code: 500,
-                msg: handleError.exception(err.message)
-            };
-        }
-        logger.error(`[Error: ${JSON.stringify(operationOutcomeMessage)}] [Resource Type: ${this.resourceType}]`);
-        return this.doResponse(operationOutcomeMessage.code, operationOutcomeMessage.msg);
+        return this.doResourceChangeFailureResponse(err, code);
     }
 
     async insertResource(resource) {
