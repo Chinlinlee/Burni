@@ -1,3 +1,4 @@
+const _ = require("lodash");
 const jp = require("jsonpath");
 const mongoose = require("mongoose");
 
@@ -19,7 +20,7 @@ const mongoose = require("mongoose");
 async function storeResourceRefBy(resource) {
     let referenceInItem = jp.nodes(resource, "$..reference");
     for (let refNode of referenceInItem) {
-        let referenceSplit = refNode.value.split("/");
+        let referenceSplit = _.isObject(refNode.value) ? refNode.value["reference"].split("/") : refNode.value.split("/");
         let id = referenceSplit[referenceSplit.length - 1];
         let resourceType = referenceSplit[referenceSplit.length - 2];
 
