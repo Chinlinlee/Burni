@@ -26,18 +26,13 @@ class UpdateService extends BaseFhirApiService {
             let validation = await this.validateRequestResource(resource);
             if (!validation.status) return validation;
 
-            let docExist = await this.isDocExist();
-            if (docExist.status === 1) {
-                return await this.updateResource(resourceClone);
-            } else if (docExist.status === 2) {
-                return await this.insertResource(resourceClone);
-            }
-            
+            return await UpdateService.insertOrUpdateResource(this.resourceType, this.resourceId, resourceClone);
+
         } catch (e) {
             return {
                 status: false,
                 code: 500,
-                result: e
+                doc: e
             };
         }
     }
@@ -56,14 +51,23 @@ class UpdateService extends BaseFhirApiService {
         this.doResourceChangeFailureResponse(err, code);
     }
 
-    async updateResource(resource) {
+    static async insertOrUpdateResource(resourceType, id, resource) {
+        let docExist = await UpdateService.isDocExist(resourceType, id);
+        if (docExist.status === 1) {
+            return await UpdateService.updateResource(resourceType, id, resource);
+        } else if (docExist.status === 2) {
+            return await UpdateService.insertResourceWithId(resourceType, id, resource);
+        }
+    }
+
+    static async updateResource(resourceType, id, resource) {
         delete resource.id;
         renameCollectionFieldName(resource);
-        resource.id = this.resourceId;
+        resource.id = id;
 
-        let newDoc = await mongoose.model(this.resourceType).findOneAndUpdate(
+        let newDoc = await mongoose.model(resourceType).findOneAndUpdate(
             {
-                id: this.resourceId
+                id: id
             },
             {
                 $set: resource
@@ -76,26 +80,26 @@ class UpdateService extends BaseFhirApiService {
 
         return {
             status: true,
-            code: 201,
+            code: 200,
             doc: newDoc.value.getFHIRField()
         };
     }
 
-    async insertResource(resource) {
-        resource.id = this.resourceId;
+    static async insertResourceWithId(resourceType, id, resource) {
+        resource.id = id;
         renameCollectionFieldName(resource);
-        let updateData = new mongoose.model(this.resourceType)(resource);
-        let doc = await updateData.save();
+        let resourceInstance = new mongoose.model(resourceType)(resource);
+        let doc = await resourceInstance.save();
         return {
             status: true,
-            code: 200,
+            code: 201,
             doc: doc.getFHIRField()
         };
     }
 
-    async isDocExist() {
-        let count = await mongoose.model(this.resourceType).countDocuments({
-            id: this.resourceID
+    static async isDocExist(resourceType, id) {
+        let count = await mongoose.model(resourceType).countDocuments({
+            id: id
         }).limit(1);
 
         if (count > 0) {
