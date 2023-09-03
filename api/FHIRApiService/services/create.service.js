@@ -31,7 +31,7 @@ class CreateService extends BaseFhirApiService {
             let validation = await this.validateRequestResource(resource);
             if (!validation.status) return validation;
 
-            let { status, result } = await this.insertResource(resourceClone);
+            let { status, result } = await CreateService.insertResource(this.resourceType, resourceClone);
             return {
                 status,
                 code: status ? 201 : 500,
@@ -60,24 +60,15 @@ class CreateService extends BaseFhirApiService {
         return this.doResourceChangeFailureResponse(err, code);
     }
 
-    async insertResource(resource) {
-        try {
-            renameCollectionFieldName(resource);
-            resource.id = uuid.v4();
-            let insertDataObject = new mongoose.model(this.resourceType)(resource);
-            let doc = await insertDataObject.save();
-            return {
-                status: true,
-                result: doc.getFHIRField()
-            };
-        } catch (e) {
-            let errorStr = JSON.stringify(e, Object.getOwnPropertyNames(e));
-            logger.error(`[Error: ${errorStr}] [Resource Type: ${this.resourceType}]`);
-            return {
-                status: false,
-                result: e
-            };
-        }
+    static async insertResource(resourceType, resource) {
+        renameCollectionFieldName(resource);
+        resource.id = uuid.v4();
+        let insertDataObject = new mongoose.model(resourceType)(resource);
+        let doc = await insertDataObject.save();
+        return {
+            status: true,
+            result: doc.getFHIRField()
+        };
     }
 
 }
