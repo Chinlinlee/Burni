@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const FHIR = require("fhir").FHIR;
+const FHIR = require("fhir").Fhir;
 const _ = require("lodash");
 const uuid = require('uuid');
 
@@ -15,8 +15,11 @@ const { logger } = require("@root/utils/log");
 
 class BaseFhirApiService {
     constructor(req, res, resourceType) {
+        /** @type { import("express").Request } */
         this.request = req;
+        /** @type { import("express").Response } */
         this.response = res;
+        /** @type { string } */
         this.resourceType = resourceType;
     }
 
@@ -69,9 +72,14 @@ class BaseFhirApiService {
     }
 
     doResponse(code, item) {
+        let responseResourceType = _.get(item, "resourceType");
+        if (!responseResourceType) {
+            item = handleError.processing(item);
+        }
+
         if (this.response.getHeader("content-type").includes("xml")) {
             let fhir = new FHIR();
-            let xmlItem = fhir.objToXml(item._doc);
+            let xmlItem = fhir.objToXml(item);
             return this.response.status(code).send(xmlItem);
         }
         return this.response.status(code).send(item);
