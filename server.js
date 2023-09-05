@@ -52,7 +52,8 @@ app.use(
 );
 app.use(
     express.text({
-        type: ["text/*", "/_xml", "xml", "+xml"]
+        type: ["text/*", "/_xml", "xml", "+xml"],
+        limit: "50mb"
     })
 );
 
