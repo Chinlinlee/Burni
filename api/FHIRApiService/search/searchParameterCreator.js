@@ -43,26 +43,34 @@ class SearchParameterCreator {
 
         for (let key in this.query) {
             try {
-                if (key.includes(".")) {
-                    let isChain = checkIsChainAndGetChainParent(
-                        this.resourceType,
-                        key
-                    );
-                    if (isChain.status) {
-                        this.query["isChain"] = true;
+                let splitDotLength = key.split(".").length;
+                if (splitDotLength >= 2) {
+                    if ((key.startsWith("composition") || key.startsWith("message")) &&
+                        splitDotLength === 2) {
 
-                        let joinQuery = getChainParentJoinQuery(
-                            isChain.chainParent,
-                            this.query[key]
+                        this.paramsSearch[key](this.query);
+
+                    } else {
+                        let isChain = checkIsChainAndGetChainParent(
+                            this.resourceType,
+                            key
                         );
-
-                        if (!_.get(this.query, "chain"))
-                            this.query["chain"] = [];
-                        this.query["chain"] = [
-                            ...this.query["chain"],
-                            joinQuery
-                        ];
-                        delete this.query[key];
+                        if (isChain.status) {
+                            this.query["isChain"] = true;
+    
+                            let joinQuery = getChainParentJoinQuery(
+                                isChain.chainParent,
+                                this.query[key]
+                            );
+    
+                            if (!_.get(this.query, "chain"))
+                                this.query["chain"] = [];
+                            this.query["chain"] = [
+                                ...this.query["chain"],
+                                joinQuery
+                            ];
+                            delete this.query[key];
+                        }
                     }
                 } else {
                     this.paramsSearch[key](this.query);

@@ -132,6 +132,13 @@ function checkIsChainAndGetChainParent(resourceType, param) {
 
         let chainRefResourceList = [];
 
+        if (resourceType === "Bundle" &&
+            (param.startsWith("composition") || param.startsWith("message"))) {
+
+            let paramPath = paramSplit.slice(0, 2).join(".");
+            paramSplit = [paramPath, ...paramSplit.slice(2)];
+        }
+
         // 1. Check the first parameter present in string
         //   1.1 Must be parameter of resource type.
         // 2. Record every reference resourceType
@@ -153,12 +160,28 @@ function checkIsChainAndGetChainParent(resourceType, param) {
             if (!paramType) return { status: false };
             else if (paramType !== "reference") return { status: false };
 
-            let paramRefResources = resourceIncludeRef[resourceType].find((v) =>
-                paramsSearchFields[firstParam][0].startsWith(v.path)
-            ).resourceList;
+            let paramRefResources;
+
+            if (resourceType === "Bundle") {
+                if (firstParam.startsWith("composition")) {
+                    let compositionFirstParam = firstParam.split(".")[1];
+                    paramRefResources = resourceIncludeRef["Composition"].find((v) =>
+                        v.path.startsWith(compositionFirstParam)
+                    ).resourceList;
+                } else if (firstParam.startsWith("message")) {
+                    let messageFirstParam = firstParam.split(".")[1];
+                    paramRefResources = resourceIncludeRef["MessageHeader"].find((v) =>
+                        v.path.startsWith(messageFirstParam)
+                    ).resourceList;
+                }
+            } else {
+                paramRefResources = resourceIncludeRef[resourceType].find((v) =>
+                    paramsSearchFields[firstParam][0].startsWith(v.path)
+                ).resourceList;
+            }
 
             if (selfParam.includes(":")) {
-                if (!paramRefResources.includes(specificResource))
+                if (!paramRefResources.includes(specificResource) && !paramRefResources.includes("Resource"))
                     return { status: false };
                 else paramRefResources = [specificResource];
             }
@@ -215,9 +238,8 @@ function getChainParentJoinQuery(chainParent, value) {
                     pipeline.push({
                         $unwind: {
                             path: hasParent
-                                ? `$stage${i - 1}Ref${
-                                      parent.parent
-                                  }-${previousKey}.${v}`
+                                ? `$stage${i - 1}Ref${parent.parent
+                                }-${previousKey}.${v}`
                                 : `\$${v}`,
                             preserveNullAndEmptyArrays: true
                         }
@@ -232,9 +254,8 @@ function getChainParentJoinQuery(chainParent, value) {
                             refId: {
                                 $substr: [
                                     hasParent
-                                        ? `$stage${i - 1}Ref${
-                                              parent.parent
-                                          }-${previousKey}.${parent.field}`
+                                        ? `$stage${i - 1}Ref${parent.parent
+                                        }-${previousKey}.${parent.field}`
                                         : `\$${parent.field}`,
                                     parent.resource.length + 1,
                                     -1
