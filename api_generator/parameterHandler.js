@@ -232,7 +232,7 @@ class TokenParameter {
         this.Field = field;
         this.ResourceDef = resourceDef;
         this.ParamsSearchFieldTxt = "";
-        this.NormalizeParamName = this.Param.replace(/-/gm, "_");
+        this.NormalizeParamName = this.Param.replace(/-|\./gm, "_");
     }
 
     fixedParamsSearchFieldTxt() {
@@ -375,7 +375,7 @@ class DateParameter {
         this.Param = param;
         this.Field = field;
         this.ResourceDef = resourceDef;
-        this.NormalizeParamName = this.Param.replace(/-/gm, "_");
+        this.NormalizeParamName = this.Param.replace(/-|\./gm, "_");
         this.LookUpFunc = {
             date: (field) => this.handleDate(field),
             dateTime: (field) => this.handleDateTime(field),
