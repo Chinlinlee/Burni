@@ -464,15 +464,16 @@ function referenceQuery(query, field, type = "") {
     const isUrl = query.match(urlRegex);
     let typeAndId = query.split("/");
     let queryBuilder = {};
+    
     if (isUrl) {
-        _.set(queryBuilder, field, isUrl[3]);
-        queryBuilder[field] = isUrl[3];
+        queryBuilder[field] = isUrl[0];
         return queryBuilder;
     } else if (typeAndId.length == 2) {
         queryBuilder[field] = `${typeAndId[0]}/${typeAndId[1]}`;
     } else {
         queryBuilder[field] = { $regex: new RegExp(query) };
     }
+
     if (type) {
         let andQuery = {
             $and: []
