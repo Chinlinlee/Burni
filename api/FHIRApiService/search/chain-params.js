@@ -2,6 +2,7 @@ const _ = require("lodash");
 const resourceIncludeRef = require("../../../api_generator/resource-reference/resourceInclude.json");
 const { findParamType, isResourceType } = require("../../../utils/fhir-param");
 const uuid = require("uuid");
+const { flatten } = require("flat");
 
 /**
  *
@@ -304,6 +305,8 @@ function getChainParentJoinQuery(chainParent, value) {
             }
         }
 
+        processBundleSpecialChain(chainParent, lastParentFieldList, value);
+
         pipeline.push({
             $match: {
                 $or: lastParentFieldList
@@ -313,6 +316,50 @@ function getChainParentJoinQuery(chainParent, value) {
     } catch (e) {
         console.error(e);
     }
+}
+
+function processBundleSpecialChain(chainParent, lastParentFieldList, value) {
+    if (chainParent[0][0].field.includes("entry.0.resource")) {
+        let lastChain = chainParent[chainParent.length - 1][0];
+        let originalQuery = {
+            $and: [],
+            [lastChain.param]: value
+        };
+        lastChain["searchFunc"](originalQuery);
+        let bundleSpecialQuery = getBundleSpecialQuery(lastChain, originalQuery);
+        
+        lastParentFieldList.push({
+            $and: bundleSpecialQuery.$and
+        });
+    }
+}
+
+function getBundleSpecialQuery(lastChain, query) {
+    let flattenOriginalQuery = flatten(query, {
+        object: true
+    });
+    let unflattenOriginalQuery = {};
+    Object.keys(flattenOriginalQuery).map(key => {
+        let keySplit = key.split(".");
+        let startPath = keySplit.slice(0, keySplit.lastIndexOf(lastChain.field));
+        let entryPath = "entry.resource";
+        let paramPath = keySplit.slice(keySplit.lastIndexOf(lastChain.field));
+        let combinePath = [entryPath, ...paramPath].join(".");
+        if (combinePath.includes("$regex")) {
+            _.set(unflattenOriginalQuery, startPath, {
+                [combinePath.slice(0, combinePath.indexOf("$regex")-1)]: {
+                    $regex: flattenOriginalQuery[key]
+                }
+            });
+        } else {
+            _.set(unflattenOriginalQuery, startPath, {
+                [combinePath]: flattenOriginalQuery[key]
+            });
+        }
+        delete flattenOriginalQuery[key];
+    });
+
+    return unflattenOriginalQuery;
 }
 
 module.exports.checkIsChainAndGetChainParent = checkIsChainAndGetChainParent;
