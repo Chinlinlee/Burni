@@ -35,8 +35,17 @@ class BaseFhirApiService {
         if (_.get(err, "resourceType", "") === "OperationOutcome")
             return this.doResponse(code, err);
 
+        let operationOutcomeMessage = this.getResourceChangeFailureOperationOutcomeMsg(err);
+        logger.error(`[Error: ${JSON.stringify(operationOutcomeMessage)}] [Resource Type: ${this.resourceType}]`);
+        return this.doResponse(operationOutcomeMessage.code, operationOutcomeMessage.msg);
+    }
+
+    getResourceChangeFailureOperationOutcomeMsg(err) {
+        if (_.get(err, "resourceType", "") === "OperationOutcome")
+            return err;
+
         let operationOutcomeMessage;
-        if (err.message.code == 11000) {
+        if (_.get(err, "message.code") === 11000) {
             operationOutcomeMessage = {
                 code: 409,
                 msg: handleError.duplicate(err.message)
@@ -67,8 +76,8 @@ class BaseFhirApiService {
                 msg: handleError.exception("Server Error Occurred")
             };
         }
-        logger.error(`[Error: ${JSON.stringify(operationOutcomeMessage)}] [Resource Type: ${this.resourceType}]`);
-        return this.doResponse(operationOutcomeMessage.code, operationOutcomeMessage.msg);
+
+        return operationOutcomeMessage;
     }
 
     doResponse(code, item) {
