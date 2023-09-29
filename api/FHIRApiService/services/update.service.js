@@ -26,7 +26,7 @@ class UpdateService extends BaseFhirApiService {
             let validation = await this.validateRequestResource(resource);
             if (!validation.status) return validation;
 
-            return await UpdateService.insertOrUpdateResource(this.resourceType, this.resourceId, resourceClone);
+            return await UpdateService.insertOrUpdateResource(this.resourceType, resourceClone, this.resourceId);
 
         } catch (e) {
             return {
@@ -51,7 +51,7 @@ class UpdateService extends BaseFhirApiService {
         this.doResourceChangeFailureResponse(err, code);
     }
 
-    static async insertOrUpdateResource(resourceType, id, resource) {
+    static async insertOrUpdateResource(resourceType, resource, id) {
         let docExist = await UpdateService.isDocExist(resourceType, id);
         if (docExist.status === 1) {
             return await UpdateService.updateResource(resourceType, id, resource);
