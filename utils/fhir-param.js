@@ -19,5 +19,42 @@ function isResourceType(resourceType) {
     return resourceTypeList.includes(resourceType);
 }
 
+function getUrlMatch(url) {
+    const urlRegex = /^(http|https):\/\/(.*)\/(\w+\/.+)$/;
+    return url.match(urlRegex);
+}
+
+/**
+ * 
+ * @param {string} url 
+ * @returns 
+ */
+function getIdInFullUrl(url) {
+    let urlMatch = getUrlMatch(url);
+    let id;
+    if (urlMatch) {
+        id = urlMatch[0];
+    } else {
+        id = url.split("/").pop();
+    }
+    return id;
+}
+
+/**
+ * 
+ * @param {string} url 
+ */
+function getResourceTypeInUrl(url) {
+    let urlSplit = url.split("/");
+    if (urlSplit.length >= 2) {
+        return urlSplit[urlSplit.length - 2];
+    }
+
+    return urlSplit.pop();
+}
+
 module.exports.findParamType = findParamType;
 module.exports.isResourceType = isResourceType;
+module.exports.getUrlMatch = getUrlMatch;
+module.exports.getIdInFullUrl = getIdInFullUrl;
+module.exports.getResourceTypeInUrl = getResourceTypeInUrl;

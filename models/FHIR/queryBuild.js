@@ -1,3 +1,4 @@
+const { getUrlMatch } = require("@root/utils/fhir-param");
 const { isNumber } = require("lodash");
 const _ = require("lodash");
 const moment = require("moment");
@@ -460,13 +461,12 @@ function instantQuery(value, field) {
 }
 
 function referenceQuery(query, field, type = "") {
-    const urlRegex = /^(http|https):\/\/(.*)\/(\w+\/.+)$/;
-    const isUrl = query.match(urlRegex);
+    const urlMatch = getUrlMatch(query);
     let typeAndId = query.split("/");
     let queryBuilder = {};
     
-    if (isUrl) {
-        queryBuilder[field] = isUrl[0];
+    if (urlMatch) {
+        queryBuilder[field] = urlMatch[0];
         return queryBuilder;
     } else if (typeAndId.length == 2) {
         queryBuilder[field] = `${typeAndId[0]}/${typeAndId[1]}`;
