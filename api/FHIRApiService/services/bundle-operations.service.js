@@ -5,7 +5,8 @@ const jsonPath = require("jsonpath");
 const {
     getDeleteMessage,
     handleError,
-    FhirWebServiceError
+    FhirWebServiceError,
+    FhirValidationError
 } = require("@models/FHIR/httpMessage");
 const { BaseFhirApiService } = require("./base.service");
 const { logger } = require("@root/utils/log");
@@ -44,12 +45,12 @@ class BundleOpService extends BaseFhirApiService {
         for (let entry of this.bundleEntry) {
             let fullUrl = _.get(entry, "fullUrl", "");
             let fullUrlSplit = _.compact(fullUrl.split("/"));
-            if (!fullUrl.length === 2 || 
+            if (!fullUrl.length === 2 ||
                 !resourceList.includes(fullUrlSplit[0])
             ) {
 
                 if (!/urn:oid:[0-2](\.[1-9]\d*)+/i.test(fullUrl) &&
-                !uuid.validate(fullUrl.replace(/^urn:uuid:/, ""))
+                    !uuid.validate(fullUrl.replace(/^urn:uuid:/, ""))
                 ) {
                     throw new FhirWebServiceError(400, `Invalid fullUrl ${fullUrl}, only support {resourceType}/{id} now`, handleError.processing);
                 }
@@ -82,6 +83,10 @@ class BundleOpService extends BaseFhirApiService {
             if (method === "POST") {
                 let createHandler = new TransactionCreateHandler(resourceType, item.resource, fullUrl, this.sortedEntry, session);
                 let createResource = await createHandler.create();
+                if (_.get(createResource, "result.resourceType") === "OperationOutcome" && _.get(createResource, "code") === 422) {
+                    await session.abortTransaction();
+                    throw new FhirValidationError(createResource.result);
+                }
                 let reqBaseUrl = `${this.request.protocol}://${this.request.get('host')}/`;
                 let fullAbsoluteUrl = urlJoin(`/${process.env.FHIRSERVER_APIPATH}/${resourceType}/${createResource.id}/_history/1`, reqBaseUrl);
                 this.bundleResponse.push({
@@ -92,6 +97,10 @@ class BundleOpService extends BaseFhirApiService {
             } else if (method === "PUT") {
                 let updateHandler = new TransactionUpdateHandler(resourceType, item.resource, fullUrl, this.sortedEntry, session);
                 let updateResult = await updateHandler.update();
+                if (_.get(updateResult, "result.resourceType") === "OperationOutcome" && _.get(updateResult, "code") === 422) {
+                    await session.abortTransaction();
+                    throw new FhirValidationError(createResource.result);
+                }
                 let reqBaseUrl = `${this.request.protocol}://${this.request.get('host')}/`;
                 let fullAbsoluteUrl = urlJoin(`/${process.env.FHIRSERVER_APIPATH}/${resourceType}/${getIdInFullUrl(fullUrl)}/_history/${updateResult.result.meta.versionId}`, reqBaseUrl);
                 this.bundleResponse.push({
@@ -191,7 +200,7 @@ class BaseTransactionHandler {
     }
 
     async replaceIdInEntry(createdResource) {
-        let resourcesWithRef = jsonPath.nodes(this.entry, `$..*.reference`).filter(v => v.value === this.fullUrl);
+        let resourcesWithRef = jsonPath.nodes(this.entry, `$.*.resource..reference`).filter(v => v.value === this.fullUrl);
 
         for (let i = 0; i < resourcesWithRef.length; i++) {
             let itemPath = resourcesWithRef[i].path.slice(1).join(".");

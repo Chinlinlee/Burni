@@ -39,6 +39,15 @@ class FhirWebServiceError extends Error {
     }
 }
 
+class FhirValidationError extends Error {
+    constructor(operationOutcome) {
+        super("");
+        this.code = 422;
+        this.name = "FhirValidationError";
+        this.operationOutcome = operationOutcome;
+    }
+}
+
 function getDeleteMessage(resource, id) {
     let message = new issue(
         "information",
@@ -87,5 +96,6 @@ module.exports = {
     ErrorOperationOutcome: ErrorOperationOutcome,
     issue: issue,
     OperationOutcome: OperationOutcome,
-    FhirWebServiceError: FhirWebServiceError
+    FhirWebServiceError: FhirWebServiceError,
+    FhirValidationError: FhirValidationError
 };
