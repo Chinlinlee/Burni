@@ -19,6 +19,26 @@ class ErrorOperationOutcome {
     }
 }
 
+class FhirWebServiceError extends Error {
+    /**
+     * 
+     * @param {number} code 
+     * @param {string} message 
+     * @param {(err: string) => void} errorHandler
+     */
+    constructor(code, message, errorHandler) {
+        super(message);
+        this.message = message;
+        this.code = code;
+        this.name = "FhirWebServiceError";
+        this.operationOutcome = errorHandler(this);
+    }
+
+    toString() {
+        return this.message;
+    }
+}
+
 function getDeleteMessage(resource, id) {
     let message = new issue(
         "information",
@@ -66,5 +86,6 @@ module.exports = {
     handleError: handleError,
     ErrorOperationOutcome: ErrorOperationOutcome,
     issue: issue,
-    OperationOutcome: OperationOutcome
+    OperationOutcome: OperationOutcome,
+    FhirWebServiceError: FhirWebServiceError
 };

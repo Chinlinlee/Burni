@@ -3,7 +3,8 @@ const mongoose = require("mongoose");
 
 const {
     getDeleteMessage,
-    handleError
+    handleError,
+    FhirWebServiceError
 } = require("@models/FHIR/httpMessage");
 const { BaseFhirApiService } = require("./base.service");
 
@@ -47,18 +48,33 @@ class DeleteService extends BaseFhirApiService {
         return this.doResponse(code, err);
     }
 
-    static async deleteResourceById(resourceType, id) {
-        let deletedDoc = await mongoose.model(resourceType).findOneAndDelete(
-            {
-                id: id
+    static async deleteResourceById(resourceType, id, session=undefined) {
+        try {
+            let deletedDoc = await mongoose.model(resourceType).findOneAndDelete(
+                {
+                    id: id
+                },
+                {
+                    session
+                }
+            );
+    
+            return {
+                success: true,
+                code: 200,
+                result: deletedDoc
+            };
+        } catch(e) {
+            if (_.isString(e)) {
+                if (e.includes("not found")) {
+                    throw new FhirWebServiceError(404, e, handleError["not-found"]);
+                } else if (e.includes("referenced")) {
+                    throw new FhirWebServiceError(400, e, handleError.processing);
+                }
             }
-        );
 
-        return {
-            success: true,
-            code: 200,
-            result: deletedDoc
-        };
+            throw e;
+        }
     }
 }
 
