@@ -60,11 +60,11 @@ class CreateService extends BaseFhirApiService {
         return this.doResourceChangeFailureResponse(err, code);
     }
 
-    static async insertResource(resourceType, resource) {
+    static async insertResource(resourceType, resource, session=undefined) {
         renameCollectionFieldName(resource);
         resource.id = uuid.v4();
         let insertDataObject = new mongoose.model(resourceType)(resource);
-        let doc = await insertDataObject.save();
+        let doc = await insertDataObject.save({session});
         return {
             status: true,
             result: doc.getFHIRField()

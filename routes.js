@@ -61,18 +61,18 @@ module.exports = function (app) {
                         _.get(req.headers, "accept")
                             ? ""
                             : (() => {
-                                  _.get(req.headers, "content-type")
-                                      ? _.set(
-                                            req.headers,
-                                            "accept",
-                                            _.get(req.headers, "content-type")
-                                        )
-                                      : _.set(
-                                            req.headers,
-                                            "accept",
-                                            "application/fhir+json"
-                                        );
-                              })();
+                                _.get(req.headers, "content-type")
+                                    ? _.set(
+                                        req.headers,
+                                        "accept",
+                                        _.get(req.headers, "content-type")
+                                    )
+                                    : _.set(
+                                        req.headers,
+                                        "accept",
+                                        "application/fhir+json"
+                                    );
+                            })();
 
                         let xmlAcceptList = [
                             "application/xml",
@@ -95,6 +95,8 @@ module.exports = function (app) {
             );
         }
     }
+
+    app.post(`/${process.env.FHIRSERVER_APIPATH}`, require("./api/FHIRApiService/root"));
     //#endregion
 
     for (let pluginName in pluginsConfig) {

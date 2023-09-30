@@ -51,16 +51,16 @@ class UpdateService extends BaseFhirApiService {
         this.doResourceChangeFailureResponse(err, code);
     }
 
-    static async insertOrUpdateResource(resourceType, resource, id) {
+    static async insertOrUpdateResource(resourceType, resource, id, session=undefined) {
         let docExist = await UpdateService.isDocExist(resourceType, id);
         if (docExist.status === 1) {
-            return await UpdateService.updateResource(resourceType, id, resource);
+            return await UpdateService.updateResource(resourceType, id, resource, session);
         } else if (docExist.status === 2) {
-            return await UpdateService.insertResourceWithId(resourceType, id, resource);
+            return await UpdateService.insertResourceWithId(resourceType, id, resource, session);
         }
     }
 
-    static async updateResource(resourceType, id, resource) {
+    static async updateResource(resourceType, id, resource, session=undefined) {
         delete resource.id;
         renameCollectionFieldName(resource);
         resource.id = id;
@@ -74,7 +74,8 @@ class UpdateService extends BaseFhirApiService {
             },
             {
                 new: true,
-                rawResult: true
+                rawResult: true,
+                session: session
             }
         );
 
@@ -85,11 +86,11 @@ class UpdateService extends BaseFhirApiService {
         };
     }
 
-    static async insertResourceWithId(resourceType, id, resource) {
+    static async insertResourceWithId(resourceType, id, resource, session=undefined) {
         resource.id = id;
         renameCollectionFieldName(resource);
         let resourceInstance = new mongoose.model(resourceType)(resource);
-        let doc = await resourceInstance.save();
+        let doc = await resourceInstance.save({session});
         return {
             status: true,
             code: 201,
