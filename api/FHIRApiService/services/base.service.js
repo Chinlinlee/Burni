@@ -94,7 +94,7 @@ class BaseFhirApiService {
         return this.response.status(code).send(item);
     }
 
-    async validateRequestResource(resource) {
+    static async validateRequestResource(resource) {
         // Validate user request body
         if (process.env.ENABLE_VALIDATOR === "true") {
             let { validateResource } = require("@root/utils/validator/processor");

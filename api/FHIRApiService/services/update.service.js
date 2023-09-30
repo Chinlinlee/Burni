@@ -23,7 +23,7 @@ class UpdateService extends BaseFhirApiService {
             let resource = this.request.body;
             let resourceClone = _.cloneDeep(resource);
 
-            let validation = await this.validateRequestResource(resource);
+            let validation = await BaseFhirApiService.validateRequestResource(resource);
             if (!validation.status) return validation;
 
             return await UpdateService.insertOrUpdateResource(this.resourceType, resourceClone, this.resourceId);

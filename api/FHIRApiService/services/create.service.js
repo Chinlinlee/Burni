@@ -28,7 +28,7 @@ class CreateService extends BaseFhirApiService {
             let resourceClone = _.cloneDeep(resource);
 
             // Validate user request body
-            let validation = await this.validateRequestResource(resource);
+            let validation = await BaseFhirApiService.validateRequestResource(resource);
             if (!validation.status) return validation;
 
             let { status, result } = await CreateService.insertResource(this.resourceType, resourceClone);
