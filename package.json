@@ -56,11 +56,11 @@
         "mongoose-date-format": "^1.2.0",
         "mongoose-schema-jsonschema": "^2.0.2",
         "node-fetch": "^2.6.1",
-        "node-java-fhir-validator": "^0.2.0",
+        "node-java-fhir-validator": "^1.0.0",
         "node-schedule": "^2.1.0",
         "normalize-text": "^2.3.2",
         "object-hash": "^3.0.0",
-        "passport": "^0.4.0",
+        "passport": "^0.6.0",
         "passport-http-bearer": "^1.0.1",
         "passport-local": "^1.0.0",
         "query-string": "^7.1.0",
@@ -71,7 +71,6 @@
         "xml-js": "^1.6.11"
     },
     "devDependencies": {
-        "apidoc": "^0.50.4",
         "babel-eslint": "^10.1.0",
         "eslint-config-prettier": "^9.0.0",
         "jsdoc-to-markdown": "^7.1.1"

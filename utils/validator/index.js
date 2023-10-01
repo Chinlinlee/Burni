@@ -1,9 +1,10 @@
 const path = require("path");
 const fs = require("fs");
+const { FhirValidator } = require("node-java-fhir-validator");
 
-const validator = require("node-java-fhir-validator")(
-    path.normalize(path.join(__dirname, "./igs"))
-);
+const validator = new FhirValidator({
+    igDir: path.normalize(path.join(__dirname, "./igs"))
+});
 
 const fhirProfileFiles = fs.readdirSync(path.join(__dirname, "./igs"));
 fhirProfileFiles.forEach(async (file) => {
