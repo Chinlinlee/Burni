@@ -49,6 +49,10 @@ function getResourceTypeInUrl(url) {
     if (urlSplit.length >= 2) {
         return urlSplit[urlSplit.length - 2];
     }
+    let firstElement = urlSplit[0];
+    if (firstElement.indexOf("?") >= 0) {
+        return firstElement.split("?")[0];
+    }
 
     return urlSplit.pop();
 }
