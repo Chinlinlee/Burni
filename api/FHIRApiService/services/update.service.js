@@ -11,6 +11,7 @@ const {
 const { BaseFhirApiService } = require("./base.service");
 
 const { logger } = require("@root/utils/log");
+const { urlJoin } = require("@root/utils/url");
 
 class UpdateService extends BaseFhirApiService {
     constructor(req, res, resourceType) {
@@ -38,11 +39,10 @@ class UpdateService extends BaseFhirApiService {
     }
 
     doSuccessResponse(resource) {
-        if (resource.code === 201) {
-            let reqBaseUrl = `${this.request.protocol}://${this.request.get("host")}/`;
-            let fullAbsoluteUrl = new URL(this.request.originalUrl, reqBaseUrl).href;
-            this.response.set("Location", fullAbsoluteUrl);
-        }
+        let reqBaseUrl = `${this.request.protocol}://${this.request.get("host")}/`;
+        let fullAbsoluteUrl = urlJoin(this.request.originalUrl, reqBaseUrl);
+        this.response.set("Location", fullAbsoluteUrl);
+
         this.response.append("Last-Modified", new Date().toUTCString());
         return this.doResponse(resource.code, resource.doc);
     }
@@ -51,7 +51,7 @@ class UpdateService extends BaseFhirApiService {
         this.doResourceChangeFailureResponse(err, code);
     }
 
-    static async insertOrUpdateResource(resourceType, resource, id, session=undefined) {
+    static async insertOrUpdateResource(resourceType, resource, id, session = undefined) {
         let docExist = await UpdateService.isDocExist(resourceType, id);
         if (docExist.status === 1) {
             return await UpdateService.updateResource(resourceType, id, resource, session);
@@ -60,7 +60,7 @@ class UpdateService extends BaseFhirApiService {
         }
     }
 
-    static async updateResource(resourceType, id, resource, session=undefined) {
+    static async updateResource(resourceType, id, resource, session = undefined) {
         delete resource.id;
         renameCollectionFieldName(resource);
         resource.id = id;
@@ -86,11 +86,11 @@ class UpdateService extends BaseFhirApiService {
         };
     }
 
-    static async insertResourceWithId(resourceType, id, resource, session=undefined) {
+    static async insertResourceWithId(resourceType, id, resource, session = undefined) {
         resource.id = id;
         renameCollectionFieldName(resource);
         let resourceInstance = new mongoose.model(resourceType)(resource);
-        let doc = await resourceInstance.save({session});
+        let doc = await resourceInstance.save({ session });
         return {
             status: true,
             code: 201,

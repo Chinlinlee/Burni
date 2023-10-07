@@ -15,6 +15,7 @@ const { BaseFhirApiService } = require("./base.service");
 
 
 const { logger } = require("@root/utils/log");
+const { urlJoin } = require("@root/utils/url");
 
 
 class CreateService extends BaseFhirApiService {
@@ -49,8 +50,9 @@ class CreateService extends BaseFhirApiService {
 
     doSuccessResponse(resource) {
         let reqBaseUrl = `${this.request.protocol}://${this.request.get('host')}/`;
-        let fullAbsoluteUrl = new URL(this.request.originalUrl, reqBaseUrl).href;
+        let fullAbsoluteUrl = urlJoin(`${this.request.originalUrl}/${resource.id}`, reqBaseUrl);
         this.response.set("Location", fullAbsoluteUrl);
+        
         this.response.append("Last-Modified", (new Date()).toUTCString());
         logger.info(`[Info: create id: ${resource.id} successfully] [Resource Type: ${this.resourceType}]`);
         return this.doResponse(201, resource);
