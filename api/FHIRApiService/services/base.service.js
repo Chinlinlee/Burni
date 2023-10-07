@@ -36,11 +36,12 @@ class BaseFhirApiService {
             return this.doResponse(code, err);
 
         let operationOutcomeMessage = this.getResourceChangeFailureOperationOutcomeMsg(err);
-        logger.error(`[Error: ${JSON.stringify(operationOutcomeMessage)}] [Resource Type: ${this.resourceType}]`);
         return this.doResponse(operationOutcomeMessage.code, operationOutcomeMessage.msg);
     }
 
     getResourceChangeFailureOperationOutcomeMsg(err) {
+        logger.error(err);
+
         if (_.get(err, "resourceType", "") === "OperationOutcome")
             return err;
 
