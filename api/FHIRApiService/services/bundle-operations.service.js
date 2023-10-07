@@ -73,76 +73,8 @@ class BundleOpService extends BaseFhirApiService {
     }
 
     async doTransaction() {
-        let transactionResponse;
-        const session = await mongoose.startSession();
-        session.startTransaction();
-
-        try {
-            for (let item of this.sortedEntry) {
-                let request = _.get(item, "request");
-                let method = _.get(request, "method");
-                let fullUrl = _.get(item, "fullUrl");
-                let resourceType = _.get(item, "resource.resourceType") || getResourceTypeInUrl(request.url);
-    
-                if (method === "POST") {
-                    logger.info("[Info: transaction create] resource: " + JSON.stringify(item));
-                    let createHandler = new TransactionCreateHandler(resourceType, item.resource, fullUrl, this.sortedEntry, session, this);
-                    await createHandler.create();
-                } else if (method === "PUT") {
-                    logger.info("[Info: transaction update] resource: " + JSON.stringify(item));
-                    let updateHandler = new TransactionUpdateHandler(resourceType, item.resource, fullUrl, this.sortedEntry, session, this);
-                    await updateHandler.update();
-                   
-                } else if (method === "DELETE") {
-                    logger.info("[Info: transaction delete] resource: " + this.getIdInUrl(request.url));
-                    let deleteResult = await this.delete(resourceType, this.getIdInUrl(request.url));
-                    if (_.isString(deleteResult.result) && deleteResult.result.includes("not found")) {
-                        this.bundleResponse.push({
-                            status: "404 NOT FOUND"
-                        });
-                    } else {
-                        this.bundleResponse.push({
-                            status: "200 DELETE"
-                        });
-                    }
-    
-                } else if (method === "GET") {
-                    let searchHandler = new TransactionSearchHandler(request, session, this);
-                    let { code, result } = await searchHandler.search();
-                    let response = {
-                        status: code.toString()
-                    };
-    
-                    if (result.resourceType === "OperationOutcome") {
-                        _.set(response, "outcome", result);
-                    } else {
-                        _.set(response, "resource", result);
-                    }
-    
-                    this.bundleResponse.push(response);
-                } else {
-                    await session.abortTransaction();
-                    throw new FhirWebServiceError(400, "Unknown method, only support GET, POST, PUT and DELETE", handleError.processing);
-                }
-            }
-        } catch(e) {
-            await session.abortTransaction();
-            throw e;
-        }
-
-        transactionResponse = new BundleTransactionResponse(this.sortedEntry, this.bundleEntry, this.bundleResponse).get();
-
-        try {
-            this.checkRefAfterOp();
-        } catch (e) {
-            await session.abortTransaction();
-            throw e;
-        }
-
-        await session.commitTransaction();
-        await session.endSession();
-
-        return transactionResponse;
+        let transactionHandler = new TransactionHandler(this);
+        return await transactionHandler.executeTransaction();
     }
 
     checkRefAfterOp() {
@@ -177,29 +109,110 @@ class BundleOpService extends BaseFhirApiService {
             return -1;
         });
     }
+}
 
-    getIdInUrl(url) {
-        let urlMatch = getUrlMatch(url);
-        let id;
-        if (urlMatch) {
-            id = urlMatch[0];
-        } else {
-            id = url.split("/").pop();
+class TransactionHandler {
+    constructor(bundleOpService) {
+        this.bundleOpService = bundleOpService;
+        this.opMethod = {
+            "POST": (item) => this.create(item),
+            "PUT": (item) => this.update(item),
+            "DELETE": (item) => this.delete(item),
+            "GET": (item) => this.search(item)
+        };
+    }
+
+    async executeTransaction() {
+        let transactionResponse;
+        this.session = await mongoose.startSession();
+        this.session.startTransaction();
+
+        for (let item of this.bundleOpService.sortedEntry) {
+            let method = _.get(item, "request.method");
+
+            try {
+                await this.opMethod[method](item);
+            } catch (e) {
+                await this.session.abortTransaction();
+                if (e.message.includes("defined")) {
+                    throw new FhirWebServiceError(400, "Unknown method, only support GET, POST, PUT and DELETE", handleError.processing);
+                }
+                throw e;
+            }
         }
-        return id;
+
+        transactionResponse = new BundleTransactionResponse(this.bundleOpService.sortedEntry, this.bundleOpService.bundleEntry, this.bundleOpService.bundleResponse).get();
+
+        try {
+            this.bundleOpService.checkRefAfterOp();
+        } catch (e) {
+            await this.session.abortTransaction();
+            throw e;
+        }
+
+        await this.session.commitTransaction();
+        await this.session.endSession();
+
+        return transactionResponse;
     }
 
-    async delete(resourceType, id) {
-        return await DeleteService.deleteResourceById(resourceType, id);
+    async create(item) {
+        logger.info("[Info: transaction create] resource: " + JSON.stringify(item));
+        let createHandler = new TransactionCreateHandler(item, this.session, this.bundleOpService);
+        await createHandler.create();
     }
+
+    async update(item) {
+        logger.info("[Info: transaction update] resource: " + JSON.stringify(item));
+        let updateHandler = new TransactionUpdateHandler(item, this.session, this.bundleOpService);
+        await updateHandler.update();
+    }
+
+    async delete(item) {
+        let request = _.get(item, "request");
+        let resourceType = _.get(item, "resource.resourceType") || getResourceTypeInUrl(request.url);
+
+        logger.info("[Info: transaction delete] resource: " + getIdInFullUrl(request.url));
+        let deleteResult = await DeleteService.deleteResourceById(resourceType, getIdInFullUrl(request.url));
+        if (_.isString(deleteResult.result) && deleteResult.result.includes("not found")) {
+            this.bundleOpService.bundleResponse.push({
+                status: "404 NOT FOUND"
+            });
+        } else {
+            this.bundleOpService.bundleResponse.push({
+                status: "200 DELETE"
+            });
+        }
+    }
+
+    async search(item) {
+        let request = _.get(item, "request");
+
+        let searchHandler = new TransactionSearchHandler(request, this.session);
+        let { code, result } = await searchHandler.search();
+        let response = {
+            status: code.toString()
+        };
+
+        if (result.resourceType === "OperationOutcome") {
+            _.set(response, "outcome", result);
+        } else {
+            _.set(response, "resource", result);
+        }
+
+        this.bundleOpService.bundleResponse.push(response);
+    }
+
 }
 
 class BaseTransactionHandler {
-    constructor(resourceType, resource, fullUrl, entry, transaction, bundleOpService) {
-        this.resourceType = resourceType;
-        this.resource = resource;
-        this.fullUrl = fullUrl;
-        this.entry = entry;
+    constructor(entryItem, transaction, bundleOpService) {
+        let request = _.get(entryItem, "request");
+        this.resourceType = _.get(entryItem, "resource.resourceType") || getResourceTypeInUrl(request.url);
+        this.resource = _.get(entryItem, "resource");
+        this.fullUrl = _.get(entryItem, "fullUrl");;
+        this.entry = bundleOpService.sortedEntry;
+
         this.transaction = transaction;
         this.bundleOpService = bundleOpService;
     }
@@ -212,11 +225,12 @@ class BaseTransactionHandler {
             _.set(this.entry, itemPath, `${this.resourceType}/${createdResource.id}`);
         }
     }
+
 }
 
 class TransactionCreateHandler extends BaseTransactionHandler {
-    constructor(resourceType, resource, fullUrl, entry, transaction, bundleOpService) {
-        super(resourceType, resource, fullUrl, entry, transaction, bundleOpService);
+    constructor(entryItem, transaction, bundleOpService) {
+        super(entryItem, transaction, bundleOpService);
     }
 
     async create() {
@@ -244,8 +258,8 @@ class TransactionCreateHandler extends BaseTransactionHandler {
 }
 
 class TransactionUpdateHandler extends BaseTransactionHandler {
-    constructor(resourceType, resource, fullUrl, entry, transaction, bundleOpService) {
-        super(resourceType, resource, fullUrl, entry, transaction, bundleOpService);
+    constructor(entryItem, transaction, bundleOpService) {
+        super(entryItem, transaction, bundleOpService);
     }
 
     async update() {
