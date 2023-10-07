@@ -14,13 +14,13 @@ async function validateResource(resource) {
         let profile = Object.prototype.hasOwnProperty.call(meta, "profile")
             ? meta.profile.join(",")
             : undefined;
-        operationOutcome = await validator.validate(
-            JSON.stringify(resource),
+        operationOutcome = await validator.validateFromBuffer(
+            Buffer.from(JSON.stringify(resource)),
             profile
         );
     } else {
-        operationOutcome = await validator.validateResource(
-            JSON.stringify(resource),
+        operationOutcome = await validator.validateFromBuffer(
+            Buffer.from(JSON.stringify(resource)),
             undefined
         );
     }
