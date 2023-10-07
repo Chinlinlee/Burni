@@ -96,6 +96,7 @@ class BaseFhirApiService {
     }
 
     static async validateRequestResource(resource) {
+        let resourceType = _.get(resource, "resourceType");
         // Validate user request body
         if (process.env.ENABLE_VALIDATOR === "true") {
             let { validateResource } = require("@root/utils/validator/processor");
@@ -112,10 +113,32 @@ class BaseFhirApiService {
             let containedValidation = await validateContainedList(resource);
             if (!containedValidation.status) {
                 let operationOutcomeError = handleError.processing(`The resource in contained error. ${containedValidation.message}`);
-                logger.error(`[Error: ${JSON.stringify(operationOutcomeError)}] [Resource Type: ${this.resourceType}]`);
+                logger.error(`[Error: ${JSON.stringify(operationOutcomeError)}] [Resource Type: ${resourceType}]`);
                 return {
                     status: false,
                     code: 422,
+                    result: operationOutcomeError
+                };
+            }
+
+            try {
+                let mongooseDoc = new mongoose.model(resourceType)(resource);
+                let mongooseValidation = await mongooseDoc.validate(resource);
+            } catch (e) {
+                let name = _.get(e, "name");
+                if (name === "ValidationError") {
+                    let operationOutcomeError = handleError.processing(e.message);
+                    return {
+                        status: false,
+                        code: 422,
+                        result: operationOutcomeError
+                    };
+                }
+                
+                let operationOutcomeError = handleError.exception(e.message);
+                return {
+                    status: false,
+                    code: 500,
                     result: operationOutcomeError
                 };
             }
