@@ -77,73 +77,57 @@ class BundleOpService extends BaseFhirApiService {
         const session = await mongoose.startSession();
         session.startTransaction();
 
-        for (let item of this.sortedEntry) {
-            let request = _.get(item, "request");
-            let method = _.get(request, "method");
-            let fullUrl = _.get(item, "fullUrl");
-            let resourceType = _.get(item, "resource.resourceType") || getResourceTypeInUrl(request.url);
-
-            if (method === "POST") {
-                logger.info("[Info: transaction create] resource: " + JSON.stringify(item));
-                let createHandler = new TransactionCreateHandler(resourceType, item.resource, fullUrl, this.sortedEntry, session);
-                let createResource = await createHandler.create();
-                if (_.get(createResource, "result.resourceType") === "OperationOutcome" && _.get(createResource, "code") === 422) {
-                    await session.abortTransaction();
-                    throw new FhirValidationError(createResource.result);
-                }
-                let reqBaseUrl = `${this.request.protocol}://${this.request.get('host')}/`;
-                let fullAbsoluteUrl = urlJoin(`/${process.env.FHIRSERVER_APIPATH}/${resourceType}/${createResource.id}/_history/1`, reqBaseUrl);
-                this.bundleResponse.push({
-                    status: "201 Created",
-                    location: fullAbsoluteUrl,
-                    lastModified: (new Date()).toUTCString()
-                });
-            } else if (method === "PUT") {
-                logger.info("[Info: transaction update] resource: " + JSON.stringify(item));
-                let updateHandler = new TransactionUpdateHandler(resourceType, item.resource, fullUrl, this.sortedEntry, session);
-                let updateResult = await updateHandler.update();
-                if (_.get(updateResult, "result.resourceType") === "OperationOutcome" && _.get(updateResult, "code") === 422) {
-                    await session.abortTransaction();
-                    throw new FhirValidationError(updateResult.result);
-                }
-                let reqBaseUrl = `${this.request.protocol}://${this.request.get('host')}/`;
-                let fullAbsoluteUrl = urlJoin(`/${process.env.FHIRSERVER_APIPATH}/${resourceType}/${getIdInFullUrl(fullUrl)}/_history/${updateResult.result.meta.versionId}`, reqBaseUrl);
-                this.bundleResponse.push({
-                    status: updateResult.code.toString(),
-                    location: fullAbsoluteUrl,
-                    lastModified: (new Date()).toUTCString()
-                });
-            } else if (method === "DELETE") {
-                logger.info("[Info: transaction delete] resource: " + this.getIdInUrl(request.url));
-                let deleteResult = await this.delete(resourceType, this.getIdInUrl(request.url));
-                if (_.isString(deleteResult.result) && deleteResult.result.includes("not found")) {
-                    this.bundleResponse.push({
-                        status: "404 NOT FOUND"
-                    });
+        try {
+            for (let item of this.sortedEntry) {
+                let request = _.get(item, "request");
+                let method = _.get(request, "method");
+                let fullUrl = _.get(item, "fullUrl");
+                let resourceType = _.get(item, "resource.resourceType") || getResourceTypeInUrl(request.url);
+    
+                if (method === "POST") {
+                    logger.info("[Info: transaction create] resource: " + JSON.stringify(item));
+                    let createHandler = new TransactionCreateHandler(resourceType, item.resource, fullUrl, this.sortedEntry, session, this);
+                    await createHandler.create();
+                } else if (method === "PUT") {
+                    logger.info("[Info: transaction update] resource: " + JSON.stringify(item));
+                    let updateHandler = new TransactionUpdateHandler(resourceType, item.resource, fullUrl, this.sortedEntry, session, this);
+                    await updateHandler.update();
+                   
+                } else if (method === "DELETE") {
+                    logger.info("[Info: transaction delete] resource: " + this.getIdInUrl(request.url));
+                    let deleteResult = await this.delete(resourceType, this.getIdInUrl(request.url));
+                    if (_.isString(deleteResult.result) && deleteResult.result.includes("not found")) {
+                        this.bundleResponse.push({
+                            status: "404 NOT FOUND"
+                        });
+                    } else {
+                        this.bundleResponse.push({
+                            status: "200 DELETE"
+                        });
+                    }
+    
+                } else if (method === "GET") {
+                    let searchHandler = new TransactionSearchHandler(request, session, this);
+                    let { code, result } = await searchHandler.search();
+                    let response = {
+                        status: code.toString()
+                    };
+    
+                    if (result.resourceType === "OperationOutcome") {
+                        _.set(response, "outcome", result);
+                    } else {
+                        _.set(response, "resource", result);
+                    }
+    
+                    this.bundleResponse.push(response);
                 } else {
-                    this.bundleResponse.push({
-                        status: "200 DELETE"
-                    });
+                    await session.abortTransaction();
+                    throw new FhirWebServiceError(400, "Unknown method, only support GET, POST, PUT and DELETE", handleError.processing);
                 }
-
-            } else if (method === "GET") {
-                let searchHandler = new TransactionSearchHandler(request, session);
-                let { code, result } = await searchHandler.search();
-                let response = {
-                    status: code.toString()
-                };
-
-                if (result.resourceType === "OperationOutcome") {
-                    _.set(response, "outcome", result);
-                } else {
-                    _.set(response, "resource",  result);
-                }
-
-                this.bundleResponse.push(response);
-            } else {
-                await session.abortTransaction();
-                throw new FhirWebServiceError(400, "Unknown method, only support GET, POST, PUT and DELETE", handleError.processing);
             }
+        } catch(e) {
+            await session.abortTransaction();
+            throw e;
         }
 
         transactionResponse = new BundleTransactionResponse(this.sortedEntry, this.bundleEntry, this.bundleResponse).get();
@@ -211,12 +195,13 @@ class BundleOpService extends BaseFhirApiService {
 }
 
 class BaseTransactionHandler {
-    constructor(resourceType, resource, fullUrl, entry, transaction) {
+    constructor(resourceType, resource, fullUrl, entry, transaction, bundleOpService) {
         this.resourceType = resourceType;
         this.resource = resource;
         this.fullUrl = fullUrl;
         this.entry = entry;
         this.transaction = transaction;
+        this.bundleOpService = bundleOpService;
     }
 
     async replaceIdInEntry(createdResource) {
@@ -230,34 +215,58 @@ class BaseTransactionHandler {
 }
 
 class TransactionCreateHandler extends BaseTransactionHandler {
-    constructor(resourceType, resource, fullUrl, entry, transaction) {
-        super(resourceType, resource, fullUrl, entry, transaction);
+    constructor(resourceType, resource, fullUrl, entry, transaction, bundleOpService) {
+        super(resourceType, resource, fullUrl, entry, transaction, bundleOpService);
     }
 
     async create() {
         // Validate user request body
         let validation = await BaseFhirApiService.validateRequestResource(this.resource);
-        if (!validation.status) return validation;
+        if (!validation.status) throw new FhirValidationError(validation.result);
 
         let { result } = await CreateService.insertResource(this.resourceType, this.resource, this.transaction);
         this.replaceIdInEntry(result);
+
+        if (_.get(result, "resourceType") === "OperationOutcome" && _.get(result, "code") === 422) {
+            await this.transaction.abortTransaction();
+            throw new FhirValidationError(result);
+        }
+        let reqBaseUrl = `${this.bundleOpService.request.protocol}://${this.bundleOpService.request.get('host')}/`;
+        let fullAbsoluteUrl = urlJoin(`/${process.env.FHIRSERVER_APIPATH}/${this.resourceType}/${result.id}/_history/1`, reqBaseUrl);
+        this.bundleOpService.bundleResponse.push({
+            status: "201 Created",
+            location: fullAbsoluteUrl,
+            lastModified: (new Date()).toUTCString()
+        });
 
         return result;
     }
 }
 
 class TransactionUpdateHandler extends BaseTransactionHandler {
-    constructor(resourceType, resource, fullUrl, entry, transaction) {
-        super(resourceType, resource, fullUrl, entry, transaction);
+    constructor(resourceType, resource, fullUrl, entry, transaction, bundleOpService) {
+        super(resourceType, resource, fullUrl, entry, transaction, bundleOpService);
     }
 
     async update() {
         // Validate user request body
         let validation = await BaseFhirApiService.validateRequestResource(this.resource);
-        if (!validation.status) return validation;
+        if (!validation.status) throw new FhirValidationError(validation.result);
 
         let { code, doc } = await UpdateService.insertOrUpdateResource(this.resourceType, this.resource, getIdInFullUrl(this.fullUrl), this.transaction);
         this.replaceIdInEntry(doc);
+
+        if (_.get(doc, "resourceType") === "OperationOutcome" && code === 422) {
+            await this.transaction.abortTransaction();
+            throw new FhirValidationError(doc.result);
+        }
+        let reqBaseUrl = `${this.bundleOpService.request.protocol}://${this.bundleOpService.request.get('host')}/`;
+        let fullAbsoluteUrl = urlJoin(`/${process.env.FHIRSERVER_APIPATH}/${this.resourceType}/${getIdInFullUrl(this.fullUrl)}/_history/${doc.meta.versionId}`, reqBaseUrl);
+        this.bundleOpService.bundleResponse.push({
+            status: code.toString(),
+            location: fullAbsoluteUrl,
+            lastModified: (new Date()).toUTCString()
+        });
 
         return { code, result: doc };
     }
@@ -317,7 +326,7 @@ class TransactionSearchHandler {
                 let [key, value] = p;
 
                 let { paramsSearch } = require(`@root/api/FHIR/${resourceTypeInUrl}/${resourceTypeInUrl}ParametersHandler.js`);
-                if (!(Object.keys(paramsSearch).indexOf(key) >= 0 )) {
+                if (!(Object.keys(paramsSearch).indexOf(key) >= 0)) {
                     throw new FhirWebServiceError(400, `Invalid URL in request ${this.resourceRequest.url} (Unknown parameter: ${key})`, handleError.processing);
                 }
             }
