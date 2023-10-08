@@ -91,7 +91,9 @@ class BaseFhirApiService {
             item = handleError.processing(item);
         }
 
-        if (this.response.getHeader("content-type").includes("xml")) {
+        if (this.response.getHeader("content-type").includes("xml") ||
+            this.request.get("accept").includes("xml")
+        ) {
             let fhir = new FHIR();
             let xmlItem = fhir.objToXml(item);
             if (this._pretty) xmlItem = xmlFormatter(xmlItem);
