@@ -37,7 +37,7 @@ class DeleteService extends BaseFhirApiService {
     }
 
     doSuccessResponse(deleteResult) {
-        if(!deleteResult.result) {
+        if(!deleteResult) {
             let errorMessage = `not found ${this.resourceType}/${this.resourceId}`;
             logger.warn(
                 `[Warn: ${errorMessage}] [Resource-Type: ${this.resourceType}]`
@@ -68,7 +68,7 @@ class DeleteService extends BaseFhirApiService {
             );
     
             return {
-                success: true,
+                status: true,
                 code: 200,
                 result: deletedDoc
             };
