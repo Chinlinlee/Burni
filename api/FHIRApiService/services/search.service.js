@@ -1,36 +1,125 @@
 const _ = require("lodash");
-const fetch = require("node-fetch");
-const mongodb = require("models/mongodb");
-const { createBundle } = require("models/FHIR/func");
-const {
-    handleError,
-    ErrorOperationOutcome
-} = require("models/FHIR/httpMessage");
-const FHIR = require("fhir").Fhir;
-const { logger } = require("../../utils/log");
-const {
-    SearchParameterCreator,
-    UnknownSearchParameterError
-} = require("./search/searchParameterCreator");
-const { SearchProcessor } = require("./search/searchProcessor");
-const xmlFormatter = require("xml-formatter");
-const { SearchService } = require("./services/search.service");
-/**
- *
- * @param {import('express').Request} req
- * @param {import('express').Response} res
- * @param {string} resourceType
- * @param {*} paramsSearch
- * @returns
- */
-module.exports = async function (req, res, resourceType, paramsSearch) {
+const mongoose = require("mongoose");
+const { BaseFhirApiService } = require("./base.service");
+const { handleError, ErrorOperationOutcome } = require("@models/FHIR/httpMessage");
+
+const { logger } = require("@root/utils/log");
+const { SearchParameterCreator, UnknownSearchParameterError } = require("../search/searchParameterCreator");
+const { SearchProcessor } = require("../search/searchProcessor");
+const { createBundle } = require("@root/models/FHIR/func");
+
+
+class SearchService extends BaseFhirApiService {
+    constructor(req, res, resourceType, paramsSearchOfResource) {
+        super(req, res, resourceType);
+        this.paramsSearchOfResource = paramsSearchOfResource;
+
+        this._total = req.query["_total"];
+        delete this.request.query["_total"];
+    }
+
+    async search() {
+        logger.info(`[Info: do search] [Resource Type: ${this.resourceType}] [Content-Type: ${this.response.getHeader(
+            "content-type"
+        )}] [Url-SearchParam: ${this.request.url}]`);
     
-    let searchService = new SearchService(req, res, resourceType, paramsSearch);
+        let queryParameter = _.cloneDeep(this.request.query);
+        let paginationSkip =
+            queryParameter["_offset"] == undefined ? 0 : queryParameter["_offset"];
+        let paginationLimit =
+            queryParameter["_count"] == undefined ? 100 : queryParameter["_count"];
+        _.set(this.request.query, "_offset", paginationSkip);
+        _.set(this.request.query, "_count", paginationLimit);
+        delete queryParameter["_count"];
+        delete queryParameter["_offset"];
+    
+        try {
+            let searchParameterCreator = new SearchParameterCreator({
+                resourceType: this.resourceType,
+                query: queryParameter,
+                paramsSearch: this.paramsSearchOfResource,
+                logger: logger
+            });
+    
+            queryParameter = searchParameterCreator.create();
+        } catch (e) {
+            if (e instanceof UnknownSearchParameterError) {
+                return {
+                    status: false,
+                    code: 400,
+                    result: handleError.processing(e.message)
+                };
+            }
+        }
+        logger.info(`[mongo query: ${JSON.stringify(queryParameter)}]`);
+        
+        try {
+            let isChain = _.get(queryParameter, "isChain", false);
+            let searchProcessor = new SearchProcessor({
+                resourceType: this.resourceType,
+                isChain: isChain,
+                query: queryParameter,
+                skip: paginationSkip,
+                limit: paginationLimit,
+                totalMode: this._total
+            });
+            let { docs, count } = await searchProcessor.search();
+    
+            if (isChain) {
+                docs = docs.map((v) => {
+                    return new mongoose.model(this.resourceType)(v).getFHIRField();
+                });
+            } else {
+                docs = docs.map((v) => {
+                    return v.getFHIRField();
+                });
+            }
+    
+            let includeDocs = await searchResultParametersHandler["_include"](
+                this.request.query,
+                docs
+            );
+            let reincludeDocs = await searchResultParametersHandler["_revIncludes"](
+                this.request.query,
+                docs,
+                this.resourceType
+            );
 
-    let { status, code, result } = await searchService.search();
+            docs = [...docs, ...includeDocs, ...reincludeDocs];
+            let bundle = createBundle(
+                this.request,
+                docs,
+                count,
+                paginationSkip,
+                paginationLimit,
+                this.resourceType
+            );
+            this.response.header("Last-Modified", new Date().toUTCString());
+            return {
+                status: true,
+                code: 200,
+                result: bundle
+            };
+        } catch (e) {
+            let errorStr = JSON.stringify(e, Object.getOwnPropertyNames(e));
+            logger.error(`[Error: ${errorStr}] [Resource Type: ${this.resourceType}]`);
+            if (_.get(e, "code")) {
+                return {
+                    status: false,
+                    code: e.code,
+                    result: e.operationOutcome
+                };
+            }
+            let operationOutcomeError = handleError.exception(`Server Error Occurred`);
+            return {
+                status: false,
+                code: 500,
+                result: operationOutcomeError
+            };
+        }
+    }
+}
 
-    return searchService.doResponse(code, result);
-};
 //#region custom functions use in `include` and `revinclude`
 function isValidHttpUrl(str) {
     try {
@@ -82,7 +171,7 @@ function checkIsReferenceTypeSearchParameter(
 }
 
 function checkResourceIsExistInMongoDB(resourceName, paramName, queryString) {
-    if (!mongodb[resourceName]) {
+    if (!mongoose.model(resourceName)) {
         let error = new ErrorOperationOutcome(
             400,
             handleError.processing(
@@ -156,7 +245,7 @@ async function getIncludeValueInDB(
     let id = referenceValueSplit[1];
     if (!specificType || specificTypeCondition) {
         if (referenceValueSplit.length === 2) {
-            let doc = await mongodb[resourceInValue].findOne({ id: id }).exec();
+            let doc = await mongoose.model(resourceInValue).findOne({ id: id }).exec();
             if (doc) {
                 doc = doc.getFHIRField();
                 _.set(doc, "myPointToCheckIsInclude", true);
@@ -167,7 +256,7 @@ async function getIncludeValueInDB(
             referenceValueSplit.length === 4
         ) {
             let versionId = referenceValueSplit[3];
-            let doc = await mongodb[resourceInValue]
+            let doc = await mongoose.model(resourceInValue)
                 .findOne({
                     $and: [
                         {
@@ -300,7 +389,7 @@ async function getRevIncludeValueInDB(
     field,
     mongoSearchResult
 ) {
-    let doc = await mongodb[targetResource]
+    let doc = await mongoose.model(targetResource)
         .findOne({
             [field]: referenceValue
         })
@@ -429,3 +518,6 @@ const searchResultParametersHandler = {
         );
     }
 };
+
+
+module.exports.SearchService = SearchService;
