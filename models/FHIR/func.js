@@ -60,11 +60,9 @@ function getEntryFullUrl(item, req, resourceType, type = "searchset") {
     let host = req.headers.host
         ? req.headers.host
         : `${process.env.FHIRSERVER_HOST}:${process.env.FHIRSERVER_PORT}`;
-    if (type === "history") {
-        return `${req.protocol}://${host}/${process.env.FHIRSERVER_APIPATH}/${resourceType}/${item.id}/_history/${item.meta.versionId}`;
-    } else {
-        return `${req.protocol}://${host}/${process.env.FHIRSERVER_APIPATH}/${resourceType}/${item.id}`;
-    }
+
+    return `${req.protocol}://${host}/${process.env.FHIRSERVER_APIPATH}/${resourceType}/${item.id}`;
+
 }
 
 /**
