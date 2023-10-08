@@ -53,7 +53,6 @@
         "moment": "^2.24.0",
         "moment-timezone": "^0.5.33",
         "mongoose": "^6.3.4",
-        "mongoose-date-format": "^1.2.0",
         "mongoose-schema-jsonschema": "^2.0.2",
         "node-fetch": "^2.6.1",
         "node-java-fhir-validator": "^1.1.0",
@@ -63,12 +62,11 @@
         "passport": "^0.6.0",
         "passport-http-bearer": "^1.0.1",
         "passport-local": "^1.0.0",
-        "query-string": "^7.1.0",
+        "qs": "^6.11.2",
         "rootpath": "^0.1.2",
         "uid-generator": "^2.0.0",
         "uuid": "^8.3.2",
-        "xml-formatter": "^2.6.1",
-        "xml-js": "^1.6.11"
+        "xml-formatter": "^2.6.1"
     },
     "devDependencies": {
         "babel-eslint": "^10.1.0",

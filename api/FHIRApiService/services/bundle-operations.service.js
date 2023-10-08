@@ -1,12 +1,14 @@
 const _ = require("lodash");
 const mongoose = require("mongoose");
 const jsonPath = require("jsonpath");
+const qs = require("qs");
 
 const {
     getDeleteMessage,
     handleError,
     FhirWebServiceError,
-    FhirValidationError
+    FhirValidationError,
+    ErrorOperationOutcome
 } = require("@models/FHIR/httpMessage");
 const { BaseFhirApiService } = require("./base.service");
 const { logger } = require("@root/utils/log");
@@ -18,6 +20,7 @@ const { urlJoin } = require("@root/utils/url");
 const uuid = require("uuid");
 const resourceList = require("@models/FHIR/fhir.resourceList.json");
 const { ReadService } = require("./read.service");
+const { SearchService } = require("./search.service");
 
 class BundleOpService extends BaseFhirApiService {
     constructor(req, res) {
@@ -100,9 +103,18 @@ class BundleOpService extends BaseFhirApiService {
 
     getSortedEntry() {
         let clonedEntry = _.cloneDeep(this.bundleEntry);
-        return clonedEntry.sort((a, b) => {
-            let secondFullUrl = _.get(b, "fullUrl");
-            let firstReferences = jsonPath.query(a, "$.resource..reference");
+        let entryWithIdx = [];
+        
+        for(let i = 0 ; i < clonedEntry.length; i++){
+            entryWithIdx.push({
+                item: clonedEntry[i],
+                idx: i
+            });
+        }
+
+        return entryWithIdx.sort((a, b) => {
+            let secondFullUrl = _.get(b.item, "fullUrl");
+            let firstReferences = jsonPath.query(a.item, "$.resource..reference");
             if (firstReferences.includes(secondFullUrl)) {
                 return 1;
             }
@@ -128,10 +140,10 @@ class TransactionHandler {
         this.session.startTransaction();
 
         for (let item of this.bundleOpService.sortedEntry) {
-            let method = _.get(item, "request.method");
+            let method = _.get(item, "item.request.method");
 
             try {
-                await this.opMethod[method](item);
+                await this.opMethod[method](item.item);
             } catch (e) {
                 await this.session.abortTransaction();
                 if (e.message.includes("defined")) {
@@ -176,11 +188,15 @@ class TransactionHandler {
         let deleteResult = await DeleteService.deleteResourceById(resourceType, getIdInFullUrl(request.url));
         if (_.isString(deleteResult.result) && deleteResult.result.includes("not found")) {
             this.bundleOpService.bundleResponse.push({
-                status: "404 NOT FOUND"
+                response: {
+                    status: "404 NOT FOUND"
+                }
             });
         } else {
             this.bundleOpService.bundleResponse.push({
-                status: "200 DELETE"
+                response: {
+                    status: "200 DELETE"
+                }
             });
         }
     }
@@ -188,19 +204,21 @@ class TransactionHandler {
     async search(item) {
         let request = _.get(item, "request");
 
-        let searchHandler = new TransactionSearchHandler(request, this.session);
+        let searchHandler = new TransactionSearchHandler(request, this.session, this.bundleOpService.request, this.bundleOpService.response);
         let { code, result } = await searchHandler.search();
-        let response = {
-            status: code.toString()
+        let bundleResponse = {
+            response: {
+                status: code.toString()
+            }
         };
 
         if (result.resourceType === "OperationOutcome") {
-            _.set(response, "outcome", result);
+            _.set(bundleResponse, "response.outcome", result);
         } else {
-            _.set(response, "resource", result);
+            _.set(bundleResponse, "resource", result);
         }
 
-        this.bundleOpService.bundleResponse.push(response);
+        this.bundleOpService.bundleResponse.push(bundleResponse);
     }
 
 }
@@ -248,9 +266,11 @@ class TransactionCreateHandler extends BaseTransactionHandler {
         let reqBaseUrl = `${this.bundleOpService.request.protocol}://${this.bundleOpService.request.get('host')}/`;
         let fullAbsoluteUrl = urlJoin(`/${process.env.FHIRSERVER_APIPATH}/${this.resourceType}/${result.id}/_history/1`, reqBaseUrl);
         this.bundleOpService.bundleResponse.push({
-            status: "201 Created",
-            location: fullAbsoluteUrl,
-            lastModified: (new Date()).toUTCString()
+            response: {
+                status: "201 Created",
+                location: fullAbsoluteUrl,
+                lastModified: (new Date()).toUTCString()
+            }
         });
 
         return result;
@@ -277,9 +297,11 @@ class TransactionUpdateHandler extends BaseTransactionHandler {
         let reqBaseUrl = `${this.bundleOpService.request.protocol}://${this.bundleOpService.request.get('host')}/`;
         let fullAbsoluteUrl = urlJoin(`/${process.env.FHIRSERVER_APIPATH}/${this.resourceType}/${getIdInFullUrl(this.fullUrl)}/_history/${doc.meta.versionId}`, reqBaseUrl);
         this.bundleOpService.bundleResponse.push({
-            status: code.toString(),
-            location: fullAbsoluteUrl,
-            lastModified: (new Date()).toUTCString()
+            response: {
+                status: code.toString(),
+                location: fullAbsoluteUrl,
+                lastModified: (new Date()).toUTCString()
+            }
         });
 
         return { code, result: doc };
@@ -287,9 +309,11 @@ class TransactionUpdateHandler extends BaseTransactionHandler {
 }
 
 class TransactionSearchHandler {
-    constructor(resourceRequest, transaction) {
+    constructor(resourceRequest, transaction, httpRequest, httpResponse) {
         this.resourceRequest = resourceRequest;
         this.transaction = transaction;
+        this.httpRequest = httpRequest;
+        this.httpResponse = httpResponse;
         this.SEARCH_METHOD = {
             "ID": 1,
             "PARAMS": 2
@@ -314,8 +338,28 @@ class TransactionSearchHandler {
                 result: operationOutcomeError
             };
         } else {
-            // TODO: Implement search
-            throw new FhirWebServiceError(500, `The url contains params is not supported of ${this.resourceRequest.url}`, handleError.processing);
+            const { paramsSearch } = require(`@root/api/FHIR/${urlDetermineResult.resourceType}/${urlDetermineResult.resourceType}ParametersHandler`);
+            let httpRequestClone = _.cloneDeep(this.httpRequest);
+            let queryOfUrl = qs.parse(urlDetermineResult.params.toString());
+            _.set(httpRequestClone, "query", queryOfUrl);
+
+            let searchService = new SearchService(
+                httpRequestClone,
+                _.cloneDeep(this.httpResponse),
+                urlDetermineResult.resourceType,
+                paramsSearch
+            );
+            let { status, code, result } = await searchService.search();
+
+            if (!status) {
+                throw new ErrorOperationOutcome(code, result);
+            }
+
+            return {
+                code: 200,
+                result
+            };
+
         }
     }
 
@@ -347,7 +391,7 @@ class TransactionSearchHandler {
 
             return {
                 method: this.SEARCH_METHOD.PARAMS,
-                resourceType: resourceType,
+                resourceType: resourceTypeInUrl,
                 params: params
             };
         }
@@ -372,18 +416,14 @@ class BundleTransactionResponse {
         };
 
         for (let i = 0; i < this.responses.length; i++) {
-            bundle.entry.push({
-                response: this.responses[entryMappingIndex[i]]
-            });
+            bundle.entry.push(this.responses[entryMappingIndex[i]]);
         }
 
         return new mongoose.model("Bundle")(bundle).getFHIRField();
     }
 
     getEntryMappingIndex() {
-        return this.sortedEntry.map((v, i) => {
-            return this.entry.findIndex(item => item.fullUrl === v.fullUrl);
-        });
+        return this.entry.map((v, i) => v.idx);
     }
 }
 
