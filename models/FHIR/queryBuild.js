@@ -3,6 +3,7 @@ const { isNumber } = require("lodash");
 const _ = require("lodash");
 const moment = require("moment");
 const momentTimezone = require("moment-timezone");
+momentTimezone.tz.setDefault("UTC");
 const prefix = ["eq", "ne", "lt", "gt", "ge", "le", "sa", "eb", "ap"];
 
 /**
