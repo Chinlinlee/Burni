@@ -4,6 +4,7 @@ const { BaseFhirApiService } = require("./base.service");
 const mongoose = require("mongoose");
 const { createBundle } = require("@root/models/FHIR/func");
 const { handleError } = require("@root/models/FHIR/httpMessage");
+const { logger } = require("@root/utils/log");
 
 class HistoryService extends BaseFhirApiService {
     constructor(req, res, resourceType) {
