@@ -20,6 +20,14 @@ class DeleteService extends BaseFhirApiService {
         try {
             return await DeleteService.deleteResourceById(this.resourceType, this.resourceId);
         } catch(e) {
+            if (e instanceof FhirWebServiceError) {
+                return {
+                    status: false,
+                    code: e.code,
+                    result: e.operationOutcome
+                };
+            }
+
             return {
                 status: false,
                 code: 500,
