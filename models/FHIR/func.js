@@ -139,7 +139,18 @@ function createBundle(req, docs, count, skip, limit, resource, option) {
             bundle.entry.push(entry);
         }
     }
-    bundle.entry = _.uniqBy(bundle.entry, "fullUrl");
+
+    if (type === "history") {
+        // entries with the same fullUrl must have different meta.versionId (except in history bundles)
+        bundle.entry = _.uniqWith(bundle.entry, (a , b) => {
+            return a.resource.id === b.resource.id &&
+                   a.resource.meta.versionId === b.resource.meta.versionId;
+        });
+    } else {
+        // FullUrl must be unique in a bundle
+        bundle.entry = _.uniqBy(bundle.entry, "fullUrl");
+    }
+    
     if (bundle.entry.length == 0) {
         delete bundle.entry;
     }
