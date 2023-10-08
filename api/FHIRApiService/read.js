@@ -13,5 +13,5 @@ module.exports = async function (req, res, resourceType) {
         return readService.doFailureResponse(result, code);
     }
 
-    return readService.doSuccessResponse(result._doc);
+    return readService.doSuccessResponse(result);
 };

@@ -306,7 +306,7 @@ function generateResourceSchema(type) {
             _.set(result, "_doc.collection", tempCollectionField);
             delete result._doc.myCollection;
         }
-        return result;
+        return result.toObject();
     };
 
     ${type}Schema.pre('save', async function (next) {
