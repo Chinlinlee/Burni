@@ -80,11 +80,15 @@ module.exports = function (app) {
                             "xml"
                         ];
 
-                        if (xmlAcceptList.includes(req.headers.accept)) {
-                            res.set("Content-Type", "application/fhir+xml");
-                        } else {
-                            res.set("Content-Type", "application/fhir+json");
+                        for(let i = 0 ; i< xmlAcceptList.length ; i++) {
+                            let xmlAccept = xmlAcceptList[i];
+                            if (req.headers.accept.includes(xmlAccept)) {
+                                res.set("Content-Type", "application/fhir+xml");
+                            } else {
+                                res.set("Content-Type", "application/fhir+json");
+                            }
                         }
+                        
                         setFormatWhenQuery(req, res);
                         doPrettyJson(app, req);
                         next();
