@@ -131,7 +131,7 @@ function isValidHttpUrl(str) {
 }
 
 function isReferenceTypeSearchParameter(resourceType, parameter) {
-    let parameterList = require("../../api_generator/FHIRParametersClean.json");
+    let parameterList = require("@root/api_generator/FHIRParametersClean.json");
     let resourceParameterObj = _.get(parameterList, resourceType);
     let parameterObj = resourceParameterObj.find(
         (v) => v.parameter == parameter
@@ -140,7 +140,7 @@ function isReferenceTypeSearchParameter(resourceType, parameter) {
 }
 
 function getResourceSupportIncludeParams(resourceType) {
-    let parameterList = require("../../api_generator/FHIRParametersClean.json");
+    let parameterList = require("@root/api_generator/FHIRParametersClean.json");
     let resourceParameterObj = _.get(parameterList, resourceType);
     let referenceParams = resourceParameterObj.reduce((prev, current) => {
         if (current.type === "reference") prev.push(current.parameter);
