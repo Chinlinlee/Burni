@@ -427,7 +427,7 @@ function generateResourceSchema(type) {
         let item = docToDelete.toObject();
         delete item._id;
 
-        if (await checkResourceHaveReferenceByOthers(item)) {
+        if (process.env.ENABLE_CHECK_REF_DELETION === "true" && await checkResourceHaveReferenceByOthers(item)) {
             next(\`The \${item.resourceType}:id->\${item.id} is referenced by multiple resource, please do not delete resource that have association\`);
         }
 
