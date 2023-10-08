@@ -3,6 +3,7 @@ const FHIR = require("fhir").Fhir;
 const { isDocExist } = require("@root/api/apiService");
 const jp = require("jsonpath");
 const uuid = require("uuid");
+const { handleError } = require("@root/models/FHIR/httpMessage");
 
 class FhirReferenceChecker {
     constructor(resource) {
@@ -20,7 +21,7 @@ class FhirReferenceChecker {
             if (/^(http|https):\/\//g.test(referenceValue)) {
                 await this.checkAbsoluteUrlRef(
                     key,
-                    referenceValue,
+                    referenceValue
                 );
             } else if (referenceValueSplit.length === 2) {
                 // Check base reference value {resourceType}/{id}
@@ -150,7 +151,7 @@ class FhirReferenceChecker {
 
     getOperationOutcomeError(checkReferenceRes) {
         if (!checkReferenceRes.status) {
-            let notExistReferenceList = fhirReferenceChecker.getNotExistReferenceList(checkReferenceRes);
+            let notExistReferenceList = this.getNotExistReferenceList(checkReferenceRes);
             let operationOutcomeError = handleError.processing(
                 `The reference not found : ${_.map(
                     notExistReferenceList,
