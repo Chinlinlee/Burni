@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const FHIR = require("fhir").Fhir;
 const _ = require("lodash");
 const uuid = require('uuid');
+const xmlFormatter = require("xml-formatter");
 
 const { renameCollectionFieldName } = require("../../apiService");
 const { validateContainedList } = require("../validateContained");
@@ -21,6 +22,9 @@ class BaseFhirApiService {
         this.response = res;
         /** @type { string } */
         this.resourceType = resourceType;
+
+        this._pretty = req.query["_pretty"];
+        delete this.request.query["_pretty"];
     }
 
     doSuccessResponse(resource) {
@@ -90,6 +94,7 @@ class BaseFhirApiService {
         if (this.response.getHeader("content-type").includes("xml")) {
             let fhir = new FHIR();
             let xmlItem = fhir.objToXml(item);
+            if (this._pretty) xmlItem = xmlFormatter(xmlItem);
             return this.response.status(code).send(xmlItem);
         }
         return this.response.status(code).send(item);
