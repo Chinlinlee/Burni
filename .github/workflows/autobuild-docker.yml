@@ -2,7 +2,7 @@ name: burni-build-docker
 on:
   push:
     branches:
-      - "main"
+      - "release"
     tags:
       - "*"
 jobs:
