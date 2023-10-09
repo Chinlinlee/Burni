@@ -51,7 +51,7 @@ class BundleOpService extends BaseFhirApiService {
             if (!fullUrl) continue;
 
             let fullUrlSplit = _.compact(fullUrl.split("/"));
-            if (fullUrl.length !== 2 ||
+            if (fullUrlSplit.length !== 2 ||
                 !resourceList.includes(fullUrlSplit[0])
             ) {
 
