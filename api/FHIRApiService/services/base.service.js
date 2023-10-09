@@ -55,7 +55,7 @@ class BaseFhirApiService {
                 code: 409,
                 msg: handleError.duplicate(err.message)
             };
-        } else if (err.stack.includes("ValidationError")) {
+        } else if (err?.stack?.includes("ValidationError")) {
 
             let operationOutcomeError = new OperationOutcome([]);
             for (let errorKey in err.errors) {
@@ -70,7 +70,7 @@ class BaseFhirApiService {
                 msg: operationOutcomeError
             };
 
-        } else if (err.stack.includes("stored by resource")) {
+        } else if (err?.stack?.includes("stored by resource")) {
             operationOutcomeMessage = {
                 code: 400,
                 msg: handleError.processing(err.message)
@@ -91,14 +91,16 @@ class BaseFhirApiService {
             item = handleError.processing(item);
         }
 
-        if (this.response.getHeader("content-type").includes("xml") ||
-            this.request.get("accept").includes("xml")
+        if ((this.response.getHeader("content-type").includes("xml") ||
+            this.request.get("accept").includes("xml")) ||
+            this.response.locals?._format?.toLowerCase() === "xml"
         ) {
             let fhir = new FHIR();
             let xmlItem = fhir.objToXml(item);
             if (this._pretty) xmlItem = xmlFormatter(xmlItem);
             return this.response.status(code).send(xmlItem);
         }
+        
         return this.response.status(code).send(item);
     }
 

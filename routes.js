@@ -12,6 +12,11 @@ if (fs.existsSync(path.join(__dirname, "./plugins/config.js"))) {
     pluginsConfig = require("./plugins/config.template").pluginsConfig;
 }
 
+/**
+ * 
+ * @param {import("express").Request} req 
+ * @param {import("express").Response} res 
+ */
 function setFormatWhenQuery(req, res) {
     let format = _.get(req, "query._format");
     if (format && format.includes("xml")) {
@@ -19,6 +24,7 @@ function setFormatWhenQuery(req, res) {
     } else if (format && format.includes("json")) {
         res.set("Content-Type", "application/fhir+json");
     }
+    res.locals._format = format;
     delete req["query"]["_format"];
 }
 
