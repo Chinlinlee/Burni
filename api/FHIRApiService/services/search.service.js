@@ -325,7 +325,7 @@ async function pushIncludeDoc(includeQuery, doc, mongoSearchResult) {
             includeQuery
         );
         const paramsSearchFields = require(
-            `../FHIR/${resourceName}/${resourceName}ParametersHandler.js`
+            `@root/api/FHIR/${resourceName}/${resourceName}ParametersHandler.js`
         ).paramsSearchFields;
         let searchParamFields = paramsSearchFields[searchParam];
         if (searchParam !== "*") {
@@ -444,7 +444,7 @@ async function pushRevIncludeDoc(
             revIncludeQuery
         );
         const paramsSearchFields = require(
-            `../FHIR/${resourceName}/${resourceName}ParametersHandler.js`
+            `@root/api/FHIR/${resourceName}/${resourceName}ParametersHandler.js`
         ).paramsSearchFields;
         let searchParamFields = paramsSearchFields[searchParam];
         if (searchParam !== "*") {
