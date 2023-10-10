@@ -30,10 +30,11 @@ class UpdateService extends BaseFhirApiService {
             return await UpdateService.insertOrUpdateResource(this.resourceType, resourceClone, this.resourceId);
 
         } catch (e) {
+            logger.error(`[Error: ${JSON.stringify(e)}] [Resource Type: ${this.resourceType}]`);
             return {
                 status: false,
                 code: 500,
-                doc: e
+                result: e
             };
         }
     }
@@ -82,7 +83,7 @@ class UpdateService extends BaseFhirApiService {
         return {
             status: true,
             code: 200,
-            doc: newDoc.value.getFHIRField()
+            result: newDoc.value.getFHIRField()
         };
     }
 
@@ -94,7 +95,7 @@ class UpdateService extends BaseFhirApiService {
         return {
             status: true,
             code: 201,
-            doc: doc.getFHIRField()
+            result: doc.getFHIRField()
         };
     }
 

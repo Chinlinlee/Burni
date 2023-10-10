@@ -46,9 +46,6 @@ class BaseFhirApiService {
     getResourceChangeFailureOperationOutcomeMsg(err) {
         logger.error(err);
 
-        if (_.get(err, "resourceType", "") === "OperationOutcome")
-            return err;
-
         let operationOutcomeMessage;
         if (_.get(err, "message.code") === 11000) {
             operationOutcomeMessage = {
@@ -100,7 +97,7 @@ class BaseFhirApiService {
             if (this._pretty) xmlItem = xmlFormatter(xmlItem);
             return this.response.status(code).send(xmlItem);
         }
-        
+
         return this.response.status(code).send(item);
     }
 

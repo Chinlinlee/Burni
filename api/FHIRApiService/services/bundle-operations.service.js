@@ -287,15 +287,11 @@ class TransactionUpdateHandler extends BaseTransactionHandler {
         let validation = await BaseFhirApiService.validateRequestResource(this.resource);
         if (!validation.status) throw new FhirValidationError(validation.result);
 
-        let { code, doc } = await UpdateService.insertOrUpdateResource(this.resourceType, this.resource, getIdInFullUrl(this.fullUrl), this.transaction);
-        this.replaceIdInEntry(doc);
+        let { code, result } = await UpdateService.insertOrUpdateResource(this.resourceType, this.resource, getIdInFullUrl(this.fullUrl), this.transaction);
+        this.replaceIdInEntry(result);
 
-        if (_.get(doc, "resourceType") === "OperationOutcome" && code === 422) {
-            await this.transaction.abortTransaction();
-            throw new FhirValidationError(doc.result);
-        }
         let reqBaseUrl = `${this.bundleOpService.request.protocol}://${this.bundleOpService.request.get('host')}/`;
-        let fullAbsoluteUrl = urlJoin(`/${process.env.FHIRSERVER_APIPATH}/${this.resourceType}/${getIdInFullUrl(this.fullUrl)}/_history/${doc.meta.versionId}`, reqBaseUrl);
+        let fullAbsoluteUrl = urlJoin(`/${process.env.FHIRSERVER_APIPATH}/${this.resourceType}/${getIdInFullUrl(this.fullUrl)}/_history/${result.meta.versionId}`, reqBaseUrl);
         this.bundleOpService.bundleResponse.push({
             response: {
                 status: code.toString(),
@@ -304,7 +300,7 @@ class TransactionUpdateHandler extends BaseTransactionHandler {
             }
         });
 
-        return { code, result: doc };
+        return { code, result };
     }
 }
 
