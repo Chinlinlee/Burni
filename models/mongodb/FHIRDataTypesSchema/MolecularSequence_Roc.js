@@ -1,9 +1,9 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const integer = require('../FHIRDataTypesSchema/integer');
-const decimal = require('../FHIRDataTypesSchema/decimal');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const integer = require("../FHIRDataTypesSchema/integer");
+const decimal = require("../FHIRDataTypesSchema/decimal");
 
 const {
     MolecularSequence_Roc

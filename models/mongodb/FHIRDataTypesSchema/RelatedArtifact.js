@@ -1,14 +1,14 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const string = require('../FHIRDataTypesSchema/string');
-const markdown = require('../FHIRDataTypesSchema/markdown');
-const url = require('../FHIRDataTypesSchema/url');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const string = require("../FHIRDataTypesSchema/string");
+const markdown = require("../FHIRDataTypesSchema/markdown");
+const url = require("../FHIRDataTypesSchema/url");
 const {
     Attachment
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const canonical = require('../FHIRDataTypesSchema/canonical');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const canonical = require("../FHIRDataTypesSchema/canonical");
 
 const {
     RelatedArtifact
@@ -20,7 +20,16 @@ RelatedArtifact.add({
     },
     type: {
         type: String,
-        enum: ["documentation", "justification", "citation", "predecessor", "successor", "derived-from", "depends-on", "composed-of"],
+        enum: [
+            "documentation",
+            "justification",
+            "citation",
+            "predecessor",
+            "successor",
+            "derived-from",
+            "depends-on",
+            "composed-of"
+        ],
         default: void 0
     },
     label: string,

@@ -1,17 +1,17 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     CodeableConcept
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     ImmunizationRecommendation_DateCriterion
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const string = require('../FHIRDataTypesSchema/string');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const string = require("../FHIRDataTypesSchema/string");
 const {
     Reference
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 
 const {
     ImmunizationRecommendation_Recommendation
@@ -71,4 +71,5 @@ ImmunizationRecommendation_Recommendation.add({
         default: void 0
     }
 });
-module.exports.ImmunizationRecommendation_Recommendation = ImmunizationRecommendation_Recommendation;
+module.exports.ImmunizationRecommendation_Recommendation =
+    ImmunizationRecommendation_Recommendation;

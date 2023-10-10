@@ -1,15 +1,15 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const url = require('../FHIRDataTypesSchema/url');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const url = require("../FHIRDataTypesSchema/url");
 const {
     ImplementationGuide_Resource1
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     ImplementationGuide_Page1
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const string = require('../FHIRDataTypesSchema/string');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const string = require("../FHIRDataTypesSchema/string");
 
 const {
     ImplementationGuide_Manifest

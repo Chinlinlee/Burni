@@ -1,19 +1,19 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     CodeableConcept
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     Reference
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const boolean = require('../FHIRDataTypesSchema/boolean');
-const string = require('../FHIRDataTypesSchema/string');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const boolean = require("../FHIRDataTypesSchema/boolean");
+const string = require("../FHIRDataTypesSchema/string");
 const {
     CoverageEligibilityResponse_Benefit
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const uri = require('../FHIRDataTypesSchema/uri');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const uri = require("../FHIRDataTypesSchema/uri");
 
 const {
     CoverageEligibilityResponse_Item
@@ -69,4 +69,5 @@ CoverageEligibilityResponse_Item.add({
     },
     authorizationUrl: uri
 });
-module.exports.CoverageEligibilityResponse_Item = CoverageEligibilityResponse_Item;
+module.exports.CoverageEligibilityResponse_Item =
+    CoverageEligibilityResponse_Item;

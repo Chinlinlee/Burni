@@ -1,20 +1,20 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     CodeableConcept
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const string = require('../FHIRDataTypesSchema/string');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const string = require("../FHIRDataTypesSchema/string");
 const {
     SubstanceSourceMaterial_Author
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     SubstanceSourceMaterial_Hybrid
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     SubstanceSourceMaterial_OrganismGeneral
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 
 const {
     SubstanceSourceMaterial_Organism
@@ -58,4 +58,5 @@ SubstanceSourceMaterial_Organism.add({
         default: void 0
     }
 });
-module.exports.SubstanceSourceMaterial_Organism = SubstanceSourceMaterial_Organism;
+module.exports.SubstanceSourceMaterial_Organism =
+    SubstanceSourceMaterial_Organism;

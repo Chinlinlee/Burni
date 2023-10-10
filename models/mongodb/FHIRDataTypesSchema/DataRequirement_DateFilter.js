@@ -1,14 +1,12 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const string = require('../FHIRDataTypesSchema/string');
-const {
-    Period
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const string = require("../FHIRDataTypesSchema/string");
+const { Period } = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     Duration
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 
 const {
     DataRequirement_DateFilter

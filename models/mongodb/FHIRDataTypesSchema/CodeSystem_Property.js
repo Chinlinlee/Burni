@@ -1,10 +1,10 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const code = require('../FHIRDataTypesSchema/code');
-const uri = require('../FHIRDataTypesSchema/uri');
-const string = require('../FHIRDataTypesSchema/string');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const code = require("../FHIRDataTypesSchema/code");
+const uri = require("../FHIRDataTypesSchema/uri");
+const string = require("../FHIRDataTypesSchema/string");
 
 const {
     CodeSystem_Property
@@ -23,7 +23,15 @@ CodeSystem_Property.add({
     description: string,
     type: {
         type: String,
-        enum: ["code", "Coding", "string", "integer", "boolean", "dateTime", "decimal"],
+        enum: [
+            "code",
+            "Coding",
+            "string",
+            "integer",
+            "boolean",
+            "dateTime",
+            "decimal"
+        ],
         default: void 0
     }
 });

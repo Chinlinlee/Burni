@@ -1,12 +1,12 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const string = require('../FHIRDataTypesSchema/string');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const string = require("../FHIRDataTypesSchema/string");
 const {
     ContactPoint
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const url = require('../FHIRDataTypesSchema/url');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const url = require("../FHIRDataTypesSchema/url");
 
 const {
     MessageHeader_Source

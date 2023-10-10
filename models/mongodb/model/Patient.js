@@ -46,6 +46,12 @@ const {
     Patient_Link
 } = require('../FHIRDataTypesSchemaExport/FHIRDataTypesSchemaExport');
 const id = require('../FHIRDataTypesSchema/id');
+const {
+    storeResourceRefBy,
+    updateRefBy,
+    deleteEmptyRefBy,
+    checkResourceHaveReferenceByOthers
+} = require("../common");
 module.exports = function() {
     require('mongoose-schema-jsonschema')(mongoose);
     const Patient = {
@@ -170,7 +176,7 @@ module.exports = function() {
             _.set(result, "_doc.collection", tempCollectionField);
             delete result._doc.myCollection;
         }
-        return result;
+        return result.toObject();
     };
 
     PatientSchema.pre('save', async function(next) {
@@ -179,25 +185,29 @@ module.exports = function() {
             let storedID = await mongodb.FHIRStoredID.findOne({
                 id: this.id
             });
-            if (storedID.resourceType == "Patient") {
-                const docInHistory = await mongodb.Patient_history.findOne({
-                        id: this.id
-                    })
-                    .sort({
-                        "meta.versionId": -1
-                    });
-                let versionId = Number(_.get(docInHistory, "meta.versionId")) + 1;
-                let versionIdStr = String(versionId);
-                _.set(this, "meta.versionId", versionIdStr);
-                _.set(this, "meta.lastUpdated", new Date());
-            } else {
+            if (storedID.resourceType != "Patient") {
                 console.error('err', storedID);
                 return next(new Error(`The id->${this.id} stored by resource ${storedID.resourceType}`));
             }
+        }
+
+        const docInHistory = await mongodb.Patient_history.findOne({
+                id: this.id
+            })
+            .sort({
+                "meta.versionId": -1
+            });
+
+        if (docInHistory) {
+            let versionId = Number(_.get(docInHistory, "meta.versionId")) + 1;
+            let versionIdStr = String(versionId);
+            _.set(this, "meta.versionId", versionIdStr);
+            _.set(this, "meta.lastUpdated", new Date());
         } else {
             _.set(this, "meta.versionId", "1");
             _.set(this, "meta.lastUpdated", new Date());
         }
+
         return next();
     });
 
@@ -234,6 +244,8 @@ module.exports = function() {
         }, {
             upsert: true
         });
+
+        await storeResourceRefBy(item);
     });
 
     PatientSchema.pre('findOneAndUpdate', async function(next) {
@@ -270,6 +282,9 @@ module.exports = function() {
         } catch (e) {
             console.error(e);
         }
+
+        await storeResourceRefBy(item);
+
         return result;
     });
 
@@ -281,6 +296,11 @@ module.exports = function() {
         let mongodb = require('../index');
         let item = docToDelete.toObject();
         delete item._id;
+
+        if (process.env.ENABLE_CHECK_REF_DELETION === "true" && await checkResourceHaveReferenceByOthers(item)) {
+            next(`The ${item.resourceType}:id->${item.id} is referenced by multiple resource, please do not delete resource that have association`);
+        }
+
         item.meta.versionId = String(Number(item.meta.versionId) + 1);
         let version = item.meta.versionId;
 
@@ -294,6 +314,11 @@ module.exports = function() {
         });
         let createdDocs = await mongodb['Patient_history'].create(item);
         next();
+    });
+
+    PatientSchema.post('findOneAndDelete', async function(resource) {
+        await updateRefBy(resource);
+        await deleteEmptyRefBy();
     });
 
     const PatientModel = mongoose.model("Patient", PatientSchema, "Patient");

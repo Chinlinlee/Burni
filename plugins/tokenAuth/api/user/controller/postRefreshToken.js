@@ -1,10 +1,10 @@
-const refreshTokenService = require('../service/refreshTokenService');
+const refreshTokenService = require("../service/refreshTokenService");
 
 /**
  * @param {import('express').Request} req
  * @param {import('express').Response} res
  */
-module.exports = async function (req , res) {
+module.exports = async function (req, res) {
     try {
         let refreshToken = req.body.refresh_token;
         let tokenObj = await refreshTokenService(refreshToken);
@@ -15,7 +15,7 @@ module.exports = async function (req , res) {
             });
         }
         return res.status(tokenObj.code).send(tokenObj.data);
-    } catch(err) {
+    } catch (err) {
         console.error(err);
         return res.status(500).json(err);
     }

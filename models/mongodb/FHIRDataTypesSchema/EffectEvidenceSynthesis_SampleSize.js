@@ -1,9 +1,9 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const string = require('../FHIRDataTypesSchema/string');
-const integer = require('../FHIRDataTypesSchema/integer');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const string = require("../FHIRDataTypesSchema/string");
+const integer = require("../FHIRDataTypesSchema/integer");
 
 const {
     EffectEvidenceSynthesis_SampleSize
@@ -21,4 +21,5 @@ EffectEvidenceSynthesis_SampleSize.add({
     numberOfStudies: integer,
     numberOfParticipants: integer
 });
-module.exports.EffectEvidenceSynthesis_SampleSize = EffectEvidenceSynthesis_SampleSize;
+module.exports.EffectEvidenceSynthesis_SampleSize =
+    EffectEvidenceSynthesis_SampleSize;

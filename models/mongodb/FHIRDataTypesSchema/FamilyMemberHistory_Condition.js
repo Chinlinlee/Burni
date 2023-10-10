@@ -1,24 +1,18 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     CodeableConcept
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const boolean = require('../FHIRDataTypesSchema/boolean');
-const {
-    Age
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const {
-    Range
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const {
-    Period
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const string = require('../FHIRDataTypesSchema/string');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const boolean = require("../FHIRDataTypesSchema/boolean");
+const { Age } = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const { Range } = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const { Period } = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const string = require("../FHIRDataTypesSchema/string");
 const {
     Annotation
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 
 const {
     FamilyMemberHistory_Condition

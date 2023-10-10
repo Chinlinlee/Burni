@@ -1,17 +1,15 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     CodeableConcept
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const {
-    Money
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const date = require('../FHIRDataTypesSchema/date');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const { Money } = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const date = require("../FHIRDataTypesSchema/date");
 const {
     Identifier
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 
 const {
     ExplanationOfBenefit_Payment

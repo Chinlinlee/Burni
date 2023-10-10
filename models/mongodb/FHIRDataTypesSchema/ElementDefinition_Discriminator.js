@@ -1,8 +1,8 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const string = require('../FHIRDataTypesSchema/string');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const string = require("../FHIRDataTypesSchema/string");
 
 const {
     ElementDefinition_Discriminator
@@ -23,4 +23,5 @@ ElementDefinition_Discriminator.add({
     },
     path: string
 });
-module.exports.ElementDefinition_Discriminator = ElementDefinition_Discriminator;
+module.exports.ElementDefinition_Discriminator =
+    ElementDefinition_Discriminator;

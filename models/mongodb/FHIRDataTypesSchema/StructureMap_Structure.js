@@ -1,9 +1,9 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const canonical = require('../FHIRDataTypesSchema/canonical');
-const string = require('../FHIRDataTypesSchema/string');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const canonical = require("../FHIRDataTypesSchema/canonical");
+const string = require("../FHIRDataTypesSchema/string");
 
 const {
     StructureMap_Structure

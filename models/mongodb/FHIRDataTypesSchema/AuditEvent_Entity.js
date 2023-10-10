@@ -1,18 +1,16 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     Reference
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const {
-    Coding
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const string = require('../FHIRDataTypesSchema/string');
-const base64Binary = require('../FHIRDataTypesSchema/base64Binary');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const { Coding } = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const string = require("../FHIRDataTypesSchema/string");
+const base64Binary = require("../FHIRDataTypesSchema/base64Binary");
 const {
     AuditEvent_Detail
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 
 const {
     AuditEvent_Entity

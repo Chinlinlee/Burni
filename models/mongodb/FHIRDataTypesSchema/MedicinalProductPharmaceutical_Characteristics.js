@@ -1,10 +1,10 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     CodeableConcept
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 
 const {
     MedicinalProductPharmaceutical_Characteristics
@@ -28,4 +28,5 @@ MedicinalProductPharmaceutical_Characteristics.add({
         default: void 0
     }
 });
-module.exports.MedicinalProductPharmaceutical_Characteristics = MedicinalProductPharmaceutical_Characteristics;
+module.exports.MedicinalProductPharmaceutical_Characteristics =
+    MedicinalProductPharmaceutical_Characteristics;

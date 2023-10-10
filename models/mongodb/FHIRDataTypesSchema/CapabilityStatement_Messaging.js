@@ -1,15 +1,15 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     CapabilityStatement_Endpoint
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const unsignedInt = require('../FHIRDataTypesSchema/unsignedInt');
-const markdown = require('../FHIRDataTypesSchema/markdown');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const unsignedInt = require("../FHIRDataTypesSchema/unsignedInt");
+const markdown = require("../FHIRDataTypesSchema/markdown");
 const {
     CapabilityStatement_SupportedMessage
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 
 const {
     CapabilityStatement_Messaging

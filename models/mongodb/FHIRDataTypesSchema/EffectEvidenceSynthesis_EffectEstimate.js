@@ -1,15 +1,15 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const string = require('../FHIRDataTypesSchema/string');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const string = require("../FHIRDataTypesSchema/string");
 const {
     CodeableConcept
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const decimal = require('../FHIRDataTypesSchema/decimal');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const decimal = require("../FHIRDataTypesSchema/decimal");
 const {
     EffectEvidenceSynthesis_PrecisionEstimate
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 
 const {
     EffectEvidenceSynthesis_EffectEstimate
@@ -42,4 +42,5 @@ EffectEvidenceSynthesis_EffectEstimate.add({
         default: void 0
     }
 });
-module.exports.EffectEvidenceSynthesis_EffectEstimate = EffectEvidenceSynthesis_EffectEstimate;
+module.exports.EffectEvidenceSynthesis_EffectEstimate =
+    EffectEvidenceSynthesis_EffectEstimate;

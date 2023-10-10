@@ -1,12 +1,12 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const code = require('../FHIRDataTypesSchema/code');
-const string = require('../FHIRDataTypesSchema/string');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const code = require("../FHIRDataTypesSchema/code");
+const string = require("../FHIRDataTypesSchema/string");
 const {
     ConceptMap_DependsOn
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 
 const {
     ConceptMap_Target
@@ -24,7 +24,18 @@ ConceptMap_Target.add({
     display: string,
     equivalence: {
         type: String,
-        enum: ["relatedto", "equivalent", "equal", "wider", "subsumes", "narrower", "specializes", "inexact", "unmatched", "disjoint"],
+        enum: [
+            "relatedto",
+            "equivalent",
+            "equal",
+            "wider",
+            "subsumes",
+            "narrower",
+            "specializes",
+            "inexact",
+            "unmatched",
+            "disjoint"
+        ],
         default: void 0
     },
     comment: string,

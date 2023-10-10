@@ -1,12 +1,10 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const string = require('../FHIRDataTypesSchema/string');
-const decimal = require('../FHIRDataTypesSchema/decimal');
-const {
-    Period
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const string = require("../FHIRDataTypesSchema/string");
+const decimal = require("../FHIRDataTypesSchema/decimal");
+const { Period } = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 
 const {
     BiologicallyDerivedProduct_Storage
@@ -32,4 +30,5 @@ BiologicallyDerivedProduct_Storage.add({
         default: void 0
     }
 });
-module.exports.BiologicallyDerivedProduct_Storage = BiologicallyDerivedProduct_Storage;
+module.exports.BiologicallyDerivedProduct_Storage =
+    BiologicallyDerivedProduct_Storage;

@@ -1066,7 +1066,167 @@
         {
             "parameter": "composition",
             "type": "reference",
-            "field": "Bundle.entry[0].resource"
+            "field": "Bundle.entry.0.resource"
+        },
+        {
+            "parameter": "composition.encounter",
+            "type": "reference",
+            "field": "Bundle.entry.0.resource.encounter"
+        },
+        {
+            "parameter": "composition.attester",
+            "type": "reference",
+            "field": "Bundle.entry.0.resource.attester.party"
+        },
+        {
+            "parameter": "composition.author",
+            "type": "reference",
+            "field": "Bundle.entry.0.resource.author"
+        },
+        {
+            "parameter": "composition.category",
+            "type": "token",
+            "field": "Bundle.entry.0.resource.category"
+        },
+        {
+            "parameter": "composition.confidentiality",
+            "type": "token",
+            "field": "Bundle.entry.0.resource.confidentiality"
+        },
+        {
+            "parameter": "composition.context",
+            "type": "token",
+            "field": "Bundle.entry.0.resource.event.code"
+        },
+        {
+            "parameter": "composition.date",
+            "type": "date",
+            "field": "Bundle.entry.0.resource.date"
+        },
+        {
+            "parameter": "composition.entry",
+            "type": "reference",
+            "field": "Bundle.entry.0.resource.section.entry"
+        },
+        {
+            "parameter": "composition.identifier",
+            "type": "token",
+            "field": "Bundle.entry.0.resource.identifier"
+        },
+        {
+            "parameter": "composition.patient",
+            "type": "reference",
+            "field": "Bundle.entry.0.resource.subject.where(resolve() is Patient)"
+        },
+        {
+            "parameter": "composition.period",
+            "type": "date",
+            "field": "Bundle.entry.0.resource.event.period"
+        },
+        {
+            "parameter": "composition.related-id",
+            "type": "token",
+            "field": "(Bundle.entry.0.resource.relatesTo.target as Identifier)"
+        },
+        {
+            "parameter": "composition.related-ref",
+            "type": "reference",
+            "field": "(Bundle.entry.0.resource.relatesTo.target as Reference)"
+        },
+        {
+            "parameter": "composition.section",
+            "type": "token",
+            "field": "Bundle.entry.0.resource.section.code"
+        },
+        {
+            "parameter": "composition.status",
+            "type": "token",
+            "field": "Bundle.entry.0.resource.status"
+        },
+        {
+            "parameter": "composition.subject",
+            "type": "reference",
+            "field": "Bundle.entry.0.resource.subject"
+        },
+        {
+            "parameter": "composition.title",
+            "type": "string",
+            "field": "Bundle.entry.0.resource.title"
+        },
+        {
+            "parameter": "composition.type",
+            "type": "token",
+            "field": "Bundle.entry.0.resource.type"
+        },
+        {
+            "parameter": "message.author",
+            "type": "reference",
+            "field": "Bundle.entry.0.resource.author"
+        },
+        {
+            "parameter": "message.code",
+            "type": "token",
+            "field": "Bundle.entry.0.resource.response.code"
+        },
+        {
+            "parameter": "message.destination",
+            "type": "string",
+            "field": "Bundle.entry.0.resource.destination.name"
+        },
+        {
+            "parameter": "message.destination-uri",
+            "type": "uri",
+            "field": "Bundle.entry.0.resource.destination.endpoint"
+        },
+        {
+            "parameter": "message.enterer",
+            "type": "reference",
+            "field": "Bundle.entry.0.resource.enterer"
+        },
+        {
+            "parameter": "message.event",
+            "type": "token",
+            "field": "Bundle.entry.0.resource.event"
+        },
+        {
+            "parameter": "message.focus",
+            "type": "reference",
+            "field": "Bundle.entry.0.resource.focus"
+        },
+        {
+            "parameter": "message.receiver",
+            "type": "reference",
+            "field": "Bundle.entry.0.resource.destination.receiver"
+        },
+        {
+            "parameter": "message.response-id",
+            "type": "token",
+            "field": "Bundle.entry.0.resource.response.identifier"
+        },
+        {
+            "parameter": "message.responsible",
+            "type": "reference",
+            "field": "Bundle.entry.0.resource.responsible"
+        },
+        {
+            "parameter": "message.sender",
+            "type": "reference",
+            "field": "Bundle.entry.0.resource.sender"
+        },
+        {
+            "parameter": "message.source",
+            "type": "string",
+            "field": "Bundle.entry.0.resource.source.name"
+        },
+        {
+            "parameter": "message.source-uri",
+            "type": "uri",
+            "field": "Bundle.entry.0.resource.source.endpoint"
+        },
+        {
+            "parameter": "message.target",
+            "type": "reference",
+            "field": "Bundle.entry.0.resource.destination.target"
         },
         {
             "parameter": "identifier",
@@ -1076,7 +1236,7 @@
         {
             "parameter": "message",
             "type": "reference",
-            "field": "Bundle.entry[0].resource"
+            "field": "Bundle.entry.0.resource"
         },
         {
             "parameter": "timestamp",

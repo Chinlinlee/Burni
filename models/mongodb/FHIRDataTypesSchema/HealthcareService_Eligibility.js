@@ -1,11 +1,11 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     CodeableConcept
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const markdown = require('../FHIRDataTypesSchema/markdown');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const markdown = require("../FHIRDataTypesSchema/markdown");
 
 const {
     HealthcareService_Eligibility

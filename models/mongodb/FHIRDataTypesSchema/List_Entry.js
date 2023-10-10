@@ -1,15 +1,15 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     CodeableConcept
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const boolean = require('../FHIRDataTypesSchema/boolean');
-const dateTime = require('../FHIRDataTypesSchema/dateTime');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const boolean = require("../FHIRDataTypesSchema/boolean");
+const dateTime = require("../FHIRDataTypesSchema/dateTime");
 const {
     Reference
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 
 const {
     List_Entry

@@ -1,13 +1,11 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const code = require('../FHIRDataTypesSchema/code');
-const string = require('../FHIRDataTypesSchema/string');
-const {
-    Coding
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const boolean = require('../FHIRDataTypesSchema/boolean');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const code = require("../FHIRDataTypesSchema/code");
+const string = require("../FHIRDataTypesSchema/string");
+const { Coding } = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const boolean = require("../FHIRDataTypesSchema/boolean");
 
 const {
     CodeSystem_Property1

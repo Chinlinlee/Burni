@@ -1,15 +1,13 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const code = require('../FHIRDataTypesSchema/code');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const code = require("../FHIRDataTypesSchema/code");
 const {
     CodeableConcept
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const decimal = require('../FHIRDataTypesSchema/decimal');
-const {
-    Money
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const decimal = require("../FHIRDataTypesSchema/decimal");
+const { Money } = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 
 const {
     ChargeItemDefinition_PriceComponent
@@ -34,4 +32,5 @@ ChargeItemDefinition_PriceComponent.add({
         default: void 0
     }
 });
-module.exports.ChargeItemDefinition_PriceComponent = ChargeItemDefinition_PriceComponent;
+module.exports.ChargeItemDefinition_PriceComponent =
+    ChargeItemDefinition_PriceComponent;

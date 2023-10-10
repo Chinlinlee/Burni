@@ -1,11 +1,11 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     CodeableConcept
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const dateTime = require('../FHIRDataTypesSchema/dateTime');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const dateTime = require("../FHIRDataTypesSchema/dateTime");
 
 const {
     ImmunizationRecommendation_DateCriterion
@@ -26,4 +26,5 @@ ImmunizationRecommendation_DateCriterion.add({
     },
     value: dateTime
 });
-module.exports.ImmunizationRecommendation_DateCriterion = ImmunizationRecommendation_DateCriterion;
+module.exports.ImmunizationRecommendation_DateCriterion =
+    ImmunizationRecommendation_DateCriterion;

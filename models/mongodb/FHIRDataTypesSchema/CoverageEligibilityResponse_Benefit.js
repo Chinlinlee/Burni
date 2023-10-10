@@ -1,14 +1,12 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     CodeableConcept
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const string = require('../FHIRDataTypesSchema/string');
-const {
-    Money
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const string = require("../FHIRDataTypesSchema/string");
+const { Money } = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 
 const {
     CoverageEligibilityResponse_Benefit
@@ -46,4 +44,5 @@ CoverageEligibilityResponse_Benefit.add({
         default: void 0
     }
 });
-module.exports.CoverageEligibilityResponse_Benefit = CoverageEligibilityResponse_Benefit;
+module.exports.CoverageEligibilityResponse_Benefit =
+    CoverageEligibilityResponse_Benefit;

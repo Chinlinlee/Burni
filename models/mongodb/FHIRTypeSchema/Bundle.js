@@ -1,35 +1,33 @@
-class Bundle  {
+class Bundle {
     constructor() {
         this.resourceType = "Bundle";
-        this.type = "" ;
-        this.total = 0 ;
+        this.type = "";
+        this.total = 0;
         this.link = [];
-        this.entry =[];
+        this.entry = [];
     }
-    ToJson()
-    {
+    ToJson() {
         return Object.getOwnPropertyNames(this).reduce((a, b) => {
             a[b] = this[b];
             return a;
-        }, {}); 
+        }, {});
     }
 }
 class entry {
-    constructor(fullUrl , resource) {
+    constructor(fullUrl, resource) {
         this.fullUrl = fullUrl;
         this.resource = resource;
     }
 }
 class link {
-    constructor(relation = "self" , url= "/") {
-        this.relation = relation ;
+    constructor(relation = "self", url = "/") {
+        this.relation = relation;
         this.url = url;
     }
 }
 
 module.exports = {
-    Bundle : Bundle ,
-    entry : entry , 
-    link : link
+    Bundle: Bundle,
+    entry: entry,
+    link: link
 };
-

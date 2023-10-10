@@ -1,14 +1,14 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     Identifier
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const dateTime = require('../FHIRDataTypesSchema/dateTime');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const dateTime = require("../FHIRDataTypesSchema/dateTime");
 const {
     Quantity
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 
 const {
     Substance_Instance

@@ -1,14 +1,12 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     Quantity
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-
-const {
-    Range
 } = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+
+const { Range } = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 Range.add({
     extension: {
         type: [Extension],

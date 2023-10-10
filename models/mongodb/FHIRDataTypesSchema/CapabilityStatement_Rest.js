@@ -1,24 +1,24 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const markdown = require('../FHIRDataTypesSchema/markdown');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const markdown = require("../FHIRDataTypesSchema/markdown");
 const {
     CapabilityStatement_Security
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     CapabilityStatement_Resource
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     CapabilityStatement_Interaction1
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     CapabilityStatement_SearchParam
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     CapabilityStatement_Operation
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const canonical = require('../FHIRDataTypesSchema/canonical');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const canonical = require("../FHIRDataTypesSchema/canonical");
 
 const {
     CapabilityStatement_Rest

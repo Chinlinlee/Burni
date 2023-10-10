@@ -1,15 +1,15 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     CodeableConcept
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const boolean = require('../FHIRDataTypesSchema/boolean');
-const string = require('../FHIRDataTypesSchema/string');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const boolean = require("../FHIRDataTypesSchema/boolean");
+const string = require("../FHIRDataTypesSchema/string");
 const {
     ExplanationOfBenefit_Financial
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 
 const {
     ExplanationOfBenefit_BenefitBalance
@@ -48,4 +48,5 @@ ExplanationOfBenefit_BenefitBalance.add({
         default: void 0
     }
 });
-module.exports.ExplanationOfBenefit_BenefitBalance = ExplanationOfBenefit_BenefitBalance;
+module.exports.ExplanationOfBenefit_BenefitBalance =
+    ExplanationOfBenefit_BenefitBalance;

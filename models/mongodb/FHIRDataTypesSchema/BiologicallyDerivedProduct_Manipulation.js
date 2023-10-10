@@ -1,11 +1,9 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const string = require('../FHIRDataTypesSchema/string');
-const {
-    Period
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const string = require("../FHIRDataTypesSchema/string");
+const { Period } = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 
 const {
     BiologicallyDerivedProduct_Manipulation
@@ -26,4 +24,5 @@ BiologicallyDerivedProduct_Manipulation.add({
         default: void 0
     }
 });
-module.exports.BiologicallyDerivedProduct_Manipulation = BiologicallyDerivedProduct_Manipulation;
+module.exports.BiologicallyDerivedProduct_Manipulation =
+    BiologicallyDerivedProduct_Manipulation;

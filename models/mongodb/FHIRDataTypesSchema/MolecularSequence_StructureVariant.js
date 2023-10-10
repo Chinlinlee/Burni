@@ -1,18 +1,18 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     CodeableConcept
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const boolean = require('../FHIRDataTypesSchema/boolean');
-const integer = require('../FHIRDataTypesSchema/integer');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const boolean = require("../FHIRDataTypesSchema/boolean");
+const integer = require("../FHIRDataTypesSchema/integer");
 const {
     MolecularSequence_Outer
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     MolecularSequence_Inner
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 
 const {
     MolecularSequence_StructureVariant
@@ -41,4 +41,5 @@ MolecularSequence_StructureVariant.add({
         default: void 0
     }
 });
-module.exports.MolecularSequence_StructureVariant = MolecularSequence_StructureVariant;
+module.exports.MolecularSequence_StructureVariant =
+    MolecularSequence_StructureVariant;

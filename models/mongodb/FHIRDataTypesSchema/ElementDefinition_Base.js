@@ -1,9 +1,9 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const string = require('../FHIRDataTypesSchema/string');
-const unsignedInt = require('../FHIRDataTypesSchema/unsignedInt');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const string = require("../FHIRDataTypesSchema/string");
+const unsignedInt = require("../FHIRDataTypesSchema/unsignedInt");
 
 const {
     ElementDefinition_Base

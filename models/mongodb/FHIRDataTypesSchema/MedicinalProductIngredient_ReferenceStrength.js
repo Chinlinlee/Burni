@@ -1,14 +1,12 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     CodeableConcept
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const {
-    Ratio
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const string = require('../FHIRDataTypesSchema/string');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const { Ratio } = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const string = require("../FHIRDataTypesSchema/string");
 
 const {
     MedicinalProductIngredient_ReferenceStrength
@@ -41,4 +39,5 @@ MedicinalProductIngredient_ReferenceStrength.add({
         default: void 0
     }
 });
-module.exports.MedicinalProductIngredient_ReferenceStrength = MedicinalProductIngredient_ReferenceStrength;
+module.exports.MedicinalProductIngredient_ReferenceStrength =
+    MedicinalProductIngredient_ReferenceStrength;

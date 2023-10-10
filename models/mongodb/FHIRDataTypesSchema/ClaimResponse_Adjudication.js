@@ -1,14 +1,12 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     CodeableConcept
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const {
-    Money
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const decimal = require('../FHIRDataTypesSchema/decimal');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const { Money } = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const decimal = require("../FHIRDataTypesSchema/decimal");
 
 const {
     ClaimResponse_Adjudication

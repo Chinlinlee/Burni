@@ -1,8 +1,8 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const canonical = require('../FHIRDataTypesSchema/canonical');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const canonical = require("../FHIRDataTypesSchema/canonical");
 
 const {
     OperationDefinition_Binding

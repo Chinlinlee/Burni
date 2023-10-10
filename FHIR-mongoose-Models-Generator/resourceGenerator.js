@@ -1,12 +1,16 @@
-const fs =require('fs');
-const _ = require('lodash');
-const beautify = require('js-beautify').js;
-const primitiveType = ["Boolean"  , "String" , "Date" , "Number" , "Buffer"];
-const skipFieldTypes = ["Number" , "String" , "Date" , "this" , "Object"];
-const path = require('path');
-const mkdirp = require('mkdirp');
+const fs = require("fs");
+const _ = require("lodash");
+const beautify = require("js-beautify").js;
+const primitiveType = ["Boolean", "String", "Date", "Number", "Buffer"];
+const skipFieldTypes = ["Number", "String", "Date", "this", "Object"];
+const path = require("path");
+const mkdirp = require("mkdirp");
 const DataTypesSummary = require("./DataTypesSummary");
-let schemaJson = JSON.parse(fs.readFileSync(path.join(__dirname ,'./fhir.schema.json') , {encoding: 'utf-8'}));
+let schemaJson = JSON.parse(
+    fs.readFileSync(path.join(__dirname, "./fhir.schema.json"), {
+        encoding: "utf-8"
+    })
+);
 let FHIRJson = schemaJson.definitions;
 let config = {};
 
@@ -15,42 +19,50 @@ function checkHaveSchema(typeName) {
 }
 
 function isFHIRSchema(typeName) {
-    return !_.isUndefined(_.get(FHIRJson ,typeName)) ;
+    return !_.isUndefined(_.get(FHIRJson, typeName));
 }
 
 function isPrimitiveType(typeName) {
-    return /^[a-z]/.test(typeName) && typeName != "number" && DataTypesSummary.PrimitiveTypes.includes(typeName);
+    return (
+        /^[a-z]/.test(typeName) &&
+        typeName != "number" &&
+        DataTypesSummary.PrimitiveTypes.includes(typeName)
+    );
 }
 
-
-function cleanChildSchema (item) {
+function cleanChildSchema(item) {
     for (let i in item) {
-        if (_.get(item[i] , "type")){
+        if (_.get(item[i], "type")) {
             let isArray = /[\[\]]/gm.test(item[i].type);
-            let type = item[i].type.replace(/[\[\]]/gm,'');
+            let type = item[i].type.replace(/[\[\]]/gm, "");
             if (type == "number") {
                 item[i].type = isArray ? "[Number]" : "Number";
-            } else if (type == "ResourceList") { //todo, the resourceList need all resource, maybe just generate minium resourceList dynamic?
+            } else if (type == "ResourceList") {
+                //todo, the resourceList need all resource, maybe just generate minium resourceList dynamic?
                 item[i].type = "Object";
             }
         }
     }
 }
 
-function fixChoiceTypeOfDate (fieldName, type) {
-    if (fieldName == "modifierExtension") return {
-        yes: false,
-        type: ""
-    };
+function fixChoiceTypeOfDate(fieldName, type) {
+    if (fieldName == "modifierExtension")
+        return {
+            yes: false,
+            type: ""
+        };
     const dateTypes = ["Date", "DateTime", "Instant", "Time"];
     let typeOfField = fieldName.match(/([A-Z])\w+/g);
-    
-    for (let i = 0 ; i < dateTypes.length ; i++) {
+
+    for (let i = 0; i < dateTypes.length; i++) {
         let dateType = dateTypes[i];
-        
-        if (typeOfField == dateType && type == "string") { 
-            console.info(`fieldName ${fieldName} typeOfField ${typeOfField} , dateType ${dateType} , type ${type}`);
-            let lowerFirstDateTypes = dateType.charAt(0).toLowerCase() + dateType.slice(1);
+
+        if (typeOfField == dateType && type == "string") {
+            console.info(
+                `fieldName ${fieldName} typeOfField ${typeOfField} , dateType ${dateType} , type ${type}`
+            );
+            let lowerFirstDateTypes =
+                dateType.charAt(0).toLowerCase() + dateType.slice(1);
             return {
                 yes: true,
                 type: lowerFirstDateTypes
@@ -65,60 +77,59 @@ function fixChoiceTypeOfDate (fieldName, type) {
 
 /**
  * Parse fhir.schema (JSON Standard Schema) to Mongoose Schema
- * @param {*} resource 
- * @param {*} name 
- * @returns 
+ * @param {*} resource
+ * @param {*} name
+ * @returns
  */
-function getSchema (resource , name) {
+function getSchema(resource, name) {
     //let skipCol = ["resourceType" , "id" , "meta" ,"implicitRules" ,"language" , "text" ,"contained" , "extension" , "modifierExtension"];
-    let skipCol = ["id" , "resourceType" , "contained"];
+    let skipCol = ["id", "resourceType", "contained"];
     let result = {};
-    
+
     for (let i in resource.properties) {
         //skip the unusual type
-        if (skipCol.indexOf(i) >= 0 ) continue;
-        else if (i.indexOf("_") == 0 ) continue;
-        let type = _.get(resource.properties[i] , "type");
+        if (skipCol.indexOf(i) >= 0) continue;
+        else if (i.indexOf("_") == 0) continue;
+        let type = _.get(resource.properties[i], "type");
         let choiceTypeDate = fixChoiceTypeOfDate(i, type);
-        let refSchema = _.get(resource.properties[i] , "$ref");
-        let isCode = _.get(resource.properties[i] , "enum");
-        if (type == 'array') {
+        let refSchema = _.get(resource.properties[i], "$ref");
+        let isCode = _.get(resource.properties[i], "enum");
+        if (type == "array") {
             let arrayRef = resource.properties[i].items.$ref;
             if (resource.properties[i].items.enum) {
                 result[i] = {
-                    type : `[String]` 
+                    type: `[String]`
                 };
                 continue;
             }
-            let arrayRefClean  = arrayRef.split('/');
-            let typeOfField = arrayRefClean[arrayRefClean.length-1];
+            let arrayRefClean = arrayRef.split("/");
+            let typeOfField = arrayRefClean[arrayRefClean.length - 1];
             if (typeOfField == name) typeOfField = "this"; //The type of field reference self
             if (choiceTypeDate.yes) typeOfField = choiceTypeDate.type;
             result[i] = {
-                type : `[${typeOfField}]` 
+                type: `[${typeOfField}]`
             };
-        } else if (refSchema)  {
+        } else if (refSchema) {
             if (/^#/.test(refSchema)) {
-                let refClean = refSchema.split('/');
-                let typeOfField = refClean[refClean.length-1];
+                let refClean = refSchema.split("/");
+                let typeOfField = refClean[refClean.length - 1];
                 if (choiceTypeDate.yes) typeOfField = choiceTypeDate.type;
                 if (isPrimitiveType(typeOfField)) {
                     result[i] = typeOfField;
                 } else {
                     result[i] = {
-                        type : typeOfField
+                        type: typeOfField
                     };
                 }
-                
             } else if (!/^#/.test(refSchema)) {
-                let refClean = refSchema.split('/');
-                let typeOfField = refClean[refClean.length-1];
+                let refClean = refSchema.split("/");
+                let typeOfField = refClean[refClean.length - 1];
                 if (choiceTypeDate.yes) typeOfField = choiceTypeDate.type;
                 if (isPrimitiveType(typeOfField)) {
                     result[i] = typeOfField;
                 } else {
                     result[i] = {
-                        type : typeOfField 
+                        type: typeOfField
                     };
                 }
             }
@@ -126,8 +137,8 @@ function getSchema (resource , name) {
             let typeOfField = "String";
             //console.log(type);
             result[i] = {
-                type : typeOfField ,
-                enum : JSON.stringify(isCode)
+                type: typeOfField,
+                enum: JSON.stringify(isCode)
             };
         } else {
             if (choiceTypeDate.yes) type = choiceTypeDate.type;
@@ -135,15 +146,15 @@ function getSchema (resource , name) {
                 result[i] = type;
             } else {
                 result[i] = {
-                    type : type 
+                    type: type
                 };
             }
         }
-        let isRequired = _.get(resource , "required");
+        let isRequired = _.get(resource, "required");
         if (isRequired) {
             for (let item of isRequired) {
                 if (item == i) {
-                    Object.assign(result[i] , {required : true});
+                    Object.assign(result[i], { required: true });
                 }
             }
         }
@@ -157,17 +168,20 @@ function getImportLibs(schema) {
     let cleanType = "";
     for (let i in schema) {
         let item = schema[i];
-        if (_.get(item , "type")) {
+        if (_.get(item, "type")) {
             item.default = "void 0";
-            cleanType = item.type.replace(/[\[\]]/gm , '');
+            cleanType = item.type.replace(/[\[\]]/gm, "");
         } else {
-            cleanType = item.replace(/[\[\]]/gm , '');
+            cleanType = item.replace(/[\[\]]/gm, "");
         }
-        if (skipFieldTypes.indexOf(cleanType) < 0 && !importedTypeLib.includes(cleanType)) {
+        if (
+            skipFieldTypes.indexOf(cleanType) < 0 &&
+            !importedTypeLib.includes(cleanType)
+        ) {
             if (isPrimitiveType(cleanType)) {
-                importLib =`${importLib}const ${cleanType} = require('../FHIRDataTypesSchema/${cleanType}');\r\n`;
+                importLib = `${importLib}const ${cleanType} = require('../FHIRDataTypesSchema/${cleanType}');\r\n`;
             } else {
-                importLib =`${importLib}const {${cleanType}} = require('../FHIRDataTypesSchemaExport/FHIRDataTypesSchemaExport');\r\n`;
+                importLib = `${importLib}const {${cleanType}} = require('../FHIRDataTypesSchemaExport/FHIRDataTypesSchemaExport');\r\n`;
             }
             importedTypeLib.push(cleanType);
         }
@@ -184,16 +198,19 @@ function generateBackBoneElement(item) {
         }
     }
     if (isBackBone && item.includes("_")) {
-        console.log("back bone element type:" , item);
+        console.log("back bone element type:", item);
         generateSchema(item);
     }
 }
-async function generateSchema (type) {
-    let schema = getSchema(FHIRJson[type] , type);
+async function generateSchema(type) {
+    let schema = getSchema(FHIRJson[type], type);
     cleanChildSchema(schema);
     let importLibs = getImportLibs(schema);
-    let schemaStr = JSON.stringify(schema , null , 4).replace(/\"/gm , '');
-    let code = `module.exports = new mongoose.Schema (${schemaStr.replace(/\\/gm , '"')} , { 
+    let schemaStr = JSON.stringify(schema, null, 4).replace(/\"/gm, "");
+    let code = `module.exports = new mongoose.Schema (${schemaStr.replace(
+        /\\/gm,
+        '"'
+    )} , { 
         _id : false ,
         id: false,
         toObject: {
@@ -201,11 +218,14 @@ async function generateSchema (type) {
         }
     });`;
     code = `${importLibs}${code}`;
-    fs.writeFileSync(`./models/mongodb/FHIRDataTypesSchema/${type}.js` , beautify(code , {indent_size : 4 ,pace_in_empty_paren: true }));
+    fs.writeFileSync(
+        `./models/mongodb/FHIRDataTypesSchema/${type}.js`,
+        beautify(code, { indent_size: 4, pace_in_empty_paren: true })
+    );
     // for (let i in schema) {
     //     try {
     //         let item = schema[i];
-    //         if (_.get(item , "type")) { 
+    //         if (_.get(item , "type")) {
     //             for (let key in item) {
     //                 let deepItem = _.get(item[key] , "type") || item[key];
     //                 deepItem = String(deepItem)
@@ -220,14 +240,14 @@ async function generateSchema (type) {
     //     }
     // }
 }
-function generateResourceSchema (type) {
+function generateResourceSchema(type) {
     if (!FHIRJson[type]) {
-        console.error('Unknown resource type ' + type);
+        console.error("Unknown resource type " + type);
         process.exit(1);
     }
     let result = getSchema(FHIRJson[type]);
     for (let i in result) {
-        if (_.get(result[i] , "type")) {
+        if (_.get(result[i], "type")) {
             // let cleanType = result[i].type.replace(/[\[\]]/gm , '');
             // generateBackBoneElement(cleanType);
             result[i].default = "void 0";
@@ -235,15 +255,13 @@ function generateResourceSchema (type) {
     }
     cleanChildSchema(result);
     let topLevelObj = {
-        resourceType : {
-            type : "String" ,
-            required : "true" ,
-            enum: [
-                `"${type}"`
-            ]
+        resourceType: {
+            type: "String",
+            required: "true",
+            enum: [`"${type}"`]
         }
     };
-    result = Object.assign({} , result , topLevelObj);
+    result = Object.assign({}, result, topLevelObj);
 
     if (_.get(result, "collection")) {
         let tempCollectionField = _.cloneDeep(result["collection"]);
@@ -254,7 +272,9 @@ function generateResourceSchema (type) {
     // let importLib = "const mongoose = require('mongoose');\r\nconst moment = require('moment');\r\nconst _ = require('lodash');\r\n";
     let code = `module.exports = function () {
     require('mongoose-schema-jsonschema')(mongoose);
-    const ${type} = ${JSON.stringify(result , null , 4).replace(/\"/gm , '').replace(/\\/gm , '"')};\r\n
+    const ${type} = ${JSON.stringify(result, null, 4)
+        .replace(/\"/gm, "")
+        .replace(/\\/gm, '"')};\r\n
     ${type}.id = {
         ...id ,
         index: true
@@ -286,34 +306,38 @@ function generateResourceSchema (type) {
             _.set(result, "_doc.collection", tempCollectionField);
             delete result._doc.myCollection;
         }
-        return result;
+        return result.toObject();
     };
 
     ${type}Schema.pre('save', async function (next) {
         let mongodb = require('../index');
-        if (process.env.ENABLE_CHECK_ALL_RESOURCE_ID== "true") {
+        if (process.env.ENABLE_CHECK_ALL_RESOURCE_ID == "true") {
             let storedID = await mongodb.FHIRStoredID.findOne({
                 id: this.id
             });
-            if (storedID.resourceType == "${type}") {
-                const docInHistory = await mongodb.${type}_history.findOne({
-                    id: this.id
-                })
-                .sort({
-                    "meta.versionId" : -1
-                });
-                let versionId = Number(_.get(docInHistory , "meta.versionId"))+1;
-                let versionIdStr = String(versionId);
-                _.set(this, "meta.versionId", versionIdStr);
-                _.set(this, "meta.lastUpdated", new Date());
-            } else {
+            if (storedID.resourceType != "${type}") {
                 console.error('err', storedID);
                 return next(new Error(\`The id->\${this.id} stored by resource \${storedID.resourceType}\`));
             }
+        }
+
+        const docInHistory = await mongodb.${type}_history.findOne({
+            id: this.id
+        })
+        .sort({
+            "meta.versionId": -1
+        });
+
+        if (docInHistory) {
+            let versionId = Number(_.get(docInHistory, "meta.versionId")) + 1;
+            let versionIdStr = String(versionId);
+            _.set(this, "meta.versionId", versionIdStr);
+            _.set(this, "meta.lastUpdated", new Date());
         } else {
             _.set(this, "meta.versionId", "1");
             _.set(this, "meta.lastUpdated", new Date());
         }
+        
         return next();
     });
 
@@ -350,6 +374,8 @@ function generateResourceSchema (type) {
         } , {
             upsert : true
         });
+
+        await storeResourceRefBy(item);
     });
 
     ${type}Schema.pre('findOneAndUpdate' , async function (next) {
@@ -386,6 +412,9 @@ function generateResourceSchema (type) {
         } catch (e) {
             console.error(e);
         }
+
+        await storeResourceRefBy(item);
+
         return result;
     });
 
@@ -397,6 +426,11 @@ function generateResourceSchema (type) {
         let mongodb = require('../index');
         let item = docToDelete.toObject();
         delete item._id;
+
+        if (process.env.ENABLE_CHECK_REF_DELETION === "true" && await checkResourceHaveReferenceByOthers(item)) {
+            next(\`The \${item.resourceType}:id->\${item.id} is referenced by multiple resource, please do not delete resource that have association\`);
+        }
+
         item.meta.versionId = String(Number(item.meta.versionId)+1);
         let version = item.meta.versionId;
 
@@ -412,59 +446,71 @@ function generateResourceSchema (type) {
         next();
     });
 
+    ${type}Schema.post('findOneAndDelete', async function (resource) {
+        await updateRefBy(resource);
+        await deleteEmptyRefBy();
+    });
+
     const ${type}Model = mongoose.model("${type}" , ${type}Schema , "${type}");
     return ${type}Model;\r\n}`;
+
     let importLibs = getImportLibs(result);
     if (!importLibs.includes("const id = require")) {
-        importLibs =`const moment = require('moment');\r\nconst _ = require('lodash');\r\n${importLibs}const id = require('${config.requirePath}/id');\r\n`;
+        importLibs = `const moment = require('moment');\r\nconst _ = require('lodash');\r\n${importLibs}const id = require('${config.requirePath}/id');\r\nconst { storeResourceRefBy, updateRefBy, deleteEmptyRefBy, checkResourceHaveReferenceByOthers } = require("../common");\r\n`;
     } else {
-        importLibs =`const moment = require('moment');\r\nconst _ = require('lodash');\r\n${importLibs}\r\n`;
+        importLibs = `const moment = require('moment');\r\nconst _ = require('lodash');\r\n${importLibs}\r\nconst { storeResourceRefBy, updateRefBy, deleteEmptyRefBy, checkResourceHaveReferenceByOthers } = require("../common");\r\n`;
     }
     code = `${importLibs}${code};`;
     mkdirp.sync(config.resourcePath);
-    fs.writeFileSync(`${config.resourcePath}/${type}.js` , beautify(code , {indent_size : 4 ,pace_in_empty_paren: true }));   
+    fs.writeFileSync(
+        `${config.resourcePath}/${type}.js`,
+        beautify(code, { indent_size: 4, pace_in_empty_paren: true })
+    );
 }
 
-
-module.exports =  function (inputResourceType , option) {
+module.exports = function (inputResourceType, option) {
     if (option.cwd) {
         process.chdir(option.cwd);
     }
     //let typePath = option.typePath;
     let resourcePath = option.resourcePath;
-   /* if (!typePath) {
+    /* if (!typePath) {
         console.error('missing typePath option');
         process.exit(1);
     } else */
     if (!resourcePath) {
-        console.error('missing resourcePath option');
+        console.error("missing resourcePath option");
         process.exit(1);
     }
     //config.typePath = typePath;
     config.resourcePath = resourcePath;
     //mkdirp.sync(`${config.resourcePath}/`);
     //mkdirp.sync(`${config.typePath}/`);
-    config.requirePath = path.relative(resourcePath , "./models/mongodb/FHIRDataTypesSchema").replace(/\\/gm ,"/");
+    config.requirePath = path
+        .relative(resourcePath, "./models/mongodb/FHIRDataTypesSchema")
+        .replace(/\\/gm, "/");
     generateResourceSchema(inputResourceType);
 };
 
-function main(inputResourceType , option) {
+function main(inputResourceType, option) {
     if (option.cwd) {
         process.chdir(option.cwd);
     }
     //let typePath = option.typePath;
     let resourcePath = option.resourcePath;
-   /* if (!typePath) {
+    /* if (!typePath) {
         console.error('missing typePath option');
         process.exit(1);
     } else */
     if (!resourcePath) {
-        console.error('missing resourcePath option');
+        console.error("missing resourcePath option");
         process.exit(1);
     }
     //config.typePath = typePath;
     config.resourcePath = resourcePath;
-    config.requirePath = path.relative(resourcePath , "./models/mongodb/FHIRDataTypesSchema").replace(/\\/gm ,"/");
+    config.requirePath = path
+        .relative(resourcePath, "./models/mongodb/FHIRDataTypesSchema")
+        .replace(/\\/gm, "/");
     generateResourceSchema(inputResourceType);
 }
 

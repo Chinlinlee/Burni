@@ -1,12 +1,12 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const canonical = require('../FHIRDataTypesSchema/canonical');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const canonical = require("../FHIRDataTypesSchema/canonical");
 const {
     TerminologyCapabilities_Version
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const boolean = require('../FHIRDataTypesSchema/boolean');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const boolean = require("../FHIRDataTypesSchema/boolean");
 
 const {
     TerminologyCapabilities_CodeSystem
@@ -27,4 +27,5 @@ TerminologyCapabilities_CodeSystem.add({
     },
     subsumption: boolean
 });
-module.exports.TerminologyCapabilities_CodeSystem = TerminologyCapabilities_CodeSystem;
+module.exports.TerminologyCapabilities_CodeSystem =
+    TerminologyCapabilities_CodeSystem;

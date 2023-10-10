@@ -1,16 +1,16 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const code = require('../FHIRDataTypesSchema/code');
-const string = require('../FHIRDataTypesSchema/string');
-const canonical = require('../FHIRDataTypesSchema/canonical');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const code = require("../FHIRDataTypesSchema/code");
+const string = require("../FHIRDataTypesSchema/string");
+const canonical = require("../FHIRDataTypesSchema/canonical");
 const {
     GraphDefinition_Compartment
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     GraphDefinition_Link
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 
 const {
     GraphDefinition_Target

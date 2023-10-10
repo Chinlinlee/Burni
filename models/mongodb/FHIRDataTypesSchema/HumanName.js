@@ -1,11 +1,9 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const string = require('../FHIRDataTypesSchema/string');
-const {
-    Period
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const string = require("../FHIRDataTypesSchema/string");
+const { Period } = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 
 const {
     HumanName
@@ -17,7 +15,15 @@ HumanName.add({
     },
     use: {
         type: String,
-        enum: ["usual", "official", "temp", "nickname", "anonymous", "old", "maiden"],
+        enum: [
+            "usual",
+            "official",
+            "temp",
+            "nickname",
+            "anonymous",
+            "old",
+            "maiden"
+        ],
         default: void 0
     },
     text: string,

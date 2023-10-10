@@ -1,21 +1,19 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     CodeableConcept
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     Quantity
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const {
-    Money
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const decimal = require('../FHIRDataTypesSchema/decimal');
-const positiveInt = require('../FHIRDataTypesSchema/positiveInt');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const { Money } = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const decimal = require("../FHIRDataTypesSchema/decimal");
+const positiveInt = require("../FHIRDataTypesSchema/positiveInt");
 const {
     ExplanationOfBenefit_Adjudication
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 
 const {
     ExplanationOfBenefit_SubDetail1
@@ -60,4 +58,5 @@ ExplanationOfBenefit_SubDetail1.add({
         default: void 0
     }
 });
-module.exports.ExplanationOfBenefit_SubDetail1 = ExplanationOfBenefit_SubDetail1;
+module.exports.ExplanationOfBenefit_SubDetail1 =
+    ExplanationOfBenefit_SubDetail1;

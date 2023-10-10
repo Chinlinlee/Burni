@@ -1,10 +1,10 @@
-const mongodb = require('../models/mongodb');
-const fetch = require('node-fetch');
-const _ = require('lodash');
-const AbortController = require('abort-controller');
-const FHIR = require('fhir').Fhir;
-const { handleError } = require('../models/FHIR/httpMessage');
-const jwt = require('jsonwebtoken');
+const mongodb = require("../models/mongodb");
+const fetch = require("node-fetch");
+const _ = require("lodash");
+const AbortController = require("abort-controller");
+const FHIR = require("fhir").Fhir;
+const { handleError } = require("../models/FHIR/httpMessage");
+const jwt = require("jsonwebtoken");
 const jsonPath = require("jsonpath");
 function getDeepKeys(obj) {
     let keys = [];
@@ -12,9 +12,11 @@ function getDeepKeys(obj) {
         keys.push(key);
         if (typeof obj[key] === "object") {
             let subkeys = getDeepKeys(obj[key]);
-            keys = keys.concat(subkeys.map(function (subkey) {
-                return key + "." + subkey;
-            }));
+            keys = keys.concat(
+                subkeys.map(function (subkey) {
+                    return key + "." + subkey;
+                })
+            );
         }
     }
     return keys;
@@ -22,14 +24,14 @@ function getDeepKeys(obj) {
 /**
  * Check item is real object.
  * 1. Is Object
- * 2. then check is array and check some element in array is object 
- * @param {*} obj 
+ * 2. then check is array and check some element in array is object
+ * @param {*} obj
  * @return {boolean}
  */
 function isRealObject(obj) {
     if (_.isObject(obj)) {
         if (_.isArray(obj)) {
-            return obj.some(v => isRealObject(v));
+            return obj.some((v) => isRealObject(v));
         }
         return true;
     }
@@ -38,11 +40,11 @@ function isRealObject(obj) {
 
 async function findResourceById(resource, id) {
     try {
-        let doc = await mongodb[resource].findOne(
-            {
+        let doc = await mongodb[resource]
+            .findOne({
                 id: id
-            }
-        ).exec();
+            })
+            .exec();
         if (doc) return doc;
         return false;
     } catch (e) {
@@ -52,14 +54,16 @@ async function findResourceById(resource, id) {
 }
 
 /**
- * 
+ *
  * @param {string} id The resource id
  * @param {string} resourceType Resource type
  * @returns status: 1 mean "exist", 2 mean "not exist", 0 mean "another error"
  */
 async function isDocExist(id, resourceType) {
     try {
-        let data = await mongodb[resourceType].countDocuments({id: id}).limit(1);
+        let data = await mongodb[resourceType]
+            .countDocuments({ id: id })
+            .limit(1);
         if (data > 0) {
             return {
                 status: 1,
@@ -70,7 +74,7 @@ async function isDocExist(id, resourceType) {
             status: 2,
             error: ""
         };
-    } catch(e) {
+    } catch (e) {
         console.error(e);
         return {
             status: 0,
@@ -79,13 +83,12 @@ async function isDocExist(id, resourceType) {
     }
 }
 
-
 function getNotExistReferenceList(checkReferenceRes) {
     let notExistReferenceList = [];
     for (let reference of checkReferenceRes.checkedReferenceList) {
         if (!reference.exist) {
             notExistReferenceList.push({
-                path: reference.path ,
+                path: reference.path,
                 value: reference.value
             });
         }
@@ -98,8 +101,8 @@ function renameCollectionFieldName(data) {
     for (let node of collectionNodes) {
         node.path.shift();
         let originalPath = node.path.join(".");
-        _.omit(data, originalPath); 
-        node.path = node.path.map( v=> {
+        _.omit(data, originalPath);
+        node.path = node.path.map((v) => {
             if (v === "collection") return "myCollection";
             return v;
         });

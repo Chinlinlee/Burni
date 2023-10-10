@@ -1,8 +1,8 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const instant = require('../FHIRDataTypesSchema/instant');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const instant = require("../FHIRDataTypesSchema/instant");
 
 const {
     DeviceMetric_Calibration
@@ -23,7 +23,12 @@ DeviceMetric_Calibration.add({
     },
     state: {
         type: String,
-        enum: ["not-calibrated", "calibration-required", "calibrated", "unspecified"],
+        enum: [
+            "not-calibrated",
+            "calibration-required",
+            "calibrated",
+            "unspecified"
+        ],
         default: void 0
     },
     time: instant
