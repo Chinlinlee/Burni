@@ -1,9 +1,9 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const code = require('../FHIRDataTypesSchema/code');
-const string = require('../FHIRDataTypesSchema/string');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const code = require("../FHIRDataTypesSchema/code");
+const string = require("../FHIRDataTypesSchema/string");
 
 const {
     TerminologyCapabilities_Parameter
@@ -20,4 +20,5 @@ TerminologyCapabilities_Parameter.add({
     name: code,
     documentation: string
 });
-module.exports.TerminologyCapabilities_Parameter = TerminologyCapabilities_Parameter;
+module.exports.TerminologyCapabilities_Parameter =
+    TerminologyCapabilities_Parameter;

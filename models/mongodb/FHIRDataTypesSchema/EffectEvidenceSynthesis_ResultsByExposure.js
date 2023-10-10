@@ -1,14 +1,14 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const string = require('../FHIRDataTypesSchema/string');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const string = require("../FHIRDataTypesSchema/string");
 const {
     CodeableConcept
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     Reference
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 
 const {
     EffectEvidenceSynthesis_ResultsByExposure
@@ -38,4 +38,5 @@ EffectEvidenceSynthesis_ResultsByExposure.add({
         default: void 0
     }
 });
-module.exports.EffectEvidenceSynthesis_ResultsByExposure = EffectEvidenceSynthesis_ResultsByExposure;
+module.exports.EffectEvidenceSynthesis_ResultsByExposure =
+    EffectEvidenceSynthesis_ResultsByExposure;

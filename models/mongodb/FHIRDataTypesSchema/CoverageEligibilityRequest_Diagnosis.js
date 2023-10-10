@@ -1,13 +1,13 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     CodeableConcept
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     Reference
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 
 const {
     CoverageEligibilityRequest_Diagnosis
@@ -30,4 +30,5 @@ CoverageEligibilityRequest_Diagnosis.add({
         default: void 0
     }
 });
-module.exports.CoverageEligibilityRequest_Diagnosis = CoverageEligibilityRequest_Diagnosis;
+module.exports.CoverageEligibilityRequest_Diagnosis =
+    CoverageEligibilityRequest_Diagnosis;

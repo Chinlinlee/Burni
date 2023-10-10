@@ -1,8 +1,8 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const string = require('../FHIRDataTypesSchema/string');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const string = require("../FHIRDataTypesSchema/string");
 
 const {
     ChargeItemDefinition_Applicability
@@ -20,4 +20,5 @@ ChargeItemDefinition_Applicability.add({
     language: string,
     expression: string
 });
-module.exports.ChargeItemDefinition_Applicability = ChargeItemDefinition_Applicability;
+module.exports.ChargeItemDefinition_Applicability =
+    ChargeItemDefinition_Applicability;

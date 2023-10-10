@@ -1,6 +1,9 @@
 const _ = require("lodash");
-const { isRealObject } = require('../../apiService');
-const { checkIsChainAndGetChainParent, getChainParentJoinQuery }  = require("./chain-params");
+const { isRealObject } = require("../../apiService");
+const {
+    checkIsChainAndGetChainParent,
+    getChainParentJoinQuery
+} = require("./chain-params");
 
 /**
  * @typedef SearchParameterCreatorOption
@@ -11,10 +14,9 @@ const { checkIsChainAndGetChainParent, getChainParentJoinQuery }  = require("./c
  */
 
 class SearchParameterCreator {
-
     /**
-     * 
-     * @param {SearchParameterCreatorOption} option 
+     *
+     * @param {SearchParameterCreatorOption} option
      */
     constructor(option) {
         this.logger = option.logger;
@@ -24,40 +26,65 @@ class SearchParameterCreator {
     }
 
     create() {
-
         // remove empty parameter
-        Object.keys(this.query).forEach(key => {
-            if (!this.query[key] || isRealObject(this.query[key]) || key == "_include" || key == "_revinclude") {
+        Object.keys(this.query).forEach((key) => {
+            if (
+                !this.query[key] ||
+                isRealObject(this.query[key]) ||
+                key == "_include" ||
+                key == "_revinclude"
+            ) {
                 delete this.query[key];
             }
         });
 
         // The top level parameter $and to combine search parameters concat with &(and)
         this.query.$and = [];
-        
+
         for (let key in this.query) {
             try {
-                if (key.includes(".")) {
-                    let isChain = checkIsChainAndGetChainParent(this.resourceType, key);
-                    if (isChain.status) {
-                        this.query["isChain"] = true;
+                let splitDotLength = key.split(".").length;
+                if (splitDotLength >= 2) {
+                    if ((key.startsWith("composition") || key.startsWith("message")) &&
+                        splitDotLength === 2) {
+
+                        this.paramsSearch[key](this.query);
+
+                    } else {
+                        let isChain = checkIsChainAndGetChainParent(
+                            this.resourceType,
+                            key
+                        );
+                        if (isChain.status) {
+                            this.query["isChain"] = true;
     
-                        let joinQuery = getChainParentJoinQuery(isChain.chainParent, this.query[key]);
+                            let joinQuery = getChainParentJoinQuery(
+                                isChain.chainParent,
+                                this.query[key]
+                            );
     
-                        if (!_.get(this.query, "chain")) this.query["chain"] = [];
-                        this.query["chain"] = [...this.query["chain"], joinQuery];
-                        delete this.query[key];
+                            if (!_.get(this.query, "chain"))
+                                this.query["chain"] = [];
+                            this.query["chain"] = [
+                                ...this.query["chain"],
+                                joinQuery
+                            ];
+                            delete this.query[key];
+                        }
                     }
                 } else {
                     this.paramsSearch[key](this.query);
                 }
-    
             } catch (e) {
                 if (key != "$and") {
                     this.logger.error(e);
-                    this.logger.error(`[Error: Unknown search parameter ${key} or value ${this.query[key]}] [Resource Type: ${this.resourceType}] [${e}]`);
-                    throw new UnknownSearchParameterError(`Unknown search parameter ${key} or value ${this.query[key]}`);
-                } 
+                    this.logger.error(
+                        `[Error: Unknown search parameter ${key} or value ${this.query[key]}] [Resource Type: ${this.resourceType}] [${e}]`
+                    );
+                    throw new UnknownSearchParameterError(
+                        `Unknown search parameter ${key} or value ${this.query[key]}`
+                    );
+                }
             }
         }
 
@@ -66,9 +93,7 @@ class SearchParameterCreator {
         }
 
         return this.query;
-
     }
-
 }
 
 class UnknownSearchParameterError extends Error {

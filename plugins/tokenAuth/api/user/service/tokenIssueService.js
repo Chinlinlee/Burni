@@ -53,9 +53,9 @@ const interactions = [
 function accessListToScope(accessList) {
     let scope = "";
     let scopeList = [];
-    for(let accessItem of accessList) {
+    for (let accessItem of accessList) {
         let resourceType = _.get(accessItem, "resourceType");
-        Object.keys(accessItem).forEach(key=> {
+        Object.keys(accessItem).forEach((key) => {
             if (interactions.includes(key) && accessItem[key]) {
                 scopeList.push(`${resourceType}:${key}`);
             }

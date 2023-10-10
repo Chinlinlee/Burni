@@ -1,12 +1,12 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const string = require('../FHIRDataTypesSchema/string');
-const url = require('../FHIRDataTypesSchema/url');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const string = require("../FHIRDataTypesSchema/string");
+const url = require("../FHIRDataTypesSchema/url");
 const {
     Reference
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 
 const {
     CapabilityStatement_Implementation
@@ -27,4 +27,5 @@ CapabilityStatement_Implementation.add({
         default: void 0
     }
 });
-module.exports.CapabilityStatement_Implementation = CapabilityStatement_Implementation;
+module.exports.CapabilityStatement_Implementation =
+    CapabilityStatement_Implementation;

@@ -1,13 +1,13 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     ChargeItemDefinition_Applicability
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     ChargeItemDefinition_PriceComponent
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 
 const {
     ChargeItemDefinition_PropertyGroup
@@ -30,4 +30,5 @@ ChargeItemDefinition_PropertyGroup.add({
         default: void 0
     }
 });
-module.exports.ChargeItemDefinition_PropertyGroup = ChargeItemDefinition_PropertyGroup;
+module.exports.ChargeItemDefinition_PropertyGroup =
+    ChargeItemDefinition_PropertyGroup;

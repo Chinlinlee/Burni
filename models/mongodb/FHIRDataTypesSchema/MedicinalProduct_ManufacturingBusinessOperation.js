@@ -1,17 +1,17 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     CodeableConcept
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     Identifier
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const dateTime = require('../FHIRDataTypesSchema/dateTime');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const dateTime = require("../FHIRDataTypesSchema/dateTime");
 const {
     Reference
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 
 const {
     MedicinalProduct_ManufacturingBusinessOperation
@@ -47,4 +47,5 @@ MedicinalProduct_ManufacturingBusinessOperation.add({
         default: void 0
     }
 });
-module.exports.MedicinalProduct_ManufacturingBusinessOperation = MedicinalProduct_ManufacturingBusinessOperation;
+module.exports.MedicinalProduct_ManufacturingBusinessOperation =
+    MedicinalProduct_ManufacturingBusinessOperation;

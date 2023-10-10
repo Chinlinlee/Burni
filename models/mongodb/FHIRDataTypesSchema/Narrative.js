@@ -1,8 +1,8 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const xhtml = require('../FHIRDataTypesSchema/xhtml');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const xhtml = require("../FHIRDataTypesSchema/xhtml");
 
 const {
     Narrative

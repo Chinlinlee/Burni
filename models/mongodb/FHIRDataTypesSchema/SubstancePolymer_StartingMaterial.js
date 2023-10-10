@@ -1,14 +1,14 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     CodeableConcept
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const boolean = require('../FHIRDataTypesSchema/boolean');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const boolean = require("../FHIRDataTypesSchema/boolean");
 const {
     SubstanceAmount
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 
 const {
     SubstancePolymer_StartingMaterial
@@ -36,4 +36,5 @@ SubstancePolymer_StartingMaterial.add({
         default: void 0
     }
 });
-module.exports.SubstancePolymer_StartingMaterial = SubstancePolymer_StartingMaterial;
+module.exports.SubstancePolymer_StartingMaterial =
+    SubstancePolymer_StartingMaterial;

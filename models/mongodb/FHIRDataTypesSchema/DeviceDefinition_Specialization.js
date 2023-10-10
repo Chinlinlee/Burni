@@ -1,8 +1,8 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const string = require('../FHIRDataTypesSchema/string');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const string = require("../FHIRDataTypesSchema/string");
 
 const {
     DeviceDefinition_Specialization
@@ -19,4 +19,5 @@ DeviceDefinition_Specialization.add({
     systemType: string,
     version: string
 });
-module.exports.DeviceDefinition_Specialization = DeviceDefinition_Specialization;
+module.exports.DeviceDefinition_Specialization =
+    DeviceDefinition_Specialization;

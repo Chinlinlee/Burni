@@ -1,8 +1,8 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const markdown = require('../FHIRDataTypesSchema/markdown');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const markdown = require("../FHIRDataTypesSchema/markdown");
 
 const {
     CapabilityStatement_Interaction1
@@ -23,4 +23,5 @@ CapabilityStatement_Interaction1.add({
     },
     documentation: markdown
 });
-module.exports.CapabilityStatement_Interaction1 = CapabilityStatement_Interaction1;
+module.exports.CapabilityStatement_Interaction1 =
+    CapabilityStatement_Interaction1;

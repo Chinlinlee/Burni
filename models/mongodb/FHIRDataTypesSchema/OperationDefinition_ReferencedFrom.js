@@ -1,8 +1,8 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const string = require('../FHIRDataTypesSchema/string');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const string = require("../FHIRDataTypesSchema/string");
 
 const {
     OperationDefinition_ReferencedFrom
@@ -19,4 +19,5 @@ OperationDefinition_ReferencedFrom.add({
     source: string,
     sourceId: string
 });
-module.exports.OperationDefinition_ReferencedFrom = OperationDefinition_ReferencedFrom;
+module.exports.OperationDefinition_ReferencedFrom =
+    OperationDefinition_ReferencedFrom;

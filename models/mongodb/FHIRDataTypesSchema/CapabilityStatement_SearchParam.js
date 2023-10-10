@@ -1,10 +1,10 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const string = require('../FHIRDataTypesSchema/string');
-const canonical = require('../FHIRDataTypesSchema/canonical');
-const markdown = require('../FHIRDataTypesSchema/markdown');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const string = require("../FHIRDataTypesSchema/string");
+const canonical = require("../FHIRDataTypesSchema/canonical");
+const markdown = require("../FHIRDataTypesSchema/markdown");
 
 const {
     CapabilityStatement_SearchParam
@@ -22,9 +22,20 @@ CapabilityStatement_SearchParam.add({
     definition: canonical,
     type: {
         type: String,
-        enum: ["number", "date", "string", "token", "reference", "composite", "quantity", "uri", "special"],
+        enum: [
+            "number",
+            "date",
+            "string",
+            "token",
+            "reference",
+            "composite",
+            "quantity",
+            "uri",
+            "special"
+        ],
         default: void 0
     },
     documentation: markdown
 });
-module.exports.CapabilityStatement_SearchParam = CapabilityStatement_SearchParam;
+module.exports.CapabilityStatement_SearchParam =
+    CapabilityStatement_SearchParam;

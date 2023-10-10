@@ -1,13 +1,13 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const code = require('../FHIRDataTypesSchema/code');
-const base64Binary = require('../FHIRDataTypesSchema/base64Binary');
-const url = require('../FHIRDataTypesSchema/url');
-const unsignedInt = require('../FHIRDataTypesSchema/unsignedInt');
-const string = require('../FHIRDataTypesSchema/string');
-const dateTime = require('../FHIRDataTypesSchema/dateTime');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const code = require("../FHIRDataTypesSchema/code");
+const base64Binary = require("../FHIRDataTypesSchema/base64Binary");
+const url = require("../FHIRDataTypesSchema/url");
+const unsignedInt = require("../FHIRDataTypesSchema/unsignedInt");
+const string = require("../FHIRDataTypesSchema/string");
+const dateTime = require("../FHIRDataTypesSchema/dateTime");
 
 const {
     Attachment

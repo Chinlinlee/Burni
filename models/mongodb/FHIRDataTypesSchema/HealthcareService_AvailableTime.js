@@ -1,9 +1,9 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const boolean = require('../FHIRDataTypesSchema/boolean');
-const time = require('../FHIRDataTypesSchema/time');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const boolean = require("../FHIRDataTypesSchema/boolean");
+const time = require("../FHIRDataTypesSchema/time");
 
 const {
     HealthcareService_AvailableTime
@@ -25,4 +25,5 @@ HealthcareService_AvailableTime.add({
     availableStartTime: time,
     availableEndTime: time
 });
-module.exports.HealthcareService_AvailableTime = HealthcareService_AvailableTime;
+module.exports.HealthcareService_AvailableTime =
+    HealthcareService_AvailableTime;

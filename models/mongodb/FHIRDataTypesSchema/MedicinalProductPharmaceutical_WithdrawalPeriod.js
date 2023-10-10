@@ -1,14 +1,14 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     CodeableConcept
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     Quantity
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const string = require('../FHIRDataTypesSchema/string');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const string = require("../FHIRDataTypesSchema/string");
 
 const {
     MedicinalProductPharmaceutical_WithdrawalPeriod
@@ -34,4 +34,5 @@ MedicinalProductPharmaceutical_WithdrawalPeriod.add({
     },
     supportingInformation: string
 });
-module.exports.MedicinalProductPharmaceutical_WithdrawalPeriod = MedicinalProductPharmaceutical_WithdrawalPeriod;
+module.exports.MedicinalProductPharmaceutical_WithdrawalPeriod =
+    MedicinalProductPharmaceutical_WithdrawalPeriod;

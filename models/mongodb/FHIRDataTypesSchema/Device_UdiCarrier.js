@@ -1,10 +1,10 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const string = require('../FHIRDataTypesSchema/string');
-const uri = require('../FHIRDataTypesSchema/uri');
-const base64Binary = require('../FHIRDataTypesSchema/base64Binary');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const string = require("../FHIRDataTypesSchema/string");
+const uri = require("../FHIRDataTypesSchema/uri");
+const base64Binary = require("../FHIRDataTypesSchema/base64Binary");
 
 const {
     Device_UdiCarrier

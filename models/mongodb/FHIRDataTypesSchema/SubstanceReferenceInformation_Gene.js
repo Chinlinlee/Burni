@@ -1,13 +1,13 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     CodeableConcept
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     Reference
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 
 const {
     SubstanceReferenceInformation_Gene
@@ -34,4 +34,5 @@ SubstanceReferenceInformation_Gene.add({
         default: void 0
     }
 });
-module.exports.SubstanceReferenceInformation_Gene = SubstanceReferenceInformation_Gene;
+module.exports.SubstanceReferenceInformation_Gene =
+    SubstanceReferenceInformation_Gene;

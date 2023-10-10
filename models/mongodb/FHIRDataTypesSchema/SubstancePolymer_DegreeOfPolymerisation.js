@@ -1,13 +1,13 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     CodeableConcept
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     SubstanceAmount
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 
 const {
     SubstancePolymer_DegreeOfPolymerisation
@@ -30,4 +30,5 @@ SubstancePolymer_DegreeOfPolymerisation.add({
         default: void 0
     }
 });
-module.exports.SubstancePolymer_DegreeOfPolymerisation = SubstancePolymer_DegreeOfPolymerisation;
+module.exports.SubstancePolymer_DegreeOfPolymerisation =
+    SubstancePolymer_DegreeOfPolymerisation;

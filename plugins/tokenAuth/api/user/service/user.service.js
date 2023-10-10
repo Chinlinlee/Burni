@@ -63,7 +63,8 @@ async function tokenAuthentication(req, res, next) {
 
 async function getTokenPermission(token, resourceType, interaction) {
     try {
-        let tokenInDb = await mongoose.model("issuedToken")
+        let tokenInDb = await mongoose
+            .model("issuedToken")
             .findOne({
                 id: token
             })
@@ -76,9 +77,11 @@ async function getTokenPermission(token, resourceType, interaction) {
         );
         if (tokenObj) {
             let scope = _.get(tokenObj, "scope");
-            if ( scope.includes(`${resourceType}:${interaction}`) ||
-                 scope.includes(`*:${interaction}`)
-            ) return true;
+            if (
+                scope.includes(`${resourceType}:${interaction}`) ||
+                scope.includes(`*:${interaction}`)
+            )
+                return true;
             return false;
         }
         return false;

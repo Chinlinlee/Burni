@@ -1,8 +1,8 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const boolean = require('../FHIRDataTypesSchema/boolean');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const boolean = require("../FHIRDataTypesSchema/boolean");
 
 const {
     TerminologyCapabilities_ValidateCode
@@ -18,4 +18,5 @@ TerminologyCapabilities_ValidateCode.add({
     },
     translations: boolean
 });
-module.exports.TerminologyCapabilities_ValidateCode = TerminologyCapabilities_ValidateCode;
+module.exports.TerminologyCapabilities_ValidateCode =
+    TerminologyCapabilities_ValidateCode;

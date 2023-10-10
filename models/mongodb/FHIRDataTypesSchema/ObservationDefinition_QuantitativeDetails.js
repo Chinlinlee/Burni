@@ -1,12 +1,12 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const {
     Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 const {
     CodeableConcept
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const decimal = require('../FHIRDataTypesSchema/decimal');
-const integer = require('../FHIRDataTypesSchema/integer');
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const decimal = require("../FHIRDataTypesSchema/decimal");
+const integer = require("../FHIRDataTypesSchema/integer");
 
 const {
     ObservationDefinition_QuantitativeDetails
@@ -31,4 +31,5 @@ ObservationDefinition_QuantitativeDetails.add({
     conversionFactor: decimal,
     decimalPrecision: integer
 });
-module.exports.ObservationDefinition_QuantitativeDetails = ObservationDefinition_QuantitativeDetails;
+module.exports.ObservationDefinition_QuantitativeDetails =
+    ObservationDefinition_QuantitativeDetails;
