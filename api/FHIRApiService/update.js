@@ -18,7 +18,7 @@ module.exports = async function (req, res, resourceType) {
     let updateService = new UpdateService(req, res, resourceType);
     let updateResult = await updateService.update();
     if (!updateResult.status)
-        return updateService.doFailureResponse(updateResult.doc, updateResult.code);
+        return updateService.doFailureResponse(updateResult.result, updateResult.code);
         
     return updateService.doSuccessResponse(updateResult);
 };
