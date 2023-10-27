@@ -45,7 +45,7 @@ class UpdateService extends BaseFhirApiService {
         this.response.set("Location", fullAbsoluteUrl);
 
         this.response.append("Last-Modified", new Date().toUTCString());
-        return this.doResponse(resource.code, resource.doc);
+        return this.doResponse(resource.code, resource.result);
     }
 
     doFailureResponse(err, code) {
