@@ -271,7 +271,6 @@ function generateResourceSchema(type) {
 
     // let importLib = "const mongoose = require('mongoose');\r\nconst moment = require('moment');\r\nconst _ = require('lodash');\r\n";
     let code = `module.exports = function () {
-    require('mongoose-schema-jsonschema')(mongoose);
     const ${type} = ${JSON.stringify(result, null, 4)
         .replace(/\"/gm, "")
         .replace(/\\/gm, '"')};\r\n
