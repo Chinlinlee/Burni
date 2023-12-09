@@ -1,7 +1,7 @@
 version: '3.4'
 services:
   fhir-burni-mongodb:
-    image: mongo:4.2
+    image: mongo:7.0
     container_name : fhir-burni-mongodb
     restart: always
     ports:
@@ -20,7 +20,7 @@ services:
     container_name: fhir-burni
     command: >
       /bin/sh -c '
-      while ! nc -z fhir-burni-mongodb 27017;
+      while ! echo >/dev/tcp/fhir-burni-mongodb/27017;
       do
         echo "waiting for database ...";
         sleep 3;
