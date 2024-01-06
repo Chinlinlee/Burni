@@ -1,4 +1,4 @@
-const mongodb = require("../../models/mongodb");
+const mongoose = require("mongoose");
 const _ = require("lodash");
 
 async function validateContained(resourceItem, index) {
@@ -10,8 +10,8 @@ async function validateContained(resourceItem, index) {
                 message: `Missing resourceType in contained[${index}]`
             };
         }
-        if (mongodb[resourceType]) {
-            let resourceToMongoModel = new mongodb[resourceType](resourceItem);
+        if (mongoose.model(resourceType)) {
+            let resourceToMongoModel = new mongoose.model(resourceType)(resourceItem);
             await resourceToMongoModel.validate();
             return {
                 status: true,

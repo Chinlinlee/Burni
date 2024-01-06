@@ -1,4 +1,4 @@
-const mongodb = require("../models/mongodb");
+const mongoose = require("mongoose");
 const fetch = require("node-fetch");
 const _ = require("lodash");
 const AbortController = require("abort-controller");
@@ -40,7 +40,7 @@ function isRealObject(obj) {
 
 async function findResourceById(resource, id) {
     try {
-        let doc = await mongodb[resource]
+        let doc = await mongoose.model(resource)
             .findOne({
                 id: id
             })
@@ -61,7 +61,7 @@ async function findResourceById(resource, id) {
  */
 async function isDocExist(id, resourceType) {
     try {
-        let data = await mongodb[resourceType]
+        let data = await mongoose.model(resourceType)
             .countDocuments({ id: id })
             .limit(1);
         if (data > 0) {

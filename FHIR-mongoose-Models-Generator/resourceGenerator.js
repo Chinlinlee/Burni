@@ -309,9 +309,8 @@ function generateResourceSchema(type) {
     };
 
     ${type}Schema.pre('save', async function (next) {
-        let mongodb = require('../index');
         if (process.env.ENABLE_CHECK_ALL_RESOURCE_ID == "true") {
-            let storedID = await mongodb.FHIRStoredID.findOne({
+            let storedID = await mongoose.model("FHIRStoredID").findOne({
                 id: this.id
             });
             if (storedID.resourceType != "${type}") {
@@ -320,7 +319,7 @@ function generateResourceSchema(type) {
             }
         }
 
-        const docInHistory = await mongodb.${type}_history.findOne({
+        const docInHistory = await mongoose.model("${type}_history").findOne({
             id: this.id
         })
         .sort({
@@ -341,7 +340,6 @@ function generateResourceSchema(type) {
     });
 
     ${type}Schema.post('save', async function (result) {
-        let mongodb = require('../index');
         let item = result.toObject();
         delete item._id;
         let version = item.meta.versionId;
@@ -354,7 +352,7 @@ function generateResourceSchema(type) {
             _.set(item, "response", {
                 status: "201"
             });
-            let createdDocs = await mongodb['${type}_history'].create(item);
+            let createdDocs = await mongoose.model("${type}_history").create(item);
         } else {
             _.set(item, "request", {
                 "method": "PUT",
@@ -363,9 +361,9 @@ function generateResourceSchema(type) {
             _.set(item, "response", {
                 status: "200"
             });
-            let createdDocs = await mongodb['${type}_history'].create(item);
+            let createdDocs = await mongoose.model("${type}_history").create(item);
         }
-        await mongodb.FHIRStoredID.findOneAndUpdate({
+        await mongoose.model("FHIRStoredID").findOneAndUpdate({
             id : result.id
         } , {
             id: result.id,
@@ -387,7 +385,6 @@ function generateResourceSchema(type) {
     });
 
     ${type}Schema.post('findOneAndUpdate' , async function (result) {
-        let mongodb = require('../index');
         let item;
         if (result.value) {
             item = _.cloneDeep(result.value).toObject();
@@ -407,7 +404,7 @@ function generateResourceSchema(type) {
         });
 
         try {
-            let history = await mongodb['${type}_history'].create(item);
+            let history = await mongoose.model("${type}_history").create(item);
         } catch (e) {
             console.error(e);
         }
@@ -422,7 +419,6 @@ function generateResourceSchema(type) {
         if (!docToDelete) {
             next(\`The id->\${this.getFilter().id} not found in ${type} resource\`);
         }
-        let mongodb = require('../index');
         let item = docToDelete.toObject();
         delete item._id;
 
@@ -441,7 +437,7 @@ function generateResourceSchema(type) {
         _.set(item, "response", {
             status: "200"
         });
-        let createdDocs = await mongodb['${type}_history'].create(item);
+        let createdDocs = await mongoose.model("${type}_history").create(item);
         next();
     });
 

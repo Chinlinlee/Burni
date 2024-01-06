@@ -1,6 +1,6 @@
 const _ = require("lodash");
+const mongoose = require("mongoose");
 const FHIR = require("fhir").Fhir;
-const mongodb = require("../../models/mongodb");
 const {
     handleError,
     OperationOutcome,
@@ -69,7 +69,7 @@ module.exports = async function (req, res, resourceType) {
  */
 async function getValidateResult(req, resourceType) {
     try {
-        let validation = await mongodb[resourceType].validate(req.body);
+        let validation = await mongoose.model(resourceType).validate(req.body);
         return handleError.informational(
             "all ok (only validate base structure)"
         );

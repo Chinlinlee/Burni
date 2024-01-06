@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const instant = require("../FHIRDataTypesSchema/instant");
 
 /**
@@ -7,22 +8,44 @@ const instant = require("../FHIRDataTypesSchema/instant");
  * @Author Chin-Lin Lee <a5566qq2581@gmail.com>
  */
 
-/**
- *
- * @param {import("mongoose")} mongodb
- * @returns
- */
-module.exports = function (mongodb) {
-    let basicInfo = new mongodb.Schema(
+let basicInfo = new mongoose.Schema(
+    {
+        resourceType: {
+            type: String,
+            required: true,
+            default: void 0
+        },
+        id: {
+            type: String,
+            required: true,
+            default: void 0
+        }
+    },
+    {
+        _id: false,
+        id: false
+    }
+);
+
+let resourceRefBy = new mongoose.Schema(
+    {},
+    {
+        versionKey: false
+    }
+);
+
+resourceRefBy.add(basicInfo);
+resourceRefBy.add({
+    lastUpdated: {
+        ...instant,
+        default: Date.now()
+    }
+});
+resourceRefBy.add(
+    new mongoose.Schema(
         {
-            resourceType: {
-                type: String,
-                required: true,
-                default: void 0
-            },
-            id: {
-                type: String,
-                required: true,
+            refBy: {
+                type: [basicInfo],
                 default: void 0
             }
         },
@@ -30,61 +53,32 @@ module.exports = function (mongodb) {
             _id: false,
             id: false
         }
-    );
+    )
+);
 
-    let resourceRefBy = new mongodb.Schema(
-        {},
-        {
-            versionKey: false
-        }
-    );
+resourceRefBy.index(
+    {
+        id: 1,
+        resourceType: 1
+    },
+    {
+        background: true
+    }
+);
 
-    resourceRefBy.add(basicInfo);
-    resourceRefBy.add({
-        lastUpdated: {
-            ...instant,
-            default: Date.now()
-        }
-    });
-    resourceRefBy.add(
-        new mongodb.Schema(
-            {
-                refBy: {
-                    type: [basicInfo],
-                    default: void 0
-                }
-            },
-            {
-                _id: false,
-                id: false
-            }
-        )
-    );
+resourceRefBy.index(
+    {
+        "refBy.id": 1,
+        "refBy.resourceType": 1
+    },
+    {
+        background: true
+    }
+);
 
-    resourceRefBy.index(
-        {
-            id: 1,
-            resourceType: 1
-        },
-        {
-            background: true
-        }
-    );
-
-    resourceRefBy.index(
-        {
-            "refBy.id": 1,
-            "refBy.resourceType": 1
-        },
-        {
-            background: true
-        }
-    );
-
-    let resourceRefByModel = mongodb.model(
-        "resourceRefBy",
-        resourceRefBy,
-        "resourceRefBy"
-    );
-    return resourceRefByModel;
-};
+let resourceRefByModel = mongoose.model(
+    "resourceRefBy",
+    resourceRefBy,
+    "resourceRefBy"
+);
+module.exports = resourceRefByModel;

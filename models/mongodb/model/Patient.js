@@ -179,9 +179,8 @@ module.exports = function() {
     };
 
     PatientSchema.pre('save', async function(next) {
-        let mongodb = require('../index');
         if (process.env.ENABLE_CHECK_ALL_RESOURCE_ID == "true") {
-            let storedID = await mongodb.FHIRStoredID.findOne({
+            let storedID = await mongoose.model("FHIRStoredID").findOne({
                 id: this.id
             });
             if (storedID.resourceType != "Patient") {
@@ -190,7 +189,7 @@ module.exports = function() {
             }
         }
 
-        const docInHistory = await mongodb.Patient_history.findOne({
+        const docInHistory = await mongoose.model("Patient_history").findOne({
                 id: this.id
             })
             .sort({
@@ -211,7 +210,6 @@ module.exports = function() {
     });
 
     PatientSchema.post('save', async function(result) {
-        let mongodb = require('../index');
         let item = result.toObject();
         delete item._id;
         let version = item.meta.versionId;
@@ -224,7 +222,7 @@ module.exports = function() {
             _.set(item, "response", {
                 status: "201"
             });
-            let createdDocs = await mongodb['Patient_history'].create(item);
+            let createdDocs = await mongoose.model("Patient_history").create(item);
         } else {
             _.set(item, "request", {
                 "method": "PUT",
@@ -233,9 +231,9 @@ module.exports = function() {
             _.set(item, "response", {
                 status: "200"
             });
-            let createdDocs = await mongodb['Patient_history'].create(item);
+            let createdDocs = await mongoose.model("Patient_history").create(item);
         }
-        await mongodb.FHIRStoredID.findOneAndUpdate({
+        await mongoose.model("FHIRStoredID").findOneAndUpdate({
             id: result.id
         }, {
             id: result.id,
@@ -257,7 +255,6 @@ module.exports = function() {
     });
 
     PatientSchema.post('findOneAndUpdate', async function(result) {
-        let mongodb = require('../index');
         let item;
         if (result.value) {
             item = _.cloneDeep(result.value).toObject();
@@ -277,7 +274,7 @@ module.exports = function() {
         });
 
         try {
-            let history = await mongodb['Patient_history'].create(item);
+            let history = await mongoose.model("Patient_history").create(item);
         } catch (e) {
             console.error(e);
         }
@@ -292,7 +289,6 @@ module.exports = function() {
         if (!docToDelete) {
             next(`The id->${this.getFilter().id} not found in Patient resource`);
         }
-        let mongodb = require('../index');
         let item = docToDelete.toObject();
         delete item._id;
 
@@ -311,7 +307,7 @@ module.exports = function() {
         _.set(item, "response", {
             status: "200"
         });
-        let createdDocs = await mongodb['Patient_history'].create(item);
+        let createdDocs = await mongoose.model("Patient_history").create(item);
         next();
     });
 

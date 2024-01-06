@@ -1,6 +1,6 @@
 const _ = require("lodash");
 const fetch = require("node-fetch");
-const mongodb = require("@root/models/mongodb");
+const mongoose = require("mongoose");
 const {
     handleError,
     ErrorOperationOutcome
@@ -74,7 +74,7 @@ function checkIsReferenceTypeSearchParameter(
 }
 
 function checkResourceIsExistInMongoDB(resourceName, paramName, queryString) {
-    if (!mongodb[resourceName]) {
+    if (!mongoose.model(resourceName)) {
         let error = new ErrorOperationOutcome(
             400,
             handleError.processing(
@@ -148,7 +148,7 @@ async function getIncludeValueInDB(
     let id = referenceValueSplit[1];
     if (!specificType || specificTypeCondition) {
         if (referenceValueSplit.length === 2) {
-            let doc = await mongodb[resourceInValue].findOne({ id: id }).exec();
+            let doc = await mongoose.model(resourceInValue).findOne({ id: id }).exec();
             if (doc) {
                 doc = doc.getFHIRField();
                 _.set(doc, "myPointToCheckIsInclude", true);
@@ -159,7 +159,7 @@ async function getIncludeValueInDB(
             referenceValueSplit.length === 4
         ) {
             let versionId = referenceValueSplit[3];
-            let doc = await mongodb[resourceInValue]
+            let doc = await mongoose.model(resourceInValue)
                 .findOne({
                     $and: [
                         {
@@ -292,7 +292,7 @@ async function getRevIncludeValueInDB(
     field,
     mongoSearchResult
 ) {
-    let doc = await mongodb[targetResource]
+    let doc = await mongoose.model(targetResource)
         .findOne({
             [field]: referenceValue
         })

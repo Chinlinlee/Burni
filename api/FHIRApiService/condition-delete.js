@@ -1,5 +1,5 @@
 const _ = require("lodash");
-const mongodb = require("@models/mongodb");
+const mongoose = require("mongoose");
 const { handleError } = require("@models/FHIR/httpMessage");
 const FHIR = require("fhir").Fhir;
 const { isRealObject } = require("../apiService");
@@ -64,7 +64,7 @@ module.exports = async function (req, res, resourceType, paramsSearch) {
         delete queryParameter["$and"];
     }
     try {
-        let deletion = await mongodb[resourceType].deleteMany(queryParameter);
+        let deletion = await mongoose.model(resourceType).deleteMany(queryParameter);
         res.header("Last-Modified", new Date().toUTCString());
         let info = handleError.informational(
             `delete successfully, deleted count : ${deletion.deletedCount}`
