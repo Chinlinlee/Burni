@@ -18,6 +18,7 @@ if (fs.existsSync(configFile)) {
 const readApi = require("./api/FHIRApiService/read");
 const instanceHistoryApi = require("./api/FHIRApiService/history");
 const searchApi = require("./api/FHIRApiService/search");
+const versionReadApi = require("./api/FHIRApiService/vread");
 
 class FhirApiRegisterHelper {
     constructor(app) {
@@ -35,12 +36,16 @@ class FhirApiRegisterHelper {
                 await this.registerSearchApi(resourceType);
             }
 
-            if (config[resourceType]?.interaction.read) {
+            if (config[resourceType]?.interaction?.read) {
                 await this.registerReadApi(resourceType);
             }
 
-            if (config[resourceType]?.interaction.history) {
+            if (config[resourceType]?.interaction?.history) {
                 await this.registerInstanceHistoryApi(resourceType);
+            }
+
+            if (config[resourceType]?.interaction?.vread) {
+                await this.registerVersionReadApi(resourceType);
             }
         }
     }
@@ -111,7 +116,20 @@ class FhirApiRegisterHelper {
         });
     }
 
+    async registerVersionReadApi(resourceType) {
+        this.app.get(`/${FhirEnv.apiPath}/${resourceType}/:id/_history/:version`, {
+            onRequest: [
+                ...FhirApiHandlerFactory.getOnRequest()
+            ],
+            preHandler: [...FhirApiHandlerFactory.getPreHandler()],
+            onSend: [...FhirApiHandlerFactory.getOnSend()]
+        }, (request, reply) => {
+            return versionReadApi(request, reply, resourceType);
+        });
+    }
+
     async registerModel(resourceType) {
+        this.app.log.info("register model: " + resourceType);
         require(`./models/mongodb/model/${resourceType}`)();
         require(`./models/mongodb/model/${resourceType}_history`)();
     }
