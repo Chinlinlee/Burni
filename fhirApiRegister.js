@@ -5,7 +5,6 @@ const joi = require("joi");
 const { FhirEnv } = require("./env-class");
 const jsBeautify = require("js-beautify");
 const fastJson = require("fast-json-stringify");
-const ajv = require("ajv");
 
 let config;
 let configFile = path.join(__dirname, "./config/config.js");
