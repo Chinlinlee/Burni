@@ -17,6 +17,7 @@ if (fs.existsSync(configFile)) {
 
 const readApi = require("./api/FHIRApiService/read");
 const instanceHistoryApi = require("./api/FHIRApiService/history");
+const searchApi = require("./api/FHIRApiService/search");
 
 class FhirApiRegisterHelper {
     constructor(app) {
@@ -68,8 +69,7 @@ class FhirApiRegisterHelper {
             onSend: [...FhirApiHandlerFactory.getOnSend()]
         }, async (request, reply) => {
             let { paramsSearch } = require(`./api/FHIR/${resourceType}/${resourceType}ParametersHandler.js`);
-            let searchHandler = require("./api/FHIRApiService/search");
-            return await searchHandler(request, reply, resourceType, paramsSearch);
+            return await searchApi(request, reply, resourceType, paramsSearch);
         });
     }
 
