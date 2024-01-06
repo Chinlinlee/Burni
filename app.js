@@ -62,20 +62,37 @@ async function buildApp(options = {}) {
         }
     });
 
-    
+
     app.addContentTypeParser("application/fhir+json", { parseAs: "string" }, app.getDefaultJsonParser("error", "ignore"));
     app.addContentTypeParser(["text/*", "/_xml", "xml", "+xml"], { parseAs: "string" }, (req, payload, done) => {
         done(null, payload);
     });
 
     app.decorateRequest("get");
-    app.addHook("preHandler", async function(request, reply) {
-        request.get = function(headerName) {
+    app.decorateReply("set");
+    app.decorateReply("append");
+    app.addHook("preHandler", async function (request, reply) {
+        request.get = function (headerName) {
             return request.headers?.[headerName];
+        };
+
+        reply.set = function (headerName, value) {
+            return reply.header(headerName, value);
+        };
+
+        // from express: https://github.com/expressjs/express/blob/2a00da2067b7017f769c9100205a2a5f267a884b/lib/response.js#L744
+        reply.append = function (headerName, value) {
+            let prev = reply.header(headerName);
+            let newValue = value;
+            if (prev) {
+                newValue = Array.isArray(prev) ? prev.concat(value) : Array.isArray(value) ? [prev].concat(value) : [prev, value];
+            }
+
+            return reply.set(headerName, newValue);
         };
     });
 
-    app.setErrorHandler(function(error, request, reply) {
+    app.setErrorHandler(function (error, request, reply) {
         this.log.error(error);
         if (error?.statusCode) {
             return reply.status(error.statusCode).send(error);

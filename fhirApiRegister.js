@@ -19,6 +19,7 @@ const readApi = require("./api/FHIRApiService/read");
 const instanceHistoryApi = require("./api/FHIRApiService/history");
 const searchApi = require("./api/FHIRApiService/search");
 const versionReadApi = require("./api/FHIRApiService/vread");
+const createApi = require("./api/FHIRApiService/create");
 
 class FhirApiRegisterHelper {
     constructor(app) {
@@ -28,6 +29,8 @@ class FhirApiRegisterHelper {
 
     async registerFhirApis() {
         this.app.decorateRequest("isPretty", false);
+        require("./models/mongodb/staticModel/FHIRStoredID");
+        require("./models/mongodb/staticModel/referenceBy");
 
         for (let resourceType in config) {
             await this.registerModel(resourceType);
@@ -46,6 +49,10 @@ class FhirApiRegisterHelper {
 
             if (config[resourceType]?.interaction?.vread) {
                 await this.registerVersionReadApi(resourceType);
+            }
+
+            if (config[resourceType]?.interaction.create) {
+                await this.registerCreateApi(resourceType);
             }
         }
     }
@@ -125,6 +132,18 @@ class FhirApiRegisterHelper {
             onSend: [...FhirApiHandlerFactory.getOnSend()]
         }, (request, reply) => {
             return versionReadApi(request, reply, resourceType);
+        });
+    }
+
+    async registerCreateApi(resourceType) { 
+        this.app.post(`/${FhirEnv.apiPath}/${resourceType}`, {
+            onRequest: [
+                ...FhirApiHandlerFactory.getOnRequest()
+            ],
+            preHandler: [...FhirApiHandlerFactory.getPreHandler()],
+            onSend: [...FhirApiHandlerFactory.getOnSend()]
+        }, (request, reply) => {
+            return createApi(request, reply, resourceType);
         });
     }
 
