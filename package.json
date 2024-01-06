@@ -25,7 +25,8 @@
         "@root": "./",
         "@models": "./models",
         "@mongodb": "./models/mongodb/",
-        "@FhirApiService": "./api/FhirApiService"
+        "@FhirApiService": "./api/FhirApiService",
+        "@api": "./api"
     },
     "dependencies": {
         "@fastify/autoload": "^5.8.0",
