@@ -164,7 +164,23 @@ class FhirApiRegisterHelper {
     async registerUpdateApi(resourceType) {
         this.app.put(`/${FhirEnv.apiPath}/${resourceType}/:id`, {
             onRequest: [
-                ...FhirApiHandlerFactory.getOnRequest()
+                ...FhirApiHandlerFactory.getOnRequest(),
+                // sanitize body for List resource type
+                async (request, reply) => {
+                    let resourceData = request.body;
+                    if (resourceType === "List") {
+                        if (Array.isArray(resourceData.entry) && resourceData.entry.length > 0) {
+                            for (let index in resourceData.entry) {
+                                let entry = resourceData.entry[index];
+                                if (resourceData.mode != "changes") {
+                                    delete entry.delete;
+                                } else if (resourceData.mode != "working") {
+                                    delete entry.date;
+                                }
+                            }
+                        }
+                    }
+                }
             ],
             preHandler: [...FhirApiHandlerFactory.getPreHandler()],
             onSend: [...FhirApiHandlerFactory.getOnSend()]
@@ -297,3 +313,4 @@ class FhirApiHandlerFactory {
 }
 
 module.exports.FhirApiRegisterHelper = FhirApiRegisterHelper;
+module.exports.FhirApiHandlerFactory = FhirApiHandlerFactory;
