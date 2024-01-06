@@ -1,6 +1,6 @@
 const _ = require("lodash");
-const mongodb = require("models/mongodb");
-const { handleError } = require("../../models/FHIR/httpMessage");
+const mongodb = require("@models/mongodb");
+const { handleError } = require("@models/FHIR/httpMessage");
 const FHIR = require("fhir").Fhir;
 const { isRealObject } = require("../apiService");
 const { logger } = require("../../utils/log");

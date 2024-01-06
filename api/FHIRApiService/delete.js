@@ -1,4 +1,4 @@
-const mongodb = require("models/mongodb");
+const mongodb = require("@models/mongodb");
 const _ = require("lodash");
 const { logger } = require("../../utils/log");
 const { DeleteService } = require("./services/delete.service");

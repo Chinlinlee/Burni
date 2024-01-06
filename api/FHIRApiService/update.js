@@ -1,4 +1,4 @@
-const mongodb = require("models/mongodb");
+const mongodb = require("@models/mongodb");
 const _ = require("lodash");
 const { logger } = require("../../utils/log");
 const { UpdateService } = require("./services/update.service");

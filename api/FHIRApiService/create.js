@@ -1,4 +1,4 @@
-const mongodb = require("models/mongodb");
+const mongodb = require("@models/mongodb");
 const uuid = require("uuid");
 const _ = require("lodash");
 const { getNotExistReferenceList } = require("../apiService");
