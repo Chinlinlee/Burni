@@ -19,6 +19,7 @@ const instanceHistoryApi = require("./api/FHIRApiService/history");
 const searchApi = require("./api/FHIRApiService/search");
 const versionReadApi = require("./api/FHIRApiService/vread");
 const createApi = require("./api/FHIRApiService/create");
+const updateApi = require("./api/FHIRApiService/update");
 const validateApi = require("./api/FHIRApiService/$validate");
 
 class FhirApiRegisterHelper {
@@ -51,8 +52,12 @@ class FhirApiRegisterHelper {
                 await this.registerVersionReadApi(resourceType);
             }
 
-            if (config[resourceType]?.interaction.create) {
+            if (config[resourceType]?.interaction?.create) {
                 await this.registerCreateApi(resourceType);
+            }
+
+            if (config[resourceType]?.interaction?.update) {
+                await this.registerUpdateApi(resourceType);
             }
 
             await this.registerValidateApi(resourceType);
@@ -146,6 +151,18 @@ class FhirApiRegisterHelper {
             onSend: [...FhirApiHandlerFactory.getOnSend()]
         }, (request, reply) => {
             return createApi(request, reply, resourceType);
+        });
+    }
+
+    async registerUpdateApi(resourceType) {
+        this.app.put(`/${FhirEnv.apiPath}/${resourceType}/:id`, {
+            onRequest: [
+                ...FhirApiHandlerFactory.getOnRequest()
+            ],
+            preHandler: [...FhirApiHandlerFactory.getPreHandler()],
+            onSend: [...FhirApiHandlerFactory.getOnSend()]
+        }, (request, reply) => {
+            return updateApi(request, reply, resourceType);
         });
     }
 
