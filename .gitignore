@@ -35,3 +35,6 @@ docs/apidoc/apidoc-sources
 /utils/validator/igs/*
 
 !**/.gitkeep
+
+#ignore metadata
+/fastify-modules/metadata.js
