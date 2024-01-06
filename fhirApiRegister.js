@@ -20,6 +20,7 @@ const searchApi = require("./api/FHIRApiService/search");
 const versionReadApi = require("./api/FHIRApiService/vread");
 const createApi = require("./api/FHIRApiService/create");
 const updateApi = require("./api/FHIRApiService/update");
+const deleteApi = require("./api/FHIRApiService/delete");
 const validateApi = require("./api/FHIRApiService/$validate");
 
 class FhirApiRegisterHelper {
@@ -58,6 +59,10 @@ class FhirApiRegisterHelper {
 
             if (config[resourceType]?.interaction?.update) {
                 await this.registerUpdateApi(resourceType);
+            }
+
+            if (config[resourceType]?.interaction?.delete) {
+                await this.registerDeleteApi(resourceType);
             }
 
             await this.registerValidateApi(resourceType);
@@ -163,6 +168,18 @@ class FhirApiRegisterHelper {
             onSend: [...FhirApiHandlerFactory.getOnSend()]
         }, (request, reply) => {
             return updateApi(request, reply, resourceType);
+        });
+    }
+
+    async registerDeleteApi(resourceType) {
+        this.app.delete(`/${FhirEnv.apiPath}/${resourceType}/:id`, {
+            onRequest: [
+                ...FhirApiHandlerFactory.getOnRequest()
+            ],
+            preHandler: [...FhirApiHandlerFactory.getPreHandler()],
+            onSend: [...FhirApiHandlerFactory.getOnSend()]
+        }, (request, reply) => {
+            return deleteApi(request, reply, resourceType);
         });
     }
 
