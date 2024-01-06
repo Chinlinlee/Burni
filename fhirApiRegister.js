@@ -19,6 +19,7 @@ const instanceHistoryApi = require("./api/FHIRApiService/history");
 const searchApi = require("./api/FHIRApiService/search");
 const versionReadApi = require("./api/FHIRApiService/vread");
 const createApi = require("./api/FHIRApiService/create");
+const validateApi = require("./api/FHIRApiService/$validate");
 
 class FhirApiRegisterHelper {
     constructor(app) {
@@ -53,6 +54,8 @@ class FhirApiRegisterHelper {
             if (config[resourceType]?.interaction.create) {
                 await this.registerCreateApi(resourceType);
             }
+
+            await this.registerValidateApi(resourceType);
         }
     }
 
@@ -143,6 +146,18 @@ class FhirApiRegisterHelper {
             onSend: [...FhirApiHandlerFactory.getOnSend()]
         }, (request, reply) => {
             return createApi(request, reply, resourceType);
+        });
+    }
+
+    async registerValidateApi(resourceType) {
+        this.app.post(`/${FhirEnv.apiPath}/${resourceType}/\$validate`, {
+            onRequest: [
+                ...FhirApiHandlerFactory.getOnRequest()
+            ],
+            preHandler: [...FhirApiHandlerFactory.getPreHandler()],
+            onSend: [...FhirApiHandlerFactory.getOnSend()]
+        }, (request, reply) => {
+            return validateApi(request, reply, resourceType);
         });
     }
 
