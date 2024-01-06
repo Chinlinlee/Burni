@@ -16,9 +16,9 @@ const { logger } = require("@root/utils/log");
 
 class BaseFhirApiService {
     constructor(req, res, resourceType) {
-        /** @type { import("express").Request } */
+        /** @type { import("fastify").FastifyRequest } */
         this.request = req;
-        /** @type { import("express").Response } */
+        /** @type { import("fastify").FastifyRegister } */
         this.response = res;
         /** @type { string } */
         this.resourceType = resourceType;

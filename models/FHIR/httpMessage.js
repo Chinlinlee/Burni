@@ -30,6 +30,7 @@ class FhirWebServiceError extends Error {
         super(message);
         this.message = message;
         this.code = code;
+        this.statusCode = code;
         this.name = "FhirWebServiceError";
         this.operationOutcome = errorHandler(this);
     }
@@ -43,6 +44,7 @@ class FhirValidationError extends Error {
     constructor(operationOutcome) {
         super("");
         this.code = 422;
+        this.statusCode = 422;
         this.name = "FhirValidationError";
         this.operationOutcome = operationOutcome;
     }

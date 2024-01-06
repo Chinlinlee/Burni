@@ -1,19 +1,11 @@
 const _ = require("lodash");
 const fetch = require("node-fetch");
-const mongodb = require("models/mongodb");
-const { createBundle } = require("models/FHIR/func");
+const mongodb = require("@root/models/mongodb");
 const {
     handleError,
     ErrorOperationOutcome
-} = require("models/FHIR/httpMessage");
-const FHIR = require("fhir").Fhir;
-const { logger } = require("../../utils/log");
-const {
-    SearchParameterCreator,
-    UnknownSearchParameterError
-} = require("./search/searchParameterCreator");
-const { SearchProcessor } = require("./search/searchProcessor");
-const xmlFormatter = require("xml-formatter");
+} = require("@root/models/FHIR/httpMessage");
+
 const { SearchService } = require("./services/search.service");
 /**
  *
