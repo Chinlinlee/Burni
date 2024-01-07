@@ -23,6 +23,7 @@ const updateApi = require("./api/FHIRApiService/update");
 const deleteApi = require("./api/FHIRApiService/delete");
 const conditionDeleteApi = require("./api/FHIRApiService/condition-delete");
 const validateApi = require("./api/FHIRApiService/$validate");
+const rootApi = require("./api/FHIRApiService/root");
 
 class FhirApiRegisterHelper {
     constructor(app) {
@@ -69,6 +70,8 @@ class FhirApiRegisterHelper {
 
             await this.registerValidateApi(resourceType);
         }
+
+        await this.registerRootApi();
     }
 
     /**
@@ -225,6 +228,19 @@ class FhirApiRegisterHelper {
             return validateApi(request, reply, resourceType);
         });
     }
+
+    async registerRootApi() {
+        this.app.post(`/${FhirEnv.apiPath}`, {
+            onRequest: [
+                ...FhirApiHandlerFactory.getOnRequest()
+            ],
+            preHandler: [...FhirApiHandlerFactory.getPreHandler()],
+            onSend: [...FhirApiHandlerFactory.getOnSend()]
+        }, (request, reply) => {
+            return rootApi(request, reply);
+        });
+    }
+
 
     async registerModel(resourceType) {
         this.app.log.info("register model: " + resourceType);
