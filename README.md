@@ -1,7 +1,7 @@
 <div>
     <div style="float: left;width: 15%;"><img src="https://github.com/Chinlinlee/Burni/blob/main/public/logo.png?raw=true" width="90px">
      <h1>Burni FHIR Server</h1>
-    <a href="README.md">English</a>
+    <strong>English<strong>
     <span> | </span>
     <a href="README.zh-TW.md">繁體中文</a>
     <br />
@@ -17,12 +17,13 @@ Burni has been tested  by AEGIS Touchstone Basic-R4-Server. The conformance resu
    
 ## features
 This server supported FHIR RESTFul API below:
+- create (e.g. POST http://example.com/fhir/Patient)
 - read (e.g. GET http://example.com/fhir/Patient/example)
 - update (e.g. PUT http://example.com/fhir/Patient/example)
 - delete (e.g. DELETE http://example.com/fhir/Patient/example)
 - search (e.g. http://example.com/fhir/Patient?_id=example)
 - history-type (e.g. http://example.com/fhir/Patient/1/_history)
-- history-type-version (e.g. e.g. http://example.com/fhir/Patient/1/_history/1)
+- history-type-version/vread (e.g. e.g. http://example.com/fhir/Patient/1/_history/1)
 
 
 <font color=red>**Don't remove Bundle.js in models/mongodb/FHIRTypeSchema**</font>
