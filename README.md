@@ -1,7 +1,7 @@
 <div>
     <div style="float: left;width: 15%;"><img src="https://github.com/Chinlinlee/Burni/blob/main/public/logo.png?raw=true" width="90px">
      <h1>Burni FHIR Server</h1>
-    <a href="README.md">English</a>
+    <strong>English<strong>
     <span> | </span>
     <a href="README.zh-TW.md">繁體中文</a>
     <br />
@@ -11,17 +11,19 @@
 
 ## Conformance Statement 
 Burni has been tested  by AEGIS Touchstone Basic-R4-Server. The conformance results show below: 
+* [FHIR4-0-1-Basic-Server version 23](https://touchstone.aegis.net/touchstone/conformance/detail?suite=FHIR4-0-1-Basic-Server&sVersion=23&testSystem=5f9518730a120e4edef042ae&supportedOnly=false&cb=%2fFHIR4-0-1-Basic&format=ALL&published=true) (2,282 tests has been passed, 100% pass)
 * [FHIR4-0-1-Basic-Server version 18](https://touchstone.aegis.net/touchstone/conformance/detail?suite=FHIR4-0-1-Basic-Server&sVersion=18&testSystem=5f9518730a120e4edef042ae&supportedOnly=false&cb=%2fFHIR4-0-1-Basic&format=ALL&published=true) (2,216 tests has been passed, 100% Pass)
 * [FHIR4-0-1-Basic-Server version 14](https://touchstone.aegis.net/touchstone/conformance/detail?suite=FHIR4-0-1-Basic-Server&sVersion=14&testSystem=5f9518730a120e4edef042ae&supportedOnly=false&cb=%2FFHIR4-0-1-Basic&published=true) (1,948 tests has been passed, 100% Pass)
    
 ## features
 This server supported FHIR RESTFul API below:
+- create (e.g. POST http://example.com/fhir/Patient)
 - read (e.g. GET http://example.com/fhir/Patient/example)
 - update (e.g. PUT http://example.com/fhir/Patient/example)
 - delete (e.g. DELETE http://example.com/fhir/Patient/example)
 - search (e.g. http://example.com/fhir/Patient?_id=example)
 - history-type (e.g. http://example.com/fhir/Patient/1/_history)
-- history-type-version (e.g. e.g. http://example.com/fhir/Patient/1/_history/1)
+- history-type-version/vread (e.g. http://example.com/fhir/Patient/1/_history/1)
 
 
 <font color=red>**Don't remove Bundle.js in models/mongodb/FHIRTypeSchema**</font>
