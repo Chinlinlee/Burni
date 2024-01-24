@@ -23,7 +23,7 @@ This server supported FHIR RESTFul API below:
 - delete (e.g. DELETE http://example.com/fhir/Patient/example)
 - search (e.g. http://example.com/fhir/Patient?_id=example)
 - history-type (e.g. http://example.com/fhir/Patient/1/_history)
-- history-type-version/vread (e.g. e.g. http://example.com/fhir/Patient/1/_history/1)
+- history-type-version/vread (e.g. http://example.com/fhir/Patient/1/_history/1)
 
 
 <font color=red>**Don't remove Bundle.js in models/mongodb/FHIRTypeSchema**</font>
