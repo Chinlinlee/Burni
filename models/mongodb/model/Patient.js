@@ -53,7 +53,6 @@ const {
     checkResourceHaveReferenceByOthers
 } = require("../common");
 module.exports = function() {
-    require('mongoose-schema-jsonschema')(mongoose);
     const Patient = {
         meta: {
             type: Meta,
