@@ -23,6 +23,7 @@ jobs:
         npm install --only=production
         node ./config/generate-config-allResources.js
         cp ./.env.template ./.env
+        cp ./plugins/config.template.js ./plugins/config.js
         npm run build
     -
       name: Set up QEMU
