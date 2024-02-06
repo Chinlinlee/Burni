@@ -83,7 +83,7 @@ class UpdateService extends BaseFhirApiService {
         return {
             status: true,
             code: 200,
-            result: newDoc.value.getFHIRField()
+            result: newDoc.getFHIRField()
         };
     }
 

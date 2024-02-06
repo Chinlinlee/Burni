@@ -12,9 +12,7 @@ const session = require("express-session");
 const flash = require("connect-flash");
 const mongodb = require("./models/mongodb");
 const mongoose = require("mongoose");
-const MongoStore = require("connect-mongo")({
-    session: session
-});
+const MongoStore = require("connect-mongo");
 //
 require("dotenv").config();
 const port = process.env.SERVER_PORT;
@@ -80,8 +78,8 @@ app.use(
         secret: process.env.SERVER_SESSION_SECRET_KEY || "secretKey",
         resave: true,
         saveUninitialized: true,
-        store: new MongoStore({
-            mongooseConnection: mongoose.connection
+        store: MongoStore.create({
+            client: mongoose.connection.getClient()
         }),
         cookie: {
             httpOnly: true,
