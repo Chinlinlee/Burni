@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.8.3](https://github.com/Chinlinlee/Burni/compare/v2.8.0...v2.8.3) (2024-02-06)
+
+
+### Bug Fixes
+
+* [#11](https://github.com/Chinlinlee/Burni/issues/11) ([ba2e2d8](https://github.com/Chinlinlee/Burni/commit/ba2e2d8ca99f11ddc02a143f5d6993871859d742))
+* update API broken ([4867f30](https://github.com/Chinlinlee/Burni/commit/4867f301ebee1a1c50c1c42a9c7d976885e9302e))
+
 ### [2.8.2](https://github.com/Chinlinlee/Burni/compare/v2.8.0...v2.8.2) (2024-01-24)
 patch change
 
