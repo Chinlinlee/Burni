@@ -85,14 +85,11 @@ module.exports = function (app) {
                             "application/fhir+xml",
                             "xml"
                         ];
-
-                        for(let i = 0 ; i< xmlAcceptList.length ; i++) {
-                            let xmlAccept = xmlAcceptList[i];
-                            if (req.headers.accept.includes(xmlAccept)) {
-                                res.set("Content-Type", "application/fhir+xml");
-                            } else {
-                                res.set("Content-Type", "application/fhir+json");
-                            }
+                        let firstAcceptType = req.headers.accept.split(",").pop();
+                        if (xmlAcceptList.includes(firstAcceptType)) {
+                            res.set("Content-Type", "application/fhir+xml");
+                        } else {
+                            res.set("Content-Type", "application/fhir+json");
                         }
                         
                         setFormatWhenQuery(req, res);

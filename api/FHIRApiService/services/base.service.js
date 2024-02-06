@@ -88,8 +88,17 @@ class BaseFhirApiService {
             item = handleError.processing(item);
         }
 
-        if ((this.response.getHeader("content-type").includes("xml") ||
-            this.request.get("accept").includes("xml")) ||
+        const xmlContentTypes = [
+            "application/fhir+xml",
+            "application/xml",
+            "xml"
+        ];
+        let firstAcceptType = this.request.headers.accept.split(",").pop();
+
+        if ((
+                this.response.getHeader("content-type").includes("xml") ||
+                xmlContentTypes.includes(firstAcceptType)
+            ) ||
             this.response.locals?._format?.toLowerCase() === "xml"
         ) {
             let fhir = new FHIR();
