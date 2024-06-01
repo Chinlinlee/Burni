@@ -2,7 +2,6 @@ require("module-alias/register");
 
 const express = require('express');
 const RateLimit = require('express-rate-limit');
-const bodyParser = require('body-parser');
 const http = require('http');
 const compress = require('compression');
 const { handleError } = require('./models/FHIR/httpMessage');
