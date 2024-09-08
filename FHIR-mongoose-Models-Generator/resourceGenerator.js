@@ -14,14 +14,6 @@ let schemaJson = JSON.parse(
 let FHIRJson = schemaJson.definitions;
 let config = {};
 
-function checkHaveSchema(typeName) {
-    return fs.existsSync(`./models/mongodb/FHIRDataTypesSchema/${typeName}.js`);
-}
-
-function isFHIRSchema(typeName) {
-    return !_.isUndefined(_.get(FHIRJson, typeName));
-}
-
 function isPrimitiveType(typeName) {
     return (
         /^[a-z]/.test(typeName) &&
@@ -189,57 +181,6 @@ function getImportLibs(schema) {
     return importLib;
 }
 
-function generateBackBoneElement(item) {
-    let isBackBone = true;
-    for (let key in DataTypesSummary) {
-        if (DataTypesSummary[key].includes(item)) {
-            isBackBone = false;
-            break;
-        }
-    }
-    if (isBackBone && item.includes("_")) {
-        console.log("back bone element type:", item);
-        generateSchema(item);
-    }
-}
-async function generateSchema(type) {
-    let schema = getSchema(FHIRJson[type], type);
-    cleanChildSchema(schema);
-    let importLibs = getImportLibs(schema);
-    let schemaStr = JSON.stringify(schema, null, 4).replace(/\"/gm, "");
-    let code = `module.exports = new mongoose.Schema (${schemaStr.replace(
-        /\\/gm,
-        '"'
-    )} , { 
-        _id : false ,
-        id: false,
-        toObject: {
-            getters: true
-        }
-    });`;
-    code = `${importLibs}${code}`;
-    fs.writeFileSync(
-        `./models/mongodb/FHIRDataTypesSchema/${type}.js`,
-        beautify(code, { indent_size: 4, pace_in_empty_paren: true })
-    );
-    // for (let i in schema) {
-    //     try {
-    //         let item = schema[i];
-    //         if (_.get(item , "type")) {
-    //             for (let key in item) {
-    //                 let deepItem = _.get(item[key] , "type") || item[key];
-    //                 deepItem = String(deepItem)
-    //                 deepItem = deepItem.replace(/[\[\]]/gm , '');
-    //                 if (!checkHaveSchema(deepItem) && isFHIRSchema(deepItem)) {
-    //                     generateBackBoneElement(deepItem);
-    //                 }
-    //             }
-    //         }
-    //     } catch (e) {
-    //         console.error(e)
-    //     }
-    // }
-}
 function generateResourceSchema(type) {
     if (!FHIRJson[type]) {
         console.error("Unknown resource type " + type);
