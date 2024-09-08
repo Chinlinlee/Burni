@@ -416,6 +416,66 @@ function getQuantityQuery(query, paramsSearchFields, queryFieldName) {
     delete query[queryFieldName];
 }
 
+/**
+ * @example <caption>Example of `url` of search parameters of the ValueSet resource</caption>
+ * // refresh query object to
+ * // {
+ * //     "$and": [
+ * //         {
+ * //             "$or": [
+ * //                 {
+ * //                     "url": "http://hl7.org/fhir/ValueSet/animal-breeds"    
+ * //                 }
+ * //             ]
+ * //         }
+ * //     ]
+ * // }
+ * getUriQuery(
+ * {
+ *     "$and": [],
+ *     "url": "http://hl7.org/fhir/ValueSet/animal-breeds"
+ * }, { url: ["url"], "url:above": ["url"], "url:below": ["url"] }, "url");
+ * @param {any} query 
+ * @param {any} paramsSearchFields 
+ * @param {string} queryFieldName 
+ */
+function getUriQuery(query, paramsSearchFields, queryFieldName) {
+    if (!_.isArray(query[queryFieldName])) {
+        query[queryFieldName] = [query[queryFieldName]];
+    }
+    for (let item of query[queryFieldName]) {
+        let buildQs = {
+            $or: []
+        };
+
+        for (let field of paramsSearchFields[queryFieldName]) {
+            let commaSeparatedValue = getCommaSplitArray(item);
+            for (let index in commaSeparatedValue) {
+                let value = commaSeparatedValue[index];
+                let uriQuery = queryBuild.uriQuery(value, queryFieldName);
+
+                let buildResult = {};
+                if (Array.isArray(uriQuery)) {
+                    buildResult = { [field]: { $or: [] }};
+
+                    for (let index in uriQuery) {
+                        buildResult[field].$or.push(uriQuery[index]);
+                    }
+                } else {
+                    buildResult = {
+                        [field]: uriQuery
+                    };
+                }
+                buildQs.$or.push(buildResult);
+            }
+        }
+        query.$and.push({
+            ...buildQs
+        });
+    }
+    delete query[queryFieldName];
+}
+
 module.exports = {
     getStringQuery: getStringQuery,
     getAddressQuery: getAddressQuery,
@@ -425,5 +485,6 @@ module.exports = {
     getNumberQuery: getNumberQuery,
     getPolyDateQuery: getPolyDateQuery,
     getReferenceQuery: getReferenceQuery,
-    getQuantityQuery: getQuantityQuery
+    getQuantityQuery: getQuantityQuery,
+    getUriQuery: getUriQuery
 };
