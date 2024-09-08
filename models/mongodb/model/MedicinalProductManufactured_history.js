@@ -1,0 +1,58 @@
+const mongoose = require('mongoose');
+const moment = require('moment');
+const _ = require('lodash');
+module.exports = function() {
+    let MedicinalProductManufactured = require('./MedicinalProductManufactured').schema;
+    MedicinalProductManufactured.id.unique = false;
+    MedicinalProductManufactured.request = {
+        "type": Object,
+        "method": {
+            type: String,
+            required: true
+        },
+        "url": {
+            type: String,
+            required: true
+        }
+    };
+    MedicinalProductManufactured.response = {
+        "type": Object,
+        "status": {
+            type: String,
+            required: true
+        }
+    };
+    let schemaConfig = {
+        toObject: {
+            getters: true
+        },
+        toJSON: {
+            getters: true
+        }
+    };
+    if (process.env.MONGODB_IS_SHARDING_MODE == "true") {
+        schemaConfig["shardKey"] = {
+            id: 1
+        };
+    }
+    const MedicinalProductManufacturedHistorySchema = new mongoose.Schema(MedicinalProductManufactured, schemaConfig);
+    MedicinalProductManufacturedHistorySchema.methods.getFHIRField = function() {
+        let result = this.toObject();
+        delete result._id;
+        delete result.__v;
+        delete result['name._id'];
+        delete result['request'];
+        delete result['response'];
+        return result;
+    };
+    MedicinalProductManufacturedHistorySchema.methods.getFHIRBundleField = function() {
+        let result = this.toObject();
+        delete result._id;
+        delete result.__v;
+        delete result['name._id'];
+        return result;
+    };
+
+    const MedicinalProductManufacturedHistoryModel = mongoose.model("MedicinalProductManufactured_history", MedicinalProductManufacturedHistorySchema, "MedicinalProductManufactured_history");
+    return MedicinalProductManufacturedHistoryModel;
+};

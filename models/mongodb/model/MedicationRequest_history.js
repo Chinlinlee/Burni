@@ -1,0 +1,58 @@
+const mongoose = require('mongoose');
+const moment = require('moment');
+const _ = require('lodash');
+module.exports = function() {
+    let MedicationRequest = require('./MedicationRequest').schema;
+    MedicationRequest.id.unique = false;
+    MedicationRequest.request = {
+        "type": Object,
+        "method": {
+            type: String,
+            required: true
+        },
+        "url": {
+            type: String,
+            required: true
+        }
+    };
+    MedicationRequest.response = {
+        "type": Object,
+        "status": {
+            type: String,
+            required: true
+        }
+    };
+    let schemaConfig = {
+        toObject: {
+            getters: true
+        },
+        toJSON: {
+            getters: true
+        }
+    };
+    if (process.env.MONGODB_IS_SHARDING_MODE == "true") {
+        schemaConfig["shardKey"] = {
+            id: 1
+        };
+    }
+    const MedicationRequestHistorySchema = new mongoose.Schema(MedicationRequest, schemaConfig);
+    MedicationRequestHistorySchema.methods.getFHIRField = function() {
+        let result = this.toObject();
+        delete result._id;
+        delete result.__v;
+        delete result['name._id'];
+        delete result['request'];
+        delete result['response'];
+        return result;
+    };
+    MedicationRequestHistorySchema.methods.getFHIRBundleField = function() {
+        let result = this.toObject();
+        delete result._id;
+        delete result.__v;
+        delete result['name._id'];
+        return result;
+    };
+
+    const MedicationRequestHistoryModel = mongoose.model("MedicationRequest_history", MedicationRequestHistorySchema, "MedicationRequest_history");
+    return MedicationRequestHistoryModel;
+};
