@@ -69,7 +69,9 @@
     },
     "devDependencies": {
         "babel-eslint": "^10.1.0",
+        "chai": "^4.5.0",
         "eslint-config-prettier": "^9.1.0",
-        "jsdoc-to-markdown": "^8.0.1"
+        "jsdoc-to-markdown": "^8.0.1",
+        "mocha": "^10.7.3"
     }
 }

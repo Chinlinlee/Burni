@@ -1,3 +1,5 @@
+const { URL } = require("url");
+
 const { getUrlMatch } = require("@root/utils/fhir-param");
 const { isNumber } = require("lodash");
 const _ = require("lodash");
@@ -579,6 +581,33 @@ function numberQuery(value, field) {
     }
 }
 
+/**
+ * 
+ * @param {string} value 
+ * @param {string} field 
+ */
+function uriQuery(value, field) {
+    let url = new URL(value);
+
+    if (field.includes(":below")) {
+        const escapedUrl = value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+        return {
+            $regex: new RegExp(`^${escapedUrl}(\\/.*)?$`, "i")
+        };
+    } else if (field.includes(":above")) {
+        let expectedUrls = [];
+        let pathnameSplit = url.pathname.split("/");
+        for(let i = 0; i < pathnameSplit.length; i++) {
+            expectedUrls.push(`${url.origin}${pathnameSplit.slice(0, i + 1).join("/")}`);
+        }
+        
+        return expectedUrls;
+    } else {
+        return value;
+    }
+}
+
 module.exports = {
     stringQuery: stringQuery,
     numberQuery: numberQuery,
@@ -593,5 +622,6 @@ module.exports = {
     quantityQuery: quantityQuery,
     referenceQuery: referenceQuery,
     arrayStringBuild: arrayStringBuild,
-    getCommaSplitArray: getCommaSplitArray
+    getCommaSplitArray: getCommaSplitArray,
+    uriQuery: uriQuery
 };
