@@ -7,38 +7,26 @@ const basename = path.basename(module.filename);
 module.exports = exports = function (config) {
     const id = config.MONGODB_USER;
     const pwd = config.MONGODB_PASSWORD;
-    const hosts = JSON.parse(config.MONGODB_HOSTS);
-    const ports = JSON.parse(config.MONGODB_PORTS);
     const dbName = config.MONGODB_NAME;
     const authDB = config.MONGODB_AUTH_DB;
     const collection = {};
-    let databaseUrl = "";
-
-    hosts.forEach((host, index) => {
-        if (index == 0) {
-            databaseUrl += `${process.env.MONGODB_PROTOCOL || "mongodb://"}${host}:${ports[0]}`;
-        } else {
-            databaseUrl += `,${host}:${ports[index]}`;
-        }
-    });
-    databaseUrl += `/${dbName}`;
-
+    let databaseUrl = getConnectionUrl(config);
     console.log(databaseUrl);
-    mongoose
-        .connect(databaseUrl, {
-            // The following parameters are no longer supported by mongoose 6.x
 
-            // useCreateIndex: true,
-            // useNewUrlParser: true,
-            // useFindAndModify: false,
-            // useUnifiedTopology: true,
+    let opts = {};
+    if (!config.MONGODB_CONNECTION_URL) {
+        opts = {
             authSource: authDB,
             auth: {
                 authSource: authDB,
                 username: id,
                 password: pwd
             }
-        })
+        };
+    }
+
+    mongoose
+        .connect(databaseUrl, opts)
         .then(() => {
             if (process.env.MONGODB_IS_SHARDING_MODE == "true") {
                 mongoose.connection.db
@@ -119,4 +107,27 @@ function shardCollection(dirname) {
                 });
         }
     }
+}
+
+function getConnectionUrl(config) {
+
+    if (config.MONGODB_CONNECTION_URL) {
+        return config.MONGODB_CONNECTION_URL;
+    }
+
+    const hosts = JSON.parse(config.MONGODB_HOSTS);
+    const ports = JSON.parse(config.MONGODB_PORTS);
+    const dbName = config.MONGODB_NAME;
+    let databaseUrl = "";
+
+    hosts.forEach((host, index) => {
+        if (index == 0) {
+            databaseUrl += `${process.env.MONGODB_PROTOCOL || "mongodb://"}${host}:${ports[0]}`;
+        } else {
+            databaseUrl += `,${host}:${ports[index]}`;
+        }
+    });
+    databaseUrl += `/${dbName}`;
+
+    return databaseUrl;
 }
