@@ -13,6 +13,10 @@ if (!fs.existsSync("config/config.js")) {
     fs.copyFileSync(configExampleFile, configFile);
 }
 
+if (process.env.NODE_ENV === "production") {
+    app.set("trust proxy", true);
+}
+
 const express = require('express');
 const RateLimit = require('express-rate-limit');
 const http = require('http');
