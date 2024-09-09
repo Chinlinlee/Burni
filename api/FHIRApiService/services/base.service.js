@@ -104,6 +104,7 @@ class BaseFhirApiService {
             let fhir = new FHIR();
             let xmlItem = fhir.objToXml(item);
             if (this._pretty) xmlItem = xmlFormatter(xmlItem);
+            this.response.setHeader("content-type", "application/fhir+xml");
             return this.response.status(code).send(xmlItem);
         }
 
