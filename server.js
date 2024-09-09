@@ -13,10 +13,6 @@ if (!fs.existsSync("config/config.js")) {
     fs.copyFileSync(configExampleFile, configFile);
 }
 
-if (process.env.NODE_ENV === "production") {
-    app.set("trust proxy", true);
-}
-
 const express = require('express');
 const RateLimit = require('express-rate-limit');
 const http = require('http');
@@ -33,6 +29,10 @@ const MongoStore = require("connect-mongo");
 require("dotenv").config();
 const port = process.env.SERVER_PORT;
 const app = express();
+
+if (process.env.NODE_ENV === "production") {
+    app.set("trust proxy", true);
+}
 
 require("rootpath")();
 require("dotenv").config();
