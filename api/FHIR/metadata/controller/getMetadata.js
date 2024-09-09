@@ -1,24 +1,34 @@
-const uuid = require('uuid');
+
 const moment = require('moment');
 const _ = require('lodash');
-const fs = require('fs');
-
-const fhirUrl = "http://hl7.org/fhir/R4";
+const package = require("@root/package.json");
+const { URL } = require("url");
 
 module.exports = async function(req, res) {
+    let fhirUrlObj = new URL(`${process.env.FHIRSERVER_SCHEME}://${process.env.FHIRSERVER_HOST}:${process.env.FHIRSERVER_PORT}/fhir`);
+
+    let experimental = process.env?.FHIRSERVER_EXPERIMENTAL === "true";
+
     const metaData = {
         "resourceType": "CapabilityStatement",
         "status": "active",
         "date": moment.utc().toDate(),
-        "publisher": "Not provided",
+        "publisher": "Imaging Informatics Labs, National Taipei University of Nursing and Health Science",
+        "description": "Burni is a user-friendly implementation of the FHIR server built using Node, Express, and MongoDB. \
+It offers a straightforward way for developers to customize the <a href=\"https://www.hl7.org/fhir/\">HL7 FHIR® specification</a>, \
+with support for both Windows and Linux environments, making it easy to deploy a FHIR service. \
+Burni allows you to import your <a href=\"https://www.hl7.org/fhir/implementationguide.html\">Implementation Guide<a> \
+and store FHIR Resources, while also creating FHIR RESTful APIs.<br> \
+Burni uses version 4.0.1 (R4) of the HL7 FHIR specification.",
+        "experimental": experimental,
         "kind": "instance",
         "software": {
             "name": "FHIR-Server Burni",
-            "version": "1.0.0"
+            "version": package.version
         },
         "implementation": {
             "description": "Burni FHIR R4 Server",
-            "url": `http://localhost/fhir`
+            "url": fhirUrlObj.href
         },
         "fhirVersion": "4.0.1",
         "format": ["json"],
