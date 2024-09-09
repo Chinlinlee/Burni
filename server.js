@@ -1,8 +1,20 @@
 require("module-alias/register");
 
+const path = require("path");
+const fs = require("fs");
+
+let configFile = path.join(
+    __dirname, "./config/config.js"
+);
+if (!fs.existsSync("config/config.js")) {
+    let configExampleFile = path.join(
+        __dirname, "./config/config.template.js"
+    );
+    fs.copyFileSync(configExampleFile, configFile);
+}
+
 const express = require('express');
 const RateLimit = require('express-rate-limit');
-const bodyParser = require('body-parser');
 const http = require('http');
 const compress = require('compression');
 const { handleError } = require('./models/FHIR/httpMessage');

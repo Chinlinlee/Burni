@@ -1,4 +1,3 @@
-const { pluginsConfig } = require("../config");
 /**
  *
  * @param {import("express").Express} app
