@@ -97,7 +97,7 @@ class BaseFhirApiService {
 
         if ((
                 this.response.getHeader("content-type").includes("xml") ||
-                xmlContentTypes.includes(firstAcceptType)
+                xmlContentTypes.some(type => firstAcceptType.includes(type))
             ) ||
             this.response.locals?._format?.toLowerCase() === "xml"
         ) {
