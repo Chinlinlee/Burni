@@ -31,7 +31,18 @@ const port = process.env.SERVER_PORT;
 const app = express();
 
 if (process.env.NODE_ENV === "production") {
-    app.set("trust proxy", true);
+    let trustProxy;
+    if (process.env.SERVER_TRUST_PROXY === "true") {
+        trustProxy = true;
+    } else if (process.env.SERVER_TRUST_PROXY === "false") {
+        trustProxy = false;
+    } else if (Number(process.env.SERVER_TRUST_PROXY)) {
+        trustProxy = Number(process.env.SERVER_TRUST_PROXY);
+    } else {
+        trustProxy = process.env.SERVER_TRUST_PROXY || 1;
+    }
+
+    app.set("trust proxy", trustProxy);
 }
 
 require("rootpath")();
