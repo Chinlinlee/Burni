@@ -1,10 +1,8 @@
 const mongoose = require("mongoose");
 const FHIR = require("fhir").Fhir;
 const _ = require("lodash");
-const uuid = require('uuid');
 const xmlFormatter = require("xml-formatter");
 
-const { renameCollectionFieldName } = require("../../apiService");
 const { validateContainedList } = require("../validateContained");
 const {
     issue,

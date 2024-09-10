@@ -3,11 +3,6 @@ const mongoose = require("mongoose");
 
 
 const { renameCollectionFieldName } = require("../../apiService");
-const {
-    issue,
-    OperationOutcome,
-    handleError
-} = require("@models/FHIR/httpMessage");
 const { BaseFhirApiService } = require("./base.service");
 
 const { logger } = require("@root/utils/log");

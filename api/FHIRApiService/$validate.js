@@ -7,7 +7,6 @@ const {
     issue
 } = require("../../models/FHIR/httpMessage");
 const { logger } = require("../../utils/log");
-const path = require("path");
 
 /**
  *

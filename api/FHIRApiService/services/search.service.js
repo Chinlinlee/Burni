@@ -37,8 +37,7 @@ class SearchService extends BaseFhirApiService {
             let searchParameterCreator = new SearchParameterCreator({
                 resourceType: this.resourceType,
                 query: queryParameter,
-                paramsSearch: this.paramsSearchOfResource,
-                logger: logger
+                paramsSearch: this.paramsSearchOfResource
             });
     
             queryParameter = searchParameterCreator.create();

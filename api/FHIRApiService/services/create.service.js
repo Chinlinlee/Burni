@@ -1,16 +1,9 @@
 
 const mongoose = require("mongoose");
-const FHIR = require("fhir").FHIR;
 const _ = require("lodash");
 const uuid = require('uuid');
 
 const { renameCollectionFieldName } = require("../../apiService");
-const { validateContainedList } = require("../validateContained");
-const {
-    issue,
-    OperationOutcome,
-    handleError
-} = require("@models/FHIR/httpMessage");
 const { BaseFhirApiService } = require("./base.service");
 
 

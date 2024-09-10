@@ -25,6 +25,8 @@ const flash = require("connect-flash");
 const mongodb = require("./models/mongodb");
 const mongoose = require("mongoose");
 const MongoStore = require("connect-mongo");
+const morgan = require("morgan");
+const { httpLogger } = require("./utils/log");
 //
 require("dotenv").config();
 const port = process.env.SERVER_PORT;
@@ -128,6 +130,32 @@ app.use((req, res, next) => {
     res.header("Access-Control-Allow-Credentials", "true");
     next();
 });
+const morganMiddleware = morgan(function (tokens, req, res) {
+    return JSON.stringify({
+        method: tokens.method(req, res),
+        url: tokens.url(req, res),
+        status: Number.parseFloat(tokens.status(req, res)),
+        content_length: tokens.res(req, res, 'content-length'),
+        response_time: Number.parseFloat(tokens['response-time'](req, res)),
+        remote_user: tokens["remote-user"](req, res),
+        remote_address: tokens["remote-addr"](req, res),
+        execution_time: Date.now() - req.startTime
+    });
+}, {
+    stream: {
+        write: (message) => {
+            const data = JSON.parse(message);
+            httpLogger.http(`incoming request`, data);
+        }
+    }
+});
+
+app.use((req, res, next) => {
+    req.startTime = Date.now();
+    next();
+});
+
+app.use(morganMiddleware);
 
 //login
 require("routes.js")(app);

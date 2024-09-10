@@ -4,11 +4,11 @@ const {
     checkIsChainAndGetChainParent,
     getChainParentJoinQuery
 } = require("./chain-params");
+const { logger } = require("@root/utils/log");
 
 /**
  * @typedef SearchParameterCreatorOption
  * @property {string} resourceType
- * @property {import("log4js").Logger} logger
  * @property {Object} query
  * @property {Object} paramsSearch The mapping function to get MongoDB query JSON from resourceType's search parameters
  */
@@ -19,7 +19,6 @@ class SearchParameterCreator {
      * @param {SearchParameterCreatorOption} option
      */
     constructor(option) {
-        this.logger = option.logger;
         this.query = option.query;
         this.resourceType = option.resourceType;
         this.paramsSearch = option.paramsSearch;
@@ -77,8 +76,8 @@ class SearchParameterCreator {
                 }
             } catch (e) {
                 if (key != "$and") {
-                    this.logger.error(e);
-                    this.logger.error(
+                    logger.error(e);
+                    logger.error(
                         `[Error: Unknown search parameter ${key} or value ${this.query[key]}] [Resource Type: ${this.resourceType}] [${e}]`
                     );
                     throw new UnknownSearchParameterError(

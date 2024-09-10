@@ -1,8 +1,4 @@
-const mongodb = require("models/mongodb");
-const { handleError } = require("../../models/FHIR/httpMessage");
-const FHIR = require("fhir").Fhir;
 const { logger } = require("@root/utils/log");
-const path = require("path");
 const { VReadService } = require("./services/vread.service");
 
 /**
