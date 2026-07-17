@@ -430,73 +430,6 @@ Burni's FHIR Validator is implemented through the integration of Node.js and Jav
 * $validate: Validation function that returns a 200 response if successful; otherwise, a 422 error is returned.
 
 
-# Add search parameter (/docs/search-parameter/add-search-parameter)
-
-
-
-The code about search parameters can be found in `models\FHIR\queryBuild.js` and `models\FHIR\searchParameterQueryHandler.js` files.
-
-* `queryBuild.js`: get single MongoDB query object from data type.
-* `searchParameterQueryHandler.js`: using `queryBuild.js` and get fully MongoDB query object from HTTP query param.
-
-Some search parameters from generator will got missing or incorrect. You can fix by using methods in `models\FHIR\searchParameterQueryHandler.js`.
-
-## Example: Bundle.composition [#example-bundlecomposition]
-
-In some use cases, you may want to search `patient/{id}` in `entry.resource.subject.reference` of bundle resource.
-
-* The example URL:
-
-```sh
-http://localhost:8080/fhir/Bundle?composition.patient=Patient/123
-```
-
-If you wanna support this parameter, you can add code in `api/FHIR/Bundle/BundleParametersHandler.js`.
-
-```js
-//#region composition.patient
-// search parameter name: "composition.patient"
-// field in resource: "entry.resource.subject.reference"
-// type: reference
-paramsSearchFields["composition.patient"]= ["entry.resource.subject.reference"];
-paramsSearch["composition.patient"] = (query) => {
-    try {
-        queryHandler.getReferenceQuery(query, paramsSearchFields, "composition.patient");
-    } catch (e) {
-        console.error(e);
-        throw e;
-    }
-};
-//#endregion
-```
-
-
-# Overview (/docs/search-parameter/overview)
-
-
-
-# Search parameters overview [#search-parameters-overview]
-
-The burni currently support [FHIR search operations](http://www.hl7.org/fhir/search.html) below:
-
-## Search Parameter Types [#search-parameter-types]
-
-* Number
-* Date/DateTime
-* String
-* Token
-* Reference
-
-## Parameters for all resources [#parameters-for-all-resources]
-
-* \_id
-* \_lastUpdated
-
-## Search result parameters [#search-result-parameters]
-
-* \_count
-
-
 # Configuration (/docs/getting-started/configuration)
 
 
@@ -703,6 +636,73 @@ Please confirm that you have the:
 </CodeBlockTabs>
 
 after installation, let's starting [configuration](/getting-started/configuration)
+
+
+# Add search parameter (/docs/search-parameter/add-search-parameter)
+
+
+
+The code about search parameters can be found in `models\FHIR\queryBuild.js` and `models\FHIR\searchParameterQueryHandler.js` files.
+
+* `queryBuild.js`: get single MongoDB query object from data type.
+* `searchParameterQueryHandler.js`: using `queryBuild.js` and get fully MongoDB query object from HTTP query param.
+
+Some search parameters from generator will got missing or incorrect. You can fix by using methods in `models\FHIR\searchParameterQueryHandler.js`.
+
+## Example: Bundle.composition [#example-bundlecomposition]
+
+In some use cases, you may want to search `patient/{id}` in `entry.resource.subject.reference` of bundle resource.
+
+* The example URL:
+
+```sh
+http://localhost:8080/fhir/Bundle?composition.patient=Patient/123
+```
+
+If you wanna support this parameter, you can add code in `api/FHIR/Bundle/BundleParametersHandler.js`.
+
+```js
+//#region composition.patient
+// search parameter name: "composition.patient"
+// field in resource: "entry.resource.subject.reference"
+// type: reference
+paramsSearchFields["composition.patient"]= ["entry.resource.subject.reference"];
+paramsSearch["composition.patient"] = (query) => {
+    try {
+        queryHandler.getReferenceQuery(query, paramsSearchFields, "composition.patient");
+    } catch (e) {
+        console.error(e);
+        throw e;
+    }
+};
+//#endregion
+```
+
+
+# Overview (/docs/search-parameter/overview)
+
+
+
+# Search parameters overview [#search-parameters-overview]
+
+The burni currently support [FHIR search operations](http://www.hl7.org/fhir/search.html) below:
+
+## Search Parameter Types [#search-parameter-types]
+
+* Number
+* Date/DateTime
+* String
+* Token
+* Reference
+
+## Parameters for all resources [#parameters-for-all-resources]
+
+* \_id
+* \_lastUpdated
+
+## Search result parameters [#search-result-parameters]
+
+* \_count
 
 
 # searchParameterQueryHandler (/docs/code-api-documentation/models/fhir/search-parameter-query-handler)
@@ -1464,77 +1464,6 @@ Burni 的 FHIR Validator 透過 Node.js 與 Java 融合的專案 [node-java-fhir
 * $validate: 驗證功能，通過返回 200，反之回傳 422 錯誤
 
 
-# 自行新增搜尋參數 (/zh-TW/docs/search-parameter/add-search-parameter)
-
-
-
-與搜尋參數相關的程式碼位於`models\FHIR\queryBuild.js` 以及 `models\FHIR\searchParameterQueryHandler.js` 檔案。
-
-* `queryBuild.js`: 根據不同的 Data Type 組成單個MongoDB 查詢語法。
-* `searchParameterQueryHandler.js`: 根據 HTTP 網址中的查詢條件使用 `queryBuild.js` 取得完整的 MongoDB 查詢語法。
-
-由產生器產生之部分搜尋參數可能是錯誤的或遺失。您可以使用 `models\FHIR\searchParameterQueryHandler.js` 內的方法修正。
-
-## 範例： Bundle.composition [#範例-bundlecomposition]
-
-在一些使用案例，您也許會想使用 bundle 的 `entry.resource.subject.reference` 搜尋 `patient/{id}`。
-
-* The example URL:
-
-```sh
-http://localhost:8080/fhir/Bundle?composition.patient=Patient/123
-```
-
-如果您想支援此項搜尋參數，您可以在 `api/FHIR/Bundle/BundleParametersHandler.js` 檔案新增以下程式碼
-
-```js
-//#region composition.patient
-// search parameter name: "composition.patient"
-// field in resource: "entry.resource.subject.reference"
-// type: reference
-paramsSearchFields["composition.patient"]= ["entry.resource.subject.reference"];
-paramsSearch["composition.patient"] = (query) => {
-    try {
-        queryHandler.getReferenceQuery(query, paramsSearchFields, "composition.patient");
-    } catch (e) {
-        console.error(e);
-        throw e;
-    }
-};
-//#endregion
-```
-
-
-# 概觀 (/zh-TW/docs/search-parameter/overview)
-
-
-
-# 搜尋參數概觀 [#搜尋參數概觀]
-
-Burni 目前支援的 [FHIR search operations](http://www.hl7.org/fhir/search.html) 如下:
-
-## Search Parameter Types [#search-parameter-types]
-
-* Number
-* Date/DateTime
-* String
-* Token
-* Reference
-
-## Parameters for all resources [#parameters-for-all-resources]
-
-* \_id
-* \_lastUpdated
-
-## Search result parameters [#search-result-parameters]
-
-* \_count
-
-<Callout type="info">
-  下一章您將會知道如何修正 Burni 遺失或錯誤的搜尋參數。下一章[自行新增搜尋參數](/getting-started/configuration)
-</Callout>
-
-
 # 設定 (/zh-TW/docs/getting-started/configuration)
 
 
@@ -1745,6 +1674,77 @@ docker-compose up -d
 </CodeBlockTabs>
 
 安裝完畢後，下一步進行[設定](/getting-started/configuration)
+
+
+# 自行新增搜尋參數 (/zh-TW/docs/search-parameter/add-search-parameter)
+
+
+
+與搜尋參數相關的程式碼位於`models\FHIR\queryBuild.js` 以及 `models\FHIR\searchParameterQueryHandler.js` 檔案。
+
+* `queryBuild.js`: 根據不同的 Data Type 組成單個MongoDB 查詢語法。
+* `searchParameterQueryHandler.js`: 根據 HTTP 網址中的查詢條件使用 `queryBuild.js` 取得完整的 MongoDB 查詢語法。
+
+由產生器產生之部分搜尋參數可能是錯誤的或遺失。您可以使用 `models\FHIR\searchParameterQueryHandler.js` 內的方法修正。
+
+## 範例： Bundle.composition [#範例-bundlecomposition]
+
+在一些使用案例，您也許會想使用 bundle 的 `entry.resource.subject.reference` 搜尋 `patient/{id}`。
+
+* The example URL:
+
+```sh
+http://localhost:8080/fhir/Bundle?composition.patient=Patient/123
+```
+
+如果您想支援此項搜尋參數，您可以在 `api/FHIR/Bundle/BundleParametersHandler.js` 檔案新增以下程式碼
+
+```js
+//#region composition.patient
+// search parameter name: "composition.patient"
+// field in resource: "entry.resource.subject.reference"
+// type: reference
+paramsSearchFields["composition.patient"]= ["entry.resource.subject.reference"];
+paramsSearch["composition.patient"] = (query) => {
+    try {
+        queryHandler.getReferenceQuery(query, paramsSearchFields, "composition.patient");
+    } catch (e) {
+        console.error(e);
+        throw e;
+    }
+};
+//#endregion
+```
+
+
+# 概觀 (/zh-TW/docs/search-parameter/overview)
+
+
+
+# 搜尋參數概觀 [#搜尋參數概觀]
+
+Burni 目前支援的 [FHIR search operations](http://www.hl7.org/fhir/search.html) 如下:
+
+## Search Parameter Types [#search-parameter-types]
+
+* Number
+* Date/DateTime
+* String
+* Token
+* Reference
+
+## Parameters for all resources [#parameters-for-all-resources]
+
+* \_id
+* \_lastUpdated
+
+## Search result parameters [#search-result-parameters]
+
+* \_count
+
+<Callout type="info">
+  下一章您將會知道如何修正 Burni 遺失或錯誤的搜尋參數。下一章[自行新增搜尋參數](/getting-started/configuration)
+</Callout>
 
 
 # searchParameterQueryHandler (/zh-TW/docs/code-api-documentation/models/fhir/search-parameter-query-handler)
