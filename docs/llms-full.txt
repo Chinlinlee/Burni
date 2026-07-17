@@ -1,0 +1,2070 @@
+# Home (/docs)
+
+
+
+# Burni documentation [#burni-documentation]
+
+# 🚧 **work in progress** [#-work-in-progress]
+
+## Getting Started [#getting-started]
+
+* Installation
+* Configuration
+* Deploy
+
+
+# Introduction (/docs/introduction)
+
+
+
+## Burni FHIR Server [#burni-fhir-server]
+
+Burni is an implementation of the FHIR server with Node, Express, and MongoDB providing very simple ways to generate Mongoose Schema, API code and customize the <a href="https://www.hl7.org/fhir/">HL7 FHIR® specification</a> Currently, Burni support both Windows and Linux environment to enable developers to rapidly deploy a FHIR service.
+
+Burni use version 4.0.1 (R4) of the HL7 FHIR specification.
+
+## Conformance Statement [#conformance-statement]
+
+Burni has been tested  by AEGIS Touchstone Basic-R4-Server. The conformance results show below:
+
+* [FHIR4-0-1-Basic-Server version 18](https://touchstone.aegis.net/touchstone/conformance/detail?suite=FHIR4-0-1-Basic-Server\&sVersion=18\&testSystem=5f9518730a120e4edef042ae\&supportedOnly=false\&cb=%2fFHIR4-0-1-Basic\&format=ALL\&published=true) (2,216 tests has been passed, 100% Pass)
+* [FHIR4-0-1-Basic-Server version 14](https://touchstone.aegis.net/touchstone/conformance/detail?suite=FHIR4-0-1-Basic-Server\&sVersion=14\&testSystem=5f9518730a120e4edef042ae\&supportedOnly=false\&cb=%2FFHIR4-0-1-Basic\&published=true) (1,948 tests has been passed, 100% Pass)
+
+
+# Generate OpenAPI (/docs/fhir-api-documentation/generate-open-api)
+
+
+
+The Burni use [apidoc](https://apidocjs.com/) to generate OpenAPI with resources that you config in `config/config.js` file and host the OpenAPI with [ReDoc](https://github.com/Redocly/redoc).
+
+<Callout type="info">
+  The full demo of API documentation can be found [here](https://chinlinlee.github.io/Burni/apidoc/redoc/)
+</Callout>
+
+## Generation [#generation]
+
+* Run script below to generate files to destination at `docs/apidoc/apidoc-sources` that contain [apidoc](https://apidocjs.com/) comments
+
+```sh
+node api_generator/doc-generator.js
+```
+
+Example:
+
+```js
+/**
+     * 
+     * @api {get} /fhir/Account/:id read Account
+     * @apiParam {string} id Resource ID in server
+     * @apiName readAccount
+     * @apiGroup Account
+     * @apiVersion  v2.1.0
+     * @apiDescription read Account resource by id.
+     * 
+     * @apiExample {Shell} cURL
+     * #example from: https://chinlinlee.github.io/Burni/assets/FHIR/fhir-resource-examples/account-example.json
+     * curl --location --request GET 'http://burni.example.com/fhir/Account/0a2d866d-0362-4e05-9880-f62d054668cf'
+     * @apiExample {JavaScript} javascript Axios
+     //example from: https://chinlinlee.github.io/Burni/assets/FHIR/fhir-resource-examples/account-example.json
+    const axios = require('axios');
+    const config = {
+        method: 'get',
+        url: 'http://burni.example.com/fhir/Account/0a2d866d-0362-4e05-9880-f62d054668cf'
+    };
+
+    axios(config)
+    .then(function (response) {
+        console.log(JSON.stringify(response.data));
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
+    * @apiSuccess (Success 200 Content-Type: application/fhir+json) {object} FHIR-JSON-RESOURCE
+    * @apiSuccessExample {json} (200) name: Success-Response Content-Type: application/fhir+json
+    {
+    "resourceType": "Account",
+    "id": "0a2d866d-0362-4e05-9880-f62d054668cf",
+    "identifier": [
+        {
+            "system": "urn:oid:0.1.2.3.4.5.6.7",
+            "value": "654321"
+        }
+    ],
+    "status": "active",
+    "type": {
+        "coding": [
+            {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+                "code": "PBILLACCT",
+                "display": "patient billing account"
+            }
+        ],
+        "text": "patient"
+    },
+    "name": "HACC Funded Billing for Peter James Chalmers",
+    "subject": [
+        {
+            "reference": "Patient/example",
+            "display": "Peter James Chalmers"
+        }
+    ],
+    "servicePeriod": {
+        "start": "2016-01-01T08:00:00+08:00",
+        "end": "2016-06-30T08:00:00+08:00"
+    },
+    "coverage": [
+        {
+            "coverage": {
+                "reference": "Coverage/7546D"
+            },
+            "priority": 1
+        }
+    ],
+    "owner": {
+        "reference": "Organization/hl7"
+    },
+    "description": "Hospital charges",
+    "meta": {
+        "tag": [
+            {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+                "code": "HTEST",
+                "display": "test health data"
+            }
+        ],
+        "versionId": "1",
+        "lastUpdated": "2022-02-13T22:30:14.037+08:00"
+    }
+}
+    * 
+    * @apiSuccess (Success 200 Content-Type: application/fhir+xml) {object} FHIR-XML-RESOURCE
+    * @apiSuccessExample {xml} (200) name: Success-Response-XML Content-Type: application/fhir+xml
+    <?xml version="1.0" encoding="UTF-8"?><Account xmlns="http://hl7.org/fhir"><id value="69efa3c0-73b1-4403-ba4b-ffd7b718d053"/><meta><versionId value="1"/><lastUpdated value="2022-02-17T17:34:51.348+08:00"/><tag><system value="http://terminology.hl7.org/CodeSystem/v3-ActReason"/><code value="HTEST"/><display value="test health data"/></tag></meta><identifier><system value="urn:oid:0.1.2.3.4.5.6.7"/><value value="654321"/></identifier><status value="active"/><type><coding><system value="http://terminology.hl7.org/CodeSystem/v3-ActCode"/><code value="PBILLACCT"/><display value="patient billing account"/></coding><text value="patient"/></type><name value="HACC Funded Billing for Peter James Chalmers"/><subject><reference value="Patient/example"/><display value="Peter James Chalmers"/></subject><servicePeriod><start value="2016-01-01T08:00:00+08:00"/><end value="2016-06-30T08:00:00+08:00"/></servicePeriod><coverage><coverage><reference value="Coverage/7546D"/></coverage><priority value="1"/></coverage><owner><reference value="Organization/hl7"/></owner><description value="Hospital charges"/></Account>
+    *
+    * @apiError (Error Not Found 404 Content-Type: application/fhir+json) {object} FHIR-JSON-RESOURCE
+    * @apiErrorExample {json} (404) name: Not-Found-Response Content-Type: application/fhir+json
+    {
+        "resourceType": "OperationOutcome",
+        "issue": [
+            {
+                "severity": "error",
+                "code": "exception",
+                "diagnostics": "not found Account/0a2d866d-0362-4e05-9880-f62d054668cf"
+            }
+        ]
+    }
+    *
+    * @apiError (Error Not Found 404 Content-Type: application/fhir+xml) {object} FHIR-XML-RESOURCE
+    * @apiErrorExample {xml} (404) name: Not-Found-Response-XML Content-Type: application/fhir+xml
+    <OperationOutcome xmlns='http://hl7.org/fhir'>
+    <issue>
+        <severity value='error'/>
+        <code value='exception'/>
+        <diagnostics value='not found Account/0a2d866d-0362-4e05-9880-f62d054668cf'/>
+    </issue>
+    </OperationOutcome>
+    *
+    */
+```
+
+* Run script below to generate open API files to destination at `docs/apidoc/redoc`
+
+```sh
+node docs/getAPIDocOpenapi.js
+```
+
+Example:
+
+```json
+{
+    "openapi": "3.0.0",
+    "servers": [
+        {
+            "url": "https://dev.burni.xn--7-c56d.com/"
+        }
+    ],
+    "info": {
+        "title": "Burni API documentation",
+        "version": "v2.1.0",
+        "description": "Documentation for the REST API"
+    },
+    "paths": {
+        "/fhir/Account/{id}": {
+            "get": {
+                "operationId": "readAccount",
+                "tags": [
+                    "Account"
+                ],
+                "summary": "read Account resource by id.",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Resource ID in server"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/fhir+json": {
+                                "schema": {
+                                    "type": "object",
+                                    "items": {
+                                        "$ref": "#/components/schemas/FHIR-XML-RESOURCE"
+                                    }
+                                },
+                                "examples": {
+                                    "Success-Response": {
+                                        "value": {
+                                            "resourceType": "Account",
+                                            "id": "0a2d866d-0362-4e05-9880-f62d054668cf",
+                                            "identifier": [
+                                                {
+                                                    "system": "urn:oid:0.1.2.3.4.5.6.7",
+                                                    "value": "654321"
+                                                }
+                                            ],
+                                            "status": "active",
+                                            "type": {
+                                                "coding": [
+                                                    {
+                                                        "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+                                                        "code": "PBILLACCT",
+                                                        "display": "patient billing account"
+                                                    }
+                                                ],
+                                                "text": "patient"
+                                            },
+                                            "name": "HACC Funded Billing for Peter James Chalmers",
+                                            "subject": [
+                                                {
+                                                    "reference": "Patient/example",
+                                                    "display": "Peter James Chalmers"
+                                                }
+                                            ],
+                                            "servicePeriod": {
+                                                "start": "2016-01-01T08:00:00+08:00",
+                                                "end": "2016-06-30T08:00:00+08:00"
+                                            },
+                                            "coverage": [
+                                                {
+                                                    "coverage": {
+                                                        "reference": "Coverage/7546D"
+                                                    },
+                                                    "priority": 1
+                                                }
+                                            ],
+                                            "owner": {
+                                                "reference": "Organization/hl7"
+                                            },
+                                            "description": "Hospital charges",
+                                            "meta": {
+                                                "tag": [
+                                                    {
+                                                        "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+                                                        "code": "HTEST",
+                                                        "display": "test health data"
+                                                    }
+                                                ],
+                                                "versionId": "1",
+                                                "lastUpdated": "2022-02-13T22:30:14.037+08:00"
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "application/fhir+xml": {
+                                "schema": {
+                                    "type": "object",
+                                    "items": {
+                                        "$ref": "#/components/schemas/FHIR-XML-RESOURCE"
+                                    },
+                                    "xml": {
+                                        "name": "Account"
+                                    }
+                                },
+                                "examples": {
+                                    "Success-Response-XML": {
+                                        "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><Account xmlns=\"http://hl7.org/fhir\"><id value=\"69efa3c0-73b1-4403-ba4b-ffd7b718d053\"/><meta><versionId value=\"1\"/><lastUpdated value=\"2022-02-17T17:34:51.348+08:00\"/><tag><system value=\"http://terminology.hl7.org/CodeSystem/v3-ActReason\"/><code value=\"HTEST\"/><display value=\"test health data\"/></tag></meta><identifier><system value=\"urn:oid:0.1.2.3.4.5.6.7\"/><value value=\"654321\"/></identifier><status value=\"active\"/><type><coding><system value=\"http://terminology.hl7.org/CodeSystem/v3-ActCode\"/><code value=\"PBILLACCT\"/><display value=\"patient billing account\"/></coding><text value=\"patient\"/></type><name value=\"HACC Funded Billing for Peter James Chalmers\"/><subject><reference value=\"Patient/example\"/><display value=\"Peter James Chalmers\"/></subject><servicePeriod><start value=\"2016-01-01T08:00:00+08:00\"/><end value=\"2016-06-30T08:00:00+08:00\"/></servicePeriod><coverage><coverage><reference value=\"Coverage/7546D\"/></coverage><priority value=\"1\"/></coverage><owner><reference value=\"Organization/hl7\"/></owner><description value=\"Hospital charges\"/></Account>"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "error",
+                        "content": {
+                            "application/fhir+json": {
+                                "schema": {
+                                    "type": "object",
+                                    "items": {
+                                        "$ref": "#/components/schemas/FHIR-XML-RESOURCE"
+                                    }
+                                },
+                                "examples": {
+                                    "Not-Found-Response": {
+                                        "value": {
+                                            "resourceType": "OperationOutcome",
+                                            "issue": [
+                                                {
+                                                    "severity": "error",
+                                                    "code": "exception",
+                                                    "diagnostics": "not found Account/0a2d866d-0362-4e05-9880-f62d054668cf"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                }
+                            },
+                            "application/fhir+xml": {
+                                "schema": {
+                                    "type": "object",
+                                    "items": {
+                                        "$ref": "#/components/schemas/FHIR-XML-RESOURCE"
+                                    },
+                                    "xml": {
+                                        "name": "OperationOutcome"
+                                    }
+                                },
+                                "examples": {
+                                    "Not-Found-Response-XML": {
+                                        "value": "<OperationOutcome xmlns='http://hl7.org/fhir'>\n<issue>\n    <severity value='error'/>\n    <code value='exception'/>\n    <diagnostics value='not found Account/0a2d866d-0362-4e05-9880-f62d054668cf'/>\n</issue>\n</OperationOutcome>"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "x-codeSamples": [
+                    {
+                        "lang": "Shell",
+                        "source": "#example from: https://chinlinlee.github.io/Burni/assets/FHIR/fhir-resource-examples/account-example.json\ncurl --location --request GET 'http://burni.example.com/fhir/Account/0a2d866d-0362-4e05-9880-f62d054668cf'",
+                        "label": "cURL"
+                    },
+                    {
+                        "lang": "JavaScript",
+                        "source": " //example from: https://chinlinlee.github.io/Burni/assets/FHIR/fhir-resource-examples/account-example.json\nconst axios = require('axios');\nconst config = {\n    method: 'get',\n    url: 'http://burni.example.com/fhir/Account/0a2d866d-0362-4e05-9880-f62d054668cf'\n};\n\naxios(config)\n.then(function (response) {\n    console.log(JSON.stringify(response.data));\n})\n.catch(function (error) {\n    console.log(error);\n});",
+                        "label": "javascript Axios"
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "FHIR-JSON-RESOURCE": {
+                "properties": {}
+            },
+            "FHIR-XML-RESOURCE": {
+                "properties": {}
+            },
+            "readAccount": {
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Resource ID in server"
+                    }
+                },
+                "required": [
+                    "id"
+                ]
+            }
+        }
+    }
+}
+```
+
+
+# Overview (/docs/fhir-api-documentation/overview)
+
+
+
+# FHIR API overview [#fhir-api-overview]
+
+The burni currently support [FHIR RESTful API](https://www.hl7.org/fhir/http.html) below:
+
+## Instance Level Interactions [#instance-level-interactions]
+
+* [read](https://www.hl7.org/fhir/http.html#read)
+* [vread](https://www.hl7.org/fhir/http.html#vread)
+* [update](https://www.hl7.org/fhir/http.html#update)
+* [delete](https://www.hl7.org/fhir/http.html#delete)
+* [history](https://www.hl7.org/fhir/http.html#history)
+
+## Type Level Interactions [#type-level-interactions]
+
+* [create](https://www.hl7.org/fhir/http.html#create)
+* [search](https://www.hl7.org/fhir/http.html#search)
+
+## Whole System Interactions [#whole-system-interactions]
+
+None
+
+
+# FHIR Validator (/docs/fhir-validator)
+
+
+
+Burni's FHIR Validator is implemented through the integration of Node.js and Java from the project [node-java-fhir-validator](https://www.npmjs.com/package/node-java-fhir-validator).
+
+<Callout type="warn" title="Important Note">
+  Please use version 0.2.0 of [node-java-fhir-validator](https://www.npmjs.com/package/node-java-fhir-validator). Subsequent versions have not been integrated into Burni yet.
+
+  * Version 0.2.0 of node-java-fhir-validator uses [joeferner / node-java](https://github.com/joeferner/node-java).
+  * Subsequent versions use [node-java-bridge](https://github.com/MarkusJx/node-java-bridge) to replicate the functionality of [fhir-validator-wrapper](https://github.com/inferno-framework/fhir-validator-wrapper).
+</Callout>
+
+* The path where Burni places the FHIR Validator: `utils/validator`
+  * `index.js`: Initializes and imports StructureDefinition (profile json file) and xxx.package.tgz (ig tgz file) from the `utils/validator/igs` folder into the validator code.
+  * `processor.js`: Implements the code for `validateResource`.
+
+## Which APIs use the FHIR Validator? [#which-apis-use-the-fhir-validator]
+
+* create: When POSTing data, validation is performed first. If validation passes, then create operation is executed; otherwise, a 422 error is returned.
+* update: When PUTting data, validation is performed first. If validation passes, then update operation is executed; otherwise, a 422 error is returned.
+* $validate: Validation function that returns a 200 response if successful; otherwise, a 422 error is returned.
+
+
+# Add search parameter (/docs/search-parameter/add-search-parameter)
+
+
+
+The code about search parameters can be found in `models\FHIR\queryBuild.js` and `models\FHIR\searchParameterQueryHandler.js` files.
+
+* `queryBuild.js`: get single MongoDB query object from data type.
+* `searchParameterQueryHandler.js`: using `queryBuild.js` and get fully MongoDB query object from HTTP query param.
+
+Some search parameters from generator will got missing or incorrect. You can fix by using methods in `models\FHIR\searchParameterQueryHandler.js`.
+
+## Example: Bundle.composition [#example-bundlecomposition]
+
+In some use cases, you may want to search `patient/{id}` in `entry.resource.subject.reference` of bundle resource.
+
+* The example URL:
+
+```sh
+http://localhost:8080/fhir/Bundle?composition.patient=Patient/123
+```
+
+If you wanna support this parameter, you can add code in `api/FHIR/Bundle/BundleParametersHandler.js`.
+
+```js
+//#region composition.patient
+// search parameter name: "composition.patient"
+// field in resource: "entry.resource.subject.reference"
+// type: reference
+paramsSearchFields["composition.patient"]= ["entry.resource.subject.reference"];
+paramsSearch["composition.patient"] = (query) => {
+    try {
+        queryHandler.getReferenceQuery(query, paramsSearchFields, "composition.patient");
+    } catch (e) {
+        console.error(e);
+        throw e;
+    }
+};
+//#endregion
+```
+
+
+# Overview (/docs/search-parameter/overview)
+
+
+
+# Search parameters overview [#search-parameters-overview]
+
+The burni currently support [FHIR search operations](http://www.hl7.org/fhir/search.html) below:
+
+## Search Parameter Types [#search-parameter-types]
+
+* Number
+* Date/DateTime
+* String
+* Token
+* Reference
+
+## Parameters for all resources [#parameters-for-all-resources]
+
+* \_id
+* \_lastUpdated
+
+## Search result parameters [#search-result-parameters]
+
+* \_count
+
+
+# Configuration (/docs/getting-started/configuration)
+
+
+
+## config\config.js [#configconfigjs]
+
+```js
+module.exports = {
+    // add the resource name that you need
+    "Patient" : { 
+        "interaction": {
+            "read": true,
+            "vread": true,
+            "update": true,
+            "delete": true,
+            "history": true,
+            "create": true,
+            "search": true
+        }
+    }
+}
+```
+
+<Callout type="info">
+  This file is config what resources you want to support.
+
+  If you want to support all resources, you can run command below:
+
+  ```sh
+  node config/generate-allResources.js
+  ```
+
+  This will generate config.js for all resources.
+</Callout>
+
+## dotenv [#dotenv]
+
+`.env` in root path.
+
+```bash
+MONGODB_NAME="dbName"
+MONGODB_HOSTS=["mongodb"]
+MONGODB_PORTS=[27017]
+MONGODB_USER="myAdmin"
+MONGODB_PASSWORD="MymongoAdmin1"
+MONGODB_IS_SHARDING_MODE=false
+MONGODB_SLAVEMODE=false
+
+SERVER_PORT=8080 
+
+FHIRSERVER_HOST="localhost"
+FHIRSERVER_PORT=8080 #use by creating bundle url
+FHIRSERVER_APIPATH="fhir"
+
+#If u want to use token auth, add below.
+ENABLE_TOKEN_AUTH=true
+ADMIN_LOGIN_PATH="adminLogin"  
+ADMIN_USERNAME="adminUsername"
+ADMIN_PASSWORD="adminPassword"
+
+ENABLE_CHECK_ALL_RESOURCE_ID=false #true that want to check resource id cross all resource
+ENABLE_CHECK_REFERENCE #true that want to check reference is exist in resource content
+
+ENABLE_CSHARP_VALIDATOR=false 
+VALIDATION_FILES_ROOT_PATH="FHIRValidatorAPI/FHIRValidatorAPI/assets/validationResources" # Please config the path corresponded to CSharp assets/validationResources directory
+VALIDATION_API_URL="https://localhost:44381/api/validate"
+```
+
+## Generate code [#generate-code]
+
+After configuration above, you need to run script below to generate js code of API and mongoose model.
+
+```sh
+npm run build
+```
+
+<Callout type="warn">
+  `TypeError: genParamFunc[type] is not a function` is meaning that method of search parameter not support now.
+</Callout>
+
+
+# Deploy (/docs/getting-started/deploy)
+
+
+
+## With Node.JS [#with-nodejs]
+
+```sh
+node server.js
+```
+
+You will see console printing the information below:
+
+```
+mongodb://localhost:27017/dbName
+moduleName ::  Patient
+path :  path\burni\models\mongodb/model
+moduleName ::  Patient_history
+path :  path\burni\models\mongodb/model
+moduleName ::  FHIRStoredID
+path :  path\burni\models\mongodb/staticModel
+moduleName ::  issuedToken
+path :  path\burni\models\mongodb/staticModel
+http server is listening on port:8089
+we're connected!
+```
+
+## With docker-compose [#with-docker-compose]
+
+The example of `docker-compose.yaml` file in root path
+
+```yaml
+version: '3.4'
+services:
+  fhir-burni-mongodb:
+    image: mongo:4.2
+    container_name : fhir-burni-mongodb
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - ./mongodb/db:/data/db
+    environment:
+      # provide your credentials here
+      - MONGO_INITDB_DATABASE=admin
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=root
+      - MONGO_PORT=27017
+  
+  fhir-burni:
+    build: ./
+    container_name: fhir-burni
+    command: >
+      /bin/sh -c '
+      while ! nc -z fhir-burni-mongodb 27017;
+      do
+        echo "waiting for database ...";
+        sleep 3;
+      done;
+      echo "db is ready!";
+      pm2-runtime start ecosystem.config.js;
+      '
+    volumes :
+      - ./:/nodejs/fhir-burni
+      - /nodejs/fhir-burni/node_modules
+    ports:
+      - 8080:8080
+    depends_on:
+      - fhir-burni-mongodb
+    tty : true
+    restart: on-failure:3
+    stdin_open : true
+```
+
+### docker-compose deploy [#docker-compose-deploy]
+
+```sh
+docker-compose up -d
+```
+
+
+# Installation (/docs/getting-started/installation)
+
+
+
+Please confirm that you have the:
+
+* [git](https://git-scm.com/downloads)
+* [Node.JS](https://nodejs.org/zh-tw/download)
+* [MongoDB](https://www.mongodb.com/try/download/community) > 4.2
+
+## With git [#with-git]
+
+* Clone from git
+
+<CodeBlockTabs defaultValue="bash">
+  <CodeBlockTabsList>
+    <CodeBlockTabsTrigger value="bash">
+      bash
+    </CodeBlockTabsTrigger>
+  </CodeBlockTabsList>
+
+  <CodeBlockTab value="bash">
+    ```bash
+    git clone https://github.com/Chinlinlee/Burni.git
+    ```
+  </CodeBlockTab>
+</CodeBlockTabs>
+
+* Install dependencies
+
+<CodeBlockTabs defaultValue="bash">
+  <CodeBlockTabsList>
+    <CodeBlockTabsTrigger value="bash">
+      bash
+    </CodeBlockTabsTrigger>
+  </CodeBlockTabsList>
+
+  <CodeBlockTab value="bash">
+    ```bash
+    npm install
+    ```
+  </CodeBlockTab>
+</CodeBlockTabs>
+
+after installation, let's starting [configuration](/getting-started/configuration)
+
+
+# searchParameterQueryHandler (/docs/code-api-documentation/models/fhir/search-parameter-query-handler)
+
+
+
+This file is in `models/FHIR/`.
+
+## Functions [#functions]
+
+<dl>
+  <dt>
+    <a href="#getStringQuery">getStringQuery(query, paramsSearchFields, queryFieldName)</a>
+  </dt>
+
+  <dd />
+
+  <dt>
+    <a href="#getAddressQuery">getAddressQuery(query, queryFieldName)</a>
+  </dt>
+
+  <dd />
+
+  <dt>
+    <a href="#getNameQuery">getNameQuery(query, queryFieldName)</a>
+  </dt>
+
+  <dd />
+
+  <dt>
+    <a href="#getTokenQuery">getTokenQuery(query, paramsSearchFields, queryFieldName)</a>
+  </dt>
+
+  <dd />
+
+  <dt>
+    <a href="#getPolyTokenQuery">getPolyTokenQuery(query, paramsSearchFields, queryFieldName, paramsSearchFunc)</a>
+  </dt>
+
+  <dd />
+
+  <dt>
+    <a href="#getNumberQuery">getNumberQuery(query, paramsSearchFields, queryFieldName)</a>
+  </dt>
+
+  <dd />
+
+  <dt>
+    <a href="#getPolyDateQuery">getPolyDateQuery(query, paramsSearchFields, queryFieldName, paramsSearchFunc)</a>
+  </dt>
+
+  <dd />
+</dl>
+
+<a name="getStringQuery" />
+
+## getStringQuery(query, paramsSearchFields, queryFieldName) [#getstringqueryquery-paramssearchfields-queryfieldname]
+
+**Kind**: global function
+
+| Param              | Type                         | Description                                     |
+| ------------------ | ---------------------------- | ----------------------------------------------- |
+| query              | <code>string</code>          | The request query object                        |
+| paramsSearchFields | <code>Array.\<string></code> | The fields of search parameter that in resource |
+| queryFieldName     | <code>string</code>          | The name of search parameter                    |
+
+**Example*&#x2A; &#x2A;(Example of \`address-city\` of search parameter of the Patient resource)*
+
+```js
+// refresh query object to 
+// {
+//    "$and": [
+//       {
+//           "$or": [
+//               {
+//                   "address.city": {
+//                       "$regex": /^PleasantVille/gi
+//                   }
+//               }
+//          ]
+//      }
+//   ]
+// }
+getStringQuery(
+{
+   "address-city": "PleasantVille",
+   "gender": "male",
+   "$and": []
+}, ["address.city"], "address-city");
+```
+
+<a name="getAddressQuery" />
+
+## getAddressQuery(query, queryFieldName) [#getaddressqueryquery-queryfieldname]
+
+**Kind**: global function
+
+| Param          | Type                | Description                  |
+| -------------- | ------------------- | ---------------------------- |
+| query          | <code>string</code> | The request query object     |
+| queryFieldName | <code>string</code> | The name of search parameter |
+
+**Example*&#x2A; &#x2A;(Example of \`address\` of search parameter of the Patient resource)*
+
+```js
+// refresh query object to 
+// {
+//     "$and": [
+//         {
+//             "$or": [
+//                 {
+//                     "address.line": {
+//                         "$regex": /^PleasantVille/gi
+//                     }
+//                 },
+//                 {
+//                     "address.city": {
+//                         "$regex": /^PleasantVille/gi
+//                     }
+//                 },
+//                 {
+//                     "address.district": {
+//                         "$regex": /^PleasantVille/gi
+//                     }
+//                 },
+//                 {
+//                     "address.state": {
+//                         "$regex": /^PleasantVille/gi
+//                     }
+//                 },
+//                 {
+//                     "address.postalCode": {
+//                         "$regex": /^PleasantVille/gi
+//                     }
+//                 },
+//                 {
+//                     "address.country": {
+//                         "$regex": /^PleasantVille/gi
+//                     }
+//                 }
+//             ]
+//         }
+//     ]
+// }
+getAddressQuery(
+{
+   "address": "PleasantVille",
+   "gender": "male",
+   "$and": []
+}, "address");
+```
+
+<a name="getNameQuery" />
+
+## getNameQuery(query, queryFieldName) [#getnamequeryquery-queryfieldname]
+
+**Kind**: global function
+
+| Param          | Type                | Description                  |
+| -------------- | ------------------- | ---------------------------- |
+| query          | <code>string</code> | The request query object     |
+| queryFieldName | <code>string</code> | The name of search parameter |
+
+**Example*&#x2A; &#x2A;(Example of \`name\` of search parameter of the Patient resource)*
+
+```js
+// refresh query object to 
+// {
+//     "$and": [
+//         {
+//             "$or": [
+//                 {
+//                     "$or": [
+//                         {
+//                             "name.text": {
+//                                 "$regex": /^Chalmers/gi
+//                             }
+//                         },
+//                         {
+//                             "name.family": {
+//                                 "$regex": /^Chalmers/gi
+//                             }
+//                         },
+//                         {
+//                             "name.given": {
+//                                 "$regex": /^Chalmers/gi
+//                             }
+//                         },
+//                         {
+//                             "name.suffix": {
+//                                 "$regex": /^Chalmers/gi
+//                             }
+//                         },
+//                         {
+//                             "name.prefix": {
+//                                 "$regex": /^Chalmers/gi
+//                             }
+//                         }
+//                     ]
+//                 }
+//             ]
+//         }
+//     ]
+// }
+```
+
+**Example**
+
+```js
+getNameQuery(
+{
+    "name": "Chalmers"
+}, ["name"], "name");
+```
+
+<a name="getTokenQuery" />
+
+## getTokenQuery(query, paramsSearchFields, queryFieldName) [#gettokenqueryquery-paramssearchfields-queryfieldname]
+
+**Kind**: global function
+
+| Param              | Type                         | Description                                     |
+| ------------------ | ---------------------------- | ----------------------------------------------- |
+| query              | <code>string</code>          | The request query object that in resource       |
+| paramsSearchFields | <code>Array.\<string></code> | The fields of search parameter that in resource |
+| queryFieldName     | <code>string</code>          | The name of search parameter                    |
+
+<a name="getPolyTokenQuery" />
+
+## getPolyTokenQuery(query, paramsSearchFields, queryFieldName, paramsSearchFunc) [#getpolytokenqueryquery-paramssearchfields-queryfieldname-paramssearchfunc]
+
+**Kind**: global function
+
+| Param              | Type                         | Description                                                                    |
+| ------------------ | ---------------------------- | ------------------------------------------------------------------------------ |
+| query              | <code>Object</code>          | The request query object                                                       |
+| paramsSearchFields | <code>Array.\<string></code> | The fields of search parameters that in resource                               |
+| queryFieldName     | <code>string</code>          | The name of search parameter                                                   |
+| paramsSearchFunc   | <code>function</code>        | parameter search function corresponds to data type e.g. code, codeable concept |
+
+**Example*&#x2A; &#x2A;(Example of \`address-use\` of search parameter of the Patient resource)*
+
+```js
+// refresh query object to 
+// {
+//     "$and": [
+//         {
+//             "$or": [
+//                 {
+//                     "$or": [
+//                         {
+//                             "address.use.system": "home" //because some data types have system 
+//                         },
+//                         {
+//                             "address.use": "home"
+//                         }
+//                     ]
+//                 }
+//             ]
+//         }
+//     ]
+// }
+getPolyTokenQuery(
+{
+    "address-use": "home"
+}, ["address.use"], "address-use", (query)=> {
+    try {
+          queryHandler.getStringQuery(query, paramsSearchFields, *"address-city");
+      } catch (e) {
+          console.error(e);
+          throw e;
+      }
+});
+```
+
+<a name="getNumberQuery" />
+
+## getNumberQuery(query, paramsSearchFields, queryFieldName) [#getnumberqueryquery-paramssearchfields-queryfieldname]
+
+**Kind**: global function
+
+| Param              | Type                         | Description                                      |
+| ------------------ | ---------------------------- | ------------------------------------------------ |
+| query              | <code>string</code>          | The request query object                         |
+| paramsSearchFields | <code>Array.\<string></code> | The fields of search parameters that in resource |
+| queryFieldName     | <code>string</code>          | The name of search parameter                     |
+
+**Example*&#x2A; &#x2A;(Example of \`variant-start\` of search parameter of the Molecularsequence resource)*
+
+```js
+// refresh query object to 
+// {
+//     "$and": [
+//         {
+//             "$or": [
+//                 {
+//                     "variant.start": {
+//                         "$eq": 22125503
+//                     }
+//                 }
+//             ]
+//         }
+//     ]
+// }
+getNumberQuery(
+{
+    "$and": [], 
+    "variant-start" : 22125503
+}, ["variant.start"], "variant-start");
+```
+
+<a name="getPolyDateQuery" />
+
+## getPolyDateQuery(query, paramsSearchFields, queryFieldName, paramsSearchFunc) [#getpolydatequeryquery-paramssearchfields-queryfieldname-paramssearchfunc]
+
+**Kind**: global function
+
+| Param              | Type                  | Description                                                            |
+| ------------------ | --------------------- | ---------------------------------------------------------------------- |
+| query              | <code>Object</code>   | The request query object                                               |
+| paramsSearchFields | <code>string</code>   | The fields of search parameters that in resource                       |
+| queryFieldName     | <code>string</code>   | The name of search parameter                                           |
+| paramsSearchFunc   | <code>function</code> | parameter search function corresponds to data type e.g. date, dateTime |
+
+
+# Home (/zh-TW/docs)
+
+
+
+# Burni documentation [#burni-documentation]
+
+# 🚧 &#x2A;*正在進行中...** [#-正在進行中]
+
+## 讓我們開始吧 [#讓我們開始吧]
+
+* 安裝
+* 設定
+* 部屬
+
+
+# 介紹 (/zh-TW/docs/introduction)
+
+
+
+## Burni FHIR Server [#burni-fhir-server]
+
+Burni 使用 Node.JS 、Express 框架以及 MongoDB 實作 FHIR R4 Server，經由簡單的設定即可產生指定 FHIR Resource的 Mongoose Schema、API程式碼並可自行更改，滿足需求。目前Burni支援Windows以及Linux，讓開發人員可以快速架設 FHIR Server。
+
+Burni 所使用的 FHIR 版本為 v4.0.1。
+
+## Server 能力聲明 [#server-能力聲明]
+
+Burni 使用 AEGIS Touchstone Basic-R4-Server 測試.
+
+測試結果:
+
+* [FHIR4-0-1-Basic-Server version 18](https://touchstone.aegis.net/touchstone/conformance/detail?suite=FHIR4-0-1-Basic-Server\&sVersion=18\&testSystem=5f9518730a120e4edef042ae\&supportedOnly=false\&cb=%2fFHIR4-0-1-Basic\&format=ALL\&published=true) (2,216 tests has been passed, 100% Pass)
+* [FHIR4-0-1-Basic-Server version 14](https://touchstone.aegis.net/touchstone/conformance/detail?suite=FHIR4-0-1-Basic-Server\&sVersion=14\&testSystem=5f9518730a120e4edef042ae\&supportedOnly=false\&cb=%2FFHIR4-0-1-Basic\&published=true) (1,948 tests has been passed, 100% Pass)
+
+
+# 產生OpenAPI (/zh-TW/docs/fhir-api-documentation/generate-open-api)
+
+
+
+# 產生 OpenAPI [#產生-openapi]
+
+Burni 使用 [apidoc](https://apidocjs.com/) 以及在`config/config.js`檔案設定的Resources 產生 OpenAPI 文件。並使用[ReDoc](https://github.com/Redocly/redoc)作為API文件的網站.
+
+<Callout type="info">
+  API文件完整範例網站 [here](https://chinlinlee.github.io/Burni/apidoc/redoc/)
+</Callout>
+
+## 如何產生 [#如何產生]
+
+* 使用下面的指令於`docs/apidoc/apidoc-sources`產生含有\[apidoc]註解的檔案
+
+```sh
+node api_generator/doc-generator.js
+```
+
+範例：
+
+```js
+/**
+     * 
+     * @api {get} /fhir/Account/:id read Account
+     * @apiParam {string} id Resource ID in server
+     * @apiName readAccount
+     * @apiGroup Account
+     * @apiVersion  v2.1.0
+     * @apiDescription read Account resource by id.
+     * 
+     * @apiExample {Shell} cURL
+     * #example from: https://chinlinlee.github.io/Burni/assets/FHIR/fhir-resource-examples/account-example.json
+     * curl --location --request GET 'http://burni.example.com/fhir/Account/0a2d866d-0362-4e05-9880-f62d054668cf'
+     * @apiExample {JavaScript} javascript Axios
+     //example from: https://chinlinlee.github.io/Burni/assets/FHIR/fhir-resource-examples/account-example.json
+    const axios = require('axios');
+    const config = {
+        method: 'get',
+        url: 'http://burni.example.com/fhir/Account/0a2d866d-0362-4e05-9880-f62d054668cf'
+    };
+
+    axios(config)
+    .then(function (response) {
+        console.log(JSON.stringify(response.data));
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
+    * @apiSuccess (Success 200 Content-Type: application/fhir+json) {object} FHIR-JSON-RESOURCE
+    * @apiSuccessExample {json} (200) name: Success-Response Content-Type: application/fhir+json
+    {
+    "resourceType": "Account",
+    "id": "0a2d866d-0362-4e05-9880-f62d054668cf",
+    "identifier": [
+        {
+            "system": "urn:oid:0.1.2.3.4.5.6.7",
+            "value": "654321"
+        }
+    ],
+    "status": "active",
+    "type": {
+        "coding": [
+            {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+                "code": "PBILLACCT",
+                "display": "patient billing account"
+            }
+        ],
+        "text": "patient"
+    },
+    "name": "HACC Funded Billing for Peter James Chalmers",
+    "subject": [
+        {
+            "reference": "Patient/example",
+            "display": "Peter James Chalmers"
+        }
+    ],
+    "servicePeriod": {
+        "start": "2016-01-01T08:00:00+08:00",
+        "end": "2016-06-30T08:00:00+08:00"
+    },
+    "coverage": [
+        {
+            "coverage": {
+                "reference": "Coverage/7546D"
+            },
+            "priority": 1
+        }
+    ],
+    "owner": {
+        "reference": "Organization/hl7"
+    },
+    "description": "Hospital charges",
+    "meta": {
+        "tag": [
+            {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+                "code": "HTEST",
+                "display": "test health data"
+            }
+        ],
+        "versionId": "1",
+        "lastUpdated": "2022-02-13T22:30:14.037+08:00"
+    }
+}
+    * 
+    * @apiSuccess (Success 200 Content-Type: application/fhir+xml) {object} FHIR-XML-RESOURCE
+    * @apiSuccessExample {xml} (200) name: Success-Response-XML Content-Type: application/fhir+xml
+    <?xml version="1.0" encoding="UTF-8"?><Account xmlns="http://hl7.org/fhir"><id value="69efa3c0-73b1-4403-ba4b-ffd7b718d053"/><meta><versionId value="1"/><lastUpdated value="2022-02-17T17:34:51.348+08:00"/><tag><system value="http://terminology.hl7.org/CodeSystem/v3-ActReason"/><code value="HTEST"/><display value="test health data"/></tag></meta><identifier><system value="urn:oid:0.1.2.3.4.5.6.7"/><value value="654321"/></identifier><status value="active"/><type><coding><system value="http://terminology.hl7.org/CodeSystem/v3-ActCode"/><code value="PBILLACCT"/><display value="patient billing account"/></coding><text value="patient"/></type><name value="HACC Funded Billing for Peter James Chalmers"/><subject><reference value="Patient/example"/><display value="Peter James Chalmers"/></subject><servicePeriod><start value="2016-01-01T08:00:00+08:00"/><end value="2016-06-30T08:00:00+08:00"/></servicePeriod><coverage><coverage><reference value="Coverage/7546D"/></coverage><priority value="1"/></coverage><owner><reference value="Organization/hl7"/></owner><description value="Hospital charges"/></Account>
+    *
+    * @apiError (Error Not Found 404 Content-Type: application/fhir+json) {object} FHIR-JSON-RESOURCE
+    * @apiErrorExample {json} (404) name: Not-Found-Response Content-Type: application/fhir+json
+    {
+        "resourceType": "OperationOutcome",
+        "issue": [
+            {
+                "severity": "error",
+                "code": "exception",
+                "diagnostics": "not found Account/0a2d866d-0362-4e05-9880-f62d054668cf"
+            }
+        ]
+    }
+    *
+    * @apiError (Error Not Found 404 Content-Type: application/fhir+xml) {object} FHIR-XML-RESOURCE
+    * @apiErrorExample {xml} (404) name: Not-Found-Response-XML Content-Type: application/fhir+xml
+    <OperationOutcome xmlns='http://hl7.org/fhir'>
+    <issue>
+        <severity value='error'/>
+        <code value='exception'/>
+        <diagnostics value='not found Account/0a2d866d-0362-4e05-9880-f62d054668cf'/>
+    </issue>
+    </OperationOutcome>
+    *
+    */
+```
+
+* 使用以下指令在`docs/apidoc/redoc`產生 openAPI 文件
+
+```sh
+node docs/getAPIDocOpenapi.js
+```
+
+範例：
+
+```json
+{
+    "openapi": "3.0.0",
+    "servers": [
+        {
+            "url": "https://dev.burni.xn--7-c56d.com/"
+        }
+    ],
+    "info": {
+        "title": "Burni API documentation",
+        "version": "v2.1.0",
+        "description": "Documentation for the REST API"
+    },
+    "paths": {
+        "/fhir/Account/{id}": {
+            "get": {
+                "operationId": "readAccount",
+                "tags": [
+                    "Account"
+                ],
+                "summary": "read Account resource by id.",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Resource ID in server"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/fhir+json": {
+                                "schema": {
+                                    "type": "object",
+                                    "items": {
+                                        "$ref": "#/components/schemas/FHIR-XML-RESOURCE"
+                                    }
+                                },
+                                "examples": {
+                                    "Success-Response": {
+                                        "value": {
+                                            "resourceType": "Account",
+                                            "id": "0a2d866d-0362-4e05-9880-f62d054668cf",
+                                            "identifier": [
+                                                {
+                                                    "system": "urn:oid:0.1.2.3.4.5.6.7",
+                                                    "value": "654321"
+                                                }
+                                            ],
+                                            "status": "active",
+                                            "type": {
+                                                "coding": [
+                                                    {
+                                                        "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+                                                        "code": "PBILLACCT",
+                                                        "display": "patient billing account"
+                                                    }
+                                                ],
+                                                "text": "patient"
+                                            },
+                                            "name": "HACC Funded Billing for Peter James Chalmers",
+                                            "subject": [
+                                                {
+                                                    "reference": "Patient/example",
+                                                    "display": "Peter James Chalmers"
+                                                }
+                                            ],
+                                            "servicePeriod": {
+                                                "start": "2016-01-01T08:00:00+08:00",
+                                                "end": "2016-06-30T08:00:00+08:00"
+                                            },
+                                            "coverage": [
+                                                {
+                                                    "coverage": {
+                                                        "reference": "Coverage/7546D"
+                                                    },
+                                                    "priority": 1
+                                                }
+                                            ],
+                                            "owner": {
+                                                "reference": "Organization/hl7"
+                                            },
+                                            "description": "Hospital charges",
+                                            "meta": {
+                                                "tag": [
+                                                    {
+                                                        "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+                                                        "code": "HTEST",
+                                                        "display": "test health data"
+                                                    }
+                                                ],
+                                                "versionId": "1",
+                                                "lastUpdated": "2022-02-13T22:30:14.037+08:00"
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "application/fhir+xml": {
+                                "schema": {
+                                    "type": "object",
+                                    "items": {
+                                        "$ref": "#/components/schemas/FHIR-XML-RESOURCE"
+                                    },
+                                    "xml": {
+                                        "name": "Account"
+                                    }
+                                },
+                                "examples": {
+                                    "Success-Response-XML": {
+                                        "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><Account xmlns=\"http://hl7.org/fhir\"><id value=\"69efa3c0-73b1-4403-ba4b-ffd7b718d053\"/><meta><versionId value=\"1\"/><lastUpdated value=\"2022-02-17T17:34:51.348+08:00\"/><tag><system value=\"http://terminology.hl7.org/CodeSystem/v3-ActReason\"/><code value=\"HTEST\"/><display value=\"test health data\"/></tag></meta><identifier><system value=\"urn:oid:0.1.2.3.4.5.6.7\"/><value value=\"654321\"/></identifier><status value=\"active\"/><type><coding><system value=\"http://terminology.hl7.org/CodeSystem/v3-ActCode\"/><code value=\"PBILLACCT\"/><display value=\"patient billing account\"/></coding><text value=\"patient\"/></type><name value=\"HACC Funded Billing for Peter James Chalmers\"/><subject><reference value=\"Patient/example\"/><display value=\"Peter James Chalmers\"/></subject><servicePeriod><start value=\"2016-01-01T08:00:00+08:00\"/><end value=\"2016-06-30T08:00:00+08:00\"/></servicePeriod><coverage><coverage><reference value=\"Coverage/7546D\"/></coverage><priority value=\"1\"/></coverage><owner><reference value=\"Organization/hl7\"/></owner><description value=\"Hospital charges\"/></Account>"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "error",
+                        "content": {
+                            "application/fhir+json": {
+                                "schema": {
+                                    "type": "object",
+                                    "items": {
+                                        "$ref": "#/components/schemas/FHIR-XML-RESOURCE"
+                                    }
+                                },
+                                "examples": {
+                                    "Not-Found-Response": {
+                                        "value": {
+                                            "resourceType": "OperationOutcome",
+                                            "issue": [
+                                                {
+                                                    "severity": "error",
+                                                    "code": "exception",
+                                                    "diagnostics": "not found Account/0a2d866d-0362-4e05-9880-f62d054668cf"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                }
+                            },
+                            "application/fhir+xml": {
+                                "schema": {
+                                    "type": "object",
+                                    "items": {
+                                        "$ref": "#/components/schemas/FHIR-XML-RESOURCE"
+                                    },
+                                    "xml": {
+                                        "name": "OperationOutcome"
+                                    }
+                                },
+                                "examples": {
+                                    "Not-Found-Response-XML": {
+                                        "value": "<OperationOutcome xmlns='http://hl7.org/fhir'>\n<issue>\n    <severity value='error'/>\n    <code value='exception'/>\n    <diagnostics value='not found Account/0a2d866d-0362-4e05-9880-f62d054668cf'/>\n</issue>\n</OperationOutcome>"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "x-codeSamples": [
+                    {
+                        "lang": "Shell",
+                        "source": "#example from: https://chinlinlee.github.io/Burni/assets/FHIR/fhir-resource-examples/account-example.json\ncurl --location --request GET 'http://burni.example.com/fhir/Account/0a2d866d-0362-4e05-9880-f62d054668cf'",
+                        "label": "cURL"
+                    },
+                    {
+                        "lang": "JavaScript",
+                        "source": " //example from: https://chinlinlee.github.io/Burni/assets/FHIR/fhir-resource-examples/account-example.json\nconst axios = require('axios');\nconst config = {\n    method: 'get',\n    url: 'http://burni.example.com/fhir/Account/0a2d866d-0362-4e05-9880-f62d054668cf'\n};\n\naxios(config)\n.then(function (response) {\n    console.log(JSON.stringify(response.data));\n})\n.catch(function (error) {\n    console.log(error);\n});",
+                        "label": "javascript Axios"
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "FHIR-JSON-RESOURCE": {
+                "properties": {}
+            },
+            "FHIR-XML-RESOURCE": {
+                "properties": {}
+            },
+            "readAccount": {
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Resource ID in server"
+                    }
+                },
+                "required": [
+                    "id"
+                ]
+            }
+        }
+    }
+}
+```
+
+
+# 概觀 (/zh-TW/docs/fhir-api-documentation/overview)
+
+
+
+# FHIR API 文件概觀 [#fhir-api-文件概觀]
+
+Burni 目前支援的 [FHIR RESTful API](https://www.hl7.org/fhir/http.html) 如下：
+
+## Instance Level Interactions [#instance-level-interactions]
+
+* [read](https://www.hl7.org/fhir/http.html#read)
+* [vread](https://www.hl7.org/fhir/http.html#vread)
+* [update](https://www.hl7.org/fhir/http.html#update)
+* [delete](https://www.hl7.org/fhir/http.html#delete)
+* [history](https://www.hl7.org/fhir/http.html#history)
+
+## Type Level Interactions [#type-level-interactions]
+
+* [create](https://www.hl7.org/fhir/http.html#create)
+* [search](https://www.hl7.org/fhir/http.html#search)
+
+## Whole System Interactions [#whole-system-interactions]
+
+None
+
+
+# FHIR Validator (/zh-TW/docs/fhir-validator)
+
+
+
+Burni 的 FHIR Validator 透過 Node.js 與 Java 融合的專案 [node-java-fhir-validator](https://www.npmjs.com/package/node-java-fhir-validator) 實現
+
+<Callout type="warn" title="注意事項">
+  [node-java-fhir-validator](https://www.npmjs.com/package/node-java-fhir-validator) **請使用 0.2.0 版本**，後續版本還未整合至 Burni
+
+  * node-java-fhir-validator 0.2.0 版本使用 [joeferner / node-java](https://github.com/joeferner/node-java)
+  * 後續版本則是使用 [node-java-bridge](https://github.com/MarkusJx/node-java-bridge) 重現 [fhir-validator-wrapper](https://github.com/inferno-framework/fhir-validator-wrapper) 的功能
+</Callout>
+
+* Burni 放置 FHIR Validator 的路徑: `utils/validator`
+  * `index.js`: 初始化引入 `utils/validator/igs` 資料夾中的 StructureDefinition (profile json file) 和 xxx.package.tgz (ig tgz file) 到 validator 的程式碼
+  * `processor.js`: 實作 `validateResource` 的程式碼
+
+## 哪些 API 使用了 FHIR Validator? [#哪些-api-使用了-fhir-validator]
+
+* create: 當 POST 資料時，會先進行驗證，驗證通過才會進行 create，反之回傳 422 錯誤
+* update: 當 PUT 資料時，會先進行驗證，驗證通過才會進行 update，反之回傳 422 錯誤
+* $validate: 驗證功能，通過返回 200，反之回傳 422 錯誤
+
+
+# 自行新增搜尋參數 (/zh-TW/docs/search-parameter/add-search-parameter)
+
+
+
+與搜尋參數相關的程式碼位於`models\FHIR\queryBuild.js` 以及 `models\FHIR\searchParameterQueryHandler.js` 檔案。
+
+* `queryBuild.js`: 根據不同的 Data Type 組成單個MongoDB 查詢語法。
+* `searchParameterQueryHandler.js`: 根據 HTTP 網址中的查詢條件使用 `queryBuild.js` 取得完整的 MongoDB 查詢語法。
+
+由產生器產生之部分搜尋參數可能是錯誤的或遺失。您可以使用 `models\FHIR\searchParameterQueryHandler.js` 內的方法修正。
+
+## 範例： Bundle.composition [#範例-bundlecomposition]
+
+在一些使用案例，您也許會想使用 bundle 的 `entry.resource.subject.reference` 搜尋 `patient/{id}`。
+
+* The example URL:
+
+```sh
+http://localhost:8080/fhir/Bundle?composition.patient=Patient/123
+```
+
+如果您想支援此項搜尋參數，您可以在 `api/FHIR/Bundle/BundleParametersHandler.js` 檔案新增以下程式碼
+
+```js
+//#region composition.patient
+// search parameter name: "composition.patient"
+// field in resource: "entry.resource.subject.reference"
+// type: reference
+paramsSearchFields["composition.patient"]= ["entry.resource.subject.reference"];
+paramsSearch["composition.patient"] = (query) => {
+    try {
+        queryHandler.getReferenceQuery(query, paramsSearchFields, "composition.patient");
+    } catch (e) {
+        console.error(e);
+        throw e;
+    }
+};
+//#endregion
+```
+
+
+# 概觀 (/zh-TW/docs/search-parameter/overview)
+
+
+
+# 搜尋參數概觀 [#搜尋參數概觀]
+
+Burni 目前支援的 [FHIR search operations](http://www.hl7.org/fhir/search.html) 如下:
+
+## Search Parameter Types [#search-parameter-types]
+
+* Number
+* Date/DateTime
+* String
+* Token
+* Reference
+
+## Parameters for all resources [#parameters-for-all-resources]
+
+* \_id
+* \_lastUpdated
+
+## Search result parameters [#search-result-parameters]
+
+* \_count
+
+<Callout type="info">
+  下一章您將會知道如何修正 Burni 遺失或錯誤的搜尋參數。下一章[自行新增搜尋參數](/getting-started/configuration)
+</Callout>
+
+
+# 設定 (/zh-TW/docs/getting-started/configuration)
+
+
+
+# Configuration [#configuration]
+
+## config\config.js [#configconfigjs]
+
+```js
+module.exports = {
+    // add the resource name that you need
+    "Patient" : { 
+        "interaction": {
+            "read": true,
+            "vread": true,
+            "update": true,
+            "delete": true,
+            "history": true,
+            "create": true,
+            "search": true
+        }
+    }
+}
+```
+
+<Callout type="info">
+  此檔案在設定您所想支援的FHIR Resources(資源)。
+
+  如果您想支援所有的FHIR Resources(資源)，您可以執行以下指令：
+
+  ```sh
+  node config/generate-allResources.js
+  ```
+
+  執行指令將會產生已設定所有FHIR Resource(資源)的config.js檔案
+</Callout>
+
+## dotenv [#dotenv]
+
+`.env` 於專案根目錄
+
+```bash
+MONGODB_NAME="dbName"
+MONGODB_HOSTS=["mongodb"]
+MONGODB_PORTS=[27017]
+MONGODB_USER="myAdmin"
+MONGODB_PASSWORD="MymongoAdmin1"
+MONGODB_IS_SHARDING_MODE=false
+MONGODB_SLAVEMODE=false
+
+SERVER_PORT=8080 
+
+FHIRSERVER_HOST="localhost"
+FHIRSERVER_PORT=8080 #use by creating bundle url
+FHIRSERVER_APIPATH="fhir"
+
+#If u want to use token auth, add below.
+ENABLE_TOKEN_AUTH=true
+ADMIN_LOGIN_PATH="adminLogin"  
+ADMIN_USERNAME="adminUsername"
+ADMIN_PASSWORD="adminPassword"
+
+ENABLE_CHECK_ALL_RESOURCE_ID=false #true that want to check resource id cross all resource
+ENABLE_CHECK_REFERENCE #true that want to check reference is exist in resource content
+
+ENABLE_CSHARP_VALIDATOR=false 
+VALIDATION_FILES_ROOT_PATH="FHIRValidatorAPI/FHIRValidatorAPI/assets/validationResources" # Please config the path corresponded to CSharp assets/validationResources directory
+VALIDATION_API_URL="https://localhost:44381/api/validate"
+```
+
+## 產生程式碼 [#產生程式碼]
+
+如果您已完成以上的設定，您必須執行以下指令產生 Mongoose Model、API 程式碼讓 Burni 正常運作。
+
+```sh
+npm run build
+```
+
+<Callout type="warn">
+  `TypeError: genParamFunc[type] is not a function` 代表此類型的搜尋參數目前不支援。
+</Callout>
+
+
+# 部屬 (/zh-TW/docs/getting-started/deploy)
+
+
+
+## 使用 Node.JS [#使用-nodejs]
+
+```sh
+node server.js
+```
+
+您會看到 console 打印以下訊息：
+
+```
+mongodb://localhost:27017/dbName
+moduleName ::  Patient
+path :  path\burni\models\mongodb/model
+moduleName ::  Patient_history
+path :  path\burni\models\mongodb/model
+moduleName ::  FHIRStoredID
+path :  path\burni\models\mongodb/staticModel
+moduleName ::  issuedToken
+path :  path\burni\models\mongodb/staticModel
+http server is listening on port:8089
+we're connected!
+```
+
+## 使用 docker-compose [#使用-docker-compose]
+
+以下是來自根目錄 `docker-compose.yaml` 的範例
+
+```yaml
+version: '3.4'
+services:
+  fhir-burni-mongodb:
+    image: mongo:4.2
+    container_name : fhir-burni-mongodb
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - ./mongodb/db:/data/db
+    environment:
+      # provide your credentials here
+      - MONGO_INITDB_DATABASE=admin
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=root
+      - MONGO_PORT=27017
+  
+  fhir-burni:
+    build: ./
+    container_name: fhir-burni
+    command: >
+      /bin/sh -c '
+      while ! nc -z fhir-burni-mongodb 27017;
+      do
+        echo "waiting for database ...";
+        sleep 3;
+      done;
+      echo "db is ready!";
+      pm2-runtime start ecosystem.config.js;
+      '
+    volumes :
+      - ./:/nodejs/fhir-burni
+      - /nodejs/fhir-burni/node_modules
+    ports:
+      - 8080:8080
+    depends_on:
+      - fhir-burni-mongodb
+    tty : true
+    restart: on-failure:3
+    stdin_open : true
+```
+
+### docker-compose部屬 [#docker-compose部屬]
+
+```sh
+docker-compose up -d
+```
+
+
+# 安裝 (/zh-TW/docs/getting-started/installation)
+
+
+
+# Installation [#installation]
+
+請確認您的環境有以下內容：
+
+* [git](https://git-scm.com/downloads)
+* [Node.JS](https://nodejs.org/zh-tw/download)
+* [MongoDB](https://www.mongodb.com/try/download/community) > 4.2
+
+## 使用 git [#使用-git]
+
+* 從 git 複製專案
+
+<CodeBlockTabs defaultValue="bash">
+  <CodeBlockTabsList>
+    <CodeBlockTabsTrigger value="bash">
+      bash
+    </CodeBlockTabsTrigger>
+  </CodeBlockTabsList>
+
+  <CodeBlockTab value="bash">
+    ```bash
+    git clone https://github.com/Chinlinlee/Burni.git
+    ```
+  </CodeBlockTab>
+</CodeBlockTabs>
+
+* 安裝套件
+
+<CodeBlockTabs defaultValue="bash">
+  <CodeBlockTabsList>
+    <CodeBlockTabsTrigger value="bash">
+      bash
+    </CodeBlockTabsTrigger>
+  </CodeBlockTabsList>
+
+  <CodeBlockTab value="bash">
+    ```bash
+    npm install
+    ```
+  </CodeBlockTab>
+</CodeBlockTabs>
+
+安裝完畢後，下一步進行[設定](/getting-started/configuration)
+
+
+# searchParameterQueryHandler (/zh-TW/docs/code-api-documentation/models/fhir/search-parameter-query-handler)
+
+
+
+此檔案位於 `models/FHIR/`.
+
+## Functions [#functions]
+
+<dl>
+  <dt>
+    <a href="#getStringQuery">getStringQuery(query, paramsSearchFields, queryFieldName)</a>
+  </dt>
+
+  <dd />
+
+  <dt>
+    <a href="#getAddressQuery">getAddressQuery(query, queryFieldName)</a>
+  </dt>
+
+  <dd />
+
+  <dt>
+    <a href="#getNameQuery">getNameQuery(query, queryFieldName)</a>
+  </dt>
+
+  <dd />
+
+  <dt>
+    <a href="#getTokenQuery">getTokenQuery(query, paramsSearchFields, queryFieldName)</a>
+  </dt>
+
+  <dd />
+
+  <dt>
+    <a href="#getPolyTokenQuery">getPolyTokenQuery(query, paramsSearchFields, queryFieldName, paramsSearchFunc)</a>
+  </dt>
+
+  <dd />
+
+  <dt>
+    <a href="#getNumberQuery">getNumberQuery(query, paramsSearchFields, queryFieldName)</a>
+  </dt>
+
+  <dd />
+
+  <dt>
+    <a href="#getPolyDateQuery">getPolyDateQuery(query, paramsSearchFields, queryFieldName, paramsSearchFunc)</a>
+  </dt>
+
+  <dd />
+</dl>
+
+<a name="getStringQuery" />
+
+## getStringQuery(query, paramsSearchFields, queryFieldName) [#getstringqueryquery-paramssearchfields-queryfieldname]
+
+**Kind**: global function
+
+| Param              | Type                         | Description                                     |
+| ------------------ | ---------------------------- | ----------------------------------------------- |
+| query              | <code>string</code>          | The request query object                        |
+| paramsSearchFields | <code>Array.\<string></code> | The fields of search parameter that in resource |
+| queryFieldName     | <code>string</code>          | The name of search parameter                    |
+
+**Example*&#x2A; &#x2A;(Example of \`address-city\` of search parameter of the Patient resource)*
+
+```js
+// refresh query object to 
+// {
+//    "$and": [
+//       {
+//           "$or": [
+//               {
+//                   "address.city": {
+//                       "$regex": /^PleasantVille/gi
+//                   }
+//               }
+//          ]
+//      }
+//   ]
+// }
+getStringQuery(
+{
+   "address-city": "PleasantVille",
+   "gender": "male",
+   "$and": []
+}, ["address.city"], "address-city");
+```
+
+<a name="getAddressQuery" />
+
+## getAddressQuery(query, queryFieldName) [#getaddressqueryquery-queryfieldname]
+
+**Kind**: global function
+
+| Param          | Type                | Description                  |
+| -------------- | ------------------- | ---------------------------- |
+| query          | <code>string</code> | The request query object     |
+| queryFieldName | <code>string</code> | The name of search parameter |
+
+**Example*&#x2A; &#x2A;(Example of \`address\` of search parameter of the Patient resource)*
+
+```js
+// refresh query object to 
+// {
+//     "$and": [
+//         {
+//             "$or": [
+//                 {
+//                     "address.line": {
+//                         "$regex": /^PleasantVille/gi
+//                     }
+//                 },
+//                 {
+//                     "address.city": {
+//                         "$regex": /^PleasantVille/gi
+//                     }
+//                 },
+//                 {
+//                     "address.district": {
+//                         "$regex": /^PleasantVille/gi
+//                     }
+//                 },
+//                 {
+//                     "address.state": {
+//                         "$regex": /^PleasantVille/gi
+//                     }
+//                 },
+//                 {
+//                     "address.postalCode": {
+//                         "$regex": /^PleasantVille/gi
+//                     }
+//                 },
+//                 {
+//                     "address.country": {
+//                         "$regex": /^PleasantVille/gi
+//                     }
+//                 }
+//             ]
+//         }
+//     ]
+// }
+getAddressQuery(
+{
+   "address": "PleasantVille",
+   "gender": "male",
+   "$and": []
+}, "address");
+```
+
+<a name="getNameQuery" />
+
+## getNameQuery(query, queryFieldName) [#getnamequeryquery-queryfieldname]
+
+**Kind**: global function
+
+| Param          | Type                | Description                  |
+| -------------- | ------------------- | ---------------------------- |
+| query          | <code>string</code> | The request query object     |
+| queryFieldName | <code>string</code> | The name of search parameter |
+
+**Example*&#x2A; &#x2A;(Example of \`name\` of search parameter of the Patient resource)*
+
+```js
+// refresh query object to 
+// {
+//     "$and": [
+//         {
+//             "$or": [
+//                 {
+//                     "$or": [
+//                         {
+//                             "name.text": {
+//                                 "$regex": /^Chalmers/gi
+//                             }
+//                         },
+//                         {
+//                             "name.family": {
+//                                 "$regex": /^Chalmers/gi
+//                             }
+//                         },
+//                         {
+//                             "name.given": {
+//                                 "$regex": /^Chalmers/gi
+//                             }
+//                         },
+//                         {
+//                             "name.suffix": {
+//                                 "$regex": /^Chalmers/gi
+//                             }
+//                         },
+//                         {
+//                             "name.prefix": {
+//                                 "$regex": /^Chalmers/gi
+//                             }
+//                         }
+//                     ]
+//                 }
+//             ]
+//         }
+//     ]
+// }
+```
+
+**Example**
+
+```js
+getNameQuery(
+{
+    "name": "Chalmers"
+}, ["name"], "name");
+```
+
+<a name="getTokenQuery" />
+
+## getTokenQuery(query, paramsSearchFields, queryFieldName) [#gettokenqueryquery-paramssearchfields-queryfieldname]
+
+**Kind**: global function
+
+| Param              | Type                         | Description                                     |
+| ------------------ | ---------------------------- | ----------------------------------------------- |
+| query              | <code>string</code>          | The request query object that in resource       |
+| paramsSearchFields | <code>Array.\<string></code> | The fields of search parameter that in resource |
+| queryFieldName     | <code>string</code>          | The name of search parameter                    |
+
+<a name="getPolyTokenQuery" />
+
+## getPolyTokenQuery(query, paramsSearchFields, queryFieldName, paramsSearchFunc) [#getpolytokenqueryquery-paramssearchfields-queryfieldname-paramssearchfunc]
+
+**Kind**: global function
+
+| Param              | Type                         | Description                                                                    |
+| ------------------ | ---------------------------- | ------------------------------------------------------------------------------ |
+| query              | <code>Object</code>          | The request query object                                                       |
+| paramsSearchFields | <code>Array.\<string></code> | The fields of search parameters that in resource                               |
+| queryFieldName     | <code>string</code>          | The name of search parameter                                                   |
+| paramsSearchFunc   | <code>function</code>        | parameter search function corresponds to data type e.g. code, codeable concept |
+
+**Example*&#x2A; &#x2A;(Example of \`address-use\` of search parameter of the Patient resource)*
+
+```js
+// refresh query object to 
+// {
+//     "$and": [
+//         {
+//             "$or": [
+//                 {
+//                     "$or": [
+//                         {
+//                             "address.use.system": "home" //because some data types have system 
+//                         },
+//                         {
+//                             "address.use": "home"
+//                         }
+//                     ]
+//                 }
+//             ]
+//         }
+//     ]
+// }
+getPolyTokenQuery(
+{
+    "address-use": "home"
+}, ["address.use"], "address-use", (query)=> {
+    try {
+          queryHandler.getStringQuery(query, paramsSearchFields, *"address-city");
+      } catch (e) {
+          console.error(e);
+          throw e;
+      }
+});
+```
+
+<a name="getNumberQuery" />
+
+## getNumberQuery(query, paramsSearchFields, queryFieldName) [#getnumberqueryquery-paramssearchfields-queryfieldname]
+
+**Kind**: global function
+
+| Param              | Type                         | Description                                      |
+| ------------------ | ---------------------------- | ------------------------------------------------ |
+| query              | <code>string</code>          | The request query object                         |
+| paramsSearchFields | <code>Array.\<string></code> | The fields of search parameters that in resource |
+| queryFieldName     | <code>string</code>          | The name of search parameter                     |
+
+**Example*&#x2A; &#x2A;(Example of \`variant-start\` of search parameter of the Molecularsequence resource)*
+
+```js
+// refresh query object to 
+// {
+//     "$and": [
+//         {
+//             "$or": [
+//                 {
+//                     "variant.start": {
+//                         "$eq": 22125503
+//                     }
+//                 }
+//             ]
+//         }
+//     ]
+// }
+getNumberQuery(
+{
+    "$and": [], 
+    "variant-start" : 22125503
+}, ["variant.start"], "variant-start");
+```
+
+<a name="getPolyDateQuery" />
+
+## getPolyDateQuery(query, paramsSearchFields, queryFieldName, paramsSearchFunc) [#getpolydatequeryquery-paramssearchfields-queryfieldname-paramssearchfunc]
+
+**Kind**: global function
+
+| Param              | Type                  | Description                                                            |
+| ------------------ | --------------------- | ---------------------------------------------------------------------- |
+| query              | <code>Object</code>   | The request query object                                               |
+| paramsSearchFields | <code>string</code>   | The fields of search parameters that in resource                       |
+| queryFieldName     | <code>string</code>   | The name of search parameter                                           |
+| paramsSearchFunc   | <code>function</code> | parameter search function corresponds to data type e.g. date, dateTime |

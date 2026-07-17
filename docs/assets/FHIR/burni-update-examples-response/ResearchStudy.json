@@ -1,9 +1,0 @@
-{
-    "resourceType": "ResearchStudy",
-    "id": "ResearchStudy-example",
-    "status": "completed",
-    "meta": {
-        "versionId": "20",
-        "lastUpdated": "2022-02-17T23:28:39.414+08:00"
-    }
-}
