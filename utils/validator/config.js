@@ -1,49 +1,71 @@
 const DEFAULT_VALIDATOR_TIMEOUT_MS = 30000;
 
-function getValidatorTimeoutMs() {
-    const timeoutMs = process.env.VALIDATOR_TIMEOUT_MS;
-    if (timeoutMs === undefined || timeoutMs === "") {
-        return DEFAULT_VALIDATOR_TIMEOUT_MS;
+/**
+ * @param {string | undefined} timeoutMs
+ * @returns {{ ok: true, value: number } | { ok: false }}
+ */
+function parseValidatorTimeoutMs(timeoutMs) {
+    if (timeoutMs === undefined) {
+        return { ok: true, value: DEFAULT_VALIDATOR_TIMEOUT_MS };
     }
-    return Number(timeoutMs);
+
+    if (!/^[1-9]\d*$/.test(timeoutMs)) {
+        return { ok: false };
+    }
+
+    return { ok: true, value: Number(timeoutMs) };
 }
 
-function assertValidatorConfig() {
+function getValidatorTimeoutMs() {
+    const parsed = parseValidatorTimeoutMs(process.env.VALIDATOR_TIMEOUT_MS);
+    return parsed.ok ? parsed.value : DEFAULT_VALIDATOR_TIMEOUT_MS;
+}
+
+/**
+ * @returns {{ valid: true } | { valid: false, error: string }}
+ */
+function validateValidatorConfig() {
     if (process.env.ENABLE_VALIDATOR !== "true") {
-        return;
+        return { valid: true };
     }
 
     const validatorUrl = process.env.VALIDATOR_URL;
     if (!validatorUrl || !validatorUrl.trim()) {
-        console.error("VALIDATOR_URL is required when ENABLE_VALIDATOR=true");
-        process.exit(1);
+        return { valid: false, error: "VALIDATOR_URL is required when ENABLE_VALIDATOR=true" };
     }
 
     let parsedUrl;
     try {
         parsedUrl = new URL(validatorUrl);
     } catch {
-        console.error("VALIDATOR_URL must be an absolute http or https URL");
-        process.exit(1);
+        return { valid: false, error: "VALIDATOR_URL must be an absolute http or https URL" };
     }
 
     if (parsedUrl.protocol !== "http:" && parsedUrl.protocol !== "https:") {
-        console.error("VALIDATOR_URL must be an absolute http or https URL");
-        process.exit(1);
+        return { valid: false, error: "VALIDATOR_URL must be an absolute http or https URL" };
     }
 
-    const timeoutMs = process.env.VALIDATOR_TIMEOUT_MS;
-    if (timeoutMs === undefined || timeoutMs === "") {
-        return;
+    if (process.env.VALIDATOR_TIMEOUT_MS !== undefined) {
+        const timeoutResult = parseValidatorTimeoutMs(process.env.VALIDATOR_TIMEOUT_MS);
+        if (!timeoutResult.ok) {
+            return { valid: false, error: "VALIDATOR_TIMEOUT_MS must be a positive integer" };
+        }
     }
 
-    if (!/^[1-9]\d*$/.test(timeoutMs)) {
-        console.error("VALIDATOR_TIMEOUT_MS must be a positive integer");
+    return { valid: true };
+}
+
+function assertValidatorConfig() {
+    const result = validateValidatorConfig();
+    if (!result.valid) {
+        console.error(result.error);
         process.exit(1);
     }
 }
 
 module.exports = {
     assertValidatorConfig,
-    getValidatorTimeoutMs
+    getValidatorTimeoutMs,
+    parseValidatorTimeoutMs,
+    validateValidatorConfig
 };

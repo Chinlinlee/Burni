@@ -35,9 +35,9 @@ module.exports = async function (req, res, resourceType) {
             let validationResult = await validateResource(req.body);
 
             if (validationResult.code !== 200) {
-                return doRes(validationResult.code, validationResult.message);
+                return doRes(validationResult.code, validationResult.operationOutcome);
             }
-            operationOutcomeMessage = validationResult.message;
+            operationOutcomeMessage = validationResult.operationOutcome;
         } else {
             operationOutcomeMessage = await getValidateResult(
                 req,

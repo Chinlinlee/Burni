@@ -11,6 +11,7 @@ const {
     ErrorOperationOutcome
 } = require("@models/FHIR/httpMessage");
 const { BaseFhirApiService } = require("./base.service");
+const { throwIfValidationFailed } = require("@root/utils/validator/validation-result");
 const { logger } = require("@root/utils/log");
 const { CreateService } = require("./create.service");
 const { UpdateService } = require("./update.service");
@@ -254,12 +255,7 @@ class TransactionCreateHandler extends BaseTransactionHandler {
     async create() {
         // Validate user request body
         let validation = await BaseFhirApiService.validateRequestResource(this.resource);
-        if (!validation.status) {
-            if (validation.code === 422) {
-                throw new FhirValidationError(validation.result);
-            }
-            throw new ErrorOperationOutcome(validation.code, validation.result);
-        }
+        throwIfValidationFailed(validation);
 
         let { result } = await CreateService.insertResource(this.resourceType, this.resource, this.transaction);
         this.replaceIdInEntry(result);
@@ -290,12 +286,7 @@ class TransactionUpdateHandler extends BaseTransactionHandler {
     async update() {
         // Validate user request body
         let validation = await BaseFhirApiService.validateRequestResource(this.resource);
-        if (!validation.status) {
-            if (validation.code === 422) {
-                throw new FhirValidationError(validation.result);
-            }
-            throw new ErrorOperationOutcome(validation.code, validation.result);
-        }
+        throwIfValidationFailed(validation);
 
         let { code, result } = await UpdateService.insertOrUpdateResource(this.resourceType, this.resource, getIdInFullUrl(this.fullUrl), this.transaction);
         this.replaceIdInEntry(result);

@@ -28,7 +28,7 @@ function buildValidatorUrl(resource) {
 
 /**
  * @param {Object} operationOutcome
- * @returns {{ isError: boolean, code: number, message: Object }}
+ * @returns {{ code: number, operationOutcome: Object }}
  */
 function mapOperationOutcome(operationOutcome) {
     const hasError = operationOutcome.issue?.some(
@@ -36,24 +36,22 @@ function mapOperationOutcome(operationOutcome) {
     );
 
     return {
-        isError: !!hasError,
         code: hasError ? 422 : 200,
-        message: operationOutcome
+        operationOutcome
     };
 }
 
 /**
  * @param {Object} resource
- * @param {{ fetch?: typeof nodeFetch, timeoutMs?: number }} [options]
+ * @param {{ timeoutMs?: number }} [options]
  */
 async function validateResource(resource, options = {}) {
-    const fetch = options.fetch || fetchImpl;
     const timeoutMs = options.timeoutMs ?? getValidatorTimeoutMs();
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), timeoutMs);
 
     try {
-        const response = await fetch(buildValidatorUrl(resource), {
+        const response = await fetchImpl(buildValidatorUrl(resource), {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -67,9 +65,8 @@ async function validateResource(resource, options = {}) {
             body = await response.json();
         } catch {
             return {
-                isError: true,
                 code: 502,
-                message: handleError.exception(
+                operationOutcome: handleError.exception(
                     "Validator response is not a valid OperationOutcome"
                 )
             };
@@ -77,9 +74,8 @@ async function validateResource(resource, options = {}) {
 
         if (body?.resourceType !== "OperationOutcome") {
             return {
-                isError: true,
                 code: 502,
-                message: handleError.exception(
+                operationOutcome: handleError.exception(
                     "Validator response is not an OperationOutcome"
                 )
             };
@@ -92,9 +88,8 @@ async function validateResource(resource, options = {}) {
             : (e?.message || "Validator is unreachable");
 
         return {
-            isError: true,
             code: 503,
-            message: handleError.exception(message)
+            operationOutcome: handleError.exception(message)
         };
     } finally {
         clearTimeout(timeout);

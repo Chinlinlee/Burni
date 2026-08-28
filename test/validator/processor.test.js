@@ -35,8 +35,7 @@ describe("remote validator processor", () => {
             const result = await validateResource({ resourceType: "Patient" });
 
             expect(result.code).to.equal(422);
-            expect(result.isError).to.equal(true);
-            expect(result.message).to.deep.equal(validatorOutcome);
+            expect(result.operationOutcome).to.deep.equal(validatorOutcome);
         });
 
         it("maps warning or information issues to 200 and returns the validator OperationOutcome", async () => {
@@ -52,8 +51,7 @@ describe("remote validator processor", () => {
             const result = await validateResource({ resourceType: "Patient" });
 
             expect(result.code).to.equal(200);
-            expect(result.isError).to.equal(false);
-            expect(result.message).to.deep.equal(validatorOutcome);
+            expect(result.operationOutcome).to.deep.equal(validatorOutcome);
         });
 
         it("maps fatal issues to 422", () => {
@@ -63,7 +61,6 @@ describe("remote validator processor", () => {
             });
 
             expect(result.code).to.equal(422);
-            expect(result.isError).to.equal(true);
         });
     });
 
@@ -83,9 +80,8 @@ describe("remote validator processor", () => {
             );
 
             expect(result.code).to.equal(503);
-            expect(result.isError).to.equal(true);
-            expect(result.message.resourceType).to.equal("OperationOutcome");
-            expect(result.message.issue[0].diagnostics).to.equal("Validator request timed out");
+            expect(result.operationOutcome.resourceType).to.equal("OperationOutcome");
+            expect(result.operationOutcome.issue[0].diagnostics).to.equal("Validator request timed out");
         });
 
         it("returns 503 when the validator connection fails", async () => {
@@ -96,9 +92,8 @@ describe("remote validator processor", () => {
             const result = await validateResource({ resourceType: "Patient" });
 
             expect(result.code).to.equal(503);
-            expect(result.isError).to.equal(true);
-            expect(result.message.resourceType).to.equal("OperationOutcome");
-            expect(result.message.issue[0].diagnostics).to.equal("connect ECONNREFUSED");
+            expect(result.operationOutcome.resourceType).to.equal("OperationOutcome");
+            expect(result.operationOutcome.issue[0].diagnostics).to.equal("connect ECONNREFUSED");
         });
 
         it("returns 502 when the response body is not an OperationOutcome", async () => {
@@ -109,9 +104,8 @@ describe("remote validator processor", () => {
             const result = await validateResource({ resourceType: "Patient" });
 
             expect(result.code).to.equal(502);
-            expect(result.isError).to.equal(true);
-            expect(result.message.resourceType).to.equal("OperationOutcome");
-            expect(result.message.issue[0].diagnostics).to.equal(
+            expect(result.operationOutcome.resourceType).to.equal("OperationOutcome");
+            expect(result.operationOutcome.issue[0].diagnostics).to.equal(
                 "Validator response is not an OperationOutcome"
             );
         });

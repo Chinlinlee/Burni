@@ -120,7 +120,7 @@ class BaseFhirApiService {
                 return {
                     status: false,
                     code: validationResult.code,
-                    result: validationResult.message
+                    result: validationResult.operationOutcome
                 };
             }
         } else {

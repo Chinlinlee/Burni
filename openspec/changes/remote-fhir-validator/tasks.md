@@ -7,7 +7,7 @@
 ## 2. HTTP `validateResource`
 
 - [x] 2.1 以可注入的 `fetch`（預設 `node-fetch`）`POST` resource JSON 到 `VALIDATOR_URL`，`Content-Type: application/json`。有 `meta.profile` 時加上 comma-joined 的 `profile` query。不改 path、不 retry、不讀 `$validate?profile=`、不拆 Parameters。Timeout 用 `AbortController`。
-- [x] 2.2 將結果對成 `{ isError, code, message }`，`message` 為 OperationOutcome。Validator 的 OO 有 error/fatal 為 422，否則 200（原樣回傳該 OO）。連線失敗或 timeout 為 503（Burni 組 OO，用 `handleError.exception`）。body 不是 OperationOutcome 為 502。Timeout 與網路錯誤不往外 throw。
+- [x] 2.2 將結果對成 `{ code, operationOutcome }`，`operationOutcome` 為 OperationOutcome。Validator 的 OO 有 error/fatal 為 422，否則 200（原樣回傳該 OO）。連線失敗或 timeout 為 503（Burni 組 OO，用 `handleError.exception`）。body 不是 OperationOutcome 為 502。Timeout 與網路錯誤不往外 throw。
 
 ## 3. 串接寫入與 `$validate`
 
