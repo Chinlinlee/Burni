@@ -34,7 +34,7 @@ ADMIN_PASSWORD="password"
 
 ENABLE_CHECK_ALL_RESOURCE_ID=false
 
-ENABLE_VALIDATOR=true
+# ENABLE_VALIDATOR=true
 # Required when ENABLE_VALIDATOR=true. Full Inferno POST /validate endpoint.
 # VALIDATOR_URL=http://localhost:4567/validate
 # Optional. Positive integer milliseconds. Defaults to 30000.
