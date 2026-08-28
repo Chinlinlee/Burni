@@ -17,9 +17,9 @@ The full resources burni FHIR server.
 |FHIRSERVER_APIPATH          |String        |使用 FHIR API 的前綴字，e.g. api/fhir ，代表查詢 Patient 使用 http://xxx.com/api/fhir/Patient|"fhir"                                |
 |ENABLE_CHECK_ALL_RESOURCE_ID|Boolean       |是否驗證跨 Resource 的 ID ，即 Patient/123 以及 Organization/123 不應該同時存在                 |false                               |
 |ENABLE_CHECK_REFERENCE      |Boolean       |是否驗證 Resource 內的 Reference 是否存在                                                |false                               |
-|ENABLE_CSHARP_VALIDATOR     |Boolean       |是否開啟 C# 的 API                                                                  |false                               |
-|VALIDATION_FILES_ROOT_PATH  |String        |存放驗證功能所使用的 Structure Definition、 Code System 、 Value Set 的路徑                   |"/validationResources "               |
-|VALIDATION_API_URL          |String        |C# 驗證器 API 的 Base URL                                                          |"http://burni-fhir-validator-api:7414"|
+|ENABLE_VALIDATOR            |Boolean       |true 時 create/update/Bundle 寫入/$validate 會等遠端 Validator。false 時 `$validate` 仍在，只做 mongoose 結構檢查 |false                               |
+|VALIDATOR_URL               |String        |Inferno `POST /validate` 的完整 URL，例如 `http://fhir-validator:4567/validate`。`ENABLE_VALIDATOR=true` 時必填 |                                    |
+|VALIDATOR_TIMEOUT_MS        |Number        |呼叫 Validator 的逾時毫秒。選填，預設 30000。有填必須是正整數                                      |30000                               |
 
 # Usage
 ## Step 1: Create network for mongoDB and burni
@@ -54,13 +54,12 @@ a5566qq123/burni:main
 ```yaml
 version: '3.4'
 services:
-  burni-fhir-validator-api:
-    image: a5566qq123/fhir-validator-api
-    container_name: burni-fhir-validator-api
-    ports: 
-      - "7414:7414"
-    volumes: 
-      - ./validationResources:/app/assets/validationResources
+  fhir-validator:
+    # 從 https://github.com/Chinlinlee/inferno-fhir-validator-wrapper 建置（`./build_docker.sh` 會 tag 成 hl7_validator）
+    image: hl7_validator
+    container_name: fhir-validator
+    ports:
+      - "4567:4567"
 
   burni-mongodb:
     image: mongo:4.4
@@ -121,7 +120,6 @@ services:
     volumes :
       - ./:/nodejs/fhir-burni
       - /nodejs/fhir-burni/node_modules
-      - ./validation-files:/validationResources
     ports:
       - 8080:8080
     depends_on:
@@ -130,11 +128,12 @@ services:
     restart: on-failure:3
     stdin_open : true
 
-  burni-fhir-validator-api:
-    image: a5566qq123/fhir-validator-api
-    container_name: burni-fhir-validator-api
-    volumes: 
-      - ./validation-files:/app/assets/validationResources
+  fhir-validator:
+    # 從 https://github.com/Chinlinlee/inferno-fhir-validator-wrapper 建置（`./build_docker.sh` 會 tag 成 hl7_validator）
+    image: hl7_validator
+    container_name: fhir-validator
+    ports:
+      - "4567:4567"
 ```
 
 

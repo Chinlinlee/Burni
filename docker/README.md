@@ -15,9 +15,9 @@
 | FHIRSERVER_APIPATH           | String         | The FHIR API path e.g. "api/fhir" is http://xxx.com/api/fhir/Patient                                      |
 | ENABLE_CHECK_ALL_RESOURCE_ID | Boolean        | Unique ID of resources of crossing whole system, e.g. Patient/123 and Organization/123 is invalid         |
 | ENABLE_CHECK_REFERENCE       | Boolean        | Validate reference in resource is exists                                                                  |
-| ENABLE_CSHARP_VALIDATOR      | Boolean        | whether enable Csharp validator, use in $validate API                                                     |
-| VALIDATION_FILES_ROOT_PATH   | String         | The path store `Structure Definition`, `Code System`, `Value Set` resource file, use for csharp validator |
-| VALIDATION_API_URL           | String         | API URL of Csharp validator                                                                               |
+| ENABLE_VALIDATOR             | Boolean        | When true, create/update/Bundle writes/$validate wait on the remote Validator. `$validate` still exists when false (mongoose structure validation only). |
+| VALIDATOR_URL                | String         | Full Inferno `POST /validate` URL, e.g. `http://fhir-validator:4567/validate`. Required when `ENABLE_VALIDATOR=true`. |
+| VALIDATOR_TIMEOUT_MS         | Number         | Validator HTTP timeout in milliseconds. Optional. Defaults to 30000. Must be a positive integer if set.   |
 
 # Usage
 ## Step 1: Create network for mongoDB and burni
@@ -52,13 +52,12 @@ a5566qq123/burni:main
 ```yaml
 version: '3.4'
 services:
-  burni-fhir-validator-api:
-    image: a5566qq123/fhir-validator-api
-    container_name: burni-fhir-validator-api
-    ports: 
-      - "7414:7414"
-    volumes: 
-      - ./validationResources:/app/assets/validationResources
+  fhir-validator:
+    # Build from https://github.com/Chinlinlee/inferno-fhir-validator-wrapper (`./build_docker.sh` tags hl7_validator)
+    image: hl7_validator
+    container_name: fhir-validator
+    ports:
+      - "4567:4567"
 
   burni-mongodb:
     image: mongo:4.4
@@ -119,7 +118,6 @@ services:
     volumes :
       - ./:/nodejs/fhir-burni
       - /nodejs/fhir-burni/node_modules
-      - ./validation-files:/validationResources
     ports:
       - 8080:8080
     depends_on:
@@ -128,11 +126,12 @@ services:
     restart: on-failure:3
     stdin_open : true
 
-  burni-fhir-validator-api:
-    image: a5566qq123/fhir-validator-api
-    container_name: burni-fhir-validator-api
-    volumes: 
-      - ./validation-files:/app/assets/validationResources
+  fhir-validator:
+    # Build from https://github.com/Chinlinlee/inferno-fhir-validator-wrapper (`./build_docker.sh` tags hl7_validator)
+    image: hl7_validator
+    container_name: fhir-validator
+    ports:
+      - "4567:4567"
 ```
 
 
