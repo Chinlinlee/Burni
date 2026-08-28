@@ -116,10 +116,10 @@ class BaseFhirApiService {
             let { validateResource } = require("@root/utils/validator/processor");
             let validationResult = await validateResource(resource);
 
-            if (validationResult.isError) {
+            if (validationResult.code !== 200) {
                 return {
                     status: false,
-                    code: 422,
+                    code: validationResult.code,
                     result: validationResult.message
                 };
             }

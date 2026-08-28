@@ -34,9 +34,10 @@ module.exports = async function (req, res, resourceType) {
             } = require("../../utils/validator/processor");
             let validationResult = await validateResource(req.body);
 
-            if (validationResult.isError)
-                return doRes(422, validationResult.message);
-            else operationOutcomeMessage = validationResult.message;
+            if (validationResult.code !== 200) {
+                return doRes(validationResult.code, validationResult.message);
+            }
+            operationOutcomeMessage = validationResult.message;
         } else {
             operationOutcomeMessage = await getValidateResult(
                 req,

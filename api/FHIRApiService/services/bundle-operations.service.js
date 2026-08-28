@@ -254,7 +254,12 @@ class TransactionCreateHandler extends BaseTransactionHandler {
     async create() {
         // Validate user request body
         let validation = await BaseFhirApiService.validateRequestResource(this.resource);
-        if (!validation.status) throw new FhirValidationError(validation.result);
+        if (!validation.status) {
+            if (validation.code === 422) {
+                throw new FhirValidationError(validation.result);
+            }
+            throw new ErrorOperationOutcome(validation.code, validation.result);
+        }
 
         let { result } = await CreateService.insertResource(this.resourceType, this.resource, this.transaction);
         this.replaceIdInEntry(result);
@@ -285,7 +290,12 @@ class TransactionUpdateHandler extends BaseTransactionHandler {
     async update() {
         // Validate user request body
         let validation = await BaseFhirApiService.validateRequestResource(this.resource);
-        if (!validation.status) throw new FhirValidationError(validation.result);
+        if (!validation.status) {
+            if (validation.code === 422) {
+                throw new FhirValidationError(validation.result);
+            }
+            throw new ErrorOperationOutcome(validation.code, validation.result);
+        }
 
         let { code, result } = await UpdateService.insertOrUpdateResource(this.resourceType, this.resource, getIdInFullUrl(this.fullUrl), this.transaction);
         this.replaceIdInEntry(result);
