@@ -2,19 +2,46 @@
 title: "FHIR Validator"
 description: ""
 ---
-Burni 的 FHIR Validator 透過 Node.js 與 Java 融合的專案 [node-java-fhir-validator](https://www.npmjs.com/package/node-java-fhir-validator) 實現
+Profile validation 打遠端 [Inferno FHIR validator wrapper](https://github.com/Chinlinlee/inferno-fhir-validator-wrapper)。Burni 不內嵌 Java validator，也不載入 IG。決策寫在 `docs/adr/0001-remote-fhir-validator.md`。
 
-<Callout type="warn" title="注意事項">
-[node-java-fhir-validator](https://www.npmjs.com/package/node-java-fhir-validator) **請使用 0.2.0 版本**，後續版本還未整合至 Burni
-
-- node-java-fhir-validator 0.2.0 版本使用 [joeferner / node-java](https://github.com/joeferner/node-java)
-- 後續版本則是使用 [node-java-bridge](https://github.com/MarkusJx/node-java-bridge) 重現 [fhir-validator-wrapper](https://github.com/inferno-framework/fhir-validator-wrapper) 的功能
+<Callout type="info" title="ENABLE_VALIDATOR 不是 $validate 的開關">
+`$validate` 永遠存在。`ENABLE_VALIDATOR=false` 只做 mongoose 結構檢查。`true` 才會等遠端 Validator。
 </Callout>
-- Burni 放置 FHIR Validator 的路徑: `utils/validator`
-    - `index.js`: 初始化引入 `utils/validator/igs` 資料夾中的 StructureDefinition (profile json file) 和 xxx.package.tgz (ig tgz file) 到 validator 的程式碼
-    - `processor.js`: 實作 `validateResource` 的程式碼
 
-## 哪些 API 使用了 FHIR Validator?
-- create: 當 POST 資料時，會先進行驗證，驗證通過才會進行 create，反之回傳 422 錯誤
-- update: 當 PUT 資料時，會先進行驗證，驗證通過才會進行 update，反之回傳 422 錯誤
-- $validate: 驗證功能，通過返回 200，反之回傳 422 錯誤
+## 設定
+
+`ENABLE_VALIDATOR=true` 時：
+
+| 變數 | 必填 | 意義 |
+| --- | --- | --- |
+| `VALIDATOR_URL` | 是 | Inferno `POST /validate` 的絕對 `http`/`https` URL，例如 `http://localhost:4567/validate`。Burni 不會自己補 `/validate`。 |
+| `VALIDATOR_TIMEOUT_MS` | 否 | 正整數毫秒。預設 `30000`。`0` 或非整數會讓啟動失敗。 |
+
+啟動只檢查這些值，不會 ping Validator。關掉時兩個變數都忽略。
+
+## 請求
+
+Burni 把 resource JSON `POST` 到 `VALIDATOR_URL`。有 `meta.profile` 才加 `?profile=`（逗號分隔）。不讀 `$validate?profile=`，不拆 Parameters，不重試。
+
+StructureDefinition 和 IG package 在 Inferno 服務載入（[REST API](https://github.com/Chinlinlee/inferno-fhir-validator-wrapper/blob/main/rest-api.md)），不要放進 `utils/validator/igs`。
+
+## 哪些 API 會打 Validator？
+
+開啟時：
+
+- create、update：寫入前先等 Validator。驗證失敗 422。Validator 不可用 503 或 502。resource 不進庫。
+- Bundle 裡的 create/update：同一套規則。
+- `$validate`：OperationOutcome 沒有 error 或 fatal 回 200，有則 422。
+
+關掉時，這些 API 仍做 mongoose 結構檢查（寫入還會驗 contained）。
+
+## HTTP status
+
+Inferno 通常 HTTP 200 帶回 OperationOutcome。Burni 再對應：
+
+| 情況 | Status | Body |
+| --- | --- | --- |
+| OperationOutcome issue 嚴重度為 `error` 或 `fatal` | 422 | Validator 的 OperationOutcome |
+| 只有 information 或 warning | 200 | Validator 的 OperationOutcome |
+| 連不上或 timeout | 503 | Burni 組的 OperationOutcome |
+| 有 HTTP 回應但 body 不是 OperationOutcome | 502 | Burni 組的 OperationOutcome |
