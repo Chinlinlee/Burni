@@ -2,7 +2,7 @@
     <h1>Burni FHIR Server</h1>
     <a href="README.md">English</a>
     <span> | </span>
-    <a href="README.zh-TW.md">繁體中文</a>
+    <strong>繁體中文</strong>
     <br />
     Burni 使用 Node.JS 、Express 框架以及 MongoDB 實作 FHIR R4 Server，經由簡單的設定即可產生指定 FHIR Resource的 Mongoose Schema、API程式碼並可自行更改，滿足需求。目前Burni支援Windows以及Linux，讓開發人員可以快速架設 FHIR Server。
 
@@ -18,12 +18,13 @@ Burni 使用 AEGIS Touchstone Basic-R4-Server 測試.
    
 ## 支援功能
 This server supported FHIR RESTFul API below:
+- create (e.g. POST http://example.com/fhir/Patient)
 - read (e.g. GET http://example.com/fhir/Patient/example)
 - update (e.g. PUT http://example.com/fhir/Patient/example)
 - delete (e.g. DELETE http://example.com/fhir/Patient/example)
 - search (e.g. http://example.com/fhir/Patient?_id=example)
 - history-type (e.g. http://example.com/fhir/Patient/1/_history)
-- history-type-version (e.g. e.g. http://example.com/fhir/Patient/1/_history/1)
+- history-type-version/vread (e.g. http://example.com/fhir/Patient/1/_history/1)
 
 
 <font color=red>**Don't remove Bundle.js in models/mongodb/FHIRTypeSchema**</font>

@@ -1,0 +1,7 @@
+{
+  "title": "FHIR API 文件",
+  "pages": [
+    "overview",
+    "generate-open-api"
+  ]
+}

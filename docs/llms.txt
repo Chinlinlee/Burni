@@ -1,0 +1,41 @@
+# Docs
+
+- [Home](/docs)
+- [Introduction](/docs/introduction)
+- Getting Started
+  - [Installation](/docs/getting-started/installation)
+  - [Configuration](/docs/getting-started/configuration)
+  - [Deploy](/docs/getting-started/deploy)
+- FHIR API Documentation
+  - [Overview](/docs/fhir-api-documentation/overview)
+  - [Generate OpenAPI](/docs/fhir-api-documentation/generate-open-api)
+- Search Parameters
+  - [Overview](/docs/search-parameter/overview)
+  - [Add search parameter](/docs/search-parameter/add-search-parameter)
+- Code API Documentation
+  - Models
+    - Code API Documentation
+      - [searchParameterQueryHandler](/docs/code-api-documentation/models/fhir/search-parameter-query-handler)
+- FHIR Validator
+  - [FHIR Validator](/docs/fhir-validator)
+
+# Docs
+
+- [Home](/zh-TW/docs)
+- [介紹](/zh-TW/docs/introduction)
+- 讓我們開始吧！
+  - [安裝](/zh-TW/docs/getting-started/installation)
+  - [設定](/zh-TW/docs/getting-started/configuration)
+  - [部屬](/zh-TW/docs/getting-started/deploy)
+- FHIR API 文件
+  - [概觀](/zh-TW/docs/fhir-api-documentation/overview)
+  - [產生OpenAPI](/zh-TW/docs/fhir-api-documentation/generate-open-api)
+- 搜尋參數
+  - [概觀](/zh-TW/docs/search-parameter/overview)
+  - [自行新增搜尋參數](/zh-TW/docs/search-parameter/add-search-parameter)
+- Code api documentation
+  - Models
+    - 程式碼文件
+      - [searchParameterQueryHandler](/zh-TW/docs/code-api-documentation/models/fhir/search-parameter-query-handler)
+- FHIR Validator
+  - [FHIR Validator](/zh-TW/docs/fhir-validator)

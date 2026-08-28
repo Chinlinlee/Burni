@@ -1,0 +1,6 @@
+1:"$Sreact.fragment"
+2:I[22016,["/Burni/_next/static/chunks/05-c3ty_6dwfk.js","/Burni/_next/static/chunks/2a35y8vvamogv.js","/Burni/_next/static/chunks/05t-5f09_eday.js","/Burni/_next/static/chunks/1b4xfjehtclem.js","/Burni/_next/static/chunks/3v0b_xfei9294.js","/Burni/_next/static/chunks/2y5bxy6lfzx89.js","/Burni/_next/static/chunks/030ztf-82-5_o.js","/Burni/_next/static/chunks/3hbvuq1abpg09.js","/Burni/_next/static/chunks/2r92bnykg4xjj.js","/Burni/_next/static/chunks/2d5xnb5nfkt-_.js","/Burni/_next/static/chunks/2gvghd2-o9r_1.js"],""]
+3:I[97367,["/Burni/_next/static/chunks/05-c3ty_6dwfk.js","/Burni/_next/static/chunks/2a35y8vvamogv.js"],"OutletBoundary"]
+4:"$Sreact.suspense"
+0:{"rsc":["$","$1","c",{"children":[["$","div",null,{"className":"flex flex-col justify-center text-center flex-1","children":[["$","h1",null,{"className":"text-2xl font-bold mb-4","children":"Burni 文件"}],["$","p",null,{"children":["開啟"," ",["$","$L2",null,{"href":"/zh-TW/docs","className":"font-medium underline","children":["/","zh-TW","/docs"]}]," ","閱讀文件（","zh-TW","）。"]}]]}],null,["$","$L3",null,{"children":["$","$4",null,{"name":"Next.MetadataOutlet","children":"$@5"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"lppfMe-WnxCAfZSPqUYxP"}
+5:null

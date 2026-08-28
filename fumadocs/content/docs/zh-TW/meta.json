@@ -1,0 +1,11 @@
+{
+  "pages": [
+    "index",
+    "introduction",
+    "getting-started",
+    "fhir-api-documentation",
+    "search-parameter",
+    "code-api-documentation",
+    "fhir-validator"
+  ]
+}
