@@ -31,7 +31,7 @@ This server supported FHIR RESTFul API below:
 ## Requirements
 - node.js >= 16
 - MongoDB >= 4
-- Java JDK >= 11 (For validator)
+- A running [Inferno FHIR validator wrapper](https://github.com/Chinlinlee/inferno-fhir-validator-wrapper) if `ENABLE_VALIDATOR=true`
 
 ## Installation
 ```bash=
@@ -84,6 +84,8 @@ ENABLE_CHECK_ALL_RESOURCE_ID=false #true that want to check resource id cross al
 ENABLE_CHECK_REFERENCE #true that want to check reference is exist in resource content
     
 ENABLE_VALIDATOR=true
+VALIDATOR_URL=http://localhost:4567/validate
+VALIDATOR_TIMEOUT_MS=30000
 ```
 After configuration, run `npm run build` to generate resources
 ```
@@ -120,9 +122,13 @@ node server.js
 The details of postman's request body and response: [Examples Using Postman](https://github.com/Chinlinlee/Burni/blob/main/examples/Examples.md)
 
 ## Validation
-Burni use the [node-java-fhir-validator](https://github.com/Chinlinlee/node-java-fhir-validator) to do validation.
-- You can put IG's (package.tgz) or json (StructureDefinition) file in `utils/validator/igs`, and Burni will load it into the validator
-- You must configure `ENABLE_VALIDATOR` in `.env`(dotenv) to true to enable validation feature
+Profile validation is a remote [Inferno FHIR validator wrapper](https://github.com/Chinlinlee/inferno-fhir-validator-wrapper). Burni `POST`s the resource JSON to `VALIDATOR_URL` and uses the OperationOutcome. Load IGs on that service, not in Burni.
+
+- `ENABLE_VALIDATOR=true` requires `VALIDATOR_URL` (absolute `http`/`https`, including `/validate`). Optional `VALIDATOR_TIMEOUT_MS` defaults to `30000`.
+- That flag does not turn `$validate` on or off. `$validate` always exists. Disabled means mongoose structure validation only.
+- Error or fatal issues in the OperationOutcome are 422. Unreachable or timeout is 503. A non-OperationOutcome body is 502.
+
+See [ADR 0001](docs/adr/0001-remote-fhir-validator.md).
 
 ## TODO
 - Search parameters

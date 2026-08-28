@@ -32,7 +32,7 @@ This server supported FHIR RESTFul API below:
 ## 必要環境
 - node.js >= 16
 - MongoDB >= 4
-- Java JDK >= 11 (For validator)
+- 若 `ENABLE_VALIDATOR=true`，需另開 [Inferno FHIR validator wrapper](https://github.com/Chinlinlee/inferno-fhir-validator-wrapper)
 
 ## 安裝
 ```bash=
@@ -84,6 +84,8 @@ ENABLE_CHECK_ALL_RESOURCE_ID=false #true that want to check resource id cross al
 ENABLE_CHECK_REFERENCE #true that want to check reference is exist in resource content
     
 ENABLE_VALIDATOR=true
+VALIDATOR_URL=http://localhost:4567/validate
+VALIDATOR_TIMEOUT_MS=30000
 ```
 設定後, 執行 `npm run build` 產生 resource 相關程式碼
 ```
@@ -119,9 +121,13 @@ node server.js
 詳細使用 Postman 的範例： [Examples Using Postman](https://github.com/Chinlinlee/Burni/blob/main/examples/Examples.md)
 
 # FHIR 驗證
-Burni 使用 [node-java-fhir-validator](https://github.com/Chinlinlee/node-java-fhir-validator) 做驗證
-- 您可以將 IG 的 package.tgz 或是 json (StructureDefinition) 檔案放入 `utils/validator/igs`，Burni 將會讀取這些檔案至 validator 當中
-- 您必須將 `.env`(dotenv) 內的 `ENABLE_VALIDATOR` 設定為 true 以開啟驗證功能
+Profile validation 打遠端 [Inferno FHIR validator wrapper](https://github.com/Chinlinlee/inferno-fhir-validator-wrapper)。Burni 把 resource JSON `POST` 到 `VALIDATOR_URL`，使用回傳的 OperationOutcome。IG 在那個服務載入，不在 Burni。
+
+- `ENABLE_VALIDATOR=true` 時必須設定 `VALIDATOR_URL`（絕對 `http`/`https`，且含 `/validate`）。`VALIDATOR_TIMEOUT_MS` 選填，預設 `30000`。
+- 這個開關不是 `$validate` 的開關。`$validate` 永遠存在。關掉時只做 mongoose 結構檢查。
+- OperationOutcome 有 error 或 fatal 回 422。連不上或 timeout 回 503。回應不是 OperationOutcome 回 502。
+
+見 [ADR 0001](docs/adr/0001-remote-fhir-validator.md)。
 
 # TODO
 - Search parameters
