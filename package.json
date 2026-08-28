@@ -4,7 +4,7 @@
     "description": "The simple FHIR server implements with nodejs-express and mongoose.",
     "main": "index.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
+        "test": "mocha",
         "build": "node ./build/init.js",
         "release": "standard-version",
         "lint": "eslint --ignore-path .gitignore .",
@@ -54,7 +54,6 @@
         "mongoose": "^8.1.1",
         "morgan": "^1.10.0",
         "node-fetch": "^2.7.0",
-        "node-java-fhir-validator": "^1.1.0",
         "node-schedule": "^2.1.1",
         "normalize-text": "^2.4.1",
         "object-hash": "^3.0.0",
