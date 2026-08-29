@@ -1,5 +1,13 @@
-const queryBuild = require("@models/FHIR/queryBuild");
-const searchParameterQueryHandler = require("@models/FHIR/searchParameterQueryHandler");
+const {
+    stringQuery,
+    numberQuery,
+    dateQuery,
+    dateTimeQuery,
+    tokenQuery,
+    referenceQuery,
+    quantityQuery,
+    uriQuery
+} = require("./queryPrimitives");
 
 /**
  * @param {string} searchType
@@ -13,37 +21,44 @@ function buildPrimitiveFilter(searchType, value, fieldPath, modifier, comparator
     switch (searchType) {
         case "string": {
             const queryKey = modifier ? `${fieldPath}:${modifier}` : fieldPath;
-            return { [fieldPath]: queryBuild.stringQuery(value, queryKey) };
+            return { [fieldPath]: stringQuery(value, queryKey) };
         }
         case "number": {
             const prefixedValue = comparator && comparator !== "eq" ? `${comparator}${value}` : value;
-            const result = queryBuild.numberQuery(prefixedValue, fieldPath);
+            const result = numberQuery(prefixedValue, fieldPath);
             if (!result) {
                 throw new Error(`invalid number: ${value}`);
             }
             return result;
         }
-        case "date":
-        case "dateTime": {
+        case "date": {
             const prefixedValue = comparator && comparator !== "eq" ? `${comparator}${value}` : value;
-            const result = queryBuild.dateQuery(prefixedValue, fieldPath);
+            const result = dateQuery(prefixedValue, fieldPath);
             if (!result) {
                 throw new Error(`invalid date: ${value}`);
             }
             return result;
         }
+        case "dateTime": {
+            const prefixedValue = comparator && comparator !== "eq" ? `${comparator}${value}` : value;
+            const result = dateTimeQuery(prefixedValue, fieldPath);
+            if (!result) {
+                throw new Error(`invalid dateTime: ${value}`);
+            }
+            return result;
+        }
         case "token": {
-            return queryBuild.tokenQuery(value, "", fieldPath, "");
+            return tokenQuery(value, "", fieldPath, "");
         }
         case "reference":
-            return queryBuild.referenceQuery(value, fieldPath);
+            return referenceQuery(value, fieldPath);
         case "quantity": {
             const prefixedValue = comparator && comparator !== "eq" ? `${comparator}${value}` : value;
-            return queryBuild.quantityQuery(prefixedValue, fieldPath);
+            return quantityQuery(prefixedValue, fieldPath);
         }
         case "uri": {
             const queryKey = modifier ? `${fieldPath}:${modifier}` : fieldPath;
-            return { [fieldPath]: queryBuild.uriQuery(value, queryKey) };
+            return { [fieldPath]: uriQuery(value, queryKey) };
         }
         default:
             throw new Error(`Unsupported search type: ${searchType}`);
@@ -51,7 +66,5 @@ function buildPrimitiveFilter(searchType, value, fieldPath, modifier, comparator
 }
 
 module.exports = {
-    buildPrimitiveFilter,
-    searchParameterQueryHandler,
-    queryBuild
+    buildPrimitiveFilter
 };

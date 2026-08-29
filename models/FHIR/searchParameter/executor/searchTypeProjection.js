@@ -1,4 +1,14 @@
-const queryBuild = require("@models/FHIR/queryBuild");
+const {
+    stringQuery,
+    tokenQuery,
+    numberQuery,
+    dateQuery,
+    dateTimeQuery,
+    periodQuery,
+    quantityQuery,
+    referenceQuery,
+    uriQuery
+} = require("./queryPrimitives");
 const {
     normalizeReferenceQueryValue,
     validateReferenceQueryValue
@@ -249,7 +259,7 @@ function buildPresenceFilters(searchType, fieldPath, datatype, predicates) {
  */
 function buildStringProjection(value, fieldPath, datatype, modifier) {
     const queryKey = modifier ? `${fieldPath}:${modifier}` : fieldPath;
-    const stringMatcher = queryBuild.stringQuery(value, queryKey);
+    const stringMatcher = stringQuery(value, queryKey);
 
     if (datatype === "Address") {
         return {
@@ -292,26 +302,26 @@ function buildTokenProjection(value, fieldPath, datatype, modifier, predicates) 
     }
 
     if (datatype === "CodeableConcept") {
-        return queryBuild.tokenQuery(value, "coding.code", fieldPath, "", true);
+        return tokenQuery(value, "coding.code", fieldPath, "", true);
     }
     if (datatype === "Coding") {
         return {
             $or: [
-                queryBuild.tokenQuery(value, "code", fieldPath),
-                queryBuild.tokenQuery(value, "system", fieldPath)
+                tokenQuery(value, "code", fieldPath),
+                tokenQuery(value, "system", fieldPath)
             ]
         };
     }
     if (datatype === "Identifier" || datatype === "ContactPoint") {
         return {
             $or: [
-                queryBuild.tokenQuery(value, "value", fieldPath),
-                queryBuild.tokenQuery(value, "system", fieldPath)
+                tokenQuery(value, "value", fieldPath),
+                tokenQuery(value, "system", fieldPath)
             ]
         };
     }
 
-    return queryBuild.tokenQuery(value, "", fieldPath, "");
+    return tokenQuery(value, "", fieldPath, "");
 }
 
 /**
@@ -322,7 +332,7 @@ function buildTokenProjection(value, fieldPath, datatype, modifier, predicates) 
  * @returns {Object}
  */
 function buildCorrelatedContactPointFilter(fieldPath, systemValue, value, modifier) {
-    const valueMatcher = queryBuild.tokenQuery(value, "value", fieldPath, modifier || "", false);
+    const valueMatcher = tokenQuery(value, "value", fieldPath, modifier || "", false);
     const matchedValue = valueMatcher[`${fieldPath}.value`] ?? valueMatcher.value ?? value;
     return {
         [fieldPath]: {
@@ -354,7 +364,7 @@ function buildDeceasedTokenFilter(value, fieldPath, datatype) {
         }
         return { [fieldPath]: false };
     }
-    return queryBuild.tokenQuery(value, "", fieldPath, "");
+    return tokenQuery(value, "", fieldPath, "");
 }
 
 /**
@@ -369,9 +379,9 @@ function buildDateProjection(value, fieldPath, datatype, comparator, searchType)
     const prefixedValue =
         comparator && comparator !== "eq" ? `${comparator}${value}` : value;
     if (datatype === "Period") {
-        return queryBuild.periodQuery(prefixedValue, fieldPath);
+        return periodQuery(prefixedValue, fieldPath);
     }
-    const queryFn = searchType === "dateTime" ? queryBuild.dateTimeQuery : queryBuild.dateQuery;
+    const queryFn = searchType === "dateTime" ? dateTimeQuery : dateQuery;
     const result = queryFn(prefixedValue, fieldPath);
     if (!result) {
         throw new Error(`invalid date: ${value}`);
@@ -388,7 +398,7 @@ function buildDateProjection(value, fieldPath, datatype, comparator, searchType)
 function buildQuantityProjection(value, fieldPath, comparator) {
     const prefixedValue =
         comparator && comparator !== "eq" ? `${comparator}${value}` : value;
-    const result = queryBuild.quantityQuery(prefixedValue, fieldPath);
+    const result = quantityQuery(prefixedValue, fieldPath);
     if (!result) {
         throw new Error(`invalid quantity: ${value}`);
     }
@@ -404,7 +414,7 @@ function buildQuantityProjection(value, fieldPath, comparator) {
 function buildNumberProjection(value, fieldPath, comparator) {
     const prefixedValue =
         comparator && comparator !== "eq" ? `${comparator}${value}` : value;
-    const result = queryBuild.numberQuery(prefixedValue, fieldPath);
+    const result = numberQuery(prefixedValue, fieldPath);
     if (!result) {
         throw new Error(`invalid number: ${value}`);
     }
@@ -419,7 +429,7 @@ function buildNumberProjection(value, fieldPath, comparator) {
  */
 function buildUriProjection(value, fieldPath, modifier) {
     const queryKey = modifier ? `${fieldPath}:${modifier}` : fieldPath;
-    return { [fieldPath]: queryBuild.uriQuery(value, queryKey) };
+    return { [fieldPath]: uriQuery(value, queryKey) };
 }
 
 /**
@@ -452,7 +462,7 @@ function buildReferenceProjection(value, fieldPath, datatype, referenceTargetTyp
     if (typePredicate?.value) {
         const arrayField = fieldPath.split(".")[0];
         const leafField = fieldPath.slice(arrayField.length + 1);
-        const matcher = queryBuild.referenceQuery(referenceValue, fieldPath);
+        const matcher = referenceQuery(referenceValue, fieldPath);
         const matchedValue = matcher[fieldPath] ?? referenceValue;
         return {
             [arrayField]: {
@@ -465,17 +475,17 @@ function buildReferenceProjection(value, fieldPath, datatype, referenceTargetTyp
     }
 
     if (datatype === "canonical" || datatype === "uri") {
-        return queryBuild.referenceQuery(referenceValue, fieldPath);
+        return referenceQuery(referenceValue, fieldPath);
     }
 
     if (datatype === "Resource") {
-        return queryBuild.referenceQuery(referenceValue, `${fieldPath}.reference`);
+        return referenceQuery(referenceValue, `${fieldPath}.reference`);
     }
 
     const targetType = referenceTargetType;
     const referenceField = `${fieldPath}.reference`;
     const typeField = `${fieldPath}.type`;
-    const referenceMatcher = queryBuild.referenceQuery(referenceValue, referenceField);
+    const referenceMatcher = referenceQuery(referenceValue, referenceField);
 
     if (!targetType) {
         return referenceMatcher;

@@ -1,5 +1,5 @@
 const { getTypeCapability, validatePlanOperator } = require("../compiler/capabilityMatrix");
-const { getCommaSplitArray } = require("@models/FHIR/queryBuild");
+const { getCommaSplitArray } = require("./queryPrimitives");
 const {
     buildProjectedFilter,
     buildDeceasedCombinedFilter
