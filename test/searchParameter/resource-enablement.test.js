@@ -114,12 +114,7 @@ describe("SearchParameter per-resource enablement gates", function () {
         const result = await retryApply({
             resourceType: "Account",
             query: { definitelyUnknownParam: "x" },
-            parameterName: "definitelyUnknownParam",
-            paramsSearch: {
-                definitelyUnknownParam: () => {
-                    throw new Error("legacy handler must not run");
-                }
-            }
+            parameterName: "definitelyUnknownParam"
         });
         expect(result).to.equal("disabled");
     });

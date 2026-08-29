@@ -5,7 +5,7 @@
  * @returns {{ ok: true, filter: Object } | { ok: false, reason: string }}
  */
 function buildLegacyFilter(paramsSearch, parameterName, rawValue) {
-    if (!paramsSearch[parameterName]) {
+    if (!paramsSearch || !paramsSearch[parameterName]) {
         return {
             ok: false,
             reason: "Legacy handler is not available"

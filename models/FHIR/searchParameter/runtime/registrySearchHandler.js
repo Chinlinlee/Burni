@@ -12,15 +12,26 @@ const {
 const { compareWithLegacyHandler } = require("./shadowComparison");
 
 /**
+ * @param {string} resourceType
+ * @returns {Object | null}
+ */
+function loadLegacyParamsSearch(resourceType) {
+    try {
+        return require(`@root/api/FHIR/${resourceType}/${resourceType}ParametersHandler`).paramsSearch;
+    } catch {
+        return null;
+    }
+}
+
+/**
  * @param {Object} options
  * @param {string} options.resourceType
  * @param {Object} options.query
  * @param {string} options.parameterName
- * @param {Object} options.paramsSearch
  * @returns {Promise<'handled' | 'disabled' | 'fallback' | 'shadow-only'>}
  */
 async function tryApplyRegistryParameter(options) {
-    const { resourceType, query, parameterName, paramsSearch } = options;
+    const { resourceType, query, parameterName } = options;
     const registryEnabled = isRegistryEnabledForResource(resourceType);
     const shadowEnabled = isShadowCompareEnabledForResource(resourceType);
 
@@ -51,7 +62,7 @@ async function tryApplyRegistryParameter(options) {
             resourceType,
             parameterName,
             queryValue: rawValue,
-            paramsSearch,
+            paramsSearch: loadLegacyParamsSearch(resourceType),
             plan,
             source: "runtime-shadow-only"
         });
@@ -80,7 +91,7 @@ async function tryApplyRegistryParameter(options) {
             resourceType,
             parameterName,
             queryValue: rawValue,
-            paramsSearch,
+            paramsSearch: loadLegacyParamsSearch(resourceType),
             plan,
             source: "runtime"
         });

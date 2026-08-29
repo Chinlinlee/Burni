@@ -1,7 +1,4 @@
 const search = require('../../../FHIRApiService/search');
-const {
-    paramsSearch
-} = require('../MessageHeaderParametersHandler');
 module.exports = async function(req, res) {
-    return await search(req, res, "MessageHeader", paramsSearch);
+    return await search(req, res, "MessageHeader");
 };

@@ -13,9 +13,8 @@ const {
 } = require("@models/FHIR/searchParameter/runtime/includeHandler");
 
 class SearchService extends BaseFhirApiService {
-    constructor(req, res, resourceType, paramsSearchOfResource) {
+    constructor(req, res, resourceType) {
         super(req, res, resourceType);
-        this.paramsSearchOfResource = paramsSearchOfResource;
 
         this._total = req.query["_total"];
         delete this.request.query["_total"];
@@ -39,8 +38,7 @@ class SearchService extends BaseFhirApiService {
         try {
             let searchParameterCreator = new SearchParameterCreator({
                 resourceType: this.resourceType,
-                query: queryParameter,
-                paramsSearch: this.paramsSearchOfResource
+                query: queryParameter
             });
     
             queryParameter = await searchParameterCreator.create();

@@ -1,7 +1,4 @@
 const conditionDelete = require('../../../FHIRApiService/condition-delete');
-const {
-    paramsSearch
-} = require('../AuditEventParametersHandler');
 module.exports = async function(req, res) {
-    return await conditionDelete(req, res, "AuditEvent", paramsSearch);
+    return await conditionDelete(req, res, "AuditEvent");
 };

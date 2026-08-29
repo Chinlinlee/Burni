@@ -336,7 +336,6 @@ class TransactionSearchHandler {
                 result: operationOutcomeError
             };
         } else {
-            const { paramsSearch } = require(`@root/api/FHIR/${urlDetermineResult.resourceType}/${urlDetermineResult.resourceType}ParametersHandler`);
             let httpRequestClone = _.cloneDeep(this.httpRequest);
             let queryOfUrl = qs.parse(urlDetermineResult.params.toString());
             _.set(httpRequestClone, "query", queryOfUrl);
@@ -344,8 +343,7 @@ class TransactionSearchHandler {
             let searchService = new SearchService(
                 httpRequestClone,
                 _.cloneDeep(this.httpResponse),
-                urlDetermineResult.resourceType,
-                paramsSearch
+                urlDetermineResult.resourceType
             );
             let { status, code, result } = await searchService.search();
 

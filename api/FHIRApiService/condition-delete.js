@@ -14,10 +14,9 @@ const {
  * @param {import('express').Request} req
  * @param {import('express').Response} res
  * @param {string} resourceType
- * @param {*} paramsSearch
  * @returns
  */
-module.exports = async function (req, res, resourceType, paramsSearch) {
+module.exports = async function (req, res, resourceType) {
     logger.info(
         `[Info: do condition-delete] [Resource Type: ${resourceType}] [Content-Type: ${res.getHeader(
             "content-type"
@@ -48,8 +47,7 @@ module.exports = async function (req, res, resourceType, paramsSearch) {
     try {
         const searchParameterCreator = new SearchParameterCreator({
             resourceType,
-            query: queryParameter,
-            paramsSearch
+            query: queryParameter
         });
         queryParameter = await searchParameterCreator.create();
     } catch (e) {
