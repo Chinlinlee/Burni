@@ -1,7 +1,6 @@
 const productionResources = require("../../fhir.resourceList.json");
 const { verifyProvenance } = require("./provenance");
 const { buildLookupMatrix } = require("./lookupMatrix");
-const { loadCommittedInventoryDiffReport } = require("./inventoryDiff");
 const { resolveLookupStatus } = require("../registry/snapshot");
 
 /** Compile diagnostics emitted for classified lookup outcomes (disabled branch, abstract base, etc.). */
@@ -23,11 +22,9 @@ const ALLOWED_COMPILE_DIAGNOSTIC_CODES = new Set([
 /**
  * @param {import('../registry/types').RegistrySnapshot} snapshot
  * @param {import('../registry/types').SearchParameterDefinition[]} definitions
- * @param {Object} [options]
- * @param {boolean} [options.includeInventoryDiff]
  * @returns {IntegrityCheckResult}
  */
-function verifyRegistryIntegrity(snapshot, definitions, options = {}) {
+function verifyRegistryIntegrity(snapshot, definitions) {
     const errors = [];
     const warnings = [];
 
@@ -101,14 +98,6 @@ function verifyRegistryIntegrity(snapshot, definitions, options = {}) {
         }
     }
 
-    let inventoryDiff = null;
-    if (options.includeInventoryDiff !== false) {
-        inventoryDiff = loadCommittedInventoryDiffReport();
-        if (inventoryDiff.inventoryLoadedByRuntime) {
-            errors.push("Migration inventory is loaded by runtime (must be inventory-only)");
-        }
-    }
-
     const unknownLookups = [];
     for (const [lookupKey] of snapshot.byLookupKey) {
         const status = resolveLookupStatus(
@@ -136,8 +125,7 @@ function verifyRegistryIntegrity(snapshot, definitions, options = {}) {
             noLookupResources: matrix.summary.noLookupResources.length,
             conflictCount: snapshot.conflictLookupKeys.size,
             diagnosticCount: snapshot.diagnostics.length,
-            provenanceValid: provenanceResult.valid,
-            inventoryDiff: inventoryDiff?.summary || null
+            provenanceValid: provenanceResult.valid
         }
     };
 }

@@ -16,7 +16,7 @@ const SCAN_ROOTS = [
 ];
 
 const ALLOWLIST = [
-    /[/\\]test[/\\]searchParameter[/\\]temp-inventory-removal-ci-gate\.test\.js$/,
+    /[/\\]test[/\\]architecture[/\\]searchParameter[/\\]temp-inventory-removal-ci-gate\.test\.js$/,
     /[/\\]migration[/\\]artifacts[/\\]/,
     /[/\\]openspec[/\\]/,
     /[/\\]docs[/\\]/
@@ -97,15 +97,4 @@ describe("SearchParameter temp inventory removal CI gate", function () {
         });
     }
 
-    it("keeps the committed inventory diff report artifact", function () {
-        const artifactPath = path.join(
-            REPO_ROOT,
-            "models/FHIR/searchParameter/migration/artifacts/inventory-diff-report.json"
-        );
-        expect(fs.existsSync(artifactPath)).to.equal(true);
-
-        const report = JSON.parse(fs.readFileSync(artifactPath, "utf8"));
-        expect(report.inventoryLoadedByRuntime).to.equal(false);
-        expect(report.summary).to.exist;
-    });
 });

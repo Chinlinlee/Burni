@@ -27,6 +27,24 @@ _Avoid_: calling a timeout or a non-OperationOutcome body a validation failure.
 Burni could not complete profile validation because the Validator was unreachable, timed out, or returned a body that is not an OperationOutcome. Burni responds 503 or 502 with an OperationOutcome it created. The resource is not stored.
 _Avoid_: treating this as a validation failure.
 
+## FHIR service
+
+**FHIR resource catalog**:
+The complete set of 146 FHIR resource types that defines Burni's production resource boundary.
+_Avoid_: treating a single resource's test as complete resource coverage.
+
+**CRUD round-trip**:
+A create followed by a read using the server-returned resource ID, verifying that the resource type, identity, and stored resource content survive persistence.
+_Avoid_: calling a create-only assertion CRUD coverage.
+
+**All-resource CRUD coverage**:
+The general FHIR service integration boundary covering every resource in the FHIR resource catalog, independent of SearchParameter behavior.
+_Avoid_: conflating it with Patient-only coverage or SearchParameter integration.
+
+**Active fixture**:
+The fixture selected by archive provenance for a resource's create payload: a designated synthetic fixture takes precedence, otherwise a derived fixture takes precedence over an official fixture. A companion fixture is auxiliary and is not the primary create payload.
+_Avoid_: treating companion fixtures as active fixtures or choosing fixtures nondeterministically.
+
 ## Search
 
 **Registry**:

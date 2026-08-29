@@ -4,7 +4,6 @@ const { expect } = require("chai");
 const fs = require("fs");
 const path = require("path");
 const { verifyProvenance } = require("@models/FHIR/searchParameter/migration/provenance");
-const { loadCommittedInventoryDiffReport } = require("@models/FHIR/searchParameter/migration/inventoryDiff");
 const { buildLookupMatrix } = require("@models/FHIR/searchParameter/migration/lookupMatrix");
 const { verifyRegistryIntegrity } = require("@models/FHIR/searchParameter/migration/diagnosticsIntegrity");
 const { reloadRegistry } = require("@models/FHIR/searchParameter/registry/registryManager");
@@ -18,11 +17,6 @@ const MATRIX_ARTIFACT = path.join(
     __dirname,
     "../../../models/FHIR/searchParameter/migration/artifacts/lookup-matrix.json"
 );
-const DIFF_ARTIFACT = path.join(
-    __dirname,
-    "../../models/FHIR/searchParameter/migration/artifacts/inventory-diff-report.json"
-);
-
 async function compileDefinitions() {
     const builtin = loadBuiltinDefinitions();
     const compiledDefinitions = [];
@@ -51,13 +45,6 @@ describe("SearchParameter migration artifacts", function () {
         expect(result.provenance.checksum).to.match(/^[a-f0-9]{64}$/);
         expect(result.provenance.fetchedAt).to.be.a("string");
         expect(result.provenance.definitionCount).to.equal(1375);
-    });
-
-    it("confirms migration inventory is not loaded by runtime", function () {
-        const report = loadCommittedInventoryDiffReport();
-        expect(report.inventoryLoadedByRuntime).to.equal(false);
-        expect(report.inventoryResourceCount).to.be.greaterThan(0);
-        expect(report.productionResourceCount).to.equal(productionResources.length);
     });
 
     it("builds a lookup matrix covering all production resources", async function () {
@@ -100,12 +87,4 @@ describe("SearchParameter migration artifacts", function () {
         expect(committed.totalSourceLookupCount).to.equal(1706);
     });
 
-    it("has committed inventory diff report artifact", function () {
-        if (!fs.existsSync(DIFF_ARTIFACT)) {
-            this.skip();
-        }
-        const report = JSON.parse(fs.readFileSync(DIFF_ARTIFACT, "utf8"));
-        expect(report.inventoryLoadedByRuntime).to.equal(false);
-        expect(report.summary).to.exist;
-    });
 });

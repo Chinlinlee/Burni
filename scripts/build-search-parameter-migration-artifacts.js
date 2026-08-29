@@ -9,7 +9,6 @@ const { compileDefinition } = require("@models/FHIR/searchParameter/compiler/com
 const { mergeDefinitions } = require("@models/FHIR/searchParameter/registry/merge");
 const { verifyProvenance } = require("@models/FHIR/searchParameter/migration/provenance");
 const { buildLookupMatrix } = require("@models/FHIR/searchParameter/migration/lookupMatrix");
-const { buildInventoryDiffReport, loadCommittedInventoryDiffReport } = require("@models/FHIR/searchParameter/migration/inventoryDiff");
 const {
     discoverExampleMapping,
     loadExampleMapping,
@@ -62,10 +61,6 @@ async function main() {
     const snapshot = await reloadRegistry();
     const definitions = await compileDefinitions();
     const lookupMatrix = buildLookupMatrix(snapshot, definitions);
-    const inventoryPath = process.env.INVENTORY_PATH;
-    const inventoryDiff = inventoryPath
-        ? buildInventoryDiffReport(inventoryPath)
-        : loadCommittedInventoryDiffReport();
     const examplesDir = process.env.FHIR_EXAMPLES_DIR;
     const exampleMapping =
         examplesDir && fs.existsSync(examplesDir)
@@ -100,7 +95,6 @@ async function main() {
     fs.mkdirSync(ARTIFACTS_DIR, { recursive: true });
 
     const matrixPath = path.join(ARTIFACTS_DIR, "lookup-matrix.json");
-    const diffPath = path.join(ARTIFACTS_DIR, "inventory-diff-report.json");
     const mappingPath = path.join(ARTIFACTS_DIR, "example-mapping.json");
     const manifestPath = path.join(ARTIFACTS_DIR, "migration-manifest.json");
     const hitSetsPath = path.join(ARTIFACTS_DIR, "hit-sets.json");
@@ -110,9 +104,6 @@ async function main() {
         : null;
 
     fs.writeFileSync(matrixPath, JSON.stringify(lookupMatrix, null, 2));
-    if (inventoryPath) {
-        fs.writeFileSync(diffPath, JSON.stringify(inventoryDiff, null, 2));
-    }
     fs.writeFileSync(mappingPath, JSON.stringify(exampleMapping, null, 2));
     fs.writeFileSync(manifestPath, JSON.stringify(migrationManifest, null, 2));
     fs.writeFileSync(hitSetsPath, JSON.stringify(hitSetArtifact, null, 2));
@@ -159,11 +150,6 @@ async function main() {
     console.log(`Wrote lookup matrix to ${matrixPath}`);
     console.log(`  Resources: ${lookupMatrix.resourceCount}`);
     console.log(`  Lookups: ${lookupMatrix.lookupCount}`);
-    if (inventoryPath) {
-        console.log(`Wrote inventory diff report to ${diffPath}`);
-    } else {
-        console.log(`Using committed inventory diff report at ${diffPath}`);
-    }
     console.log(`Wrote example mapping to ${mappingPath}`);
     console.log(`  Official examples: ${exampleMapping.summary.official}`);
     console.log(`  Synthetic required: ${exampleMapping.summary.missing}`);

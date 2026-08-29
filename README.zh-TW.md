@@ -92,6 +92,19 @@ VALIDATOR_TIMEOUT_MS=30000
 npm run build
 ```
 > TypeError: genParamFunc[type] is not a function 代表此類型的搜尋參數目前不支援。
+
+### SearchParameter 維護指令
+
+Registry 是 production SearchParameter 唯一的執行路徑。以下指令用來維護及驗證版本控制中的來源與測試 artifacts：
+
+- `npm run search-parameter:diagnostics` 產生 Registry integrity report 至 `temp/search-parameter-diagnostics-report.json`。用於本機調查，不是 CI gate。
+- `npm run search-parameter:verify` 執行 provenance、lookup 完整性、conflict、compiler diagnostics 與 manifest drift 的嚴格驗證；驗證失敗時回傳失敗狀態，並由 CI 執行。
+- `npm run test:diagnostics-gate` 執行 Mocha diagnostics contract，包含 production resource 與 lookup coverage 的固定檢查，並由 CI 執行。
+- `npm run search-parameter:build-artifacts` 重新產生版本控制中的 lookup matrix、example mapping、fixture archive、hit-set、migration manifest 與 resource-enablement artifacts。只有在 canonical Bundle、compiler 行為或 fixture corpus 改變時執行；需要重新搜尋官方 examples 時設定 `FHIR_EXAMPLES_DIR`。
+- `npm run search-parameter:discover-examples -- <hl7-examples-dir>` 掃描 HL7 FHIR examples 目錄，並更新 `models/FHIR/searchParameter/migration/artifacts/example-mapping.json`。這是維護者指令，不會在服務啟動時執行。
+
+版本控制中的 canonical source 是 FHIR R4/4.0.1 SearchParameter Bundle。Legacy inventory 檔案不是 runtime input，也不會由上述指令重新產生。
+
 ## 啟動服務
 ```
 node server.js
