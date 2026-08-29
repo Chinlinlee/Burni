@@ -4,6 +4,14 @@ const { buildLookupMatrix } = require("./lookupMatrix");
 const { buildInventoryDiffReport } = require("./inventoryDiff");
 const { resolveLookupStatus } = require("../registry/snapshot");
 
+/** Compile diagnostics emitted for classified lookup outcomes (disabled branch, abstract base, etc.). */
+const ALLOWED_COMPILE_DIAGNOSTIC_CODES = new Set([
+    "missing-expression",
+    "lookup-disabled",
+    "incompatible-branch",
+    "missing-type-map"
+]);
+
 /**
  * @typedef {Object} IntegrityCheckResult
  * @property {boolean} valid
@@ -79,11 +87,11 @@ function verifyRegistryIntegrity(snapshot, definitions, options = {}) {
         (diagnostic) =>
             diagnostic.category === "compile" &&
             !diagnostic.code.startsWith("unsupported") &&
-            diagnostic.code !== "missing-expression"
+            !ALLOWED_COMPILE_DIAGNOSTIC_CODES.has(diagnostic.code)
     );
-    if (unclassifiedDiagnostics.length > 0) {
-        warnings.push(
-            `Compiler diagnostics present: ${unclassifiedDiagnostics.length} (review required)`
+    for (const diagnostic of unclassifiedDiagnostics) {
+        errors.push(
+            `Unclassified compiler failure: ${diagnostic.lookupKey || diagnostic.canonicalKey} (${diagnostic.code})`
         );
     }
 
