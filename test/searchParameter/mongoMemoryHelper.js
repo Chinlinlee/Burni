@@ -28,6 +28,9 @@ function setRegistryTestEnv() {
         }
         process.env[key] = value;
     }
+    if (!("MONGODB_CONNECTION_URL" in originalEnv)) {
+        originalEnv.MONGODB_CONNECTION_URL = process.env.MONGODB_CONNECTION_URL;
+    }
 }
 
 function restoreEnv() {
@@ -37,6 +40,11 @@ function restoreEnv() {
         } else {
             process.env[key] = originalEnv[key];
         }
+    }
+    if (originalEnv.MONGODB_CONNECTION_URL === undefined) {
+        delete process.env.MONGODB_CONNECTION_URL;
+    } else {
+        process.env.MONGODB_CONNECTION_URL = originalEnv.MONGODB_CONNECTION_URL;
     }
 }
 
@@ -66,6 +74,7 @@ async function startMongoMemoryTestContext() {
 
     memoryServer = await MongoMemoryServer.create();
     const uri = memoryServer.getUri();
+    process.env.MONGODB_CONNECTION_URL = uri;
 
     if (mongoose.connection.readyState !== 0) {
         await mongoose.disconnect();
