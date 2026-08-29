@@ -67,9 +67,8 @@ function getCodeUpdate(resource) {
 function getGeneratedApiFiles(resource) {
     const get = `
         const search = require('../../../FHIRApiService/search');
-        const { paramsSearch } = require('../${resource}ParametersHandler');
         module.exports = async function(req, res) {
-            return await search(req, res,"${resource}", paramsSearch);
+            return await search(req, res, "${resource}");
         };
         `;
 
@@ -125,11 +124,8 @@ function getGeneratedApiFiles(resource) {
 
     const conditionDeleteJs = `
         const conditionDelete = require('../../../FHIRApiService/condition-delete');
-        const {
-            paramsSearch
-        } = require('../${resource}ParametersHandler');
         module.exports = async function(req, res) {
-            return await conditionDelete(req, res, "${resource}", paramsSearch);
+            return await conditionDelete(req, res, "${resource}");
         };
         `;
 

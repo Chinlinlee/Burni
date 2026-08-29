@@ -37,7 +37,16 @@ describe("API generator without SearchParameter handlers", function () {
         expect(Object.keys(files)).to.not.include("PatientParametersHandler.js");
         expect(generatorSource).to.not.include("FHIRParametersClean");
         expect(generatorSource).to.not.include("searchParametersCodeGenerator");
-        expect(generatorSource).to.not.include("ParametersHandler.js");
+        expect(generatorSource).to.not.include("ParametersHandler");
+        expect(generatorSource).to.not.include("paramsSearch");
+    });
+
+    it("does not emit search or conditional delete controllers that import generated handlers", function () {
+        const contents = generatedContents("Patient");
+
+        expect(contents).to.not.include("ParametersHandler");
+        expect(contents).to.not.include("paramsSearch");
+        expect(contents).to.not.include("paramsSearchFields");
     });
 
     it("still emits CRUD, history, and validation controllers", function () {

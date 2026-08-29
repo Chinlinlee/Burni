@@ -212,10 +212,9 @@ async function readPatientViaService(id) {
  */
 async function searchPatientViaService(query) {
     const { SearchService } = require("@root/api/FHIRApiService/services/search.service");
-    const { paramsSearch } = require("@root/api/FHIR/Patient/PatientParametersHandler");
     const req = createFakeRequest({ query, originalUrl: "/Patient" });
     const res = createFakeResponse();
-    const service = new SearchService(req, res, "Patient", paramsSearch);
+    const service = new SearchService(req, res, "Patient");
     return service.search();
 }
 
