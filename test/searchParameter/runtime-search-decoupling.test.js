@@ -84,17 +84,15 @@ describe("runtime search decoupling from generated handlers", function () {
         expect(offenders, offenders.join("\n")).to.deep.equal([]);
     });
 
-    it("keeps chain-params as the only FHIRApiService module that still references generated handlers", function () {
+    it("does not reference generated handlers from any FHIRApiService module", function () {
         const offenders = [];
 
         for (const filePath of listJsFiles(API_SERVICE_ROOT)) {
-            if (filePath.endsWith(`${path.sep}search${path.sep}chain-params.js`)) {
-                continue;
-            }
             const content = fs.readFileSync(filePath, "utf8");
             if (
                 /ParametersHandler\.js/.test(content) ||
-                content.includes("paramsSearchFields")
+                content.includes("paramsSearchFields") ||
+                content.includes("paramsSearch")
             ) {
                 offenders.push(path.relative(path.join(__dirname, "../.."), filePath));
             }

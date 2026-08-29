@@ -1,4 +1,3 @@
-const { logger } = require("@root/utils/log");
 const { ensureRegistryLoaded } = require("../registry/registryManager");
 const { resolveLookupStatus, getEffectiveDefinition } = require("../registry/snapshot");
 const { applyPlanToQuery } = require("../executor/mongoExecutor");
@@ -6,36 +5,21 @@ const { buildRelationPlan, buildRelationAggregation } = require("../executor/rel
 const { parseSearchParameterName } = require("./parameterName");
 const {
     isRegistryEnabledForResource,
-    isShadowCompareEnabledForResource,
     isLegacyFallbackEnabledForResource
 } = require("../config/featureFlags");
-const { compareWithLegacyHandler } = require("./shadowComparison");
-
-/**
- * @param {string} resourceType
- * @returns {Object | null}
- */
-function loadLegacyParamsSearch(resourceType) {
-    try {
-        return require(`@root/api/FHIR/${resourceType}/${resourceType}ParametersHandler`).paramsSearch;
-    } catch {
-        return null;
-    }
-}
 
 /**
  * @param {Object} options
  * @param {string} options.resourceType
  * @param {Object} options.query
  * @param {string} options.parameterName
- * @returns {Promise<'handled' | 'disabled' | 'fallback' | 'shadow-only'>}
+ * @returns {Promise<'handled' | 'disabled' | 'fallback'>}
  */
 async function tryApplyRegistryParameter(options) {
     const { resourceType, query, parameterName } = options;
     const registryEnabled = isRegistryEnabledForResource(resourceType);
-    const shadowEnabled = isShadowCompareEnabledForResource(resourceType);
 
-    if (!registryEnabled && !shadowEnabled) {
+    if (!registryEnabled) {
         return isLegacyFallbackEnabledForResource(resourceType) ? "fallback" : "disabled";
     }
 
@@ -55,26 +39,13 @@ async function tryApplyRegistryParameter(options) {
     }
 
     const plan = definition.compiledPlan;
-    const rawValue = query[parameterName];
-
-    if (!registryEnabled && shadowEnabled) {
-        await compareWithLegacyHandler({
-            resourceType,
-            parameterName,
-            queryValue: rawValue,
-            paramsSearch: loadLegacyParamsSearch(resourceType),
-            plan,
-            source: "runtime-shadow-only"
-        });
-        return "shadow-only";
-    }
 
     if (parsed.chain) {
         const relation = buildRelationPlan(plan, parsed.chain, snapshot, parsed.typeFilter);
         if (!relation.valid || !relation.relationPlan) {
             return "disabled";
         }
-        const aggregation = buildRelationAggregation(relation.relationPlan, rawValue);
+        const aggregation = buildRelationAggregation(relation.relationPlan, query[parameterName]);
         if (!query.chain) {
             query.chain = [];
         }
@@ -85,17 +56,6 @@ async function tryApplyRegistryParameter(options) {
     }
 
     applyPlanToQuery(plan, query, parameterName);
-
-    if (shadowEnabled) {
-        await compareWithLegacyHandler({
-            resourceType,
-            parameterName,
-            queryValue: rawValue,
-            paramsSearch: loadLegacyParamsSearch(resourceType),
-            plan,
-            source: "runtime"
-        });
-    }
 
     return "handled";
 }
