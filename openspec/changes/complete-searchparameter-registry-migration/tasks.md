@@ -69,8 +69,8 @@
 
 ## 9. Final verification
 
-- [ ] 9.1 執行完整 unit、compiler、golden filter、Mongo integration、API entry-point 與 error-flow tests。
-- [ ] 9.2 執行 diagnostics CI gate，確認 146 種 resource 與所有 lookup 都有允許且可追蹤的 outcome。
-- [ ] 9.3 執行 production-like startup、Registry preload、DB overlay reload 與 in-flight snapshot verification。
-- [ ] 9.4 執行 legacy dependency scan，確認 `FHIRParametersClean.json`、generated handler、shadow 與 rollout-status 已無有效引用。
-- [ ] 9.5 確認非 SearchParameter 的 Bundle transaction、URL/id parsing、CRUD、history、validation、pagination、summary 與 response 行為未回歸。
+- [x] 9.1 執行完整 unit、compiler、golden filter、Mongo integration、API entry-point 與 error-flow tests。
+- [x] 9.2 執行 diagnostics CI gate，確認 146 種 resource 與所有 lookup 都有允許且可追蹤的 outcome。
+- [x] 9.3 執行 production-like startup、Registry preload、DB overlay reload 與 in-flight snapshot verification。
+- [x] 9.4 執行 legacy dependency scan，確認 `FHIRParametersClean.json`、generated handler、shadow 與 rollout-status 已無有效引用。
+- [x] 9.5 確認非 SearchParameter 的 Bundle transaction、URL/id parsing、CRUD、history、validation、pagination、summary 與 response 行為未回歸。
