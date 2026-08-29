@@ -3,6 +3,7 @@ require("module-alias/register");
 const { expect } = require("chai");
 const {
     EXPECTED_RESOURCE_COUNT,
+    compareCatalogWithCoverage,
     loadResourceCatalog
 } = require("../../support/fhir/resource-catalog");
 const { loadFixtureProvenance } = require("@models/FHIR/searchParameter/migration/fixtureArchive");
@@ -27,5 +28,16 @@ describe("FHIR resource catalog support", function () {
 
         expect(missingInProvenance, missingInProvenance.join(", ")).to.deep.equal([]);
         expect(extraInProvenance, extraInProvenance.join(", ")).to.deep.equal([]);
+    });
+
+    it("fails when coverage cases diverge from the catalog and names the resource types", function () {
+        const catalog = loadResourceCatalog();
+        const { missingInCoverage, extraInCoverage } = compareCatalogWithCoverage(catalog, [
+            ...catalog.slice(1),
+            "NotInCatalog"
+        ]);
+
+        expect(missingInCoverage).to.deep.equal([catalog[0]]);
+        expect(extraInCoverage).to.deep.equal(["NotInCatalog"]);
     });
 });

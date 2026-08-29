@@ -142,6 +142,12 @@ Profile validation 打遠端 [Inferno FHIR validator wrapper](https://github.com
 
 見 [ADR 0001](docs/adr/0001-remote-fhir-validator.md)。
 
+# 測試
+
+`npm test` 執行完整 Mocha。`npm run lint` 執行 ESLint。
+
+`npm run test:all-resource-crud` 會對 `models/FHIR/fhir.resourceList.json` 中的每種 resource 執行具名 create/read round-trip。catalog 新增 resource 後，coverage 會自動要求對應案例；缺少 fixture provenance、active fixture 或 MongoDB model 時，該案例會失敗，錯誤訊息會帶 resource type。catalog 數量改變時，請同步更新 `test/support/fhir/resource-catalog.js` 的 `EXPECTED_RESOURCE_COUNT`。詳見 `docs/adr/0005-all-resource-crud-coverage.md`。
+
 # TODO
 - Search parameters
     - [ ] composite

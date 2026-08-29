@@ -44,11 +44,18 @@ adapters, but assertions remain in the integration test.
 
 ## Consequences
 
-- A new resource added to the catalog automatically becomes a required CRUD
-  integration case.
+- A new resource added to `models/FHIR/fhir.resourceList.json` automatically
+  becomes a required named CRUD integration case after
+  `EXPECTED_RESOURCE_COUNT` in `test/support/fhir/resource-catalog.js` is
+  updated to the new catalog size. No new test file is required.
+- Missing fixture provenance, a missing active fixture, a `resourceType`
+  mismatch, or an unregistered MongoDB model fails that resource's case and
+  names the resource type in the diagnostic.
 - Fixture provenance and schema regressions fail loudly instead of becoming
   unreported coverage gaps.
 - The suite does not prove remote profile validation, HTTP routing, search
   behavior, or update/delete semantics.
 - The full suite may expose resource-specific persistence side effects that
   Patient-only tests do not cover.
+- Run the targeted suite with `npm run test:all-resource-crud`. Run the full
+  Mocha suite with `npm test` and lint with `npm run lint`.

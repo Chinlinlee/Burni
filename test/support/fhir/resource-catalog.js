@@ -29,7 +29,24 @@ function loadResourceCatalog() {
     return [...productionResources];
 }
 
+/**
+ * @param {string[]} catalog
+ * @param {string[]} coverageResourceTypes
+ * @returns {{ missingInCoverage: string[], extraInCoverage: string[] }}
+ */
+function compareCatalogWithCoverage(catalog, coverageResourceTypes) {
+    const coverageSet = new Set(coverageResourceTypes);
+    const catalogSet = new Set(catalog);
+    const missingInCoverage = catalog.filter((resourceType) => !coverageSet.has(resourceType));
+    const extraInCoverage = coverageResourceTypes.filter(
+        (resourceType) => !catalogSet.has(resourceType)
+    );
+
+    return { missingInCoverage, extraInCoverage };
+}
+
 module.exports = {
     EXPECTED_RESOURCE_COUNT,
+    compareCatalogWithCoverage,
     loadResourceCatalog
 };

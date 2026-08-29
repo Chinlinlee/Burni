@@ -143,6 +143,12 @@ Profile validation is a remote [Inferno FHIR validator wrapper](https://github.c
 
 See [ADR 0001](docs/adr/0001-remote-fhir-validator.md).
 
+## Testing
+
+`npm test` runs the full Mocha suite. `npm run lint` runs ESLint.
+
+`npm run test:all-resource-crud` runs a named create/read round-trip for every type in `models/FHIR/fhir.resourceList.json`. Adding a resource to that catalog automatically requires a coverage case. The case fails if fixture provenance, the active fixture, or the MongoDB model is missing, and the error names the resource type. Update `EXPECTED_RESOURCE_COUNT` in `test/support/fhir/resource-catalog.js` when the catalog size changes. See `docs/adr/0005-all-resource-crud-coverage.md`.
+
 ## TODO
 - Search parameters
     - [ ] composite

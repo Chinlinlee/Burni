@@ -1,8 +1,12 @@
 require("module-alias/register");
 
 const { expect } = require("chai");
+const { loadFixtureProvenance } = require("@models/FHIR/searchParameter/migration/fixtureArchive");
 const { loadResourceCatalog } = require("../../support/fhir/resource-catalog");
-const { loadActiveFixture } = require("../../support/fhir/active-fixture");
+const {
+    compareCatalogWithFixtureProvenance,
+    loadActiveFixture
+} = require("../../support/fhir/active-fixture");
 
 describe("FHIR active fixture support", function () {
     it("loads Patient derived fixture with matching resourceType", function () {
@@ -34,7 +38,39 @@ describe("FHIR active fixture support", function () {
     });
 
     it("fails when resource type is missing from provenance", function () {
-        expect(() => loadActiveFixture("NotARealResource")).to.throw(/Missing fixture provenance/);
+        expect(() => loadActiveFixture("NotARealResource")).to.throw(
+            /Missing fixture provenance for NotARealResource/
+        );
+    });
+
+    it("requires fixture provenance for a resource added to the catalog", function () {
+        const catalog = loadResourceCatalog();
+        const provenance = loadFixtureProvenance();
+        const { missingInProvenance, extraInProvenance } = compareCatalogWithFixtureProvenance(
+            provenance,
+            [...catalog, "NotYetInCatalog"]
+        );
+
+        expect(missingInProvenance).to.deep.equal(["NotYetInCatalog"]);
+        expect(extraInProvenance).to.deep.equal([]);
+        expect(() => loadActiveFixture("NotYetInCatalog")).to.throw(
+            /Missing fixture provenance for NotYetInCatalog/
+        );
+    });
+
+    it("fails when fixture provenance includes a resource outside the catalog", function () {
+        const catalog = loadResourceCatalog();
+        const provenance = {
+            ...loadFixtureProvenance(),
+            NotInCatalog: { activeFixturePath: "test/fixtures/archive/official/NotInCatalog.json" }
+        };
+        const { missingInProvenance, extraInProvenance } = compareCatalogWithFixtureProvenance(
+            provenance,
+            catalog
+        );
+
+        expect(missingInProvenance).to.deep.equal([]);
+        expect(extraInProvenance).to.deep.equal(["NotInCatalog"]);
     });
 
     it("covers every catalog resource with an active fixture", function () {

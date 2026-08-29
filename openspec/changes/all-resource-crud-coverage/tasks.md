@@ -21,6 +21,6 @@
 
 ## 4. 驗證與文件
 
-- [ ] 4.1 執行 targeted all-resource CRUD integration suite，確認 146 個具名案例均被執行。
-- [ ] 4.2 執行完整 Mocha 測試與 ESLint。
-- [ ] 4.3 確認新增 resource 後 catalog coverage、fixture 載入與 failure diagnostics 仍會自動涵蓋該 resource。
+- [x] 4.1 執行 targeted all-resource CRUD integration suite，確認 146 個具名案例均被執行。
+- [x] 4.2 執行完整 Mocha 測試與 ESLint。
+- [x] 4.3 確認新增 resource 後 catalog coverage、fixture 載入與 failure diagnostics 仍會自動涵蓋該 resource。
