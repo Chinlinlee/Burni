@@ -55,7 +55,7 @@
 - [x] 7.2 移除所有 controller、service、Bundle 與 conditional delete 對 generated `paramsSearch`/`paramsSearchFields` 的需求。
 - [x] 7.3 將 Registry executor 從 legacy `queryBuild.js` 與 `searchParameterQueryHandler.js` 解耦，保留必要的 type-specific primitives。
 - [x] 7.4 替換或移除 chain、include/revinclude、conditional delete 與 shadow code 中的 legacy imports。
-- [ ] 7.5 更新或替換直接測試 legacy query methods 的測試，改測 Registry executor 與 SearchQueryPlan contract。
+- [x] 7.5 更新或替換直接測試 legacy query methods 的測試，改測 Registry executor 與 SearchQueryPlan contract。
 - [ ] 7.6 執行全 repository import/reference 檢查，確認沒有 runtime、build、test 或 diagnostics call site 依賴 generated handlers。
 
 ## 8. Feature flags、script 與 legacy artifact removal

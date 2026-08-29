@@ -144,13 +144,22 @@ describe("Search type operator contracts", function () {
     });
 
     describe("uri", function () {
-        const uriPlan = () =>
+        const uriPlan = (extractionPaths = [{ path: "url", datatype: "uri" }]) =>
             plan({
                 searchType: "uri",
                 code: "url",
-                extractionPaths: [{ path: "url", datatype: "uri" }],
+                extractionPaths,
                 modifiers: ["below", "above"]
             });
+
+        it("matches an exact uri value", function () {
+            const filter = executeSearchQueryPlan(
+                uriPlan(),
+                "http://acme.org/fhir/ValueSet/123",
+                "url"
+            );
+            expect(filter).to.deep.equal({ url: "http://acme.org/fhir/ValueSet/123" });
+        });
 
         it("applies :below as a prefix match", function () {
             const filter = executeSearchQueryPlan(
@@ -159,6 +168,37 @@ describe("Search type operator contracts", function () {
                 "url:below"
             );
             expect(filter.url.$regex).to.be.instanceOf(RegExp);
+        });
+
+        it("ORs :below across multiple extraction paths", function () {
+            const filter = executeSearchQueryPlan(
+                uriPlan([
+                    { path: "url", datatype: "uri" },
+                    { path: "url2", datatype: "uri" }
+                ]),
+                "http://acme.org/fhir/",
+                "url:below"
+            );
+
+            expect(filter).to.have.property("$or").with.lengthOf(2);
+            expect(filter.$or[0]).to.have.nested.property("url.$regex");
+            expect(filter.$or[1]).to.have.nested.property("url2.$regex");
+        });
+
+        it("applies :above as the uri prefix hierarchy", function () {
+            const filter = executeSearchQueryPlan(
+                uriPlan(),
+                "http://acme.org/fhir/ValueSet/123/_history/5",
+                "url:above"
+            );
+
+            expect(filter.url).to.be.an("array");
+            expect(filter.url).to.include("http://acme.org");
+            expect(filter.url).to.include("http://acme.org/fhir");
+            expect(filter.url).to.include("http://acme.org/fhir/ValueSet");
+            expect(filter.url).to.include("http://acme.org/fhir/ValueSet/123");
+            expect(filter.url).to.include("http://acme.org/fhir/ValueSet/123/_history");
+            expect(filter.url).to.include("http://acme.org/fhir/ValueSet/123/_history/5");
         });
 
         it("rejects an undeclared string modifier", function () {
