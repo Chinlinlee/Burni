@@ -40,7 +40,7 @@ class SearchService extends BaseFhirApiService {
                 paramsSearch: this.paramsSearchOfResource
             });
     
-            queryParameter = searchParameterCreator.create();
+            queryParameter = await searchParameterCreator.create();
         } catch (e) {
             if (e instanceof UnknownSearchParameterError) {
                 return {

@@ -5,6 +5,7 @@ const {
     getChainParentJoinQuery
 } = require("./chain-params");
 const { logger } = require("@root/utils/log");
+const { tryApplyRegistryParameter } = require("@models/FHIR/searchParameter/runtime/registrySearchHandler");
 
 /**
  * @typedef SearchParameterCreatorOption
@@ -24,7 +25,7 @@ class SearchParameterCreator {
         this.paramsSearch = option.paramsSearch;
     }
 
-    create() {
+    async create() {
         // remove empty parameter
         Object.keys(this.query).forEach((key) => {
             if (
@@ -40,8 +41,24 @@ class SearchParameterCreator {
         // The top level parameter $and to combine search parameters concat with &(and)
         this.query.$and = [];
 
-        for (let key in this.query) {
+        const pendingKeys = Object.keys(this.query).filter((key) => key !== "$and");
+        for (const key of pendingKeys) {
             try {
+                const registryResult = await tryApplyRegistryParameter({
+                    resourceType: this.resourceType,
+                    query: this.query,
+                    parameterName: key,
+                    paramsSearch: this.paramsSearch
+                });
+                if (registryResult === "disabled") {
+                    throw new UnknownSearchParameterError(
+                        `Unknown search parameter ${key} or value ${this.query[key]}`
+                    );
+                }
+                if (registryResult === "handled") {
+                    continue;
+                }
+
                 let splitDotLength = key.split(".").length;
                 if (splitDotLength >= 2) {
                     if ((key.startsWith("composition") || key.startsWith("message")) &&
@@ -75,6 +92,9 @@ class SearchParameterCreator {
                     this.paramsSearch[key](this.query);
                 }
             } catch (e) {
+                if (e instanceof UnknownSearchParameterError) {
+                    throw e;
+                }
                 if (key != "$and") {
                     logger.error(e);
                     logger.error(

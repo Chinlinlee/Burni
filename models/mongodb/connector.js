@@ -53,6 +53,10 @@ module.exports = exports = function (config) {
     db.on("error", console.error.bind(console, "connection error:"));
     db.once("open", function () {
         console.log("we're connected!");
+        const { reloadRegistry } = require("../FHIR/searchParameter/registry/registryManager");
+        reloadRegistry().catch((error) => {
+            console.error("Failed to preload SearchParameter registry", error);
+        });
     });
     getCollections("/model", collection);
     getCollections("/staticModel", collection);

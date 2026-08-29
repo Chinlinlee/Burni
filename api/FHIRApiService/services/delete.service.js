@@ -18,7 +18,12 @@ class DeleteService extends BaseFhirApiService {
 
     async delete() {
         try {
-            return await DeleteService.deleteResourceById(this.resourceType, this.resourceId);
+            const result = await DeleteService.deleteResourceById(this.resourceType, this.resourceId);
+            if (result?.status && this.resourceType === "SearchParameter") {
+                const { reloadSearchParameterRegistry } = require("@models/FHIR/searchParameter/runtime/registryLifecycle");
+                await reloadSearchParameterRegistry();
+            }
+            return result;
         } catch(e) {
             if (e instanceof FhirWebServiceError) {
                 return {

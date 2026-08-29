@@ -1,0 +1,7 @@
+{
+  "enabledResourceTypes": ["Patient"],
+  "shadowCompareResourceTypes": [
+    "Patient"
+  ],
+  "notes": "Patient is enabled after 23-code contract gates (8.1-8.6). Shadow comparison is diagnostic only and does not gate enablement."
+}

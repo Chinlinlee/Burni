@@ -1,0 +1,9 @@
+{
+  "fhirVersion": "4.0.1",
+  "source": "HL7 FHIR R4 SearchParameter Bundle",
+  "bundleId": "searchParams",
+  "bundleType": "collection",
+  "fixtureFile": "search-parameters-r4-4.0.1.json",
+  "trusted": true,
+  "notes": "Official HL7 FHIR R4/4.0.1 SearchParameter definitions. Raw resource status is preserved; effective activation is applied by the registry overlay."
+}

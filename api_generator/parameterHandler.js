@@ -6,6 +6,9 @@ const jp = require("jsonpath");
  * get clean fields of search parameter
  * @param {string} field The field to clean
  * @returns
+ *
+ * Legacy codegen helper. Canonical SearchParameter definitions are maintained by the
+ * registry/compiler pipeline and must not be derived from string-split field rules.
  */
 function getSearchFields(field) {
     let searchFields = field

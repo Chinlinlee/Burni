@@ -22,7 +22,12 @@ class UpdateService extends BaseFhirApiService {
             let validation = await BaseFhirApiService.validateRequestResource(resource);
             if (!validation.status) return validation;
 
-            return await UpdateService.insertOrUpdateResource(this.resourceType, resourceClone, this.resourceId);
+            const result = await UpdateService.insertOrUpdateResource(this.resourceType, resourceClone, this.resourceId);
+            if (result?.status && this.resourceType === "SearchParameter") {
+                const { reloadSearchParameterRegistry } = require("@models/FHIR/searchParameter/runtime/registryLifecycle");
+                await reloadSearchParameterRegistry();
+            }
+            return result;
 
         } catch (e) {
             logger.error(`[Error: ${JSON.stringify(e)}] [Resource Type: ${this.resourceType}]`);

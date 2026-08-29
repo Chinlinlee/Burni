@@ -5,6 +5,9 @@
     "main": "index.js",
     "scripts": {
         "test": "mocha",
+        "search-parameter:diagnostics": "node ./scripts/record-search-parameter-diagnostics.js",
+        "search-parameter:shadow": "node ./scripts/compare-registry-legacy-shadow.js",
+        "search-parameter:rollout-status": "node ./scripts/registry-rollout-status.js",
         "build": "node ./build/init.js",
         "release": "standard-version",
         "lint": "eslint --ignore-path .gitignore .",
@@ -72,6 +75,7 @@
         "chai": "^4.5.0",
         "eslint-config-prettier": "^9.1.0",
         "jsdoc-to-markdown": "^8.0.1",
-        "mocha": "^10.7.3"
+        "mocha": "^10.7.3",
+        "mongodb-memory-server": "^11.2.0"
     }
 }

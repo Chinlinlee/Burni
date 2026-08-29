@@ -125,6 +125,8 @@ function generateAPI(option) {
         };
         `;
         let searchParameter = require("./FHIRParametersClean.json");
+        // FHIRParametersClean.json is legacy codegen input only. Canonical SearchParameter
+        // definitions come from the version-controlled R4 bundle fixture and database registry.
         let resSearchParams = searchParameter[res];
         let resourceDefinition = require(
             `./to-code-use-definition/${res}.json`

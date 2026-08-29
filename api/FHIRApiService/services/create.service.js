@@ -25,8 +25,12 @@ class CreateService extends BaseFhirApiService {
             let validation = await BaseFhirApiService.validateRequestResource(resource);
             if (!validation.status) return validation;
 
-            let { status, result } = await CreateService.insertResource(this.resourceType, resourceClone);
-            return {
+        let { status, result } = await CreateService.insertResource(this.resourceType, resourceClone);
+        if (status && this.resourceType === "SearchParameter") {
+            const { reloadSearchParameterRegistry } = require("@models/FHIR/searchParameter/runtime/registryLifecycle");
+            await reloadSearchParameterRegistry();
+        }
+        return {
                 status,
                 code: status ? 201 : 500,
                 result
