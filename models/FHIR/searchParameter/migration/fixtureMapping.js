@@ -5,7 +5,7 @@ const productionResources = require("../../fhir.resourceList.json");
 
 const ARTIFACTS_DIR = path.join(__dirname, "artifacts");
 const EXAMPLE_MAPPING_PATH = path.join(ARTIFACTS_DIR, "example-mapping.json");
-const OFFICIAL_ARCHIVE_DIR = path.join(__dirname, "../fixtures/archive/official");
+const OFFICIAL_ARCHIVE_DIR = path.join(__dirname, "../../../../test/fixtures/archive/official");
 
 const FIXED_EXAMPLE_OVERRIDES = {
     Patient: "patient-example-f201-roel.json"

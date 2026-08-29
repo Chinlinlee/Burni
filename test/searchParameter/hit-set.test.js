@@ -23,10 +23,7 @@ const HIT_SETS_ARTIFACT = path.join(
     __dirname,
     "../../models/FHIR/searchParameter/migration/artifacts/hit-sets.json"
 );
-const ARCHIVE_ROOT = path.join(
-    __dirname,
-    "../../models/FHIR/searchParameter/fixtures/archive"
-);
+const ARCHIVE_ROOT = path.join(__dirname, "../fixtures/archive");
 
 async function compileDefinitions() {
     const builtin = loadBuiltinDefinitions();

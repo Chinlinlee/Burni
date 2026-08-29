@@ -75,7 +75,7 @@ describe("Registry integrity diagnostics report", function () {
         expect(patientActive.conflict).to.equal(false);
         expect(patientActive.fixtureProvenance.valueSource).to.equal("derived");
         expect(patientActive.fixtureProvenance.activeFixturePath).to.include(
-            "fixtures/archive/derived/Patient.json"
+            "test/fixtures/archive/derived/Patient.json"
         );
         expect(patientActive.fixtureProvenance.activeFixtureHash).to.match(/^[a-f0-9]{64}$/);
         expect(patientActive.enablement.registryEnabled).to.equal(true);

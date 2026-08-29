@@ -18,10 +18,7 @@ const ARTIFACTS_DIR = path.join(
     __dirname,
     "../../models/FHIR/searchParameter/migration/artifacts"
 );
-const ARCHIVE_ROOT = path.join(
-    __dirname,
-    "../../models/FHIR/searchParameter/fixtures/archive"
-);
+const ARCHIVE_ROOT = path.join(__dirname, "../fixtures/archive");
 
 async function compileDefinitions() {
     const builtin = loadBuiltinDefinitions();

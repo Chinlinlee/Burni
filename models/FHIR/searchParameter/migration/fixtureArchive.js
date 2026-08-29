@@ -11,7 +11,7 @@ const {
 const { buildDerivedFixture, buildSyntheticFixture } = require("./fixtureDerivation");
 const { COMPANION_DIR, writeCompanionFixture } = require("./companionFixtures");
 
-const ARCHIVE_ROOT = path.join(__dirname, "../fixtures/archive");
+const ARCHIVE_ROOT = path.join(__dirname, "../../../../test/fixtures/archive");
 const OFFICIAL_DIR = path.join(ARCHIVE_ROOT, "official");
 const DERIVED_DIR = path.join(ARCHIVE_ROOT, "derived");
 const SYNTHETIC_DIR = path.join(ARCHIVE_ROOT, "synthetic");
@@ -50,7 +50,7 @@ function loadOfficialArchiveResource(resourceType) {
     if (!fs.existsSync(archivePath)) {
         throw new Error(
             `Official archive fixture missing for ${resourceType}: ${archivePath}. ` +
-                "Run search-parameter:build-artifacts or restore fixtures/archive/official."
+                "Run search-parameter:build-artifacts or restore test/fixtures/archive/official."
         );
     }
     return JSON.parse(fs.readFileSync(archivePath, "utf8"));

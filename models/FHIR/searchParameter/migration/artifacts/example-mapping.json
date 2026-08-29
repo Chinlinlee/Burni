@@ -2760,7 +2760,7 @@
       "resourceType": "Account",
       "valueSource": "official",
       "sourceFile": "account-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/Account.json",
+      "archivePath": "test/fixtures/archive/official/Account.json",
       "sourceHash": "665a5b20ec3b6c64d452953d3812bfc51ed7bb62f23420f076b992cc3f2b7c64",
       "verifiedResourceType": "Account",
       "candidates": [
@@ -2772,7 +2772,7 @@
       "resourceType": "ActivityDefinition",
       "valueSource": "official",
       "sourceFile": "activitydefinition-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/ActivityDefinition.json",
+      "archivePath": "test/fixtures/archive/official/ActivityDefinition.json",
       "sourceHash": "17ee34c9d576a0c02d5edf2a76a9c686cc7a5ce66947017c992bd2803fcef5bf",
       "verifiedResourceType": "ActivityDefinition",
       "candidates": [
@@ -2791,7 +2791,7 @@
       "resourceType": "AdverseEvent",
       "valueSource": "official",
       "sourceFile": "adverseevent-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/AdverseEvent.json",
+      "archivePath": "test/fixtures/archive/official/AdverseEvent.json",
       "sourceHash": "e0e04b733bc641cda198ab2d339e6fe5080cb6a2c73be01f54007956cb7a200f",
       "verifiedResourceType": "AdverseEvent",
       "candidates": [
@@ -2802,7 +2802,7 @@
       "resourceType": "AllergyIntolerance",
       "valueSource": "official",
       "sourceFile": "allergyintolerance-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/AllergyIntolerance.json",
+      "archivePath": "test/fixtures/archive/official/AllergyIntolerance.json",
       "sourceHash": "04740c8c72604fb54892efb0f1a9880a04d3beddb468cf6a52df0f84040188ec",
       "verifiedResourceType": "AllergyIntolerance",
       "candidates": [
@@ -2818,7 +2818,7 @@
       "resourceType": "Appointment",
       "valueSource": "official",
       "sourceFile": "appointment-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/Appointment.json",
+      "archivePath": "test/fixtures/archive/official/Appointment.json",
       "sourceHash": "270e1c045421921ac65b7a3127ef1281a418fde7fc02ee5b5b7d1d8a8dc66704",
       "verifiedResourceType": "Appointment",
       "candidates": [
@@ -2831,7 +2831,7 @@
       "resourceType": "AppointmentResponse",
       "valueSource": "official",
       "sourceFile": "appointmentresponse-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/AppointmentResponse.json",
+      "archivePath": "test/fixtures/archive/official/AppointmentResponse.json",
       "sourceHash": "b34884366e72a4014e873197fafc3e0b9bb2911aa86831ade6bf23adcd99d0c8",
       "verifiedResourceType": "AppointmentResponse",
       "candidates": [
@@ -2843,7 +2843,7 @@
       "resourceType": "AuditEvent",
       "valueSource": "official",
       "sourceFile": "auditevent-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/AuditEvent.json",
+      "archivePath": "test/fixtures/archive/official/AuditEvent.json",
       "sourceHash": "3b9214fc3999a08eaf4ae9bac5152c87dda50599d5b2a5c5a3bb977141785005",
       "verifiedResourceType": "AuditEvent",
       "candidates": [
@@ -2862,7 +2862,7 @@
       "resourceType": "Basic",
       "valueSource": "official",
       "sourceFile": "basic-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/Basic.json",
+      "archivePath": "test/fixtures/archive/official/Basic.json",
       "sourceHash": "6d29cff24865c750d1a09a3da1d8835de1a49d70ca1db997c98071b453e1b6b6",
       "verifiedResourceType": "Basic",
       "candidates": [
@@ -2875,7 +2875,7 @@
       "resourceType": "Binary",
       "valueSource": "official",
       "sourceFile": "binary-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/Binary.json",
+      "archivePath": "test/fixtures/archive/official/Binary.json",
       "sourceHash": "8cd5b1e7b4b3cac3aea0e9b98ab2bf8c6b530942de694dda8cda4a7cf87580b1",
       "verifiedResourceType": "Binary",
       "candidates": [
@@ -2887,7 +2887,7 @@
       "resourceType": "BiologicallyDerivedProduct",
       "valueSource": "official",
       "sourceFile": "biologicallyderivedproduct-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/BiologicallyDerivedProduct.json",
+      "archivePath": "test/fixtures/archive/official/BiologicallyDerivedProduct.json",
       "sourceHash": "22a4a0e8d30891bfc036f0573898e1ea295af9b1f9ed0524321e431424a5c365",
       "verifiedResourceType": "BiologicallyDerivedProduct",
       "candidates": [
@@ -2898,7 +2898,7 @@
       "resourceType": "BodyStructure",
       "valueSource": "official",
       "sourceFile": "bodystructure-example-fetus.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/BodyStructure.json",
+      "archivePath": "test/fixtures/archive/official/BodyStructure.json",
       "sourceHash": "70d36119f5c426bce6abfb24221a82ad0ee7defc84429c388a13892515d9c8f9",
       "verifiedResourceType": "BodyStructure",
       "candidates": [
@@ -2911,7 +2911,7 @@
       "resourceType": "Bundle",
       "valueSource": "official",
       "sourceFile": "bundle-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/Bundle.json",
+      "archivePath": "test/fixtures/archive/official/Bundle.json",
       "sourceHash": "edc0367afb9fb0a2dc7699b3b75f0160fbf41313861772153a2f7f4a8547174b",
       "verifiedResourceType": "Bundle",
       "candidates": [
@@ -2965,7 +2965,7 @@
       "resourceType": "CapabilityStatement",
       "valueSource": "official",
       "sourceFile": "capabilitystatement-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/CapabilityStatement.json",
+      "archivePath": "test/fixtures/archive/official/CapabilityStatement.json",
       "sourceHash": "6254490dd31e985e347e802ef6bd3956fadaa57ad9e1bdb295dad092f3d130c4",
       "verifiedResourceType": "CapabilityStatement",
       "candidates": [
@@ -2983,7 +2983,7 @@
       "resourceType": "CarePlan",
       "valueSource": "official",
       "sourceFile": "careplan-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/CarePlan.json",
+      "archivePath": "test/fixtures/archive/official/CarePlan.json",
       "sourceHash": "e1854a9195cae9a1ec778ca6b04c12086bc38bfe0caaf164a24b6006a6775aab",
       "verifiedResourceType": "CarePlan",
       "candidates": [
@@ -3004,7 +3004,7 @@
       "resourceType": "CareTeam",
       "valueSource": "official",
       "sourceFile": "careteam-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/CareTeam.json",
+      "archivePath": "test/fixtures/archive/official/CareTeam.json",
       "sourceHash": "f12c69d9179f4dc0afa898b4d680ceeb853cc9d9c28c820b4de2107caf9d8f0f",
       "verifiedResourceType": "CareTeam",
       "candidates": [
@@ -3015,7 +3015,7 @@
       "resourceType": "CatalogEntry",
       "valueSource": "official",
       "sourceFile": "catalogentry-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/CatalogEntry.json",
+      "archivePath": "test/fixtures/archive/official/CatalogEntry.json",
       "sourceHash": "b1c705ce350c77b710770df989716d0237aaaa40937980f44b91309d9800df63",
       "verifiedResourceType": "CatalogEntry",
       "candidates": [
@@ -3026,7 +3026,7 @@
       "resourceType": "ChargeItem",
       "valueSource": "official",
       "sourceFile": "chargeitem-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/ChargeItem.json",
+      "archivePath": "test/fixtures/archive/official/ChargeItem.json",
       "sourceHash": "c1be648cd9081d263d07391dd571328758fef660a6978e1044be4d4bcc0a0f92",
       "verifiedResourceType": "ChargeItem",
       "candidates": [
@@ -3037,7 +3037,7 @@
       "resourceType": "ChargeItemDefinition",
       "valueSource": "official",
       "sourceFile": "chargeitemdefinition-device-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/ChargeItemDefinition.json",
+      "archivePath": "test/fixtures/archive/official/ChargeItemDefinition.json",
       "sourceHash": "0b9c3686ebb23660536edc010e9feac59fd97da14f9ad3c563b301160b84bb18",
       "verifiedResourceType": "ChargeItemDefinition",
       "candidates": [
@@ -3049,7 +3049,7 @@
       "resourceType": "Claim",
       "valueSource": "official",
       "sourceFile": "claim-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/Claim.json",
+      "archivePath": "test/fixtures/archive/official/Claim.json",
       "sourceHash": "190fedb60f7f2daee298915b895b75bdc014eed61419e02cdf9bf659a3e118b3",
       "verifiedResourceType": "Claim",
       "candidates": [
@@ -3076,7 +3076,7 @@
       "resourceType": "ClaimResponse",
       "valueSource": "official",
       "sourceFile": "claimresponse-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/ClaimResponse.json",
+      "archivePath": "test/fixtures/archive/official/ClaimResponse.json",
       "sourceHash": "99deb33655a4f78a4f49c1b661a7e98a08e29ea36552f1787a1edeb919dc767a",
       "verifiedResourceType": "ClaimResponse",
       "candidates": [
@@ -3091,7 +3091,7 @@
       "resourceType": "ClinicalImpression",
       "valueSource": "official",
       "sourceFile": "clinicalimpression-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/ClinicalImpression.json",
+      "archivePath": "test/fixtures/archive/official/ClinicalImpression.json",
       "sourceHash": "0eaf91a68b56741ea7c603a5a5e7f041e6df24cda96037ec3ef308b8de470bf5",
       "verifiedResourceType": "ClinicalImpression",
       "candidates": [
@@ -3102,7 +3102,7 @@
       "resourceType": "CodeSystem",
       "valueSource": "official",
       "sourceFile": "codesystem-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/CodeSystem.json",
+      "archivePath": "test/fixtures/archive/official/CodeSystem.json",
       "sourceHash": "7636c057af379324dd09794c1a13a27829f2375276d26b85051c955926bd6e2f",
       "verifiedResourceType": "CodeSystem",
       "candidates": [
@@ -3607,7 +3607,7 @@
       "resourceType": "Communication",
       "valueSource": "official",
       "sourceFile": "communication-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/Communication.json",
+      "archivePath": "test/fixtures/archive/official/Communication.json",
       "sourceHash": "aed8bf9514901dd6828461d7c3ef92c60031a2b8163cb8ab9970f34c114bd51f",
       "verifiedResourceType": "Communication",
       "candidates": [
@@ -3620,7 +3620,7 @@
       "resourceType": "CommunicationRequest",
       "valueSource": "official",
       "sourceFile": "communicationrequest-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/CommunicationRequest.json",
+      "archivePath": "test/fixtures/archive/official/CommunicationRequest.json",
       "sourceHash": "60934bac4bddf1e2a2506fc631d98caef8af195c3f19b6432f207cdb5672025d",
       "verifiedResourceType": "CommunicationRequest",
       "candidates": [
@@ -3632,7 +3632,7 @@
       "resourceType": "CompartmentDefinition",
       "valueSource": "official",
       "sourceFile": "compartmentdefinition-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/CompartmentDefinition.json",
+      "archivePath": "test/fixtures/archive/official/CompartmentDefinition.json",
       "sourceHash": "6099d0736876b41def8de1d556b9c019f6305a4f4b252c7d5a17046eac4536d3",
       "verifiedResourceType": "CompartmentDefinition",
       "candidates": [
@@ -3648,7 +3648,7 @@
       "resourceType": "Composition",
       "valueSource": "official",
       "sourceFile": "composition-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/Composition.json",
+      "archivePath": "test/fixtures/archive/official/Composition.json",
       "sourceHash": "828f1c7d0fd3e8dac91b086493e4e35480f97f91e3cd549d87b5e4bda2d3b682",
       "verifiedResourceType": "Composition",
       "candidates": [
@@ -3660,7 +3660,7 @@
       "resourceType": "ConceptMap",
       "valueSource": "official",
       "sourceFile": "conceptmap-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/ConceptMap.json",
+      "archivePath": "test/fixtures/archive/official/ConceptMap.json",
       "sourceHash": "2da2828b3b5195cface180f56cc76e2174a958a398e9e5b77b263355cd056c16",
       "verifiedResourceType": "ConceptMap",
       "candidates": [
@@ -3750,7 +3750,7 @@
       "resourceType": "Condition",
       "valueSource": "official",
       "sourceFile": "condition-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/Condition.json",
+      "archivePath": "test/fixtures/archive/official/Condition.json",
       "sourceHash": "53c805e804c872f009c339277892f3f35dfa3a881604c62a77afa978df7b3f7b",
       "verifiedResourceType": "Condition",
       "candidates": [
@@ -3772,7 +3772,7 @@
       "resourceType": "Consent",
       "valueSource": "official",
       "sourceFile": "consent-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/Consent.json",
+      "archivePath": "test/fixtures/archive/official/Consent.json",
       "sourceHash": "acdadbad2f4d33fe7ef0811c165d6156c8ec3ef688972ffb633de5abb0a7826c",
       "verifiedResourceType": "Consent",
       "candidates": [
@@ -3794,7 +3794,7 @@
       "resourceType": "Contract",
       "valueSource": "official",
       "sourceFile": "contract-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/Contract.json",
+      "archivePath": "test/fixtures/archive/official/Contract.json",
       "sourceHash": "3d1f7e6213530bed405b401ba7a0568302a2b09d1f01fba33bc3508234bd575f",
       "verifiedResourceType": "Contract",
       "candidates": [
@@ -3812,7 +3812,7 @@
       "resourceType": "Coverage",
       "valueSource": "official",
       "sourceFile": "coverage-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/Coverage.json",
+      "archivePath": "test/fixtures/archive/official/Coverage.json",
       "sourceHash": "917d5af2dd4dcd3e9e23d0d137e12895e9b589fc2c8e23ece6122b1095f9656a",
       "verifiedResourceType": "Coverage",
       "candidates": [
@@ -3826,7 +3826,7 @@
       "resourceType": "CoverageEligibilityRequest",
       "valueSource": "official",
       "sourceFile": "coverageeligibilityrequest-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/CoverageEligibilityRequest.json",
+      "archivePath": "test/fixtures/archive/official/CoverageEligibilityRequest.json",
       "sourceHash": "c09bc797fcfa8234ab56b1aa6dda848ea2fa7f0736eb839f7d641e8bc2180653",
       "verifiedResourceType": "CoverageEligibilityRequest",
       "candidates": [
@@ -3838,7 +3838,7 @@
       "resourceType": "CoverageEligibilityResponse",
       "valueSource": "official",
       "sourceFile": "coverageeligibilityresponse-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/CoverageEligibilityResponse.json",
+      "archivePath": "test/fixtures/archive/official/CoverageEligibilityResponse.json",
       "sourceHash": "1416b11420d5001514668b713c9331f4d5c53e476a0a43e7be1e32f69cfdf00d",
       "verifiedResourceType": "CoverageEligibilityResponse",
       "candidates": [
@@ -3852,7 +3852,7 @@
       "resourceType": "DetectedIssue",
       "valueSource": "official",
       "sourceFile": "detectedissue-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/DetectedIssue.json",
+      "archivePath": "test/fixtures/archive/official/DetectedIssue.json",
       "sourceHash": "ffec003e954b191e00195f8d6be1daba4161a57a32494e6867713c2355dbba9c",
       "verifiedResourceType": "DetectedIssue",
       "candidates": [
@@ -3866,7 +3866,7 @@
       "resourceType": "Device",
       "valueSource": "official",
       "sourceFile": "device-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/Device.json",
+      "archivePath": "test/fixtures/archive/official/Device.json",
       "sourceHash": "708adfe39b5ca92c2baef32fe316d04f5e2e4069fe48576b04bf189fda7916e3",
       "verifiedResourceType": "Device",
       "candidates": [
@@ -3878,7 +3878,7 @@
       "resourceType": "DeviceDefinition",
       "valueSource": "official",
       "sourceFile": "devicedefinition-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/DeviceDefinition.json",
+      "archivePath": "test/fixtures/archive/official/DeviceDefinition.json",
       "sourceHash": "1d1edbc048eab2672b9cb6c00463ed1aaddd15091746d63ea93e20166905d823",
       "verifiedResourceType": "DeviceDefinition",
       "candidates": [
@@ -3889,7 +3889,7 @@
       "resourceType": "DeviceMetric",
       "valueSource": "official",
       "sourceFile": "devicemetric-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/DeviceMetric.json",
+      "archivePath": "test/fixtures/archive/official/DeviceMetric.json",
       "sourceHash": "f76f036975a1f979885288c4d9d2953fb39038c33448d46f1100c1139c4d30e0",
       "verifiedResourceType": "DeviceMetric",
       "candidates": [
@@ -3900,7 +3900,7 @@
       "resourceType": "DeviceRequest",
       "valueSource": "official",
       "sourceFile": "devicerequest-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/DeviceRequest.json",
+      "archivePath": "test/fixtures/archive/official/DeviceRequest.json",
       "sourceHash": "632c7f038f289cfd033877d8f806fd2732c1812718ba184c81c62f32ff0a6034",
       "verifiedResourceType": "DeviceRequest",
       "candidates": [
@@ -3914,7 +3914,7 @@
       "resourceType": "DeviceUseStatement",
       "valueSource": "official",
       "sourceFile": "deviceusestatement-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/DeviceUseStatement.json",
+      "archivePath": "test/fixtures/archive/official/DeviceUseStatement.json",
       "sourceHash": "9518a093560d095728434d23399413c407802dcf3b6a96f3c9aed016c4317260",
       "verifiedResourceType": "DeviceUseStatement",
       "candidates": [
@@ -3925,7 +3925,7 @@
       "resourceType": "DiagnosticReport",
       "valueSource": "official",
       "sourceFile": "diagnosticreport-example-dxa.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/DiagnosticReport.json",
+      "archivePath": "test/fixtures/archive/official/DiagnosticReport.json",
       "sourceHash": "0ef062caa5dadffbd224480e7e5b20b89827f4cd5aac873a7b19c8a8b51a4d10",
       "verifiedResourceType": "DiagnosticReport",
       "candidates": [
@@ -3941,7 +3941,7 @@
       "resourceType": "DocumentManifest",
       "valueSource": "official",
       "sourceFile": "documentmanifest-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/DocumentManifest.json",
+      "archivePath": "test/fixtures/archive/official/DocumentManifest.json",
       "sourceHash": "047a87d26e5d70065fdb1d02848228a5e7436df1235a485e96b25951461a64a9",
       "verifiedResourceType": "DocumentManifest",
       "candidates": [
@@ -3953,7 +3953,7 @@
       "resourceType": "DocumentReference",
       "valueSource": "official",
       "sourceFile": "documentreference-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/DocumentReference.json",
+      "archivePath": "test/fixtures/archive/official/DocumentReference.json",
       "sourceHash": "58db8dec47725753d9fe52252fd72a96caeccf92619e6a4e35de599370ccf4aa",
       "verifiedResourceType": "DocumentReference",
       "candidates": [
@@ -3964,7 +3964,7 @@
       "resourceType": "EffectEvidenceSynthesis",
       "valueSource": "official",
       "sourceFile": "effectevidencesynthesis-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/EffectEvidenceSynthesis.json",
+      "archivePath": "test/fixtures/archive/official/EffectEvidenceSynthesis.json",
       "sourceHash": "a1b1d6b0cb2e82f4d69aab8d214f163fc035659a6e54f31ca65ec86af8ba477c",
       "verifiedResourceType": "EffectEvidenceSynthesis",
       "candidates": [
@@ -3975,7 +3975,7 @@
       "resourceType": "Encounter",
       "valueSource": "official",
       "sourceFile": "encounter-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/Encounter.json",
+      "archivePath": "test/fixtures/archive/official/Encounter.json",
       "sourceHash": "ee0a4f1812a9be50cd2646d4cb36548601b10c8b3675a1b699abe8d2d49ca5b2",
       "verifiedResourceType": "Encounter",
       "candidates": [
@@ -3995,7 +3995,7 @@
       "resourceType": "Endpoint",
       "valueSource": "official",
       "sourceFile": "endpoint-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/Endpoint.json",
+      "archivePath": "test/fixtures/archive/official/Endpoint.json",
       "sourceHash": "50299f67016fcd08b6daff35825f1909113e5202258c4a3d3c8ee137e2a8f730",
       "verifiedResourceType": "Endpoint",
       "candidates": [
@@ -4009,7 +4009,7 @@
       "resourceType": "EnrollmentRequest",
       "valueSource": "official",
       "sourceFile": "enrollmentrequest-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/EnrollmentRequest.json",
+      "archivePath": "test/fixtures/archive/official/EnrollmentRequest.json",
       "sourceHash": "23501bbf6b67d61f7a93e82a1a4592ca4a7a9250c4acbddfd59247565dcfbcc8",
       "verifiedResourceType": "EnrollmentRequest",
       "candidates": [
@@ -4020,7 +4020,7 @@
       "resourceType": "EnrollmentResponse",
       "valueSource": "official",
       "sourceFile": "enrollmentresponse-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/EnrollmentResponse.json",
+      "archivePath": "test/fixtures/archive/official/EnrollmentResponse.json",
       "sourceHash": "7425deb74928f0f0c8f0a9b6de4de8dce0bbb46c7cf80e8c9f2a589bd3f49032",
       "verifiedResourceType": "EnrollmentResponse",
       "candidates": [
@@ -4031,7 +4031,7 @@
       "resourceType": "EpisodeOfCare",
       "valueSource": "official",
       "sourceFile": "episodeofcare-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/EpisodeOfCare.json",
+      "archivePath": "test/fixtures/archive/official/EpisodeOfCare.json",
       "sourceHash": "cfb4f3f8277ead0108f111a3ee8063539fdfe9d68ce98ffe14245ee49691b58b",
       "verifiedResourceType": "EpisodeOfCare",
       "candidates": [
@@ -4042,7 +4042,7 @@
       "resourceType": "EventDefinition",
       "valueSource": "official",
       "sourceFile": "eventdefinition-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/EventDefinition.json",
+      "archivePath": "test/fixtures/archive/official/EventDefinition.json",
       "sourceHash": "33603c65040b9563db928109581d095325f2c3d2bb8356aa742c137f763bdea1",
       "verifiedResourceType": "EventDefinition",
       "candidates": [
@@ -4053,7 +4053,7 @@
       "resourceType": "Evidence",
       "valueSource": "official",
       "sourceFile": "evidence-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/Evidence.json",
+      "archivePath": "test/fixtures/archive/official/Evidence.json",
       "sourceHash": "fed3ebd8cb17a49d6a84e12aaf7700a62c69444de033d1abe854dc7bfccdf5c6",
       "verifiedResourceType": "Evidence",
       "candidates": [
@@ -4064,7 +4064,7 @@
       "resourceType": "EvidenceVariable",
       "valueSource": "official",
       "sourceFile": "evidencevariable-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/EvidenceVariable.json",
+      "archivePath": "test/fixtures/archive/official/EvidenceVariable.json",
       "sourceHash": "5c4ea265021b83e2796ad2608a4d9646f9e7d01557b2bb8f13f70ae5843191d5",
       "verifiedResourceType": "EvidenceVariable",
       "candidates": [
@@ -4075,7 +4075,7 @@
       "resourceType": "ExampleScenario",
       "valueSource": "official",
       "sourceFile": "examplescenario-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/ExampleScenario.json",
+      "archivePath": "test/fixtures/archive/official/ExampleScenario.json",
       "sourceHash": "112175a7dcfc09311ef452adad706d6fd70deedb3babe40179fc77c6f1259e04",
       "verifiedResourceType": "ExampleScenario",
       "candidates": [
@@ -4086,7 +4086,7 @@
       "resourceType": "ExplanationOfBenefit",
       "valueSource": "official",
       "sourceFile": "explanationofbenefit-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/ExplanationOfBenefit.json",
+      "archivePath": "test/fixtures/archive/official/ExplanationOfBenefit.json",
       "sourceHash": "f146f72055f530100672d9968a2e9d46321170e72b67b470d1e1d2466fbf928c",
       "verifiedResourceType": "ExplanationOfBenefit",
       "candidates": [
@@ -4098,7 +4098,7 @@
       "resourceType": "FamilyMemberHistory",
       "valueSource": "official",
       "sourceFile": "familymemberhistory-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/FamilyMemberHistory.json",
+      "archivePath": "test/fixtures/archive/official/FamilyMemberHistory.json",
       "sourceHash": "4339a524e43cb64a0e25fc9b05a4c7314c63561c790568cbe8c34888ba0b9a90",
       "verifiedResourceType": "FamilyMemberHistory",
       "candidates": [
@@ -4110,7 +4110,7 @@
       "resourceType": "Flag",
       "valueSource": "official",
       "sourceFile": "flag-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/Flag.json",
+      "archivePath": "test/fixtures/archive/official/Flag.json",
       "sourceHash": "f26709bd12f6e525fc73ca083df7c9f2f06f228deca38b589cfe161431f52d17",
       "verifiedResourceType": "Flag",
       "candidates": [
@@ -4122,7 +4122,7 @@
       "resourceType": "Goal",
       "valueSource": "official",
       "sourceFile": "goal-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/Goal.json",
+      "archivePath": "test/fixtures/archive/official/Goal.json",
       "sourceHash": "3d4c7cf6be559f55178aecc4a487050e9141a61cdc72bdd035b9513b3670b9bc",
       "verifiedResourceType": "Goal",
       "candidates": [
@@ -4134,7 +4134,7 @@
       "resourceType": "GraphDefinition",
       "valueSource": "official",
       "sourceFile": "graphdefinition-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/GraphDefinition.json",
+      "archivePath": "test/fixtures/archive/official/GraphDefinition.json",
       "sourceHash": "ccaaab8f2043f74f9e1deeb4ef7a3631456cd2fd2741593509f5d5df9dd76b14",
       "verifiedResourceType": "GraphDefinition",
       "candidates": [
@@ -4145,7 +4145,7 @@
       "resourceType": "Group",
       "valueSource": "official",
       "sourceFile": "group-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/Group.json",
+      "archivePath": "test/fixtures/archive/official/Group.json",
       "sourceHash": "059ebfa1c5f5effd241f0c3c0415946a83c419d735f6a252358d344d1355687d",
       "verifiedResourceType": "Group",
       "candidates": [
@@ -4159,7 +4159,7 @@
       "resourceType": "GuidanceResponse",
       "valueSource": "official",
       "sourceFile": "guidanceresponse-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/GuidanceResponse.json",
+      "archivePath": "test/fixtures/archive/official/GuidanceResponse.json",
       "sourceHash": "523fe5fd3f8af293dff76fd6d87f902f6ba919afa3a826269c6c22dcdcddcd51",
       "verifiedResourceType": "GuidanceResponse",
       "candidates": [
@@ -4170,7 +4170,7 @@
       "resourceType": "HealthcareService",
       "valueSource": "official",
       "sourceFile": "healthcareservice-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/HealthcareService.json",
+      "archivePath": "test/fixtures/archive/official/HealthcareService.json",
       "sourceHash": "53c4850ecec662e1f853091e90f662fd1b3b6e73bd873ca6a32de1cb7ce06c26",
       "verifiedResourceType": "HealthcareService",
       "candidates": [
@@ -4181,7 +4181,7 @@
       "resourceType": "ImagingStudy",
       "valueSource": "official",
       "sourceFile": "imagingstudy-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/ImagingStudy.json",
+      "archivePath": "test/fixtures/archive/official/ImagingStudy.json",
       "sourceHash": "733b523c12839ebc0a394f578d3e3de8d51456bb3cff9d3be71b2151e43e5691",
       "verifiedResourceType": "ImagingStudy",
       "candidates": [
@@ -4193,7 +4193,7 @@
       "resourceType": "Immunization",
       "valueSource": "official",
       "sourceFile": "immunization-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/Immunization.json",
+      "archivePath": "test/fixtures/archive/official/Immunization.json",
       "sourceHash": "6c08805fe355d58ef8c9d59be79dfd0f44a1fc6038848cbc4fa6be063b1a5d93",
       "verifiedResourceType": "Immunization",
       "candidates": [
@@ -4208,7 +4208,7 @@
       "resourceType": "ImmunizationEvaluation",
       "valueSource": "official",
       "sourceFile": "immunizationevaluation-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/ImmunizationEvaluation.json",
+      "archivePath": "test/fixtures/archive/official/ImmunizationEvaluation.json",
       "sourceHash": "65f5cfbc0c584170e9815febf0c93ba1ff118a811a817502d3565df7e3a04d1f",
       "verifiedResourceType": "ImmunizationEvaluation",
       "candidates": [
@@ -4220,7 +4220,7 @@
       "resourceType": "ImmunizationRecommendation",
       "valueSource": "official",
       "sourceFile": "immunizationrecommendation-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/ImmunizationRecommendation.json",
+      "archivePath": "test/fixtures/archive/official/ImmunizationRecommendation.json",
       "sourceHash": "a148cb9bec8f0a33528fef6a67ac126da384347ad679b3eea65510d8d9ba794e",
       "verifiedResourceType": "ImmunizationRecommendation",
       "candidates": [
@@ -4232,7 +4232,7 @@
       "resourceType": "ImplementationGuide",
       "valueSource": "official",
       "sourceFile": "implementationguide-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/ImplementationGuide.json",
+      "archivePath": "test/fixtures/archive/official/ImplementationGuide.json",
       "sourceHash": "83cb09bd970182f5f6c35b93a122023c63d8852c2823c0bff14b5cd043899467",
       "verifiedResourceType": "ImplementationGuide",
       "candidates": [
@@ -4243,7 +4243,7 @@
       "resourceType": "InsurancePlan",
       "valueSource": "official",
       "sourceFile": "insuranceplan-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/InsurancePlan.json",
+      "archivePath": "test/fixtures/archive/official/InsurancePlan.json",
       "sourceHash": "e2a2fdfb690577139b23552c50d5e4fd2b48cdc5347167dfbb62cd86df24f02f",
       "verifiedResourceType": "InsurancePlan",
       "candidates": [
@@ -4254,7 +4254,7 @@
       "resourceType": "Invoice",
       "valueSource": "official",
       "sourceFile": "invoice-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/Invoice.json",
+      "archivePath": "test/fixtures/archive/official/Invoice.json",
       "sourceHash": "5bdfbf186433fd6f63d181d6e4d44ba73a6dbeee0a3e8d4c55da76b6c171de3f",
       "verifiedResourceType": "Invoice",
       "candidates": [
@@ -4265,7 +4265,7 @@
       "resourceType": "Library",
       "valueSource": "official",
       "sourceFile": "library-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/Library.json",
+      "archivePath": "test/fixtures/archive/official/Library.json",
       "sourceHash": "94d2f6f986107836496bf2910af16b00b7ac6f13d9bc8cf04a71a7d938978ba9",
       "verifiedResourceType": "Library",
       "candidates": [
@@ -4296,7 +4296,7 @@
       "resourceType": "Linkage",
       "valueSource": "official",
       "sourceFile": "linkage-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/Linkage.json",
+      "archivePath": "test/fixtures/archive/official/Linkage.json",
       "sourceHash": "d9bf5071da71389c78525be70adc5d03ea3553e3d0f47f5dfa5a123caf47306b",
       "verifiedResourceType": "Linkage",
       "candidates": [
@@ -4307,7 +4307,7 @@
       "resourceType": "List",
       "valueSource": "official",
       "sourceFile": "list-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/List.json",
+      "archivePath": "test/fixtures/archive/official/List.json",
       "sourceHash": "b650fade8cb002466e4bbc608b37b2453bae0f99f5d00cfb9b32dc663767bd13",
       "verifiedResourceType": "List",
       "candidates": [
@@ -4327,7 +4327,7 @@
       "resourceType": "Location",
       "valueSource": "official",
       "sourceFile": "location-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/Location.json",
+      "archivePath": "test/fixtures/archive/official/Location.json",
       "sourceHash": "ae957529f1cb592ccc09a721fa9947f4b301d781d419c94cbc8207d33168bb48",
       "verifiedResourceType": "Location",
       "candidates": [
@@ -4343,7 +4343,7 @@
       "resourceType": "Measure",
       "valueSource": "official",
       "sourceFile": "measure-cms146-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/Measure.json",
+      "archivePath": "test/fixtures/archive/official/Measure.json",
       "sourceHash": "8c016d6887ecaf5286fdd8966e4833de3866e9afae1b05d66f9314b6dffc09fa",
       "verifiedResourceType": "Measure",
       "candidates": [
@@ -4360,7 +4360,7 @@
       "resourceType": "MeasureReport",
       "valueSource": "official",
       "sourceFile": "measurereport-cms146-cat1-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/MeasureReport.json",
+      "archivePath": "test/fixtures/archive/official/MeasureReport.json",
       "sourceHash": "83f24297bf495a93221b2ad38766289ea0a77da5f3210b8f65413ab20b7b5146",
       "verifiedResourceType": "MeasureReport",
       "candidates": [
@@ -4374,7 +4374,7 @@
       "resourceType": "Media",
       "valueSource": "official",
       "sourceFile": "media-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/Media.json",
+      "archivePath": "test/fixtures/archive/official/Media.json",
       "sourceHash": "44922ef9794d6b5b6f7792a91b039bfe01b852c0c5c5ff334224c48a5b348794",
       "verifiedResourceType": "Media",
       "candidates": [
@@ -4388,7 +4388,7 @@
       "resourceType": "Medication",
       "valueSource": "official",
       "sourceFile": "medicationexample0301.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/Medication.json",
+      "archivePath": "test/fixtures/archive/official/Medication.json",
       "sourceHash": "99a19c3e442ee4b0f7db099420647aa5326a055cf38f8a514edcc8201b1fb92c",
       "verifiedResourceType": "Medication",
       "candidates": [
@@ -4421,7 +4421,7 @@
       "resourceType": "MedicationAdministration",
       "valueSource": "official",
       "sourceFile": "medicationadministration0301.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/MedicationAdministration.json",
+      "archivePath": "test/fixtures/archive/official/MedicationAdministration.json",
       "sourceHash": "1235f5352f7c69fcee63ee864dbe1822b5a40a57cbeaa0b2625c97f6faab44d2",
       "verifiedResourceType": "MedicationAdministration",
       "candidates": [
@@ -4445,7 +4445,7 @@
       "resourceType": "MedicationDispense",
       "valueSource": "official",
       "sourceFile": "medicationdispense0301.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/MedicationDispense.json",
+      "archivePath": "test/fixtures/archive/official/MedicationDispense.json",
       "sourceHash": "b2db1afd841c23908ef5631138e06fd34c0a85aaa9a24fd7ac592a96bcc32792",
       "verifiedResourceType": "MedicationDispense",
       "candidates": [
@@ -4486,7 +4486,7 @@
       "resourceType": "MedicationKnowledge",
       "valueSource": "official",
       "sourceFile": "medicationknowledge-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/MedicationKnowledge.json",
+      "archivePath": "test/fixtures/archive/official/MedicationKnowledge.json",
       "sourceHash": "efcbdc53f3fbc228d260b44625329c69d2a97e3b0713b4e6870990500e1fed1b",
       "verifiedResourceType": "MedicationKnowledge",
       "candidates": [
@@ -4497,7 +4497,7 @@
       "resourceType": "MedicationRequest",
       "valueSource": "official",
       "sourceFile": "medicationrequest0301.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/MedicationRequest.json",
+      "archivePath": "test/fixtures/archive/official/MedicationRequest.json",
       "sourceHash": "e204f3be56f7ac8de74a97cb95ca0a797eeec9e3ca790812ed2ea645bef9dfd6",
       "verifiedResourceType": "MedicationRequest",
       "candidates": [
@@ -4547,7 +4547,7 @@
       "resourceType": "MedicationStatement",
       "valueSource": "official",
       "sourceFile": "medicationstatementexample1.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/MedicationStatement.json",
+      "archivePath": "test/fixtures/archive/official/MedicationStatement.json",
       "sourceHash": "1d3b6f87bc39a6cefecd42e12a28d0f9b2a2f1d19f8ec9eb5ba7a4b9cc1fa4a4",
       "verifiedResourceType": "MedicationStatement",
       "candidates": [
@@ -4564,7 +4564,7 @@
       "resourceType": "MedicinalProduct",
       "valueSource": "official",
       "sourceFile": "medicinalproduct-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/MedicinalProduct.json",
+      "archivePath": "test/fixtures/archive/official/MedicinalProduct.json",
       "sourceHash": "f26cadd98c115517ac6355675bd6f09e09a7f7c854ed10f994374cd02cbb2d1e",
       "verifiedResourceType": "MedicinalProduct",
       "candidates": [
@@ -4575,7 +4575,7 @@
       "resourceType": "MedicinalProductAuthorization",
       "valueSource": "official",
       "sourceFile": "medicinalproductauthorization-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/MedicinalProductAuthorization.json",
+      "archivePath": "test/fixtures/archive/official/MedicinalProductAuthorization.json",
       "sourceHash": "2f9b150f9cb2f2e2aa3b7f673ddccbc2f2fb4cc65fe1c2e80c812f890261583a",
       "verifiedResourceType": "MedicinalProductAuthorization",
       "candidates": [
@@ -4586,7 +4586,7 @@
       "resourceType": "MedicinalProductContraindication",
       "valueSource": "official",
       "sourceFile": "medicinalproductcontraindication-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/MedicinalProductContraindication.json",
+      "archivePath": "test/fixtures/archive/official/MedicinalProductContraindication.json",
       "sourceHash": "b5471179072dac4c4ef675c93c296fcf77fdcd772d6cfbb1407720df28fcdaf9",
       "verifiedResourceType": "MedicinalProductContraindication",
       "candidates": [
@@ -4597,7 +4597,7 @@
       "resourceType": "MedicinalProductIndication",
       "valueSource": "official",
       "sourceFile": "medicinalproductindication-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/MedicinalProductIndication.json",
+      "archivePath": "test/fixtures/archive/official/MedicinalProductIndication.json",
       "sourceHash": "0daa2a1ce5343b113560160129d758545c8a551f5a34ac0440db3ec4cf036557",
       "verifiedResourceType": "MedicinalProductIndication",
       "candidates": [
@@ -4608,7 +4608,7 @@
       "resourceType": "MedicinalProductIngredient",
       "valueSource": "official",
       "sourceFile": "medicinalproductingredient-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/MedicinalProductIngredient.json",
+      "archivePath": "test/fixtures/archive/official/MedicinalProductIngredient.json",
       "sourceHash": "8daff3d7f72b6a7c9a0148acf9d49c268fc075cb20e6e1554c4bfedf0e18b227",
       "verifiedResourceType": "MedicinalProductIngredient",
       "candidates": [
@@ -4619,7 +4619,7 @@
       "resourceType": "MedicinalProductInteraction",
       "valueSource": "official",
       "sourceFile": "medicinalproductinteraction-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/MedicinalProductInteraction.json",
+      "archivePath": "test/fixtures/archive/official/MedicinalProductInteraction.json",
       "sourceHash": "459bbcaadf59b07c9fcfd6b797292b712f2c62c82ac27f91387c256f1ffcebf3",
       "verifiedResourceType": "MedicinalProductInteraction",
       "candidates": [
@@ -4630,7 +4630,7 @@
       "resourceType": "MedicinalProductManufactured",
       "valueSource": "official",
       "sourceFile": "medicinalproductmanufactured-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/MedicinalProductManufactured.json",
+      "archivePath": "test/fixtures/archive/official/MedicinalProductManufactured.json",
       "sourceHash": "b93d9a92c63f42584e1afd3da25e0c715cf31964839de3cf22a75b70a109a1bb",
       "verifiedResourceType": "MedicinalProductManufactured",
       "candidates": [
@@ -4641,7 +4641,7 @@
       "resourceType": "MedicinalProductPackaged",
       "valueSource": "official",
       "sourceFile": "medicinalproductpackaged-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/MedicinalProductPackaged.json",
+      "archivePath": "test/fixtures/archive/official/MedicinalProductPackaged.json",
       "sourceHash": "e48db3d78de3b58397a728d3f8b10162c5bcaf1e95a4b9ed98406a1659ab1fe9",
       "verifiedResourceType": "MedicinalProductPackaged",
       "candidates": [
@@ -4652,7 +4652,7 @@
       "resourceType": "MedicinalProductPharmaceutical",
       "valueSource": "official",
       "sourceFile": "medicinalproductpharmaceutical-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/MedicinalProductPharmaceutical.json",
+      "archivePath": "test/fixtures/archive/official/MedicinalProductPharmaceutical.json",
       "sourceHash": "5df377a7384d622a9269d607f456bac9b54dcbd1f8f5a419d97dbff1bc0c56bc",
       "verifiedResourceType": "MedicinalProductPharmaceutical",
       "candidates": [
@@ -4663,7 +4663,7 @@
       "resourceType": "MedicinalProductUndesirableEffect",
       "valueSource": "official",
       "sourceFile": "medicinalproductundesirableeffect-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/MedicinalProductUndesirableEffect.json",
+      "archivePath": "test/fixtures/archive/official/MedicinalProductUndesirableEffect.json",
       "sourceHash": "e291066aeba78fbc3e5790a9c091fea83a5444d73af3d100b988a2d191cc8e42",
       "verifiedResourceType": "MedicinalProductUndesirableEffect",
       "candidates": [
@@ -4674,7 +4674,7 @@
       "resourceType": "MessageDefinition",
       "valueSource": "official",
       "sourceFile": "messagedefinition-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/MessageDefinition.json",
+      "archivePath": "test/fixtures/archive/official/MessageDefinition.json",
       "sourceHash": "61283d165ec6171ba7d1e92a17ca2ddc81e50e6cbed471a9987293ad6e67c5a7",
       "verifiedResourceType": "MessageDefinition",
       "candidates": [
@@ -4687,7 +4687,7 @@
       "resourceType": "MessageHeader",
       "valueSource": "official",
       "sourceFile": "messageheader-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/MessageHeader.json",
+      "archivePath": "test/fixtures/archive/official/MessageHeader.json",
       "sourceHash": "69c0596d36924e692b624be654db2715672b0a172ded029c8fb59fd989a7370b",
       "verifiedResourceType": "MessageHeader",
       "candidates": [
@@ -4698,7 +4698,7 @@
       "resourceType": "MolecularSequence",
       "valueSource": "official",
       "sourceFile": "molecularsequence-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/MolecularSequence.json",
+      "archivePath": "test/fixtures/archive/official/MolecularSequence.json",
       "sourceHash": "b41101a6f331b3c3ef847dfb6c35dcf987a141ee66deed4543e2fd8cb8069656",
       "verifiedResourceType": "MolecularSequence",
       "candidates": [
@@ -4725,7 +4725,7 @@
       "resourceType": "NamingSystem",
       "valueSource": "official",
       "sourceFile": "namingsystem-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/NamingSystem.json",
+      "archivePath": "test/fixtures/archive/official/NamingSystem.json",
       "sourceHash": "f3c72fd2eebd09835903af6c5c72a524bc44535ff904442786f2b24b6eeaf89a",
       "verifiedResourceType": "NamingSystem",
       "candidates": [
@@ -4737,7 +4737,7 @@
       "resourceType": "NutritionOrder",
       "valueSource": "official",
       "sourceFile": "nutritionorder-example-cardiacdiet.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/NutritionOrder.json",
+      "archivePath": "test/fixtures/archive/official/NutritionOrder.json",
       "sourceHash": "82984d8182a26c5e2eafb0e68e574c7469771c787aa6abced9f4151c3e6a0315",
       "verifiedResourceType": "NutritionOrder",
       "candidates": [
@@ -4760,7 +4760,7 @@
       "resourceType": "Observation",
       "valueSource": "official",
       "sourceFile": "observation-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/Observation.json",
+      "archivePath": "test/fixtures/archive/official/Observation.json",
       "sourceHash": "7afd004f59b5d320a05f870c30c07565041339fce5e78d1811a8a62f5adc6c2a",
       "verifiedResourceType": "Observation",
       "candidates": [
@@ -4834,7 +4834,7 @@
       "resourceType": "ObservationDefinition",
       "valueSource": "official",
       "sourceFile": "observationdefinition-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/ObservationDefinition.json",
+      "archivePath": "test/fixtures/archive/official/ObservationDefinition.json",
       "sourceHash": "e6555861f3c20455ce6e37c05bd49456c1c6369a45b3e5f1e15fc4c08e8342cc",
       "verifiedResourceType": "ObservationDefinition",
       "candidates": [
@@ -4845,7 +4845,7 @@
       "resourceType": "OperationDefinition",
       "valueSource": "official",
       "sourceFile": "operationdefinition-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/OperationDefinition.json",
+      "archivePath": "test/fixtures/archive/official/OperationDefinition.json",
       "sourceHash": "4760dee9fe20cda8a443ac188103d6152f961f1224798ae7cd49e377d260ce2c",
       "verifiedResourceType": "OperationDefinition",
       "candidates": [
@@ -4901,7 +4901,7 @@
       "resourceType": "OperationOutcome",
       "valueSource": "official",
       "sourceFile": "operationoutcome-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/OperationOutcome.json",
+      "archivePath": "test/fixtures/archive/official/OperationOutcome.json",
       "sourceHash": "aeb0de2bb3ed2cbe06d1d1aac4307c931769df9ecfe642033d39318caee26d46",
       "verifiedResourceType": "OperationOutcome",
       "candidates": [
@@ -4917,7 +4917,7 @@
       "resourceType": "Organization",
       "valueSource": "official",
       "sourceFile": "organization-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/Organization.json",
+      "archivePath": "test/fixtures/archive/official/Organization.json",
       "sourceHash": "f28b8118b19f7b4a77f1d27673a7e6a6b841f1f5a2810a636e237af59d1e18fe",
       "verifiedResourceType": "Organization",
       "candidates": [
@@ -4940,7 +4940,7 @@
       "resourceType": "OrganizationAffiliation",
       "valueSource": "official",
       "sourceFile": "organizationaffiliation-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/OrganizationAffiliation.json",
+      "archivePath": "test/fixtures/archive/official/OrganizationAffiliation.json",
       "sourceHash": "d28a081019baaab0712cbd58dc9ea2b9413949a7dfa70846e02baf76bcf5ff5d",
       "verifiedResourceType": "OrganizationAffiliation",
       "candidates": [
@@ -4953,7 +4953,7 @@
       "resourceType": "Parameters",
       "valueSource": "official",
       "sourceFile": "parameters-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/Parameters.json",
+      "archivePath": "test/fixtures/archive/official/Parameters.json",
       "sourceHash": "7472d57574e4a8728b77f03f7b5d5c6c75c50c883c3fcd7014334157cd6bdcfe",
       "verifiedResourceType": "Parameters",
       "candidates": [
@@ -4964,7 +4964,7 @@
       "resourceType": "Patient",
       "valueSource": "official",
       "sourceFile": "patient-example-f201-roel.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/Patient.json",
+      "archivePath": "test/fixtures/archive/official/Patient.json",
       "sourceHash": "2f95ad0b9afc2b6ba1c38784fd204b813714b708ebdb42d42e2105d1e6f7d509",
       "verifiedResourceType": "Patient",
       "candidates": [
@@ -4997,7 +4997,7 @@
       "resourceType": "PaymentNotice",
       "valueSource": "official",
       "sourceFile": "paymentnotice-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/PaymentNotice.json",
+      "archivePath": "test/fixtures/archive/official/PaymentNotice.json",
       "sourceHash": "4809bda9ef7e961c07f96317726d718620814ee4999233a2dd8368e2cf16c8da",
       "verifiedResourceType": "PaymentNotice",
       "candidates": [
@@ -5008,7 +5008,7 @@
       "resourceType": "PaymentReconciliation",
       "valueSource": "official",
       "sourceFile": "paymentreconciliation-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/PaymentReconciliation.json",
+      "archivePath": "test/fixtures/archive/official/PaymentReconciliation.json",
       "sourceHash": "4710fef74e909e70d70bc5b5ef5a3d66780e26b352b6dc53ad4c0f4dc1f9b717",
       "verifiedResourceType": "PaymentReconciliation",
       "candidates": [
@@ -5019,7 +5019,7 @@
       "resourceType": "Person",
       "valueSource": "official",
       "sourceFile": "person-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/Person.json",
+      "archivePath": "test/fixtures/archive/official/Person.json",
       "sourceHash": "e22e478a2635168476d3cf64710835b9d0199fdaec765839a64de91f55cec901",
       "verifiedResourceType": "Person",
       "candidates": [
@@ -5034,7 +5034,7 @@
       "resourceType": "PlanDefinition",
       "valueSource": "official",
       "sourceFile": "plandefinition-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/PlanDefinition.json",
+      "archivePath": "test/fixtures/archive/official/PlanDefinition.json",
       "sourceHash": "efe6a1bfb3f98d01cca9146fa885b2736d2c25ae03af164c02faceb9e8f72e1f",
       "verifiedResourceType": "PlanDefinition",
       "candidates": [
@@ -5062,7 +5062,7 @@
       "resourceType": "Practitioner",
       "valueSource": "official",
       "sourceFile": "practitioner-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/Practitioner.json",
+      "archivePath": "test/fixtures/archive/official/Practitioner.json",
       "sourceHash": "a6423d574c6536253652b8be17bf2583ba0439ea678b9a110fcef23ef752cac3",
       "verifiedResourceType": "Practitioner",
       "candidates": [
@@ -5086,7 +5086,7 @@
       "resourceType": "PractitionerRole",
       "valueSource": "official",
       "sourceFile": "practitionerrole-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/PractitionerRole.json",
+      "archivePath": "test/fixtures/archive/official/PractitionerRole.json",
       "sourceHash": "084f6991e734e2e57f4383072ec5e01f5c5e2c3363db72944d51e207a6486e5a",
       "verifiedResourceType": "PractitionerRole",
       "candidates": [
@@ -5097,7 +5097,7 @@
       "resourceType": "Procedure",
       "valueSource": "official",
       "sourceFile": "procedure-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/Procedure.json",
+      "archivePath": "test/fixtures/archive/official/Procedure.json",
       "sourceHash": "7b41d280c726c2e99137b7c20ada9c3de25e1639bc80c94d1e51a0b898c4aa55",
       "verifiedResourceType": "Procedure",
       "candidates": [
@@ -5123,7 +5123,7 @@
       "resourceType": "Provenance",
       "valueSource": "official",
       "sourceFile": "provenance-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/Provenance.json",
+      "archivePath": "test/fixtures/archive/official/Provenance.json",
       "sourceHash": "761d8ec746d00f6808651d41cdffe9852c63ffa48af7f3ea968c8f5e355f790e",
       "verifiedResourceType": "Provenance",
       "candidates": [
@@ -5138,7 +5138,7 @@
       "resourceType": "Questionnaire",
       "valueSource": "official",
       "sourceFile": "questionnaire-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/Questionnaire.json",
+      "archivePath": "test/fixtures/archive/official/Questionnaire.json",
       "sourceHash": "bf8f0179dc86cf1176cee38dbd738e2e1e7c6fc56c02a80b5957080d9f163e41",
       "verifiedResourceType": "Questionnaire",
       "candidates": [
@@ -5154,7 +5154,7 @@
       "resourceType": "QuestionnaireResponse",
       "valueSource": "official",
       "sourceFile": "questionnaireresponse-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/QuestionnaireResponse.json",
+      "archivePath": "test/fixtures/archive/official/QuestionnaireResponse.json",
       "sourceHash": "5a87231ac99a380e8a1a2c72f41d6ff9f97bc7676589c3a4d0e0648763b1a200",
       "verifiedResourceType": "QuestionnaireResponse",
       "candidates": [
@@ -5169,7 +5169,7 @@
       "resourceType": "RelatedPerson",
       "valueSource": "official",
       "sourceFile": "relatedperson-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/RelatedPerson.json",
+      "archivePath": "test/fixtures/archive/official/RelatedPerson.json",
       "sourceHash": "e906ad4495add6557e4150ee3f9139a91072fccb3fe694e2deb4486ebb4b2e78",
       "verifiedResourceType": "RelatedPerson",
       "candidates": [
@@ -5184,7 +5184,7 @@
       "resourceType": "RequestGroup",
       "valueSource": "official",
       "sourceFile": "requestgroup-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/RequestGroup.json",
+      "archivePath": "test/fixtures/archive/official/RequestGroup.json",
       "sourceHash": "23503e1908ca46f25e06dc0e334ce9b9ef5809ff6b63d4f5a018975616106d3a",
       "verifiedResourceType": "RequestGroup",
       "candidates": [
@@ -5196,7 +5196,7 @@
       "resourceType": "ResearchDefinition",
       "valueSource": "official",
       "sourceFile": "researchdefinition-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/ResearchDefinition.json",
+      "archivePath": "test/fixtures/archive/official/ResearchDefinition.json",
       "sourceHash": "40ebb6c7afa6eed1c2cb449af511b633274fc98854311d132cdc5c844cf871a1",
       "verifiedResourceType": "ResearchDefinition",
       "candidates": [
@@ -5207,7 +5207,7 @@
       "resourceType": "ResearchElementDefinition",
       "valueSource": "official",
       "sourceFile": "researchelementdefinition-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/ResearchElementDefinition.json",
+      "archivePath": "test/fixtures/archive/official/ResearchElementDefinition.json",
       "sourceHash": "aff7a303928bf2c380d7763f0c5dd1635f6cd36b626aa750648b0d52688210f7",
       "verifiedResourceType": "ResearchElementDefinition",
       "candidates": [
@@ -5218,7 +5218,7 @@
       "resourceType": "ResearchStudy",
       "valueSource": "official",
       "sourceFile": "researchstudy-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/ResearchStudy.json",
+      "archivePath": "test/fixtures/archive/official/ResearchStudy.json",
       "sourceHash": "71cb77ddb7f261173a0449a0d3d1c8b5dfeb1c9938b0cf234017a43a7044270e",
       "verifiedResourceType": "ResearchStudy",
       "candidates": [
@@ -5229,7 +5229,7 @@
       "resourceType": "ResearchSubject",
       "valueSource": "official",
       "sourceFile": "researchsubject-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/ResearchSubject.json",
+      "archivePath": "test/fixtures/archive/official/ResearchSubject.json",
       "sourceHash": "ef109e3f64c25a84766da6f7abf71ad56de9289bdb78f3cab1a8b5515f598beb",
       "verifiedResourceType": "ResearchSubject",
       "candidates": [
@@ -5240,7 +5240,7 @@
       "resourceType": "RiskAssessment",
       "valueSource": "official",
       "sourceFile": "riskassessment-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/RiskAssessment.json",
+      "archivePath": "test/fixtures/archive/official/RiskAssessment.json",
       "sourceHash": "6112bc244e115aeca099c7d0ab3bfba78cb52bab5cdf4e279fae7e9e528ab5f2",
       "verifiedResourceType": "RiskAssessment",
       "candidates": [
@@ -5256,7 +5256,7 @@
       "resourceType": "RiskEvidenceSynthesis",
       "valueSource": "official",
       "sourceFile": "riskevidencesynthesis-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/RiskEvidenceSynthesis.json",
+      "archivePath": "test/fixtures/archive/official/RiskEvidenceSynthesis.json",
       "sourceHash": "25d49ff584c44949dc561aa39e6fd54606994edf293b987120c63d5c57e1b06e",
       "verifiedResourceType": "RiskEvidenceSynthesis",
       "candidates": [
@@ -5267,7 +5267,7 @@
       "resourceType": "Schedule",
       "valueSource": "official",
       "sourceFile": "schedule-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/Schedule.json",
+      "archivePath": "test/fixtures/archive/official/Schedule.json",
       "sourceHash": "accdafdb090846a8dae2cc1b8253115ac1aac430c391b99926090ef1df715454",
       "verifiedResourceType": "Schedule",
       "candidates": [
@@ -5280,7 +5280,7 @@
       "resourceType": "SearchParameter",
       "valueSource": "official",
       "sourceFile": "searchparameter-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/SearchParameter.json",
+      "archivePath": "test/fixtures/archive/official/SearchParameter.json",
       "sourceHash": "424ea34a9303ccaa8a9fd7671acfc28e3f1c41b6a01f41f7e8700cdc92fa0312",
       "verifiedResourceType": "SearchParameter",
       "candidates": [
@@ -5315,7 +5315,7 @@
       "resourceType": "ServiceRequest",
       "valueSource": "official",
       "sourceFile": "servicerequest-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/ServiceRequest.json",
+      "archivePath": "test/fixtures/archive/official/ServiceRequest.json",
       "sourceHash": "907b92b2cabaee8a57ea8f304d735eb948943f84b2ac435b9ce0ad7a2e59b9e6",
       "verifiedResourceType": "ServiceRequest",
       "candidates": [
@@ -5345,7 +5345,7 @@
       "resourceType": "Slot",
       "valueSource": "official",
       "sourceFile": "slot-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/Slot.json",
+      "archivePath": "test/fixtures/archive/official/Slot.json",
       "sourceHash": "18534fc391bd9d281453b32d4e40a940f5c5d5fca5a20f8547cf23163d75e15a",
       "verifiedResourceType": "Slot",
       "candidates": [
@@ -5359,7 +5359,7 @@
       "resourceType": "Specimen",
       "valueSource": "official",
       "sourceFile": "specimen-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/Specimen.json",
+      "archivePath": "test/fixtures/archive/official/Specimen.json",
       "sourceHash": "18b80ac11a4dc32046b8a35df1c4bc0627400584160838db2a215aa56e03ed71",
       "verifiedResourceType": "Specimen",
       "candidates": [
@@ -5374,7 +5374,7 @@
       "resourceType": "SpecimenDefinition",
       "valueSource": "official",
       "sourceFile": "specimendefinition-example-serum-plasma.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/SpecimenDefinition.json",
+      "archivePath": "test/fixtures/archive/official/SpecimenDefinition.json",
       "sourceHash": "4e13abf9a7a6b973ddcdacc1241b4b12d3319084f682e2d36c03585146247a6d",
       "verifiedResourceType": "SpecimenDefinition",
       "candidates": [
@@ -5385,7 +5385,7 @@
       "resourceType": "StructureDefinition",
       "valueSource": "official",
       "sourceFile": "definition.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/StructureDefinition.json",
+      "archivePath": "test/fixtures/archive/official/StructureDefinition.json",
       "sourceHash": "67e4cedaa02f0a6a28294c73ff274563b4abe55d4ba7dcbdccdbdd516b32ce1c",
       "verifiedResourceType": "StructureDefinition",
       "candidates": [
@@ -5794,7 +5794,7 @@
       "resourceType": "StructureMap",
       "valueSource": "official",
       "sourceFile": "structuremap-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/StructureMap.json",
+      "archivePath": "test/fixtures/archive/official/StructureMap.json",
       "sourceHash": "11dbd4daffdb1ea9380bb4fe1c1e14f2958d76726e0c09aa3d07514aa15a2a3a",
       "verifiedResourceType": "StructureMap",
       "candidates": [
@@ -5806,7 +5806,7 @@
       "resourceType": "Subscription",
       "valueSource": "official",
       "sourceFile": "subscription-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/Subscription.json",
+      "archivePath": "test/fixtures/archive/official/Subscription.json",
       "sourceHash": "b0a1fa3145f225febb5e87133f7b4c9c8396b999c91e205060509acd32b4910c",
       "verifiedResourceType": "Subscription",
       "candidates": [
@@ -5818,7 +5818,7 @@
       "resourceType": "Substance",
       "valueSource": "official",
       "sourceFile": "substance-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/Substance.json",
+      "archivePath": "test/fixtures/archive/official/Substance.json",
       "sourceHash": "0f429ac23579de24356ad3dcc9bccbfea54a617e480277285dcbbb5a7285b7f6",
       "verifiedResourceType": "Substance",
       "candidates": [
@@ -5884,7 +5884,7 @@
       "resourceType": "SubstanceSpecification",
       "valueSource": "official",
       "sourceFile": "substancespecification-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/SubstanceSpecification.json",
+      "archivePath": "test/fixtures/archive/official/SubstanceSpecification.json",
       "sourceHash": "c828341466c09f6d69244c21e942795694ed488a60b710d5b62238677922c8f4",
       "verifiedResourceType": "SubstanceSpecification",
       "candidates": [
@@ -5900,7 +5900,7 @@
       "resourceType": "SupplyDelivery",
       "valueSource": "official",
       "sourceFile": "supplydelivery-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/SupplyDelivery.json",
+      "archivePath": "test/fixtures/archive/official/SupplyDelivery.json",
       "sourceHash": "12e8490ac26f4a11dbd5ecce98b0693734e3f75044bbe5ccbb4e80b91a46ded9",
       "verifiedResourceType": "SupplyDelivery",
       "candidates": [
@@ -5912,7 +5912,7 @@
       "resourceType": "SupplyRequest",
       "valueSource": "official",
       "sourceFile": "supplyrequest-example-simpleorder.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/SupplyRequest.json",
+      "archivePath": "test/fixtures/archive/official/SupplyRequest.json",
       "sourceHash": "eeb46b9ff484e2503876ac54942daf1c77446f86b1768a5ad486d45956265396",
       "verifiedResourceType": "SupplyRequest",
       "candidates": [
@@ -5923,7 +5923,7 @@
       "resourceType": "Task",
       "valueSource": "official",
       "sourceFile": "task-example-fm-cancel.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/Task.json",
+      "archivePath": "test/fixtures/archive/official/Task.json",
       "sourceHash": "0df52cb8b9ca4a6e61aa89b1067242c20b8003f97af5c62e5cfd6468dd78cac3",
       "verifiedResourceType": "Task",
       "candidates": [
@@ -5945,7 +5945,7 @@
       "resourceType": "TerminologyCapabilities",
       "valueSource": "official",
       "sourceFile": "terminologycapabilities-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/TerminologyCapabilities.json",
+      "archivePath": "test/fixtures/archive/official/TerminologyCapabilities.json",
       "sourceHash": "09a6404721d2f9edb997bf7f469196cdee5d370f6a18ccc701f18dde9add23c5",
       "verifiedResourceType": "TerminologyCapabilities",
       "candidates": [
@@ -5956,7 +5956,7 @@
       "resourceType": "TestReport",
       "valueSource": "official",
       "sourceFile": "testreport-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/TestReport.json",
+      "archivePath": "test/fixtures/archive/official/TestReport.json",
       "sourceHash": "3254c565c13c0c52bbd8fdfcbca795556d3e7b67e2b9d86f873b87d63ce8f539",
       "verifiedResourceType": "TestReport",
       "candidates": [
@@ -5967,7 +5967,7 @@
       "resourceType": "TestScript",
       "valueSource": "official",
       "sourceFile": "testscript-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/TestScript.json",
+      "archivePath": "test/fixtures/archive/official/TestScript.json",
       "sourceHash": "986ead52d34134aa2580c3cf2c25190139c54e6322c77b1dc6e66bb32f43f255",
       "verifiedResourceType": "TestScript",
       "candidates": [
@@ -5983,7 +5983,7 @@
       "resourceType": "ValueSet",
       "valueSource": "official",
       "sourceFile": "valueset-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/ValueSet.json",
+      "archivePath": "test/fixtures/archive/official/ValueSet.json",
       "sourceHash": "6b25e955cd5f7cb9e6d02afc7a242a29a03b193dffbfcf57f372013818a5883c",
       "verifiedResourceType": "ValueSet",
       "candidates": [
@@ -6665,7 +6665,7 @@
       "resourceType": "VerificationResult",
       "valueSource": "official",
       "sourceFile": "verificationresult-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/VerificationResult.json",
+      "archivePath": "test/fixtures/archive/official/VerificationResult.json",
       "sourceHash": "2d4d79c558a994368ca4635a7cc3672c9cce06a9cc253850ae3579a15e2afd75",
       "verifiedResourceType": "VerificationResult",
       "candidates": [
@@ -6676,7 +6676,7 @@
       "resourceType": "VisionPrescription",
       "valueSource": "official",
       "sourceFile": "visionprescription-example.json",
-      "archivePath": "models/FHIR/searchParameter/fixtures/archive/official/VisionPrescription.json",
+      "archivePath": "test/fixtures/archive/official/VisionPrescription.json",
       "sourceHash": "e687d429f72e2ddb7ee249211e74fd99595ad262c6bbaad24934acd11a968a89",
       "verifiedResourceType": "VisionPrescription",
       "candidates": [

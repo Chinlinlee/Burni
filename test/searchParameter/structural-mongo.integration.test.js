@@ -19,10 +19,7 @@ const {
     stopMongoMemoryTestContext
 } = require("./mongoMemoryHelper");
 
-const ARCHIVE_ROOT = path.join(
-    __dirname,
-    "../../models/FHIR/searchParameter/fixtures/archive"
-);
+const ARCHIVE_ROOT = path.join(__dirname, "../fixtures/archive");
 const LOOKUP_MATRIX_PATH = path.join(
     __dirname,
     "../../models/FHIR/searchParameter/migration/artifacts/lookup-matrix.json"

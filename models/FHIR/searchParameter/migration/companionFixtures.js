@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 
-const COMPANION_DIR = path.join(__dirname, "../fixtures/archive/companion");
+const COMPANION_DIR = path.join(__dirname, "../../../../test/fixtures/archive/companion");
 
 /** @type {Record<string, (mainFixture: Object) => Object>} */
 const SPECIAL_COMPANION_BUILDERS = {

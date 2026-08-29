@@ -20,10 +20,7 @@ const {
     stopMongoMemoryTestContext
 } = require("./mongoMemoryHelper");
 
-const ARCHIVE_ROOT = path.join(
-    __dirname,
-    "../../models/FHIR/searchParameter/fixtures/archive"
-);
+const ARCHIVE_ROOT = path.join(__dirname, "../fixtures/archive");
 
 /**
  * @param {Object} fixture
