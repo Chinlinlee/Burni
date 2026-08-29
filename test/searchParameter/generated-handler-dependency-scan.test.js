@@ -18,11 +18,8 @@ const SCAN_ROOTS = [
 const GENERATED_HANDLER_FILE = /[/\\]api[/\\]FHIR[/\\][^/\\]+[/\\][^/\\]+ParametersHandler\.js$/;
 
 const ALLOWLIST = [
-    /[/\\]scripts[/\\]compare-registry-legacy-shadow\.js$/,
     /[/\\]models[/\\]FHIR[/\\]searchParameterQueryHandler\.js$/,
-    /[/\\]models[/\\]FHIR[/\\]searchParameter[/\\]runtime[/\\]shadowComparison\.js$/,
     /[/\\]models[/\\]FHIR[/\\]searchParameter[/\\]runtime[/\\]legacyQueryBuilder\.js$/,
-    /[/\\]test[/\\]searchParameter[/\\]shadow\.test\.js$/,
     /[/\\]test[/\\]searchParameter[/\\]compatibility-plus-corrections\.test\.js$/,
     /[/\\]test[/\\]searchParameter[/\\]generated-handler-dependency-scan\.test\.js$/,
     /[/\\]test[/\\]searchParameter[/\\]runtime-search-decoupling\.test\.js$/,

@@ -4,7 +4,7 @@
  */
 
 /** @type {Record<string, CompatibilityEntry>} */
-const EXPECTED_SHADOW_MISMATCHES = {
+const EXPECTED_LEGACY_DIVERGENCES = {
     "Patient::deceased": {
         category: "correction",
         reason: "Registry searches both deceasedBoolean and deceasedDateTime choice branches."
@@ -61,23 +61,23 @@ const NON_GOALS = Object.freeze([
  * @param {string} lookupKey
  * @returns {boolean}
  */
-function isExpectedShadowMismatch(lookupKey) {
-    return Object.prototype.hasOwnProperty.call(EXPECTED_SHADOW_MISMATCHES, lookupKey);
+function isExpectedLegacyDivergence(lookupKey) {
+    return Object.prototype.hasOwnProperty.call(EXPECTED_LEGACY_DIVERGENCES, lookupKey);
 }
 
 /**
  * @returns {string[]}
  */
-function getExpectedShadowMismatchKeys() {
-    return Object.keys(EXPECTED_SHADOW_MISMATCHES);
+function getExpectedLegacyDivergenceKeys() {
+    return Object.keys(EXPECTED_LEGACY_DIVERGENCES);
 }
 
 /**
  * @param {string} lookupKey
  * @returns {CompatibilityEntry | null}
  */
-function getExpectedShadowMismatch(lookupKey) {
-    return EXPECTED_SHADOW_MISMATCHES[lookupKey] || null;
+function getExpectedLegacyDivergence(lookupKey) {
+    return EXPECTED_LEGACY_DIVERGENCES[lookupKey] || null;
 }
 
 /**
@@ -103,12 +103,12 @@ function usesLegacyFilterEqualityAsEnablementGate() {
 }
 
 module.exports = {
-    EXPECTED_SHADOW_MISMATCHES,
+    EXPECTED_LEGACY_DIVERGENCES,
     ENABLEMENT_GATES,
     NON_GOALS,
-    isExpectedShadowMismatch,
-    getExpectedShadowMismatchKeys,
-    getExpectedShadowMismatch,
+    isExpectedLegacyDivergence,
+    getExpectedLegacyDivergenceKeys,
+    getExpectedLegacyDivergence,
     getEnablementGates,
     getCompatibilityNonGoals,
     usesLegacyFilterEqualityAsEnablementGate

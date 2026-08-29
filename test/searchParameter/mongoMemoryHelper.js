@@ -13,7 +13,6 @@ const REGISTRY_ENV = {
 };
 
 const MODULES_TO_RELOAD = [
-    "@models/FHIR/searchParameter/config/featureFlags",
     "@models/FHIR/searchParameter/runtime/registrySearchHandler",
     "@models/FHIR/searchParameter/registry/registryManager"
 ];

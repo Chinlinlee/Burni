@@ -14,8 +14,7 @@ const LEGACY_IMPORT_PATTERNS = [
     /require\(["'].*\/searchParameterQueryHandler["']\)/
 ];
 const ALLOWLIST = new Set([
-    path.join(TEST_ROOT, "searchParameter/compatibility-plus-corrections.test.js"),
-    path.join(TEST_ROOT, "searchParameter/shadow.test.js")
+    path.join(TEST_ROOT, "searchParameter/compatibility-plus-corrections.test.js")
 ]);
 
 function listTestFiles(dir) {

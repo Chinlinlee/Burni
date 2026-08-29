@@ -9,8 +9,6 @@ const {
     buildRegistryIntegrityReport
 } = require("@models/FHIR/searchParameter/migration/registryIntegrityReport");
 const { reloadRegistry } = require("@models/FHIR/searchParameter/registry/registryManager");
-const featureFlagsModule = require("@models/FHIR/searchParameter/config/featureFlags");
-
 describe("Registry-only production search path", function () {
     it("does not keep a resource rollout config file", function () {
         const rolloutPath = path.join(
@@ -18,15 +16,6 @@ describe("Registry-only production search path", function () {
             "../../models/FHIR/searchParameter/config/registry-rollout.json"
         );
         expect(fs.existsSync(rolloutPath)).to.equal(false);
-    });
-
-    it("does not export rollout or legacy fallback helpers", function () {
-        expect(featureFlagsModule).to.not.have.property("loadRolloutConfig");
-        expect(featureFlagsModule).to.not.have.property("isRegistryEnabledForResource");
-        expect(featureFlagsModule).to.not.have.property("isLegacyFallbackEnabledForResource");
-        expect(featureFlagsModule.featureFlags).to.not.have.property("legacyFallbackEnabled");
-        expect(featureFlagsModule.featureFlags).to.not.have.property("registrySearchEnabled");
-        expect(featureFlagsModule.featureFlags).to.not.have.property("registryEnabledResourceTypes");
     });
 
     it("returns disabled for unknown codes without a legacy fallback path", async function () {

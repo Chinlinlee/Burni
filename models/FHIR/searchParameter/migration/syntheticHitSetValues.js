@@ -1,5 +1,3 @@
-const { getSampleValue } = require("../runtime/shadowComparison");
-
 const ARRAY_PATH_ROOTS = new Set([
     "useContext",
     "identifier",
@@ -23,6 +21,45 @@ const ARRAY_LEAF_DATATYPES = new Set([
     "Address",
     "Coding"
 ]);
+
+/**
+ * @param {string} searchType
+ * @param {string} [parameterName]
+ * @returns {string}
+ */
+function getSampleValue(searchType, parameterName = "") {
+    if (parameterName === "gender") {
+        return "male";
+    }
+    if (parameterName === "identifier") {
+        return "http://example.org|test-id";
+    }
+    if (parameterName.includes("status")) {
+        return "active";
+    }
+    if (parameterName.includes("birth") || parameterName.includes("date")) {
+        return "1999-12-12";
+    }
+
+    switch (searchType) {
+        case "number":
+            return "eq42";
+        case "date":
+        case "dateTime":
+            return "1999-12-12";
+        case "token":
+            return "official";
+        case "reference":
+            return "Patient/example";
+        case "quantity":
+            return "eq10|kg";
+        case "uri":
+            return "http://example.org/test";
+        case "string":
+        default:
+            return "smith";
+    }
+}
 
 /**
  * @param {import('../compiler/searchQueryPlan').ExtractionPath} extractionPath

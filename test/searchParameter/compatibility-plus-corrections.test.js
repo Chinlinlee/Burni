@@ -11,17 +11,10 @@ const { prepareMainDocumentForHitSet } = require("@models/FHIR/searchParameter/m
 const {
     getEnablementGates,
     getCompatibilityNonGoals,
-    getExpectedShadowMismatchKeys,
-    isExpectedShadowMismatch,
+    getExpectedLegacyDivergenceKeys,
     usesLegacyFilterEqualityAsEnablementGate
 } = require("@models/FHIR/searchParameter/migration/compatibilityPolicy");
 const { buildLegacyFilter } = require("@models/FHIR/searchParameter/runtime/legacyQueryBuilder");
-const { compareWithLegacyHandler } = require("@models/FHIR/searchParameter/runtime/shadowComparison");
-const {
-    resetShadowDiagnostics,
-    getAllSummaries,
-    getResourceSummary
-} = require("@models/FHIR/searchParameter/runtime/shadowDiagnostics");
 const { areFiltersEqual } = require("@models/FHIR/searchParameter/runtime/queryComparator");
 const { executeSearchQueryPlan } = require("@models/FHIR/searchParameter/executor/mongoExecutor");
 const patientHandler = require("@root/api/FHIR/Patient/PatientParametersHandler");
@@ -35,17 +28,6 @@ const ARCHIVE_ROOT = path.join(
     __dirname,
     "../../models/FHIR/searchParameter/fixtures/archive"
 );
-
-/** @type {Record<string, string>} */
-const PATIENT_SHADOW_SAMPLES = {
-    deceased: "true",
-    email: "roel.bor@example.org",
-    phone: "+31612345678",
-    identifier: "urn:oid:2.16.840.1.113883.2.4.6.3|123456789",
-    name: "Roel",
-    telecom: "+31612345678",
-    phonetic: "Bor"
-};
 
 /**
  * @param {Object} fixture
@@ -117,8 +99,8 @@ describe("SearchParameter compatibility-plus-corrections", function () {
             expect(getCompatibilityNonGoals()).to.include("full R4 phonetic matching");
         });
 
-        it("tracks every expected Patient and Observation shadow mismatch", function () {
-            expect(getExpectedShadowMismatchKeys()).to.have.members([
+        it("documents every expected Patient and Observation legacy divergence", function () {
+            expect(getExpectedLegacyDivergenceKeys()).to.have.members([
                 "Patient::deceased",
                 "Patient::email",
                 "Patient::phone",
@@ -128,76 +110,6 @@ describe("SearchParameter compatibility-plus-corrections", function () {
                 "Patient::name",
                 "Observation::value-quantity"
             ]);
-        });
-    });
-
-    describe("shadow diagnostics", function () {
-        beforeEach(function () {
-            resetShadowDiagnostics();
-        });
-
-        it("never marks shadow summaries as ready for enablement", async function () {
-            const snapshot = await reloadRegistry();
-            const definition = snapshot.byLookupKey.get("Patient::gender");
-            await compareWithLegacyHandler({
-                resourceType: "Patient",
-                parameterName: "gender",
-                queryValue: "male",
-                paramsSearch: patientHandler.paramsSearch,
-                plan: definition.compiledPlan,
-                source: "batch"
-            });
-
-            const summary = getAllSummaries()[0];
-            expect(summary.readyForEnablement).to.equal(false);
-            expect(summary.shadowDiagnosticOnly).to.equal(true);
-        });
-
-        it("classifies every Patient shadow mismatch as an expected correction or divergence", async function () {
-            const snapshot = await reloadRegistry();
-            for (const [code, sampleValue] of Object.entries(PATIENT_SHADOW_SAMPLES)) {
-                const definition = snapshot.byLookupKey.get(`Patient::${code}`);
-                await compareWithLegacyHandler({
-                    resourceType: "Patient",
-                    parameterName: code,
-                    queryValue: sampleValue,
-                    paramsSearch: patientHandler.paramsSearch,
-                    plan: definition.compiledPlan,
-                    source: "batch"
-                });
-            }
-
-            const summary = getResourceSummary("Patient");
-            const mismatches = summary.entries.filter((entry) => entry.status === "mismatch");
-            expect(mismatches.map((entry) => `Patient::${entry.parameterName}`).sort()).to.deep.equal(
-                getExpectedShadowMismatchKeys()
-                    .filter((key) => key.startsWith("Patient::"))
-                    .sort()
-            );
-
-            for (const entry of mismatches) {
-                expect(
-                    isExpectedShadowMismatch(`Patient::${entry.parameterName}`),
-                    `${entry.parameterName} mismatch should be documented`
-                ).to.equal(true);
-            }
-        });
-
-        it("records Observation value-quantity mismatch without blocking enablement", async function () {
-            const snapshot = await reloadRegistry();
-            const definition = snapshot.byLookupKey.get("Observation::value-quantity");
-            const entry = await compareWithLegacyHandler({
-                resourceType: "Observation",
-                parameterName: "value-quantity",
-                queryValue: "eq10|kg",
-                paramsSearch: observationHandler.paramsSearch,
-                plan: definition.compiledPlan,
-                source: "batch"
-            });
-
-            expect(entry.status).to.equal("mismatch");
-            expect(isExpectedShadowMismatch("Observation::value-quantity")).to.equal(true);
-            expect(getAllSummaries()[0].readyForEnablement).to.equal(false);
         });
     });
 

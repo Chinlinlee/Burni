@@ -1,9 +1,7 @@
 const registryManager = require("./registry/registryManager");
-const featureFlags = require("./config/featureFlags");
 
 module.exports = {
     ...registryManager,
-    ...featureFlags,
     compiler: require("./compiler/compiler"),
     executor: {
         mongoExecutor: require("./executor/mongoExecutor"),
@@ -13,7 +11,6 @@ module.exports = {
         queryPrimitives: require("./executor/queryPrimitives")
     },
     runtime: {
-        registrySearchHandler: require("./runtime/registrySearchHandler"),
-        shadowComparison: require("./runtime/shadowComparison")
+        registrySearchHandler: require("./runtime/registrySearchHandler")
     }
 };
