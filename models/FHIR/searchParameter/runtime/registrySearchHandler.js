@@ -5,9 +5,9 @@ const { applyPlanToQuery } = require("../executor/mongoExecutor");
 const { buildRelationPlan, buildRelationAggregation } = require("../executor/relationPlan");
 const { parseSearchParameterName } = require("./parameterName");
 const {
-    featureFlags,
     isRegistryEnabledForResource,
-    isShadowCompareEnabledForResource
+    isShadowCompareEnabledForResource,
+    isLegacyFallbackEnabledForResource
 } = require("../config/featureFlags");
 const { compareWithLegacyHandler } = require("./shadowComparison");
 
@@ -25,7 +25,7 @@ async function tryApplyRegistryParameter(options) {
     const shadowEnabled = isShadowCompareEnabledForResource(resourceType);
 
     if (!registryEnabled && !shadowEnabled) {
-        return "fallback";
+        return isLegacyFallbackEnabledForResource(resourceType) ? "fallback" : "disabled";
     }
 
     const parsed = parseSearchParameterName(parameterName);
@@ -35,7 +35,7 @@ async function tryApplyRegistryParameter(options) {
         return "disabled";
     }
     if (lookupStatus === "unknown") {
-        return featureFlags.legacyFallbackEnabled ? "fallback" : "disabled";
+        return isLegacyFallbackEnabledForResource(resourceType) ? "fallback" : "disabled";
     }
 
     const definition = getEffectiveDefinition(snapshot, resourceType, parsed.code);

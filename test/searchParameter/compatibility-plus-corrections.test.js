@@ -104,6 +104,7 @@ describe("SearchParameter compatibility-plus-corrections", function () {
             expect(getEnablementGates()).to.deep.equal([
                 "golden-filter",
                 "document-hit-set",
+                "operator-multiplicity",
                 "diagnostics",
                 "structural-registry"
             ]);

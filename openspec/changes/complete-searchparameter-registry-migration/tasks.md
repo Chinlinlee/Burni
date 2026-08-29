@@ -40,7 +40,7 @@
 - [x] 5.3 建立每個 compiled lookup 的 positive hit-set、companion negative hit-set 與適用的 `:missing` 測試。
 - [x] 5.4 建立 choice、union、nested array、reference correlation、synthetic fixture 與 no-lookup resource 的 Mongo integration tests。
 - [x] 5.5 以 compatibility-plus-corrections 驗證 public search 結果，不以 legacy filter JSON equality 作為 gate。
-- [ ] 5.6 逐 resource 執行 golden filter、document hit-set、operator/multiplicity、diagnostics 與 structural gates，通過後關閉該 resource fallback。
+- [x] 5.6 逐 resource 執行 golden filter、document hit-set、operator/multiplicity、diagnostics 與 structural gates，通過後關閉該 resource fallback。
 
 ## 6. SearchParameter CRUD、DB overlay 與 diagnostics
 

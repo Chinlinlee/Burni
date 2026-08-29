@@ -1,8 +1,10 @@
 {
   "enableAllProductionResources": true,
   "enabledResourceTypes": [],
+  "disableLegacyFallbackForAllEnabledResources": true,
+  "fallbackDisabledResourceTypes": [],
   "shadowCompareResourceTypes": [
     "Patient"
   ],
-  "notes": "All production resources use Registry-first search. Disabled, unsupported, and conflict lookups never fall back to generated handlers. Shadow comparison is diagnostic only."
+  "notes": "All production resources use Registry-first search. Per-resource enablement gates disable legacy fallback after golden filter, document hit-set, operator/multiplicity, diagnostics, and structural gates pass. Shadow comparison is diagnostic only."
 }

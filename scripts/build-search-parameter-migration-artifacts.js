@@ -20,6 +20,10 @@ const { buildFixtureArchive } = require("@models/FHIR/searchParameter/migration/
 const { buildMigrationManifest } = require("@models/FHIR/searchParameter/migration/migrationManifest");
 const { buildHitSetArtifact } = require("@models/FHIR/searchParameter/migration/hitSetBuilder");
 const { verifyMigrationArtifacts } = require("@models/FHIR/searchParameter/migration/manifestDrift");
+const {
+    buildResourceEnablementArtifact,
+    verifyResourceEnablementArtifact
+} = require("@models/FHIR/searchParameter/migration/resourceEnablementGates");
 
 const ARTIFACTS_DIR = path.join(
     __dirname,
@@ -77,6 +81,12 @@ async function main() {
         snapshot,
         fixtureArchive
     });
+    const resourceEnablement = buildResourceEnablementArtifact({
+        snapshot,
+        definitions,
+        fixtureArchive,
+        hitSetArtifact
+    });
     const migrationManifest = buildMigrationManifest({
         snapshot,
         definitions,
@@ -91,12 +101,17 @@ async function main() {
     const mappingPath = path.join(ARTIFACTS_DIR, "example-mapping.json");
     const manifestPath = path.join(ARTIFACTS_DIR, "migration-manifest.json");
     const hitSetsPath = path.join(ARTIFACTS_DIR, "hit-sets.json");
+    const enablementPath = path.join(ARTIFACTS_DIR, "resource-enablement.json");
+    const committedEnablement = fs.existsSync(enablementPath)
+        ? JSON.parse(fs.readFileSync(enablementPath, "utf8"))
+        : null;
 
     fs.writeFileSync(matrixPath, JSON.stringify(lookupMatrix, null, 2));
     fs.writeFileSync(diffPath, JSON.stringify(inventoryDiff, null, 2));
     fs.writeFileSync(mappingPath, JSON.stringify(exampleMapping, null, 2));
     fs.writeFileSync(manifestPath, JSON.stringify(migrationManifest, null, 2));
     fs.writeFileSync(hitSetsPath, JSON.stringify(hitSetArtifact, null, 2));
+    fs.writeFileSync(enablementPath, JSON.stringify(resourceEnablement, null, 2));
 
     const drift = verifyMigrationArtifacts({
         currentManifest: migrationManifest,
@@ -109,6 +124,31 @@ async function main() {
             console.error(`  - ${error}`);
         }
         process.exit(1);
+    }
+
+    if (resourceEnablement.summary.failedResources > 0) {
+        console.error("Resource enablement gate verification failed:");
+        for (const [resourceType, entry] of Object.entries(resourceEnablement.resources)) {
+            if (!entry.passed) {
+                console.error(`  - ${resourceType}: ${entry.errors.slice(0, 2).join("; ")}`);
+            }
+        }
+        process.exit(1);
+    }
+
+    const committedEnablementPath = enablementPath;
+    if (committedEnablement) {
+        const enablementDrift = verifyResourceEnablementArtifact(
+            committedEnablement,
+            resourceEnablement
+        );
+        if (!enablementDrift.valid) {
+            console.error("Resource enablement artifact drift verification failed after build:");
+            for (const error of enablementDrift.errors) {
+                console.error(`  - ${error}`);
+            }
+            process.exit(1);
+        }
     }
 
     console.log(`Wrote lookup matrix to ${matrixPath}`);
@@ -129,6 +169,9 @@ async function main() {
     console.log(`Wrote hit-sets artifact to ${hitSetsPath}`);
     console.log(`  Defined hit-sets: ${hitSetArtifact.summary.definedHitSets}`);
     console.log(`  Pending hit-sets: ${hitSetArtifact.summary.pendingHitSets}`);
+    console.log(`Wrote resource enablement artifact to ${enablementPath}`);
+    console.log(`  Passed resources: ${resourceEnablement.summary.passedResources}`);
+    console.log(`  Fallback disabled resources: ${resourceEnablement.summary.fallbackDisabledResources}`);
 }
 
 main().catch((error) => {

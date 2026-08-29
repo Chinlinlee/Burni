@@ -1,0 +1,3805 @@
+{
+  "version": 1,
+  "generatedAt": "2026-08-29T11:55:42.464Z",
+  "resources": {
+    "Account": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "ActivityDefinition": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "AdverseEvent": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "AllergyIntolerance": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "Appointment": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "AppointmentResponse": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "AuditEvent": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "Basic": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "Binary": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "BiologicallyDerivedProduct": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "BodyStructure": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "Bundle": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "CapabilityStatement": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "CarePlan": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "CareTeam": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "CatalogEntry": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "ChargeItem": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "ChargeItemDefinition": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "Claim": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "ClaimResponse": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "ClinicalImpression": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "CodeSystem": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "Communication": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "CommunicationRequest": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "CompartmentDefinition": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "Composition": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "ConceptMap": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "Condition": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "Consent": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "Contract": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "Coverage": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "CoverageEligibilityRequest": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "CoverageEligibilityResponse": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "DetectedIssue": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "Device": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "DeviceDefinition": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "DeviceMetric": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "DeviceRequest": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "DeviceUseStatement": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "DiagnosticReport": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "DocumentManifest": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "DocumentReference": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "EffectEvidenceSynthesis": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "Encounter": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "Endpoint": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "EnrollmentRequest": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "EnrollmentResponse": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "EpisodeOfCare": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "EventDefinition": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "Evidence": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "EvidenceVariable": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "ExampleScenario": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "ExplanationOfBenefit": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "FamilyMemberHistory": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "Flag": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "Goal": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "GraphDefinition": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "Group": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "GuidanceResponse": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "HealthcareService": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "ImagingStudy": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "Immunization": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "ImmunizationEvaluation": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "ImmunizationRecommendation": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "ImplementationGuide": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "InsurancePlan": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "Invoice": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "Library": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "Linkage": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "List": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "Location": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "Measure": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "MeasureReport": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "Media": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "Medication": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "MedicationAdministration": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "MedicationDispense": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "MedicationKnowledge": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "MedicationRequest": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "MedicationStatement": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "MedicinalProduct": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "MedicinalProductAuthorization": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "MedicinalProductContraindication": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "MedicinalProductIndication": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "MedicinalProductIngredient": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "MedicinalProductInteraction": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "MedicinalProductManufactured": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "MedicinalProductPackaged": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "MedicinalProductPharmaceutical": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "MedicinalProductUndesirableEffect": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "MessageDefinition": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "MessageHeader": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "MolecularSequence": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "NamingSystem": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "NutritionOrder": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "Observation": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "ObservationDefinition": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "OperationDefinition": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "OperationOutcome": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "Organization": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "OrganizationAffiliation": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "Parameters": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "Patient": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "PaymentNotice": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "PaymentReconciliation": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "Person": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "PlanDefinition": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "Practitioner": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "PractitionerRole": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "Procedure": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "Provenance": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "Questionnaire": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "QuestionnaireResponse": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "RelatedPerson": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "RequestGroup": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "ResearchDefinition": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "ResearchElementDefinition": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "ResearchStudy": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "ResearchSubject": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "RiskAssessment": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "RiskEvidenceSynthesis": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "Schedule": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "SearchParameter": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "ServiceRequest": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "Slot": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "Specimen": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "SpecimenDefinition": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "StructureDefinition": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "StructureMap": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "Subscription": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "Substance": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "SubstanceNucleicAcid": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "SubstancePolymer": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "SubstanceProtein": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "SubstanceReferenceInformation": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "SubstanceSourceMaterial": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "SubstanceSpecification": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "SupplyDelivery": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "SupplyRequest": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "Task": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "TerminologyCapabilities": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "TestReport": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "TestScript": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "ValueSet": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "VerificationResult": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    },
+    "VisionPrescription": {
+      "passed": true,
+      "fallbackDisabled": true,
+      "gates": {
+        "diagnostics": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "structural-registry": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "golden-filter": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "document-hit-set": {
+          "passed": true,
+          "errorCount": 0
+        },
+        "operator-multiplicity": {
+          "passed": true,
+          "errorCount": 0
+        }
+      },
+      "errors": []
+    }
+  },
+  "summary": {
+    "resourceCount": 146,
+    "passedResources": 146,
+    "fallbackDisabledResources": 146,
+    "failedResources": 0,
+    "gates": [
+      "golden-filter",
+      "document-hit-set",
+      "operator-multiplicity",
+      "diagnostics",
+      "structural-registry"
+    ]
+  }
+}

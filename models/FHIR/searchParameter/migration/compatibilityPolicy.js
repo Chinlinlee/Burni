@@ -43,6 +43,7 @@ const EXPECTED_SHADOW_MISMATCHES = {
 const ENABLEMENT_GATES = Object.freeze([
     "golden-filter",
     "document-hit-set",
+    "operator-multiplicity",
     "diagnostics",
     "structural-registry"
 ]);

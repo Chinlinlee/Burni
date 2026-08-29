@@ -30,18 +30,30 @@ function loadRolloutConfig() {
         const raw = fs.readFileSync(ROLLOUT_CONFIG_PATH, "utf8");
         const config = JSON.parse(raw);
         const enableAll = config.enableAllProductionResources === true;
+        const enabledResourceTypes = enableAll
+            ? [...productionResources]
+            : config.enabledResourceTypes || [];
+        const fallbackDisabled = new Set(config.fallbackDisabledResourceTypes || []);
+        if (config.disableLegacyFallbackForAllEnabledResources === true) {
+            for (const resourceType of enabledResourceTypes) {
+                fallbackDisabled.add(resourceType);
+            }
+        }
         return {
             enableAllProductionResources: enableAll,
-            enabledResourceTypes: enableAll
-                ? [...productionResources]
-                : config.enabledResourceTypes || [],
-            shadowCompareResourceTypes: config.shadowCompareResourceTypes || []
+            enabledResourceTypes,
+            shadowCompareResourceTypes: config.shadowCompareResourceTypes || [],
+            disableLegacyFallbackForAllEnabledResources:
+                config.disableLegacyFallbackForAllEnabledResources === true,
+            fallbackDisabledResourceTypes: [...fallbackDisabled]
         };
     } catch {
         return {
             enableAllProductionResources: false,
             enabledResourceTypes: [],
-            shadowCompareResourceTypes: []
+            shadowCompareResourceTypes: [],
+            disableLegacyFallbackForAllEnabledResources: false,
+            fallbackDisabledResourceTypes: []
         };
     }
 }
@@ -59,13 +71,15 @@ const shadowCompareResourceTypes = new Set([
     ...rolloutConfig.shadowCompareResourceTypes,
     ...envShadow
 ]);
+const fallbackDisabledResourceTypes = new Set(rolloutConfig.fallbackDisabledResourceTypes);
 
 const featureFlags = {
     registrySearchEnabled: parseBoolean(process.env.SEARCH_REGISTRY_ENABLED, false),
     registryShadowCompare: parseBoolean(process.env.SEARCH_REGISTRY_SHADOW_COMPARE, false),
     registryEnabledResourceTypes: enabledResourceTypes,
     registryShadowCompareResourceTypes: shadowCompareResourceTypes,
-    legacyFallbackEnabled: parseBoolean(process.env.SEARCH_LEGACY_FALLBACK_ENABLED, true)
+    legacyFallbackEnabled: parseBoolean(process.env.SEARCH_LEGACY_FALLBACK_ENABLED, true),
+    legacyFallbackDisabledResourceTypes: fallbackDisabledResourceTypes
 };
 
 /**
@@ -96,10 +110,22 @@ function isShadowCompareEnabledForResource(resourceType) {
     return featureFlags.registryShadowCompareResourceTypes.has(resourceType);
 }
 
+/**
+ * @param {string} resourceType
+ * @returns {boolean}
+ */
+function isLegacyFallbackEnabledForResource(resourceType) {
+    if (!featureFlags.legacyFallbackEnabled) {
+        return false;
+    }
+    return !featureFlags.legacyFallbackDisabledResourceTypes.has(resourceType);
+}
+
 module.exports = {
     featureFlags,
     isRegistryEnabledForResource,
     isShadowCompareEnabledForResource,
+    isLegacyFallbackEnabledForResource,
     loadRolloutConfig,
     ROLLOUT_CONFIG_PATH
 };

@@ -21,20 +21,24 @@ describe("SearchParameter migration", function () {
         expect(resolveLookupStatus(snapshot, resourceType, code)).to.equal("disabled");
     });
 
-    it("keeps unknown codes on fallback path when legacy fallback is enabled", async function () {
+    it("returns disabled instead of fallback for unknown codes on gated production resources", async function () {
         process.env.SEARCH_REGISTRY_ENABLED = "true";
         process.env.SEARCH_LEGACY_FALLBACK_ENABLED = "true";
         delete require.cache[require.resolve("@models/FHIR/searchParameter/config/featureFlags")];
         delete require.cache[require.resolve("@models/FHIR/searchParameter/runtime/registrySearchHandler")];
         const { tryApplyRegistryParameter: retryApply } = require("@models/FHIR/searchParameter/runtime/registrySearchHandler");
-        const query = { definitelyUnknownParam: "x" };
+
         const result = await retryApply({
-            resourceType: "Patient",
-            query,
+            resourceType: "Account",
+            query: { definitelyUnknownParam: "x" },
             parameterName: "definitelyUnknownParam",
-            paramsSearch: {}
+            paramsSearch: {
+                definitelyUnknownParam: () => {
+                    throw new Error("legacy handler must not run");
+                }
+            }
         });
-        expect(result).to.equal("fallback");
+        expect(result).to.equal("disabled");
     });
 
     it("never falls back for disabled, unsupported, or conflict lookups", async function () {
