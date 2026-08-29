@@ -90,7 +90,7 @@ The migration acceptance policy that preserves the existing public search projec
 _Avoid_: silently expanding the hit-set and calling it compatibility
 
 **Canonical SearchParameter source**:
-The version-controlled FHIR R4/4.0.1 SearchParameter Bundle whose complete resource semantics define Registry input. `temp/fhir-search-parameters.json` is only a migration inventory and is not a definition source.
+The version-controlled FHIR R4/4.0.1 SearchParameter Bundle whose complete resource semantics define Registry input. Legacy migration inventory artifacts live in `models/FHIR/searchParameter/migration/artifacts/` and are not Registry definition sources.
 _Avoid_: treating a reduced inventory or generated handler snapshot as canonical
 
 **Production search coverage**:

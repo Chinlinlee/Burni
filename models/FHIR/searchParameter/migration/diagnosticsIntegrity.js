@@ -1,7 +1,7 @@
 const productionResources = require("../../fhir.resourceList.json");
 const { verifyProvenance } = require("./provenance");
 const { buildLookupMatrix } = require("./lookupMatrix");
-const { buildInventoryDiffReport } = require("./inventoryDiff");
+const { loadCommittedInventoryDiffReport } = require("./inventoryDiff");
 const { resolveLookupStatus } = require("../registry/snapshot");
 
 /** Compile diagnostics emitted for classified lookup outcomes (disabled branch, abstract base, etc.). */
@@ -103,7 +103,7 @@ function verifyRegistryIntegrity(snapshot, definitions, options = {}) {
 
     let inventoryDiff = null;
     if (options.includeInventoryDiff !== false) {
-        inventoryDiff = buildInventoryDiffReport();
+        inventoryDiff = loadCommittedInventoryDiffReport();
         if (inventoryDiff.inventoryLoadedByRuntime) {
             errors.push("Migration inventory is loaded by runtime (must be inventory-only)");
         }

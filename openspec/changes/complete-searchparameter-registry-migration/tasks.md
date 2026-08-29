@@ -65,7 +65,7 @@
 - [x] 8.3 移除 `search-parameter:rollout-status` 及其 shadow report 依賴。
 - [x] 8.4 在所有 deletion gates 通過後移除 generated `*ParametersHandler.js`、`parameterHandler.js`、`searchParameterQueryHandler.js` 與已解耦的 legacy search methods。
 - [x] 8.5 確認沒有任何 runtime/build/test 參照後移除 `FHIRParametersClean.json` 與 SearchParameter-specific `fhir-param` functions。
-- [ ] 8.6 清除已完成 migration 工作且不再需要的 temp inventory；保留正式 Bundle、provenance、manifest、fixtures 與生成/驗證腳本。
+- [x] 8.6 清除已完成 migration 工作且不再需要的 temp inventory；保留正式 Bundle、provenance、manifest、fixtures 與生成/驗證腳本。
 
 ## 9. Final verification
 

@@ -7,9 +7,6 @@ const ARTIFACTS_DIR = path.join(__dirname, "artifacts");
 const EXAMPLE_MAPPING_PATH = path.join(ARTIFACTS_DIR, "example-mapping.json");
 const OFFICIAL_ARCHIVE_DIR = path.join(__dirname, "../fixtures/archive/official");
 
-/** 僅供一次性 discovery CLI 使用；runtime 不應讀取 temp */
-const FHIR_EXAMPLES_DISCOVERY_DIR = path.join(__dirname, "../../../../temp/fhir-examples");
-
 const FIXED_EXAMPLE_OVERRIDES = {
     Patient: "patient-example-f201-roel.json"
 };
@@ -157,7 +154,8 @@ function discoverExampleMapping(examplesDir) {
     if (!fs.existsSync(examplesDir)) {
         throw new Error(
             `FHIR examples discovery directory not found: ${examplesDir}. ` +
-                "Run discovery locally with temp/fhir-examples, then commit artifacts/example-mapping.json."
+                "Provide an HL7 examples directory via CLI argument or FHIR_EXAMPLES_DIR, " +
+                "then commit artifacts/example-mapping.json."
         );
     }
 
@@ -240,7 +238,14 @@ function writeExampleMapping(mapping) {
 }
 
 if (require.main === module) {
-    const examplesDir = process.argv[2] || FHIR_EXAMPLES_DISCOVERY_DIR;
+    const examplesDir = process.argv[2] || process.env.FHIR_EXAMPLES_DIR;
+    if (!examplesDir) {
+        console.error(
+            "Usage: node fixtureMapping.js <hl7-examples-dir>\n" +
+                "  or set FHIR_EXAMPLES_DIR to an HL7 FHIR examples directory."
+        );
+        process.exit(1);
+    }
     try {
         const mapping = discoverExampleMapping(examplesDir);
         const outputPath = writeExampleMapping(mapping);
@@ -259,7 +264,6 @@ module.exports = {
     ARTIFACTS_DIR,
     EXAMPLE_MAPPING_PATH,
     OFFICIAL_ARCHIVE_DIR,
-    FHIR_EXAMPLES_DISCOVERY_DIR,
     FIXED_EXAMPLE_OVERRIDES,
     computeFileHash,
     indexExampleFiles,

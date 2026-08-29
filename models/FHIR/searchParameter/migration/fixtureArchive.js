@@ -50,7 +50,7 @@ function loadOfficialArchiveResource(resourceType) {
     if (!fs.existsSync(archivePath)) {
         throw new Error(
             `Official archive fixture missing for ${resourceType}: ${archivePath}. ` +
-                "Run search-parameter:build-artifacts with temp/fhir-examples present."
+                "Run search-parameter:build-artifacts or restore fixtures/archive/official."
         );
     }
     return JSON.parse(fs.readFileSync(archivePath, "utf8"));

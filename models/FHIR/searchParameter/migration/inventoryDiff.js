@@ -1,13 +1,9 @@
 const fs = require("fs");
 const path = require("path");
 const { loadBuiltinDefinitions } = require("../registry/sourceAdapter");
-const { getLookupKey } = require("../registry/identity");
 const productionResources = require("../../fhir.resourceList.json");
 
-const DEFAULT_INVENTORY_PATH = path.join(
-    __dirname,
-    "../../../../temp/fhir-search-parameters.json"
-);
+const INVENTORY_DIFF_ARTIFACT_PATH = path.join(__dirname, "artifacts/inventory-diff-report.json");
 
 /**
  * @typedef {Object} InventoryEntry
@@ -17,10 +13,22 @@ const DEFAULT_INVENTORY_PATH = path.join(
  */
 
 /**
- * @param {string} [inventoryPath]
+ * @returns {Object}
+ */
+function loadCommittedInventoryDiffReport() {
+    if (!fs.existsSync(INVENTORY_DIFF_ARTIFACT_PATH)) {
+        throw new Error(
+            `Committed inventory diff report not found: ${INVENTORY_DIFF_ARTIFACT_PATH}`
+        );
+    }
+    return JSON.parse(fs.readFileSync(INVENTORY_DIFF_ARTIFACT_PATH, "utf8"));
+}
+
+/**
+ * @param {string} inventoryPath
  * @returns {InventoryEntry[]}
  */
-function loadMigrationInventory(inventoryPath = DEFAULT_INVENTORY_PATH) {
+function loadMigrationInventory(inventoryPath) {
     if (!fs.existsSync(inventoryPath)) {
         return [];
     }
@@ -56,10 +64,18 @@ function buildBundleLookupIndex(definitions) {
 }
 
 /**
- * @param {string} [inventoryPath]
+ * 僅在明確提供 legacy inventory 路徑時重新產生差異報告；日常驗證使用 loadCommittedInventoryDiffReport()。
+ *
+ * @param {string} inventoryPath
  * @returns {Object}
  */
-function buildInventoryDiffReport(inventoryPath = DEFAULT_INVENTORY_PATH) {
+function buildInventoryDiffReport(inventoryPath) {
+    if (!inventoryPath) {
+        throw new Error(
+            "inventoryPath is required; use loadCommittedInventoryDiffReport() for the archived migration report"
+        );
+    }
+
     const inventory = loadMigrationInventory(inventoryPath);
     const { definitions } = loadBuiltinDefinitions();
     const bundleIndex = buildBundleLookupIndex(definitions);
@@ -169,7 +185,8 @@ function buildInventoryDiffReport(inventoryPath = DEFAULT_INVENTORY_PATH) {
 }
 
 module.exports = {
-    DEFAULT_INVENTORY_PATH,
+    INVENTORY_DIFF_ARTIFACT_PATH,
+    loadCommittedInventoryDiffReport,
     loadMigrationInventory,
     buildBundleLookupIndex,
     buildInventoryDiffReport

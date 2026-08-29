@@ -4,7 +4,7 @@ const { expect } = require("chai");
 const fs = require("fs");
 const path = require("path");
 const { verifyProvenance } = require("@models/FHIR/searchParameter/migration/provenance");
-const { buildInventoryDiffReport } = require("@models/FHIR/searchParameter/migration/inventoryDiff");
+const { loadCommittedInventoryDiffReport } = require("@models/FHIR/searchParameter/migration/inventoryDiff");
 const { buildLookupMatrix } = require("@models/FHIR/searchParameter/migration/lookupMatrix");
 const { verifyRegistryIntegrity } = require("@models/FHIR/searchParameter/migration/diagnosticsIntegrity");
 const { reloadRegistry } = require("@models/FHIR/searchParameter/registry/registryManager");
@@ -54,7 +54,7 @@ describe("SearchParameter migration artifacts", function () {
     });
 
     it("confirms migration inventory is not loaded by runtime", function () {
-        const report = buildInventoryDiffReport();
+        const report = loadCommittedInventoryDiffReport();
         expect(report.inventoryLoadedByRuntime).to.equal(false);
         expect(report.inventoryResourceCount).to.be.greaterThan(0);
         expect(report.productionResourceCount).to.equal(productionResources.length);

@@ -9,12 +9,11 @@ const { compileDefinition } = require("@models/FHIR/searchParameter/compiler/com
 const { mergeDefinitions } = require("@models/FHIR/searchParameter/registry/merge");
 const { verifyProvenance } = require("@models/FHIR/searchParameter/migration/provenance");
 const { buildLookupMatrix } = require("@models/FHIR/searchParameter/migration/lookupMatrix");
-const { buildInventoryDiffReport } = require("@models/FHIR/searchParameter/migration/inventoryDiff");
+const { buildInventoryDiffReport, loadCommittedInventoryDiffReport } = require("@models/FHIR/searchParameter/migration/inventoryDiff");
 const {
     discoverExampleMapping,
     loadExampleMapping,
-    writeExampleMapping,
-    FHIR_EXAMPLES_DISCOVERY_DIR
+    writeExampleMapping
 } = require("@models/FHIR/searchParameter/migration/fixtureMapping");
 const { buildFixtureArchive } = require("@models/FHIR/searchParameter/migration/fixtureArchive");
 const { buildMigrationManifest } = require("@models/FHIR/searchParameter/migration/migrationManifest");
@@ -63,19 +62,23 @@ async function main() {
     const snapshot = await reloadRegistry();
     const definitions = await compileDefinitions();
     const lookupMatrix = buildLookupMatrix(snapshot, definitions);
-    const inventoryDiff = buildInventoryDiffReport();
-    const examplesDir = process.env.FHIR_EXAMPLES_DIR || FHIR_EXAMPLES_DISCOVERY_DIR;
-    const exampleMapping = fs.existsSync(examplesDir)
-        ? discoverExampleMapping(examplesDir)
-        : loadExampleMapping();
-    if (fs.existsSync(examplesDir)) {
+    const inventoryPath = process.env.INVENTORY_PATH;
+    const inventoryDiff = inventoryPath
+        ? buildInventoryDiffReport(inventoryPath)
+        : loadCommittedInventoryDiffReport();
+    const examplesDir = process.env.FHIR_EXAMPLES_DIR;
+    const exampleMapping =
+        examplesDir && fs.existsSync(examplesDir)
+            ? discoverExampleMapping(examplesDir)
+            : loadExampleMapping();
+    if (examplesDir && fs.existsSync(examplesDir)) {
         writeExampleMapping(exampleMapping);
     }
     const fixtureArchive = buildFixtureArchive({
         snapshot,
         definitions,
         exampleMapping,
-        examplesDir: fs.existsSync(examplesDir) ? examplesDir : undefined
+        examplesDir: examplesDir && fs.existsSync(examplesDir) ? examplesDir : undefined
     });
     const hitSetArtifact = buildHitSetArtifact({
         snapshot,
@@ -107,7 +110,9 @@ async function main() {
         : null;
 
     fs.writeFileSync(matrixPath, JSON.stringify(lookupMatrix, null, 2));
-    fs.writeFileSync(diffPath, JSON.stringify(inventoryDiff, null, 2));
+    if (inventoryPath) {
+        fs.writeFileSync(diffPath, JSON.stringify(inventoryDiff, null, 2));
+    }
     fs.writeFileSync(mappingPath, JSON.stringify(exampleMapping, null, 2));
     fs.writeFileSync(manifestPath, JSON.stringify(migrationManifest, null, 2));
     fs.writeFileSync(hitSetsPath, JSON.stringify(hitSetArtifact, null, 2));
@@ -154,7 +159,11 @@ async function main() {
     console.log(`Wrote lookup matrix to ${matrixPath}`);
     console.log(`  Resources: ${lookupMatrix.resourceCount}`);
     console.log(`  Lookups: ${lookupMatrix.lookupCount}`);
-    console.log(`Wrote inventory diff report to ${diffPath}`);
+    if (inventoryPath) {
+        console.log(`Wrote inventory diff report to ${diffPath}`);
+    } else {
+        console.log(`Using committed inventory diff report at ${diffPath}`);
+    }
     console.log(`Wrote example mapping to ${mappingPath}`);
     console.log(`  Official examples: ${exampleMapping.summary.official}`);
     console.log(`  Synthetic required: ${exampleMapping.summary.missing}`);

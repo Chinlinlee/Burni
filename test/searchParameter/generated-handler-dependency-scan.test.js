@@ -21,6 +21,7 @@ const ALLOWLIST = [
     /[/\\]test[/\\]searchParameter[/\\]runtime-entry-decoupling\.test\.js$/,
     /[/\\]test[/\\]searchParameter[/\\]legacy-query-test-decoupling\.test\.js$/,
     /[/\\]test[/\\]searchParameter[/\\]legacy-artifact-removal-ci-gate\.test\.js$/,
+    /[/\\]test[/\\]searchParameter[/\\]temp-inventory-removal-ci-gate\.test\.js$/,
     /[/\\]test[/\\]api_generator[/\\]api-generator-search-decoupling\.test\.js$/
 ];
 
