@@ -1,0 +1,11 @@
+{
+  "resourceType": "Library",
+  "meta": {
+    "tag": [
+      {
+        "system": "urn:burni:fixture-source",
+        "code": "companion-negative"
+      }
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "resourceType": "GraphDefinition",
+  "meta": {
+    "tag": [
+      {
+        "system": "urn:burni:fixture-source",
+        "code": "companion-negative"
+      }
+    ]
+  }
+}

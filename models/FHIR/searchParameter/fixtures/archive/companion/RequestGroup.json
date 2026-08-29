@@ -1,0 +1,11 @@
+{
+  "resourceType": "RequestGroup",
+  "meta": {
+    "tag": [
+      {
+        "system": "urn:burni:fixture-source",
+        "code": "companion-negative"
+      }
+    ]
+  }
+}

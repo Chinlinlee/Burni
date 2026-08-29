@@ -1,0 +1,333 @@
+const { getSampleValue } = require("../runtime/shadowComparison");
+
+const ARRAY_PATH_ROOTS = new Set([
+    "useContext",
+    "identifier",
+    "telecom",
+    "name",
+    "address",
+    "component",
+    "relatedArtifact",
+    "category",
+    "coding",
+    "subject",
+    "performer",
+    "participant",
+    "link",
+    "contained"
+]);
+const ARRAY_LEAF_DATATYPES = new Set([
+    "Identifier",
+    "ContactPoint",
+    "HumanName",
+    "Address",
+    "Coding"
+]);
+
+/**
+ * @param {import('../compiler/searchQueryPlan').ExtractionPath} extractionPath
+ * @returns {string | null}
+ */
+function getTypePredicateValue(extractionPath) {
+    return extractionPath.predicates?.find((entry) => entry.kind === "typeEquals")?.value || null;
+}
+
+/**
+ * @param {import('../compiler/searchQueryPlan').ExtractionPath} extractionPath
+ * @returns {string | null}
+ */
+function getSystemPredicateValue(extractionPath) {
+    return extractionPath.predicates?.find((entry) => entry.kind === "systemEquals")?.value || null;
+}
+
+/**
+ * @param {string} searchType
+ * @param {string} code
+ * @param {import('../compiler/searchQueryPlan').ExtractionPath} extractionPath
+ * @param {string} [resourceType]
+ * @returns {unknown}
+ */
+function buildSyntheticFieldValue(searchType, code, extractionPath, resourceType) {
+    const datatype = extractionPath.datatype;
+    const typePredicate = getTypePredicateValue(extractionPath);
+    const systemPredicate = getSystemPredicateValue(extractionPath);
+
+    if (systemPredicate && datatype === "ContactPoint") {
+        return { system: systemPredicate, value: `hit-set-${code}@example.org` };
+    }
+
+    if (typePredicate && extractionPath.correlation?.kind === "same-array-element") {
+        const parentPath = extractionPath.correlation.parentPath || extractionPath.path.split(".")[0];
+        const leaf = extractionPath.path.split(".").slice(1).join(".");
+        const leafValue =
+            datatype === "canonical"
+                ? `ActivityDefinition/hit-set-${code}`
+                : datatype === "uri"
+                  ? `http://example.org/${code}`
+                  : `${code}-value`;
+        return {
+            [parentPath]: [
+                {
+                    type: typePredicate,
+                    [leaf]: leafValue
+                }
+            ]
+        };
+    }
+
+    switch (searchType) {
+        case "token":
+            if (datatype === "boolean") {
+                return true;
+            }
+            if (
+                datatype === "code" ||
+                datatype === "string" ||
+                datatype === "id" ||
+                datatype === "dateTime"
+            ) {
+                return `${code}-value`;
+            }
+            if (datatype === "Identifier" || datatype === "ContactPoint") {
+                return { system: "urn:burni:hit-set", value: `${code}-value` };
+            }
+            if (datatype === "CodeableConcept" || datatype === "Coding") {
+                return {
+                    system: "urn:burni:hit-set",
+                    code: `${code}-value`
+                };
+            }
+            return { system: "urn:burni:hit-set", code: `${code}-value` };
+        case "string":
+            if (datatype === "HumanName") {
+                return { family: `hit-set-${code}` };
+            }
+            if (datatype === "Address") {
+                return { city: `hit-set-${code}` };
+            }
+            return `hit-set-${code}`;
+        case "reference": {
+            if (datatype === "uri" || datatype === "url") {
+                return `${resourceType || "Patient"}/hit-set-${code}`;
+            }
+            const targetType = extractionPath.referenceTargetType || "Patient";
+            if (datatype === "canonical") {
+                return `${targetType}/hit-set-${code}`;
+            }
+            return { reference: `${targetType}/hit-set-${code}` };
+        }
+        case "date":
+        case "dateTime":
+            if (datatype === "Period") {
+                const date = new Date("2000-01-01T12:00:00.000Z");
+                return { start: date, end: date };
+            }
+            return new Date("2000-01-01T12:00:00.000Z");
+        case "quantity":
+            return {
+                value: 10,
+                system: "kg"
+            };
+        case "number":
+            return 42;
+        case "uri":
+            return `http://example.org/${code}`;
+        default:
+            return getSampleValue(searchType, code);
+    }
+}
+
+/**
+ * @param {unknown} fieldValue
+ * @param {string} datatype
+ * @returns {unknown}
+ */
+function normalizeAssignedValue(fieldValue, datatype) {
+    if (datatype === "CodeableConcept") {
+        if (fieldValue && typeof fieldValue === "object" && "coding" in fieldValue) {
+            return fieldValue;
+        }
+        return {
+            coding: [fieldValue]
+        };
+    }
+    if (ARRAY_LEAF_DATATYPES.has(datatype)) {
+        return Array.isArray(fieldValue) ? fieldValue : [fieldValue];
+    }
+    return fieldValue;
+}
+
+/**
+ * @param {string} searchType
+ * @param {string} code
+ * @param {unknown} fieldValue
+ * @param {import('../compiler/searchQueryPlan').ExtractionPath} extractionPath
+ * @returns {string}
+ */
+function formatSyntheticQueryValue(searchType, code, fieldValue, extractionPath) {
+    const systemPredicate = getSystemPredicateValue(extractionPath);
+    if (systemPredicate && extractionPath.datatype === "ContactPoint") {
+        return typeof fieldValue === "object" && fieldValue && "value" in fieldValue
+            ? String(fieldValue.value)
+            : String(fieldValue);
+    }
+
+    const { formatSearchValue } = require("./fixtureValueExtractor");
+    const plan = {
+        code,
+        searchType,
+        extractionPaths: [extractionPath]
+    };
+
+    if (
+        fieldValue &&
+        typeof fieldValue === "object" &&
+        extractionPath.correlation?.parentPath &&
+        extractionPath.correlation.parentPath in fieldValue
+    ) {
+        const arrayValue = fieldValue[extractionPath.correlation.parentPath];
+        const element = Array.isArray(arrayValue) ? arrayValue[0] : arrayValue;
+        const leaf = extractionPath.path.split(".").slice(1).join(".");
+        const leafValue = leaf.split(".").reduce((current, segment) => current?.[segment], element);
+        const formatted = formatSearchValue(
+            leafValue,
+            extractionPath.datatype,
+            code,
+            plan,
+            extractionPath
+        );
+        if (formatted) {
+            return formatted;
+        }
+    }
+
+    const normalized = normalizeAssignedValue(fieldValue, extractionPath.datatype);
+    const sample =
+        Array.isArray(normalized) && normalized.length > 0 ? normalized[0] : normalized;
+    const formatted = formatSearchValue(
+        sample,
+        extractionPath.datatype,
+        code,
+        plan,
+        extractionPath
+    );
+    if (formatted) {
+        return formatted;
+    }
+    return getSampleValue(searchType, code);
+}
+
+/**
+ * @param {Object} target
+ * @param {string[]} segments
+ * @param {unknown} value
+ * @param {string} datatype
+ */
+function setNestedValue(target, segments, value, datatype) {
+    if (
+        value &&
+        typeof value === "object" &&
+        segments.length === 1 &&
+        segments[0] in value &&
+        Array.isArray(value[segments[0]])
+    ) {
+        target[segments[0]] = value[segments[0]];
+        return;
+    }
+
+    if (segments.length > 1 && ARRAY_PATH_ROOTS.has(segments[0])) {
+        const [root, ...rest] = segments;
+        if (!Array.isArray(target[root]) || target[root].length === 0) {
+            target[root] = [{}];
+        }
+        setNestedValue(target[root][0], rest, value, datatype);
+        return;
+    }
+
+    let current = target;
+    for (let index = 0; index < segments.length - 1; index += 1) {
+        const segment = segments[index];
+        if (!(segment in current) || current[segment] == null) {
+            current[segment] = {};
+        }
+        if (Array.isArray(current[segment])) {
+            if (current[segment].length === 0) {
+                current[segment].push({});
+            }
+            current = current[segment][0];
+        } else if (
+            typeof current[segment] === "object" &&
+            segments[index + 1] &&
+            !(segments[index + 1] in current[segment])
+        ) {
+            const nextSegment = segments[index + 1];
+            const remaining = segments.slice(index + 1);
+            const isArrayParent = remaining.length > 1 || ARRAY_LEAF_DATATYPES.has(datatype);
+            if (isArrayParent && !Array.isArray(current[segment])) {
+                current[segment] = [{}];
+                current = current[segment][0];
+                index += 0;
+                continue;
+            }
+            current = current[segment];
+        } else {
+            current = current[segment];
+        }
+    }
+    const leaf = segments[segments.length - 1];
+    current[leaf] = normalizeAssignedValue(value, datatype);
+}
+
+/**
+ * @param {Object} document
+ * @param {import('../compiler/searchQueryPlan').SearchQueryPlan} plan
+ * @returns {{ document: Object, queryValue: string } | null}
+ */
+function augmentDocumentForHitSet(document, plan) {
+    const augmented = JSON.parse(JSON.stringify(document));
+    const extractionPath = plan.extractionPaths[0];
+    if (!extractionPath) {
+        return null;
+    }
+
+    const fieldValue = buildSyntheticFieldValue(
+        plan.searchType,
+        plan.code,
+        extractionPath,
+        plan.resourceType
+    );
+    if (
+        fieldValue &&
+        typeof fieldValue === "object" &&
+        extractionPath.correlation?.parentPath &&
+        extractionPath.correlation.parentPath in fieldValue
+    ) {
+        Object.assign(augmented, fieldValue);
+    } else {
+        setNestedValue(
+            augmented,
+            extractionPath.path.split("."),
+            fieldValue,
+            extractionPath.datatype
+        );
+    }
+
+    const queryValue = formatSyntheticQueryValue(
+        plan.searchType,
+        plan.code,
+        fieldValue,
+        extractionPath
+    );
+
+    return {
+        document: augmented,
+        queryValue
+    };
+}
+
+module.exports = {
+    augmentDocumentForHitSet,
+    buildSyntheticFieldValue,
+    formatSyntheticQueryValue,
+    normalizeAssignedValue
+};

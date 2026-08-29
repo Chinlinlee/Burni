@@ -17,9 +17,10 @@ function hashPlan(plan) {
  * @param {import('../registry/types').RegistrySnapshot} input.snapshot
  * @param {import('../registry/types').SearchParameterDefinition[]} input.definitions
  * @param {Object} input.fixtureArchive
+ * @param {Object} [input.hitSetArtifact]
  * @returns {Object}
  */
-function buildMigrationManifest({ snapshot, definitions, fixtureArchive }) {
+function buildMigrationManifest({ snapshot, definitions, fixtureArchive, hitSetArtifact }) {
     const provenance = verifyProvenance().provenance;
     const bundleChecksum = computeFileChecksum(getBundlePath());
     const lookupMatrix = buildLookupMatrix(snapshot, definitions);
@@ -49,11 +50,13 @@ function buildMigrationManifest({ snapshot, definitions, fixtureArchive }) {
                 null;
 
             const hitSet =
-                lookup.outcome === "compiled" ? getKnownHitSet(resourceType, code) : null;
+                lookup.outcome === "compiled"
+                    ? hitSetArtifact?.resources?.[resourceType]?.[code] || getKnownHitSet(resourceType, code)
+                    : null;
 
             if (lookup.outcome === "compiled") {
                 summary.compiledLookups += 1;
-                if (hitSet) {
+                if (hitSet?.status === "defined") {
                     summary.definedHitSets += 1;
                 } else {
                     summary.pendingHitSets += 1;

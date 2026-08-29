@@ -18,6 +18,7 @@ const {
 } = require("@models/FHIR/searchParameter/migration/fixtureMapping");
 const { buildFixtureArchive } = require("@models/FHIR/searchParameter/migration/fixtureArchive");
 const { buildMigrationManifest } = require("@models/FHIR/searchParameter/migration/migrationManifest");
+const { buildHitSetArtifact } = require("@models/FHIR/searchParameter/migration/hitSetBuilder");
 const { verifyMigrationArtifacts } = require("@models/FHIR/searchParameter/migration/manifestDrift");
 
 const ARTIFACTS_DIR = path.join(
@@ -72,10 +73,15 @@ async function main() {
         exampleMapping,
         examplesDir: fs.existsSync(examplesDir) ? examplesDir : undefined
     });
+    const hitSetArtifact = buildHitSetArtifact({
+        snapshot,
+        fixtureArchive
+    });
     const migrationManifest = buildMigrationManifest({
         snapshot,
         definitions,
-        fixtureArchive
+        fixtureArchive,
+        hitSetArtifact
     });
 
     fs.mkdirSync(ARTIFACTS_DIR, { recursive: true });
@@ -84,11 +90,13 @@ async function main() {
     const diffPath = path.join(ARTIFACTS_DIR, "inventory-diff-report.json");
     const mappingPath = path.join(ARTIFACTS_DIR, "example-mapping.json");
     const manifestPath = path.join(ARTIFACTS_DIR, "migration-manifest.json");
+    const hitSetsPath = path.join(ARTIFACTS_DIR, "hit-sets.json");
 
     fs.writeFileSync(matrixPath, JSON.stringify(lookupMatrix, null, 2));
     fs.writeFileSync(diffPath, JSON.stringify(inventoryDiff, null, 2));
     fs.writeFileSync(mappingPath, JSON.stringify(exampleMapping, null, 2));
     fs.writeFileSync(manifestPath, JSON.stringify(migrationManifest, null, 2));
+    fs.writeFileSync(hitSetsPath, JSON.stringify(hitSetArtifact, null, 2));
 
     const drift = verifyMigrationArtifacts({
         currentManifest: migrationManifest,
@@ -118,6 +126,9 @@ async function main() {
     console.log(`  Compiled lookups: ${migrationManifest.summary.compiledLookups}`);
     console.log(`  Defined hit-sets: ${migrationManifest.summary.definedHitSets}`);
     console.log(`  Pending hit-sets: ${migrationManifest.summary.pendingHitSets}`);
+    console.log(`Wrote hit-sets artifact to ${hitSetsPath}`);
+    console.log(`  Defined hit-sets: ${hitSetArtifact.summary.definedHitSets}`);
+    console.log(`  Pending hit-sets: ${hitSetArtifact.summary.pendingHitSets}`);
 }
 
 main().catch((error) => {

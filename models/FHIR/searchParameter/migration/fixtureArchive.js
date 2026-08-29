@@ -9,6 +9,7 @@ const {
     getOfficialArchivePath
 } = require("./fixtureMapping");
 const { buildDerivedFixture, buildSyntheticFixture } = require("./fixtureDerivation");
+const { writeCompanionFixture } = require("./companionFixtures");
 
 const ARCHIVE_ROOT = path.join(__dirname, "../fixtures/archive");
 const OFFICIAL_DIR = path.join(ARCHIVE_ROOT, "official");
@@ -72,7 +73,8 @@ function buildFixtureArchive({ snapshot, definitions, exampleMapping, examplesDi
     const summary = {
         official: 0,
         derived: 0,
-        synthetic: 0
+        synthetic: 0,
+        companion: 0
     };
 
     for (const resourceType of productionResources) {
@@ -112,6 +114,10 @@ function buildFixtureArchive({ snapshot, definitions, exampleMapping, examplesDi
                 summary.derived += 1;
             }
 
+            const activeResource = derived.needsDerived ? derived.resource : officialResource;
+            const companionWritten = writeCompanionFixture(resourceType, activeResource);
+            summary.companion += 1;
+
             resources[resourceType] = {
                 valueSource: derived.needsDerived ? "derived" : "official",
                 official: {
@@ -129,6 +135,12 @@ function buildFixtureArchive({ snapshot, definitions, exampleMapping, examplesDi
                           augmentations: derived.augmentations
                       }
                     : null,
+                companion: {
+                    archivePath: path
+                        .relative(process.cwd(), companionWritten.archivePath)
+                        .replace(/\\/g, "/"),
+                    archiveHash: companionWritten.archiveHash
+                },
                 activeFixturePath: derived.needsDerived
                     ? path.relative(process.cwd(), derivedWritten.archivePath).replace(/\\/g, "/")
                     : path.relative(process.cwd(), officialWritten.archivePath).replace(/\\/g, "/"),
@@ -145,6 +157,9 @@ function buildFixtureArchive({ snapshot, definitions, exampleMapping, examplesDi
             );
             summary.synthetic += 1;
 
+            const companionWritten = writeCompanionFixture(resourceType, syntheticResource);
+            summary.companion += 1;
+
             resources[resourceType] = {
                 valueSource: "synthetic",
                 official: null,
@@ -155,6 +170,12 @@ function buildFixtureArchive({ snapshot, definitions, exampleMapping, examplesDi
                         .replace(/\\/g, "/"),
                     archiveHash: syntheticWritten.archiveHash,
                     reason: entry.reason
+                },
+                companion: {
+                    archivePath: path
+                        .relative(process.cwd(), companionWritten.archivePath)
+                        .replace(/\\/g, "/"),
+                    archiveHash: companionWritten.archiveHash
                 },
                 activeFixturePath: path
                     .relative(process.cwd(), syntheticWritten.archivePath)

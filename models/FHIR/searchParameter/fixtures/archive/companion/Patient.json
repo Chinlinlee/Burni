@@ -1,0 +1,57 @@
+{
+  "resourceType": "Patient",
+  "active": false,
+  "gender": "female",
+  "birthDate": "1985-06-01",
+  "deceasedDateTime": "2020-01-15",
+  "name": [
+    {
+      "family": "Companion",
+      "given": [
+        "Alex"
+      ],
+      "text": "Alex Companion"
+    }
+  ],
+  "address": [
+    {
+      "city": "Rotterdam",
+      "country": "USA",
+      "postalCode": "3011AA",
+      "state": "ZH",
+      "use": "work",
+      "text": "Rotterdam office"
+    }
+  ],
+  "identifier": [
+    {
+      "system": "urn:oid:example",
+      "value": "999999999"
+    }
+  ],
+  "communication": [
+    {
+      "language": {
+        "coding": [
+          {
+            "system": "urn:ietf:bcp:47",
+            "code": "en-US",
+            "display": "English"
+          }
+        ]
+      },
+      "preferred": true
+    }
+  ],
+  "managingOrganization": {
+    "reference": "Organization/other-org",
+    "display": "Other Org"
+  },
+  "telecom": [
+    {
+      "system": "phone",
+      "value": "+31000000000",
+      "use": "mobile"
+    }
+  ]
+}

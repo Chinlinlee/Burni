@@ -1,3 +1,9 @@
+const fs = require("fs");
+const path = require("path");
+const crypto = require("crypto");
+
+const HIT_SETS_ARTIFACT = path.join(__dirname, "artifacts/hit-sets.json");
+
 /** @type {Record<string, Array<{ code: string, query: Record<string, string>, expectHit: "main" | "companion" | "none" }>>} */
 const KNOWN_HIT_SETS = {
     Patient: [
@@ -35,29 +41,22 @@ const KNOWN_HIT_SETS = {
     ]
 };
 
-/**
- * @param {string} resourceType
- * @param {string} code
- * @returns {Object | null}
- */
-function getKnownHitSet(resourceType, code) {
-    const cases = KNOWN_HIT_SETS[resourceType] || [];
-    const match = cases.find((entry) => entry.code === code);
-    if (!match) {
-        return null;
-    }
+/** @type {Object | null} */
+let cachedArtifact = null;
 
-    return {
-        status: "defined",
-        hash: hashHitSet(match),
-        positive: {
-            query: match.query,
-            expectDocument: match.expectHit
-        },
-        companionNegative: {
-            expectDocument: match.expectHit === "main" ? "companion" : "main"
-        }
-    };
+/**
+ * @returns {Object}
+ */
+function loadHitSetArtifact() {
+    if (cachedArtifact) {
+        return cachedArtifact;
+    }
+    if (!fs.existsSync(HIT_SETS_ARTIFACT)) {
+        cachedArtifact = { version: 1, resources: {}, summary: { definedHitSets: 0 } };
+        return cachedArtifact;
+    }
+    cachedArtifact = JSON.parse(fs.readFileSync(HIT_SETS_ARTIFACT, "utf8"));
+    return cachedArtifact;
 }
 
 /**
@@ -65,12 +64,54 @@ function getKnownHitSet(resourceType, code) {
  * @returns {string}
  */
 function hashHitSet(hitSet) {
-    const crypto = require("crypto");
     return crypto.createHash("sha256").update(JSON.stringify(hitSet)).digest("hex");
 }
 
+/**
+ * @param {string} resourceType
+ * @param {string} code
+ * @returns {Object | null}
+ */
+function getKnownHitSet(resourceType, code) {
+    const curated = (KNOWN_HIT_SETS[resourceType] || []).find((entry) => entry.code === code);
+    if (curated) {
+        return {
+            status: "defined",
+            hash: hashHitSet(curated),
+            positive: {
+                query: curated.query,
+                expectDocument: curated.expectHit
+            },
+            companionNegative: {
+                expectDocument: curated.expectHit === "main" ? "companion" : "main"
+            },
+            missing: {
+                applicable: true
+            }
+        };
+    }
+
+    const artifact = loadHitSetArtifact();
+    const hitSet = artifact.resources?.[resourceType]?.[code];
+    if (!hitSet || hitSet.status !== "defined") {
+        return null;
+    }
+    return hitSet;
+}
+
+/**
+ * @returns {Object}
+ */
+function getHitSetSummary() {
+    const artifact = loadHitSetArtifact();
+    return artifact.summary || { definedHitSets: 0, pendingHitSets: 0, compiledLookups: 0 };
+}
+
 module.exports = {
+    HIT_SETS_ARTIFACT,
     KNOWN_HIT_SETS,
+    loadHitSetArtifact,
     getKnownHitSet,
+    getHitSetSummary,
     hashHitSet
 };
