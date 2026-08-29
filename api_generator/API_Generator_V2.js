@@ -1,11 +1,9 @@
 const fhirgen = require("../FHIR-mongoose-Models-Generator/resourceGenerator");
 const fs = require("fs");
-const path = require("path");
 const mkdirp = require("mkdirp");
 const beautify = require("js-beautify").js;
 const _ = require("lodash");
 require("dotenv").config();
-const { genParamFunc } = require("./searchParametersCodeGenerator");
 
 /**
  * @param {string} resource resource type
@@ -63,6 +61,156 @@ function getCodeUpdate(resource) {
 }
 
 /**
+ * @param {string} resource
+ * @returns {Record<string, string>} files relative to `api/FHIR/${resource}/`
+ */
+function getGeneratedApiFiles(resource) {
+    const get = `
+        const search = require('../../../FHIRApiService/search');
+        const { paramsSearch } = require('../${resource}ParametersHandler');
+        module.exports = async function(req, res) {
+            return await search(req, res,"${resource}", paramsSearch);
+        };
+        `;
+
+    const getById = getCodeGetById(resource);
+
+    const getHistory = `
+        const history = require('../../../FHIRApiService/history');
+
+        module.exports = async function(req , res) {
+            return await history(req, res, "${resource}");
+        };
+        `;
+
+    const getHistoryById = `
+        const vread = require('../../../FHIRApiService/vread');
+
+        module.exports = async function(req, res) {
+            return await vread(req ,res, "${resource}");
+        };
+        `;
+
+    const post = getCodeCreate(resource);
+
+    let put = getCodeUpdate(resource);
+    if (resource == "List") {
+        put = `
+            const update = require('../../../FHIRApiService/update.js');
+            const _ = require('lodash');
+            module.exports = async function(req, res) {
+                let resourceData = req.body;
+                if (_.isArray(resourceData.entry) && resourceData.entry.length > 0) {
+                    for (let index in resourceData.entry) {
+                        let entry = resourceData.entry[index];
+                        if (resourceData.mode != "changes") {
+                            delete entry.delete;
+                        } else if (resourceData.mode != "working") {
+                            delete entry.date;
+                        }
+                    }
+                }
+                return await update(req, res, "${resource}");
+            };
+            `;
+    }
+
+    const deleteJs = `
+        const deleteAPI = require('../../../FHIRApiService/delete');
+
+        module.exports = async function (req, res) {
+            return await deleteAPI(req, res, "${resource}");
+        };
+        `;
+
+    const conditionDeleteJs = `
+        const conditionDelete = require('../../../FHIRApiService/condition-delete');
+        const {
+            paramsSearch
+        } = require('../${resource}ParametersHandler');
+        module.exports = async function(req, res) {
+            return await conditionDelete(req, res, "${resource}", paramsSearch);
+        };
+        `;
+
+    const validationScript = `
+        const validate = require('../../../FHIRApiService/$validate');
+
+        module.exports = async function (req, res) {
+            return await validate(req,res, "${resource}");
+        };
+        `;
+
+    const indexJs = `
+        const express = require('express');
+        const router = express.Router();
+        const joi = require('joi');
+        const {
+            FHIRValidateParams
+        } = require('api/validator');
+        const _ = require('lodash');
+        const config = require('../../../config/config');
+
+        if (_.get(config, "${resource}.interaction.search", true)) {
+            router.get('/', FHIRValidateParams({
+                "_offset": joi.number().integer(),
+                "_count": joi.number().integer(),
+                "_pretty": joi.boolean().default(true),
+                "_total": joi.string().allow("none", "estimate", "accurate").default("estimate")
+            }, "query", {
+                allowUnknown: true
+            }), require('./controller/get${resource}'));
+        }
+        
+        if (_.get(config, "${resource}.interaction.read",true)) {
+            router.get('/:id', require('./controller/get${resource}ById'));
+        }
+        
+        if (_.get(config, "${resource}.interaction.history", true)) {
+            router.get('/:id/_history', FHIRValidateParams({
+                "_offset": joi.number().integer(),
+                "_count": joi.number().integer()
+            }, "query", {
+                allowUnknown: true
+            }), require('./controller/get${resource}History'));
+        }
+        
+        if (_.get(config, "${resource}.interaction.vread", true)) {
+            router.get('/:id/_history/:version', require('./controller/get${resource}HistoryById'));
+        }
+
+        if (_.get(config, "${resource}.interaction.create", true)) {
+            router.post('/', require('./controller/post${resource}'));
+        }
+
+        router.post('/([\\$])validate', require('./controller/post${resource}Validate'));
+
+        if (_.get(config, "${resource}.interaction.update", true)) {
+            router.put('/:id', require("./controller/put${resource}"));
+        }
+        
+        if (_.get(config, "${resource}.interaction.delete", true)) {
+            router.delete('/:id', require("./controller/delete${resource}"));
+            router.delete('/', require("./controller/condition-delete${resource}"));
+        }
+
+        module.exports = router;`;
+
+    return {
+        [`controller/get${resource}.js`]: get,
+        [`controller/get${resource}ById.js`]: getById,
+        [`controller/get${resource}History.js`]: getHistory,
+        [`controller/get${resource}HistoryById.js`]: getHistoryById,
+        [`controller/post${resource}.js`]: post,
+        [`controller/put${resource}.js`]: put,
+        [`controller/delete${resource}.js`]: deleteJs,
+        [`controller/condition-delete${resource}.js`]: conditionDeleteJs,
+        [`controller/post${resource}Validate.js`]: validationScript,
+        "index.js": indexJs
+    };
+}
+
+/**
  *
  * @param {Object} option
  * @param {Array} option.resources the resources want to use
@@ -78,264 +226,13 @@ function generateAPI(option) {
 
     for (let res in option) {
         mkdirp.sync(`./api/FHIR/${res}/controller`);
-
-        //#region search
-        let get = `
-        const search = require('../../../FHIRApiService/search');
-        const { paramsSearch } = require('../${res}ParametersHandler');
-        module.exports = async function(req, res) {
-            return await search(req, res,"${res}", paramsSearch);
-        };
-        `;
-        //#endregion
-
-        //#region search parameters
-        let resourceParameterHandler = `
-        const _ = require('lodash');
-        const queryBuild = require('../../../models/FHIR/queryBuild.js');
-        const queryHandler = require('../../../models/FHIR/searchParameterQueryHandler');
-        const jp = require("jsonpath");
-        let resourceInclude = require("../../../api_generator/resource-reference/resourceInclude.json");
-        const { chainSearch } = require('../../../models/FHIR/queryBuild.js');
-        const path = require("path");
-
-        let paramsSearchFields = {};
-
-        const paramsSearch = {
-            "_id" : (query) => {
-                query.$and.push({
-                    id : query["_id"]
-                });
-                delete query["_id"];
-            }
-        };
-
-        paramsSearch["_lastUpdated"] = (query) => {
-            if (!_.isArray(query["_lastUpdated"])) {
-                query["_lastUpdated"] = [query["_lastUpdated"]];
-            }
-            for (let i in query["_lastUpdated"]) {
-                let buildResult = queryBuild.instantQuery(query["_lastUpdated"][i], "meta.lastUpdated");
-                if (!buildResult) {
-                    throw new Error(\`invalid date: \${query["_lastUpdated"]}\`);
-                }
-                query.$and.push(buildResult);
-            }
-            delete query["_lastUpdated"];
-        };
-        `;
-        let searchParameter = require("./FHIRParametersClean.json");
-        // FHIRParametersClean.json is legacy codegen input only. Canonical SearchParameter
-        // definitions come from the version-controlled R4 bundle fixture and database registry.
-        let resSearchParams = searchParameter[res];
-        let resourceDefinition = require(
-            `./to-code-use-definition/${res}.json`
-        );
-        for (let key in resSearchParams) {
-            let paramObj = resSearchParams[key];
-            let param = paramObj["parameter"];
-            let type = paramObj["type"];
-            let field = paramObj["field"];
-            try {
-                let searchFuncTxt = genParamFunc[type](
-                    param,
-                    field,
-                    resourceDefinition
-                );
-                resourceParameterHandler += searchFuncTxt;
-            } catch (e) {
-                if (e.message.includes("not a function")) {
-                    console.error(
-                        `The parameter type "${type}" is not support`
-                    );
-                } else {
-                    console.error(e);
-                }
-            }
+        const files = getGeneratedApiFiles(res);
+        for (const [relativePath, content] of Object.entries(files)) {
+            fs.writeFileSync(
+                `./api/FHIR/${res}/${relativePath}`,
+                beautify(content)
+            );
         }
-        resourceParameterHandler += `
-        module.exports.paramsSearch = paramsSearch;
-        module.exports.paramsSearchFields = paramsSearchFields;
-        `;
-        //#endregion
-
-        //#region getById
-        const getById = getCodeGetById(res);
-        //#endregion
-
-        //#region getHistory
-        const getHistory = `
-        const history = require('../../../FHIRApiService/history');
-
-        module.exports = async function(req , res) {
-            return await history(req, res, "${res}");
-        };
-        `;
-        //#endregion
-
-        //#region getHistoryById
-        const getHistoryById = `
-        const vread = require('../../../FHIRApiService/vread');
-
-        module.exports = async function(req, res) {
-            return await vread(req ,res, "${res}");
-        };
-        `;
-        //#endregion
-
-        //#region create resource (post)
-        let post = getCodeCreate(res);
-        //#endregion
-
-        //#region update (put)
-        let put = getCodeUpdate(res);
-        if (res == "List") {
-            put = `
-            const update = require('../../../FHIRApiService/update.js');
-            const _ = require('lodash');
-            module.exports = async function(req, res) {
-                let resourceData = req.body;
-                if (_.isArray(resourceData.entry) && resourceData.entry.length > 0) {
-                    for (let index in resourceData.entry) {
-                        let entry = resourceData.entry[index];
-                        if (resourceData.mode != "changes") {
-                            delete entry.delete;
-                        } else if (resourceData.mode != "working") {
-                            delete entry.date;
-                        }
-                    }
-                }
-                return await update(req, res, "${res}");
-            };
-            `;
-        }
-        //#endregion
-
-        //#region delete
-        const deleteJs = `
-        const deleteAPI = require('../../../FHIRApiService/delete');
-
-        module.exports = async function (req, res) {
-            return await deleteAPI(req, res, "${res}");
-        };
-        `;
-        //#endregion
-
-        //#region condition delete
-        const conditionDeleteJs = `
-        const conditionDelete = require('../../../FHIRApiService/condition-delete');
-        const {
-            paramsSearch
-        } = require('../${res}ParametersHandler');
-        module.exports = async function(req, res) {
-            return await conditionDelete(req, res, "${res}", paramsSearch);
-        };
-        `;
-        //#endregion
-
-        const validationScript = `
-        const validate = require('../../../FHIRApiService/$validate');
-
-        module.exports = async function (req, res) {
-            return await validate(req,res, "${res}");
-        };
-        `;
-
-        fs.writeFileSync(
-            `./api/FHIR/${res}/controller/get${res}.js`,
-            beautify(get)
-        );
-        fs.writeFileSync(
-            `./api/FHIR/${res}/${res}ParametersHandler.js`,
-            beautify(resourceParameterHandler)
-        );
-        fs.writeFileSync(
-            `./api/FHIR/${res}/controller/get${res}ById.js`,
-            beautify(getById)
-        );
-        fs.writeFileSync(
-            `./api/FHIR/${res}/controller/get${res}History.js`,
-            beautify(getHistory)
-        );
-        fs.writeFileSync(
-            `./api/FHIR/${res}/controller/get${res}HistoryById.js`,
-            beautify(getHistoryById)
-        );
-        fs.writeFileSync(
-            `./api/FHIR/${res}/controller/post${res}.js`,
-            beautify(post)
-        );
-        fs.writeFileSync(
-            `./api/FHIR/${res}/controller/put${res}.js`,
-            beautify(put)
-        );
-        fs.writeFileSync(
-            `./api/FHIR/${res}/controller/delete${res}.js`,
-            beautify(deleteJs)
-        );
-        fs.writeFileSync(
-            `./api/FHIR/${res}/controller/condition-delete${res}.js`,
-            beautify(conditionDeleteJs)
-        );
-        fs.writeFileSync(
-            `./api/FHIR/${res}/controller/post${res}Validate.js`,
-            beautify(validationScript)
-        );
-        let indexJs = `
-        const express = require('express');
-        const router = express.Router();
-        const joi = require('joi');
-        const {
-            FHIRValidateParams
-        } = require('api/validator');
-        const _ = require('lodash');
-        const config = require('../../../config/config');
-
-        if (_.get(config, "${res}.interaction.search", true)) {
-            router.get('/', FHIRValidateParams({
-                "_offset": joi.number().integer(),
-                "_count": joi.number().integer(),
-                "_pretty": joi.boolean().default(true),
-                "_total": joi.string().allow("none", "estimate", "accurate").default("estimate")
-            }, "query", {
-                allowUnknown: true
-            }), require('./controller/get${res}'));
-        }
-        
-        if (_.get(config, "${res}.interaction.read",true)) {
-            router.get('/:id', require('./controller/get${res}ById'));
-        }
-        
-        if (_.get(config, "${res}.interaction.history", true)) {
-            router.get('/:id/_history', FHIRValidateParams({
-                "_offset": joi.number().integer(),
-                "_count": joi.number().integer()
-            }, "query", {
-                allowUnknown: true
-            }), require('./controller/get${res}History'));
-        }
-        
-        if (_.get(config, "${res}.interaction.vread", true)) {
-            router.get('/:id/_history/:version', require('./controller/get${res}HistoryById'));
-        }
-
-        if (_.get(config, "${res}.interaction.create", true)) {
-            router.post('/', require('./controller/post${res}'));
-        }
-
-        router.post('/([\\$])validate', require('./controller/post${res}Validate'));
-
-        if (_.get(config, "${res}.interaction.update", true)) {
-            router.put('/:id', require("./controller/put${res}"));
-        }
-        
-        if (_.get(config, "${res}.interaction.delete", true)) {
-            router.delete('/:id', require("./controller/delete${res}"));
-            router.delete('/', require("./controller/condition-delete${res}"));
-        }
-
-        module.exports = router;`;
-        fs.writeFileSync(`./api/FHIR/${res}/index.js`, beautify(indexJs));
     }
 }
 function getDirInFHIRAPI() {
@@ -517,5 +414,6 @@ function generateConfig() {
 module.exports = {
     generateAPI: generateAPI,
     generateMetaData: generateMetaData,
-    generateConfig: generateConfig
+    generateConfig: generateConfig,
+    getGeneratedApiFiles: getGeneratedApiFiles
 };

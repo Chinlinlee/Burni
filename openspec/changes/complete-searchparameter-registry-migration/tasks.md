@@ -51,7 +51,7 @@
 
 ## 7. API generator 與 legacy decoupling
 
-- [ ] 7.1 修改 API generator，使其停止讀取 `FHIRParametersClean.json` 與產生 SearchParameter handlers，但保留 CRUD、history、validation 等生成能力。
+- [x] 7.1 修改 API generator，使其停止讀取 `FHIRParametersClean.json` 與產生 SearchParameter handlers，但保留 CRUD、history、validation 等生成能力。
 - [ ] 7.2 移除所有 controller、service、Bundle 與 conditional delete 對 generated `paramsSearch`/`paramsSearchFields` 的需求。
 - [ ] 7.3 將 Registry executor 從 legacy `queryBuild.js` 與 `searchParameterQueryHandler.js` 解耦，保留必要的 type-specific primitives。
 - [ ] 7.4 替換或移除 chain、include/revinclude、conditional delete 與 shadow code 中的 legacy imports。
