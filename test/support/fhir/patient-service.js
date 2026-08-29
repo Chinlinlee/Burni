@@ -1,11 +1,11 @@
-const path = require("path");
 const mongoose = require("mongoose");
 const { createFakeRequest, createFakeResponse } = require("../fake-http");
+const { ensureMongodbConnectorLoaded } = require("./fhir-service");
 
 function loadPatientModel() {
+    ensureMongodbConnectorLoaded();
     if (!mongoose.models.Patient) {
-        const patientModelPath = path.join(__dirname, "../../../models/mongodb/model/Patient.js");
-        require(patientModelPath)(mongoose);
+        throw new Error("MongoDB model not registered for Patient");
     }
 }
 

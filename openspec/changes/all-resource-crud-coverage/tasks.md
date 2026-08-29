@@ -7,11 +7,11 @@
 
 ## 2. 實作全資源 CRUD coverage
 
-- [ ] 2.1 新增一般 FHIR service integration test，從 resource catalog 動態建立具名測試案例。
-- [ ] 2.2 對每個 resource 使用 active fixture 執行 create，並確認 server-generated ID 可用且不同於 fixture 原始 ID。
-- [ ] 2.3 使用 create response 的 ID 執行 read，驗證 resource type、identity 與非 server-managed 內容等價。
-- [ ] 2.4 讓 fixture 載入失敗、create/read 失敗、catalog 不一致與 round-trip 差異直接使對應測試失敗。
-- [ ] 2.5 保留並確認現有 Patient-specific CRUD regression test。
+- [x] 2.1 新增一般 FHIR service integration test，從 resource catalog 動態建立具名測試案例。
+- [x] 2.2 對每個 resource 使用 active fixture 執行 create，並確認 server-generated ID 可用且不同於 fixture 原始 ID。
+- [x] 2.3 使用 create response 的 ID 執行 read，驗證 resource type、identity 與非 server-managed 內容等價。
+- [x] 2.4 讓 fixture 載入失敗、create/read 失敗、catalog 不一致與 round-trip 差異直接使對應測試失敗。
+- [x] 2.5 保留並確認現有 Patient-specific CRUD regression test。
 
 ## 3. Production 缺陷處理
 

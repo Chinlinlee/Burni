@@ -4,6 +4,18 @@ const mongoose = require("mongoose");
 const { createFakeRequest, createFakeResponse } = require("../fake-http");
 const { loadResourceCatalog } = require("./resource-catalog");
 
+/** @type {boolean} */
+let mongodbConnectorLoaded = false;
+
+function ensureMongodbConnectorLoaded() {
+    if (mongodbConnectorLoaded) {
+        return;
+    }
+
+    require("../../../models/mongodb/index.js");
+    mongodbConnectorLoaded = true;
+}
+
 /**
  * @param {string} resourceType
  * @returns {string}
@@ -16,18 +28,9 @@ function getResourceModelPath(resourceType) {
  * @param {string} resourceType
  */
 function ensureResourceModel(resourceType) {
-    if (mongoose.models[resourceType]) {
-        return mongoose.model(resourceType);
-    }
-
-    const modelPath = getResourceModelPath(resourceType);
-    if (!fs.existsSync(modelPath)) {
-        throw new Error(`MongoDB model file missing for ${resourceType}: ${modelPath}`);
-    }
-
-    require(modelPath)(mongoose);
+    ensureMongodbConnectorLoaded();
     if (!mongoose.models[resourceType]) {
-        throw new Error(`MongoDB model failed to register for ${resourceType} from ${modelPath}`);
+        throw new Error(`MongoDB model not registered for ${resourceType}`);
     }
 
     return mongoose.model(resourceType);
@@ -52,23 +55,25 @@ function diagnoseResourceModelRegistration() {
         const modelPath = getResourceModelPath(resourceType);
         if (!fs.existsSync(modelPath)) {
             missingModelFiles.push(resourceType);
-            continue;
         }
+    }
 
-        try {
-            if (!mongoose.models[resourceType]) {
-                require(modelPath)(mongoose);
-            }
-            if (!mongoose.models[resourceType]) {
-                registrationFailures.push({
-                    resourceType,
-                    reason: `model did not register from ${modelPath}`
-                });
-            }
-        } catch (error) {
+    if (missingModelFiles.length > 0) {
+        return {
+            catalogCount: catalog.length,
+            missingModelFiles,
+            registrationFailures,
+            valid: false
+        };
+    }
+
+    ensureMongodbConnectorLoaded();
+
+    for (const resourceType of catalog) {
+        if (!mongoose.models[resourceType]) {
             registrationFailures.push({
                 resourceType,
-                reason: error instanceof Error ? error.message : String(error)
+                reason: "model not registered after mongodb connector load"
             });
         }
     }
@@ -77,7 +82,7 @@ function diagnoseResourceModelRegistration() {
         catalogCount: catalog.length,
         missingModelFiles,
         registrationFailures,
-        valid: missingModelFiles.length === 0 && registrationFailures.length === 0
+        valid: registrationFailures.length === 0
     };
 }
 
@@ -135,6 +140,7 @@ module.exports = {
     clearResourceCollection,
     createResourceViaService,
     diagnoseResourceModelRegistration,
+    ensureMongodbConnectorLoaded,
     ensureResourceModel,
     getResourceModelPath,
     readResourceViaService
