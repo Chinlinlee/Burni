@@ -4,7 +4,7 @@ const fs = require("fs");
 const path = require("path");
 const { expect } = require("chai");
 
-const REPO_ROOT = path.join(__dirname, "../..");
+const REPO_ROOT = path.join(__dirname, "../../..");
 
 const REMOVED_PATHS = [
     "scripts/compare-registry-legacy-shadow.js",

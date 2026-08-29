@@ -11,9 +11,9 @@ const {
 } = require("@models/FHIR/searchParameter/registry/registryManager");
 const { resolveLookupStatus } = require("@models/FHIR/searchParameter/registry/snapshot");
 const {
-    startMongoMemoryTestContext,
-    stopMongoMemoryTestContext
-} = require("./mongoMemoryHelper");
+    startRegistryTestContext,
+    stopRegistryTestContext
+} = require("../support/registry-test-context");
 
 const CUSTOM_LOOKUP_CODE = "registry-crud-reload-test";
 const CUSTOM_PARAM_URL = "http://example.org/SearchParameter/registry-crud-reload-test";
@@ -39,7 +39,7 @@ function buildCustomSearchParameter(overrides = {}) {
 
 function loadSearchParameterModel() {
     if (!mongoose.models.SearchParameter) {
-        const modelPath = path.join(__dirname, "../../models/mongodb/model/SearchParameter.js");
+        const modelPath = path.join(__dirname, "../../../models/mongodb/model/SearchParameter.js");
         require(modelPath)(mongoose);
     }
 }
@@ -161,12 +161,12 @@ describe("SearchParameter registry reload lifecycle", function () {
 describe("SearchParameter CRUD registry reload integration", function () {
     before(async function () {
         this.timeout(120000);
-        await startMongoMemoryTestContext();
+        await startRegistryTestContext();
         loadSearchParameterModel();
     });
 
     after(async function () {
-        await stopMongoMemoryTestContext();
+        await stopRegistryTestContext();
     });
 
     beforeEach(async function () {

@@ -16,11 +16,11 @@ const {
 } = require("@models/FHIR/searchParameter/migration/compatibilityPolicy");
 const { executeSearchQueryPlan } = require("@models/FHIR/searchParameter/executor/mongoExecutor");
 const {
-    startMongoMemoryTestContext,
-    stopMongoMemoryTestContext
-} = require("./mongoMemoryHelper");
+    startRegistryTestContext,
+    stopRegistryTestContext
+} = require("../support/registry-test-context");
 
-const ARCHIVE_ROOT = path.join(__dirname, "../fixtures/archive");
+const ARCHIVE_ROOT = path.join(__dirname, "../../fixtures/archive");
 
 /**
  * @param {Object} fixture
@@ -109,11 +109,11 @@ describe("SearchParameter compatibility-plus-corrections", function () {
     describe("registry corrections in Mongo", function () {
         before(async function () {
             this.timeout(120000);
-            await startMongoMemoryTestContext();
+            await startRegistryTestContext();
         });
 
         after(async function () {
-            await stopMongoMemoryTestContext();
+            await stopRegistryTestContext();
         });
 
         it("matches deceasedDateTime for deceased=true across choice branches", async function () {
@@ -206,11 +206,11 @@ describe("SearchParameter compatibility-plus-corrections", function () {
     describe("public search hit-set gate", function () {
         before(async function () {
             this.timeout(120000);
-            await startMongoMemoryTestContext();
+            await startRegistryTestContext();
         });
 
         after(async function () {
-            await stopMongoMemoryTestContext();
+            await stopRegistryTestContext();
         });
 
         it("verifies Patient public search cases through document hit-sets instead of legacy filters", async function () {

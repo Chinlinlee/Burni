@@ -16,9 +16,9 @@ const productionResources = require("@models/FHIR/fhir.resourceList.json");
 
 const ARTIFACTS_DIR = path.join(
     __dirname,
-    "../../models/FHIR/searchParameter/migration/artifacts"
+    "../../../models/FHIR/searchParameter/migration/artifacts"
 );
-const ARCHIVE_ROOT = path.join(__dirname, "../fixtures/archive");
+const ARCHIVE_ROOT = path.join(__dirname, "../../fixtures/archive");
 
 async function compileDefinitions() {
     const builtin = loadBuiltinDefinitions();

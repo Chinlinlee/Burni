@@ -13,7 +13,7 @@ describe("Registry-only production search path", function () {
     it("does not keep a resource rollout config file", function () {
         const rolloutPath = path.join(
             __dirname,
-            "../../models/FHIR/searchParameter/config/registry-rollout.json"
+            "../../../models/FHIR/searchParameter/config/registry-rollout.json"
         );
         expect(fs.existsSync(rolloutPath)).to.equal(false);
     });

@@ -7,7 +7,7 @@
         "test": "mocha",
         "search-parameter:diagnostics": "node ./scripts/record-search-parameter-diagnostics.js",
         "search-parameter:verify": "node ./scripts/verify-search-parameter-diagnostics.js",
-        "test:diagnostics-gate": "mocha test/searchParameter/diagnostics-ci-gate.test.js",
+        "test:diagnostics-gate": "mocha test/searchParameter/migration/diagnostics-ci-gate.test.js",
         "search-parameter:build-artifacts": "node ./scripts/build-search-parameter-migration-artifacts.js",
         "search-parameter:discover-examples": "node ./models/FHIR/searchParameter/migration/fixtureMapping.js",
         "build": "node ./build/init.js",

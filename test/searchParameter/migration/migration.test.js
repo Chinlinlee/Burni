@@ -7,9 +7,9 @@ const { resolveLookupStatus } = require("@models/FHIR/searchParameter/registry/s
 const { tryApplyRegistryParameter } = require("@models/FHIR/searchParameter/runtime/registrySearchHandler");
 const productionResources = require("@models/FHIR/fhir.resourceList.json");
 const {
-    startMongoMemoryTestContext,
-    stopMongoMemoryTestContext
-} = require("./mongoMemoryHelper");
+    startRegistryTestContext,
+    stopRegistryTestContext
+} = require("../support/registry-test-context");
 
 describe("SearchParameter migration", function () {
     it("treats disabled registry codes as unknown parameters", async function () {
@@ -51,11 +51,11 @@ describe("SearchParameter migration", function () {
 describe("SearchParameter mongo integration", function () {
     before(async function () {
         this.timeout(120000);
-        await startMongoMemoryTestContext();
+        await startRegistryTestContext();
     });
 
     after(async function () {
-        await stopMongoMemoryTestContext();
+        await stopRegistryTestContext();
     });
 
     it("reloads consistently when database is available", async function () {
@@ -69,11 +69,11 @@ describe("SearchParameter mongo integration", function () {
 describe("SearchParameter document fixture queries", function () {
     before(async function () {
         this.timeout(120000);
-        await startMongoMemoryTestContext();
+        await startRegistryTestContext();
     });
 
     after(async function () {
-        await stopMongoMemoryTestContext();
+        await stopRegistryTestContext();
     });
 
     it("matches Patient address string search against stored documents", async function () {

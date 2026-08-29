@@ -6,7 +6,7 @@ const { expect } = require("chai");
 
 const EXECUTOR_ROOT = path.join(
     __dirname,
-    "../../models/FHIR/searchParameter/executor"
+    "../../../models/FHIR/searchParameter/executor"
 );
 const LEGACY_IMPORT_PATTERNS = [
     /require\(["']@models\/FHIR\/queryBuild["']\)/,
@@ -38,7 +38,7 @@ describe("Registry executor decoupling from legacy query builders", function () 
 
         for (const filePath of listJsFiles(EXECUTOR_ROOT)) {
             const content = fs.readFileSync(filePath, "utf8");
-            const relativePath = path.relative(path.join(__dirname, "../.."), filePath);
+            const relativePath = path.relative(path.join(__dirname, "../../.."), filePath);
             for (const pattern of LEGACY_IMPORT_PATTERNS) {
                 if (pattern.test(content)) {
                     offenders.push(relativePath);

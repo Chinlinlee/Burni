@@ -15,15 +15,15 @@ const { compileDefinition } = require("@models/FHIR/searchParameter/compiler/com
 const { mergeDefinitions } = require("@models/FHIR/searchParameter/registry/merge");
 const { executeSearchQueryPlan } = require("@models/FHIR/searchParameter/executor/mongoExecutor");
 const {
-    startMongoMemoryTestContext,
-    stopMongoMemoryTestContext
-} = require("./mongoMemoryHelper");
+    startRegistryTestContext,
+    stopRegistryTestContext
+} = require("../support/registry-test-context");
 
 const HIT_SETS_ARTIFACT = path.join(
     __dirname,
-    "../../models/FHIR/searchParameter/migration/artifacts/hit-sets.json"
+    "../../../models/FHIR/searchParameter/migration/artifacts/hit-sets.json"
 );
-const ARCHIVE_ROOT = path.join(__dirname, "../fixtures/archive");
+const ARCHIVE_ROOT = path.join(__dirname, "../../fixtures/archive");
 
 async function compileDefinitions() {
     const builtin = loadBuiltinDefinitions();
@@ -78,11 +78,11 @@ describe("SearchParameter hit-set verification", function () {
 describe("SearchParameter document hit-set gates", function () {
     before(async function () {
         this.timeout(120000);
-        await startMongoMemoryTestContext();
+        await startRegistryTestContext();
     });
 
     after(async function () {
-        await stopMongoMemoryTestContext();
+        await stopRegistryTestContext();
     });
 
     it("verifies positive, companion negative, and missing semantics for compiled lookups", async function () {

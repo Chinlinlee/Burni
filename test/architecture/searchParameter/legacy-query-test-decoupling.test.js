@@ -4,7 +4,7 @@ const fs = require("fs");
 const path = require("path");
 const { expect } = require("chai");
 
-const TEST_ROOT = path.join(__dirname, "..");
+const TEST_ROOT = path.join(__dirname, "../..");
 const LEGACY_IMPORT_PATTERNS = [
     /require\(["']@root\/models\/FHIR\/queryBuild["']\)/,
     /require\(["']@models\/FHIR\/queryBuild["']\)/,
@@ -38,7 +38,7 @@ describe("legacy query test decoupling", function () {
 
         for (const filePath of listTestFiles(TEST_ROOT)) {
             const content = fs.readFileSync(filePath, "utf8");
-            const relativePath = path.relative(path.join(__dirname, "../.."), filePath);
+            const relativePath = path.relative(path.join(__dirname, "../../.."), filePath);
             for (const pattern of LEGACY_IMPORT_PATTERNS) {
                 if (pattern.test(content)) {
                     offenders.push(`${relativePath}: ${pattern}`);

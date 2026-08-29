@@ -4,7 +4,7 @@ const fs = require("fs");
 const path = require("path");
 const { expect } = require("chai");
 
-const REPO_ROOT = path.join(__dirname, "../..");
+const REPO_ROOT = path.join(__dirname, "../../..");
 
 const SCAN_ROOTS = [
     { label: "runtime", relativePath: "api/FHIRApiService" },
@@ -16,12 +16,12 @@ const SCAN_ROOTS = [
 ];
 
 const ALLOWLIST = [
-    /[/\\]test[/\\]searchParameter[/\\]generated-handler-dependency-scan\.test\.js$/,
-    /[/\\]test[/\\]searchParameter[/\\]runtime-search-decoupling\.test\.js$/,
-    /[/\\]test[/\\]searchParameter[/\\]runtime-entry-decoupling\.test\.js$/,
-    /[/\\]test[/\\]searchParameter[/\\]legacy-query-test-decoupling\.test\.js$/,
-    /[/\\]test[/\\]searchParameter[/\\]legacy-artifact-removal-ci-gate\.test\.js$/,
-    /[/\\]test[/\\]searchParameter[/\\]temp-inventory-removal-ci-gate\.test\.js$/,
+    /[/\\]test[/\\]architecture[/\\]searchParameter[/\\]generated-handler-dependency-scan\.test\.js$/,
+    /[/\\]test[/\\]architecture[/\\]searchParameter[/\\]runtime-search-decoupling\.test\.js$/,
+    /[/\\]test[/\\]architecture[/\\]searchParameter[/\\]runtime-entry-decoupling\.test\.js$/,
+    /[/\\]test[/\\]architecture[/\\]searchParameter[/\\]legacy-query-test-decoupling\.test\.js$/,
+    /[/\\]test[/\\]architecture[/\\]searchParameter[/\\]legacy-artifact-removal-ci-gate\.test\.js$/,
+    /[/\\]test[/\\]architecture[/\\]searchParameter[/\\]temp-inventory-removal-ci-gate\.test\.js$/,
     /[/\\]test[/\\]api_generator[/\\]api-generator-search-decoupling\.test\.js$/
 ];
 

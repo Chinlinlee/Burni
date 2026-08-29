@@ -1,20 +1,20 @@
 require("module-alias/register");
 
 const { expect } = require("chai");
-const f201Fixture = require("../fixtures/patient-example-f201-roel.json");
+const f201Fixture = require("../../fixtures/patient-example-f201-roel.json");
 const {
-    startMongoMemoryTestContext,
-    stopMongoMemoryTestContext,
+    startRegistryTestContext,
+    stopRegistryTestContext
+} = require("../support/registry-test-context");
+const {
     clearPatientCollection,
     createPatientViaService,
-    readPatientViaService,
     searchPatientViaService,
     getBundlePatientIds
-} = require("./mongoMemoryHelper");
+} = require("../../support/fhir/patient-service");
 const { reloadRegistry } = require("@models/FHIR/searchParameter/registry/registryManager");
-const { resolveLookupStatus } = require("@models/FHIR/searchParameter/registry/snapshot");
+const { resolveLookupStatus, getEffectiveDefinition } = require("@models/FHIR/searchParameter/registry/snapshot");
 const { executeSearchQueryPlan } = require("@models/FHIR/searchParameter/executor/mongoExecutor");
-const { getEffectiveDefinition } = require("@models/FHIR/searchParameter/registry/snapshot");
 const { ADDRESS_STRING_FIELDS } = require("@models/FHIR/searchParameter/executor/searchTypeProjection");
 
 const EFFECTIVE_PATIENT_CODES = [
@@ -124,18 +124,16 @@ const PATIENT_SEARCH_CASES = [
 ];
 
 describe("Patient service-level registry search integration", function () {
-    /** @type {string} */
     let mainPatientId;
-    /** @type {string} */
     let companionPatientId;
 
     before(async function () {
         this.timeout(120000);
-        await startMongoMemoryTestContext();
+        await startRegistryTestContext();
     });
 
     after(async function () {
-        await stopMongoMemoryTestContext();
+        await stopRegistryTestContext();
     });
 
     beforeEach(async function () {
@@ -144,14 +142,6 @@ describe("Patient service-level registry search integration", function () {
         const companionPatient = await createPatientViaService(buildCompanionPatientFixture());
         mainPatientId = mainPatient.id;
         companionPatientId = companionPatient.id;
-    });
-
-    it("creates and reads Patient through FHIR services", async function () {
-        const readResult = await readPatientViaService(mainPatientId);
-        expect(readResult.status).to.equal(true);
-        expect(readResult.code).to.equal(200);
-        expect(readResult.result.id).to.equal(mainPatientId);
-        expect(readResult.result.gender).to.equal("male");
     });
 
     it("exposes 23 effective Patient registry codes", async function () {
@@ -165,7 +155,7 @@ describe("Patient service-level registry search integration", function () {
     });
 
     for (const searchCase of PATIENT_SEARCH_CASES) {
-        it(`searches Patient?${Object.entries(searchCase.query).map(([k, v]) => `${k}=${v}`).join("&")} with expected hit-set`, async function () {
+        it(`searches Patient?${Object.entries(searchCase.query).map(([key, value]) => `${key}=${value}`).join("&")} with expected hit-set`, async function () {
             const searchResult = await searchPatientViaService(searchCase.query);
             expect(searchResult.status).to.equal(true);
             expect(searchResult.code).to.equal(200);
@@ -191,7 +181,7 @@ describe("Patient service-level registry search integration", function () {
                 );
             }
             if (excludedId) {
-                expect(hitIds, `expected ${searchCase.code} to exclude patient ${excludedId}`).to.not.include(
+                expect(hitIds, `expected ${searchCase.code} to exclude stored patient ${excludedId}`).to.not.include(
                     excludedId
                 );
             }

@@ -16,7 +16,7 @@ const productionResources = require("@models/FHIR/fhir.resourceList.json");
 
 const MATRIX_ARTIFACT = path.join(
     __dirname,
-    "../../models/FHIR/searchParameter/migration/artifacts/lookup-matrix.json"
+    "../../../models/FHIR/searchParameter/migration/artifacts/lookup-matrix.json"
 );
 const DIFF_ARTIFACT = path.join(
     __dirname,

@@ -4,8 +4,8 @@ const fs = require("fs");
 const path = require("path");
 const { expect } = require("chai");
 
-const API_SERVICE_ROOT = path.join(__dirname, "../../api/FHIRApiService");
-const FHIR_ROOT = path.join(__dirname, "../../api/FHIR");
+const API_SERVICE_ROOT = path.join(__dirname, "../../../api/FHIRApiService");
+const FHIR_ROOT = path.join(__dirname, "../../../api/FHIR");
 
 function listJsFiles(dir) {
     const files = [];
@@ -77,7 +77,7 @@ describe("runtime search decoupling from generated handlers", function () {
 
             const content = fs.readFileSync(filePath, "utf8");
             if (content.includes("ParametersHandler") || content.includes("paramsSearch")) {
-                offenders.push(path.relative(path.join(__dirname, "../.."), filePath));
+                offenders.push(path.relative(path.join(__dirname, "../../.."), filePath));
             }
         }
 
@@ -94,7 +94,7 @@ describe("runtime search decoupling from generated handlers", function () {
                 content.includes("paramsSearchFields") ||
                 content.includes("paramsSearch")
             ) {
-                offenders.push(path.relative(path.join(__dirname, "../.."), filePath));
+                offenders.push(path.relative(path.join(__dirname, "../../.."), filePath));
             }
         }
 

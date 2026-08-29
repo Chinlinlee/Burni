@@ -93,6 +93,10 @@ _Avoid_: silently expanding the hit-set and calling it compatibility
 The version-controlled FHIR R4/4.0.1 SearchParameter Bundle whose complete resource semantics define Registry input. Legacy migration inventory artifacts live in `models/FHIR/searchParameter/migration/artifacts/` and are not Registry definition sources.
 _Avoid_: treating a reduced inventory or generated handler snapshot as canonical
 
+**Migration artifacts**:
+Version-controlled evidence for Registry coverage and reproducibility, including lookup outcomes, fixture mapping, hit-sets, manifest, and resource enablement. These artifacts are maintained explicitly and are not runtime SearchParameter definitions.
+_Avoid_: treating one-time legacy inventory comparisons as part of the canonical source
+
 **Production search coverage**:
 The migration boundary covering all 146 resource types in Burni's production resource catalog. A resource without SearchParameter lookups passes a structural gate; a resource with lookups must account for every `(resourceType, code)` outcome.
 _Avoid_: calling Patient-only rollout complete
@@ -112,3 +116,15 @@ _Avoid_: deleting a legacy file while another SearchParameter call path still de
 **Registry diagnostics**:
 The durable operational and CI verification of source identity, lookup outcomes, compiler failures, conflicts, fixture provenance, and resource enablement. It is not shadow comparison or rollout status.
 _Avoid_: using shadow equality as the correctness gate
+
+**Test scope**:
+The behavioral boundary a test verifies, independent of the resource type or test infrastructure it uses. A Patient test can belong to SearchParameter scope when it verifies Registry search semantics, while a CRUD-only test belongs to the general FHIR service scope.
+_Avoid_: classifying a test only by its resource name or by whether it uses MongoDB
+
+**Service-level search integration**:
+An integration contract that invokes the public FHIR service search path and verifies effective Registry search behavior against stored resources and expected hit-sets.
+_Avoid_: treating a service-level search test as a generic Patient CRUD test
+
+**Test support module**:
+A reusable test-only capability that provides environment setup, lifecycle management, or request adaptation without asserting product behavior itself.
+_Avoid_: placing assertions or domain-specific test cases in shared support

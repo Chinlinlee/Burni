@@ -4,7 +4,7 @@ const fs = require("fs");
 const path = require("path");
 const { expect } = require("chai");
 
-const REPO_ROOT = path.join(__dirname, "../..");
+const REPO_ROOT = path.join(__dirname, "../../..");
 
 const SCAN_ROOTS = [
     "models/FHIR/searchParameter",

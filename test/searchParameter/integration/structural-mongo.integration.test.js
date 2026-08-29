@@ -15,14 +15,14 @@ const { compileDefinition } = require("@models/FHIR/searchParameter/compiler/com
 const { mergeDefinitions } = require("@models/FHIR/searchParameter/registry/merge");
 const { executeSearchQueryPlan } = require("@models/FHIR/searchParameter/executor/mongoExecutor");
 const {
-    startMongoMemoryTestContext,
-    stopMongoMemoryTestContext
-} = require("./mongoMemoryHelper");
+    startRegistryTestContext,
+    stopRegistryTestContext
+} = require("../support/registry-test-context");
 
-const ARCHIVE_ROOT = path.join(__dirname, "../fixtures/archive");
+const ARCHIVE_ROOT = path.join(__dirname, "../../fixtures/archive");
 const LOOKUP_MATRIX_PATH = path.join(
     __dirname,
-    "../../models/FHIR/searchParameter/migration/artifacts/lookup-matrix.json"
+    "../../../models/FHIR/searchParameter/migration/artifacts/lookup-matrix.json"
 );
 const NO_LOOKUP_RESOURCES = [
     "Binary",
@@ -99,12 +99,12 @@ describe("SearchParameter structural Mongo integration", function () {
 
     before(async function () {
         this.timeout(120000);
-        await startMongoMemoryTestContext();
+        await startRegistryTestContext();
         snapshot = await reloadRegistry();
     });
 
     after(async function () {
-        await stopMongoMemoryTestContext();
+        await stopRegistryTestContext();
     });
 
     describe("choice", function () {

@@ -4,8 +4,8 @@ const fs = require("fs");
 const path = require("path");
 const { expect } = require("chai");
 
-const RUNTIME_ROOT = path.join(__dirname, "../../models/FHIR/searchParameter/runtime");
-const API_SERVICE_ROOT = path.join(__dirname, "../../api/FHIRApiService");
+const RUNTIME_ROOT = path.join(__dirname, "../../../models/FHIR/searchParameter/runtime");
+const API_SERVICE_ROOT = path.join(__dirname, "../../../api/FHIRApiService");
 
 const LEGACY_IMPORT_PATTERNS = [
     /ParametersHandler/,
