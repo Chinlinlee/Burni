@@ -9,10 +9,7 @@ let memoryServer = null;
 const originalEnv = {};
 
 const REGISTRY_ENV = {
-    ENABLE_VALIDATOR: "false",
-    SEARCH_REGISTRY_ENABLED: "true",
-    SEARCH_REGISTRY_RESOURCE_TYPES: "Patient",
-    SEARCH_LEGACY_FALLBACK_ENABLED: "false"
+    ENABLE_VALIDATOR: "false"
 };
 
 const MODULES_TO_RELOAD = [

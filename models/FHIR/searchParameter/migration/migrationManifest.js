@@ -1,8 +1,8 @@
 const crypto = require("crypto");
 const { verifyProvenance, computeFileChecksum, getBundlePath } = require("./provenance");
 const { getKnownHitSet } = require("./hitSets");
+const productionResources = require("../../fhir.resourceList.json");
 const { buildLookupMatrix } = require("./lookupMatrix");
-const { loadRolloutConfig } = require("../config/featureFlags");
 
 /**
  * @param {import('../compiler/searchQueryPlan').SearchQueryPlan} plan
@@ -24,7 +24,6 @@ function buildMigrationManifest({ snapshot, definitions, fixtureArchive, hitSetA
     const provenance = verifyProvenance().provenance;
     const bundleChecksum = computeFileChecksum(getBundlePath());
     const lookupMatrix = buildLookupMatrix(snapshot, definitions);
-    const rolloutConfig = loadRolloutConfig();
 
     /** @type {Record<string, Object>} */
     const resources = {};
@@ -32,7 +31,7 @@ function buildMigrationManifest({ snapshot, definitions, fixtureArchive, hitSetA
         compiledLookups: 0,
         definedHitSets: 0,
         pendingHitSets: 0,
-        enabledResources: rolloutConfig.enabledResourceTypes.length
+        enabledResources: productionResources.length
     };
 
     for (const resourceType of Object.keys(fixtureArchive.resources)) {
@@ -76,7 +75,7 @@ function buildMigrationManifest({ snapshot, definitions, fixtureArchive, hitSetA
                     hash: null
                 },
                 enablement: {
-                    registryEnabled: rolloutConfig.enabledResourceTypes.includes(resourceType),
+                    registryEnabled: true,
                     outcome: lookup.outcome
                 }
             };
@@ -93,7 +92,7 @@ function buildMigrationManifest({ snapshot, definitions, fixtureArchive, hitSetA
             lookupCount: matrixResource?.lookupCount || 0,
             resourceOutcome: matrixResource?.outcome || null,
             enablement: {
-                registryEnabled: rolloutConfig.enabledResourceTypes.includes(resourceType),
+                registryEnabled: true,
                 structuralOnly: (matrixResource?.lookupCount || 0) === 0
             },
             lookups

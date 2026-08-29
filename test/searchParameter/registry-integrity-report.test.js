@@ -106,7 +106,8 @@ describe("Registry integrity diagnostics report", function () {
                 "synthetic"
             ]);
             expect(resource.fixtureProvenance.activeFixtureHash).to.match(/^[a-f0-9]{64}$/);
-            expect(resource.enablement.registryEnabled).to.be.a("boolean");
+            expect(resource.enablement.registryEnabled).to.equal(true);
+            expect(resource.enablement.fallbackDisabled).to.equal(true);
             expect(resource.enablement.structuralOnly).to.equal(resource.lookupCount === 0);
 
             for (const [code, lookup] of Object.entries(resource.lookups)) {

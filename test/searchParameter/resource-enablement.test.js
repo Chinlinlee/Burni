@@ -18,10 +18,6 @@ const {
     verifyResourceEnablementArtifact,
     RESOURCE_ENABLEMENT_ARTIFACT
 } = require("@models/FHIR/searchParameter/migration/resourceEnablementGates");
-const {
-    isLegacyFallbackEnabledForResource,
-    loadRolloutConfig
-} = require("@models/FHIR/searchParameter/config/featureFlags");
 const { tryApplyRegistryParameter } = require("@models/FHIR/searchParameter/runtime/registrySearchHandler");
 
 async function compileDefinitions() {
@@ -91,27 +87,8 @@ describe("SearchParameter per-resource enablement gates", function () {
         expect(failures, failures.slice(0, 20).join("\n")).to.deep.equal([]);
     });
 
-    it("disables legacy fallback for every production resource after gates pass", function () {
-        const rollout = loadRolloutConfig();
-        expect(rollout.disableLegacyFallbackForAllEnabledResources).to.equal(true);
-        expect(rollout.fallbackDisabledResourceTypes).to.have.length(146);
-
-        for (const resourceType of productionResources) {
-            expect(
-                isLegacyFallbackEnabledForResource(resourceType),
-                `${resourceType} should not use legacy fallback`
-            ).to.equal(false);
-        }
-    });
-
-    it("returns disabled instead of fallback for unknown codes on gated resources", async function () {
-        process.env.SEARCH_REGISTRY_ENABLED = "true";
-        process.env.SEARCH_LEGACY_FALLBACK_ENABLED = "true";
-        delete require.cache[require.resolve("@models/FHIR/searchParameter/config/featureFlags")];
-        delete require.cache[require.resolve("@models/FHIR/searchParameter/runtime/registrySearchHandler")];
-        const { tryApplyRegistryParameter: retryApply } = require("@models/FHIR/searchParameter/runtime/registrySearchHandler");
-
-        const result = await retryApply({
+    it("returns disabled for unknown codes on production resources", async function () {
+        const result = await tryApplyRegistryParameter({
             resourceType: "Account",
             query: { definitelyUnknownParam: "x" },
             parameterName: "definitelyUnknownParam"

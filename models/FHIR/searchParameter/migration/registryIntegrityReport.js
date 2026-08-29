@@ -2,7 +2,6 @@ const productionResources = require("../../fhir.resourceList.json");
 const { verifyProvenance } = require("./provenance");
 const { buildLookupMatrix } = require("./lookupMatrix");
 const { loadFixtureProvenance } = require("./fixtureArchive");
-const { loadRolloutConfig } = require("../config/featureFlags");
 const { loadResourceEnablementArtifact } = require("./resourceEnablementGates");
 
 /**
@@ -34,15 +33,14 @@ function collectDefinitions(snapshot, definitions = []) {
 /**
  * @param {string} resourceType
  * @param {number} lookupCount
- * @param {{ enabledResourceTypes: string[], fallbackDisabledResourceTypes: string[] }} rollout
  * @param {Object | null} enablementArtifact
  * @returns {Object}
  */
-function buildResourceEnablement(resourceType, lookupCount, rollout, enablementArtifact) {
+function buildResourceEnablement(resourceType, lookupCount, enablementArtifact) {
     const artifactEntry = enablementArtifact?.resources?.[resourceType];
     return {
-        registryEnabled: rollout.enabledResourceTypes.includes(resourceType),
-        fallbackDisabled: rollout.fallbackDisabledResourceTypes.includes(resourceType),
+        registryEnabled: true,
+        fallbackDisabled: true,
         gatesPassed: artifactEntry ? artifactEntry.passed === true : null,
         structuralOnly: lookupCount === 0
     };
@@ -80,7 +78,6 @@ function buildRegistryIntegrityReport({ snapshot, definitions = [] }) {
     const reportDefinitions = collectDefinitions(snapshot, definitions);
     const matrix = buildLookupMatrix(snapshot, reportDefinitions);
     const fixtureByResource = loadFixtureProvenance();
-    const rollout = loadRolloutConfig();
     const enablementArtifact = loadResourceEnablementArtifact();
     const definitionByLookupKey = new Map();
     for (const definition of reportDefinitions) {
@@ -113,7 +110,6 @@ function buildRegistryIntegrityReport({ snapshot, definitions = [] }) {
         const enablement = buildResourceEnablement(
             resourceType,
             lookupCount,
-            rollout,
             enablementArtifact
         );
         /** @type {Record<string, Object>} */
@@ -191,7 +187,7 @@ function buildRegistryIntegrityReport({ snapshot, definitions = [] }) {
             unsupported: matrix.summary.unsupported,
             noLookupResources: matrix.summary.noLookupResources,
             conflictCount: snapshot.conflictLookupKeys.size,
-            enabledResources: rollout.enabledResourceTypes.length,
+            enabledResources: productionResources.length,
             abstractLookupCount: abstractLookups.length
         }
     };

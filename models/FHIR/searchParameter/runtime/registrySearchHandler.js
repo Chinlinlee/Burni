@@ -3,34 +3,22 @@ const { resolveLookupStatus, getEffectiveDefinition } = require("../registry/sna
 const { applyPlanToQuery } = require("../executor/mongoExecutor");
 const { buildRelationPlan, buildRelationAggregation } = require("../executor/relationPlan");
 const { parseSearchParameterName } = require("./parameterName");
-const {
-    isRegistryEnabledForResource,
-    isLegacyFallbackEnabledForResource
-} = require("../config/featureFlags");
 
 /**
  * @param {Object} options
  * @param {string} options.resourceType
  * @param {Object} options.query
  * @param {string} options.parameterName
- * @returns {Promise<'handled' | 'disabled' | 'fallback'>}
+ * @returns {Promise<'handled' | 'disabled'>}
  */
 async function tryApplyRegistryParameter(options) {
     const { resourceType, query, parameterName } = options;
-    const registryEnabled = isRegistryEnabledForResource(resourceType);
-
-    if (!registryEnabled) {
-        return isLegacyFallbackEnabledForResource(resourceType) ? "fallback" : "disabled";
-    }
 
     const parsed = parseSearchParameterName(parameterName);
     const snapshot = await ensureRegistryLoaded();
     const lookupStatus = resolveLookupStatus(snapshot, resourceType, parsed.code);
-    if (lookupStatus === "disabled") {
+    if (lookupStatus === "disabled" || lookupStatus === "unknown") {
         return "disabled";
-    }
-    if (lookupStatus === "unknown") {
-        return isLegacyFallbackEnabledForResource(resourceType) ? "fallback" : "disabled";
     }
 
     const definition = getEffectiveDefinition(snapshot, resourceType, parsed.code);

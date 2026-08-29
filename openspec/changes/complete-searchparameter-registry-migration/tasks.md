@@ -60,7 +60,7 @@
 
 ## 8. Feature flags、script 與 legacy artifact removal
 
-- [ ] 8.1 將 Registry 設為 production 唯一路徑，移除 legacy fallback flag、resource rollout config 與 runtime rollback path。
+- [x] 8.1 將 Registry 設為 production 唯一路徑，移除 legacy fallback flag、resource rollout config 與 runtime rollback path。
 - [ ] 8.2 移除 `search-parameter:shadow` 及其 runtime comparator、legacy report 與 package script。
 - [ ] 8.3 移除 `search-parameter:rollout-status` 及其 shadow report 依賴。
 - [ ] 8.4 在所有 deletion gates 通過後移除 generated `*ParametersHandler.js`、`parameterHandler.js`、`searchParameterQueryHandler.js` 與已解耦的 legacy search methods。

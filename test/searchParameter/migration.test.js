@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const { reloadRegistry } = require("@models/FHIR/searchParameter/registry/registryManager");
 const { resolveLookupStatus } = require("@models/FHIR/searchParameter/registry/snapshot");
 const { tryApplyRegistryParameter } = require("@models/FHIR/searchParameter/runtime/registrySearchHandler");
+const productionResources = require("@models/FHIR/fhir.resourceList.json");
 const {
     startMongoMemoryTestContext,
     stopMongoMemoryTestContext
@@ -21,14 +22,8 @@ describe("SearchParameter migration", function () {
         expect(resolveLookupStatus(snapshot, resourceType, code)).to.equal("disabled");
     });
 
-    it("returns disabled instead of fallback for unknown codes on gated production resources", async function () {
-        process.env.SEARCH_REGISTRY_ENABLED = "true";
-        process.env.SEARCH_LEGACY_FALLBACK_ENABLED = "true";
-        delete require.cache[require.resolve("@models/FHIR/searchParameter/config/featureFlags")];
-        delete require.cache[require.resolve("@models/FHIR/searchParameter/runtime/registrySearchHandler")];
-        const { tryApplyRegistryParameter: retryApply } = require("@models/FHIR/searchParameter/runtime/registrySearchHandler");
-
-        const result = await retryApply({
+    it("returns disabled for unknown codes on production resources", async function () {
+        const result = await tryApplyRegistryParameter({
             resourceType: "Account",
             query: { definitelyUnknownParam: "x" },
             parameterName: "definitelyUnknownParam"
@@ -37,26 +32,14 @@ describe("SearchParameter migration", function () {
     });
 
     it("never falls back for disabled, unsupported, or conflict lookups", async function () {
-        process.env.SEARCH_REGISTRY_ENABLED = "true";
-        process.env.SEARCH_LEGACY_FALLBACK_ENABLED = "true";
-        delete require.cache[require.resolve("@models/FHIR/searchParameter/config/featureFlags")];
-        delete require.cache[require.resolve("@models/FHIR/searchParameter/runtime/registrySearchHandler")];
-        const { tryApplyRegistryParameter: retryApply } = require("@models/FHIR/searchParameter/runtime/registrySearchHandler");
-        const { isRegistryEnabledForResource } = require("@models/FHIR/searchParameter/config/featureFlags");
         const snapshot = await reloadRegistry({ databaseResources: [] });
-
-        expect(isRegistryEnabledForResource("Observation")).to.equal(true);
-        expect(isRegistryEnabledForResource("Account")).to.equal(true);
-
-        const productionResources = require("@models/FHIR/fhir.resourceList.json");
         const disabledKey = [...snapshot.disabledLookupKeys].find((key) =>
             productionResources.includes(key.split("::")[0])
         );
         expect(disabledKey).to.be.a("string");
         const [resourceType, code] = disabledKey.split("::");
-        expect(isRegistryEnabledForResource(resourceType)).to.equal(true);
         expect(resolveLookupStatus(snapshot, resourceType, code)).to.equal("disabled");
-        const result = await retryApply({
+        const result = await tryApplyRegistryParameter({
             resourceType,
             query: { [code]: "x" },
             parameterName: code
