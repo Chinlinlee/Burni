@@ -44,7 +44,7 @@
 
 ## 6. SearchParameter CRUD、DB overlay 與 diagnostics
 
-- [ ] 6.1 驗證 active DB SearchParameter、canonical overlay、retired/draft policy 與 active conflict 的 Registry 行為。
+- [x] 6.1 驗證 active DB SearchParameter、canonical overlay、retired/draft policy 與 active conflict 的 Registry 行為。
 - [ ] 6.2 驗證 SearchParameter CRUD 成功後的 atomic reload、in-flight snapshot consistency 與 reload failure preservation。
 - [ ] 6.3 將 `search-parameter:diagnostics` 擴充為長期 Registry integrity command，輸出所有 lookup outcome 與 fixture/enablement 狀態。
 - [ ] 6.4 將 diagnostics completeness、unclassified failure、unknown lookup、conflict 與 manifest drift 納入 CI gate。
