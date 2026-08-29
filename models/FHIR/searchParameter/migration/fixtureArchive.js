@@ -9,7 +9,7 @@ const {
     getOfficialArchivePath
 } = require("./fixtureMapping");
 const { buildDerivedFixture, buildSyntheticFixture } = require("./fixtureDerivation");
-const { writeCompanionFixture } = require("./companionFixtures");
+const { COMPANION_DIR, writeCompanionFixture } = require("./companionFixtures");
 
 const ARCHIVE_ROOT = path.join(__dirname, "../fixtures/archive");
 const OFFICIAL_DIR = path.join(ARCHIVE_ROOT, "official");
@@ -194,6 +194,96 @@ function buildFixtureArchive({ snapshot, definitions, exampleMapping, examplesDi
     };
 }
 
+/**
+ * @param {string} filePath
+ * @returns {string}
+ */
+function toRelativePath(filePath) {
+    return path.relative(process.cwd(), filePath).replace(/\\/g, "/");
+}
+
+/**
+ * @param {string} filePath
+ * @returns {string | null}
+ */
+function hashExistingFile(filePath) {
+    if (!fs.existsSync(filePath)) {
+        return null;
+    }
+    return crypto.createHash("sha256").update(fs.readFileSync(filePath)).digest("hex");
+}
+
+/**
+ * 讀取已歸檔 fixture 的 provenance，不重寫檔案。
+ * @returns {Record<string, Object>}
+ */
+function loadFixtureProvenance() {
+    const mapping = loadExampleMapping();
+    /** @type {Record<string, Object>} */
+    const resources = {};
+
+    for (const resourceType of productionResources) {
+        const entry = mapping.resources[resourceType];
+        const officialPath = path.join(OFFICIAL_DIR, `${resourceType}.json`);
+        const derivedPath = path.join(DERIVED_DIR, `${resourceType}.json`);
+        const syntheticPath = path.join(SYNTHETIC_DIR, `${resourceType}.json`);
+        const companionPath = path.join(COMPANION_DIR, `${resourceType}.json`);
+
+        const officialExists = fs.existsSync(officialPath);
+        const derivedExists = fs.existsSync(derivedPath);
+        const syntheticExists = fs.existsSync(syntheticPath);
+        const companionExists = fs.existsSync(companionPath);
+
+        let valueSource;
+        let activePath = null;
+        if (entry.valueSource === "synthetic") {
+            valueSource = "synthetic";
+            activePath = syntheticExists ? syntheticPath : null;
+        } else if (derivedExists) {
+            valueSource = "derived";
+            activePath = derivedPath;
+        } else {
+            valueSource = "official";
+            activePath = officialExists ? officialPath : null;
+        }
+
+        resources[resourceType] = {
+            valueSource,
+            official: officialExists
+                ? {
+                      sourceFile: entry.sourceFile,
+                      sourceHash: entry.sourceHash,
+                      archivePath: toRelativePath(officialPath),
+                      archiveHash: hashExistingFile(officialPath)
+                  }
+                : null,
+            derived: derivedExists
+                ? {
+                      archivePath: toRelativePath(derivedPath),
+                      archiveHash: hashExistingFile(derivedPath)
+                  }
+                : null,
+            synthetic: syntheticExists
+                ? {
+                      archivePath: toRelativePath(syntheticPath),
+                      archiveHash: hashExistingFile(syntheticPath),
+                      reason: entry.reason
+                  }
+                : null,
+            companion: companionExists
+                ? {
+                      archivePath: toRelativePath(companionPath),
+                      archiveHash: hashExistingFile(companionPath)
+                  }
+                : null,
+            activeFixturePath: activePath ? toRelativePath(activePath) : null,
+            activeFixtureHash: activePath ? hashExistingFile(activePath) : null
+        };
+    }
+
+    return resources;
+}
+
 module.exports = {
     ARCHIVE_ROOT,
     OFFICIAL_DIR,
@@ -202,5 +292,6 @@ module.exports = {
     hashValue,
     writeArchiveFixture,
     loadOfficialArchiveResource,
-    buildFixtureArchive
+    buildFixtureArchive,
+    loadFixtureProvenance
 };
