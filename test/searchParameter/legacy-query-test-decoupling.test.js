@@ -11,11 +11,11 @@ const LEGACY_IMPORT_PATTERNS = [
     /require\(["']@root\/models\/FHIR\/searchParameterQueryHandler["']\)/,
     /require\(["']@models\/FHIR\/searchParameterQueryHandler["']\)/,
     /require\(["'].*\/queryBuild["']\)/,
-    /require\(["'].*\/searchParameterQueryHandler["']\)/
+    /require\(["'].*\/searchParameterQueryHandler["']\)/,
+    /require\(["']@root\/utils\/fhir-param["']\)/,
+    /require\(["']@root\/api\/FHIR\/.*ParametersHandler["']\)/,
+    /require\(["'].*\/legacyQueryBuilder["']\)/
 ];
-const ALLOWLIST = new Set([
-    path.join(TEST_ROOT, "searchParameter/compatibility-plus-corrections.test.js")
-]);
 
 function listTestFiles(dir) {
     const files = [];
@@ -33,14 +33,10 @@ function listTestFiles(dir) {
 }
 
 describe("legacy query test decoupling", function () {
-    it("does not import queryBuild or searchParameterQueryHandler from test files", function () {
+    it("does not import legacy query modules or generated handlers from test files", function () {
         const offenders = [];
 
         for (const filePath of listTestFiles(TEST_ROOT)) {
-            if (ALLOWLIST.has(filePath)) {
-                continue;
-            }
-
             const content = fs.readFileSync(filePath, "utf8");
             const relativePath = path.relative(path.join(__dirname, "../.."), filePath);
             for (const pattern of LEGACY_IMPORT_PATTERNS) {

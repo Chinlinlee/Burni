@@ -14,11 +14,7 @@ const {
     getExpectedLegacyDivergenceKeys,
     usesLegacyFilterEqualityAsEnablementGate
 } = require("@models/FHIR/searchParameter/migration/compatibilityPolicy");
-const { buildLegacyFilter } = require("@models/FHIR/searchParameter/runtime/legacyQueryBuilder");
-const { areFiltersEqual } = require("@models/FHIR/searchParameter/runtime/queryComparator");
 const { executeSearchQueryPlan } = require("@models/FHIR/searchParameter/executor/mongoExecutor");
-const patientHandler = require("@root/api/FHIR/Patient/PatientParametersHandler");
-const observationHandler = require("@root/api/FHIR/Observation/ObservationParametersHandler");
 const {
     startMongoMemoryTestContext,
     stopMongoMemoryTestContext
@@ -123,13 +119,11 @@ describe("SearchParameter compatibility-plus-corrections", function () {
             await stopMongoMemoryTestContext();
         });
 
-        it("matches deceasedDateTime for deceased=true while legacy only checks deceasedBoolean", async function () {
+        it("matches deceasedDateTime for deceased=true across choice branches", async function () {
             const snapshot = await reloadRegistry();
             const plan = getEffectiveDefinition(snapshot, "Patient", "deceased").compiledPlan;
-            const legacy = buildLegacyFilter(patientHandler.paramsSearch, "deceased", "true");
             const registry = executeSearchQueryPlan(plan, "true", "deceased");
 
-            expect(areFiltersEqual(legacy.ok ? legacy.filter : null, registry)).to.equal(false);
             expect(JSON.stringify(registry)).to.include("deceasedDateTime");
 
             const collection = mongoose.connection.collection("Patient_compat_deceased");
@@ -148,27 +142,17 @@ describe("SearchParameter compatibility-plus-corrections", function () {
             ]);
 
             const registryMatches = await queryCollection("Patient_compat_deceased", registry);
-            const legacyMatches = await queryCollection(
-                "Patient_compat_deceased",
-                legacy.ok ? legacy.filter : {}
-            );
 
             expect(registryMatches.map((entry) => entry._fixtureRole).sort()).to.deep.equal([
                 "boolean",
                 "dateTime-only"
             ]);
-            expect(legacyMatches.map((entry) => entry._fixtureRole)).to.deep.equal(["boolean"]);
         });
 
         it("requires email system=value correlation and rejects phone-only telecom values", async function () {
             const snapshot = await reloadRegistry();
             const plan = getEffectiveDefinition(snapshot, "Patient", "email").compiledPlan;
             const registry = executeSearchQueryPlan(plan, "shared@example.org", "email");
-            const legacy = buildLegacyFilter(
-                patientHandler.paramsSearch,
-                "email",
-                "shared@example.org"
-            );
 
             const collection = mongoose.connection.collection("Patient_compat_email");
             await collection.drop().catch(() => undefined);
@@ -186,30 +170,16 @@ describe("SearchParameter compatibility-plus-corrections", function () {
             ]);
 
             const registryMatches = await queryCollection("Patient_compat_email", registry);
-            const legacyMatches = await queryCollection(
-                "Patient_compat_email",
-                legacy.ok ? legacy.filter : {}
-            );
 
             expect(registryMatches.map((entry) => entry._fixtureRole)).to.deep.equal(["email-hit"]);
-            expect(legacyMatches.map((entry) => entry._fixtureRole).sort()).to.deep.equal([
-                "email-hit",
-                "phone-only-miss"
-            ]);
         });
 
         it("omits incompatible SampledData from value-quantity registry filters", async function () {
             const snapshot = await reloadRegistry();
             const plan = getEffectiveDefinition(snapshot, "Observation", "value-quantity").compiledPlan;
             const registry = executeSearchQueryPlan(plan, "eq10|kg", "value-quantity");
-            const legacy = buildLegacyFilter(
-                observationHandler.paramsSearch,
-                "value-quantity",
-                "eq10|kg"
-            );
 
             expect(JSON.stringify(registry)).to.not.include("valueSampledData");
-            expect(JSON.stringify(legacy.filter)).to.include("valueSampledData");
             expect(registry).to.deep.equal({
                 $and: [{ "valueQuantity.system": "kg" }, { "valueQuantity.value": { $eq: 10 } }]
             });

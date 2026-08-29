@@ -15,19 +15,13 @@ const SCAN_ROOTS = [
     { label: "test", relativePath: "test" }
 ];
 
-const GENERATED_HANDLER_FILE = /[/\\]api[/\\]FHIR[/\\][^/\\]+[/\\][^/\\]+ParametersHandler\.js$/;
-
 const ALLOWLIST = [
-    /[/\\]models[/\\]FHIR[/\\]searchParameterQueryHandler\.js$/,
-    /[/\\]models[/\\]FHIR[/\\]searchParameter[/\\]runtime[/\\]legacyQueryBuilder\.js$/,
-    /[/\\]test[/\\]searchParameter[/\\]compatibility-plus-corrections\.test\.js$/,
     /[/\\]test[/\\]searchParameter[/\\]generated-handler-dependency-scan\.test\.js$/,
     /[/\\]test[/\\]searchParameter[/\\]runtime-search-decoupling\.test\.js$/,
     /[/\\]test[/\\]searchParameter[/\\]runtime-entry-decoupling\.test\.js$/,
     /[/\\]test[/\\]searchParameter[/\\]legacy-query-test-decoupling\.test\.js$/,
-    /[/\\]test[/\\]api_generator[/\\]api-generator-search-decoupling\.test\.js$/,
-    /[/\\]api_generator[/\\]parameterHandler\.js$/,
-    /[/\\]api_generator[/\\]searchParametersCodeGenerator\.js$/
+    /[/\\]test[/\\]searchParameter[/\\]legacy-artifact-removal-ci-gate\.test\.js$/,
+    /[/\\]test[/\\]api_generator[/\\]api-generator-search-decoupling\.test\.js$/
 ];
 
 /**
@@ -40,23 +34,22 @@ function isAllowlisted(filePath) {
 }
 
 /**
- * @param {string} filePath
- * @returns {boolean}
- */
-function isGeneratedHandlerArtifact(filePath) {
-    return GENERATED_HANDLER_FILE.test(filePath.replace(/\\/g, "/"));
-}
-
-/**
  * @param {string} content
  * @returns {boolean}
  */
-function referencesGeneratedHandler(content) {
+function referencesLegacySearchArtifacts(content) {
     return (
         /require\([^)]*ParametersHandler/.test(content) ||
         /ParametersHandler\.js/.test(content) ||
         content.includes("paramsSearchFields") ||
-        /\bparamsSearch\b/.test(content)
+        /\bparamsSearch\b/.test(content) ||
+        /FHIRParametersClean/.test(content) ||
+        /require\([^)]*searchParameterQueryHandler/.test(content) ||
+        /require\([^)]*queryBuild/.test(content) ||
+        /require\([^)]*parameterHandler/.test(content) ||
+        /require\([^)]*searchParametersCodeGenerator/.test(content) ||
+        /require\([^)]*legacyQueryBuilder/.test(content) ||
+        /require\([^)]*fhir-param/.test(content)
     );
 }
 
@@ -92,12 +85,12 @@ function findOffenders(root) {
     const absoluteRoot = path.join(REPO_ROOT, root.relativePath);
 
     for (const filePath of listJsFiles(absoluteRoot)) {
-        if (isGeneratedHandlerArtifact(filePath) || isAllowlisted(filePath)) {
+        if (isAllowlisted(filePath)) {
             continue;
         }
 
         const content = fs.readFileSync(filePath, "utf8");
-        if (referencesGeneratedHandler(content)) {
+        if (referencesLegacySearchArtifacts(content)) {
             offenders.push(path.relative(REPO_ROOT, filePath));
         }
     }
@@ -107,7 +100,7 @@ function findOffenders(root) {
 
 describe("generated handler dependency scan", function () {
     for (const root of SCAN_ROOTS) {
-        it(`does not depend on generated handlers from ${root.label}`, function () {
+        it(`does not depend on legacy search artifacts from ${root.label}`, function () {
             const offenders = findOffenders(root);
             expect(offenders, offenders.join("\n")).to.deep.equal([]);
         });
@@ -133,5 +126,6 @@ describe("generated handler dependency scan", function () {
         expect(generatorSource).to.not.include("parameterHandler");
         expect(generatorSource).to.not.include("ParametersHandler");
         expect(generatorSource).to.not.include("paramsSearch");
+        expect(generatorSource).to.not.include("FHIRParametersClean");
     });
 });

@@ -18,7 +18,8 @@ const {
     getIdInFullUrl,
     isResourceType
 } = require("@root/utils/fhir-url");
-const { findParamType } = require("@root/utils/fhir-param");
+const { reloadRegistry } = require("@models/FHIR/searchParameter/registry/registryManager");
+const { getEffectiveDefinition } = require("@models/FHIR/searchParameter/registry/snapshot");
 
 function definition(resource, lookupKeys) {
     return {
@@ -169,7 +170,9 @@ describe("Bundle URL helpers are independent of SearchParameter lookup", functio
         expect(isResourceType("NotAResource")).to.equal(false);
     });
 
-    it("keeps SearchParameter type lookup on the legacy fhir-param module", function () {
-        expect(findParamType("Patient", "name")).to.equal("string");
+    it("resolves SearchParameter type lookup from Registry", async function () {
+        const snapshot = await reloadRegistry();
+        const definition = getEffectiveDefinition(snapshot, "Patient", "name");
+        expect(definition.compiledPlan.searchType).to.equal("string");
     });
 });

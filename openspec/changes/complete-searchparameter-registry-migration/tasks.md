@@ -63,8 +63,8 @@
 - [x] 8.1 將 Registry 設為 production 唯一路徑，移除 legacy fallback flag、resource rollout config 與 runtime rollback path。
 - [x] 8.2 移除 `search-parameter:shadow` 及其 runtime comparator、legacy report 與 package script。
 - [x] 8.3 移除 `search-parameter:rollout-status` 及其 shadow report 依賴。
-- [ ] 8.4 在所有 deletion gates 通過後移除 generated `*ParametersHandler.js`、`parameterHandler.js`、`searchParameterQueryHandler.js` 與已解耦的 legacy search methods。
-- [ ] 8.5 確認沒有任何 runtime/build/test 參照後移除 `FHIRParametersClean.json` 與 SearchParameter-specific `fhir-param` functions。
+- [x] 8.4 在所有 deletion gates 通過後移除 generated `*ParametersHandler.js`、`parameterHandler.js`、`searchParameterQueryHandler.js` 與已解耦的 legacy search methods。
+- [x] 8.5 確認沒有任何 runtime/build/test 參照後移除 `FHIRParametersClean.json` 與 SearchParameter-specific `fhir-param` functions。
 - [ ] 8.6 清除已完成 migration 工作且不再需要的 temp inventory；保留正式 Bundle、provenance、manifest、fixtures 與生成/驗證腳本。
 
 ## 9. Final verification
