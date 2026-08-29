@@ -5,12 +5,6 @@ const { augmentDocumentForHitSet } = require("./syntheticHitSetValues");
  * @returns {unknown}
  */
 function toMongoDateValue(value) {
-    if (value instanceof Date) {
-        return value;
-    }
-    if (typeof value === "string" && /^\d{4}-\d{2}-\d{2}/.test(value)) {
-        return new Date(`${value.slice(0, 10)}T12:00:00.000Z`);
-    }
     return value;
 }
 

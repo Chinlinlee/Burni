@@ -99,11 +99,6 @@ describe("SearchParameter document hit-set gates", function () {
             const companionDocument = JSON.parse(
                 fs.readFileSync(path.resolve(fixture.companion.archivePath), "utf8")
             );
-            if (companionDocument.deceasedDateTime) {
-                companionDocument.deceasedDateTime = new Date(
-                    `${companionDocument.deceasedDateTime}T12:00:00.000Z`
-                );
-            }
             const collectionName = `${resourceType}_hit_set_test`;
             const collection = mongoose.connection.collection(collectionName);
             await collection.drop().catch(() => undefined);

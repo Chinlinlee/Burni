@@ -31,6 +31,26 @@ Timing.add({
     code: {
         type: CodeableConcept,
         default: void 0
+    },
+    _event: {
+        type: [
+            new mongoose.Schema(
+                {
+                    extension: {
+                        type: [Extension],
+                        default: void 0
+                    }
+                },
+                {
+                    _id: false,
+                    id: false,
+                    toObject: {
+                        getters: true
+                    }
+                }
+            )
+        ],
+        default: void 0
     }
 });
 module.exports.Timing = Timing;

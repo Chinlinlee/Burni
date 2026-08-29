@@ -15,9 +15,9 @@
 
 ## 3. Production 缺陷處理
 
-- [ ] 3.1 執行全資源 coverage，區分測試 support 問題、fixture 問題與 production model/service 缺陷。
-- [ ] 3.2 僅修正由失敗測試證明的 production CRUD 缺陷，不改變既有 HTTP、ID、SearchParameter 或 update/delete contract。
-- [ ] 3.3 若 fixture archive 缺少必要 provenance 或 active fixture，補齊對應 fixture 並保留來源語意。
+- [x] 3.1 執行全資源 coverage，區分測試 support 問題、fixture 問題與 production model/service 缺陷。
+- [x] 3.2 僅修正由失敗測試證明的 production CRUD 缺陷，不改變既有 HTTP、ID、SearchParameter 或 update/delete contract。
+- [x] 3.3 若 fixture archive 缺少必要 provenance 或 active fixture，補齊對應 fixture 並保留來源語意。
 
 ## 4. 驗證與文件
 

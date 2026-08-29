@@ -110,7 +110,7 @@ describe("SearchParameter document fixture queries", function () {
         await collection.insertMany([
             {
                 resourceType: "Patient",
-                deceasedDateTime: new Date("2020-01-15T00:00:00.000Z")
+                deceasedDateTime: "2020-01-15"
             },
             {
                 resourceType: "Patient",

@@ -121,39 +121,51 @@ function tokenQuery(item, type, field, required, isCodeableConcept = false) {
 
 const dateQueryBuilder = {
     eq: (queryBuilder, field, date, format) => {
-        const gte = moment(date).startOf(format);
-        const lte = moment(date).endOf(format);
+        const rangeStart = moment(date).startOf(format);
+        const rangeEnd = moment(date).endOf(format);
+        if (format === "date") {
+            queryBuilder[field] = {
+                $gte: rangeStart.format("YYYY-MM-DD"),
+                $lt: rangeEnd.clone().add(1, "day").format("YYYY-MM-DD")
+            };
+            return queryBuilder;
+        }
+        if (format === "month") {
+            queryBuilder[field] = {
+                $gte: rangeStart.format("YYYY-MM"),
+                $lt: rangeEnd.clone().add(1, "month").format("YYYY-MM")
+            };
+            return queryBuilder;
+        }
+
         queryBuilder[field] = {
-            $gte: gte.toDate(),
-            $lte: lte.toDate()
+            $gte: rangeStart.format("YYYY"),
+            $lt: rangeEnd.clone().add(1, "year").format("YYYY")
         };
         return queryBuilder;
     },
     ne: (queryBuilder, field, date, format) => {
-        const gd = moment(date).set(format, moment(date).get(format) + 1);
-        const ld = moment(date).set(format, moment(date).get(format) - 1);
+        const eqQuery = {};
+        dateQueryBuilder.eq(eqQuery, field, date, format);
         queryBuilder = {
-            $or: [
-                { [field]: { $gte: moment(gd).toDate() } },
-                { [field]: { $lte: moment(ld).toDate() } }
-            ]
+            $nor: [eqQuery]
         };
         return queryBuilder;
     },
     lt: (queryBuilder, field, date) => {
-        queryBuilder[field] = { $lt: moment(date).toDate() };
+        queryBuilder[field] = { $lt: moment(date).format("YYYY-MM-DD") };
         return queryBuilder;
     },
     gt: (queryBuilder, field, date) => {
-        queryBuilder[field] = { $gt: moment(date).toDate() };
+        queryBuilder[field] = { $gte: moment(date).clone().add(1, "day").format("YYYY-MM-DD") };
         return queryBuilder;
     },
     ge: (queryBuilder, field, date) => {
-        queryBuilder[field] = { $gte: moment(date).toDate() };
+        queryBuilder[field] = { $gte: moment(date).format("YYYY-MM-DD") };
         return queryBuilder;
     },
     le: (queryBuilder, field, date) => {
-        queryBuilder[field] = { $lte: moment(date).toDate() };
+        queryBuilder[field] = { $lt: moment(date).clone().add(1, "day").format("YYYY-MM-DD") };
         return queryBuilder;
     }
 };

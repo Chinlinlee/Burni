@@ -43,6 +43,24 @@ HumanName.add({
     period: {
         type: Period,
         default: void 0
+    },
+    _family: {
+        type: new mongoose.Schema(
+            {
+                extension: {
+                    type: [Extension],
+                    default: void 0
+                }
+            },
+            {
+                _id: false,
+                id: false,
+                toObject: {
+                    getters: true
+                }
+            }
+        ),
+        default: void 0
     }
 });
 module.exports.HumanName = HumanName;

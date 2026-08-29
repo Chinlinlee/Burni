@@ -45,7 +45,7 @@ function buildCompanionPatientFixture() {
         active: false,
         gender: "female",
         birthDate: "1985-06-01",
-        deceasedDateTime: new Date("2020-01-15T12:00:00.000Z"),
+        deceasedDateTime: "2020-01-15",
         name: [{ family: "Companion", given: ["Alex"], text: "Alex Companion" }],
         address: [
             {
