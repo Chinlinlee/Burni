@@ -7,7 +7,8 @@
  * @property {string} path
  * @property {string} datatype
  * @property {string} [referenceTargetType]
- * @property {{ kind: 'systemEquals' | 'deceasedPresence', value?: string }[]} [predicates]
+ * @property {{ kind: 'systemEquals' | 'deceasedPresence' | 'typeEquals', value?: string }[]} [predicates]
+ * @property {{ kind: 'same-array-element' | 'none', parentPath?: string, fields?: string[] }} [correlation]
  */
 
 /**
@@ -25,6 +26,8 @@
  * @property {string[]} modifiers
  * @property {string[]} [chain]
  * @property {string[]} [target]
+ * @property {string[]} targets
+ * @property {string[]} supportedValueForms
  * @property {number} depth
  * @property {number} estimatedCost
  * @property {string[]} requiredIndexes
@@ -44,12 +47,14 @@ function createSearchQueryPlan(fields) {
         kind: fields.kind || "filter",
         extractionPaths: fields.extractionPaths || [],
         ast: fields.ast || null,
-        multipleOr: Boolean(fields.multipleOr),
-        multipleAnd: Boolean(fields.multipleAnd),
+        multipleOr: fields.multipleOr !== false,
+        multipleAnd: fields.multipleAnd !== false,
         comparators: fields.comparators || [],
         modifiers: fields.modifiers || [],
         chain: fields.chain,
         target: fields.target,
+        targets: fields.targets || fields.target || [],
+        supportedValueForms: fields.supportedValueForms || [],
         depth: fields.depth ?? 0,
         estimatedCost: fields.estimatedCost ?? 1,
         requiredIndexes: fields.requiredIndexes || [],

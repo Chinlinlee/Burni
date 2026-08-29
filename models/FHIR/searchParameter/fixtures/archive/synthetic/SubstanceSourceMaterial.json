@@ -1,0 +1,11 @@
+{
+  "resourceType": "SubstanceSourceMaterial",
+  "meta": {
+    "tag": [
+      {
+        "system": "urn:burni:fixture-source",
+        "code": "synthetic"
+      }
+    ]
+  }
+}

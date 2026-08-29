@@ -1,0 +1,139 @@
+const productionResources = require("../../fhir.resourceList.json");
+const { verifyProvenance } = require("./provenance");
+const { buildLookupMatrix } = require("./lookupMatrix");
+const { buildInventoryDiffReport } = require("./inventoryDiff");
+const { resolveLookupStatus } = require("../registry/snapshot");
+
+/**
+ * @typedef {Object} IntegrityCheckResult
+ * @property {boolean} valid
+ * @property {string[]} errors
+ * @property {string[]} warnings
+ * @property {Object} summary
+ */
+
+/**
+ * @param {import('../registry/types').RegistrySnapshot} snapshot
+ * @param {import('../registry/types').SearchParameterDefinition[]} definitions
+ * @param {Object} [options]
+ * @param {boolean} [options.includeInventoryDiff]
+ * @returns {IntegrityCheckResult}
+ */
+function verifyRegistryIntegrity(snapshot, definitions, options = {}) {
+    const errors = [];
+    const warnings = [];
+
+    const provenanceResult = verifyProvenance();
+    if (!provenanceResult.valid) {
+        errors.push(...provenanceResult.errors);
+    }
+
+    const matrix = buildLookupMatrix(snapshot, definitions);
+    const trackedLookups =
+        matrix.summary.compiled + matrix.summary.disabled + matrix.summary.unsupported;
+
+    if (matrix.resourceCount !== productionResources.length) {
+        errors.push(
+            `Resource count mismatch: matrix has ${matrix.resourceCount}, catalog has ${productionResources.length}`
+        );
+    }
+
+    /** @type {Set<string>} */
+    const accountedLookupKeys = new Set();
+    for (const resourceType of productionResources) {
+        const resourceEntry = matrix.resources[resourceType];
+        if (!resourceEntry) {
+            errors.push(`Missing matrix entry for resource: ${resourceType}`);
+            continue;
+        }
+        for (const [code, lookup] of Object.entries(resourceEntry.lookups || {})) {
+            accountedLookupKeys.add(`${resourceType}::${code}`);
+            if (!lookup.outcome) {
+                errors.push(`Unclassified lookup outcome: ${resourceType}::${code}`);
+            }
+        }
+    }
+
+    for (const definition of definitions) {
+        for (const lookupKey of definition.lookupKeys) {
+            const [resourceType] = lookupKey.split("::");
+            if (!productionResources.includes(resourceType)) {
+                continue;
+            }
+            if (!accountedLookupKeys.has(lookupKey)) {
+                errors.push(`Lookup not tracked in matrix: ${lookupKey}`);
+            }
+        }
+    }
+
+    const conflictDiagnostics = snapshot.diagnostics.filter(
+        (diagnostic) => diagnostic.category === "conflict"
+    );
+    if (conflictDiagnostics.length > 0) {
+        for (const diagnostic of conflictDiagnostics) {
+            errors.push(`Active conflict: ${diagnostic.lookupKey || diagnostic.canonicalKey}`);
+        }
+    }
+
+    const unclassifiedDiagnostics = snapshot.diagnostics.filter(
+        (diagnostic) =>
+            diagnostic.category === "compile" &&
+            !diagnostic.code.startsWith("unsupported") &&
+            diagnostic.code !== "missing-expression"
+    );
+    if (unclassifiedDiagnostics.length > 0) {
+        warnings.push(
+            `Compiler diagnostics present: ${unclassifiedDiagnostics.length} (review required)`
+        );
+    }
+
+    for (const lookupKey of snapshot.conflictLookupKeys) {
+        if (!snapshot.disabledLookupKeys.has(lookupKey)) {
+            errors.push(`Conflict lookup not in disabled set: ${lookupKey}`);
+        }
+    }
+
+    let inventoryDiff = null;
+    if (options.includeInventoryDiff !== false) {
+        inventoryDiff = buildInventoryDiffReport();
+        if (inventoryDiff.inventoryLoadedByRuntime) {
+            errors.push("Migration inventory is loaded by runtime (must be inventory-only)");
+        }
+    }
+
+    const unknownLookups = [];
+    for (const [lookupKey] of snapshot.byLookupKey) {
+        const status = resolveLookupStatus(
+            snapshot,
+            ...lookupKey.split("::")
+        );
+        if (status === "unknown") {
+            unknownLookups.push(lookupKey);
+        }
+    }
+    if (unknownLookups.length > 0) {
+        errors.push(`Unknown effective lookups in snapshot: ${unknownLookups.length}`);
+    }
+
+    return {
+        valid: errors.length === 0,
+        errors,
+        warnings,
+        summary: {
+            resourceCount: matrix.resourceCount,
+            lookupCount: trackedLookups,
+            compiled: matrix.summary.compiled,
+            disabled: matrix.summary.disabled,
+            unsupported: matrix.summary.unsupported,
+            noLookupResources: matrix.summary.noLookupResources.length,
+            conflictCount: snapshot.conflictLookupKeys.size,
+            diagnosticCount: snapshot.diagnostics.length,
+            provenanceValid: provenanceResult.valid,
+            inventoryDiff: inventoryDiff?.summary || null
+        }
+    };
+}
+
+module.exports = {
+    verifyRegistryIntegrity
+};

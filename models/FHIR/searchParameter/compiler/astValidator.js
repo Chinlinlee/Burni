@@ -77,6 +77,9 @@ function validateAstNode(node, errors, context = {}) {
         case "Exists":
             validateAstNode(node.operand, errors, context);
             return;
+        case "ArrayIndex":
+            validateAstNode(node.operand, errors, context);
+            return;
         case "Literal":
             if (context.inWherePredicate) {
                 errors.push("Literal where comparison is not supported");
@@ -116,13 +119,19 @@ function validateWherePredicate(predicate, errors) {
  * @param {string[]} errors
  */
 function validatePropertyEqualsPredicate(node, errors) {
-    if (node.property !== "system") {
-        errors.push("Only system literal where predicates are supported");
+    if (node.property === "system") {
+        if (!ALLOWED_SYSTEM_PREDICATE_VALUES.has(node.value || "")) {
+            errors.push("Only system='email' or system='phone' predicates are supported");
+        }
         return;
     }
-    if (!ALLOWED_SYSTEM_PREDICATE_VALUES.has(node.value || "")) {
-        errors.push("Only system='email' or system='phone' predicates are supported");
+    if (node.property === "type") {
+        if (!node.value) {
+            errors.push("type predicate requires a literal value");
+        }
+        return;
     }
+    errors.push("Only system or type literal where predicates are supported");
 }
 
 /**
@@ -265,6 +274,13 @@ function extractRawPaths(node, resourceType = "") {
         }
         case "Where":
             return extractRawPaths(node.operand, resourceType);
+        case "ArrayIndex": {
+            const operandPaths = extractRawPaths(node.operand, resourceType);
+            return operandPaths.map((entry) => ({
+                rootType: entry.rootType,
+                segments: [...entry.segments, String(node.index ?? 0)]
+            }));
+        }
         default:
             return [];
     }
@@ -314,13 +330,34 @@ function hasDeceasedNotFalsePredicate(ast) {
  */
 function extractSystemPredicate(node) {
     if (node.type === "Where" && node.predicate?.type === "PropertyEquals") {
-        return {
-            property: node.predicate.property || "",
-            value: node.predicate.value || ""
-        };
+        if (node.predicate.property === "system") {
+            return {
+                property: node.predicate.property || "",
+                value: node.predicate.value || ""
+            };
+        }
     }
     if (node.type === "Union") {
         return extractSystemPredicate(node.left) || extractSystemPredicate(node.right);
+    }
+    return undefined;
+}
+
+/**
+ * @param {import('./parser/ast').AstNode} node
+ * @returns {{ property: string, value: string } | undefined}
+ */
+function extractTypePredicate(node) {
+    if (node.type === "Where" && node.predicate?.type === "PropertyEquals") {
+        if (node.predicate.property === "type") {
+            return {
+                property: node.predicate.property || "",
+                value: node.predicate.value || ""
+            };
+        }
+    }
+    if (node.type === "Union") {
+        return extractTypePredicate(node.left) || extractTypePredicate(node.right);
     }
     return undefined;
 }
@@ -332,5 +369,6 @@ module.exports = {
     extractReferenceTargetType,
     hasDeceasedNotFalsePredicate,
     extractSystemPredicate,
+    extractTypePredicate,
     toChoiceElementName
 };

@@ -1,6 +1,6 @@
 const { URL } = require("url");
 
-const { getUrlMatch } = require("@root/utils/fhir-param");
+const { getUrlMatch } = require("@root/utils/fhir-url");
 const { isNumber } = require("lodash");
 const _ = require("lodash");
 const moment = require("moment");
@@ -566,7 +566,7 @@ function numberQuery(value, field) {
         let queryBuilder = {};
         let num = value.substring(2);
         let queryPrefix = value.substring(0, 2);
-        if (isNumber(Number(queryPrefix))) {
+        if (prefix.indexOf(queryPrefix) < 0) {
             queryPrefix = "eq";
             num = value;
         }

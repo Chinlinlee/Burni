@@ -100,6 +100,15 @@ class Parser {
                 });
                 continue;
             }
+            if (this.match(TOKEN_TYPES.LBRACKET)) {
+                const indexToken = this.expect(TOKEN_TYPES.NUMBER);
+                this.expect(TOKEN_TYPES.RBRACKET);
+                node = createNode("ArrayIndex", {
+                    operand: node,
+                    index: Number(indexToken.value)
+                });
+                continue;
+            }
             break;
         }
         return node;

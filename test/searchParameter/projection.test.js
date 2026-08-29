@@ -297,16 +297,141 @@ describe("Per-lookup SearchQueryPlan compilation", function () {
         });
         definition.lookupKeys = ["Patient::address", "Person::address"];
         const compiled = compileDefinition(definition);
-        expect(compiled.lookupPlans["Patient::address"].plan.extractionPaths).to.deep.equal([
+        const patientPlan = compiled.lookupPlans["Patient::address"].plan;
+        const personPlan = compiled.lookupPlans["Person::address"].plan;
+
+        expect(patientPlan).to.not.equal(personPlan);
+        expect(patientPlan.resourceType).to.equal("Patient");
+        expect(personPlan.resourceType).to.equal("Person");
+        expect(patientPlan.extractionPaths).to.deep.equal([
             { path: "address", datatype: "Address" }
         ]);
-        expect(compiled.lookupPlans["Person::address"].plan.extractionPaths).to.deep.equal([
+        expect(personPlan.extractionPaths).to.deep.equal([
             { path: "address", datatype: "Address" }
         ]);
         expect(
-            compiled.lookupPlans["Patient::address"].plan.extractionPaths.some((entry) =>
-                entry.path.startsWith("Person")
-            )
+            patientPlan.extractionPaths.some((entry) => entry.path.startsWith("Person"))
         ).to.equal(false);
+    });
+
+    it("types the same field name from each resource type map", function () {
+        const patientName = buildDefinition({
+            resource: {
+                code: "name",
+                base: ["Patient"],
+                type: "string",
+                expression: "Patient.name"
+            }
+        });
+        patientName.lookupKeys = ["Patient::name"];
+
+        const locationName = buildDefinition({
+            resource: {
+                url: "http://example.org/SearchParameter/location-name",
+                code: "name",
+                base: ["Location"],
+                type: "string",
+                expression: "Location.name | Location.alias"
+            }
+        });
+        locationName.canonicalKey = "http://example.org/SearchParameter/location-name::4.0.1";
+        locationName.lookupKeys = ["Location::name"];
+
+        const patientCompiled = compileDefinition(patientName);
+        const locationCompiled = compileDefinition(locationName);
+
+        expect(patientCompiled.lookupPlans["Patient::name"].plan.extractionPaths).to.deep.equal([
+            { path: "name", datatype: "HumanName" }
+        ]);
+        expect(locationCompiled.lookupPlans["Location::name"].plan.extractionPaths).to.deep.equal([
+            { path: "name", datatype: "string" },
+            { path: "alias", datatype: "string" }
+        ]);
+    });
+
+    it("does not attach another base's plan when one union branch cannot compile", function () {
+        const definition = buildDefinition({
+            resource: {
+                code: "address",
+                base: ["Patient", "Person"],
+                type: "string",
+                expression: "Patient.address | Person.notARealField"
+            }
+        });
+        definition.lookupKeys = ["Patient::address", "Person::address"];
+        const compiled = compileDefinition(definition);
+
+        expect(compiled.lookupPlans["Patient::address"].compilable).to.equal(true);
+        expect(compiled.lookupPlans["Person::address"].compilable).to.equal(false);
+        expect(compiled.lookupPlans["Person::address"].plan).to.equal(undefined);
+    });
+
+    it("disables a lookup whose union branches all belong to another resource", function () {
+        const definition = buildDefinition({
+            resource: {
+                code: "address",
+                base: ["Patient"],
+                type: "string",
+                expression: "Person.address | RelatedPerson.address"
+            }
+        });
+        definition.lookupKeys = ["Patient::address"];
+        const compiled = compileDefinition(definition);
+        const lookup = compiled.lookupPlans["Patient::address"];
+        expect(lookup.compilable).to.equal(false);
+        expect(lookup.plan).to.equal(undefined);
+    });
+
+    it("omits BackboneElement paths that have no search-type projection", function () {
+        const definition = buildDefinition({
+            resource: {
+                code: "contact",
+                base: ["Patient"],
+                type: "string",
+                expression: "Patient.contact"
+            }
+        });
+        definition.lookupKeys = ["Patient::contact"];
+        const compiled = compileDefinition(definition);
+        const lookup = compiled.lookupPlans["Patient::contact"];
+        expect(lookup.compilable).to.equal(false);
+        expect(
+            compiled.diagnostics.some((entry) =>
+                entry.message.includes("No search-type projection")
+            )
+        ).to.equal(true);
+    });
+
+    it("compiles nested complex-type leaf paths with the leaf datatype", function () {
+        const definition = buildDefinition({
+            resource: {
+                code: "address-city",
+                base: ["Patient"],
+                type: "string",
+                expression: "Patient.address.city"
+            }
+        });
+        definition.lookupKeys = ["Patient::address-city"];
+        const compiled = compileDefinition(definition);
+        expect(compiled.lookupPlans["Patient::address-city"].plan.extractionPaths).to.deep.equal([
+            { path: "address.city", datatype: "string" }
+        ]);
+    });
+
+    it("compiles both as-syntax forms in one union", function () {
+        const definition = buildDefinition({
+            resource: {
+                code: "value-quantity",
+                base: ["Observation"],
+                type: "quantity",
+                expression:
+                    "(Observation.value as Quantity) | Observation.value.as(Quantity)"
+            }
+        });
+        definition.lookupKeys = ["Observation::value-quantity"];
+        const compiled = compileDefinition(definition);
+        expect(
+            compiled.lookupPlans["Observation::value-quantity"].plan.extractionPaths
+        ).to.deep.equal([{ path: "valueQuantity", datatype: "Quantity" }]);
     });
 });

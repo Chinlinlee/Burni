@@ -26,7 +26,7 @@ context: |
 # Per-operation guidance (optional)
 # Add advisory guidance for how apply and archive work should be conducted.
 # This is separate from artifact rules above.
-operations:
-  apply:
-    guidance:
-      - Implement pending tasks by explicitly invoking `/implement`.
+# operations:
+#   apply:
+#     guidance:
+#       - Implement pending tasks by explicitly invoking `/implement`.

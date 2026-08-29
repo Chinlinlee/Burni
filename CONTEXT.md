@@ -88,3 +88,27 @@ _Avoid_: treating a generated handler or a positive-only test as completion
 **Compatibility-plus-corrections**:
 The migration acceptance policy that preserves the existing public search projection boundary while correcting known omissions required for Patient searches, including deceased choice handling and same-ContactPoint system/value correlation for email and phone. It does not claim full R4 Address.text or phonetic matching.
 _Avoid_: silently expanding the hit-set and calling it compatibility
+
+**Canonical SearchParameter source**:
+The version-controlled FHIR R4/4.0.1 SearchParameter Bundle whose complete resource semantics define Registry input. `temp/fhir-search-parameters.json` is only a migration inventory and is not a definition source.
+_Avoid_: treating a reduced inventory or generated handler snapshot as canonical
+
+**Production search coverage**:
+The migration boundary covering all 146 resource types in Burni's production resource catalog. A resource without SearchParameter lookups passes a structural gate; a resource with lookups must account for every `(resourceType, code)` outcome.
+_Avoid_: calling Patient-only rollout complete
+
+**Lookup outcome**:
+The final state of one `(resourceType, code)` lookup: `compiled` with an executable plan, `unsupported` with an explicit policy reason, or `disabled` with a diagnostic-backed failure.
+_Avoid_: treating missing fixtures or an unclassified compiler failure as an implicit skip
+
+**Fixture archive**:
+The version-controlled test corpus containing one fixed official example per resource when available, plus explicitly labelled derived or synthetic fixtures and their expected hit-sets.
+_Avoid_: mutating official examples or selecting examples nondeterministically
+
+**SearchParameter legacy removal**:
+The completed state in which SearchParameter runtime/build semantics no longer use reduced JSON, generated handlers, or legacy fallback, while non-SearchParameter API and control behavior remains available.
+_Avoid_: deleting a legacy file while another SearchParameter call path still depends on it
+
+**Registry diagnostics**:
+The durable operational and CI verification of source identity, lookup outcomes, compiler failures, conflicts, fixture provenance, and resource enablement. It is not shadow comparison or rollout status.
+_Avoid_: using shadow equality as the correctness gate

@@ -256,8 +256,8 @@ describe("Patient service-level registry search integration", function () {
         });
     }
 
-    it("rejects unsupported comparator on string Patient parameter", async function () {
-        const searchResult = await searchPatientViaService({ family: "eqBor" });
+    it("rejects an unsupported modifier on a string Patient parameter", async function () {
+        const searchResult = await searchPatientViaService({ "family:not": "Bor" });
         expect(searchResult.status).to.equal(false);
         expect(searchResult.code).to.equal(400);
     });

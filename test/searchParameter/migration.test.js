@@ -36,6 +36,39 @@ describe("SearchParameter migration", function () {
         });
         expect(result).to.equal("fallback");
     });
+
+    it("never falls back for disabled, unsupported, or conflict lookups", async function () {
+        process.env.SEARCH_REGISTRY_ENABLED = "true";
+        process.env.SEARCH_LEGACY_FALLBACK_ENABLED = "true";
+        delete require.cache[require.resolve("@models/FHIR/searchParameter/config/featureFlags")];
+        delete require.cache[require.resolve("@models/FHIR/searchParameter/runtime/registrySearchHandler")];
+        const { tryApplyRegistryParameter: retryApply } = require("@models/FHIR/searchParameter/runtime/registrySearchHandler");
+        const { isRegistryEnabledForResource } = require("@models/FHIR/searchParameter/config/featureFlags");
+        const snapshot = await reloadRegistry({ databaseResources: [] });
+
+        expect(isRegistryEnabledForResource("Observation")).to.equal(true);
+        expect(isRegistryEnabledForResource("Account")).to.equal(true);
+
+        const productionResources = require("@models/FHIR/fhir.resourceList.json");
+        const disabledKey = [...snapshot.disabledLookupKeys].find((key) =>
+            productionResources.includes(key.split("::")[0])
+        );
+        expect(disabledKey).to.be.a("string");
+        const [resourceType, code] = disabledKey.split("::");
+        expect(isRegistryEnabledForResource(resourceType)).to.equal(true);
+        expect(resolveLookupStatus(snapshot, resourceType, code)).to.equal("disabled");
+        const result = await retryApply({
+            resourceType,
+            query: { [code]: "x" },
+            parameterName: code,
+            paramsSearch: {
+                [code]: () => {
+                    throw new Error("legacy handler must not run");
+                }
+            }
+        });
+        expect(result).to.equal("disabled");
+    });
 });
 
 describe("SearchParameter mongo integration", function () {

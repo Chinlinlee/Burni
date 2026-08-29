@@ -21,7 +21,7 @@ const ALLOWED_OPERATORS = new Set([
 
 /**
  * @param {import('../compiler/searchQueryPlan').SearchQueryPlan} plan
- * @param {string} rawValue
+ * @param {string | string[]} rawValue
  * @param {string} parameterName
  * @returns {Object}
  */
@@ -62,7 +62,7 @@ function assertSafeFilter(filter) {
  */
 function applyPlanToQuery(plan, query, parameterName) {
     const rawValue = query[parameterName];
-    const filter = executeSearchQueryPlan(plan, String(rawValue), parameterName);
+    const filter = executeSearchQueryPlan(plan, rawValue, parameterName);
     if (!query.$and) {
         query.$and = [];
     }

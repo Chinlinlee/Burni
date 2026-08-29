@@ -3,6 +3,7 @@ const fs = require("fs");
 const { createDiagnostic } = require("./diagnostics");
 const { getCanonicalKey, getLookupKeysForResource } = require("./identity");
 const { validateSearchParameterResource } = require("./validation");
+const { verifyProvenance } = require("../migration/provenance");
 
 const DEFAULT_BUNDLE_PATH = path.join(
     __dirname,
@@ -14,6 +15,13 @@ const DEFAULT_BUNDLE_PATH = path.join(
  * @returns {import('./types').SearchParameterResource[]}
  */
 function loadBuiltinBundle(bundlePath = DEFAULT_BUNDLE_PATH) {
+    const provenanceResult = verifyProvenance();
+    if (!provenanceResult.valid) {
+        throw new Error(
+            `SearchParameter bundle provenance verification failed: ${provenanceResult.errors.join("; ")}`
+        );
+    }
+
     const raw = fs.readFileSync(bundlePath, "utf8");
     const bundle = JSON.parse(raw);
     if (bundle.resourceType !== "Bundle" || !Array.isArray(bundle.entry)) {

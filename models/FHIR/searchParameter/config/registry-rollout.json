@@ -1,7 +1,8 @@
 {
-  "enabledResourceTypes": ["Patient"],
+  "enableAllProductionResources": true,
+  "enabledResourceTypes": [],
   "shadowCompareResourceTypes": [
     "Patient"
   ],
-  "notes": "Patient is enabled after 23-code contract gates (8.1-8.6). Shadow comparison is diagnostic only and does not gate enablement."
+  "notes": "All production resources use Registry-first search. Disabled, unsupported, and conflict lookups never fall back to generated handlers. Shadow comparison is diagnostic only."
 }

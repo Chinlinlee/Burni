@@ -4,7 +4,10 @@ const { handleError } = require("../../models/FHIR/httpMessage");
 const FHIR = require("fhir").Fhir;
 const { isRealObject } = require("../apiService");
 const { logger } = require("../../utils/log");
-const path = require("path");
+const {
+    SearchParameterCreator,
+    UnknownSearchParameterError
+} = require("./search/searchParameterCreator");
 
 /**
  *
@@ -42,26 +45,35 @@ module.exports = async function (req, res, resourceType, paramsSearch) {
             delete queryParameter[key];
         }
     });
-    queryParameter.$and = [];
-    for (let key in queryParameter) {
-        try {
-            paramsSearch[key](queryParameter);
-        } catch (e) {
-            if (key != "$and") {
-                logger.error(
-                    `[Error: Unknown search parameter ${key} or value ${queryParameter[key]}] [Resource Type: ${resourceType}] [${e}]`
-                );
-                return doRes(
-                    400,
-                    handleError.processing(
-                        `Unknown search parameter ${key} or value ${queryParameter[key]}`
-                    )
-                );
-            }
+    try {
+        const searchParameterCreator = new SearchParameterCreator({
+            resourceType,
+            query: queryParameter,
+            paramsSearch
+        });
+        queryParameter = await searchParameterCreator.create();
+    } catch (e) {
+        if (e instanceof UnknownSearchParameterError) {
+            logger.error(
+                `[Error: ${e.message}] [Resource Type: ${resourceType}]`
+            );
+            return doRes(400, handleError.processing(e.message));
         }
+        logger.error(
+            `[Error: Unknown search parameter] [Resource Type: ${resourceType}] [${e}]`
+        );
+        return doRes(
+            400,
+            handleError.processing(
+                `Unknown search parameter or value`
+            )
+        );
     }
-    if (queryParameter.$and.length == 0) {
-        delete queryParameter["$and"];
+    if (queryParameter.isChain) {
+        return doRes(
+            400,
+            handleError.processing("Chained search is not supported for conditional delete")
+        );
     }
     try {
         let deletion = await mongodb[resourceType].deleteMany(queryParameter);

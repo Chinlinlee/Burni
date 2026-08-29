@@ -42,7 +42,8 @@ function hasSearchTypeProjection(searchType, datatype) {
                 datatype === "HumanName" ||
                 datatype === "string" ||
                 datatype === "uri" ||
-                datatype === "code"
+                datatype === "code" ||
+                datatype === "markdown"
             );
         case "token":
             return (
@@ -53,10 +54,16 @@ function hasSearchTypeProjection(searchType, datatype) {
                 datatype === "code" ||
                 datatype === "boolean" ||
                 datatype === "string" ||
-                datatype === "dateTime"
+                datatype === "dateTime" ||
+                datatype === "id"
             );
         case "reference":
-            return datatype === "Reference";
+            return (
+                datatype === "Reference" ||
+                datatype === "canonical" ||
+                datatype === "Resource" ||
+                datatype === "uri"
+            );
         case "date":
         case "dateTime":
             return (
@@ -66,7 +73,12 @@ function hasSearchTypeProjection(searchType, datatype) {
                 datatype === "instant"
             );
         case "quantity":
-            return datatype === "Quantity";
+            return (
+                datatype === "Quantity" ||
+                datatype === "Age" ||
+                datatype === "Money" ||
+                datatype === "Duration"
+            );
         case "number":
             return (
                 datatype === "decimal" ||
@@ -76,7 +88,12 @@ function hasSearchTypeProjection(searchType, datatype) {
                 datatype === "number"
             );
         case "uri":
-            return datatype === "uri" || datatype === "url" || datatype === "canonical";
+            return (
+                datatype === "uri" ||
+                datatype === "url" ||
+                datatype === "canonical" ||
+                datatype === "string"
+            );
         default:
             return false;
     }
@@ -122,7 +139,13 @@ function buildProjectedFilter(
         case "token":
             return buildTokenProjection(value, fieldPath, datatype, modifier, predicates);
         case "reference":
-            return buildReferenceProjection(value, fieldPath, referenceTargetType);
+            return buildReferenceProjection(
+                value,
+                fieldPath,
+                datatype,
+                referenceTargetType,
+                predicates
+            );
         case "date":
         case "dateTime":
             return buildDateProjection(value, fieldPath, datatype, comparator, searchType);
@@ -405,7 +428,15 @@ function buildUriProjection(value, fieldPath, modifier) {
  * @param {string | undefined} referenceTargetType
  * @returns {Object}
  */
-function buildReferenceProjection(value, fieldPath, referenceTargetType) {
+/**
+ * @param {string} value
+ * @param {string} fieldPath
+ * @param {string} datatype
+ * @param {string | undefined} referenceTargetType
+ * @param {{ kind: string, value?: string }[] | undefined} predicates
+ * @returns {Object}
+ */
+function buildReferenceProjection(value, fieldPath, datatype, referenceTargetType, predicates) {
     const validation = validateReferenceQueryValue(value);
     if (!validation.valid) {
         throw new Error(validation.reason || "Invalid reference value");
@@ -417,6 +448,30 @@ function buildReferenceProjection(value, fieldPath, referenceTargetType) {
     }
 
     const referenceValue = normalized.normalizedValue;
+    const typePredicate = findPredicate(predicates, "typeEquals");
+    if (typePredicate?.value) {
+        const arrayField = fieldPath.split(".")[0];
+        const leafField = fieldPath.slice(arrayField.length + 1);
+        const matcher = queryBuild.referenceQuery(referenceValue, fieldPath);
+        const matchedValue = matcher[fieldPath] ?? referenceValue;
+        return {
+            [arrayField]: {
+                $elemMatch: {
+                    type: typePredicate.value,
+                    [leafField]: matchedValue
+                }
+            }
+        };
+    }
+
+    if (datatype === "canonical" || datatype === "uri") {
+        return queryBuild.referenceQuery(referenceValue, fieldPath);
+    }
+
+    if (datatype === "Resource") {
+        return queryBuild.referenceQuery(referenceValue, `${fieldPath}.reference`);
+    }
+
     const targetType = referenceTargetType;
     const referenceField = `${fieldPath}.reference`;
     const typeField = `${fieldPath}.type`;

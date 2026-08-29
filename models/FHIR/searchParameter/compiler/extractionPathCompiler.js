@@ -3,18 +3,21 @@ const { getLookupKey } = require("../registry/identity");
 const {
     loadResourceTypeMap,
     resolvePathDatatype,
-    expandChoiceElementNames
+    expandChoiceElementNames,
+    getComplexTypeFields
 } = require("./resourceTypeMap");
 const { hasSearchTypeProjection } = require("../executor/searchTypeProjection");
 const {
     extractReferenceTargetType,
     hasDeceasedNotFalsePredicate,
-    extractSystemPredicate
+    extractSystemPredicate,
+    extractTypePredicate
 } = require("./astValidator");
+const { attachPathCorrelation } = require("./planMetadata");
 
 /**
  * @typedef {Object} PathPredicate
- * @property {'systemEquals' | 'deceasedPresence'} kind
+ * @property {'systemEquals' | 'deceasedPresence' | 'typeEquals'} kind
  * @property {string} [value]
  */
 
@@ -24,6 +27,7 @@ const {
  * @property {string} datatype
  * @property {string} [referenceTargetType]
  * @property {PathPredicate[]} [predicates]
+ * @property {{ kind: 'same-array-element' | 'none', parentPath?: string, fields?: string[] }} [correlation]
  */
 
 /**
@@ -132,16 +136,29 @@ function collectRawPaths(node, resourceType, resourceTypeMap) {
             const operandPaths = collectRawPaths(node.operand, resourceType, resourceTypeMap);
             const referenceTargetType = extractReferenceTargetType(node);
             const systemPredicate = extractSystemPredicate(node);
+            const typePredicate = extractTypePredicate(node);
             /** @type {PathPredicate[]} */
             const predicates = [];
             if (systemPredicate?.property === "system") {
                 predicates.push({ kind: "systemEquals", value: systemPredicate.value });
+            }
+            if (typePredicate?.property === "type") {
+                predicates.push({ kind: "typeEquals", value: typePredicate.value });
             }
             return operandPaths.map((entry) => ({
                 rootType: entry.rootType,
                 segments: entry.segments,
                 referenceTargetType: referenceTargetType || entry.referenceTargetType,
                 predicates: [...(entry.predicates || []), ...predicates]
+            }));
+        }
+        case "ArrayIndex": {
+            const operandPaths = collectRawPaths(node.operand, resourceType, resourceTypeMap);
+            return operandPaths.map((entry) => ({
+                rootType: entry.rootType,
+                segments: [...entry.segments, String(node.index ?? 0)],
+                referenceTargetType: entry.referenceTargetType,
+                predicates: entry.predicates
             }));
         }
         default:
@@ -158,6 +175,105 @@ function filterPathsForResource(rawPaths, resourceType) {
     return rawPaths.filter(
         (entry) => entry.rootType === resourceType || entry.rootType === "Resource"
     );
+}
+
+/**
+ * @param {RawPath[]} rawPaths
+ * @param {string} resourceType
+ * @param {Object} typeMap
+ * @returns {RawPath[]}
+ */
+function normalizeBareFieldPaths(rawPaths, resourceType, typeMap) {
+    /** @type {RawPath[]} */
+    const normalized = [];
+    for (const entry of rawPaths) {
+        if (entry.rootType === resourceType || entry.rootType === "Resource") {
+            normalized.push(entry);
+            continue;
+        }
+        if (entry.segments.length === 0 && typeMap[entry.rootType]) {
+            normalized.push({
+                ...entry,
+                rootType: resourceType,
+                segments: [entry.rootType]
+            });
+        }
+    }
+    return normalized;
+}
+
+/**
+ * @param {string} dotPath
+ * @returns {string}
+ */
+function normalizePathForTypeResolution(dotPath) {
+    return dotPath
+        .split(".")
+        .filter((segment) => !/^\d+$/.test(segment))
+        .join(".");
+}
+
+/**
+ * @param {Object} typeMap
+ * @param {string} parentPath
+ * @returns {Object}
+ */
+function getContextMapForPath(typeMap, parentPath) {
+    if (!parentPath) {
+        return typeMap;
+    }
+    const resolved = resolvePathDatatype(typeMap, parentPath);
+    if (!resolved.found || !resolved.datatype) {
+        return typeMap;
+    }
+    return getComplexTypeFields(resolved.datatype) || typeMap;
+}
+
+/**
+ * @param {RawPath} rawPath
+ * @param {Object} typeMap
+ * @returns {RawPath[]}
+ */
+function expandTerminalChoicePaths(rawPath, typeMap) {
+    const path = rawPath.segments.join(".");
+    const resolved = resolvePathDatatype(typeMap, path);
+    if (resolved.found && resolved.datatype) {
+        return [rawPath];
+    }
+
+    const segments = [...rawPath.segments];
+    const last = segments.pop();
+    if (!last) {
+        return [];
+    }
+
+    const parentPath = segments.join(".");
+    const contextMap = getContextMapForPath(typeMap, parentPath);
+    const choiceFields = expandChoiceElementNames(contextMap, last);
+    if (choiceFields.length === 0) {
+        return [rawPath];
+    }
+
+    return choiceFields.map((field) => ({
+        rootType: rawPath.rootType,
+        segments: [...segments, field],
+        referenceTargetType: rawPath.referenceTargetType,
+        predicates: rawPath.predicates
+    }));
+}
+
+/**
+ * @param {RawPath[]} rawPaths
+ * @param {Object} typeMap
+ * @returns {RawPath[]}
+ */
+function expandAllChoicePaths(rawPaths, typeMap) {
+    /** @type {RawPath[]} */
+    const expanded = [];
+    for (const rawPath of rawPaths) {
+        expanded.push(...expandTerminalChoicePaths(rawPath, typeMap));
+    }
+    return expanded;
 }
 
 /**
@@ -190,9 +306,12 @@ function compileExtractionPaths(definition, resourceType, ast, searchType) {
         return { extractionPaths: systemPaths, diagnostics };
     }
 
-    const rawPaths = filterPathsForResource(
-        collectRawPaths(ast, resourceType, typeMap),
-        resourceType
+    const rawPaths = expandAllChoicePaths(
+        filterPathsForResource(
+            normalizeBareFieldPaths(collectRawPaths(ast, resourceType, typeMap), resourceType, typeMap),
+            resourceType
+        ),
+        typeMap
     );
     /** @type {ExtractionPath[]} */
     const extractionPaths = [];
@@ -204,7 +323,7 @@ function compileExtractionPaths(definition, resourceType, ast, searchType) {
             continue;
         }
 
-        const resolved = resolvePathDatatype(typeMap, path);
+        const resolved = resolvePathDatatype(typeMap, normalizePathForTypeResolution(path));
         if (!resolved.found || !resolved.datatype) {
             diagnostics.push(
                 createDiagnostic({
@@ -239,17 +358,45 @@ function compileExtractionPaths(definition, resourceType, ast, searchType) {
             predicates.push({ kind: "deceasedPresence" });
         }
 
-        extractionPaths.push({
-            path,
-            datatype: resolved.datatype,
-            ...(rawPath.referenceTargetType
-                ? { referenceTargetType: rawPath.referenceTargetType }
-                : {}),
-            ...(predicates.length > 0 ? { predicates } : {})
-        });
+        extractionPaths.push(
+            attachPathCorrelation({
+                path,
+                datatype: resolved.datatype,
+                ...(rawPath.referenceTargetType
+                    ? { referenceTargetType: rawPath.referenceTargetType }
+                    : {}),
+                ...(predicates.length > 0 ? { predicates } : {})
+            })
+        );
     }
 
-    return { extractionPaths, diagnostics };
+    return { extractionPaths: dedupeExtractionPaths(extractionPaths), diagnostics };
+}
+
+/**
+ * And of exists() and a comparison on the same choice field would otherwise
+ * emit the same typed path twice.
+ * @param {ExtractionPath[]} extractionPaths
+ * @returns {ExtractionPath[]}
+ */
+function dedupeExtractionPaths(extractionPaths) {
+    const seen = new Set();
+    /** @type {ExtractionPath[]} */
+    const unique = [];
+    for (const entry of extractionPaths) {
+        const key = JSON.stringify({
+            path: entry.path,
+            datatype: entry.datatype,
+            referenceTargetType: entry.referenceTargetType || "",
+            predicates: entry.predicates || []
+        });
+        if (seen.has(key)) {
+            continue;
+        }
+        seen.add(key);
+        unique.push(entry);
+    }
+    return unique;
 }
 
 /**
@@ -277,6 +424,10 @@ module.exports = {
     toChoiceElementName,
     collectRawPaths,
     filterPathsForResource,
+    normalizeBareFieldPaths,
+    normalizePathForTypeResolution,
+    expandTerminalChoicePaths,
+    expandAllChoicePaths,
     compileExtractionPaths,
     deriveSystemExtractionPaths
 };

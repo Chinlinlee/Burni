@@ -52,10 +52,6 @@ async function reloadRegistry(options = {}) {
             });
             if (compileResult.lookupPlans) {
                 activated.lookupPlans = compileResult.lookupPlans;
-                const firstCompilable = Object.values(compileResult.lookupPlans).find(
-                    (entry) => entry.compilable && entry.plan
-                );
-                activated.compiledPlan = firstCompilable?.plan || null;
             }
             compiledDefinitions.push(activated);
         }

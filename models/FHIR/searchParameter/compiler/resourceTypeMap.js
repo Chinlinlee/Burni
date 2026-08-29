@@ -100,6 +100,28 @@ const COMPLEX_TYPE_FIELDS = {
         system: "uri",
         code: "code"
     },
+    Age: {
+        value: "decimal",
+        unit: "string",
+        system: "uri",
+        code: "code"
+    },
+    UsageContext: {
+        code: "Coding",
+        valueCodeableConcept: "CodeableConcept",
+        valueQuantity: "Quantity",
+        valueRange: "Range",
+        valueReference: "Reference"
+    },
+    RelatedArtifact: {
+        type: "code",
+        label: "string",
+        display: "string",
+        citation: "markdown",
+        url: "url",
+        document: "Attachment",
+        resource: "canonical"
+    },
     Attachment: {
         contentType: "code",
         language: "code",
@@ -107,6 +129,26 @@ const COMPLEX_TYPE_FIELDS = {
         url: "url",
         size: "unsignedInt",
         title: "string"
+    },
+    Money: {
+        value: "decimal",
+        currency: "code"
+    },
+    Duration: {
+        value: "decimal",
+        unit: "code",
+        system: "uri",
+        code: "code"
+    },
+    ContactDetail: {
+        name: "string",
+        telecom: "ContactPoint"
+    },
+    Annotation: {
+        authorString: "string",
+        authorReference: "Reference",
+        time: "dateTime",
+        text: "markdown"
     }
 };
 
@@ -246,7 +288,9 @@ function clearResourceTypeMapCache() {
 module.exports = {
     TYPE_MAP_ROOT,
     COMPLEX_TYPE_FIELDS,
+    PRIMITIVE_TYPES,
     loadResourceTypeMap,
+    getComplexTypeFields,
     resolvePathDatatype,
     expandChoiceElementNames,
     clearResourceTypeMapCache

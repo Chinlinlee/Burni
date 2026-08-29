@@ -1,9 +1,12 @@
 const TOKEN_TYPES = {
     IDENTIFIER: "IDENTIFIER",
+    NUMBER: "NUMBER",
     DOT: "DOT",
     PIPE: "PIPE",
     LPAREN: "LPAREN",
     RPAREN: "RPAREN",
+    LBRACKET: "LBRACKET",
+    RBRACKET: "RBRACKET",
     STRING: "STRING",
     KEYWORD: "KEYWORD",
     EQ: "EQ",
@@ -68,6 +71,25 @@ function tokenize(input) {
             }
             index += 1;
             tokens.push({ type: TOKEN_TYPES.STRING, value });
+            continue;
+        }
+        if (char === "[") {
+            tokens.push({ type: TOKEN_TYPES.LBRACKET, value: "[" });
+            index += 1;
+            continue;
+        }
+        if (char === "]") {
+            tokens.push({ type: TOKEN_TYPES.RBRACKET, value: "]" });
+            index += 1;
+            continue;
+        }
+        if (/[0-9]/.test(char)) {
+            let value = "";
+            while (index < input.length && /[0-9]/.test(input[index])) {
+                value += input[index];
+                index += 1;
+            }
+            tokens.push({ type: TOKEN_TYPES.NUMBER, value });
             continue;
         }
         if (/[A-Za-z_]/.test(char)) {

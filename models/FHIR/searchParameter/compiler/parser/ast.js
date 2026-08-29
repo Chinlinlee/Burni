@@ -1,5 +1,5 @@
 /**
- * @typedef {'PropertyAccess' | 'Union' | 'Where' | 'As' | 'OfType' | 'Exists' | 'Literal' | 'Identifier' | 'ResolveIs' | 'And' | 'Comparison' | 'PropertyEquals'} AstNodeType
+ * @typedef {'PropertyAccess' | 'Union' | 'Where' | 'As' | 'OfType' | 'Exists' | 'Literal' | 'Identifier' | 'ResolveIs' | 'And' | 'Comparison' | 'PropertyEquals' | 'ArrayIndex'} AstNodeType
  */
 
 /**
@@ -14,6 +14,7 @@
  * @property {string} [valueType]
  * @property {string} [operator]
  * @property {string} [property]
+ * @property {number} [index]
  * @property {AstNode[]} [parts]
  */
 

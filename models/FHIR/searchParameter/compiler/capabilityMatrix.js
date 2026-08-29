@@ -34,13 +34,13 @@ const TYPE_CAPABILITY_MATRIX = {
     },
     token: {
         comparators: [],
-        modifiers: ["text", "not", "above", "below", "in", "not-in"],
+        modifiers: ["text"],
         multipleOr: true,
         multipleAnd: true
     },
     reference: {
         comparators: [],
-        modifiers: ["identifier"],
+        modifiers: [],
         multipleOr: true,
         multipleAnd: true
     },
@@ -111,9 +111,45 @@ function validateOperator(type, modifier, comparator) {
     return { valid: true };
 }
 
+/**
+ * @param {import('./searchQueryPlan').SearchQueryPlan} plan
+ * @param {string | undefined} modifier
+ * @param {string | undefined} comparator
+ * @returns {{ valid: boolean, reason?: string }}
+ */
+function validatePlanOperator(plan, modifier, comparator) {
+    const typeCheck = validateOperator(plan.searchType, modifier, comparator);
+    if (!typeCheck.valid) {
+        return typeCheck;
+    }
+    if (
+        modifier &&
+        modifier !== "missing" &&
+        plan.modifiers.length > 0 &&
+        !plan.modifiers.includes(modifier)
+    ) {
+        return {
+            valid: false,
+            reason: `Modifier ${modifier} is not declared for this parameter`
+        };
+    }
+    if (
+        comparator &&
+        plan.comparators.length > 0 &&
+        !plan.comparators.includes(comparator)
+    ) {
+        return {
+            valid: false,
+            reason: `Comparator ${comparator} is not declared for this parameter`
+        };
+    }
+    return { valid: true };
+}
+
 module.exports = {
     TYPE_CAPABILITY_MATRIX,
     getTypeCapability,
     isSupportedSearchType,
-    validateOperator
+    validateOperator,
+    validatePlanOperator
 };

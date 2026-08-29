@@ -1,0 +1,185 @@
+const fs = require("fs");
+const path = require("path");
+const crypto = require("crypto");
+const productionResources = require("../../fhir.resourceList.json");
+const {
+    loadExampleMapping,
+    selectOfficialExample,
+    indexExampleFiles,
+    getOfficialArchivePath
+} = require("./fixtureMapping");
+const { buildDerivedFixture, buildSyntheticFixture } = require("./fixtureDerivation");
+
+const ARCHIVE_ROOT = path.join(__dirname, "../fixtures/archive");
+const OFFICIAL_DIR = path.join(ARCHIVE_ROOT, "official");
+const DERIVED_DIR = path.join(ARCHIVE_ROOT, "derived");
+const SYNTHETIC_DIR = path.join(ARCHIVE_ROOT, "synthetic");
+
+/**
+ * @param {Object} value
+ * @returns {string}
+ */
+function hashValue(value) {
+    return crypto.createHash("sha256").update(JSON.stringify(value)).digest("hex");
+}
+
+/**
+ * @param {string} dir
+ * @param {string} resourceType
+ * @param {Object} resource
+ * @returns {{ archivePath: string, archiveHash: string }}
+ */
+function writeArchiveFixture(dir, resourceType, resource) {
+    fs.mkdirSync(dir, { recursive: true });
+    const archivePath = path.join(dir, `${resourceType}.json`);
+    const content = JSON.stringify(resource, null, 2);
+    fs.writeFileSync(archivePath, content);
+    return {
+        archivePath: archivePath.replace(/\\/g, "/"),
+        archiveHash: crypto.createHash("sha256").update(content).digest("hex")
+    };
+}
+
+/**
+ * @param {string} resourceType
+ * @returns {Object}
+ */
+function loadOfficialArchiveResource(resourceType) {
+    const archivePath = getOfficialArchivePath(resourceType);
+    if (!fs.existsSync(archivePath)) {
+        throw new Error(
+            `Official archive fixture missing for ${resourceType}: ${archivePath}. ` +
+                "Run search-parameter:build-artifacts with temp/fhir-examples present."
+        );
+    }
+    return JSON.parse(fs.readFileSync(archivePath, "utf8"));
+}
+
+/**
+ * @param {Object} input
+ * @param {import('../registry/types').RegistrySnapshot} input.snapshot
+ * @param {import('../registry/types').SearchParameterDefinition[]} input.definitions
+ * @param {Object} [input.exampleMapping]
+ * @param {string} [input.examplesDir] 僅在需要從 HL7 examples 重新歸檔 official fixture 時提供
+ * @returns {Object}
+ */
+function buildFixtureArchive({ snapshot, definitions, exampleMapping, examplesDir }) {
+    const mapping = exampleMapping || loadExampleMapping();
+    const exampleIndex = examplesDir ? indexExampleFiles(examplesDir).byResourceType : null;
+
+    /** @type {Record<string, Object>} */
+    const resources = {};
+    const summary = {
+        official: 0,
+        derived: 0,
+        synthetic: 0
+    };
+
+    for (const resourceType of productionResources) {
+        const entry = mapping.resources[resourceType];
+        const compiledPlans = [];
+
+        for (const [lookupKey, definition] of snapshot.byLookupKey) {
+            const [lookupResourceType] = lookupKey.split("::");
+            if (lookupResourceType !== resourceType) {
+                continue;
+            }
+            const plan = definition.lookupPlans?.[lookupKey]?.plan || definition.compiledPlan;
+            if (plan) {
+                compiledPlans.push(plan);
+            }
+        }
+
+        if (entry.valueSource === "official") {
+            let officialResource;
+            if (examplesDir) {
+                const selected = selectOfficialExample(resourceType, examplesDir, exampleIndex);
+                if (!selected) {
+                    throw new Error(`Expected official example for ${resourceType} during discovery`);
+                }
+                officialResource = selected.resource;
+            } else {
+                officialResource = loadOfficialArchiveResource(resourceType);
+            }
+
+            const officialWritten = writeArchiveFixture(OFFICIAL_DIR, resourceType, officialResource);
+            summary.official += 1;
+
+            const derived = buildDerivedFixture(resourceType, officialResource, compiledPlans);
+            let derivedWritten = null;
+            if (derived.needsDerived) {
+                derivedWritten = writeArchiveFixture(DERIVED_DIR, resourceType, derived.resource);
+                summary.derived += 1;
+            }
+
+            resources[resourceType] = {
+                valueSource: derived.needsDerived ? "derived" : "official",
+                official: {
+                    sourceFile: entry.sourceFile,
+                    sourceHash: entry.sourceHash,
+                    archivePath: path.relative(process.cwd(), officialWritten.archivePath).replace(/\\/g, "/"),
+                    archiveHash: officialWritten.archiveHash
+                },
+                derived: derivedWritten
+                    ? {
+                          archivePath: path
+                              .relative(process.cwd(), derivedWritten.archivePath)
+                              .replace(/\\/g, "/"),
+                          archiveHash: derivedWritten.archiveHash,
+                          augmentations: derived.augmentations
+                      }
+                    : null,
+                activeFixturePath: derived.needsDerived
+                    ? path.relative(process.cwd(), derivedWritten.archivePath).replace(/\\/g, "/")
+                    : path.relative(process.cwd(), officialWritten.archivePath).replace(/\\/g, "/"),
+                activeFixtureHash: derived.needsDerived
+                    ? derivedWritten.archiveHash
+                    : officialWritten.archiveHash
+            };
+        } else {
+            const syntheticResource = buildSyntheticFixture(resourceType);
+            const syntheticWritten = writeArchiveFixture(
+                SYNTHETIC_DIR,
+                resourceType,
+                syntheticResource
+            );
+            summary.synthetic += 1;
+
+            resources[resourceType] = {
+                valueSource: "synthetic",
+                official: null,
+                derived: null,
+                synthetic: {
+                    archivePath: path
+                        .relative(process.cwd(), syntheticWritten.archivePath)
+                        .replace(/\\/g, "/"),
+                    archiveHash: syntheticWritten.archiveHash,
+                    reason: entry.reason
+                },
+                activeFixturePath: path
+                    .relative(process.cwd(), syntheticWritten.archivePath)
+                    .replace(/\\/g, "/"),
+                activeFixtureHash: syntheticWritten.archiveHash
+            };
+        }
+    }
+
+    return {
+        generatedAt: new Date().toISOString(),
+        archiveRoot: path.relative(process.cwd(), ARCHIVE_ROOT).replace(/\\/g, "/"),
+        exampleMapping: mapping,
+        resources,
+        summary
+    };
+}
+
+module.exports = {
+    ARCHIVE_ROOT,
+    OFFICIAL_DIR,
+    DERIVED_DIR,
+    SYNTHETIC_DIR,
+    hashValue,
+    writeArchiveFixture,
+    loadOfficialArchiveResource,
+    buildFixtureArchive
+};

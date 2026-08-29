@@ -89,6 +89,45 @@ describe("SearchParameter registry", function () {
         expect(second.version).to.be.greaterThan(first.version);
         expect(second.byLookupKey.size).to.be.greaterThan(0);
     });
+
+    it("does not attach another base's compiled plan to a failed lookup", function () {
+        const definition = {
+            resource: {
+                resourceType: "SearchParameter",
+                url: "http://example.org/SearchParameter/address",
+                version: "4.0.1",
+                status: "active",
+                code: "address",
+                base: ["Patient", "Person"],
+                type: "string",
+                expression: "Patient.address | Person.notARealField"
+            },
+            source: "builtin-bundle",
+            canonicalKey: "http://example.org/SearchParameter/address::4.0.1",
+            lookupKeys: ["Patient::address", "Person::address"],
+            rawStatus: "active",
+            effectiveStatus: "disabled",
+            diagnostics: []
+        };
+        const compileResult = compileDefinition(definition);
+        const activated = applyActivationOverlay(definition, {
+            compilable: compileResult.compilable,
+            reason: compileResult.reason
+        });
+        activated.lookupPlans = compileResult.lookupPlans;
+        const snapshot = buildRegistrySnapshot({
+            definitions: [activated],
+            diagnostics: compileResult.diagnostics,
+            version: 1
+        });
+
+        expect(resolveLookupStatus(snapshot, "Patient", "address")).to.equal("effective");
+        expect(resolveLookupStatus(snapshot, "Person", "address")).to.equal("disabled");
+        expect(snapshot.byLookupKey.get("Patient::address").compiledPlan.resourceType).to.equal(
+            "Patient"
+        );
+        expect(snapshot.byLookupKey.has("Person::address")).to.equal(false);
+    });
 });
 
 describe("FHIRPath compiler", function () {

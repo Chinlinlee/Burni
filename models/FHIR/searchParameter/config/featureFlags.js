@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const productionResources = require("@models/FHIR/fhir.resourceList.json");
 
 const ROLLOUT_CONFIG_PATH = path.join(__dirname, "registry-rollout.json");
 
@@ -18,18 +19,27 @@ function parseList(value) {
 }
 
 /**
- * @returns {{ enabledResourceTypes: string[], shadowCompareResourceTypes: string[] }}
+ * @returns {{
+ *   enabledResourceTypes: string[],
+ *   shadowCompareResourceTypes: string[],
+ *   enableAllProductionResources: boolean
+ * }}
  */
 function loadRolloutConfig() {
     try {
         const raw = fs.readFileSync(ROLLOUT_CONFIG_PATH, "utf8");
         const config = JSON.parse(raw);
+        const enableAll = config.enableAllProductionResources === true;
         return {
-            enabledResourceTypes: config.enabledResourceTypes || [],
+            enableAllProductionResources: enableAll,
+            enabledResourceTypes: enableAll
+                ? [...productionResources]
+                : config.enabledResourceTypes || [],
             shadowCompareResourceTypes: config.shadowCompareResourceTypes || []
         };
     } catch {
         return {
+            enableAllProductionResources: false,
             enabledResourceTypes: [],
             shadowCompareResourceTypes: []
         };

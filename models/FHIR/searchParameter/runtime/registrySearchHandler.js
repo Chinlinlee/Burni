@@ -3,6 +3,7 @@ const { ensureRegistryLoaded } = require("../registry/registryManager");
 const { resolveLookupStatus, getEffectiveDefinition } = require("../registry/snapshot");
 const { applyPlanToQuery } = require("../executor/mongoExecutor");
 const { buildRelationPlan, buildRelationAggregation } = require("../executor/relationPlan");
+const { parseSearchParameterName } = require("./parameterName");
 const {
     featureFlags,
     isRegistryEnabledForResource,
@@ -27,8 +28,9 @@ async function tryApplyRegistryParameter(options) {
         return "fallback";
     }
 
+    const parsed = parseSearchParameterName(parameterName);
     const snapshot = await ensureRegistryLoaded();
-    const lookupStatus = resolveLookupStatus(snapshot, resourceType, parameterName);
+    const lookupStatus = resolveLookupStatus(snapshot, resourceType, parsed.code);
     if (lookupStatus === "disabled") {
         return "disabled";
     }
@@ -36,7 +38,7 @@ async function tryApplyRegistryParameter(options) {
         return featureFlags.legacyFallbackEnabled ? "fallback" : "disabled";
     }
 
-    const definition = getEffectiveDefinition(snapshot, resourceType, parameterName);
+    const definition = getEffectiveDefinition(snapshot, resourceType, parsed.code);
     if (!definition?.compiledPlan) {
         return "disabled";
     }
@@ -56,13 +58,17 @@ async function tryApplyRegistryParameter(options) {
         return "shadow-only";
     }
 
-    if (parameterName.includes(".")) {
-        const relation = buildRelationPlan(plan, parameterName.split(".").slice(1).join("."), snapshot);
+    if (parsed.chain) {
+        const relation = buildRelationPlan(plan, parsed.chain, snapshot, parsed.typeFilter);
         if (!relation.valid || !relation.relationPlan) {
             return "disabled";
         }
-        const aggregation = buildRelationAggregation(relation.relationPlan, String(rawValue));
-        Object.assign(query, aggregation);
+        const aggregation = buildRelationAggregation(relation.relationPlan, rawValue);
+        if (!query.chain) {
+            query.chain = [];
+        }
+        query.isChain = true;
+        query.chain.push(...aggregation.chain);
         delete query[parameterName];
         return "handled";
     }

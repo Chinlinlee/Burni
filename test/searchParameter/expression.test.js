@@ -101,9 +101,16 @@ describe("FHIRPath expression fixtures", function () {
             {
                 path: "subject",
                 datatype: "Reference",
-                referenceTargetType: "Patient"
+                referenceTargetType: "Patient",
+                correlation: {
+                    kind: "same-array-element",
+                    parentPath: "subject",
+                    fields: ["reference", "type"]
+                }
             }
         ]);
+        expect(lookup.plan.targets).to.include("Patient");
+        expect(lookup.plan.supportedValueForms).to.deep.equal(["type/id", "id", "absolute-url"]);
     });
 
     it("parses deceased exists and not-false predicate", function () {
@@ -116,6 +123,60 @@ describe("FHIRPath expression fixtures", function () {
         const parsed = parseFhirPath("Patient.telecom.where(system='email')");
         expect(parsed.success).to.equal(true);
         expect(validateAst(parsed.ast).valid).to.equal(true);
+    });
+
+    it("parses RelatedArtifact type where predicate", function () {
+        const parsed = parseFhirPath(
+            "ActivityDefinition.relatedArtifact.where(type='composed-of').resource"
+        );
+        expect(parsed.success).to.equal(true);
+        expect(validateAst(parsed.ast).valid).to.equal(true);
+    });
+
+    it("parses bundle array index access", function () {
+        const parsed = parseFhirPath("Bundle.entry[0].resource");
+        expect(parsed.success).to.equal(true);
+        expect(validateAst(parsed.ast).valid).to.equal(true);
+    });
+
+    it("compiles RelatedArtifact type predicate into correlated reference plan", function () {
+        const definition = buildDefinition({
+            resource: {
+                code: "composed-of",
+                base: ["ActivityDefinition"],
+                type: "reference",
+                expression:
+                    "ActivityDefinition.relatedArtifact.where(type='composed-of').resource"
+            }
+        });
+        definition.lookupKeys = ["ActivityDefinition::composed-of"];
+        const compiled = compileDefinition(definition);
+        const lookup = compiled.lookupPlans["ActivityDefinition::composed-of"];
+        expect(lookup.compilable).to.equal(true);
+        expect(lookup.plan.extractionPaths[0]).to.include({
+            path: "relatedArtifact.resource",
+            datatype: "canonical"
+        });
+        expect(lookup.plan.extractionPaths[0].predicates).to.deep.equal([
+            { kind: "typeEquals", value: "composed-of" }
+        ]);
+    });
+
+    it("compiles bundle composition reference path with array index", function () {
+        const definition = buildDefinition({
+            resource: {
+                code: "composition",
+                base: ["Bundle"],
+                type: "reference",
+                expression: "Bundle.entry[0].resource"
+            }
+        });
+        definition.lookupKeys = ["Bundle::composition"];
+        const compiled = compileDefinition(definition);
+        const lookup = compiled.lookupPlans["Bundle::composition"];
+        expect(lookup.compilable).to.equal(true);
+        expect(lookup.plan.extractionPaths[0].path).to.equal("entry.0.resource");
+        expect(lookup.plan.extractionPaths[0].datatype).to.equal("Resource");
     });
 
     it("rejects versioned and contained reference query values", function () {

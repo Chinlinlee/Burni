@@ -16,12 +16,13 @@ const { logger } = require("@root/utils/log");
 const { CreateService } = require("./create.service");
 const { UpdateService } = require("./update.service");
 const { DeleteService } = require("./delete.service");
-const { getUrlMatch, getResourceTypeInUrl, getIdInFullUrl } = require("@root/utils/fhir-param");
+const { getUrlMatch, getResourceTypeInUrl, getIdInFullUrl } = require("@root/utils/fhir-url");
 const { urlJoin } = require("@root/utils/url");
 const uuid = require("uuid");
 const resourceList = require("@models/FHIR/fhir.resourceList.json");
 const { ReadService } = require("./read.service");
 const { SearchService } = require("./search.service");
+const { validateBundleGetSearchParameters } = require("@models/FHIR/searchParameter/runtime/bundleSearchValidation");
 
 class BundleOpService extends BaseFhirApiService {
     constructor(req, res) {
@@ -377,14 +378,11 @@ class TransactionSearchHandler {
                 urlSplit.indexOf("?")
             );
             let params = new URLSearchParams("?" + paramsStr);
-            for (let p of params) {
-                let [key, value] = p;
-
-                let { paramsSearch } = require(`@root/api/FHIR/${resourceTypeInUrl}/${resourceTypeInUrl}ParametersHandler.js`);
-                if (!(Object.keys(paramsSearch).indexOf(key) >= 0)) {
-                    throw new FhirWebServiceError(400, `Invalid URL in request ${this.resourceRequest.url} (Unknown parameter: ${key})`, handleError.processing);
-                }
-            }
+            await validateBundleGetSearchParameters(
+                resourceTypeInUrl,
+                params,
+                this.resourceRequest.url
+            );
 
             return {
                 method: this.SEARCH_METHOD.PARAMS,
