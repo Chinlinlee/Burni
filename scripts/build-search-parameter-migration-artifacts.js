@@ -2,11 +2,16 @@ require("module-alias/register");
 
 const fs = require("fs");
 const path = require("path");
-const { reloadRegistry } = require("@models/FHIR/searchParameter/registry/registryManager");
 const { loadBuiltinDefinitions } = require("@models/FHIR/searchParameter/registry/sourceAdapter");
 const { applyActivationOverlay } = require("@models/FHIR/searchParameter/registry/activationPolicy");
 const { compileDefinition } = require("@models/FHIR/searchParameter/compiler/compiler");
 const { mergeDefinitions } = require("@models/FHIR/searchParameter/registry/merge");
+const { buildRegistrySnapshot } = require("@models/FHIR/searchParameter/registry/snapshot");
+const {
+    ARTIFACT_PATH,
+    writeArtifact,
+    verifyArtifactIdentity
+} = require("@models/FHIR/searchParameter/registry/artifacts/compiledArtifact");
 const { verifyProvenance } = require("@models/FHIR/searchParameter/migration/provenance");
 const { buildLookupMatrix } = require("@models/FHIR/searchParameter/migration/lookupMatrix");
 const {
@@ -28,13 +33,31 @@ const ARTIFACTS_DIR = path.join(
     "../models/FHIR/searchParameter/migration/artifacts"
 );
 
-async function compileDefinitions() {
+/**
+ * Single compile pass over builtin definitions: raw parse output for the runtime
+ * artifact, activation overlay + merge for migration snapshot inputs.
+ *
+ * @returns {{
+ *   rawDefinitions: import('@models/FHIR/searchParameter/registry/types').SearchParameterDefinition[],
+ *   compileResults: Record<string, ReturnType<typeof compileDefinition>>,
+ *   definitions: import('@models/FHIR/searchParameter/registry/types').SearchParameterDefinition[],
+ *   snapshot: import('@models/FHIR/searchParameter/registry/types').RegistrySnapshot
+ * }}
+ */
+function compileBuiltinDefinitionsOnce() {
     const builtin = loadBuiltinDefinitions();
+    /** @type {Record<string, ReturnType<typeof compileDefinition>>} */
+    const compileResults = {};
     /** @type {import('@models/FHIR/searchParameter/registry/types').SearchParameterDefinition[]} */
-    const compiledDefinitions = [];
+    const activatedDefinitions = [];
+    /** @type {import('@models/FHIR/searchParameter/registry/diagnostics').RegistryDiagnostic[]} */
+    const diagnostics = [...builtin.diagnostics];
 
     for (const definition of builtin.definitions) {
         const compileResult = compileDefinition(definition);
+        compileResults[definition.canonicalKey] = compileResult;
+        diagnostics.push(...compileResult.diagnostics);
+
         const activated = applyActivationOverlay(definition, {
             compilable: compileResult.compilable,
             reason: compileResult.reason
@@ -42,10 +65,24 @@ async function compileDefinitions() {
         if (compileResult.lookupPlans) {
             activated.lookupPlans = compileResult.lookupPlans;
         }
-        compiledDefinitions.push(activated);
+        activatedDefinitions.push(activated);
     }
 
-    return mergeDefinitions(compiledDefinitions).definitions;
+    const merged = mergeDefinitions(activatedDefinitions);
+    diagnostics.push(...merged.diagnostics);
+
+    const snapshot = buildRegistrySnapshot({
+        definitions: merged.definitions,
+        diagnostics,
+        version: 1
+    });
+
+    return {
+        rawDefinitions: builtin.definitions,
+        compileResults,
+        definitions: merged.definitions,
+        snapshot
+    };
 }
 
 async function main() {
@@ -58,8 +95,19 @@ async function main() {
         process.exit(1);
     }
 
-    const snapshot = await reloadRegistry();
-    const definitions = await compileDefinitions();
+    const { rawDefinitions, compileResults, definitions, snapshot } =
+        compileBuiltinDefinitionsOnce();
+
+    const artifact = writeArtifact(rawDefinitions, compileResults);
+    const identityVerification = verifyArtifactIdentity(artifact);
+    if (!identityVerification.valid) {
+        console.error("Runtime compile artifact identity verification failed after build:");
+        for (const error of identityVerification.errors) {
+            console.error(`  - ${error}`);
+        }
+        process.exit(1);
+    }
+
     const lookupMatrix = buildLookupMatrix(snapshot, definitions);
     const examplesDir = process.env.FHIR_EXAMPLES_DIR;
     const exampleMapping =
@@ -147,6 +195,9 @@ async function main() {
         }
     }
 
+    console.log(`Wrote runtime compile artifact to ${ARTIFACT_PATH}`);
+    console.log(`  Definitions: ${Object.keys(artifact.definitions).length}`);
+    console.log(`  Identity valid: ${identityVerification.valid}`);
     console.log(`Wrote lookup matrix to ${matrixPath}`);
     console.log(`  Resources: ${lookupMatrix.resourceCount}`);
     console.log(`  Lookups: ${lookupMatrix.lookupCount}`);
