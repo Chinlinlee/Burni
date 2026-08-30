@@ -1,6 +1,9 @@
 const mongoose = require('mongoose');
 const moment = require('moment');
 const _ = require('lodash');
+const {
+    serializeResourceTemporals
+} = require("../../FHIR/temporal");
 module.exports = function() {
     let Substance = require('./Substance').schema;
     Substance.id.unique = false;
@@ -43,14 +46,14 @@ module.exports = function() {
         delete result['name._id'];
         delete result['request'];
         delete result['response'];
-        return result;
+        return serializeResourceTemporals(result);
     };
     SubstanceHistorySchema.methods.getFHIRBundleField = function() {
         let result = this.toObject();
         delete result._id;
         delete result.__v;
         delete result['name._id'];
-        return result;
+        return serializeResourceTemporals(result);
     };
 
     const SubstanceHistoryModel = mongoose.model("Substance_history", SubstanceHistorySchema, "Substance_history");

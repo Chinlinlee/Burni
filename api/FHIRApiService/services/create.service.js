@@ -36,6 +36,19 @@ class CreateService extends BaseFhirApiService {
                 result
             };
         } catch (e) {
+            const { temporalErrorToWriteFailure } = require("@models/FHIR/temporal");
+            const { FhirValidationError } = require("@models/FHIR/httpMessage");
+            const temporalFailure = temporalErrorToWriteFailure(e);
+            if (temporalFailure) {
+                return temporalFailure;
+            }
+            if (e instanceof FhirValidationError) {
+                return {
+                    status: false,
+                    code: e.code,
+                    result: e.operationOutcome
+                };
+            }
             return {
                 status: false,
                 code: 500,
@@ -60,9 +73,11 @@ class CreateService extends BaseFhirApiService {
     }
 
     static async insertResource(resourceType, resource, session=undefined) {
-        renameCollectionFieldName(resource);
         resource.id = uuid.v4();
-        let insertDataObject = new mongoose.model(resourceType)(resource);
+        const { normalizeResourceTemporals } = require("@models/FHIR/temporal");
+        const normalized = normalizeResourceTemporals(resource);
+        renameCollectionFieldName(normalized);
+        let insertDataObject = new mongoose.model(resourceType)(normalized);
         let doc = await insertDataObject.save({session});
         return {
             status: true,

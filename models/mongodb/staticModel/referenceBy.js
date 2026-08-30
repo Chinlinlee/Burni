@@ -1,4 +1,5 @@
 const instant = require("../FHIRDataTypesSchema/instant");
+const { canonicalInstantFromUtcDate } = require("../../FHIR/temporal");
 
 /**
  * The schema to storing each resource is refer by which resources
@@ -43,7 +44,7 @@ module.exports = function (mongodb) {
     resourceRefBy.add({
         lastUpdated: {
             ...instant,
-            default: Date.now()
+            default: () => canonicalInstantFromUtcDate(new Date())
         }
     });
     resourceRefBy.add(

@@ -1,6 +1,9 @@
 const mongoose = require('mongoose');
 const moment = require('moment');
 const _ = require('lodash');
+const {
+    serializeResourceTemporals
+} = require("../../FHIR/temporal");
 module.exports = function() {
     let ChargeItemDefinition = require('./ChargeItemDefinition').schema;
     ChargeItemDefinition.id.unique = false;
@@ -43,14 +46,14 @@ module.exports = function() {
         delete result['name._id'];
         delete result['request'];
         delete result['response'];
-        return result;
+        return serializeResourceTemporals(result);
     };
     ChargeItemDefinitionHistorySchema.methods.getFHIRBundleField = function() {
         let result = this.toObject();
         delete result._id;
         delete result.__v;
         delete result['name._id'];
-        return result;
+        return serializeResourceTemporals(result);
     };
 
     const ChargeItemDefinitionHistoryModel = mongoose.model("ChargeItemDefinition_history", ChargeItemDefinitionHistorySchema, "ChargeItemDefinition_history");

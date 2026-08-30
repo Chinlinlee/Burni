@@ -1,6 +1,9 @@
 const mongoose = require('mongoose');
 const moment = require('moment');
 const _ = require('lodash');
+const {
+    serializeResourceTemporals
+} = require("../../FHIR/temporal");
 module.exports = function() {
     let MessageHeader = require('./MessageHeader').schema;
     MessageHeader.id.unique = false;
@@ -43,14 +46,14 @@ module.exports = function() {
         delete result['name._id'];
         delete result['request'];
         delete result['response'];
-        return result;
+        return serializeResourceTemporals(result);
     };
     MessageHeaderHistorySchema.methods.getFHIRBundleField = function() {
         let result = this.toObject();
         delete result._id;
         delete result.__v;
         delete result['name._id'];
-        return result;
+        return serializeResourceTemporals(result);
     };
 
     const MessageHeaderHistoryModel = mongoose.model("MessageHeader_history", MessageHeaderHistorySchema, "MessageHeader_history");

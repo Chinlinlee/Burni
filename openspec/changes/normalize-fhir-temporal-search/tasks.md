@@ -14,10 +14,10 @@
 
 ## 3. FHIR write and response integration
 
-- [ ] 3.1 將 temporal normalization 接入 create、update、Bundle write 與其他 public resource write path。
-- [ ] 3.2 將 temporal serializer 接入 read、search response、history、include、revinclude 與 contained resource。
-- [ ] 3.3 確認 primitive extension metadata 不會被 temporal object normalization 或 serialization 誤處理。
-- [ ] 3.4 更新 direct `$set`、history snapshot 與 resource round-trip 流程，使其只接受並保存 canonical temporal object。
+- [x] 3.1 將 temporal normalization 接入 create、update、Bundle write 與其他 public resource write path。
+- [x] 3.2 將 temporal serializer 接入 read、search response、history、include、revinclude 與 contained resource。
+- [x] 3.3 確認 primitive extension metadata 不會被 temporal object normalization 或 serialization 誤處理。
+- [x] 3.4 更新 direct `$set`、history snapshot 與 resource round-trip 流程，使其只接受並保存 canonical temporal object。
 
 ## 4. Migration
 

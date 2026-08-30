@@ -136,9 +136,25 @@ class BaseFhirApiService {
             }
 
             try {
-                let mongooseDoc = new mongoose.model(resourceType)(resource);
-                let mongooseValidation = await mongooseDoc.validate(resource);
+                const { normalizeResourceTemporals } = require("@models/FHIR/temporal");
+                const { renameCollectionFieldName } = require("../../apiService");
+                const normalizedForValidate = normalizeResourceTemporals(resource);
+                renameCollectionFieldName(normalizedForValidate);
+                let mongooseDoc = new mongoose.model(resourceType)(normalizedForValidate);
+                await mongooseDoc.validate(normalizedForValidate);
             } catch (e) {
+                const {
+                    TemporalValidationError,
+                    temporalErrorToOperationOutcome
+                } = require("@models/FHIR/temporal");
+                if (e instanceof TemporalValidationError) {
+                    return {
+                        status: false,
+                        code: 422,
+                        result: temporalErrorToOperationOutcome(e)
+                    };
+                }
+
                 let name = _.get(e, "name");
                 if (name === "ValidationError") {
                     let operationOutcomeError = handleError.processing(e.message);

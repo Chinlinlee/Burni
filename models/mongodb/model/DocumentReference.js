@@ -39,6 +39,10 @@ const {
     deleteEmptyRefBy,
     checkResourceHaveReferenceByOthers
 } = require("../common");
+const {
+    canonicalInstantFromUtcDate,
+    serializeResourceTemporals
+} = require("../../FHIR/temporal");
 module.exports = function() {
     const DocumentReference = {
         meta: {
@@ -161,7 +165,7 @@ module.exports = function() {
             _.set(result, "_doc.collection", tempCollectionField);
             delete result._doc.myCollection;
         }
-        return result.toObject();
+        return serializeResourceTemporals(result.toObject());
     };
 
     DocumentReferenceSchema.pre('save', async function(next) {
@@ -183,15 +187,17 @@ module.exports = function() {
                 "meta.versionId": -1
             });
 
-        if (docInHistory) {
-            let versionId = Number(_.get(docInHistory, "meta.versionId")) + 1;
-            let versionIdStr = String(versionId);
-            _.set(this, "meta.versionId", versionIdStr);
-            _.set(this, "meta.lastUpdated", new Date());
-        } else {
-            _.set(this, "meta.versionId", "1");
-            _.set(this, "meta.lastUpdated", new Date());
-        }
+        const nextVersionId = docInHistory ?
+            String(Number(_.get(docInHistory, "meta.versionId")) + 1) :
+            "1";
+        const currentMeta = this.meta && typeof this.meta.toObject === "function" ?
+            this.meta.toObject() :
+            (this.meta ? {
+                ...this.meta
+            } : {});
+        currentMeta.versionId = nextVersionId;
+        currentMeta.lastUpdated = canonicalInstantFromUtcDate(new Date());
+        this.set("meta", currentMeta);
 
         return next();
     });
@@ -236,9 +242,14 @@ module.exports = function() {
     DocumentReferenceSchema.pre('findOneAndUpdate', async function(next) {
         const docToUpdate = await this.model.findOne(this.getFilter());
         let version = Number(docToUpdate.meta.versionId);
-        this._update.$set.meta = docToUpdate.meta;
-        this._update.$set.meta.versionId = String(version + 1);
-        this._update.$set.meta.lastUpdated = new Date();
+        const currentMeta = docToUpdate.meta && typeof docToUpdate.meta.toObject === "function" ?
+            docToUpdate.meta.toObject() :
+            {
+                ...docToUpdate.meta
+            };
+        currentMeta.versionId = String(version + 1);
+        currentMeta.lastUpdated = canonicalInstantFromUtcDate(new Date());
+        this._update.$set.meta = currentMeta;
         return next();
     });
 

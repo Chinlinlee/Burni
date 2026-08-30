@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 
 const { handleError } = require("@models/FHIR/httpMessage");
 const { BaseFhirApiService } = require("./base.service");
+const { toHttpLastModified } = require("@models/FHIR/temporal");
 
 class VReadService extends BaseFhirApiService {
     constructor(req, res, resourceType) {
@@ -16,7 +17,10 @@ class VReadService extends BaseFhirApiService {
             let resource = await VReadService.getResourceByIdAndVersion(this.resourceType, id, version);
             if (resource) {
                 let responseResource = resource.getFHIRField();
-                this.response.header("Last-Modified", new Date(responseResource.meta.lastUpdated).toUTCString());
+                this.response.header(
+                    "Last-Modified",
+                    toHttpLastModified(responseResource.meta && responseResource.meta.lastUpdated)
+                );
                 return {
                     status: true,
                     code: 200,

@@ -272,6 +272,22 @@ function normalizeTemporalSafe(scalar, type, path) {
     }
 }
 
+/**
+ * @param {unknown} error
+ * @returns {{ status: false, code: number, result: import('../httpMessage').OperationOutcome } | undefined}
+ */
+function temporalErrorToWriteFailure(error) {
+    if (error instanceof TemporalValidationError) {
+        return {
+            status: false,
+            code: 422,
+            result: temporalErrorToOperationOutcome(error)
+        };
+    }
+
+    return undefined;
+}
+
 module.exports = {
     TEMPORAL_ERROR_CODE,
     TemporalValidationError,
@@ -279,6 +295,7 @@ module.exports = {
     mapNormalizerError,
     temporalErrorToOperationOutcome,
     temporalErrorToFhirValidationError,
+    temporalErrorToWriteFailure,
     normalizeDateSafe,
     normalizeDateTimeSafe,
     normalizeInstantSafe,

@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const {
-    validateCanonicalDateTime
+    validateCanonicalDateTime,
+    toPlainCanonicalValue
 } = require("../../FHIR/temporal");
 const {
     DATETIME_PRECISION
@@ -34,10 +35,10 @@ module.exports = {
     default: void 0,
     validate: {
         validator: function(v) {
-            return validateCanonicalDateTime(v).valid;
+            return validateCanonicalDateTime(toPlainCanonicalValue(v)).valid;
         },
         message: (props) => {
-            const result = validateCanonicalDateTime(props.value);
+            const result = validateCanonicalDateTime(toPlainCanonicalValue(props.value));
             return result.errors.join("; ");
         }
     }

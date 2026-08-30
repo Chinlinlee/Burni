@@ -1,6 +1,9 @@
 const mongoose = require('mongoose');
 const moment = require('moment');
 const _ = require('lodash');
+const {
+    serializeResourceTemporals
+} = require("../../FHIR/temporal");
 module.exports = function() {
     let PaymentReconciliation = require('./PaymentReconciliation').schema;
     PaymentReconciliation.id.unique = false;
@@ -43,14 +46,14 @@ module.exports = function() {
         delete result['name._id'];
         delete result['request'];
         delete result['response'];
-        return result;
+        return serializeResourceTemporals(result);
     };
     PaymentReconciliationHistorySchema.methods.getFHIRBundleField = function() {
         let result = this.toObject();
         delete result._id;
         delete result.__v;
         delete result['name._id'];
-        return result;
+        return serializeResourceTemporals(result);
     };
 
     const PaymentReconciliationHistoryModel = mongoose.model("PaymentReconciliation_history", PaymentReconciliationHistorySchema, "PaymentReconciliation_history");

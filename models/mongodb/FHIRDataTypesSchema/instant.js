@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const {
-    validateCanonicalInstant
+    validateCanonicalInstant,
+    canonicalInstantFromUtcDate,
+    toPlainCanonicalValue
 } = require("../../FHIR/temporal");
 const {
     INSTANT_PRECISION
@@ -28,12 +30,21 @@ module.exports = {
     },
     _id: false,
     default: void 0,
+    set: function(v) {
+        if (v instanceof Date) {
+            return canonicalInstantFromUtcDate(v);
+        }
+        if (typeof v === "number" && Number.isFinite(v)) {
+            return canonicalInstantFromUtcDate(new Date(v));
+        }
+        return v;
+    },
     validate: {
         validator: function(v) {
-            return validateCanonicalInstant(v).valid;
+            return validateCanonicalInstant(toPlainCanonicalValue(v)).valid;
         },
         message: (props) => {
-            const result = validateCanonicalInstant(props.value);
+            const result = validateCanonicalInstant(toPlainCanonicalValue(props.value));
             return result.errors.join("; ");
         }
     }

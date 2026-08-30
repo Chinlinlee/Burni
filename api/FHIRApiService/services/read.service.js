@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 
 const { BaseFhirApiService } = require("./base.service");
 const { handleError } = require("@models/FHIR/httpMessage");
+const { toHttpLastModified } = require("@models/FHIR/temporal");
 
 const { logger } = require("@root/utils/log");
 
@@ -20,7 +21,7 @@ class ReadService extends BaseFhirApiService {
                 let responseDoc = resource.getFHIRField();
                 this.response.header(
                     "Last-Modified",
-                    new Date(responseDoc.meta.lastUpdated).toUTCString()
+                    toHttpLastModified(responseDoc.meta && responseDoc.meta.lastUpdated)
                 );
                 return {
                     status: true,

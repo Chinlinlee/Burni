@@ -23,13 +23,15 @@ const { isDecimal128, compareDecimal128 } = require("./decimal128");
 const {
     validateCanonicalDate,
     validateCanonicalDateTime,
-    validateCanonicalInstant
+    validateCanonicalInstant,
+    toPlainCanonicalValue
 } = require("./validate");
 const {
     normalizeDate,
     normalizeDateTime,
     normalizeInstant,
-    normalizeTemporal
+    normalizeTemporal,
+    canonicalInstantFromUtcDate
 } = require("./normalizer");
 const {
     serializeDate,
@@ -45,11 +47,17 @@ const {
     mapNormalizerError,
     temporalErrorToOperationOutcome,
     temporalErrorToFhirValidationError,
+    temporalErrorToWriteFailure,
     normalizeDateSafe,
     normalizeDateTimeSafe,
     normalizeInstantSafe,
     normalizeTemporalSafe
 } = require("./errors");
+const {
+    normalizeResourceTemporals,
+    serializeResourceTemporals,
+    toHttpLastModified
+} = require("./resource");
 
 module.exports = {
     DATE_PRECISION,
@@ -76,10 +84,12 @@ module.exports = {
     validateCanonicalDate,
     validateCanonicalDateTime,
     validateCanonicalInstant,
+    toPlainCanonicalValue,
     normalizeDate,
     normalizeDateTime,
     normalizeInstant,
     normalizeTemporal,
+    canonicalInstantFromUtcDate,
     serializeDate,
     serializeDateTime,
     serializeInstant,
@@ -91,8 +101,12 @@ module.exports = {
     mapNormalizerError,
     temporalErrorToOperationOutcome,
     temporalErrorToFhirValidationError,
+    temporalErrorToWriteFailure,
     normalizeDateSafe,
     normalizeDateTimeSafe,
     normalizeInstantSafe,
-    normalizeTemporalSafe
+    normalizeTemporalSafe,
+    normalizeResourceTemporals,
+    serializeResourceTemporals,
+    toHttpLastModified
 };

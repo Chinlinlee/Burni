@@ -27,7 +27,7 @@ function checkIsFHIRResource(resourceName) {
 }
 
 function generateCanonicalDateSchema() {
-    return beautify(`const { validateCanonicalDate } = require("../../FHIR/temporal");
+    return beautify(`const { validateCanonicalDate, toPlainCanonicalValue } = require("../../FHIR/temporal");
 const { DATE_PRECISION } = require("../../FHIR/temporal/constants");
 
 module.exports = {
@@ -45,10 +45,10 @@ module.exports = {
     default: void 0,
     validate: {
         validator: function (v) {
-            return validateCanonicalDate(v).valid;
+            return validateCanonicalDate(toPlainCanonicalValue(v)).valid;
         },
         message: (props) => {
-            const result = validateCanonicalDate(props.value);
+            const result = validateCanonicalDate(toPlainCanonicalValue(props.value));
             return result.errors.join("; ");
         }
     }
@@ -57,7 +57,7 @@ module.exports = {
 
 function generateCanonicalDateTimeSchema() {
     return beautify(`const mongoose = require("mongoose");
-const { validateCanonicalDateTime } = require("../../FHIR/temporal");
+const { validateCanonicalDateTime, toPlainCanonicalValue } = require("../../FHIR/temporal");
 const { DATETIME_PRECISION } = require("../../FHIR/temporal/constants");
 
 module.exports = {
@@ -82,10 +82,10 @@ module.exports = {
     default: void 0,
     validate: {
         validator: function (v) {
-            return validateCanonicalDateTime(v).valid;
+            return validateCanonicalDateTime(toPlainCanonicalValue(v)).valid;
         },
         message: (props) => {
-            const result = validateCanonicalDateTime(props.value);
+            const result = validateCanonicalDateTime(toPlainCanonicalValue(props.value));
             return result.errors.join("; ");
         }
     }
@@ -94,7 +94,7 @@ module.exports = {
 
 function generateCanonicalInstantSchema() {
     return beautify(`const mongoose = require("mongoose");
-const { validateCanonicalInstant } = require("../../FHIR/temporal");
+const { validateCanonicalInstant, canonicalInstantFromUtcDate, toPlainCanonicalValue } = require("../../FHIR/temporal");
 const { INSTANT_PRECISION } = require("../../FHIR/temporal/constants");
 
 module.exports = {
@@ -113,12 +113,21 @@ module.exports = {
     },
     _id: false,
     default: void 0,
+    set: function (v) {
+        if (v instanceof Date) {
+            return canonicalInstantFromUtcDate(v);
+        }
+        if (typeof v === "number" && Number.isFinite(v)) {
+            return canonicalInstantFromUtcDate(new Date(v));
+        }
+        return v;
+    },
     validate: {
         validator: function (v) {
-            return validateCanonicalInstant(v).valid;
+            return validateCanonicalInstant(toPlainCanonicalValue(v)).valid;
         },
         message: (props) => {
-            const result = validateCanonicalInstant(props.value);
+            const result = validateCanonicalInstant(toPlainCanonicalValue(props.value));
             return result.errors.join("; ");
         }
     }

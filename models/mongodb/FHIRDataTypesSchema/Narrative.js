@@ -2,9 +2,7 @@ const mongoose = require('mongoose');
 const {
     Extension
 } = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const {
-    xhtml
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const xhtml = require('../FHIRDataTypesSchema/xhtml');
 
 const {
     Narrative
@@ -19,11 +17,7 @@ Narrative.add({
         enum: ["generated", "extensions", "additional", "empty"],
         default: void 0
     },
-    div: {
-        type: xhtml,
-        required: true,
-        default: void 0
-    },
+    div: xhtml,
     _status: {
         type: new mongoose.Schema({
             extension: {

@@ -99,9 +99,6 @@ const {
 const {
     Meta
 } = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
-const {
-    Extension
-} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
 
 const {
     Extension

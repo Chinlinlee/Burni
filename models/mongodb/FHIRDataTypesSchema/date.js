@@ -1,5 +1,6 @@
 const {
-    validateCanonicalDate
+    validateCanonicalDate,
+    toPlainCanonicalValue
 } = require("../../FHIR/temporal");
 const {
     DATE_PRECISION
@@ -29,10 +30,10 @@ module.exports = {
     default: void 0,
     validate: {
         validator: function(v) {
-            return validateCanonicalDate(v).valid;
+            return validateCanonicalDate(toPlainCanonicalValue(v)).valid;
         },
         message: (props) => {
-            const result = validateCanonicalDate(props.value);
+            const result = validateCanonicalDate(toPlainCanonicalValue(props.value));
             return result.errors.join("; ");
         }
     }

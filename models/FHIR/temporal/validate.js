@@ -26,6 +26,40 @@ function isPlainObject(value) {
 }
 
 /**
+ * Mongoose nested paths pass a Subdocument into schema validators.
+ * Canonical validation must see only persistence fields.
+ *
+ * @param {unknown} value
+ * @returns {unknown}
+ */
+function toPlainCanonicalValue(value) {
+    if (value == null || typeof value !== "object") {
+        return value;
+    }
+
+    const source =
+        value._doc && typeof value._doc === "object"
+            ? value._doc
+            : typeof value.toObject === "function"
+              ? value.toObject()
+              : value;
+
+    if (!source || typeof source !== "object" || Array.isArray(source)) {
+        return source;
+    }
+
+    /** @type {Record<string, unknown>} */
+    const plain = {};
+    for (const [key, fieldValue] of Object.entries(source)) {
+        if (key.startsWith("$") || key === "_doc") {
+            continue;
+        }
+        plain[key] = fieldValue;
+    }
+    return plain;
+}
+
+/**
  * @param {Record<string, unknown>} value
  * @param {Set<string>} allowedFields
  * @param {string[]} errors
@@ -282,5 +316,6 @@ function validateCanonicalInstant(value) {
 module.exports = {
     validateCanonicalDate,
     validateCanonicalDateTime,
-    validateCanonicalInstant
+    validateCanonicalInstant,
+    toPlainCanonicalValue
 };

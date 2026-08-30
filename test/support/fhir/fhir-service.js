@@ -107,9 +107,11 @@ async function createResourceViaService(resourceType, resource) {
     const service = new CreateService(req, res, resourceType);
     const { status, code, result } = await service.create();
     if (!status) {
-        throw new Error(
-            `Create failed for ${resourceType} (${code}): ${JSON.stringify(result)}`
-        );
+        const detail =
+            result instanceof Error
+                ? `${result.name}: ${result.message}`
+                : JSON.stringify(result, Object.getOwnPropertyNames(result));
+        throw new Error(`Create failed for ${resourceType} (${code}): ${detail}`);
     }
     return result;
 }

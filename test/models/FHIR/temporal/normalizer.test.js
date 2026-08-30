@@ -157,6 +157,20 @@ describe("FHIR temporal normalizer", function () {
         });
     });
 
+    describe("canonicalInstantFromUtcDate", function () {
+        const { canonicalInstantFromUtcDate } = require("@models/FHIR/temporal");
+
+        it("builds a canonical instant from a UTC Date", function () {
+            const date = new Date(Date.UTC(2015, 1, 7, 13, 28, 17, 230));
+            const result = canonicalInstantFromUtcDate(date);
+
+            expect(result.value).to.equal("2015-02-07T13:28:17.230Z");
+            expect(result.precision).to.equal(INSTANT_PRECISION.FRACTION);
+            expect(result.fractionDigits).to.equal(3);
+            expect(result.epochSeconds.toString()).to.equal("1423315697.230");
+        });
+    });
+
     describe("normalizeTemporal", function () {
         it("dispatches by temporal type", function () {
             expect(normalizeTemporal("1995-06", "date").precision).to.equal(DATE_PRECISION.MONTH);

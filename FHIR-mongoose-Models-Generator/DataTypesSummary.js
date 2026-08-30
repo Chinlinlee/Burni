@@ -18,7 +18,8 @@ module.exports = {
         "oid",
         "uuid",
         "unsignedInt",
-        "positiveInt"
+        "positiveInt",
+        "xhtml"
     ],
     GeneralPurposeDataTypes: [
         "Ratio",

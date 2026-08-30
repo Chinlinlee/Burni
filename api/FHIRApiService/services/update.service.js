@@ -30,6 +30,19 @@ class UpdateService extends BaseFhirApiService {
             return result;
 
         } catch (e) {
+            const { temporalErrorToWriteFailure } = require("@models/FHIR/temporal");
+            const { FhirValidationError } = require("@models/FHIR/httpMessage");
+            const temporalFailure = temporalErrorToWriteFailure(e);
+            if (temporalFailure) {
+                return temporalFailure;
+            }
+            if (e instanceof FhirValidationError) {
+                return {
+                    status: false,
+                    code: e.code,
+                    result: e.operationOutcome
+                };
+            }
             logger.error(`[Error: ${JSON.stringify(e)}] [Resource Type: ${this.resourceType}]`);
             return {
                 status: false,
@@ -63,34 +76,43 @@ class UpdateService extends BaseFhirApiService {
 
     static async updateResource(resourceType, id, resource, session = undefined) {
         delete resource.id;
-        renameCollectionFieldName(resource);
         resource.id = id;
+        const { normalizeResourceTemporals } = require("@models/FHIR/temporal");
+        const normalized = normalizeResourceTemporals(resource);
+        renameCollectionFieldName(normalized);
 
         let newDoc = await mongoose.model(resourceType).findOneAndUpdate(
             {
                 id: id
             },
             {
-                $set: resource
+                $set: normalized
             },
             {
                 new: true,
                 rawResult: true,
+                runValidators: true,
                 session: session
             }
         );
 
+        const updatedDoc = newDoc && typeof newDoc.getFHIRField === "function"
+            ? newDoc
+            : newDoc.value;
+
         return {
             status: true,
             code: 200,
-            result: newDoc.getFHIRField()
+            result: updatedDoc.getFHIRField()
         };
     }
 
     static async insertResourceWithId(resourceType, id, resource, session = undefined) {
         resource.id = id;
-        renameCollectionFieldName(resource);
-        let resourceInstance = new mongoose.model(resourceType)(resource);
+        const { normalizeResourceTemporals } = require("@models/FHIR/temporal");
+        const normalized = normalizeResourceTemporals(resource);
+        renameCollectionFieldName(normalized);
+        let resourceInstance = new mongoose.model(resourceType)(normalized);
         let doc = await resourceInstance.save({ session });
         return {
             status: true,

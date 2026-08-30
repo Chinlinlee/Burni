@@ -1,5 +1,6 @@
 const mongodb = require("../../models/mongodb");
 const _ = require("lodash");
+const { normalizeResourceTemporals } = require("@models/FHIR/temporal");
 
 async function validateContained(resourceItem, index) {
     try {
@@ -11,7 +12,9 @@ async function validateContained(resourceItem, index) {
             };
         }
         if (mongodb[resourceType]) {
-            let resourceToMongoModel = new mongodb[resourceType](resourceItem);
+            let resourceToMongoModel = new mongodb[resourceType](
+                normalizeResourceTemporals(resourceItem)
+            );
             await resourceToMongoModel.validate();
             return {
                 status: true,

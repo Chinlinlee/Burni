@@ -182,7 +182,7 @@ function formatSchemaBody(schema) {
     return schemaStr;
 }
 
-function getImportLibs(schema) {
+function getImportLibs(schema, selfType) {
     let importLib = "const mongoose = require('mongoose');\r\n";
     let importedTypeLib = [];
     let cleanType = "";
@@ -196,6 +196,9 @@ function getImportLibs(schema) {
             cleanType = item.type.replace(/[\[\]]/gm, "");
         } else {
             cleanType = item.replace(/[\[\]]/gm, "");
+        }
+        if (cleanType === selfType) {
+            continue;
         }
         if (
             skipFieldTypes.indexOf(cleanType) < 0 &&
@@ -213,7 +216,11 @@ function getImportLibs(schema) {
     const needsElementExtensionImport = Object.values(schema).some(
         (fieldDef) => fieldDef && fieldDef.__elementExtension !== undefined
     );
-    if (needsElementExtensionImport && !importedTypeLib.includes("Extension")) {
+    if (
+        needsElementExtensionImport &&
+        !importedTypeLib.includes("Extension") &&
+        selfType !== "Extension"
+    ) {
         importLib =
             `${importLib}const { Extension } = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');\r\n`;
     }
@@ -223,7 +230,7 @@ function getImportLibs(schema) {
 async function generateSchema(type) {
     let schema = getSchema(FHIRJson[type], type);
     cleanChildSchema(schema);
-    let importLibs = getImportLibs(schema);
+    let importLibs = getImportLibs(schema, type);
     const schemaBody = formatSchemaBody(schema);
     let code = `
     const { ${type} } = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");

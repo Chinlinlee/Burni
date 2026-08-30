@@ -175,9 +175,25 @@ function normalizeTemporal(scalar, type) {
     }
 }
 
+/**
+ * Build a canonical instant from a UTC Date. Used for server-owned
+ * lastUpdated, not public FHIR string writes.
+ *
+ * @param {Date} date
+ * @returns {import('./types').CanonicalInstant}
+ */
+function canonicalInstantFromUtcDate(date) {
+    if (!(date instanceof Date) || Number.isNaN(date.getTime())) {
+        throw new Error("canonicalInstantFromUtcDate requires a valid Date");
+    }
+
+    return normalizeInstant(date.toISOString());
+}
+
 module.exports = {
     normalizeDate,
     normalizeDateTime,
     normalizeInstant,
-    normalizeTemporal
+    normalizeTemporal,
+    canonicalInstantFromUtcDate
 };
