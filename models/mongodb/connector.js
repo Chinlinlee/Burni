@@ -143,20 +143,37 @@ function failReady(state, error) {
     state.rejectShardingReady(error);
 }
 
+function disableAutomaticSchemaProvisioning() {
+    mongoose.set({ autoIndex: false, autoCreate: false });
+    const connection = mongoose.connection;
+    if (connection && connection.config) {
+        connection.config.autoIndex = false;
+        connection.config.autoCreate = false;
+    }
+}
+
 function buildMongooseConnectOptions(config) {
+    // Mongoose defaults autoIndex/autoCreate to true. With 294 FHIR models that
+    // queues createCollection + createIndex on every collection as soon as the
+    // connection opens, and the first query (SearchParameter registry fetch)
+    // waits behind that work.
+    const options = {
+        autoIndex: false,
+        autoCreate: false
+    };
+
     if (config.MONGODB_CONNECTION_URL) {
-        return {};
+        return options;
     }
 
     const authDB = config.MONGODB_AUTH_DB;
-    return {
+    options.authSource = authDB;
+    options.auth = {
         authSource: authDB,
-        auth: {
-            authSource: authDB,
-            username: config.MONGODB_USER,
-            password: config.MONGODB_PASSWORD
-        }
+        username: config.MONGODB_USER,
+        password: config.MONGODB_PASSWORD
     };
+    return options;
 }
 
 function extractDatabaseFromConnectionUrl(connectionUrl) {
@@ -401,6 +418,7 @@ function connect(config) {
     initializationState = state;
 
     try {
+        disableAutomaticSchemaProvisioning();
         state.discovered = discoverModelFiles();
         registerDiscoveredModels(state.discovered, state.modelMap);
         state.timings.modelRegistryEnd = performance.now();
@@ -503,6 +521,8 @@ function shardCollections(modelNames, dbName) {
 module.exports = exports = connect;
 exports.normalizeConfig = normalizeConfig;
 exports.buildConnectionUrl = buildConnectionUrl;
+exports.buildMongooseConnectOptions = buildMongooseConnectOptions;
+exports.disableAutomaticSchemaProvisioning = disableAutomaticSchemaProvisioning;
 exports.discoverModelFiles = discoverModelFiles;
 exports.registerDiscoveredModels = registerDiscoveredModels;
 exports.MongoDBInitializationConflictError = MongoDBInitializationConflictError;
