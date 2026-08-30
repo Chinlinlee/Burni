@@ -25,11 +25,11 @@
 
 ## 4. Architecture documentation
 
-- [ ] 4.1 更新 `CONTEXT.md`，記錄 model registry ready、database ready、application ready 與 sharding provisioning 的 canonical terminology。
-- [ ] 4.2 建立 ADR，記錄同步 model map、singleton lifecycle、default connection、server readiness gate 與 sharding 分離的取捨。
+- [x] 4.1 更新 `CONTEXT.md`，記錄 model registry ready、database ready、application ready 與 sharding provisioning 的 canonical terminology。
+- [x] 4.2 建立 ADR，記錄同步 model map、singleton lifecycle、default connection、server readiness gate 與 sharding 分離的取捨。
 
 ## 5. Validation
 
-- [ ] 5.1 執行 connector lifecycle focused tests、model registration tests 與相關 lint 檢查。
+- [x] 5.1 執行 connector lifecycle focused tests、model registration tests 與相關 lint 檢查。
 - [ ] 5.2 執行完整 test suite，確認既有 FHIR API、SearchParameter 與全資源 CRUD 行為未回歸。
-- [ ] 5.3 執行 OpenSpec validation，確認所有規格、設計與任務文件完整且互相一致。
+- [x] 5.3 執行 OpenSpec validation，確認所有規格、設計與任務文件完整且互相一致。

@@ -146,3 +146,37 @@ _Avoid_: treating a service-level search test as a generic Patient CRUD test
 **Test support module**:
 A reusable test-only capability that provides environment setup, lifecycle management, or request adaptation without asserting product behavior itself.
 _Avoid_: placing assertions or domain-specific test cases in shared support
+
+## MongoDB initialization
+
+**Model registry ready**:
+The state after all resource, history, and static models are registered in a deterministic order. The synchronous model map is available at this point; the default Mongoose connection and SearchParameter registry may still be initializing.
+_Avoid_: calling this application ready; treating model registration as proof the server can serve traffic
+
+**Database ready**:
+The state after the default Mongoose connection is established and usable. The system continues to use the global Mongoose connection; an existing connection with a matching normalized configuration is reused rather than opening a second one.
+_Avoid_: equating a connection open event with database ready; switching to a different connection mid-process
+
+**Application ready** (`mongodb.ready`):
+The state after model registry ready, database ready, and SearchParameter registry reload have all succeeded. Server bootstrap awaits this before configuring database-dependent middleware and listening for HTTP traffic.
+_Avoid_: treating model map availability as application ready; waiting on sharding provisioning for application readiness
+
+**Sharding provisioning** (`mongodb.shardingReady`):
+The independent result of configuring MongoDB sharding after database ready. When sharding mode is off, it resolves immediately. When on, it runs after database ready and does not block application ready.
+_Avoid_: gating HTTP listen on sharding provisioning; conflating sharding failure with application readiness failure when sharding mode is off
+
+**Synchronous model map**:
+The object returned by `models/mongodb/index.js` that allows immediate lookup of registered Mongoose models by name. It carries non-enumerable `ready` and `shardingReady` promises for awaiting application readiness and sharding provisioning without changing the synchronous lookup shape.
+_Avoid_: iterating the map expecting only model names; re-exporting readiness as separate module exports when the map already exposes them
+
+**Server readiness gate**:
+The server bootstrap contract that awaits `mongodb.ready` before configuring session store, routes that depend on the database client, and HTTP listen. A readiness rejection is logged, prevents listen, and exits the process with a non-zero status; the connector does not call `process.exit()` itself.
+_Avoid_: treating process start as server ready; catching readiness failure and continuing to listen
+
+**Connector singleton lifecycle**:
+The module-level initialization state created on first connector use. Subsequent calls with the same normalized connection fingerprint share the same model map and readiness promises. Conflicting settings are rejected immediately, and a failed initialization is retained and re-thrown without automatic retry.
+_Avoid_: re-initializing with different settings in the same process; expecting failed initialization to recover on the next call without restarting the process
+
+**Safe initialization observability**:
+Initialization logs that record model registry, database connection, SearchParameter registry, and total phase timings without printing passwords, full authenticated connection URLs, or other credentials. Connection details use masked hosts, database name, or similar metadata only.
+_Avoid_: logging raw `MONGODB_URL` with credentials; treating timing logs as proof of application ready

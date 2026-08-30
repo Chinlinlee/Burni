@@ -62,7 +62,7 @@ function normalizeConfig(config) {
         connectionUrl: buildConnectionUrl(config),
         database: config.MONGODB_NAME ?? "",
         authSource: config.MONGODB_AUTH_DB ?? "",
-        username: config.MONGODB_USER ?? "",
+        username: config.MONGODB_USER ?? ""
     };
 }
 
@@ -209,7 +209,7 @@ function maskConnectionInfo(normalizedConfig) {
         database:
             normalizedConfig.database ||
             getExpectedDatabaseName(normalizedConfig),
-        hosts: extractHostsFromConnectionUrl(normalizedConfig.connectionUrl),
+        hosts: extractHostsFromConnectionUrl(normalizedConfig.connectionUrl)
     };
 
     if (normalizedConfig.authSource) {
@@ -225,7 +225,7 @@ function createInitTimings() {
         modelRegistryEnd: null,
         databaseEnd: null,
         searchParameterEnd: null,
-        totalEnd: null,
+        totalEnd: null
     };
 }
 
@@ -396,7 +396,7 @@ function connect(config) {
         modelMap: {},
         status: "initializing",
         error: null,
-        timings: createInitTimings(),
+        timings: createInitTimings()
     };
     initializationState = state;
 
