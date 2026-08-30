@@ -4,117 +4,38 @@ mongoose.Promise = global.Promise;
 const fs = require("fs");
 const path = require("path");
 const basename = path.basename(module.filename);
-module.exports = exports = function (config) {
-    const id = config.MONGODB_USER;
-    const pwd = config.MONGODB_PASSWORD;
-    const dbName = config.MONGODB_NAME;
-    const authDB = config.MONGODB_AUTH_DB;
-    const collection = {};
-    let databaseUrl = getConnectionUrl(config);
-    console.log(databaseUrl);
 
-    let opts = {};
-    if (!config.MONGODB_CONNECTION_URL) {
-        opts = {
-            authSource: authDB,
-            auth: {
-                authSource: authDB,
-                username: id,
-                password: pwd
-            }
-        };
-    }
+let initializationState = null;
 
-    mongoose
-        .connect(databaseUrl, opts)
-        .then(() => {
-            if (process.env.MONGODB_IS_SHARDING_MODE == "true") {
-                mongoose.connection.db
-                    .admin()
-                    .command({
-                        enableSharding: dbName
-                    })
-                    .then((res) => {
-                        console.log(`sharding database ${dbName} successfully`);
-                        shardCollection("/model");
-                        shardCollection("/staticModel");
-                    })
-                    .catch((err) => {
-                        console.error(err);
-                    });
-            }
-        })
-        .catch((err) => {
-            console.error(err);
-            process.exit(1);
-        });
-
-    const db = mongoose.connection;
-    db.on("error", console.error.bind(console, "connection error:"));
-    db.once("open", function () {
-        console.log("we're connected!");
-        const { reloadRegistry } = require("../FHIR/searchParameter/registry/registryManager");
-        reloadRegistry().catch((error) => {
-            console.error("Failed to preload SearchParameter registry", error);
-        });
-    });
-    getCollections("/model", collection);
-    getCollections("/staticModel", collection);
-
-    return collection;
-};
-
-function getCollections(dirname, collectionObj) {
-    let jsFilesInDir = fs
-        .readdirSync(__dirname + dirname)
-        .filter(
-            (file) =>
-                file.indexOf(".") !== 0 &&
-                file !== basename &&
-                file.slice(-3) === ".js"
+class MongoDBInitializationConflictError extends Error {
+    constructor() {
+        super(
+            "MongoDB connector already initialized with a different configuration"
         );
-    for (let file of jsFilesInDir) {
-        const moduleName = file.split(".")[0];
-        console.log("moduleName :: ", moduleName);
-        console.log("path : ", __dirname + dirname);
-        collectionObj[moduleName] = require(
-            __dirname + dirname + "/" + moduleName
-        )(mongoose);
+        this.name = "MongoDBInitializationConflictError";
     }
 }
 
-function shardCollection(dirname) {
-    let jsFilesInDir = fs
-        .readdirSync(__dirname + dirname)
-        .filter(
-            (file) =>
-                file.indexOf(".") !== 0 &&
-                file !== basename &&
-                file.slice(-3) === ".js"
+class MongoDBModelCollisionError extends Error {
+    constructor(modelName, filePath) {
+        super(
+            `Model name collision: "${modelName}" already registered (attempted from ${filePath})`
         );
-    for (let file of jsFilesInDir) {
-        const moduleName = file.split(".")[0];
-        if (process.env.MONGODB_IS_SHARDING_MODE == "true") {
-            mongoose.connection.db
-                .admin()
-                .command({
-                    shardCollection: `${process.env.MONGODB_NAME}.${moduleName}`,
-                    key: { id: "hashed" }
-                })
-                .then((res) => {
-                    console.log(
-                        `sharding collection ${moduleName} successfully`
-                    );
-                })
-                .catch((err) => {
-                    console.error(err);
-                });
-        }
+        this.name = "MongoDBModelCollisionError";
     }
 }
 
-function getConnectionUrl(config) {
+class MongoDBConnectionConflictError extends Error {
+    constructor(message) {
+        super(
+            message ||
+                "Existing MongoDB connection does not match expected configuration"
+        );
+        this.name = "MongoDBConnectionConflictError";
+    }
+}
 
+function buildConnectionUrl(config) {
     if (config.MONGODB_CONNECTION_URL) {
         return config.MONGODB_CONNECTION_URL;
     }
@@ -135,3 +56,453 @@ function getConnectionUrl(config) {
 
     return databaseUrl;
 }
+
+function normalizeConfig(config) {
+    return {
+        connectionUrl: buildConnectionUrl(config),
+        database: config.MONGODB_NAME ?? "",
+        authSource: config.MONGODB_AUTH_DB ?? "",
+        username: config.MONGODB_USER ?? "",
+    };
+}
+
+function fingerprintFromNormalizedConfig(normalizedConfig) {
+    return JSON.stringify(normalizedConfig);
+}
+
+function markInitializationFailed(state, error) {
+    state.status = "failed";
+    state.error = error;
+}
+
+function createDeferred() {
+    let resolve;
+    let reject;
+    const promise = new Promise((res, rej) => {
+        resolve = res;
+        reject = rej;
+    });
+    return { promise, resolve, reject };
+}
+
+function attachReadinessToModelMap(state) {
+    const ready = createDeferred();
+    const shardingReady = createDeferred();
+
+    state.readyPromise = ready.promise;
+    state.shardingReadyPromise = shardingReady.promise;
+    state.readySettled = false;
+    state.shardingReadySettled = false;
+
+    state.resolveReady = (value) => {
+        if (state.readySettled) {
+            return;
+        }
+        state.readySettled = true;
+        ready.resolve(value);
+    };
+    state.rejectReady = (error) => {
+        if (state.readySettled) {
+            return;
+        }
+        state.readySettled = true;
+        ready.reject(error);
+    };
+    state.resolveShardingReady = (value) => {
+        if (state.shardingReadySettled) {
+            return;
+        }
+        state.shardingReadySettled = true;
+        shardingReady.resolve(value);
+    };
+    state.rejectShardingReady = (error) => {
+        if (state.shardingReadySettled) {
+            return;
+        }
+        state.shardingReadySettled = true;
+        shardingReady.reject(error);
+    };
+
+    Object.defineProperty(state.modelMap, "ready", {
+        value: state.readyPromise,
+        enumerable: false,
+        configurable: false,
+        writable: false
+    });
+    Object.defineProperty(state.modelMap, "shardingReady", {
+        value: state.shardingReadyPromise,
+        enumerable: false,
+        configurable: false,
+        writable: false
+    });
+}
+
+function failReady(state, error) {
+    markInitializationFailed(state, error);
+    state.rejectReady(error);
+    state.rejectShardingReady(error);
+}
+
+function buildMongooseConnectOptions(config) {
+    if (config.MONGODB_CONNECTION_URL) {
+        return {};
+    }
+
+    const authDB = config.MONGODB_AUTH_DB;
+    return {
+        authSource: authDB,
+        auth: {
+            authSource: authDB,
+            username: config.MONGODB_USER,
+            password: config.MONGODB_PASSWORD
+        }
+    };
+}
+
+function extractDatabaseFromConnectionUrl(connectionUrl) {
+    const pathPart = connectionUrl
+        .replace(/^mongodb(\+srv)?:\/\/[^/?#]+/, "")
+        .split("?")[0];
+    const database = pathPart.replace(/^\//, "").trim();
+    return database || null;
+}
+
+function getExpectedDatabaseName(normalizedConfig) {
+    if (normalizedConfig.database) {
+        return normalizedConfig.database;
+    }
+    return extractDatabaseFromConnectionUrl(normalizedConfig.connectionUrl);
+}
+
+function parseConnectionUrlHosts(connectionUrl) {
+    return extractHostsFromConnectionUrl(connectionUrl).map((host) =>
+        host.toLowerCase()
+    );
+}
+
+function extractHostsFromConnectionUrl(connectionUrl) {
+    if (!connectionUrl) {
+        return [];
+    }
+
+    const withoutProtocol = connectionUrl.replace(/^mongodb(\+srv)?:\/\//, "");
+    const hostPart = withoutProtocol.split("/")[0].split("?")[0];
+    const withoutAuth = hostPart.includes("@")
+        ? hostPart.slice(hostPart.lastIndexOf("@") + 1)
+        : hostPart;
+
+    return withoutAuth
+        .split(",")
+        .map((segment) => {
+            const trimmed = segment.trim();
+            const lastColon = trimmed.lastIndexOf(":");
+            if (lastColon > 0 && /^\d+$/.test(trimmed.slice(lastColon + 1))) {
+                return trimmed.slice(0, lastColon);
+            }
+            return trimmed;
+        })
+        .filter(Boolean);
+}
+
+function maskConnectionInfo(normalizedConfig) {
+    const masked = {
+        database:
+            normalizedConfig.database ||
+            getExpectedDatabaseName(normalizedConfig),
+        hosts: extractHostsFromConnectionUrl(normalizedConfig.connectionUrl),
+    };
+
+    if (normalizedConfig.authSource) {
+        masked.authSource = normalizedConfig.authSource;
+    }
+
+    return masked;
+}
+
+function createInitTimings() {
+    return {
+        start: performance.now(),
+        modelRegistryEnd: null,
+        databaseEnd: null,
+        searchParameterEnd: null,
+        totalEnd: null,
+    };
+}
+
+function elapsedMs(timings, from = timings.start, to = performance.now()) {
+    return Math.round(to - from);
+}
+
+function logInitPhaseFailure(state, failedPhase) {
+    console.error(
+        `[mongodb] ${failedPhase} failed after ${elapsedMs(state.timings)}ms total`
+    );
+}
+
+function assertExistingConnectionMatches(normalizedConfig) {
+    const connection = mongoose.connection;
+
+    if (connection.readyState !== 1) {
+        return;
+    }
+
+    const expectedDatabase = getExpectedDatabaseName(normalizedConfig);
+    if (expectedDatabase && connection.name !== expectedDatabase) {
+        throw new MongoDBConnectionConflictError(
+            `Existing connection database "${connection.name}" does not match expected "${expectedDatabase}"`
+        );
+    }
+
+    const expectedHosts = parseConnectionUrlHosts(normalizedConfig.connectionUrl);
+    const actualHost = (connection.host || "").toLowerCase();
+    if (expectedHosts.length > 0 && actualHost && !expectedHosts.includes(actualHost)) {
+        throw new MongoDBConnectionConflictError(
+            `Existing connection host "${connection.host}" does not match expected configuration`
+        );
+    }
+}
+
+function waitForDisconnected() {
+    const connection = mongoose.connection;
+    if (connection.readyState === 0) {
+        return Promise.resolve();
+    }
+
+    return new Promise((resolve) => {
+        connection.once("close", resolve);
+    });
+}
+
+async function waitForDatabaseReady(config, state) {
+    const connection = mongoose.connection;
+    let readyState = connection.readyState;
+
+    if (readyState === 3) {
+        await waitForDisconnected();
+        readyState = connection.readyState;
+    }
+
+    if (readyState === 1) {
+        assertExistingConnectionMatches(state.normalizedConfig);
+        return;
+    }
+
+    if (readyState === 2) {
+        await connection.asPromise();
+        assertExistingConnectionMatches(state.normalizedConfig);
+        return;
+    }
+
+    const databaseUrl = state.normalizedConfig.connectionUrl;
+    const opts = buildMongooseConnectOptions(config);
+    await mongoose.connect(databaseUrl, opts);
+}
+
+function beginDatabaseConnection(config, state) {
+    const db = mongoose.connection;
+    db.on("error", console.error.bind(console, "connection error:"));
+
+    if (process.env.MONGODB_IS_SHARDING_MODE != "true") {
+        state.resolveShardingReady();
+    }
+
+    waitForDatabaseReady(config, state)
+        .then(() => {
+            state.timings.databaseEnd = performance.now();
+            console.log(
+                `[mongodb] database ready in ${elapsedMs(
+                    state.timings,
+                    state.timings.modelRegistryEnd,
+                    state.timings.databaseEnd
+                )}ms`,
+                maskConnectionInfo(state.normalizedConfig)
+            );
+
+            const { reloadRegistry } = require("../FHIR/searchParameter/registry/registryManager");
+            return reloadRegistry();
+        })
+        .then(() => {
+            state.timings.searchParameterEnd = performance.now();
+            console.log(
+                `[mongodb] SearchParameter registry loaded in ${elapsedMs(
+                    state.timings,
+                    state.timings.databaseEnd,
+                    state.timings.searchParameterEnd
+                )}ms`
+            );
+
+            state.timings.totalEnd = performance.now();
+            console.log(
+                `[mongodb] initialization complete in ${elapsedMs(state.timings)}ms total`
+            );
+
+            state.resolveReady();
+            if (process.env.MONGODB_IS_SHARDING_MODE == "true") {
+                void provisionSharding(config, state);
+            }
+        })
+        .catch((err) => {
+            const failedPhase = !state.timings.databaseEnd
+                ? "database connection"
+                : "SearchParameter registry";
+            logInitPhaseFailure(state, failedPhase);
+            console.error(err);
+            failReady(state, err);
+        });
+}
+
+function provisionSharding(config, state) {
+    const dbName = config.MONGODB_NAME;
+
+    return Promise.resolve()
+        .then(() =>
+            mongoose.connection.db.admin().command({
+                enableSharding: dbName
+            })
+        )
+        .then(() => {
+            console.log(`sharding database ${dbName} successfully`);
+            return shardCollections(
+                getShardableModelNames(state.discovered),
+                dbName
+            );
+        })
+        .then(() => {
+            state.resolveShardingReady();
+        })
+        .catch((err) => {
+            console.error(err);
+            state.rejectShardingReady(err);
+        });
+}
+
+function connect(config) {
+    const normalizedConfig = normalizeConfig(config);
+    const fingerprint = fingerprintFromNormalizedConfig(normalizedConfig);
+
+    if (initializationState) {
+        if (initializationState.fingerprint !== fingerprint) {
+            throw new MongoDBInitializationConflictError();
+        }
+        if (initializationState.error) {
+            throw initializationState.error;
+        }
+        return initializationState.modelMap;
+    }
+
+    const state = {
+        fingerprint,
+        normalizedConfig,
+        modelMap: {},
+        status: "initializing",
+        error: null,
+        timings: createInitTimings(),
+    };
+    initializationState = state;
+
+    try {
+        state.discovered = discoverModelFiles();
+        registerDiscoveredModels(state.discovered, state.modelMap);
+        state.timings.modelRegistryEnd = performance.now();
+        console.log(
+            `[mongodb] model registry registered in ${elapsedMs(
+                state.timings,
+                state.timings.start,
+                state.timings.modelRegistryEnd
+            )}ms (${Object.keys(state.modelMap).length} models)`
+        );
+    } catch (err) {
+        logInitPhaseFailure(state, "model registry");
+        markInitializationFailed(state, err);
+        throw err;
+    }
+
+    attachReadinessToModelMap(state);
+    beginDatabaseConnection(config, state);
+    return state.modelMap;
+}
+
+function isModelJsFile(file) {
+    return (
+        file.indexOf(".") !== 0 &&
+        file !== basename &&
+        file.slice(-3) === ".js"
+    );
+}
+
+function discoverModelFiles() {
+    const modelFiles = fs
+        .readdirSync(path.join(__dirname, "model"))
+        .filter(isModelJsFile);
+
+    return {
+        resourceModels: modelFiles
+            .filter((file) => !file.endsWith("_history.js"))
+            .sort(),
+        historyModels: modelFiles
+            .filter((file) => file.endsWith("_history.js"))
+            .sort(),
+        staticModels: fs
+            .readdirSync(path.join(__dirname, "staticModel"))
+            .filter(isModelJsFile)
+            .sort()
+    };
+}
+
+function registerModelFile(file, dirname, modelMap) {
+    const moduleName = file.split(".")[0];
+    if (Object.prototype.hasOwnProperty.call(modelMap, moduleName)) {
+        throw new MongoDBModelCollisionError(
+            moduleName,
+            path.join(__dirname, dirname, file)
+        );
+    }
+    modelMap[moduleName] = require(
+        path.join(__dirname, dirname, moduleName)
+    )(mongoose);
+}
+
+function registerModelGroup(files, dirname, modelMap) {
+    for (const file of files) {
+        registerModelFile(file, dirname, modelMap);
+    }
+}
+
+function registerDiscoveredModels(discovered, modelMap) {
+    registerModelGroup(discovered.resourceModels, "/model", modelMap);
+    registerModelGroup(discovered.historyModels, "/model", modelMap);
+    registerModelGroup(discovered.staticModels, "/staticModel", modelMap);
+}
+
+function getShardableModelNames(discovered) {
+    return [
+        ...discovered.resourceModels.map((file) => file.split(".")[0]),
+        ...discovered.staticModels.map((file) => file.split(".")[0])
+    ];
+}
+
+function shardCollections(modelNames, dbName) {
+    if (process.env.MONGODB_IS_SHARDING_MODE != "true") {
+        return Promise.resolve();
+    }
+    return Promise.all(
+        modelNames.map((moduleName) =>
+            mongoose.connection.db
+                .admin()
+                .command({
+                    shardCollection: `${dbName}.${moduleName}`,
+                    key: { id: "hashed" }
+                })
+                .then(() => {
+                    console.log(`sharding collection ${moduleName} successfully`);
+                })
+        )
+    );
+}
+
+module.exports = exports = connect;
+exports.normalizeConfig = normalizeConfig;
+exports.buildConnectionUrl = buildConnectionUrl;
+exports.MongoDBInitializationConflictError = MongoDBInitializationConflictError;
+exports.MongoDBModelCollisionError = MongoDBModelCollisionError;
+exports.MongoDBConnectionConflictError = MongoDBConnectionConflictError;
