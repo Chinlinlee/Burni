@@ -1,9 +1,9 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const {
     Extension
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
-const markdown = require("../FHIRDataTypesSchema/markdown");
-const string = require("../FHIRDataTypesSchema/string");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const markdown = require('../FHIRDataTypesSchema/markdown');
+const string = require('../FHIRDataTypesSchema/string');
 
 const {
     TestReport_Assert
@@ -23,6 +23,51 @@ TestReport_Assert.add({
         default: void 0
     },
     message: markdown,
-    detail: string
+    detail: string,
+    _result: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
+        default: void 0
+    },
+    _message: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
+        default: void 0
+    },
+    _detail: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
+        default: void 0
+    }
 });
 module.exports.TestReport_Assert = TestReport_Assert;

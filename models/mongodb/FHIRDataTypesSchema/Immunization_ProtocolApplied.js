@@ -1,14 +1,14 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const {
     Extension
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
-const string = require("../FHIRDataTypesSchema/string");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const string = require('../FHIRDataTypesSchema/string');
 const {
     Reference
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
 const {
     CodeableConcept
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
 
 const {
     Immunization_ProtocolApplied
@@ -40,6 +40,81 @@ Immunization_ProtocolApplied.add({
         type: Number,
         default: void 0
     },
-    seriesDosesString: string
+    seriesDosesString: string,
+    _series: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
+        default: void 0
+    },
+    _doseNumberPositiveInt: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
+        default: void 0
+    },
+    _doseNumberString: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
+        default: void 0
+    },
+    _seriesDosesPositiveInt: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
+        default: void 0
+    },
+    _seriesDosesString: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
+        default: void 0
+    }
 });
 module.exports.Immunization_ProtocolApplied = Immunization_ProtocolApplied;

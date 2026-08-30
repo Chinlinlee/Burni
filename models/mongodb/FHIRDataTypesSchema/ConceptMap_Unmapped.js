@@ -1,10 +1,10 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const {
     Extension
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
-const code = require("../FHIRDataTypesSchema/code");
-const string = require("../FHIRDataTypesSchema/string");
-const canonical = require("../FHIRDataTypesSchema/canonical");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const code = require('../FHIRDataTypesSchema/code');
+const string = require('../FHIRDataTypesSchema/string');
+const canonical = require('../FHIRDataTypesSchema/canonical');
 
 const {
     ConceptMap_Unmapped
@@ -25,6 +25,51 @@ ConceptMap_Unmapped.add({
     },
     code: code,
     display: string,
-    url: canonical
+    url: canonical,
+    _mode: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
+        default: void 0
+    },
+    _code: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
+        default: void 0
+    },
+    _display: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
+        default: void 0
+    }
 });
 module.exports.ConceptMap_Unmapped = ConceptMap_Unmapped;

@@ -1,16 +1,18 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const {
     Extension
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
 const {
     CodeableConcept
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
-const uri = require("../FHIRDataTypesSchema/uri");
-const string = require("../FHIRDataTypesSchema/string");
-const { Period } = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const uri = require('../FHIRDataTypesSchema/uri');
+const string = require('../FHIRDataTypesSchema/string');
+const {
+    Period
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
 const {
     Reference
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
 
 const {
     Identifier
@@ -37,6 +39,51 @@ Identifier.add({
     },
     assigner: {
         type: Reference,
+        default: void 0
+    },
+    _use: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
+        default: void 0
+    },
+    _system: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
+        default: void 0
+    },
+    _value: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
         default: void 0
     }
 });

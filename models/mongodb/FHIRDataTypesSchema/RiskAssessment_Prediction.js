@@ -1,14 +1,18 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const {
     Extension
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
 const {
     CodeableConcept
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
-const { Range } = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
-const decimal = require("../FHIRDataTypesSchema/decimal");
-const { Period } = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
-const string = require("../FHIRDataTypesSchema/string");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Range
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const decimal = require('../FHIRDataTypesSchema/decimal');
+const {
+    Period
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const string = require('../FHIRDataTypesSchema/string');
 
 const {
     RiskAssessment_Prediction
@@ -47,6 +51,51 @@ RiskAssessment_Prediction.add({
         type: Range,
         default: void 0
     },
-    rationale: string
+    rationale: string,
+    _probabilityDecimal: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
+        default: void 0
+    },
+    _relativeRisk: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
+        default: void 0
+    },
+    _rationale: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
+        default: void 0
+    }
 });
 module.exports.RiskAssessment_Prediction = RiskAssessment_Prediction;

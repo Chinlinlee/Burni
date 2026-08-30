@@ -1,10 +1,10 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const {
     Extension
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
 const {
     Reference
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
 
 const {
     CatalogEntry_RelatedEntry
@@ -26,6 +26,21 @@ CatalogEntry_RelatedEntry.add({
     item: {
         type: Reference,
         required: true,
+        default: void 0
+    },
+    _relationtype: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
         default: void 0
     }
 });

@@ -1,17 +1,17 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const {
     Extension
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
 const {
     Identifier
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
 const {
     CodeableConcept
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
 const {
     Reference
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
-const dateTime = require("../FHIRDataTypesSchema/dateTime");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const dateTime = require('../FHIRDataTypesSchema/dateTime');
 
 const {
     MedicinalProduct_SpecialDesignation
@@ -53,7 +53,21 @@ MedicinalProduct_SpecialDesignation.add({
     species: {
         type: CodeableConcept,
         default: void 0
+    },
+    _date: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
+        default: void 0
     }
 });
-module.exports.MedicinalProduct_SpecialDesignation =
-    MedicinalProduct_SpecialDesignation;
+module.exports.MedicinalProduct_SpecialDesignation = MedicinalProduct_SpecialDesignation;

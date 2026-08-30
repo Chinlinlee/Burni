@@ -1,19 +1,24 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const {
     Extension
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
-const boolean = require("../FHIRDataTypesSchema/boolean");
-const string = require("../FHIRDataTypesSchema/string");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const boolean = require('../FHIRDataTypesSchema/boolean');
+const date = require('../FHIRDataTypesSchema/date');
+const dateTime = require('../FHIRDataTypesSchema/dateTime');
+const time = require('../FHIRDataTypesSchema/time');
+const string = require('../FHIRDataTypesSchema/string');
 const {
     Attachment
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
-const { Coding } = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Coding
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
 const {
     Quantity
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
 const {
     Reference
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
 
 const {
     Contract_Answer
@@ -36,9 +41,9 @@ Contract_Answer.add({
         type: Number,
         default: void 0
     },
-    valueDate: string,
-    valueDateTime: string,
-    valueTime: string,
+    valueDate: date,
+    valueDateTime: dateTime,
+    valueTime: time,
     valueString: string,
     valueUri: string,
     valueAttachment: {
@@ -55,6 +60,126 @@ Contract_Answer.add({
     },
     valueReference: {
         type: Reference,
+        default: void 0
+    },
+    _valueBoolean: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
+        default: void 0
+    },
+    _valueDecimal: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
+        default: void 0
+    },
+    _valueInteger: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
+        default: void 0
+    },
+    _valueDate: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
+        default: void 0
+    },
+    _valueDateTime: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
+        default: void 0
+    },
+    _valueTime: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
+        default: void 0
+    },
+    _valueString: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
+        default: void 0
+    },
+    _valueUri: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
         default: void 0
     }
 });

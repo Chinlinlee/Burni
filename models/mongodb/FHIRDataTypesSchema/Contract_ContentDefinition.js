@@ -1,16 +1,16 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const {
     Extension
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
 const {
     CodeableConcept
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
 const {
     Reference
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
-const dateTime = require("../FHIRDataTypesSchema/dateTime");
-const code = require("../FHIRDataTypesSchema/code");
-const markdown = require("../FHIRDataTypesSchema/markdown");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const dateTime = require('../FHIRDataTypesSchema/dateTime');
+const code = require('../FHIRDataTypesSchema/code');
+const markdown = require('../FHIRDataTypesSchema/markdown');
 
 const {
     Contract_ContentDefinition
@@ -39,6 +39,51 @@ Contract_ContentDefinition.add({
     },
     publicationDate: dateTime,
     publicationStatus: code,
-    copyright: markdown
+    copyright: markdown,
+    _publicationDate: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
+        default: void 0
+    },
+    _publicationStatus: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
+        default: void 0
+    },
+    _copyright: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
+        default: void 0
+    }
 });
 module.exports.Contract_ContentDefinition = Contract_ContentDefinition;

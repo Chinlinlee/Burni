@@ -1,9 +1,11 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const {
     Extension
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
-const string = require("../FHIRDataTypesSchema/string");
-const { Period } = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const string = require('../FHIRDataTypesSchema/string');
+const {
+    Period
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
 
 const {
     HumanName
@@ -15,15 +17,7 @@ HumanName.add({
     },
     use: {
         type: String,
-        enum: [
-            "usual",
-            "official",
-            "temp",
-            "nickname",
-            "anonymous",
-            "old",
-            "maiden"
-        ],
+        enum: ["usual", "official", "temp", "nickname", "anonymous", "old", "maiden"],
         default: void 0
     },
     text: string,
@@ -44,22 +38,94 @@ HumanName.add({
         type: Period,
         default: void 0
     },
-    _family: {
-        type: new mongoose.Schema(
-            {
-                extension: {
-                    type: [Extension],
-                    default: void 0
-                }
-            },
-            {
-                _id: false,
-                id: false,
-                toObject: {
-                    getters: true
-                }
+    _use: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
             }
-        ),
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
+        default: void 0
+    },
+    _text: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
+        default: void 0
+    },
+    _family: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
+        default: void 0
+    },
+    _given: {
+        type: [new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        })],
+        default: void 0
+    },
+    _prefix: {
+        type: [new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        })],
+        default: void 0
+    },
+    _suffix: {
+        type: [new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        })],
         default: void 0
     }
 });

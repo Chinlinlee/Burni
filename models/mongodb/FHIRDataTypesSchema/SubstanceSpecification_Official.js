@@ -1,11 +1,11 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const {
     Extension
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
 const {
     CodeableConcept
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
-const dateTime = require("../FHIRDataTypesSchema/dateTime");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const dateTime = require('../FHIRDataTypesSchema/dateTime');
 
 const {
     SubstanceSpecification_Official
@@ -27,7 +27,21 @@ SubstanceSpecification_Official.add({
         type: CodeableConcept,
         default: void 0
     },
-    date: dateTime
+    date: dateTime,
+    _date: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
+        default: void 0
+    }
 });
-module.exports.SubstanceSpecification_Official =
-    SubstanceSpecification_Official;
+module.exports.SubstanceSpecification_Official = SubstanceSpecification_Official;

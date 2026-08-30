@@ -1,24 +1,26 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const {
     Extension
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
 const {
     CodeableConcept
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
 const {
     Reference
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
 const {
     Identifier
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
-const dateTime = require("../FHIRDataTypesSchema/dateTime");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const dateTime = require('../FHIRDataTypesSchema/dateTime');
 const {
     Quantity
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
-const { Money } = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
-const decimal = require("../FHIRDataTypesSchema/decimal");
-const string = require("../FHIRDataTypesSchema/string");
-const unsignedInt = require("../FHIRDataTypesSchema/unsignedInt");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Money
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const decimal = require('../FHIRDataTypesSchema/decimal');
+const string = require('../FHIRDataTypesSchema/string');
+const unsignedInt = require('../FHIRDataTypesSchema/unsignedInt');
 
 const {
     Contract_ValuedItem
@@ -75,6 +77,111 @@ Contract_ValuedItem.add({
     },
     securityLabelNumber: {
         type: [unsignedInt],
+        default: void 0
+    },
+    _effectiveTime: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
+        default: void 0
+    },
+    _factor: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
+        default: void 0
+    },
+    _points: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
+        default: void 0
+    },
+    _payment: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
+        default: void 0
+    },
+    _paymentDate: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
+        default: void 0
+    },
+    _linkId: {
+        type: [new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        })],
+        default: void 0
+    },
+    _securityLabelNumber: {
+        type: [new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        })],
         default: void 0
     }
 });

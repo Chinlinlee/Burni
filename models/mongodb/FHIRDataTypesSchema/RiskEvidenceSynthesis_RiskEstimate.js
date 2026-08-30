@@ -1,16 +1,16 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const {
     Extension
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
-const string = require("../FHIRDataTypesSchema/string");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const string = require('../FHIRDataTypesSchema/string');
 const {
     CodeableConcept
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
-const decimal = require("../FHIRDataTypesSchema/decimal");
-const integer = require("../FHIRDataTypesSchema/integer");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const decimal = require('../FHIRDataTypesSchema/decimal');
+const integer = require('../FHIRDataTypesSchema/integer');
 const {
     RiskEvidenceSynthesis_PrecisionEstimate
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
 
 const {
     RiskEvidenceSynthesis_RiskEstimate
@@ -39,7 +39,66 @@ RiskEvidenceSynthesis_RiskEstimate.add({
     precisionEstimate: {
         type: [RiskEvidenceSynthesis_PrecisionEstimate],
         default: void 0
+    },
+    _description: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
+        default: void 0
+    },
+    _value: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
+        default: void 0
+    },
+    _denominatorCount: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
+        default: void 0
+    },
+    _numeratorCount: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
+        default: void 0
     }
 });
-module.exports.RiskEvidenceSynthesis_RiskEstimate =
-    RiskEvidenceSynthesis_RiskEstimate;
+module.exports.RiskEvidenceSynthesis_RiskEstimate = RiskEvidenceSynthesis_RiskEstimate;

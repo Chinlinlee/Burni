@@ -1,8 +1,8 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const {
     Extension
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
-const boolean = require("../FHIRDataTypesSchema/boolean");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const boolean = require('../FHIRDataTypesSchema/boolean');
 
 const {
     TerminologyCapabilities_ValidateCode
@@ -16,7 +16,21 @@ TerminologyCapabilities_ValidateCode.add({
         type: [Extension],
         default: void 0
     },
-    translations: boolean
+    translations: boolean,
+    _translations: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
+        default: void 0
+    }
 });
-module.exports.TerminologyCapabilities_ValidateCode =
-    TerminologyCapabilities_ValidateCode;
+module.exports.TerminologyCapabilities_ValidateCode = TerminologyCapabilities_ValidateCode;

@@ -1,24 +1,29 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const {
     Extension
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
-const boolean = require("../FHIRDataTypesSchema/boolean");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const boolean = require('../FHIRDataTypesSchema/boolean');
 const {
     CodeableConcept
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
 const {
     Contract_Subject
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
-const string = require("../FHIRDataTypesSchema/string");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const string = require('../FHIRDataTypesSchema/string');
 const {
     Reference
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
-const { Period } = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
-const { Timing } = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const dateTime = require('../FHIRDataTypesSchema/dateTime');
+const {
+    Period
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Timing
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
 const {
     Annotation
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
-const unsignedInt = require("../FHIRDataTypesSchema/unsignedInt");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const unsignedInt = require('../FHIRDataTypesSchema/unsignedInt');
 
 const {
     Contract_Action
@@ -64,7 +69,7 @@ Contract_Action.add({
         type: [string],
         default: void 0
     },
-    occurrenceDateTime: string,
+    occurrenceDateTime: dateTime,
     occurrencePeriod: {
         type: Period,
         default: void 0
@@ -119,6 +124,141 @@ Contract_Action.add({
     },
     securityLabelNumber: {
         type: [unsignedInt],
+        default: void 0
+    },
+    _doNotPerform: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
+        default: void 0
+    },
+    _linkId: {
+        type: [new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        })],
+        default: void 0
+    },
+    _contextLinkId: {
+        type: [new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        })],
+        default: void 0
+    },
+    _occurrenceDateTime: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
+        default: void 0
+    },
+    _requesterLinkId: {
+        type: [new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        })],
+        default: void 0
+    },
+    _performerLinkId: {
+        type: [new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        })],
+        default: void 0
+    },
+    _reason: {
+        type: [new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        })],
+        default: void 0
+    },
+    _reasonLinkId: {
+        type: [new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        })],
+        default: void 0
+    },
+    _securityLabelNumber: {
+        type: [new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        })],
         default: void 0
     }
 });

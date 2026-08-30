@@ -1,12 +1,12 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const {
     Extension
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
-const boolean = require("../FHIRDataTypesSchema/boolean");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const boolean = require('../FHIRDataTypesSchema/boolean');
 const {
     Reference
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
-const string = require("../FHIRDataTypesSchema/string");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const string = require('../FHIRDataTypesSchema/string');
 
 const {
     CoverageEligibilityRequest_Insurance
@@ -26,7 +26,36 @@ CoverageEligibilityRequest_Insurance.add({
         required: true,
         default: void 0
     },
-    businessArrangement: string
+    businessArrangement: string,
+    _focal: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
+        default: void 0
+    },
+    _businessArrangement: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
+        default: void 0
+    }
 });
-module.exports.CoverageEligibilityRequest_Insurance =
-    CoverageEligibilityRequest_Insurance;
+module.exports.CoverageEligibilityRequest_Insurance = CoverageEligibilityRequest_Insurance;

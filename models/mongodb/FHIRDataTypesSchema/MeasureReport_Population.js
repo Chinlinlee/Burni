@@ -1,14 +1,14 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const {
     Extension
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
 const {
     CodeableConcept
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
-const integer = require("../FHIRDataTypesSchema/integer");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const integer = require('../FHIRDataTypesSchema/integer');
 const {
     Reference
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
 
 const {
     MeasureReport_Population
@@ -29,6 +29,21 @@ MeasureReport_Population.add({
     count: integer,
     subjectResults: {
         type: Reference,
+        default: void 0
+    },
+    _count: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
         default: void 0
     }
 });

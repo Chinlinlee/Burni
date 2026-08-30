@@ -1,13 +1,13 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const {
     Extension
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
 const {
     CodeableConcept
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
 const {
     Annotation
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
 
 const {
     RiskEvidenceSynthesis_CertaintySubcomponent
@@ -34,5 +34,4 @@ RiskEvidenceSynthesis_CertaintySubcomponent.add({
         default: void 0
     }
 });
-module.exports.RiskEvidenceSynthesis_CertaintySubcomponent =
-    RiskEvidenceSynthesis_CertaintySubcomponent;
+module.exports.RiskEvidenceSynthesis_CertaintySubcomponent = RiskEvidenceSynthesis_CertaintySubcomponent;

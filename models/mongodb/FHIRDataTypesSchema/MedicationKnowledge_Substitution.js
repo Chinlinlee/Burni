@@ -1,11 +1,11 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const {
     Extension
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
 const {
     CodeableConcept
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
-const boolean = require("../FHIRDataTypesSchema/boolean");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const boolean = require('../FHIRDataTypesSchema/boolean');
 
 const {
     MedicationKnowledge_Substitution
@@ -24,7 +24,21 @@ MedicationKnowledge_Substitution.add({
         required: true,
         default: void 0
     },
-    allowed: boolean
+    allowed: boolean,
+    _allowed: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
+        default: void 0
+    }
 });
-module.exports.MedicationKnowledge_Substitution =
-    MedicationKnowledge_Substitution;
+module.exports.MedicationKnowledge_Substitution = MedicationKnowledge_Substitution;

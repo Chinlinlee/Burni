@@ -1,8 +1,8 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const {
     Extension
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
-const canonical = require("../FHIRDataTypesSchema/canonical");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const canonical = require('../FHIRDataTypesSchema/canonical');
 
 const {
     CapabilityStatement_SupportedMessage
@@ -21,7 +21,21 @@ CapabilityStatement_SupportedMessage.add({
         enum: ["sender", "receiver"],
         default: void 0
     },
-    definition: canonical
+    definition: canonical,
+    _mode: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
+        default: void 0
+    }
 });
-module.exports.CapabilityStatement_SupportedMessage =
-    CapabilityStatement_SupportedMessage;
+module.exports.CapabilityStatement_SupportedMessage = CapabilityStatement_SupportedMessage;

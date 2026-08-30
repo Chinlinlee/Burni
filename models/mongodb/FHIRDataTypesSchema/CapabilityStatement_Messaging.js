@@ -1,15 +1,15 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const {
     Extension
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
 const {
     CapabilityStatement_Endpoint
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
-const unsignedInt = require("../FHIRDataTypesSchema/unsignedInt");
-const markdown = require("../FHIRDataTypesSchema/markdown");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const unsignedInt = require('../FHIRDataTypesSchema/unsignedInt');
+const markdown = require('../FHIRDataTypesSchema/markdown');
 const {
     CapabilityStatement_SupportedMessage
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
 
 const {
     CapabilityStatement_Messaging
@@ -31,6 +31,36 @@ CapabilityStatement_Messaging.add({
     documentation: markdown,
     supportedMessage: {
         type: [CapabilityStatement_SupportedMessage],
+        default: void 0
+    },
+    _reliableCache: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
+        default: void 0
+    },
+    _documentation: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
         default: void 0
     }
 });

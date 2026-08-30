@@ -1,11 +1,11 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const {
     Extension
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
-const code = require("../FHIRDataTypesSchema/code");
-const canonical = require("../FHIRDataTypesSchema/canonical");
-const unsignedInt = require("../FHIRDataTypesSchema/unsignedInt");
-const string = require("../FHIRDataTypesSchema/string");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const code = require('../FHIRDataTypesSchema/code');
+const canonical = require('../FHIRDataTypesSchema/canonical');
+const unsignedInt = require('../FHIRDataTypesSchema/unsignedInt');
+const string = require('../FHIRDataTypesSchema/string');
 
 const {
     MessageDefinition_Focus
@@ -22,6 +22,51 @@ MessageDefinition_Focus.add({
     code: code,
     profile: canonical,
     min: unsignedInt,
-    max: string
+    max: string,
+    _code: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
+        default: void 0
+    },
+    _min: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
+        default: void 0
+    },
+    _max: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
+        default: void 0
+    }
 });
 module.exports.MessageDefinition_Focus = MessageDefinition_Focus;

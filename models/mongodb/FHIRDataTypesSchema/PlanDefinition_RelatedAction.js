@@ -1,12 +1,14 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const {
     Extension
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
-const id = require("../FHIRDataTypesSchema/id");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const id = require('../FHIRDataTypesSchema/id');
 const {
     Duration
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
-const { Range } = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Range
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
 
 const {
     PlanDefinition_RelatedAction
@@ -23,17 +25,7 @@ PlanDefinition_RelatedAction.add({
     actionId: id,
     relationship: {
         type: String,
-        enum: [
-            "before-start",
-            "before",
-            "before-end",
-            "concurrent-with-start",
-            "concurrent",
-            "concurrent-with-end",
-            "after-start",
-            "after",
-            "after-end"
-        ],
+        enum: ["before-start", "before", "before-end", "concurrent-with-start", "concurrent", "concurrent-with-end", "after-start", "after", "after-end"],
         default: void 0
     },
     offsetDuration: {
@@ -42,6 +34,36 @@ PlanDefinition_RelatedAction.add({
     },
     offsetRange: {
         type: Range,
+        default: void 0
+    },
+    _actionId: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
+        default: void 0
+    },
+    _relationship: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
         default: void 0
     }
 });

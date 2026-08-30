@@ -1,8 +1,8 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const {
     Extension
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
-const decimal = require("../FHIRDataTypesSchema/decimal");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const decimal = require('../FHIRDataTypesSchema/decimal');
 
 const {
     Bundle_Search
@@ -21,6 +21,36 @@ Bundle_Search.add({
         enum: ["match", "include", "outcome"],
         default: void 0
     },
-    score: decimal
+    score: decimal,
+    _mode: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
+        default: void 0
+    },
+    _score: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
+        default: void 0
+    }
 });
 module.exports.Bundle_Search = Bundle_Search;

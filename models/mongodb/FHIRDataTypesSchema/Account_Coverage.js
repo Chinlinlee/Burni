@@ -1,11 +1,11 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const {
     Extension
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
 const {
     Reference
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
-const positiveInt = require("../FHIRDataTypesSchema/positiveInt");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const positiveInt = require('../FHIRDataTypesSchema/positiveInt');
 
 const {
     Account_Coverage
@@ -24,6 +24,21 @@ Account_Coverage.add({
         required: true,
         default: void 0
     },
-    priority: positiveInt
+    priority: positiveInt,
+    _priority: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
+        default: void 0
+    }
 });
 module.exports.Account_Coverage = Account_Coverage;

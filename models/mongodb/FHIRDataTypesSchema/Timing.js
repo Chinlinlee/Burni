@@ -1,16 +1,18 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const {
     Extension
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
-const dateTime = require("../FHIRDataTypesSchema/dateTime");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const dateTime = require('../FHIRDataTypesSchema/dateTime');
 const {
     Timing_Repeat
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
 const {
     CodeableConcept
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
 
-const { Timing } = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const {
+    Timing
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 Timing.add({
     extension: {
         type: [Extension],
@@ -33,23 +35,18 @@ Timing.add({
         default: void 0
     },
     _event: {
-        type: [
-            new mongoose.Schema(
-                {
-                    extension: {
-                        type: [Extension],
-                        default: void 0
-                    }
-                },
-                {
-                    _id: false,
-                    id: false,
-                    toObject: {
-                        getters: true
-                    }
-                }
-            )
-        ],
+        type: [new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        })],
         default: void 0
     }
 });

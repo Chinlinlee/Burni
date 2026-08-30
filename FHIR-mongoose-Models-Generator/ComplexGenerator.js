@@ -20,6 +20,11 @@ let FHIRJson = schemaJson.definitions;
 let genedType = [];
 
 const DataTypesSummary = require("./DataTypesSummary");
+const { fixChoiceTypeOfDate } = require("./temporalFieldMapping");
+const {
+    resolveElementExtensionField,
+    formatElementExtensionField
+} = require("./elementExtensionMapping");
 
 function checkIsFHIRResource(resourceName) {
     return resourceList.find((v) => {
@@ -43,7 +48,11 @@ function cleanChildSchema(item) {
 }
 
 function isPrimitiveType(typeName) {
-    return /^[a-z]/.test(typeName) && typeName != "number";
+    return (
+        /^[a-z]/.test(typeName) &&
+        typeName != "number" &&
+        DataTypesSummary.PrimitiveTypes.includes(typeName)
+    );
 }
 function getSchema(resource, name) {
     //let skipCol = ["resourceType" , "id" , "meta" ,"implicitRules" ,"language" , "text" ,"contained" , "extension" , "modifierExtension"];
@@ -53,8 +62,22 @@ function getSchema(resource, name) {
     for (let i in resource.properties) {
         //skip the unusual type
         if (skipCol.indexOf(i) >= 0) continue;
-        else if (i.indexOf("_") == 0) continue;
+        else if (i.indexOf("_") == 0) {
+            const elementExtension = resolveElementExtensionField(
+                i,
+                resource.properties[i],
+                resource.properties
+            );
+            if (!elementExtension.yes) {
+                continue;
+            }
+            result[i] = {
+                __elementExtension: elementExtension.isArray
+            };
+            continue;
+        }
         let type = _.get(resource.properties[i], "type");
+        let choiceTypeDate = fixChoiceTypeOfDate(i, type);
         let refSchema = _.get(resource.properties[i], "$ref");
         let isCode = _.get(resource.properties[i], "enum");
         if (type == "array") {
@@ -68,6 +91,7 @@ function getSchema(resource, name) {
             let arrayRefClean = arrayRef.split("/");
             let typeOfField = arrayRefClean[arrayRefClean.length - 1];
             if (typeOfField == name) typeOfField = "this";
+            if (choiceTypeDate.yes) typeOfField = choiceTypeDate.type;
             if (/^#/.test(arrayRef)) {
                 result[i] = {
                     type: `[${typeOfField}]`
@@ -81,6 +105,7 @@ function getSchema(resource, name) {
             if (/^#/.test(refSchema)) {
                 let refClean = refSchema.split("/");
                 let typeOfField = refClean[refClean.length - 1];
+                if (choiceTypeDate.yes) typeOfField = choiceTypeDate.type;
                 if (isPrimitiveType(typeOfField)) {
                     result[i] = typeOfField;
                 } else {
@@ -91,6 +116,7 @@ function getSchema(resource, name) {
             } else if (!/^#/.test(refSchema)) {
                 let refClean = refSchema.split("/");
                 let typeOfField = refClean[refClean.length - 1];
+                if (choiceTypeDate.yes) typeOfField = choiceTypeDate.type;
                 if (isPrimitiveType(typeOfField)) {
                     result[i] = typeOfField;
                 } else {
@@ -107,6 +133,7 @@ function getSchema(resource, name) {
                 enum: JSON.stringify(isCode)
             };
         } else {
+            if (choiceTypeDate.yes) type = choiceTypeDate.type;
             if (isPrimitiveType(type)) {
                 result[i] = type;
             } else {
@@ -127,12 +154,43 @@ function getSchema(resource, name) {
     return result;
 }
 
+function formatSchemaBody(schema) {
+    /** @type {Record<string, unknown>} */
+    const normalSchema = {};
+    /** @type {Record<string, boolean>} */
+    const elementExtensions = {};
+
+    for (const [fieldName, fieldDef] of Object.entries(schema)) {
+        if (fieldDef && fieldDef.__elementExtension !== undefined) {
+            elementExtensions[fieldName] = fieldDef.__elementExtension;
+            continue;
+        }
+        normalSchema[fieldName] = fieldDef;
+    }
+
+    let schemaStr = JSON.stringify(normalSchema, null, 4).replace(/\"/gm, "");
+    schemaStr = schemaStr.replace(/\\/gm, '"');
+
+    if (Object.keys(elementExtensions).length > 0) {
+        const extensionParts = Object.entries(elementExtensions).map(
+            ([fieldName, isArray]) =>
+                `    ${fieldName}: ${formatElementExtensionField(isArray)}`
+        );
+        schemaStr = schemaStr.replace(/\n\}$/, `,\n${extensionParts.join(",\n")}\n}`);
+    }
+
+    return schemaStr;
+}
+
 function getImportLibs(schema) {
     let importLib = "const mongoose = require('mongoose');\r\n";
     let importedTypeLib = [];
     let cleanType = "";
     for (let i in schema) {
         let item = schema[i];
+        if (item && item.__elementExtension !== undefined) {
+            continue;
+        }
         if (_.get(item, "type")) {
             item.default = "void 0";
             cleanType = item.type.replace(/[\[\]]/gm, "");
@@ -151,22 +209,31 @@ function getImportLibs(schema) {
             importedTypeLib.push(cleanType);
         }
     }
+
+    const needsElementExtensionImport = Object.values(schema).some(
+        (fieldDef) => fieldDef && fieldDef.__elementExtension !== undefined
+    );
+    if (needsElementExtensionImport && !importedTypeLib.includes("Extension")) {
+        importLib =
+            `${importLib}const { Extension } = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');\r\n`;
+    }
+
     return importLib;
 }
 async function generateSchema(type) {
     let schema = getSchema(FHIRJson[type], type);
     cleanChildSchema(schema);
     let importLibs = getImportLibs(schema);
-    let schemaStr = JSON.stringify(schema, null, 4).replace(/\"/gm, "");
+    const schemaBody = formatSchemaBody(schema);
     let code = `
     const { ${type} } = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
-    ${type}.add(${schemaStr.replace(/\\/gm, '"')});
+    ${type}.add(${schemaBody});
     module.exports.${type} = ${type};`;
     code = `${importLibs}${code}`;
 
-    await mkdirp(`./models/mongodb/FHIRDataTypesSchema-New`);
+    mkdirp.sync(`./models/mongodb/FHIRDataTypesSchema`);
     fs.writeFileSync(
-        `./models/mongodb/FHIRDataTypesSchema-New/${type}.js`,
+        `./models/mongodb/FHIRDataTypesSchema/${type}.js`,
         beautify(code, { indent_size: 4, pace_in_empty_paren: true })
     );
 }

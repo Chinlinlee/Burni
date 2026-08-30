@@ -1,8 +1,10 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const {
     Extension
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
-const { Period } = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Period
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
 
 const {
     EpisodeOfCare_StatusHistory
@@ -18,20 +20,27 @@ EpisodeOfCare_StatusHistory.add({
     },
     status: {
         type: String,
-        enum: [
-            "planned",
-            "waitlist",
-            "active",
-            "onhold",
-            "finished",
-            "cancelled",
-            "entered-in-error"
-        ],
+        enum: ["planned", "waitlist", "active", "onhold", "finished", "cancelled", "entered-in-error"],
         default: void 0
     },
     period: {
         type: Period,
         required: true,
+        default: void 0
+    },
+    _status: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
         default: void 0
     }
 });

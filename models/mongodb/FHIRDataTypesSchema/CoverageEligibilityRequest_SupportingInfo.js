@@ -1,12 +1,12 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const {
     Extension
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
-const positiveInt = require("../FHIRDataTypesSchema/positiveInt");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const positiveInt = require('../FHIRDataTypesSchema/positiveInt');
 const {
     Reference
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
-const boolean = require("../FHIRDataTypesSchema/boolean");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const boolean = require('../FHIRDataTypesSchema/boolean');
 
 const {
     CoverageEligibilityRequest_SupportingInfo
@@ -26,7 +26,36 @@ CoverageEligibilityRequest_SupportingInfo.add({
         required: true,
         default: void 0
     },
-    appliesToAll: boolean
+    appliesToAll: boolean,
+    _sequence: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
+        default: void 0
+    },
+    _appliesToAll: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
+        default: void 0
+    }
 });
-module.exports.CoverageEligibilityRequest_SupportingInfo =
-    CoverageEligibilityRequest_SupportingInfo;
+module.exports.CoverageEligibilityRequest_SupportingInfo = CoverageEligibilityRequest_SupportingInfo;

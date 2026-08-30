@@ -7,10 +7,10 @@
 
 ## 2. Generator and schemas
 
-- [ ] 2.1 更新 `PrimitiveGenerator.js`，使 date、dateTime、instant 產生新的 canonical schema definition。
-- [ ] 2.2 更新所有 nested datatype、choice、resource 與 history schema 的 temporal field mapping。
-- [ ] 2.3 執行 generator，檢查所有 generated output，並確認非 temporal diff 沒有非預期變更。
-- [ ] 2.4 在每次後續 generator 或 schema 修改後重新執行 generator，驗證 source 與 generated output 保持一致。
+- [x] 2.1 更新 `PrimitiveGenerator.js`，使 date、dateTime、instant 產生新的 canonical schema definition。
+- [x] 2.2 更新所有 nested datatype、choice、resource 與 history schema 的 temporal field mapping。
+- [x] 2.3 執行 generator，檢查所有 generated output，並確認非 temporal diff 沒有非預期變更。
+- [x] 2.4 在每次後續 generator 或 schema 修改後重新執行 generator，驗證 source 與 generated output 保持一致。
 
 ## 3. FHIR write and response integration
 

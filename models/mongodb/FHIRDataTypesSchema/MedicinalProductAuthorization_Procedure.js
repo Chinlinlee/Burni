@@ -1,15 +1,17 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const {
     Extension
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
 const {
     Identifier
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
 const {
     CodeableConcept
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
-const { Period } = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
-const string = require("../FHIRDataTypesSchema/string");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const {
+    Period
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const dateTime = require('../FHIRDataTypesSchema/dateTime');
 
 const {
     MedicinalProductAuthorization_Procedure
@@ -36,11 +38,25 @@ MedicinalProductAuthorization_Procedure.add({
         type: Period,
         default: void 0
     },
-    dateDateTime: string,
+    dateDateTime: dateTime,
     application: {
         type: [this],
         default: void 0
+    },
+    _dateDateTime: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
+        default: void 0
     }
 });
-module.exports.MedicinalProductAuthorization_Procedure =
-    MedicinalProductAuthorization_Procedure;
+module.exports.MedicinalProductAuthorization_Procedure = MedicinalProductAuthorization_Procedure;

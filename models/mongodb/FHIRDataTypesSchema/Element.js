@@ -1,9 +1,11 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const {
     Extension
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
 
-const { Element } = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const {
+    Element
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 Element.add({
     extension: {
         type: [Extension],

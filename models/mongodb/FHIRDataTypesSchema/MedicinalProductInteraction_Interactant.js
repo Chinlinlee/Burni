@@ -1,13 +1,13 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const {
     Extension
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
 const {
     Reference
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
 const {
     CodeableConcept
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
 
 const {
     MedicinalProductInteraction_Interactant
@@ -30,5 +30,4 @@ MedicinalProductInteraction_Interactant.add({
         default: void 0
     }
 });
-module.exports.MedicinalProductInteraction_Interactant =
-    MedicinalProductInteraction_Interactant;
+module.exports.MedicinalProductInteraction_Interactant = MedicinalProductInteraction_Interactant;

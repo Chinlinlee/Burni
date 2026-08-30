@@ -6,6 +6,7 @@ const skipFieldTypes = ["Number", "String", "Date", "this", "Object"];
 const path = require("path");
 const mkdirp = require("mkdirp");
 const DataTypesSummary = require("./DataTypesSummary");
+const { fixChoiceTypeOfDate } = require("./temporalFieldMapping");
 let schemaJson = JSON.parse(
     fs.readFileSync(path.join(__dirname, "./fhir.schema.json"), {
         encoding: "utf-8"
@@ -35,36 +36,6 @@ function cleanChildSchema(item) {
             }
         }
     }
-}
-
-function fixChoiceTypeOfDate(fieldName, type) {
-    if (fieldName == "modifierExtension")
-        return {
-            yes: false,
-            type: ""
-        };
-    const dateTypes = ["Date", "DateTime", "Instant", "Time"];
-    let typeOfField = fieldName.match(/([A-Z])\w+/g);
-
-    for (let i = 0; i < dateTypes.length; i++) {
-        let dateType = dateTypes[i];
-
-        if (typeOfField == dateType && type == "string") {
-            console.info(
-                `fieldName ${fieldName} typeOfField ${typeOfField} , dateType ${dateType} , type ${type}`
-            );
-            let lowerFirstDateTypes =
-                dateType.charAt(0).toLowerCase() + dateType.slice(1);
-            return {
-                yes: true,
-                type: lowerFirstDateTypes
-            };
-        }
-    }
-    return {
-        yes: false,
-        type: ""
-    };
 }
 
 /**

@@ -1,12 +1,12 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const {
     Extension
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
-const boolean = require("../FHIRDataTypesSchema/boolean");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const boolean = require('../FHIRDataTypesSchema/boolean');
 const {
     TerminologyCapabilities_Parameter
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
-const markdown = require("../FHIRDataTypesSchema/markdown");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const markdown = require('../FHIRDataTypesSchema/markdown');
 
 const {
     TerminologyCapabilities_Expansion
@@ -27,7 +27,66 @@ TerminologyCapabilities_Expansion.add({
         type: [TerminologyCapabilities_Parameter],
         default: void 0
     },
-    textFilter: markdown
+    textFilter: markdown,
+    _hierarchical: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
+        default: void 0
+    },
+    _paging: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
+        default: void 0
+    },
+    _incomplete: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
+        default: void 0
+    },
+    _textFilter: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
+        default: void 0
+    }
 });
-module.exports.TerminologyCapabilities_Expansion =
-    TerminologyCapabilities_Expansion;
+module.exports.TerminologyCapabilities_Expansion = TerminologyCapabilities_Expansion;

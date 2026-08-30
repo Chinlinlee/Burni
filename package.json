@@ -5,6 +5,7 @@
     "main": "index.js",
     "scripts": {
         "test": "mocha",
+        "generate:fhir-schemas": "node ./scripts/run-fhir-schema-generators.js",
         "search-parameter:diagnostics": "node ./scripts/record-search-parameter-diagnostics.js",
         "search-parameter:verify": "node ./scripts/verify-search-parameter-diagnostics.js",
         "test:diagnostics-gate": "mocha test/searchParameter/migration/diagnostics-ci-gate.test.js",

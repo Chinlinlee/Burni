@@ -1,14 +1,18 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const {
     Extension
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
-const id = require("../FHIRDataTypesSchema/id");
-const instant = require("../FHIRDataTypesSchema/instant");
-const uri = require("../FHIRDataTypesSchema/uri");
-const canonical = require("../FHIRDataTypesSchema/canonical");
-const { Coding } = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const id = require('../FHIRDataTypesSchema/id');
+const instant = require('../FHIRDataTypesSchema/instant');
+const uri = require('../FHIRDataTypesSchema/uri');
+const canonical = require('../FHIRDataTypesSchema/canonical');
+const {
+    Coding
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
 
-const { Meta } = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+const {
+    Meta
+} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
 Meta.add({
     extension: {
         type: [Extension],
@@ -27,6 +31,51 @@ Meta.add({
     },
     tag: {
         type: [Coding],
+        default: void 0
+    },
+    _versionId: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
+        default: void 0
+    },
+    _lastUpdated: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
+        default: void 0
+    },
+    _source: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
         default: void 0
     }
 });

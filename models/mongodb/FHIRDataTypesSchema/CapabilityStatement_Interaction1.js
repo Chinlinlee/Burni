@@ -1,8 +1,8 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const {
     Extension
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
-const markdown = require("../FHIRDataTypesSchema/markdown");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
+const markdown = require('../FHIRDataTypesSchema/markdown');
 
 const {
     CapabilityStatement_Interaction1
@@ -21,7 +21,36 @@ CapabilityStatement_Interaction1.add({
         enum: ["transaction", "batch", "search-system", "history-system"],
         default: void 0
     },
-    documentation: markdown
+    documentation: markdown,
+    _code: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
+        default: void 0
+    },
+    _documentation: {
+        type: new mongoose.Schema({
+            extension: {
+                type: [Extension],
+                default: void 0
+            }
+        }, {
+            _id: false,
+            id: false,
+            toObject: {
+                getters: true
+            }
+        }),
+        default: void 0
+    }
 });
-module.exports.CapabilityStatement_Interaction1 =
-    CapabilityStatement_Interaction1;
+module.exports.CapabilityStatement_Interaction1 = CapabilityStatement_Interaction1;

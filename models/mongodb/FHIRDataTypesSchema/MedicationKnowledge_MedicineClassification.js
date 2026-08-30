@@ -1,10 +1,10 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const {
     Extension
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
 const {
     CodeableConcept
-} = require("../FHIRDataTypesSchemaExport/allTypeSchemaTopDef");
+} = require('../FHIRDataTypesSchemaExport/allTypeSchemaTopDef');
 
 const {
     MedicationKnowledge_MedicineClassification
@@ -28,5 +28,4 @@ MedicationKnowledge_MedicineClassification.add({
         default: void 0
     }
 });
-module.exports.MedicationKnowledge_MedicineClassification =
-    MedicationKnowledge_MedicineClassification;
+module.exports.MedicationKnowledge_MedicineClassification = MedicationKnowledge_MedicineClassification;
