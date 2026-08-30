@@ -3,33 +3,18 @@ require("module-alias/register");
 const { expect } = require("chai");
 const productionResources = require("@models/FHIR/fhir.resourceList.json");
 const { reloadRegistry } = require("@models/FHIR/searchParameter/registry/registryManager");
-const { loadBuiltinDefinitions } = require("@models/FHIR/searchParameter/registry/sourceAdapter");
-const { applyActivationOverlay } = require("@models/FHIR/searchParameter/registry/activationPolicy");
-const { compileDefinition } = require("@models/FHIR/searchParameter/compiler/compiler");
-const { mergeDefinitions } = require("@models/FHIR/searchParameter/registry/merge");
 const {
     runDiagnosticsCiGate,
     ALLOWED_LOOKUP_OUTCOMES,
     ALLOWED_RESOURCE_OUTCOMES
 } = require("@models/FHIR/searchParameter/migration/diagnosticsCiGate");
 
-async function compileDefinitions() {
-    const builtin = loadBuiltinDefinitions();
-    const compiledDefinitions = [];
-
-    for (const definition of builtin.definitions) {
-        const compileResult = compileDefinition(definition);
-        const activated = applyActivationOverlay(definition, {
-            compilable: compileResult.compilable,
-            reason: compileResult.reason
-        });
-        if (compileResult.lookupPlans) {
-            activated.lookupPlans = compileResult.lookupPlans;
-        }
-        compiledDefinitions.push(activated);
-    }
-
-    return mergeDefinitions(compiledDefinitions).definitions;
+/**
+ * @param {import('@models/FHIR/searchParameter/registry/types').RegistrySnapshot} snapshot
+ * @returns {import('@models/FHIR/searchParameter/registry/types').SearchParameterDefinition[]}
+ */
+function definitionsFromSnapshot(snapshot) {
+    return [...snapshot.byCanonicalKey.values()];
 }
 
 describe("SearchParameter diagnostics CI gate", function () {
@@ -43,8 +28,8 @@ describe("SearchParameter diagnostics CI gate", function () {
     let gate;
 
     before(async function () {
-        snapshot = await reloadRegistry();
-        definitions = await compileDefinitions();
+        snapshot = await reloadRegistry({ databaseResources: [] });
+        definitions = definitionsFromSnapshot(snapshot);
         gate = runDiagnosticsCiGate({ snapshot, definitions });
     });
 

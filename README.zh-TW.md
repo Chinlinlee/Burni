@@ -100,10 +100,10 @@ Registry 是 production SearchParameter 唯一的執行路徑。以下指令用�
 - `npm run search-parameter:diagnostics` 產生 Registry integrity report 至 `temp/search-parameter-diagnostics-report.json`。用於本機調查，不是 CI gate。
 - `npm run search-parameter:verify` 執行 provenance、lookup 完整性、conflict、compiler diagnostics 與 manifest drift 的嚴格驗證；驗證失敗時回傳失敗狀態，並由 CI 執行。
 - `npm run test:diagnostics-gate` 執行 Mocha diagnostics contract，包含 production resource 與 lookup coverage 的固定檢查，並由 CI 執行。
-- `npm run search-parameter:build-artifacts` 重新產生版本控制中的 lookup matrix、example mapping、fixture archive、hit-set、migration manifest 與 resource-enablement artifacts。只有在 canonical Bundle、compiler 行為或 fixture corpus 改變時執行；需要重新搜尋官方 examples 時設定 `FHIR_EXAMPLES_DIR`。
+- `npm run search-parameter:build-artifacts` 重新產生版本控制中的 runtime compile artifact（`models/FHIR/searchParameter/registry/artifacts/compiled-builtin-definitions.json`）以及 migration artifacts（lookup matrix、example mapping、fixture archive、hit-set、migration manifest、resource-enablement）。在官方 SearchParameter Bundle、compiler 行為、`api_generator/to-code-use-definition` 下的 type maps 或 fixture corpus 改變時執行；需要重新搜尋官方 examples 時設定 `FHIR_EXAMPLES_DIR`。預設 registry 啟動會 hydrate 此 compile artifact；缺失或過期時 application readiness 會 reject。
 - `npm run search-parameter:discover-examples -- <hl7-examples-dir>` 掃描 HL7 FHIR examples 目錄，並更新 `models/FHIR/searchParameter/migration/artifacts/example-mapping.json`。這是維護者指令，不會在服務啟動時執行。
 
-版本控制中的 canonical source 是 FHIR R4/4.0.1 SearchParameter Bundle。Legacy inventory 檔案不是 runtime input，也不會由上述指令重新產生。
+版本控制中的 canonical source 是 FHIR R4/4.0.1 SearchParameter Bundle。Legacy inventory 檔案不是 runtime input，也不會由上述指令重新產生。`npm run build` 不會重新產生 SearchParameter compile artifact；上述輸入變更時請另外執行 `search-parameter:build-artifacts`。
 
 ## 啟動服務
 ```

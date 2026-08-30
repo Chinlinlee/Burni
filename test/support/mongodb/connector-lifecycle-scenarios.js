@@ -427,6 +427,52 @@ async function registryFailureBlocksReady() {
     }
 }
 
+async function staleArtifactBlocksReady() {
+    const restoreConsole = captureConsole();
+    try {
+        const uri = await startMemoryServer();
+        const config = buildConfigFromUri(uri);
+        const compiledArtifactModule = require("@models/FHIR/searchParameter/registry/artifacts/compiledArtifact");
+        const savedRead = compiledArtifactModule.readArtifact;
+        compiledArtifactModule.readArtifact = () => {
+            const artifact = savedRead();
+            return {
+                ...artifact,
+                header: {
+                    ...artifact.header,
+                    identity: {
+                        ...artifact.header.identity,
+                        bundleChecksum: "0".repeat(64)
+                    }
+                }
+            };
+        };
+
+        const modelMap = connect(config);
+
+        let readyError = null;
+        try {
+            await modelMap.ready;
+        } catch (error) {
+            readyError = error;
+        }
+
+        compiledArtifactModule.readArtifact = savedRead;
+
+        return {
+            ok:
+                Boolean(readyError) &&
+                readyError.message.includes("npm run search-parameter:build-artifacts") &&
+                mongoose.connection.readyState === 1,
+            readyError: serializeError(readyError),
+            databaseConnected: mongoose.connection.readyState === 1
+        };
+    } finally {
+        restoreConsole();
+        await stopMemoryServer();
+    }
+}
+
 async function shardingIndependentFromApplicationReady() {
     originalShardingMode = process.env.MONGODB_IS_SHARDING_MODE;
     process.env.MONGODB_IS_SHARDING_MODE = "true";
@@ -600,6 +646,7 @@ module.exports = {
     databaseAndRegistrySuccess,
     databaseFailureBlocksReady,
     registryFailureBlocksReady,
+    staleArtifactBlocksReady,
     shardingIndependentFromApplicationReady,
     shardingFailureDoesNotRejectReady,
     safeInitLogs,

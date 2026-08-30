@@ -9,7 +9,9 @@ const { buildLookupMatrix } = require("./lookupMatrix");
  * @returns {string}
  */
 function hashPlan(plan) {
-    return crypto.createHash("sha256").update(JSON.stringify(plan)).digest("hex");
+    const { ast, ...rest } = plan;
+    void ast;
+    return crypto.createHash("sha256").update(JSON.stringify(rest)).digest("hex");
 }
 
 /**

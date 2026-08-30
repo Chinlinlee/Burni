@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-08-30T14:31:59.718Z",
+  "generatedAt": "2026-08-30T14:37:56.363Z",
   "resources": {
     "Account": {
       "identifier": {
@@ -185,26 +185,6 @@
           "extractionPath": "relatedArtifact.resource"
         }
       },
-      "context": {
-        "status": "defined",
-        "hash": "25dbf53337d9487d3e754fa95c8b24d5c6f6ebc311ea392a5ebb6fe09d71228a",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "context": "urn:burni:hit-set|context-value"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "useContext.valueCodeableConcept"
-        }
-      },
       "context-quantity": {
         "status": "defined",
         "hash": "f87eb749fc8bae28f5b2a093eb8831decd5ad7b17776020956fe696b61dc92bf",
@@ -243,6 +223,26 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "useContext.code"
+        }
+      },
+      "context": {
+        "status": "defined",
+        "hash": "25dbf53337d9487d3e754fa95c8b24d5c6f6ebc311ea392a5ebb6fe09d71228a",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context": "urn:burni:hit-set|context-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext.valueCodeableConcept"
         }
       },
       "date": {
@@ -869,26 +869,6 @@
           "extractionPath": "clinicalStatus"
         }
       },
-      "code": {
-        "status": "defined",
-        "hash": "4164aa850127ac1c0af4a67418db7e964896847993d3f8975b20ae9900947c51",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "code": "urn:burni:hit-set|code-value"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "code"
-        }
-      },
       "criticality": {
         "status": "defined",
         "hash": "df386adafd7cc1898c7ba92beff985d6f65f635ac362af28ceb72f583530d880",
@@ -907,46 +887,6 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "criticality"
-        }
-      },
-      "date": {
-        "status": "defined",
-        "hash": "17f3ab552d71ba0f7177302e6b3b95c22b0b06c184b7698400e1897bf943a095",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "date": "2000-01-01"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "recordedDate"
-        }
-      },
-      "identifier": {
-        "status": "defined",
-        "hash": "3f210cb112bf9d4edd600c1545ed9cdeb5362500268d7697472da5790ea9bdfa",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "identifier": "urn:burni:hit-set|identifier-value"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "identifier"
         }
       },
       "last-date": {
@@ -1009,26 +949,6 @@
           "extractionPath": "reaction.onset"
         }
       },
-      "patient": {
-        "status": "defined",
-        "hash": "c5959e7430293f7a3c908774ba83fcf62b5a60b756388deb7e0465be3494bff2",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "patient": "Patient/hit-set-patient"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "patient"
-        }
-      },
       "recorder": {
         "status": "defined",
         "hash": "777325196daf099b97bac07c094f37be4aef850092b23ebd3b23c829fe985625",
@@ -1089,26 +1009,6 @@
           "extractionPath": "reaction.severity"
         }
       },
-      "type": {
-        "status": "defined",
-        "hash": "43a474f66de6b12a72fc8ee55907c1922d2dfd520f1a67dc043124f0d4decef7",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "type": "type-value"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "type"
-        }
-      },
       "verification-status": {
         "status": "defined",
         "hash": "e291896ea7fb2d764048cce1d1eb8914c76d96e25db23355631b5d16299f2d84",
@@ -1127,6 +1027,106 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "verificationStatus"
+        }
+      },
+      "code": {
+        "status": "defined",
+        "hash": "4164aa850127ac1c0af4a67418db7e964896847993d3f8975b20ae9900947c51",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "code": "urn:burni:hit-set|code-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "code"
+        }
+      },
+      "date": {
+        "status": "defined",
+        "hash": "17f3ab552d71ba0f7177302e6b3b95c22b0b06c184b7698400e1897bf943a095",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "date": "2000-01-01"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "recordedDate"
+        }
+      },
+      "identifier": {
+        "status": "defined",
+        "hash": "3f210cb112bf9d4edd600c1545ed9cdeb5362500268d7697472da5790ea9bdfa",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "identifier": "urn:burni:hit-set|identifier-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "identifier"
+        }
+      },
+      "patient": {
+        "status": "defined",
+        "hash": "c5959e7430293f7a3c908774ba83fcf62b5a60b756388deb7e0465be3494bff2",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "patient": "Patient/hit-set-patient"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "patient"
+        }
+      },
+      "type": {
+        "status": "defined",
+        "hash": "43a474f66de6b12a72fc8ee55907c1922d2dfd520f1a67dc043124f0d4decef7",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "type": "type-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "type"
         }
       }
     },
@@ -1655,26 +1655,6 @@
           "extractionPath": "agent.network.address"
         }
       },
-      "agent": {
-        "status": "defined",
-        "hash": "b768a1ea40179dae342d9405956594065c53c3d82330921a0e9177a7de7f1e9f",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "agent": "Patient/hit-set-agent"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "agent.who"
-        }
-      },
       "agent-name": {
         "status": "defined",
         "hash": "bca96836d6eae1c1ec289f46e581376e281358f66f28f0de454ed3a5beb62a03",
@@ -1715,6 +1695,26 @@
           "extractionPath": "agent.role"
         }
       },
+      "agent": {
+        "status": "defined",
+        "hash": "b768a1ea40179dae342d9405956594065c53c3d82330921a0e9177a7de7f1e9f",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "agent": "Patient/hit-set-agent"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "agent.who"
+        }
+      },
       "altid": {
         "status": "defined",
         "hash": "57527721627d81ff82ae0c7a4e280b199caba4256f21dbe1f15f76a29199f195",
@@ -1753,26 +1753,6 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "recorded"
-        }
-      },
-      "entity": {
-        "status": "defined",
-        "hash": "4ff3579d832023322157ab096a68a86fb8f4f2c31160e23f5d981569ae8d3a49",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "entity": "Patient/hit-set-entity"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "entity.what"
         }
       },
       "entity-name": {
@@ -1833,6 +1813,26 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "entity.type"
+        }
+      },
+      "entity": {
+        "status": "defined",
+        "hash": "4ff3579d832023322157ab096a68a86fb8f4f2c31160e23f5d981569ae8d3a49",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "entity": "Patient/hit-set-entity"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "entity.what"
         }
       },
       "outcome": {
@@ -2283,106 +2283,6 @@
       }
     },
     "CapabilityStatement": {
-      "context": {
-        "status": "defined",
-        "hash": "25dbf53337d9487d3e754fa95c8b24d5c6f6ebc311ea392a5ebb6fe09d71228a",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "context": "urn:burni:hit-set|context-value"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "useContext.valueCodeableConcept"
-        }
-      },
-      "context-quantity": {
-        "status": "defined",
-        "hash": "f87eb749fc8bae28f5b2a093eb8831decd5ad7b17776020956fe696b61dc92bf",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "context-quantity": "10"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "useContext.valueQuantity"
-        }
-      },
-      "context-type": {
-        "status": "defined",
-        "hash": "84a2741b43d71bb23c986b70f70e6d5133d0c775ca4bfd3a86ced404e820ba27",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "context-type": "urn:burni:hit-set|context-type-value"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "useContext.code"
-        }
-      },
-      "date": {
-        "status": "defined",
-        "hash": "17f3ab552d71ba0f7177302e6b3b95c22b0b06c184b7698400e1897bf943a095",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "date": "2000-01-01"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "date"
-        }
-      },
-      "description": {
-        "status": "defined",
-        "hash": "8252e161bc7952eca4033739e403deb6f52a05a6482f9d5edc2cccdb9334f1f2",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "description": "hit-set-description"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "description"
-        }
-      },
       "fhirversion": {
         "status": "defined",
         "hash": "f4fc12b0d79d1c237d738b8e0266775e1cbabc430c5f97f8fa9d626ba7454e89",
@@ -2443,26 +2343,6 @@
           "extractionPath": "implementationGuide"
         }
       },
-      "jurisdiction": {
-        "status": "defined",
-        "hash": "004ebe4e7b1933b224822c66eab23959d5bbfa7ff33bfb0800dac1ead3f1abb8",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "jurisdiction": "urn:burni:hit-set|jurisdiction-value"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "jurisdiction"
-        }
-      },
       "mode": {
         "status": "defined",
         "hash": "3850271172da8217eb82ea595377ca8f89287fc477ab97de3b3f6ed0cae72156",
@@ -2483,13 +2363,13 @@
           "extractionPath": "rest.mode"
         }
       },
-      "name": {
+      "resource-profile": {
         "status": "defined",
-        "hash": "f1b8f9898a5dbe0cc2ef792ce23324cccf18b1168d409d7286452aec4987ebfa",
+        "hash": "61fba340626933634fe78ad4cfbd3b5de64eee147170c2eca87bd1326e6a4ee5",
         "valueSource": "synthetic",
         "positive": {
           "query": {
-            "name": "hit-set-name"
+            "resource-profile": "Patient/hit-set-resource-profile"
           },
           "expectDocument": "main"
         },
@@ -2500,27 +2380,7 @@
           "applicable": true
         },
         "syntheticAugmentation": {
-          "extractionPath": "name"
-        }
-      },
-      "publisher": {
-        "status": "defined",
-        "hash": "5d3bfdb870c72e0a3125d29fd2bef5ecf8827562afb6ba4501b872ec121c5c64",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "publisher": "hit-set-publisher"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "publisher"
+          "extractionPath": "rest.resource.profile"
         }
       },
       "resource": {
@@ -2541,26 +2401,6 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "rest.resource.type"
-        }
-      },
-      "resource-profile": {
-        "status": "defined",
-        "hash": "61fba340626933634fe78ad4cfbd3b5de64eee147170c2eca87bd1326e6a4ee5",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "resource-profile": "Patient/hit-set-resource-profile"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "rest.resource.profile"
         }
       },
       "security-service": {
@@ -2603,26 +2443,6 @@
           "extractionPath": "software.name"
         }
       },
-      "status": {
-        "status": "defined",
-        "hash": "b90c2f21937a3a3824df13a92becdb39a3ff488da50d5d96e8834cf6f68abd1c",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "status": "status-value"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "status"
-        }
-      },
       "supported-profile": {
         "status": "defined",
         "hash": "f2172f833ab9d5b3abf1606b8a3b41329c4d64d1c286661ff04157f9376ad8e1",
@@ -2641,6 +2461,186 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "rest.resource.supportedProfile"
+        }
+      },
+      "context-quantity": {
+        "status": "defined",
+        "hash": "f87eb749fc8bae28f5b2a093eb8831decd5ad7b17776020956fe696b61dc92bf",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context-quantity": "10"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext.valueQuantity"
+        }
+      },
+      "context-type": {
+        "status": "defined",
+        "hash": "84a2741b43d71bb23c986b70f70e6d5133d0c775ca4bfd3a86ced404e820ba27",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context-type": "urn:burni:hit-set|context-type-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext.code"
+        }
+      },
+      "context": {
+        "status": "defined",
+        "hash": "25dbf53337d9487d3e754fa95c8b24d5c6f6ebc311ea392a5ebb6fe09d71228a",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context": "urn:burni:hit-set|context-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext.valueCodeableConcept"
+        }
+      },
+      "date": {
+        "status": "defined",
+        "hash": "17f3ab552d71ba0f7177302e6b3b95c22b0b06c184b7698400e1897bf943a095",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "date": "2000-01-01"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "date"
+        }
+      },
+      "description": {
+        "status": "defined",
+        "hash": "8252e161bc7952eca4033739e403deb6f52a05a6482f9d5edc2cccdb9334f1f2",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "description": "hit-set-description"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "description"
+        }
+      },
+      "jurisdiction": {
+        "status": "defined",
+        "hash": "004ebe4e7b1933b224822c66eab23959d5bbfa7ff33bfb0800dac1ead3f1abb8",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "jurisdiction": "urn:burni:hit-set|jurisdiction-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "jurisdiction"
+        }
+      },
+      "name": {
+        "status": "defined",
+        "hash": "f1b8f9898a5dbe0cc2ef792ce23324cccf18b1168d409d7286452aec4987ebfa",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "name": "hit-set-name"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "name"
+        }
+      },
+      "publisher": {
+        "status": "defined",
+        "hash": "5d3bfdb870c72e0a3125d29fd2bef5ecf8827562afb6ba4501b872ec121c5c64",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "publisher": "hit-set-publisher"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "publisher"
+        }
+      },
+      "status": {
+        "status": "defined",
+        "hash": "b90c2f21937a3a3824df13a92becdb39a3ff488da50d5d96e8834cf6f68abd1c",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "status": "status-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "status"
         }
       },
       "title": {
@@ -2705,66 +2705,6 @@
       }
     },
     "CarePlan": {
-      "date": {
-        "status": "defined",
-        "hash": "17f3ab552d71ba0f7177302e6b3b95c22b0b06c184b7698400e1897bf943a095",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "date": "2000-01-01"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "period"
-        }
-      },
-      "identifier": {
-        "status": "defined",
-        "hash": "3f210cb112bf9d4edd600c1545ed9cdeb5362500268d7697472da5790ea9bdfa",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "identifier": "urn:burni:hit-set|identifier-value"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "identifier"
-        }
-      },
-      "patient": {
-        "status": "defined",
-        "hash": "c5959e7430293f7a3c908774ba83fcf62b5a60b756388deb7e0465be3494bff2",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "patient": "Patient/hit-set-patient"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "subject"
-        }
-      },
       "activity-code": {
         "status": "defined",
         "hash": "3c95366d6dbf7fdb75e19b55d97c3182525801c03c41076464fd62a5e6fb3808",
@@ -3084,9 +3024,7 @@
         "syntheticAugmentation": {
           "extractionPath": "subject"
         }
-      }
-    },
-    "CareTeam": {
+      },
       "date": {
         "status": "defined",
         "hash": "17f3ab552d71ba0f7177302e6b3b95c22b0b06c184b7698400e1897bf943a095",
@@ -3146,7 +3084,9 @@
         "syntheticAugmentation": {
           "extractionPath": "subject"
         }
-      },
+      }
+    },
+    "CareTeam": {
       "category": {
         "status": "defined",
         "hash": "0242f4ede58933cd3c5b3b4eb17786d117f024f970d08d4a88113f137b9e32d6",
@@ -3234,6 +3174,66 @@
         "positive": {
           "query": {
             "subject": "Patient/hit-set-subject"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "subject"
+        }
+      },
+      "date": {
+        "status": "defined",
+        "hash": "17f3ab552d71ba0f7177302e6b3b95c22b0b06c184b7698400e1897bf943a095",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "date": "2000-01-01"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "period"
+        }
+      },
+      "identifier": {
+        "status": "defined",
+        "hash": "3f210cb112bf9d4edd600c1545ed9cdeb5362500268d7697472da5790ea9bdfa",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "identifier": "urn:burni:hit-set|identifier-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "identifier"
+        }
+      },
+      "patient": {
+        "status": "defined",
+        "hash": "c5959e7430293f7a3c908774ba83fcf62b5a60b756388deb7e0465be3494bff2",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "patient": "Patient/hit-set-patient"
           },
           "expectDocument": "main"
         },
@@ -3591,26 +3591,6 @@
       }
     },
     "ChargeItemDefinition": {
-      "context": {
-        "status": "defined",
-        "hash": "25dbf53337d9487d3e754fa95c8b24d5c6f6ebc311ea392a5ebb6fe09d71228a",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "context": "urn:burni:hit-set|context-value"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "useContext.valueCodeableConcept"
-        }
-      },
       "context-quantity": {
         "status": "defined",
         "hash": "f87eb749fc8bae28f5b2a093eb8831decd5ad7b17776020956fe696b61dc92bf",
@@ -3649,6 +3629,26 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "useContext.code"
+        }
+      },
+      "context": {
+        "status": "defined",
+        "hash": "25dbf53337d9487d3e754fa95c8b24d5c6f6ebc311ea392a5ebb6fe09d71228a",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context": "urn:burni:hit-set|context-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext.valueCodeableConcept"
         }
       },
       "date": {
@@ -4679,13 +4679,13 @@
       }
     },
     "CodeSystem": {
-      "context": {
+      "code": {
         "status": "defined",
-        "hash": "25dbf53337d9487d3e754fa95c8b24d5c6f6ebc311ea392a5ebb6fe09d71228a",
+        "hash": "371ada08897e85c3b64f52c5031c53cd65c2faf37987a5f2e0b151d5172b1613",
         "valueSource": "synthetic",
         "positive": {
           "query": {
-            "context": "urn:burni:hit-set|context-value"
+            "code": "code-value"
           },
           "expectDocument": "main"
         },
@@ -4696,7 +4696,87 @@
           "applicable": true
         },
         "syntheticAugmentation": {
-          "extractionPath": "useContext.valueCodeableConcept"
+          "extractionPath": "concept.code"
+        }
+      },
+      "content-mode": {
+        "status": "defined",
+        "hash": "3db037bad32e4e557558de898a0ce01bf3c5223d6253f58db21fc80aa0d9c684",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "content-mode": "content-mode-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "content"
+        }
+      },
+      "language": {
+        "status": "defined",
+        "hash": "a6b85b3f555630a4204a6b9143dbb88867317e50b9c90147aa141fc0e5eb832b",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "language": "language-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "concept.designation.language"
+        }
+      },
+      "supplements": {
+        "status": "defined",
+        "hash": "1a68d1274811cdb9715aea406b1ad1596642ef231dab099ef3088bda7f064e3d",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "supplements": "Patient/hit-set-supplements"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "supplements"
+        }
+      },
+      "system": {
+        "status": "defined",
+        "hash": "1b03608e9e56cf89ee0f48e9dc72c1be897b2562a60140b4b572f6732d29b974",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "system": "http://example.org/system"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "url"
         }
       },
       "context-quantity": {
@@ -4739,6 +4819,26 @@
           "extractionPath": "useContext.code"
         }
       },
+      "context": {
+        "status": "defined",
+        "hash": "25dbf53337d9487d3e754fa95c8b24d5c6f6ebc311ea392a5ebb6fe09d71228a",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context": "urn:burni:hit-set|context-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext.valueCodeableConcept"
+        }
+      },
       "date": {
         "status": "defined",
         "hash": "17f3ab552d71ba0f7177302e6b3b95c22b0b06c184b7698400e1897bf943a095",
@@ -4777,6 +4877,26 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "description"
+        }
+      },
+      "identifier": {
+        "status": "defined",
+        "hash": "3f210cb112bf9d4edd600c1545ed9cdeb5362500268d7697472da5790ea9bdfa",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "identifier": "urn:burni:hit-set|identifier-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "identifier"
         }
       },
       "jurisdiction": {
@@ -4917,126 +5037,6 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "version"
-        }
-      },
-      "code": {
-        "status": "defined",
-        "hash": "371ada08897e85c3b64f52c5031c53cd65c2faf37987a5f2e0b151d5172b1613",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "code": "code-value"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "concept.code"
-        }
-      },
-      "content-mode": {
-        "status": "defined",
-        "hash": "3db037bad32e4e557558de898a0ce01bf3c5223d6253f58db21fc80aa0d9c684",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "content-mode": "content-mode-value"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "content"
-        }
-      },
-      "identifier": {
-        "status": "defined",
-        "hash": "3f210cb112bf9d4edd600c1545ed9cdeb5362500268d7697472da5790ea9bdfa",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "identifier": "urn:burni:hit-set|identifier-value"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "identifier"
-        }
-      },
-      "language": {
-        "status": "defined",
-        "hash": "a6b85b3f555630a4204a6b9143dbb88867317e50b9c90147aa141fc0e5eb832b",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "language": "language-value"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "concept.designation.language"
-        }
-      },
-      "supplements": {
-        "status": "defined",
-        "hash": "1a68d1274811cdb9715aea406b1ad1596642ef231dab099ef3088bda7f064e3d",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "supplements": "Patient/hit-set-supplements"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "supplements"
-        }
-      },
-      "system": {
-        "status": "defined",
-        "hash": "1b03608e9e56cf89ee0f48e9dc72c1be897b2562a60140b4b572f6732d29b974",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "system": "http://example.org/system"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "url"
         }
       }
     },
@@ -5665,13 +5665,13 @@
       }
     },
     "CompartmentDefinition": {
-      "context": {
+      "code": {
         "status": "defined",
-        "hash": "25dbf53337d9487d3e754fa95c8b24d5c6f6ebc311ea392a5ebb6fe09d71228a",
+        "hash": "371ada08897e85c3b64f52c5031c53cd65c2faf37987a5f2e0b151d5172b1613",
         "valueSource": "synthetic",
         "positive": {
           "query": {
-            "context": "urn:burni:hit-set|context-value"
+            "code": "code-value"
           },
           "expectDocument": "main"
         },
@@ -5682,7 +5682,27 @@
           "applicable": true
         },
         "syntheticAugmentation": {
-          "extractionPath": "useContext.valueCodeableConcept"
+          "extractionPath": "code"
+        }
+      },
+      "resource": {
+        "status": "defined",
+        "hash": "775a7ab387c6df1d563c3a1071ac89957222e997387e590c79e660a5451eb36b",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "resource": "resource-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "resource.code"
         }
       },
       "context-quantity": {
@@ -5723,6 +5743,26 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "useContext.code"
+        }
+      },
+      "context": {
+        "status": "defined",
+        "hash": "25dbf53337d9487d3e754fa95c8b24d5c6f6ebc311ea392a5ebb6fe09d71228a",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context": "urn:burni:hit-set|context-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext.valueCodeableConcept"
         }
       },
       "date": {
@@ -5864,46 +5904,6 @@
         "syntheticAugmentation": {
           "extractionPath": "version"
         }
-      },
-      "code": {
-        "status": "defined",
-        "hash": "371ada08897e85c3b64f52c5031c53cd65c2faf37987a5f2e0b151d5172b1613",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "code": "code-value"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "code"
-        }
-      },
-      "resource": {
-        "status": "defined",
-        "hash": "775a7ab387c6df1d563c3a1071ac89957222e997387e590c79e660a5451eb36b",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "resource": "resource-value"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "resource.code"
-        }
       }
     },
     "Composition": {
@@ -5925,6 +5925,26 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "date"
+        }
+      },
+      "encounter": {
+        "status": "defined",
+        "hash": "f67abff106106520a8955251dd15d70c1e74426fb8375dd1f573737c2e2f7a95",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "encounter": "Patient/hit-set-encounter"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "encounter"
         }
       },
       "identifier": {
@@ -6085,26 +6105,6 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "event.code"
-        }
-      },
-      "encounter": {
-        "status": "defined",
-        "hash": "f67abff106106520a8955251dd15d70c1e74426fb8375dd1f573737c2e2f7a95",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "encounter": "Patient/hit-set-encounter"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "encounter"
         }
       },
       "entry": {
@@ -6269,13 +6269,13 @@
       }
     },
     "ConceptMap": {
-      "context": {
+      "dependson": {
         "status": "defined",
-        "hash": "25dbf53337d9487d3e754fa95c8b24d5c6f6ebc311ea392a5ebb6fe09d71228a",
+        "hash": "c0089dfbb78af8479ae4542684b1a4c6b16f1efb3c1ac1fa75adfdb90a360ab3",
         "valueSource": "synthetic",
         "positive": {
           "query": {
-            "context": "urn:burni:hit-set|context-value"
+            "dependson": "http://example.org/dependson"
           },
           "expectDocument": "main"
         },
@@ -6286,7 +6286,187 @@
           "applicable": true
         },
         "syntheticAugmentation": {
-          "extractionPath": "useContext.valueCodeableConcept"
+          "extractionPath": "group.element.target.dependsOn.property"
+        }
+      },
+      "other": {
+        "status": "defined",
+        "hash": "32b61a1852166f1d5bc5d81048724debaba3d85862f4984874d195b204ae1916",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "other": "Patient/hit-set-other"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "group.unmapped.url"
+        }
+      },
+      "source-code": {
+        "status": "defined",
+        "hash": "6e1f5f0416dcf02502866cca5f5d7efbeae7fb107245f442e215cf745d0060d4",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "source-code": "source-code-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "group.element.code"
+        }
+      },
+      "source-system": {
+        "status": "defined",
+        "hash": "086401f776f83634e7e2b300daf370ca36dfc35ebafacfb293bbd9fae8c70a6c",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "source-system": "http://example.org/source-system"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "group.source"
+        }
+      },
+      "source-uri": {
+        "status": "defined",
+        "hash": "7c9bc1623a809c998b73dd6914eb638e563b523342bea7b7b857017333c0a307",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "source-uri": "ConceptMap/hit-set-source-uri"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "sourceUri"
+        }
+      },
+      "source": {
+        "status": "defined",
+        "hash": "700dae4999d977dccb05bf75747c20c543364c23b0bea37b08f07d7c8cc1db36",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "source": "Patient/hit-set-source"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "sourceCanonical"
+        }
+      },
+      "target-code": {
+        "status": "defined",
+        "hash": "dfffcb9249978806f8cd7cbebcfbfad0a209172a4704f520d343f2a8ed9e71a4",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "target-code": "target-code-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "group.element.target.code"
+        }
+      },
+      "target-system": {
+        "status": "defined",
+        "hash": "7f11edf61e7fd991603029fb61888e99fb36397c4b7f85605ff0451455f3e074",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "target-system": "http://example.org/target-system"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "group.target"
+        }
+      },
+      "target-uri": {
+        "status": "defined",
+        "hash": "4fc2c62293bf801a0fd15470ca7c31fa118fb0e8c518d0a860481420336277bd",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "target-uri": "ConceptMap/hit-set-target-uri"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "targetUri"
+        }
+      },
+      "target": {
+        "status": "defined",
+        "hash": "28e2141455b81f8f313447fdb9eb830c552f3f2ab1af328a997c86b3a786e80f",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "target": "Patient/hit-set-target"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "targetCanonical"
         }
       },
       "context-quantity": {
@@ -6329,6 +6509,26 @@
           "extractionPath": "useContext.code"
         }
       },
+      "context": {
+        "status": "defined",
+        "hash": "25dbf53337d9487d3e754fa95c8b24d5c6f6ebc311ea392a5ebb6fe09d71228a",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context": "urn:burni:hit-set|context-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext.valueCodeableConcept"
+        }
+      },
       "date": {
         "status": "defined",
         "hash": "17f3ab552d71ba0f7177302e6b3b95c22b0b06c184b7698400e1897bf943a095",
@@ -6367,6 +6567,26 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "description"
+        }
+      },
+      "identifier": {
+        "status": "defined",
+        "hash": "3f210cb112bf9d4edd600c1545ed9cdeb5362500268d7697472da5790ea9bdfa",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "identifier": "urn:burni:hit-set|identifier-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "identifier"
         }
       },
       "jurisdiction": {
@@ -6507,226 +6727,6 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "version"
-        }
-      },
-      "identifier": {
-        "status": "defined",
-        "hash": "3f210cb112bf9d4edd600c1545ed9cdeb5362500268d7697472da5790ea9bdfa",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "identifier": "urn:burni:hit-set|identifier-value"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "identifier"
-        }
-      },
-      "dependson": {
-        "status": "defined",
-        "hash": "c0089dfbb78af8479ae4542684b1a4c6b16f1efb3c1ac1fa75adfdb90a360ab3",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "dependson": "http://example.org/dependson"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "group.element.target.dependsOn.property"
-        }
-      },
-      "other": {
-        "status": "defined",
-        "hash": "32b61a1852166f1d5bc5d81048724debaba3d85862f4984874d195b204ae1916",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "other": "Patient/hit-set-other"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "group.unmapped.url"
-        }
-      },
-      "source": {
-        "status": "defined",
-        "hash": "700dae4999d977dccb05bf75747c20c543364c23b0bea37b08f07d7c8cc1db36",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "source": "Patient/hit-set-source"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "sourceCanonical"
-        }
-      },
-      "source-code": {
-        "status": "defined",
-        "hash": "6e1f5f0416dcf02502866cca5f5d7efbeae7fb107245f442e215cf745d0060d4",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "source-code": "source-code-value"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "group.element.code"
-        }
-      },
-      "source-system": {
-        "status": "defined",
-        "hash": "086401f776f83634e7e2b300daf370ca36dfc35ebafacfb293bbd9fae8c70a6c",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "source-system": "http://example.org/source-system"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "group.source"
-        }
-      },
-      "source-uri": {
-        "status": "defined",
-        "hash": "7c9bc1623a809c998b73dd6914eb638e563b523342bea7b7b857017333c0a307",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "source-uri": "ConceptMap/hit-set-source-uri"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "sourceUri"
-        }
-      },
-      "target": {
-        "status": "defined",
-        "hash": "28e2141455b81f8f313447fdb9eb830c552f3f2ab1af328a997c86b3a786e80f",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "target": "Patient/hit-set-target"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "targetCanonical"
-        }
-      },
-      "target-code": {
-        "status": "defined",
-        "hash": "dfffcb9249978806f8cd7cbebcfbfad0a209172a4704f520d343f2a8ed9e71a4",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "target-code": "target-code-value"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "group.element.target.code"
-        }
-      },
-      "target-system": {
-        "status": "defined",
-        "hash": "7f11edf61e7fd991603029fb61888e99fb36397c4b7f85605ff0451455f3e074",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "target-system": "http://example.org/target-system"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "group.target"
-        }
-      },
-      "target-uri": {
-        "status": "defined",
-        "hash": "4fc2c62293bf801a0fd15470ca7c31fa118fb0e8c518d0a860481420336277bd",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "target-uri": "ConceptMap/hit-set-target-uri"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "targetUri"
         }
       }
     },
@@ -6951,26 +6951,6 @@
           "extractionPath": "encounter"
         }
       },
-      "evidence": {
-        "status": "defined",
-        "hash": "170d59255ab42dbadc88e0e20898ffbf52a218653fb925cb796db94b3e4619bf",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "evidence": "urn:burni:hit-set|evidence-value"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "evidence.code"
-        }
-      },
       "evidence-detail": {
         "status": "defined",
         "hash": "87251e5434a0e8bb0967e00bdaa70f17ea3a0eedcfdf9e5883af0a09deb5e902",
@@ -6989,6 +6969,26 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "evidence.detail"
+        }
+      },
+      "evidence": {
+        "status": "defined",
+        "hash": "170d59255ab42dbadc88e0e20898ffbf52a218653fb925cb796db94b3e4619bf",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "evidence": "urn:burni:hit-set|evidence-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "evidence.code"
         }
       },
       "onset-age": {
@@ -8751,6 +8751,26 @@
           "extractionPath": "codeCodeableConcept"
         }
       },
+      "encounter": {
+        "status": "defined",
+        "hash": "f67abff106106520a8955251dd15d70c1e74426fb8375dd1f573737c2e2f7a95",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "encounter": "Patient/hit-set-encounter"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "encounter"
+        }
+      },
       "identifier": {
         "status": "defined",
         "hash": "3f210cb112bf9d4edd600c1545ed9cdeb5362500268d7697472da5790ea9bdfa",
@@ -8789,26 +8809,6 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "subject"
-        }
-      },
-      "encounter": {
-        "status": "defined",
-        "hash": "f67abff106106520a8955251dd15d70c1e74426fb8375dd1f573737c2e2f7a95",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "encounter": "Patient/hit-set-encounter"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "encounter"
         }
       },
       "authored-on": {
@@ -9215,6 +9215,26 @@
           "extractionPath": "effectiveDateTime"
         }
       },
+      "encounter": {
+        "status": "defined",
+        "hash": "f67abff106106520a8955251dd15d70c1e74426fb8375dd1f573737c2e2f7a95",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "encounter": "Patient/hit-set-encounter"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "encounter"
+        }
+      },
       "identifier": {
         "status": "defined",
         "hash": "3f210cb112bf9d4edd600c1545ed9cdeb5362500268d7697472da5790ea9bdfa",
@@ -9253,26 +9273,6 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "subject"
-        }
-      },
-      "encounter": {
-        "status": "defined",
-        "hash": "f67abff106106520a8955251dd15d70c1e74426fb8375dd1f573737c2e2f7a95",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "encounter": "Patient/hit-set-encounter"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "encounter"
         }
       },
       "based-on": {
@@ -9759,6 +9759,26 @@
       }
     },
     "DocumentReference": {
+      "encounter": {
+        "status": "defined",
+        "hash": "f67abff106106520a8955251dd15d70c1e74426fb8375dd1f573737c2e2f7a95",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "encounter": "Patient/hit-set-encounter"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "context.encounter"
+        }
+      },
       "identifier": {
         "status": "defined",
         "hash": "3f210cb112bf9d4edd600c1545ed9cdeb5362500268d7697472da5790ea9bdfa",
@@ -9817,26 +9837,6 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "type"
-        }
-      },
-      "encounter": {
-        "status": "defined",
-        "hash": "f67abff106106520a8955251dd15d70c1e74426fb8375dd1f573737c2e2f7a95",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "encounter": "Patient/hit-set-encounter"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "context.encounter"
         }
       },
       "authenticator": {
@@ -10241,26 +10241,6 @@
       }
     },
     "EffectEvidenceSynthesis": {
-      "context": {
-        "status": "defined",
-        "hash": "25dbf53337d9487d3e754fa95c8b24d5c6f6ebc311ea392a5ebb6fe09d71228a",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "context": "urn:burni:hit-set|context-value"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "useContext.valueCodeableConcept"
-        }
-      },
       "context-quantity": {
         "status": "defined",
         "hash": "f87eb749fc8bae28f5b2a093eb8831decd5ad7b17776020956fe696b61dc92bf",
@@ -10299,6 +10279,26 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "useContext.code"
+        }
+      },
+      "context": {
+        "status": "defined",
+        "hash": "25dbf53337d9487d3e754fa95c8b24d5c6f6ebc311ea392a5ebb6fe09d71228a",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context": "urn:burni:hit-set|context-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext.valueCodeableConcept"
         }
       },
       "date": {
@@ -10743,26 +10743,6 @@
           "extractionPath": "length"
         }
       },
-      "location": {
-        "status": "defined",
-        "hash": "7e9abaf35c755906432ea634a8fbe3a178faf3e73b7a29047c32b1678abc7527",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "location": "Patient/hit-set-location"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "location.location"
-        }
-      },
       "location-period": {
         "status": "defined",
         "hash": "ec450213abd233924ddd94f8eacb199601102fc532bdf16195705da9134e5c65",
@@ -10781,6 +10761,26 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "location.period"
+        }
+      },
+      "location": {
+        "status": "defined",
+        "hash": "7e9abaf35c755906432ea634a8fbe3a178faf3e73b7a29047c32b1678abc7527",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "location": "Patient/hit-set-location"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "location.location"
         }
       },
       "part-of": {
@@ -10803,26 +10803,6 @@
           "extractionPath": "partOf"
         }
       },
-      "participant": {
-        "status": "defined",
-        "hash": "fe89b47413b6abc87777e070628c7675c8a414696fb0defce708187135f7d752",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "participant": "Patient/hit-set-participant"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "participant.individual"
-        }
-      },
       "participant-type": {
         "status": "defined",
         "hash": "6a55d7249c1b901a4f715159bb1f8c0c653578da92afe94feca6c81b36561ba1",
@@ -10841,6 +10821,26 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "participant.type"
+        }
+      },
+      "participant": {
+        "status": "defined",
+        "hash": "fe89b47413b6abc87777e070628c7675c8a414696fb0defce708187135f7d752",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "participant": "Patient/hit-set-participant"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "participant.individual"
         }
       },
       "practitioner": {
@@ -11453,26 +11453,6 @@
           "extractionPath": "relatedArtifact.resource"
         }
       },
-      "context": {
-        "status": "defined",
-        "hash": "25dbf53337d9487d3e754fa95c8b24d5c6f6ebc311ea392a5ebb6fe09d71228a",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "context": "urn:burni:hit-set|context-value"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "useContext.valueCodeableConcept"
-        }
-      },
       "context-quantity": {
         "status": "defined",
         "hash": "f87eb749fc8bae28f5b2a093eb8831decd5ad7b17776020956fe696b61dc92bf",
@@ -11511,6 +11491,26 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "useContext.code"
+        }
+      },
+      "context": {
+        "status": "defined",
+        "hash": "25dbf53337d9487d3e754fa95c8b24d5c6f6ebc311ea392a5ebb6fe09d71228a",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context": "urn:burni:hit-set|context-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext.valueCodeableConcept"
         }
       },
       "date": {
@@ -11855,26 +11855,6 @@
           "extractionPath": "relatedArtifact.resource"
         }
       },
-      "context": {
-        "status": "defined",
-        "hash": "25dbf53337d9487d3e754fa95c8b24d5c6f6ebc311ea392a5ebb6fe09d71228a",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "context": "urn:burni:hit-set|context-value"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "useContext.valueCodeableConcept"
-        }
-      },
       "context-quantity": {
         "status": "defined",
         "hash": "f87eb749fc8bae28f5b2a093eb8831decd5ad7b17776020956fe696b61dc92bf",
@@ -11913,6 +11893,26 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "useContext.code"
+        }
+      },
+      "context": {
+        "status": "defined",
+        "hash": "25dbf53337d9487d3e754fa95c8b24d5c6f6ebc311ea392a5ebb6fe09d71228a",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context": "urn:burni:hit-set|context-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext.valueCodeableConcept"
         }
       },
       "date": {
@@ -12257,26 +12257,6 @@
           "extractionPath": "relatedArtifact.resource"
         }
       },
-      "context": {
-        "status": "defined",
-        "hash": "25dbf53337d9487d3e754fa95c8b24d5c6f6ebc311ea392a5ebb6fe09d71228a",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "context": "urn:burni:hit-set|context-value"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "useContext.valueCodeableConcept"
-        }
-      },
       "context-quantity": {
         "status": "defined",
         "hash": "f87eb749fc8bae28f5b2a093eb8831decd5ad7b17776020956fe696b61dc92bf",
@@ -12315,6 +12295,26 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "useContext.code"
+        }
+      },
+      "context": {
+        "status": "defined",
+        "hash": "25dbf53337d9487d3e754fa95c8b24d5c6f6ebc311ea392a5ebb6fe09d71228a",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context": "urn:burni:hit-set|context-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext.valueCodeableConcept"
         }
       },
       "date": {
@@ -12639,26 +12639,6 @@
       }
     },
     "ExampleScenario": {
-      "context": {
-        "status": "defined",
-        "hash": "25dbf53337d9487d3e754fa95c8b24d5c6f6ebc311ea392a5ebb6fe09d71228a",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "context": "urn:burni:hit-set|context-value"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "useContext.valueCodeableConcept"
-        }
-      },
       "context-quantity": {
         "status": "defined",
         "hash": "f87eb749fc8bae28f5b2a093eb8831decd5ad7b17776020956fe696b61dc92bf",
@@ -12697,6 +12677,26 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "useContext.code"
+        }
+      },
+      "context": {
+        "status": "defined",
+        "hash": "25dbf53337d9487d3e754fa95c8b24d5c6f6ebc311ea392a5ebb6fe09d71228a",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context": "urn:burni:hit-set|context-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext.valueCodeableConcept"
         }
       },
       "date": {
@@ -13405,26 +13405,6 @@
           "extractionPath": "period"
         }
       },
-      "patient": {
-        "status": "defined",
-        "hash": "c5959e7430293f7a3c908774ba83fcf62b5a60b756388deb7e0465be3494bff2",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "patient": "Patient/hit-set-patient"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "subject"
-        }
-      },
       "encounter": {
         "status": "defined",
         "hash": "f67abff106106520a8955251dd15d70c1e74426fb8375dd1f573737c2e2f7a95",
@@ -13443,6 +13423,26 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "encounter"
+        }
+      },
+      "patient": {
+        "status": "defined",
+        "hash": "c5959e7430293f7a3c908774ba83fcf62b5a60b756388deb7e0465be3494bff2",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "patient": "Patient/hit-set-patient"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "subject"
         }
       },
       "author": {
@@ -13669,26 +13669,6 @@
       }
     },
     "GraphDefinition": {
-      "context": {
-        "status": "defined",
-        "hash": "25dbf53337d9487d3e754fa95c8b24d5c6f6ebc311ea392a5ebb6fe09d71228a",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "context": "urn:burni:hit-set|context-value"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "useContext.valueCodeableConcept"
-        }
-      },
       "context-quantity": {
         "status": "defined",
         "hash": "f87eb749fc8bae28f5b2a093eb8831decd5ad7b17776020956fe696b61dc92bf",
@@ -13727,6 +13707,26 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "useContext.code"
+        }
+      },
+      "context": {
+        "status": "defined",
+        "hash": "25dbf53337d9487d3e754fa95c8b24d5c6f6ebc311ea392a5ebb6fe09d71228a",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context": "urn:burni:hit-set|context-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext.valueCodeableConcept"
         }
       },
       "date": {
@@ -14899,26 +14899,6 @@
           "extractionPath": "performer.actor"
         }
       },
-      "reaction": {
-        "status": "defined",
-        "hash": "7791644169626fcacf03e1ce1656536557fee862792281ea5f0b45a3ab59a3f7",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "reaction": "Patient/hit-set-reaction"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "reaction.detail"
-        }
-      },
       "reaction-date": {
         "status": "defined",
         "hash": "3a7e3b2d205899fd5d35e6ba4169ab4d2ece5aaab22e4d1d18e638989b9d0a7d",
@@ -14937,6 +14917,26 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "reaction.date"
+        }
+      },
+      "reaction": {
+        "status": "defined",
+        "hash": "7791644169626fcacf03e1ce1656536557fee862792281ea5f0b45a3ab59a3f7",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "reaction": "Patient/hit-set-reaction"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "reaction.detail"
         }
       },
       "reason-code": {
@@ -14999,26 +14999,6 @@
           "extractionPath": "protocolApplied.series"
         }
       },
-      "status": {
-        "status": "defined",
-        "hash": "b90c2f21937a3a3824df13a92becdb39a3ff488da50d5d96e8834cf6f68abd1c",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "status": "status-value"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "status"
-        }
-      },
       "status-reason": {
         "status": "defined",
         "hash": "1a3271de0767c0158eacf9c80c7fdabbfc20f184b429101b40418eea2fc57c7a",
@@ -15037,6 +15017,26 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "statusReason"
+        }
+      },
+      "status": {
+        "status": "defined",
+        "hash": "b90c2f21937a3a3824df13a92becdb39a3ff488da50d5d96e8834cf6f68abd1c",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "status": "status-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "status"
         }
       },
       "target-disease": {
@@ -15385,26 +15385,6 @@
       }
     },
     "ImplementationGuide": {
-      "context": {
-        "status": "defined",
-        "hash": "25dbf53337d9487d3e754fa95c8b24d5c6f6ebc311ea392a5ebb6fe09d71228a",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "context": "urn:burni:hit-set|context-value"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "useContext.valueCodeableConcept"
-        }
-      },
       "context-quantity": {
         "status": "defined",
         "hash": "f87eb749fc8bae28f5b2a093eb8831decd5ad7b17776020956fe696b61dc92bf",
@@ -15443,6 +15423,26 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "useContext.code"
+        }
+      },
+      "context": {
+        "status": "defined",
+        "hash": "25dbf53337d9487d3e754fa95c8b24d5c6f6ebc311ea392a5ebb6fe09d71228a",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context": "urn:burni:hit-set|context-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext.valueCodeableConcept"
         }
       },
       "date": {
@@ -15707,26 +15707,6 @@
       }
     },
     "InsurancePlan": {
-      "address": {
-        "status": "defined",
-        "hash": "1f28dad29b0dd960122e6ce7dc853c52e67e560c7568fbffc74f323d0e56aad5",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "address": "hit-set-address"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "contact.address"
-        }
-      },
       "address-city": {
         "status": "defined",
         "hash": "407dd0b31926bbdd6cd42aa4258890bf2f58111ad4ca78d6c2d47f32ff523112",
@@ -15825,6 +15805,26 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "contact.address.use"
+        }
+      },
+      "address": {
+        "status": "defined",
+        "hash": "1f28dad29b0dd960122e6ce7dc853c52e67e560c7568fbffc74f323d0e56aad5",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "address": "hit-set-address"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "contact.address"
         }
       },
       "administered-by": {
@@ -16069,26 +16069,6 @@
           "extractionPath": "issuer"
         }
       },
-      "participant": {
-        "status": "defined",
-        "hash": "fe89b47413b6abc87777e070628c7675c8a414696fb0defce708187135f7d752",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "participant": "Patient/hit-set-participant"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "participant.actor"
-        }
-      },
       "participant-role": {
         "status": "defined",
         "hash": "7fd3fa0e7cd189df8698b6e623b688a3a941e5d607d7bb6819611fcdad06b148",
@@ -16107,6 +16087,26 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "participant.role"
+        }
+      },
+      "participant": {
+        "status": "defined",
+        "hash": "fe89b47413b6abc87777e070628c7675c8a414696fb0defce708187135f7d752",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "participant": "Patient/hit-set-participant"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "participant.actor"
         }
       },
       "patient": {
@@ -16291,26 +16291,6 @@
           "extractionPath": "content.contentType"
         }
       },
-      "context": {
-        "status": "defined",
-        "hash": "25dbf53337d9487d3e754fa95c8b24d5c6f6ebc311ea392a5ebb6fe09d71228a",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "context": "urn:burni:hit-set|context-value"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "useContext.valueCodeableConcept"
-        }
-      },
       "context-quantity": {
         "status": "defined",
         "hash": "f87eb749fc8bae28f5b2a093eb8831decd5ad7b17776020956fe696b61dc92bf",
@@ -16349,6 +16329,26 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "useContext.code"
+        }
+      },
+      "context": {
+        "status": "defined",
+        "hash": "25dbf53337d9487d3e754fa95c8b24d5c6f6ebc311ea392a5ebb6fe09d71228a",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context": "urn:burni:hit-set|context-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext.valueCodeableConcept"
         }
       },
       "date": {
@@ -16795,6 +16795,26 @@
           "extractionPath": "date"
         }
       },
+      "encounter": {
+        "status": "defined",
+        "hash": "f67abff106106520a8955251dd15d70c1e74426fb8375dd1f573737c2e2f7a95",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "encounter": "Patient/hit-set-encounter"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "encounter"
+        }
+      },
       "identifier": {
         "status": "defined",
         "hash": "3f210cb112bf9d4edd600c1545ed9cdeb5362500268d7697472da5790ea9bdfa",
@@ -16833,26 +16853,6 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "subject"
-        }
-      },
-      "encounter": {
-        "status": "defined",
-        "hash": "f67abff106106520a8955251dd15d70c1e74426fb8375dd1f573737c2e2f7a95",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "encounter": "Patient/hit-set-encounter"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "encounter"
         }
       },
       "empty-reason": {
@@ -16997,26 +16997,6 @@
       }
     },
     "Location": {
-      "address": {
-        "status": "defined",
-        "hash": "1f28dad29b0dd960122e6ce7dc853c52e67e560c7568fbffc74f323d0e56aad5",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "address": "hit-set-address"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "address"
-        }
-      },
       "address-city": {
         "status": "defined",
         "hash": "407dd0b31926bbdd6cd42aa4258890bf2f58111ad4ca78d6c2d47f32ff523112",
@@ -17115,6 +17095,26 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "address.use"
+        }
+      },
+      "address": {
+        "status": "defined",
+        "hash": "1f28dad29b0dd960122e6ce7dc853c52e67e560c7568fbffc74f323d0e56aad5",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "address": "hit-set-address"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "address"
         }
       },
       "endpoint": {
@@ -17299,26 +17299,6 @@
           "extractionPath": "relatedArtifact.resource"
         }
       },
-      "context": {
-        "status": "defined",
-        "hash": "25dbf53337d9487d3e754fa95c8b24d5c6f6ebc311ea392a5ebb6fe09d71228a",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "context": "urn:burni:hit-set|context-value"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "useContext.valueCodeableConcept"
-        }
-      },
       "context-quantity": {
         "status": "defined",
         "hash": "f87eb749fc8bae28f5b2a093eb8831decd5ad7b17776020956fe696b61dc92bf",
@@ -17357,6 +17337,26 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "useContext.code"
+        }
+      },
+      "context": {
+        "status": "defined",
+        "hash": "25dbf53337d9487d3e754fa95c8b24d5c6f6ebc311ea392a5ebb6fe09d71228a",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context": "urn:burni:hit-set|context-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext.valueCodeableConcept"
         }
       },
       "date": {
@@ -18205,26 +18205,6 @@
           "extractionPath": "identifier"
         }
       },
-      "ingredient": {
-        "status": "defined",
-        "hash": "4af706be9f8ec365b9b383c113e3321e9b9b7366a74fb775da8fc706f4e960d5",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "ingredient": "Patient/hit-set-ingredient"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "ingredient.itemReference"
-        }
-      },
       "ingredient-code": {
         "status": "defined",
         "hash": "d3f3c767d24a68b9c5cf849c20a7d3c8ab057611c050b3b5031d179d3ba9a490",
@@ -18243,6 +18223,26 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "ingredient.itemCodeableConcept"
+        }
+      },
+      "ingredient": {
+        "status": "defined",
+        "hash": "4af706be9f8ec365b9b383c113e3321e9b9b7366a74fb775da8fc706f4e960d5",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "ingredient": "Patient/hit-set-ingredient"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "ingredient.itemReference"
         }
       },
       "lot-number": {
@@ -18427,26 +18427,6 @@
           "extractionPath": "effectiveDateTime"
         }
       },
-      "medication": {
-        "status": "defined",
-        "hash": "65c349532e46d464c5bb4488d76d35a6434e4e694423b4566f660675e7c464a8",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "medication": "Patient/hit-set-medication"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "medicationReference"
-        }
-      },
       "performer": {
         "status": "defined",
         "hash": "db485159b7ca4de17161e2fdb6665b75d1ffb8cf9b5001e491b8d6f0db10baa5",
@@ -18527,26 +18507,6 @@
           "extractionPath": "request"
         }
       },
-      "status": {
-        "status": "defined",
-        "hash": "b90c2f21937a3a3824df13a92becdb39a3ff488da50d5d96e8834cf6f68abd1c",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "status": "status-value"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "status"
-        }
-      },
       "subject": {
         "status": "defined",
         "hash": "3dbdb1d87d00a2deb2c8be5c2d166cfc8b51230ce85c087c6ca5b6189f30e991",
@@ -18565,6 +18525,46 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "subject"
+        }
+      },
+      "medication": {
+        "status": "defined",
+        "hash": "65c349532e46d464c5bb4488d76d35a6434e4e694423b4566f660675e7c464a8",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "medication": "Patient/hit-set-medication"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "medicationReference"
+        }
+      },
+      "status": {
+        "status": "defined",
+        "hash": "b90c2f21937a3a3824df13a92becdb39a3ff488da50d5d96e8834cf6f68abd1c",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "status": "status-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "status"
         }
       }
     },
@@ -18629,46 +18629,6 @@
           "extractionPath": "subject"
         }
       },
-      "medication": {
-        "status": "defined",
-        "hash": "65c349532e46d464c5bb4488d76d35a6434e4e694423b4566f660675e7c464a8",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "medication": "Patient/hit-set-medication"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "medicationReference"
-        }
-      },
-      "status": {
-        "status": "defined",
-        "hash": "b90c2f21937a3a3824df13a92becdb39a3ff488da50d5d96e8834cf6f68abd1c",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "status": "status-value"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "status"
-        }
-      },
       "context": {
         "status": "defined",
         "hash": "e86b4968d3c2bc025f8113500d027b043aa0909072a7da60a0f41304d6ad1fa0",
@@ -18727,26 +18687,6 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "performer.actor"
-        }
-      },
-      "prescription": {
-        "status": "defined",
-        "hash": "59ca5c7a5a0dc4c3cdc025b87540e90530c459211825c6118ff3e32e7b362acf",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "prescription": "Patient/hit-set-prescription"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "authorizingPrescription"
         }
       },
       "receiver": {
@@ -18868,16 +18808,14 @@
         "syntheticAugmentation": {
           "extractionPath": "whenPrepared"
         }
-      }
-    },
-    "MedicationKnowledge": {
-      "classification": {
+      },
+      "medication": {
         "status": "defined",
-        "hash": "0ec4b63a271e387f2f71685fa8675f9c676c000ee48ca1ea0d742eaa0ec0c726",
+        "hash": "65c349532e46d464c5bb4488d76d35a6434e4e694423b4566f660675e7c464a8",
         "valueSource": "synthetic",
         "positive": {
           "query": {
-            "classification": "urn:burni:hit-set|classification-value"
+            "medication": "Patient/hit-set-medication"
           },
           "expectDocument": "main"
         },
@@ -18888,9 +18826,51 @@
           "applicable": true
         },
         "syntheticAugmentation": {
-          "extractionPath": "medicineClassification.classification"
+          "extractionPath": "medicationReference"
         }
       },
+      "prescription": {
+        "status": "defined",
+        "hash": "59ca5c7a5a0dc4c3cdc025b87540e90530c459211825c6118ff3e32e7b362acf",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "prescription": "Patient/hit-set-prescription"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "authorizingPrescription"
+        }
+      },
+      "status": {
+        "status": "defined",
+        "hash": "b90c2f21937a3a3824df13a92becdb39a3ff488da50d5d96e8834cf6f68abd1c",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "status": "status-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "status"
+        }
+      }
+    },
+    "MedicationKnowledge": {
       "classification-type": {
         "status": "defined",
         "hash": "69be71a1152b1ca88241057d592405e7768d2368bb2ede348daf823ba9299d28",
@@ -18909,6 +18889,26 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "medicineClassification.type"
+        }
+      },
+      "classification": {
+        "status": "defined",
+        "hash": "0ec4b63a271e387f2f71685fa8675f9c676c000ee48ca1ea0d742eaa0ec0c726",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "classification": "urn:burni:hit-set|classification-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "medicineClassification.classification"
         }
       },
       "code": {
@@ -18951,26 +18951,6 @@
           "extractionPath": "doseForm"
         }
       },
-      "ingredient": {
-        "status": "defined",
-        "hash": "4af706be9f8ec365b9b383c113e3321e9b9b7366a74fb775da8fc706f4e960d5",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "ingredient": "Patient/hit-set-ingredient"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "ingredient.itemReference"
-        }
-      },
       "ingredient-code": {
         "status": "defined",
         "hash": "d3f3c767d24a68b9c5cf849c20a7d3c8ab057611c050b3b5031d179d3ba9a490",
@@ -18989,6 +18969,26 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "ingredient.itemCodeableConcept"
+        }
+      },
+      "ingredient": {
+        "status": "defined",
+        "hash": "4af706be9f8ec365b9b383c113e3321e9b9b7366a74fb775da8fc706f4e960d5",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "ingredient": "Patient/hit-set-ingredient"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "ingredient.itemReference"
         }
       },
       "manufacturer": {
@@ -19051,26 +19051,6 @@
           "extractionPath": "monitoringProgram.type"
         }
       },
-      "monograph": {
-        "status": "defined",
-        "hash": "33af4b3541f4d9b53a1b61491826ab0487501cd17101fa5a779090b31c7945d3",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "monograph": "Patient/hit-set-monograph"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "monograph.source"
-        }
-      },
       "monograph-type": {
         "status": "defined",
         "hash": "98e793ca1cc7a11f258c297660876880662ac955f2e8a44aa8be95c895e16e7f",
@@ -19089,6 +19069,26 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "monograph.type"
+        }
+      },
+      "monograph": {
+        "status": "defined",
+        "hash": "33af4b3541f4d9b53a1b61491826ab0487501cd17101fa5a779090b31c7945d3",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "monograph": "Patient/hit-set-monograph"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "monograph.source"
         }
       },
       "source-cost": {
@@ -19193,46 +19193,6 @@
           "extractionPath": "subject"
         }
       },
-      "medication": {
-        "status": "defined",
-        "hash": "65c349532e46d464c5bb4488d76d35a6434e4e694423b4566f660675e7c464a8",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "medication": "Patient/hit-set-medication"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "medicationReference"
-        }
-      },
-      "status": {
-        "status": "defined",
-        "hash": "b90c2f21937a3a3824df13a92becdb39a3ff488da50d5d96e8834cf6f68abd1c",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "status": "status-value"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "status"
-        }
-      },
       "authoredon": {
         "status": "defined",
         "hash": "bde2879c8cc6336ff457801a6539205c6aa0c116051379040019cc1eec28b4e6",
@@ -19271,26 +19231,6 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "category"
-        }
-      },
-      "encounter": {
-        "status": "defined",
-        "hash": "f67abff106106520a8955251dd15d70c1e74426fb8375dd1f573737c2e2f7a95",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "encounter": "Patient/hit-set-encounter"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "encounter"
         }
       },
       "intended-dispenser": {
@@ -19431,6 +19371,66 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "subject"
+        }
+      },
+      "encounter": {
+        "status": "defined",
+        "hash": "f67abff106106520a8955251dd15d70c1e74426fb8375dd1f573737c2e2f7a95",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "encounter": "Patient/hit-set-encounter"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "encounter"
+        }
+      },
+      "medication": {
+        "status": "defined",
+        "hash": "65c349532e46d464c5bb4488d76d35a6434e4e694423b4566f660675e7c464a8",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "medication": "Patient/hit-set-medication"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "medicationReference"
+        }
+      },
+      "status": {
+        "status": "defined",
+        "hash": "b90c2f21937a3a3824df13a92becdb39a3ff488da50d5d96e8834cf6f68abd1c",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "status": "status-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "status"
         }
       }
     },
@@ -19677,26 +19677,6 @@
           "extractionPath": "identifier"
         }
       },
-      "name": {
-        "status": "defined",
-        "hash": "f1b8f9898a5dbe0cc2ef792ce23324cccf18b1168d409d7286452aec4987ebfa",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "name": "hit-set-name"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "name.productName"
-        }
-      },
       "name-language": {
         "status": "defined",
         "hash": "312680c8b18817a1bc40f6c088f0b06b57bff1596a5f27b9ff919af0dde7832f",
@@ -19715,6 +19695,26 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "name.countryLanguage.language"
+        }
+      },
+      "name": {
+        "status": "defined",
+        "hash": "f1b8f9898a5dbe0cc2ef792ce23324cccf18b1168d409d7286452aec4987ebfa",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "name": "hit-set-name"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "name.productName"
         }
       }
     },
@@ -20013,26 +20013,6 @@
       }
     },
     "MessageDefinition": {
-      "context": {
-        "status": "defined",
-        "hash": "25dbf53337d9487d3e754fa95c8b24d5c6f6ebc311ea392a5ebb6fe09d71228a",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "context": "urn:burni:hit-set|context-value"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "useContext.valueCodeableConcept"
-        }
-      },
       "context-quantity": {
         "status": "defined",
         "hash": "f87eb749fc8bae28f5b2a093eb8831decd5ad7b17776020956fe696b61dc92bf",
@@ -20073,6 +20053,26 @@
           "extractionPath": "useContext.code"
         }
       },
+      "context": {
+        "status": "defined",
+        "hash": "25dbf53337d9487d3e754fa95c8b24d5c6f6ebc311ea392a5ebb6fe09d71228a",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context": "urn:burni:hit-set|context-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext.valueCodeableConcept"
+        }
+      },
       "date": {
         "status": "defined",
         "hash": "17f3ab552d71ba0f7177302e6b3b95c22b0b06c184b7698400e1897bf943a095",
@@ -20111,6 +20111,26 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "description"
+        }
+      },
+      "identifier": {
+        "status": "defined",
+        "hash": "3f210cb112bf9d4edd600c1545ed9cdeb5362500268d7697472da5790ea9bdfa",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "identifier": "urn:burni:hit-set|identifier-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "identifier"
         }
       },
       "jurisdiction": {
@@ -20253,26 +20273,6 @@
           "extractionPath": "version"
         }
       },
-      "identifier": {
-        "status": "defined",
-        "hash": "3f210cb112bf9d4edd600c1545ed9cdeb5362500268d7697472da5790ea9bdfa",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "identifier": "urn:burni:hit-set|identifier-value"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "identifier"
-        }
-      },
       "category": {
         "status": "defined",
         "hash": "1de27e4f3c69199befaa2c125e26616459c9759b305f406a19bddc3b4cd699f0",
@@ -20395,26 +20395,6 @@
           "extractionPath": "response.code"
         }
       },
-      "destination": {
-        "status": "defined",
-        "hash": "7b1e41623fefebae434f03ce358455c1a66364f1ef31e96fa18cc473f6be83e2",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "destination": "hit-set-destination"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "destination.name"
-        }
-      },
       "destination-uri": {
         "status": "defined",
         "hash": "e8f4fc6401b43ed97a5480011f28db7f9be2b133f3d130ada5d7847012cd2160",
@@ -20433,6 +20413,26 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "destination.endpoint"
+        }
+      },
+      "destination": {
+        "status": "defined",
+        "hash": "7b1e41623fefebae434f03ce358455c1a66364f1ef31e96fa18cc473f6be83e2",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "destination": "hit-set-destination"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "destination.name"
         }
       },
       "enterer": {
@@ -20575,26 +20575,6 @@
           "extractionPath": "sender"
         }
       },
-      "source": {
-        "status": "defined",
-        "hash": "36200bf9252bd9b5602a409ecabaaf304d22f87fc4482e8bb05f88f36dc5226b",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "source": "hit-set-source"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "source.name"
-        }
-      },
       "source-uri": {
         "status": "defined",
         "hash": "6664074e70d08d5ac0302fba6b19cb2b341d45c0f90234e76c188d12d3164fe8",
@@ -20613,6 +20593,26 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "source.endpoint"
+        }
+      },
+      "source": {
+        "status": "defined",
+        "hash": "36200bf9252bd9b5602a409ecabaaf304d22f87fc4482e8bb05f88f36dc5226b",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "source": "hit-set-source"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "source.name"
         }
       },
       "target": {
@@ -20819,26 +20819,6 @@
       }
     },
     "NamingSystem": {
-      "context": {
-        "status": "defined",
-        "hash": "25dbf53337d9487d3e754fa95c8b24d5c6f6ebc311ea392a5ebb6fe09d71228a",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "context": "urn:burni:hit-set|context-value"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "useContext.valueCodeableConcept"
-        }
-      },
       "context-quantity": {
         "status": "defined",
         "hash": "f87eb749fc8bae28f5b2a093eb8831decd5ad7b17776020956fe696b61dc92bf",
@@ -20877,6 +20857,26 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "useContext.code"
+        }
+      },
+      "context": {
+        "status": "defined",
+        "hash": "25dbf53337d9487d3e754fa95c8b24d5c6f6ebc311ea392a5ebb6fe09d71228a",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context": "urn:burni:hit-set|context-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext.valueCodeableConcept"
         }
       },
       "date": {
@@ -21161,6 +21161,26 @@
       }
     },
     "NutritionOrder": {
+      "encounter": {
+        "status": "defined",
+        "hash": "f67abff106106520a8955251dd15d70c1e74426fb8375dd1f573737c2e2f7a95",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "encounter": "Patient/hit-set-encounter"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "encounter"
+        }
+      },
       "identifier": {
         "status": "defined",
         "hash": "3f210cb112bf9d4edd600c1545ed9cdeb5362500268d7697472da5790ea9bdfa",
@@ -21199,26 +21219,6 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "patient"
-        }
-      },
-      "encounter": {
-        "status": "defined",
-        "hash": "f67abff106106520a8955251dd15d70c1e74426fb8375dd1f573737c2e2f7a95",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "encounter": "Patient/hit-set-encounter"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "encounter"
         }
       },
       "additive": {
@@ -21443,6 +21443,26 @@
           "extractionPath": "effectiveDateTime"
         }
       },
+      "encounter": {
+        "status": "defined",
+        "hash": "f67abff106106520a8955251dd15d70c1e74426fb8375dd1f573737c2e2f7a95",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "encounter": "Patient/hit-set-encounter"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "encounter"
+        }
+      },
       "identifier": {
         "status": "defined",
         "hash": "3f210cb112bf9d4edd600c1545ed9cdeb5362500268d7697472da5790ea9bdfa",
@@ -21481,26 +21501,6 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "subject"
-        }
-      },
-      "encounter": {
-        "status": "defined",
-        "hash": "f67abff106106520a8955251dd15d70c1e74426fb8375dd1f573737c2e2f7a95",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "encounter": "Patient/hit-set-encounter"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "encounter"
         }
       },
       "based-on": {
@@ -22005,26 +22005,6 @@
       }
     },
     "OperationDefinition": {
-      "context": {
-        "status": "defined",
-        "hash": "25dbf53337d9487d3e754fa95c8b24d5c6f6ebc311ea392a5ebb6fe09d71228a",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "context": "urn:burni:hit-set|context-value"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "useContext.valueCodeableConcept"
-        }
-      },
       "context-quantity": {
         "status": "defined",
         "hash": "f87eb749fc8bae28f5b2a093eb8831decd5ad7b17776020956fe696b61dc92bf",
@@ -22063,6 +22043,26 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "useContext.code"
+        }
+      },
+      "context": {
+        "status": "defined",
+        "hash": "25dbf53337d9487d3e754fa95c8b24d5c6f6ebc311ea392a5ebb6fe09d71228a",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context": "urn:burni:hit-set|context-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext.valueCodeableConcept"
         }
       },
       "date": {
@@ -22427,26 +22427,6 @@
           "extractionPath": "active"
         }
       },
-      "address": {
-        "status": "defined",
-        "hash": "1f28dad29b0dd960122e6ce7dc853c52e67e560c7568fbffc74f323d0e56aad5",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "address": "hit-set-address"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "address"
-        }
-      },
       "address-city": {
         "status": "defined",
         "hash": "407dd0b31926bbdd6cd42aa4258890bf2f58111ad4ca78d6c2d47f32ff523112",
@@ -22545,6 +22525,26 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "address.use"
+        }
+      },
+      "address": {
+        "status": "defined",
+        "hash": "1f28dad29b0dd960122e6ce7dc853c52e67e560c7568fbffc74f323d0e56aad5",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "address": "hit-set-address"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "address"
         }
       },
       "endpoint": {
@@ -22951,38 +22951,6 @@
       }
     },
     "Patient": {
-      "active": {
-        "status": "defined",
-        "hash": "207745cd37b02bbea3ea5c5c21709980bc315c57e5958dec0783701ec5c967ad",
-        "positive": {
-          "query": {
-            "active": "true"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        }
-      },
-      "address": {
-        "status": "defined",
-        "hash": "9064f9b11a4c36b5061714aea167f94d2c8ebb2c03a4d12aa180766cb57c63c6",
-        "positive": {
-          "query": {
-            "address": "Amsterdam"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        }
-      },
       "address-city": {
         "status": "defined",
         "hash": "e1240a4ac2f9c840c26111a9e1a165c2e98dc195423675236fa1924ae60ef7b6",
@@ -23063,44 +23031,28 @@
           "applicable": true
         }
       },
+      "address": {
+        "status": "defined",
+        "hash": "9064f9b11a4c36b5061714aea167f94d2c8ebb2c03a4d12aa180766cb57c63c6",
+        "positive": {
+          "query": {
+            "address": "Amsterdam"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        }
+      },
       "birthdate": {
         "status": "defined",
         "hash": "e075a9d557f08dc76c7c60f987bbf7844d2d9a8b1f35837fad8337b44b916894",
         "positive": {
           "query": {
             "birthdate": "1960-03-13"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        }
-      },
-      "death-date": {
-        "status": "defined",
-        "hash": "6f03222a576020be1cab106317a6006feafc7e7c451ffda2e41ae2615dea2a43",
-        "positive": {
-          "query": {
-            "death-date": "2020-01-15"
-          },
-          "expectDocument": "companion"
-        },
-        "companionNegative": {
-          "expectDocument": "main"
-        },
-        "missing": {
-          "applicable": true
-        }
-      },
-      "deceased": {
-        "status": "defined",
-        "hash": "053ee610f392f5e942eb3485cc5a1ec556a8de1b4f9b54e64409e11a124d0792",
-        "positive": {
-          "query": {
-            "deceased": "false"
           },
           "expectDocument": "main"
         },
@@ -23159,12 +23111,12 @@
           "applicable": true
         }
       },
-      "general-practitioner": {
+      "given": {
         "status": "defined",
-        "hash": "8dffcf644577aaf1041e896c437a35b2d0f7071eb50d0258aa394fcae0f84b3d",
+        "hash": "676a8013087ae59b362b182e285b69ee9c60e769a93d2cba5ccaf3a63913b717",
         "positive": {
           "query": {
-            "general-practitioner": "Practitioner/gp-example"
+            "given": "Roelof"
           },
           "expectDocument": "main"
         },
@@ -23175,12 +23127,108 @@
           "applicable": true
         }
       },
-      "given": {
+      "phone": {
         "status": "defined",
-        "hash": "676a8013087ae59b362b182e285b69ee9c60e769a93d2cba5ccaf3a63913b717",
+        "hash": "c17fdc2add154ef77ff0a5a00877dc17394ceb66e7581c6b3918852aeab663e4",
         "positive": {
           "query": {
-            "given": "Roelof"
+            "phone": "+31612345678"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        }
+      },
+      "phonetic": {
+        "status": "defined",
+        "hash": "3a96352c4d1a781aa06f244893206fe976d4404e20d8e4d19345cddd1e1a1869",
+        "positive": {
+          "query": {
+            "phonetic": "Bor"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        }
+      },
+      "telecom": {
+        "status": "defined",
+        "hash": "b1dcebb457c8018928acf014d44d725c09d62b13781c7b3f2f449d0ef0bbe6fc",
+        "positive": {
+          "query": {
+            "telecom": "+31201234567"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        }
+      },
+      "active": {
+        "status": "defined",
+        "hash": "207745cd37b02bbea3ea5c5c21709980bc315c57e5958dec0783701ec5c967ad",
+        "positive": {
+          "query": {
+            "active": "true"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        }
+      },
+      "death-date": {
+        "status": "defined",
+        "hash": "6f03222a576020be1cab106317a6006feafc7e7c451ffda2e41ae2615dea2a43",
+        "positive": {
+          "query": {
+            "death-date": "2020-01-15"
+          },
+          "expectDocument": "companion"
+        },
+        "companionNegative": {
+          "expectDocument": "main"
+        },
+        "missing": {
+          "applicable": true
+        }
+      },
+      "deceased": {
+        "status": "defined",
+        "hash": "053ee610f392f5e942eb3485cc5a1ec556a8de1b4f9b54e64409e11a124d0792",
+        "positive": {
+          "query": {
+            "deceased": "false"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        }
+      },
+      "general-practitioner": {
+        "status": "defined",
+        "hash": "8dffcf644577aaf1041e896c437a35b2d0f7071eb50d0258aa394fcae0f84b3d",
+        "positive": {
+          "query": {
+            "general-practitioner": "Practitioner/gp-example"
           },
           "expectDocument": "main"
         },
@@ -23261,54 +23309,6 @@
         "positive": {
           "query": {
             "organization": "Organization/f201"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        }
-      },
-      "phone": {
-        "status": "defined",
-        "hash": "c17fdc2add154ef77ff0a5a00877dc17394ceb66e7581c6b3918852aeab663e4",
-        "positive": {
-          "query": {
-            "phone": "+31612345678"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        }
-      },
-      "phonetic": {
-        "status": "defined",
-        "hash": "3a96352c4d1a781aa06f244893206fe976d4404e20d8e4d19345cddd1e1a1869",
-        "positive": {
-          "query": {
-            "phonetic": "Bor"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        }
-      },
-      "telecom": {
-        "status": "defined",
-        "hash": "b1dcebb457c8018928acf014d44d725c09d62b13781c7b3f2f449d0ef0bbe6fc",
-        "positive": {
-          "query": {
-            "telecom": "+31201234567"
           },
           "expectDocument": "main"
         },
@@ -23625,26 +23625,6 @@
       }
     },
     "Person": {
-      "address": {
-        "status": "defined",
-        "hash": "1f28dad29b0dd960122e6ce7dc853c52e67e560c7568fbffc74f323d0e56aad5",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "address": "hit-set-address"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "address"
-        }
-      },
       "address-city": {
         "status": "defined",
         "hash": "407dd0b31926bbdd6cd42aa4258890bf2f58111ad4ca78d6c2d47f32ff523112",
@@ -23743,6 +23723,26 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "address.use"
+        }
+      },
+      "address": {
+        "status": "defined",
+        "hash": "1f28dad29b0dd960122e6ce7dc853c52e67e560c7568fbffc74f323d0e56aad5",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "address": "hit-set-address"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "address"
         }
       },
       "birthdate": {
@@ -24027,26 +24027,6 @@
           "extractionPath": "relatedArtifact.resource"
         }
       },
-      "context": {
-        "status": "defined",
-        "hash": "25dbf53337d9487d3e754fa95c8b24d5c6f6ebc311ea392a5ebb6fe09d71228a",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "context": "urn:burni:hit-set|context-value"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "useContext.valueCodeableConcept"
-        }
-      },
       "context-quantity": {
         "status": "defined",
         "hash": "f87eb749fc8bae28f5b2a093eb8831decd5ad7b17776020956fe696b61dc92bf",
@@ -24085,6 +24065,26 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "useContext.code"
+        }
+      },
+      "context": {
+        "status": "defined",
+        "hash": "25dbf53337d9487d3e754fa95c8b24d5c6f6ebc311ea392a5ebb6fe09d71228a",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context": "urn:burni:hit-set|context-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext.valueCodeableConcept"
         }
       },
       "date": {
@@ -24429,26 +24429,6 @@
       }
     },
     "Practitioner": {
-      "address": {
-        "status": "defined",
-        "hash": "1f28dad29b0dd960122e6ce7dc853c52e67e560c7568fbffc74f323d0e56aad5",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "address": "hit-set-address"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "address"
-        }
-      },
       "address-city": {
         "status": "defined",
         "hash": "407dd0b31926bbdd6cd42aa4258890bf2f58111ad4ca78d6c2d47f32ff523112",
@@ -24547,6 +24527,26 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "address.use"
+        }
+      },
+      "address": {
+        "status": "defined",
+        "hash": "1f28dad29b0dd960122e6ce7dc853c52e67e560c7568fbffc74f323d0e56aad5",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "address": "hit-set-address"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "address"
         }
       },
       "email": {
@@ -25073,6 +25073,26 @@
           "extractionPath": "performedDateTime"
         }
       },
+      "encounter": {
+        "status": "defined",
+        "hash": "f67abff106106520a8955251dd15d70c1e74426fb8375dd1f573737c2e2f7a95",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "encounter": "Patient/hit-set-encounter"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "encounter"
+        }
+      },
       "identifier": {
         "status": "defined",
         "hash": "3f210cb112bf9d4edd600c1545ed9cdeb5362500268d7697472da5790ea9bdfa",
@@ -25111,26 +25131,6 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "subject"
-        }
-      },
-      "encounter": {
-        "status": "defined",
-        "hash": "f67abff106106520a8955251dd15d70c1e74426fb8375dd1f573737c2e2f7a95",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "encounter": "Patient/hit-set-encounter"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "encounter"
         }
       },
       "based-on": {
@@ -25355,26 +25355,6 @@
       }
     },
     "Provenance": {
-      "agent": {
-        "status": "defined",
-        "hash": "b768a1ea40179dae342d9405956594065c53c3d82330921a0e9177a7de7f1e9f",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "agent": "Patient/hit-set-agent"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "agent.who"
-        }
-      },
       "agent-role": {
         "status": "defined",
         "hash": "dd6d472c6e93e000576cc04a97ec3ae3761c0ba64a57b3a5fe4905c344f452a1",
@@ -25413,6 +25393,26 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "agent.type"
+        }
+      },
+      "agent": {
+        "status": "defined",
+        "hash": "b768a1ea40179dae342d9405956594065c53c3d82330921a0e9177a7de7f1e9f",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "agent": "Patient/hit-set-agent"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "agent.who"
         }
       },
       "entity": {
@@ -25557,26 +25557,6 @@
           "extractionPath": "item.code"
         }
       },
-      "context": {
-        "status": "defined",
-        "hash": "25dbf53337d9487d3e754fa95c8b24d5c6f6ebc311ea392a5ebb6fe09d71228a",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "context": "urn:burni:hit-set|context-value"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "useContext.valueCodeableConcept"
-        }
-      },
       "context-quantity": {
         "status": "defined",
         "hash": "f87eb749fc8bae28f5b2a093eb8831decd5ad7b17776020956fe696b61dc92bf",
@@ -25615,6 +25595,26 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "useContext.code"
+        }
+      },
+      "context": {
+        "status": "defined",
+        "hash": "25dbf53337d9487d3e754fa95c8b24d5c6f6ebc311ea392a5ebb6fe09d71228a",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context": "urn:burni:hit-set|context-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext.valueCodeableConcept"
         }
       },
       "date": {
@@ -26101,26 +26101,6 @@
       }
     },
     "RelatedPerson": {
-      "address": {
-        "status": "defined",
-        "hash": "1f28dad29b0dd960122e6ce7dc853c52e67e560c7568fbffc74f323d0e56aad5",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "address": "hit-set-address"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "address"
-        }
-      },
       "address-city": {
         "status": "defined",
         "hash": "407dd0b31926bbdd6cd42aa4258890bf2f58111ad4ca78d6c2d47f32ff523112",
@@ -26219,6 +26199,26 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "address.use"
+        }
+      },
+      "address": {
+        "status": "defined",
+        "hash": "1f28dad29b0dd960122e6ce7dc853c52e67e560c7568fbffc74f323d0e56aad5",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "address": "hit-set-address"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "address"
         }
       },
       "birthdate": {
@@ -26745,26 +26745,6 @@
           "extractionPath": "relatedArtifact.resource"
         }
       },
-      "context": {
-        "status": "defined",
-        "hash": "25dbf53337d9487d3e754fa95c8b24d5c6f6ebc311ea392a5ebb6fe09d71228a",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "context": "urn:burni:hit-set|context-value"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "useContext.valueCodeableConcept"
-        }
-      },
       "context-quantity": {
         "status": "defined",
         "hash": "f87eb749fc8bae28f5b2a093eb8831decd5ad7b17776020956fe696b61dc92bf",
@@ -26803,6 +26783,26 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "useContext.code"
+        }
+      },
+      "context": {
+        "status": "defined",
+        "hash": "25dbf53337d9487d3e754fa95c8b24d5c6f6ebc311ea392a5ebb6fe09d71228a",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context": "urn:burni:hit-set|context-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext.valueCodeableConcept"
         }
       },
       "date": {
@@ -27147,26 +27147,6 @@
           "extractionPath": "relatedArtifact.resource"
         }
       },
-      "context": {
-        "status": "defined",
-        "hash": "25dbf53337d9487d3e754fa95c8b24d5c6f6ebc311ea392a5ebb6fe09d71228a",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "context": "urn:burni:hit-set|context-value"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "useContext.valueCodeableConcept"
-        }
-      },
       "context-quantity": {
         "status": "defined",
         "hash": "f87eb749fc8bae28f5b2a093eb8831decd5ad7b17776020956fe696b61dc92bf",
@@ -27205,6 +27185,26 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "useContext.code"
+        }
+      },
+      "context": {
+        "status": "defined",
+        "hash": "25dbf53337d9487d3e754fa95c8b24d5c6f6ebc311ea392a5ebb6fe09d71228a",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context": "urn:burni:hit-set|context-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext.valueCodeableConcept"
         }
       },
       "date": {
@@ -27933,6 +27933,26 @@
           "extractionPath": "occurrenceDateTime"
         }
       },
+      "encounter": {
+        "status": "defined",
+        "hash": "f67abff106106520a8955251dd15d70c1e74426fb8375dd1f573737c2e2f7a95",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "encounter": "Patient/hit-set-encounter"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "encounter"
+        }
+      },
       "identifier": {
         "status": "defined",
         "hash": "3f210cb112bf9d4edd600c1545ed9cdeb5362500268d7697472da5790ea9bdfa",
@@ -27971,26 +27991,6 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "subject"
-        }
-      },
-      "encounter": {
-        "status": "defined",
-        "hash": "f67abff106106520a8955251dd15d70c1e74426fb8375dd1f573737c2e2f7a95",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "encounter": "Patient/hit-set-encounter"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "encounter"
         }
       },
       "condition": {
@@ -28095,26 +28095,6 @@
       }
     },
     "RiskEvidenceSynthesis": {
-      "context": {
-        "status": "defined",
-        "hash": "25dbf53337d9487d3e754fa95c8b24d5c6f6ebc311ea392a5ebb6fe09d71228a",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "context": "urn:burni:hit-set|context-value"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "useContext.valueCodeableConcept"
-        }
-      },
       "context-quantity": {
         "status": "defined",
         "hash": "f87eb749fc8bae28f5b2a093eb8831decd5ad7b17776020956fe696b61dc92bf",
@@ -28153,6 +28133,26 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "useContext.code"
+        }
+      },
+      "context": {
+        "status": "defined",
+        "hash": "25dbf53337d9487d3e754fa95c8b24d5c6f6ebc311ea392a5ebb6fe09d71228a",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context": "urn:burni:hit-set|context-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext.valueCodeableConcept"
         }
       },
       "date": {
@@ -28519,26 +28519,6 @@
       }
     },
     "SearchParameter": {
-      "context": {
-        "status": "defined",
-        "hash": "25dbf53337d9487d3e754fa95c8b24d5c6f6ebc311ea392a5ebb6fe09d71228a",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "context": "urn:burni:hit-set|context-value"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "useContext.valueCodeableConcept"
-        }
-      },
       "context-quantity": {
         "status": "defined",
         "hash": "f87eb749fc8bae28f5b2a093eb8831decd5ad7b17776020956fe696b61dc92bf",
@@ -28577,6 +28557,26 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "useContext.code"
+        }
+      },
+      "context": {
+        "status": "defined",
+        "hash": "25dbf53337d9487d3e754fa95c8b24d5c6f6ebc311ea392a5ebb6fe09d71228a",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context": "urn:burni:hit-set|context-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext.valueCodeableConcept"
         }
       },
       "date": {
@@ -28881,6 +28881,26 @@
           "extractionPath": "code"
         }
       },
+      "encounter": {
+        "status": "defined",
+        "hash": "f67abff106106520a8955251dd15d70c1e74426fb8375dd1f573737c2e2f7a95",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "encounter": "Patient/hit-set-encounter"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "encounter"
+        }
+      },
       "identifier": {
         "status": "defined",
         "hash": "3f210cb112bf9d4edd600c1545ed9cdeb5362500268d7697472da5790ea9bdfa",
@@ -28919,26 +28939,6 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "subject"
-        }
-      },
-      "encounter": {
-        "status": "defined",
-        "hash": "f67abff106106520a8955251dd15d70c1e74426fb8375dd1f573737c2e2f7a95",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "encounter": "Patient/hit-set-encounter"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "encounter"
         }
       },
       "authored": {
@@ -29101,26 +29101,6 @@
           "extractionPath": "occurrenceDateTime"
         }
       },
-      "performer": {
-        "status": "defined",
-        "hash": "db485159b7ca4de17161e2fdb6665b75d1ffb8cf9b5001e491b8d6f0db10baa5",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "performer": "Patient/hit-set-performer"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "performer"
-        }
-      },
       "performer-type": {
         "status": "defined",
         "hash": "2820f86fc7cc0c0c2b7639e7f55eab24fca8f7ce13abc941d7c1b362bb446fea",
@@ -29139,6 +29119,26 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "performerType"
+        }
+      },
+      "performer": {
+        "status": "defined",
+        "hash": "db485159b7ca4de17161e2fdb6665b75d1ffb8cf9b5001e491b8d6f0db10baa5",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "performer": "Patient/hit-set-performer"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "performer"
         }
       },
       "priority": {
@@ -29505,26 +29505,6 @@
           "extractionPath": "collection.collector"
         }
       },
-      "container": {
-        "status": "defined",
-        "hash": "e556d74dd86d5793361fd25a41606bf05ab4d75e61243328291952c5f6fe12f1",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "container": "urn:burni:hit-set|container-value"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "container.type"
-        }
-      },
       "container-id": {
         "status": "defined",
         "hash": "303ab948b04b653b9e8ed687cbd92284b45b54bc22e36a70ef5086a30daba40d",
@@ -29543,6 +29523,26 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "container.identifier"
+        }
+      },
+      "container": {
+        "status": "defined",
+        "hash": "e556d74dd86d5793361fd25a41606bf05ab4d75e61243328291952c5f6fe12f1",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "container": "urn:burni:hit-set|container-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "container.type"
         }
       },
       "identifier": {
@@ -29729,26 +29729,6 @@
       }
     },
     "StructureDefinition": {
-      "context": {
-        "status": "defined",
-        "hash": "25dbf53337d9487d3e754fa95c8b24d5c6f6ebc311ea392a5ebb6fe09d71228a",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "context": "urn:burni:hit-set|context-value"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "useContext.valueCodeableConcept"
-        }
-      },
       "context-quantity": {
         "status": "defined",
         "hash": "f87eb749fc8bae28f5b2a093eb8831decd5ad7b17776020956fe696b61dc92bf",
@@ -29789,6 +29769,26 @@
           "extractionPath": "useContext.code"
         }
       },
+      "context": {
+        "status": "defined",
+        "hash": "25dbf53337d9487d3e754fa95c8b24d5c6f6ebc311ea392a5ebb6fe09d71228a",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context": "urn:burni:hit-set|context-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext.valueCodeableConcept"
+        }
+      },
       "date": {
         "status": "defined",
         "hash": "17f3ab552d71ba0f7177302e6b3b95c22b0b06c184b7698400e1897bf943a095",
@@ -29827,6 +29827,26 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "description"
+        }
+      },
+      "identifier": {
+        "status": "defined",
+        "hash": "3f210cb112bf9d4edd600c1545ed9cdeb5362500268d7697472da5790ea9bdfa",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "identifier": "urn:burni:hit-set|identifier-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "identifier"
         }
       },
       "jurisdiction": {
@@ -29967,26 +29987,6 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "version"
-        }
-      },
-      "identifier": {
-        "status": "defined",
-        "hash": "3f210cb112bf9d4edd600c1545ed9cdeb5362500268d7697472da5790ea9bdfa",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "identifier": "urn:burni:hit-set|identifier-value"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "identifier"
         }
       },
       "abstract": {
@@ -30151,26 +30151,6 @@
       }
     },
     "StructureMap": {
-      "context": {
-        "status": "defined",
-        "hash": "25dbf53337d9487d3e754fa95c8b24d5c6f6ebc311ea392a5ebb6fe09d71228a",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "context": "urn:burni:hit-set|context-value"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "useContext.valueCodeableConcept"
-        }
-      },
       "context-quantity": {
         "status": "defined",
         "hash": "f87eb749fc8bae28f5b2a093eb8831decd5ad7b17776020956fe696b61dc92bf",
@@ -30211,6 +30191,26 @@
           "extractionPath": "useContext.code"
         }
       },
+      "context": {
+        "status": "defined",
+        "hash": "25dbf53337d9487d3e754fa95c8b24d5c6f6ebc311ea392a5ebb6fe09d71228a",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context": "urn:burni:hit-set|context-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext.valueCodeableConcept"
+        }
+      },
       "date": {
         "status": "defined",
         "hash": "17f3ab552d71ba0f7177302e6b3b95c22b0b06c184b7698400e1897bf943a095",
@@ -30249,6 +30249,26 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "description"
+        }
+      },
+      "identifier": {
+        "status": "defined",
+        "hash": "3f210cb112bf9d4edd600c1545ed9cdeb5362500268d7697472da5790ea9bdfa",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "identifier": "urn:burni:hit-set|identifier-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "identifier"
         }
       },
       "jurisdiction": {
@@ -30389,26 +30409,6 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "version"
-        }
-      },
-      "identifier": {
-        "status": "defined",
-        "hash": "3f210cb112bf9d4edd600c1545ed9cdeb5362500268d7697472da5790ea9bdfa",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "identifier": "urn:burni:hit-set|identifier-value"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "identifier"
         }
       }
     },
@@ -31345,26 +31345,6 @@
       }
     },
     "TerminologyCapabilities": {
-      "context": {
-        "status": "defined",
-        "hash": "25dbf53337d9487d3e754fa95c8b24d5c6f6ebc311ea392a5ebb6fe09d71228a",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "context": "urn:burni:hit-set|context-value"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "useContext.valueCodeableConcept"
-        }
-      },
       "context-quantity": {
         "status": "defined",
         "hash": "f87eb749fc8bae28f5b2a093eb8831decd5ad7b17776020956fe696b61dc92bf",
@@ -31403,6 +31383,26 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "useContext.code"
+        }
+      },
+      "context": {
+        "status": "defined",
+        "hash": "25dbf53337d9487d3e754fa95c8b24d5c6f6ebc311ea392a5ebb6fe09d71228a",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context": "urn:burni:hit-set|context-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext.valueCodeableConcept"
         }
       },
       "date": {
@@ -31709,26 +31709,6 @@
       }
     },
     "TestScript": {
-      "context": {
-        "status": "defined",
-        "hash": "25dbf53337d9487d3e754fa95c8b24d5c6f6ebc311ea392a5ebb6fe09d71228a",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "context": "urn:burni:hit-set|context-value"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "useContext.valueCodeableConcept"
-        }
-      },
       "context-quantity": {
         "status": "defined",
         "hash": "f87eb749fc8bae28f5b2a093eb8831decd5ad7b17776020956fe696b61dc92bf",
@@ -31767,6 +31747,26 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "useContext.code"
+        }
+      },
+      "context": {
+        "status": "defined",
+        "hash": "25dbf53337d9487d3e754fa95c8b24d5c6f6ebc311ea392a5ebb6fe09d71228a",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context": "urn:burni:hit-set|context-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext.valueCodeableConcept"
         }
       },
       "date": {
@@ -31991,26 +31991,6 @@
       }
     },
     "ValueSet": {
-      "context": {
-        "status": "defined",
-        "hash": "25dbf53337d9487d3e754fa95c8b24d5c6f6ebc311ea392a5ebb6fe09d71228a",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "context": "urn:burni:hit-set|context-value"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "useContext.valueCodeableConcept"
-        }
-      },
       "context-quantity": {
         "status": "defined",
         "hash": "f87eb749fc8bae28f5b2a093eb8831decd5ad7b17776020956fe696b61dc92bf",
@@ -32051,6 +32031,26 @@
           "extractionPath": "useContext.code"
         }
       },
+      "context": {
+        "status": "defined",
+        "hash": "25dbf53337d9487d3e754fa95c8b24d5c6f6ebc311ea392a5ebb6fe09d71228a",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context": "urn:burni:hit-set|context-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext.valueCodeableConcept"
+        }
+      },
       "date": {
         "status": "defined",
         "hash": "17f3ab552d71ba0f7177302e6b3b95c22b0b06c184b7698400e1897bf943a095",
@@ -32089,6 +32089,26 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "description"
+        }
+      },
+      "identifier": {
+        "status": "defined",
+        "hash": "3f210cb112bf9d4edd600c1545ed9cdeb5362500268d7697472da5790ea9bdfa",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "identifier": "urn:burni:hit-set|identifier-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "identifier"
         }
       },
       "jurisdiction": {
@@ -32231,26 +32251,6 @@
           "extractionPath": "version"
         }
       },
-      "identifier": {
-        "status": "defined",
-        "hash": "3f210cb112bf9d4edd600c1545ed9cdeb5362500268d7697472da5790ea9bdfa",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "identifier": "urn:burni:hit-set|identifier-value"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "identifier"
-        }
-      },
       "code": {
         "status": "defined",
         "hash": "371ada08897e85c3b64f52c5031c53cd65c2faf37987a5f2e0b151d5172b1613",
@@ -32335,6 +32335,26 @@
       }
     },
     "VisionPrescription": {
+      "encounter": {
+        "status": "defined",
+        "hash": "f67abff106106520a8955251dd15d70c1e74426fb8375dd1f573737c2e2f7a95",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "encounter": "Patient/hit-set-encounter"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "encounter"
+        }
+      },
       "identifier": {
         "status": "defined",
         "hash": "3f210cb112bf9d4edd600c1545ed9cdeb5362500268d7697472da5790ea9bdfa",
@@ -32373,26 +32393,6 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "patient"
-        }
-      },
-      "encounter": {
-        "status": "defined",
-        "hash": "f67abff106106520a8955251dd15d70c1e74426fb8375dd1f573737c2e2f7a95",
-        "valueSource": "synthetic",
-        "positive": {
-          "query": {
-            "encounter": "Patient/hit-set-encounter"
-          },
-          "expectDocument": "main"
-        },
-        "companionNegative": {
-          "expectDocument": "companion"
-        },
-        "missing": {
-          "applicable": true
-        },
-        "syntheticAugmentation": {
-          "extractionPath": "encounter"
         }
       },
       "datewritten": {

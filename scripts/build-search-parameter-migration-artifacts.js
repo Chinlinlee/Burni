@@ -10,7 +10,8 @@ const { buildRegistrySnapshot } = require("@models/FHIR/searchParameter/registry
 const {
     ARTIFACT_PATH,
     writeArtifact,
-    verifyArtifactIdentity
+    verifyArtifactIdentity,
+    hydrateDefinitionEntry
 } = require("@models/FHIR/searchParameter/registry/artifacts/compiledArtifact");
 const { verifyProvenance } = require("@models/FHIR/searchParameter/migration/provenance");
 const { buildLookupMatrix } = require("@models/FHIR/searchParameter/migration/lookupMatrix");
@@ -85,6 +86,47 @@ function compileBuiltinDefinitionsOnce() {
     };
 }
 
+/**
+ * Hydrate the runtime artifact and build the same snapshot shape used by default reload.
+ *
+ * @param {import('@models/FHIR/searchParameter/registry/artifacts/compiledArtifact').CompiledBuiltinArtifact} artifact
+ * @returns {{
+ *   definitions: import('@models/FHIR/searchParameter/registry/types').SearchParameterDefinition[],
+ *   snapshot: import('@models/FHIR/searchParameter/registry/types').RegistrySnapshot
+ * }}
+ */
+function buildSnapshotFromArtifact(artifact) {
+    /** @type {import('@models/FHIR/searchParameter/registry/types').SearchParameterDefinition[]} */
+    const definitions = [];
+    /** @type {import('@models/FHIR/searchParameter/registry/diagnostics').RegistryDiagnostic[]} */
+    const diagnostics = [];
+
+    for (const entry of Object.values(artifact.definitions)) {
+        const hydrated = hydrateDefinitionEntry(entry);
+        diagnostics.push(...entry.compile.diagnostics);
+        const activated = applyActivationOverlay(hydrated, {
+            compilable: entry.compile.compilable,
+            reason: entry.compile.reason
+        });
+        activated.lookupPlans = entry.compile.lookupPlans;
+        definitions.push(activated);
+    }
+
+    const merged = mergeDefinitions(definitions);
+    diagnostics.push(...merged.diagnostics);
+
+    const snapshot = buildRegistrySnapshot({
+        definitions: merged.definitions,
+        diagnostics,
+        version: 1
+    });
+
+    return {
+        definitions: merged.definitions,
+        snapshot
+    };
+}
+
 async function main() {
     const provenanceResult = verifyProvenance();
     if (!provenanceResult.valid) {
@@ -95,8 +137,7 @@ async function main() {
         process.exit(1);
     }
 
-    const { rawDefinitions, compileResults, definitions, snapshot } =
-        compileBuiltinDefinitionsOnce();
+    const { rawDefinitions, compileResults } = compileBuiltinDefinitionsOnce();
 
     const artifact = writeArtifact(rawDefinitions, compileResults);
     const identityVerification = verifyArtifactIdentity(artifact);
@@ -107,6 +148,8 @@ async function main() {
         }
         process.exit(1);
     }
+
+    const { definitions, snapshot } = buildSnapshotFromArtifact(artifact);
 
     const lookupMatrix = buildLookupMatrix(snapshot, definitions);
     const examplesDir = process.env.FHIR_EXAMPLES_DIR;

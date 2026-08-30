@@ -102,6 +102,16 @@ describe("MongoDB connector lifecycle", function () {
             expect(result.databaseConnected).to.equal(true);
         });
 
+        it("rejects application readiness when the compile artifact identity is stale", function () {
+            const result = runIsolatedConnectorScenario("staleArtifactBlocksReady");
+
+            expect(result.ok).to.equal(true);
+            expect(result.readyError?.message).to.include(
+                "npm run search-parameter:build-artifacts"
+            );
+            expect(result.databaseConnected).to.equal(true);
+        });
+
         it("keeps sharding provisioning independent from application readiness success", function () {
             const result = runIsolatedConnectorScenario(
                 "shardingIndependentFromApplicationReady"

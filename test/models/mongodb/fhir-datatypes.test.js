@@ -8,6 +8,12 @@ const dateTime = require("@mongodb/FHIRDataTypesSchema/dateTime");
 const { Reference } = require("@mongodb/FHIRDataTypesSchema/Reference");
 const { HumanName } = require("@mongodb/FHIRDataTypesSchema/HumanName");
 const { Timing } = require("@mongodb/FHIRDataTypesSchema/Timing");
+const {
+    normalizeDate,
+    normalizeDateTime,
+    serializeDate,
+    serializeDateTime
+} = require("@models/FHIR/temporal");
 
 function castWithSchema(pathDef, value) {
     const schema = new mongoose.Schema({ value: pathDef }, { _id: false });
@@ -34,17 +40,17 @@ describe("FHIR datatype persistence", function () {
     });
 
     it("preserves partial FHIR date precision", function () {
-        expect(castWithSchema(date, "1995")).to.equal("1995");
-        expect(castWithSchema(date, "2012-01")).to.equal("2012-01");
-        expect(castWithSchema(date, "2012-06-01")).to.equal("2012-06-01");
+        for (const scalar of ["1995", "2012-01", "2012-06-01"]) {
+            const stored = castWithSchema(date, normalizeDate(scalar));
+            expect(serializeDate(stored)).to.equal(scalar);
+        }
     });
 
     it("preserves partial FHIR dateTime precision", function () {
-        expect(castWithSchema(dateTime, "2004")).to.equal("2004");
-        expect(castWithSchema(dateTime, "2012-06")).to.equal("2012-06");
-        expect(castWithSchema(dateTime, "2015-02-09T16:04:15.817Z")).to.equal(
-            "2015-02-09T16:04:15.817Z"
-        );
+        for (const scalar of ["2004", "2012-06", "2015-02-09T16:04:15.817Z"]) {
+            const stored = castWithSchema(dateTime, normalizeDateTime(scalar));
+            expect(serializeDateTime(stored)).to.equal(scalar);
+        }
     });
 
     it("accepts absolute references with implementation-specific resource types", function () {

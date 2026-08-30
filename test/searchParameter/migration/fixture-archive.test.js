@@ -8,9 +8,8 @@ const { buildFixtureArchive } = require("@models/FHIR/searchParameter/migration/
 const { buildMigrationManifest } = require("@models/FHIR/searchParameter/migration/migrationManifest");
 const { verifyMigrationArtifacts } = require("@models/FHIR/searchParameter/migration/manifestDrift");
 const { reloadRegistry } = require("@models/FHIR/searchParameter/registry/registryManager");
-const { loadBuiltinDefinitions } = require("@models/FHIR/searchParameter/registry/sourceAdapter");
+const compiledArtifact = require("@models/FHIR/searchParameter/registry/artifacts/compiledArtifact");
 const { applyActivationOverlay } = require("@models/FHIR/searchParameter/registry/activationPolicy");
-const { compileDefinition } = require("@models/FHIR/searchParameter/compiler/compiler");
 const { mergeDefinitions } = require("@models/FHIR/searchParameter/registry/merge");
 const productionResources = require("@models/FHIR/fhir.resourceList.json");
 
@@ -20,23 +19,21 @@ const ARTIFACTS_DIR = path.join(
 );
 const ARCHIVE_ROOT = path.join(__dirname, "../../fixtures/archive");
 
-async function compileDefinitions() {
-    const builtin = loadBuiltinDefinitions();
-    const compiledDefinitions = [];
+function hydrateDefinitionsFromArtifact() {
+    const artifact = compiledArtifact.readArtifact();
+    const definitions = [];
 
-    for (const definition of builtin.definitions) {
-        const compileResult = compileDefinition(definition);
-        const activated = applyActivationOverlay(definition, {
-            compilable: compileResult.compilable,
-            reason: compileResult.reason
+    for (const entry of Object.values(artifact.definitions)) {
+        const hydrated = compiledArtifact.hydrateDefinitionEntry(entry);
+        const activated = applyActivationOverlay(hydrated, {
+            compilable: entry.compile.compilable,
+            reason: entry.compile.reason
         });
-        if (compileResult.lookupPlans) {
-            activated.lookupPlans = compileResult.lookupPlans;
-        }
-        compiledDefinitions.push(activated);
+        activated.lookupPlans = entry.compile.lookupPlans;
+        definitions.push(activated);
     }
 
-    return mergeDefinitions(compiledDefinitions).definitions;
+    return mergeDefinitions(definitions).definitions;
 }
 
 describe("SearchParameter fixture archive", function () {
@@ -65,7 +62,7 @@ describe("SearchParameter fixture archive", function () {
 
     it("archives official, derived, and synthetic fixtures without mutating source examples", async function () {
         const snapshot = await reloadRegistry();
-        const definitions = await compileDefinitions();
+        const definitions = hydrateDefinitionsFromArtifact();
         const archive = buildFixtureArchive({ snapshot, definitions });
 
         expect(archive.summary.official).to.equal(141);
@@ -86,7 +83,7 @@ describe("SearchParameter fixture archive", function () {
 
     it("builds a migration manifest with source, fixture, plan, hit-set, and enablement metadata", async function () {
         const snapshot = await reloadRegistry();
-        const definitions = await compileDefinitions();
+        const definitions = hydrateDefinitionsFromArtifact();
         const archive = buildFixtureArchive({ snapshot, definitions });
         const manifest = buildMigrationManifest({
             snapshot,
@@ -110,7 +107,7 @@ describe("SearchParameter fixture archive", function () {
         }
 
         const snapshot = await reloadRegistry();
-        const definitions = await compileDefinitions();
+        const definitions = hydrateDefinitionsFromArtifact();
         const archive = buildFixtureArchive({ snapshot, definitions });
         const manifest = buildMigrationManifest({
             snapshot,

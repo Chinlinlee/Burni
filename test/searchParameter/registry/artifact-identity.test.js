@@ -20,6 +20,33 @@ const { loadBuiltinDefinitions } = require("@models/FHIR/searchParameter/registr
 const { compileDefinition } = require("@models/FHIR/searchParameter/compiler/compiler");
 
 describe("SearchParameter compiled artifact identity", function () {
+    it("passes identity verification for the committed runtime artifact", function () {
+        const artifact = readArtifact();
+        const verification = verifyArtifactIdentity(artifact);
+        expect(verification.valid, verification.errors.join("; ")).to.equal(true);
+    });
+
+    it("fails when current bundle checksum no longer matches the artifact header", function () {
+        const artifact = readArtifact();
+        const staleArtifact = {
+            ...artifact,
+            header: {
+                ...artifact.header,
+                identity: {
+                    ...artifact.header.identity,
+                    bundleChecksum: "0".repeat(64)
+                }
+            }
+        };
+
+        const verification = verifyArtifactIdentity(staleArtifact);
+        expect(verification.valid).to.equal(false);
+        expect(verification.errors.join(" ")).to.include("npm run search-parameter:build-artifacts");
+        expect(verification.errors.some((error) => error.includes("bundle checksum"))).to.equal(
+            true
+        );
+    });
+
     it("computes stable directory hashes for compiler and type maps inputs", function () {
         const identity = computeCurrentIdentity();
         expect(identity.bundleChecksum).to.match(/^[a-f0-9]{64}$/);

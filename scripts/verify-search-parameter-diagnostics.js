@@ -3,37 +3,35 @@ require("module-alias/register");
 const fs = require("fs");
 const path = require("path");
 const { reloadRegistry } = require("@models/FHIR/searchParameter/registry/registryManager");
-const { loadBuiltinDefinitions } = require("@models/FHIR/searchParameter/registry/sourceAdapter");
-const { applyActivationOverlay } = require("@models/FHIR/searchParameter/registry/activationPolicy");
-const { compileDefinition } = require("@models/FHIR/searchParameter/compiler/compiler");
-const { mergeDefinitions } = require("@models/FHIR/searchParameter/registry/merge");
+const {
+    readArtifact,
+    verifyArtifactIdentity
+} = require("@models/FHIR/searchParameter/registry/artifacts/compiledArtifact");
 const { runDiagnosticsCiGate } = require("@models/FHIR/searchParameter/migration/diagnosticsCiGate");
 
 const outputPath = path.join(__dirname, "../temp/search-parameter-diagnostics-report.json");
 
-async function compileDefinitions() {
-    const builtin = loadBuiltinDefinitions();
-    /** @type {import('@models/FHIR/searchParameter/registry/types').SearchParameterDefinition[]} */
-    const compiledDefinitions = [];
-
-    for (const definition of builtin.definitions) {
-        const compileResult = compileDefinition(definition);
-        const activated = applyActivationOverlay(definition, {
-            compilable: compileResult.compilable,
-            reason: compileResult.reason
-        });
-        if (compileResult.lookupPlans) {
-            activated.lookupPlans = compileResult.lookupPlans;
-        }
-        compiledDefinitions.push(activated);
-    }
-
-    return mergeDefinitions(compiledDefinitions).definitions;
+/**
+ * @param {import('@models/FHIR/searchParameter/registry/types').RegistrySnapshot} snapshot
+ * @returns {import('@models/FHIR/searchParameter/registry/types').SearchParameterDefinition[]}
+ */
+function definitionsFromSnapshot(snapshot) {
+    return [...snapshot.byCanonicalKey.values()];
 }
 
 async function main() {
+    const artifact = readArtifact();
+    const identityVerification = verifyArtifactIdentity(artifact);
+    if (!identityVerification.valid) {
+        console.error("SearchParameter compile artifact identity verification failed:");
+        for (const error of identityVerification.errors) {
+            console.error(`  - ${error}`);
+        }
+        process.exit(1);
+    }
+
     const snapshot = await reloadRegistry();
-    const definitions = await compileDefinitions();
+    const definitions = definitionsFromSnapshot(snapshot);
     const gate = runDiagnosticsCiGate({ snapshot, definitions });
 
     const report = {
