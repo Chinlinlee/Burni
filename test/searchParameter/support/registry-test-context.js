@@ -1,4 +1,6 @@
+const mongoose = require("mongoose");
 const {
+    dropMongoTestDatabase,
     startMongoMemory,
     stopMongoMemory
 } = require("../../support/mongo-memory");
@@ -41,12 +43,14 @@ async function startRegistryTestContext() {
     setRegistryTestEnv();
     clearRegistryModuleCache();
     const context = await startMongoMemory();
+    await mongoose.connection.collection("SearchParameter").deleteMany({});
     const { reloadRegistry } = require("@models/FHIR/searchParameter/registry/registryManager");
     await reloadRegistry();
     return context;
 }
 
 async function stopRegistryTestContext() {
+    await dropMongoTestDatabase();
     await stopMongoMemory();
     restoreRegistryTestEnv();
     clearRegistryModuleCache();

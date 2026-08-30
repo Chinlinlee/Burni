@@ -1,37 +1,88 @@
 const mongoose = require("mongoose");
 const { MongoMemoryServer } = require("mongodb-memory-server");
+const timing = require("./test-timing");
 
 /** @type {MongoMemoryServer | null} */
 let memoryServer = null;
 
+/** @type {string | null} */
+let processUri = null;
+
 /** @type {string | undefined} */
 let originalMongoUrl;
+
+/** @type {number} */
+let activeSuiteCount = 0;
+
+/** @type {boolean} */
+let processTeardownComplete = false;
 
 /**
  * @returns {Promise<{ mongoose: typeof mongoose, memoryServer: MongoMemoryServer }>}
  */
 async function startMongoMemory() {
-    originalMongoUrl = process.env.MONGODB_CONNECTION_URL;
-    memoryServer = await MongoMemoryServer.create();
-    const uri = memoryServer.getUri();
-    process.env.MONGODB_CONNECTION_URL = uri;
-
-    if (mongoose.connection.readyState !== 0) {
-        await mongoose.disconnect();
+    if (processTeardownComplete) {
+        processTeardownComplete = false;
     }
-    await mongoose.connect(uri);
+
+    if (originalMongoUrl === undefined) {
+        originalMongoUrl = process.env.MONGODB_CONNECTION_URL;
+    }
+
+    if (!memoryServer) {
+        timing.startPhase("database.startup");
+        memoryServer = await MongoMemoryServer.create();
+        processUri = memoryServer.getUri();
+        process.env.MONGODB_CONNECTION_URL = processUri;
+        timing.endPhase("database.startup");
+    }
+
+    activeSuiteCount++;
+
+    const readyState = mongoose.connection.readyState;
+    if (readyState !== 1) {
+        if (readyState !== 0) {
+            await mongoose.disconnect();
+        }
+        timing.startPhase("database.connect");
+        await mongoose.connect(processUri);
+        timing.endPhase("database.connect");
+    }
 
     return { mongoose, memoryServer };
 }
 
 async function stopMongoMemory() {
+    if (activeSuiteCount > 0) {
+        activeSuiteCount--;
+    }
+}
+
+async function dropMongoTestDatabase() {
+    if (mongoose.connection.readyState === 1) {
+        await mongoose.connection.dropDatabase();
+    }
+}
+
+async function stopMongoMemoryProcess() {
+    if (processTeardownComplete) {
+        return;
+    }
+    processTeardownComplete = true;
+    activeSuiteCount = 0;
+
+    timing.startPhase("database.teardown");
     if (mongoose.connection.readyState !== 0) {
         await mongoose.disconnect();
     }
+
     if (memoryServer) {
         await memoryServer.stop();
         memoryServer = null;
+        processUri = null;
     }
+    timing.endPhase("database.teardown");
+
     if (originalMongoUrl === undefined) {
         delete process.env.MONGODB_CONNECTION_URL;
     } else {
@@ -63,5 +114,7 @@ async function startMongoMemoryWithConnector() {
 module.exports = {
     startMongoMemory,
     startMongoMemoryWithConnector,
-    stopMongoMemory
+    stopMongoMemory,
+    stopMongoMemoryProcess,
+    dropMongoTestDatabase
 };

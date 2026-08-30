@@ -49,7 +49,21 @@ describe("FHIR CRUD test context", function () {
         expect(process.env.ENABLE_VALIDATOR).to.equal("false");
 
         await stopFhirCrudTestContext();
-        expect(mongoose.connection.readyState).to.equal(0);
+        expect(mongoose.connection.readyState).to.equal(1);
+    });
+
+    it("reuses the same process-level MongoMemoryServer across start/stop cycles", async function () {
+        this.timeout(120000);
+        const first = await startFhirCrudTestContext();
+        const serverRef = first.memoryServer;
+        await stopFhirCrudTestContext();
+
+        const second = await startFhirCrudTestContext();
+        expect(second.memoryServer).to.equal(serverRef);
+        expect(second.mongoose.connection.readyState).to.equal(1);
+
+        await stopFhirCrudTestContext();
+        expect(mongoose.connection.readyState).to.equal(1);
     });
 
     it("isolates collections per resource type", async function () {
@@ -58,6 +72,8 @@ describe("FHIR CRUD test context", function () {
 
         const patientModel = ensureResourceModel("Patient");
         const organizationModel = ensureResourceModel("Organization");
+        await clearResourceCollection("Patient");
+        await clearResourceCollection("Organization");
         await patientModel.create({
             resourceType: "Patient",
             id: "patient-isolation-test",

@@ -58,6 +58,10 @@ describe("SearchParameter mongo integration", function () {
         await stopRegistryTestContext();
     });
 
+    beforeEach(async function () {
+        await mongoose.connection.collection("SearchParameter").deleteMany({});
+    });
+
     it("reloads consistently when database is available", async function () {
         const first = await reloadRegistry();
         const second = await reloadRegistry();

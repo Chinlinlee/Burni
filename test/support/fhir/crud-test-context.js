@@ -1,4 +1,5 @@
 const {
+    dropMongoTestDatabase,
     startMongoMemory,
     stopMongoMemory
 } = require("../mongo-memory");
@@ -31,6 +32,7 @@ async function startFhirCrudTestContext() {
 }
 
 async function stopFhirCrudTestContext() {
+    await dropMongoTestDatabase();
     await stopMongoMemory();
     restoreFhirCrudTestEnv();
 }

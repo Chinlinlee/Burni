@@ -2,6 +2,7 @@ require("module-alias/register");
 
 const { expect } = require("chai");
 const {
+    dropMongoTestDatabase,
     startMongoMemory,
     stopMongoMemory
 } = require("../../../support/mongo-memory");
@@ -20,6 +21,7 @@ describe("Patient FHIR service integration", function () {
     });
 
     after(async function () {
+        await dropMongoTestDatabase();
         await stopMongoMemory();
     });
 

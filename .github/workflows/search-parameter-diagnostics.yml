@@ -1,10 +1,12 @@
+# Diagnostics gate only — full profile (`npm run test:full`) stays a manual/release
+# entry until Specimen CRUD is stable across full runs (see baseline.md).
 name: SearchParameter Diagnostics
 
 on:
   push:
-    branches: [main]
+    branches: [main, next, dev]
   pull_request:
-    branches: [main]
+    branches: [main, next, dev]
 
 jobs:
   diagnostics-gate:

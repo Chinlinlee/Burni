@@ -23,6 +23,10 @@ describe("FHIR generic service support", function () {
         await stopFhirCrudTestContext();
     });
 
+    beforeEach(async function () {
+        await clearResourceCollection("Patient");
+    });
+
     it("registers all catalog resource models", function () {
         const diagnosis = diagnoseResourceModelRegistration();
         expect(diagnosis.catalogCount).to.equal(146);
@@ -37,7 +41,6 @@ describe("FHIR generic service support", function () {
     });
 
     it("creates and reads Patient through the generic adapter", async function () {
-        await clearResourceCollection("Patient");
         const { resource: fixture } = loadActiveFixture("Patient");
         const created = await createResourceViaService("Patient", fixture);
 
