@@ -5,5 +5,7 @@ if (!process.env.MONGODB_HOSTS) {
         path: `${appDir}/.env`
     });
 }
-const dataDB = require("../mongodb/connector")(process.env);
-module.exports = exports = dataDB;
+
+const modelMap = require("./connector")(process.env);
+
+module.exports = modelMap;

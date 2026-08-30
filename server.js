@@ -103,21 +103,7 @@ app.use((err, req, res, next) => {
 });
 
 app.use(cookieParser());
-//login
-app.use(
-    session({
-        secret: process.env.SERVER_SESSION_SECRET_KEY || "secretKey",
-        resave: true,
-        saveUninitialized: true,
-        store: MongoStore.create({
-            client: mongoose.connection.getClient()
-        }),
-        cookie: {
-            httpOnly: true,
-            maxAge: 60 * 60 * 1000
-        }
-    })
-);
+
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
     res.header(
@@ -159,12 +145,40 @@ app.use((req, res, next) => {
 
 app.use(morganMiddleware);
 
-//login
-require("routes.js")(app);
-app.engine("html", require("ejs").renderFile);
-//
-http.createServer(app).listen(port, function () {
-    console.log(`http server is listening on port:${port}`);
-});
+function configureDatabaseDependentMiddleware() {
+    app.use(
+        session({
+            secret: process.env.SERVER_SESSION_SECRET_KEY || "secretKey",
+            resave: true,
+            saveUninitialized: true,
+            store: MongoStore.create({
+                client: mongoose.connection.getClient()
+            }),
+            cookie: {
+                httpOnly: true,
+                maxAge: 60 * 60 * 1000
+            }
+        })
+    );
+
+    require("routes.js")(app);
+    app.engine("html", require("ejs").renderFile);
+}
+
+async function startServer() {
+    try {
+        await mongodb.ready;
+        configureDatabaseDependentMiddleware();
+
+        http.createServer(app).listen(port, function () {
+            console.log(`http server is listening on port:${port}`);
+        });
+    } catch (err) {
+        console.error("[server] application readiness failed:", err);
+        process.exit(1);
+    }
+}
+
+void startServer();
 
 module.exports = app;

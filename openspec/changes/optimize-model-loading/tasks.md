@@ -9,10 +9,10 @@
 
 ## 2. Application bootstrap integration
 
-- [ ] 2.1 更新 `models/mongodb/index.js`，讓既有同步 model map 使用者不變並可取得 readiness Promise。
-- [ ] 2.2 更新 `server.js` 的啟動順序，使 HTTP server 在 application readiness 完成前不 listen。
-- [ ] 2.3 將依賴 database client 的 session store、routes 與 HTTP listen 放入成功 readiness 後的 bootstrap 流程。
-- [ ] 2.4 讓 readiness failure 被記錄、阻止 HTTP server 啟動，並以非零狀態結束 process；connector 不直接終止 process。
+- [x] 2.1 更新 `models/mongodb/index.js`，讓既有同步 model map 使用者不變並可取得 readiness Promise。
+- [x] 2.2 更新 `server.js` 的啟動順序，使 HTTP server 在 application readiness 完成前不 listen。
+- [x] 2.3 將依賴 database client 的 session store、routes 與 HTTP listen 放入成功 readiness 後的 bootstrap 流程。
+- [x] 2.4 讓 readiness failure 被記錄、阻止 HTTP server 啟動，並以非零狀態結束 process；connector 不直接終止 process。
 
 ## 3. Lifecycle verification
 
