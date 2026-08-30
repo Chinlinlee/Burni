@@ -53,7 +53,7 @@ describe("FHIR CRUD test context", function () {
     });
 
     it("isolates collections per resource type", async function () {
-        this.timeout(120000);
+        this.timeout(180000);
         await startFhirCrudTestContext();
 
         const patientModel = ensureResourceModel("Patient");

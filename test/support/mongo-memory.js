@@ -40,7 +40,28 @@ async function stopMongoMemory() {
     originalMongoUrl = undefined;
 }
 
+/**
+ * Starts MongoMemoryServer, pre-connects mongoose, then loads the connector so
+ * lifecycle tests cover the pre-existing default connection path.
+ *
+ * @returns {Promise<{
+ *   mongoose: typeof mongoose,
+ *   memoryServer: MongoMemoryServer,
+ *   mongodb: Record<string, unknown> & { ready: Promise<void>, shardingReady: Promise<void> }
+ * }>}
+ */
+async function startMongoMemoryWithConnector() {
+    const context = await startMongoMemory();
+    const mongodb = require("../../models/mongodb/index.js");
+    await mongodb.ready;
+    return {
+        ...context,
+        mongodb
+    };
+}
+
 module.exports = {
     startMongoMemory,
+    startMongoMemoryWithConnector,
     stopMongoMemory
 };

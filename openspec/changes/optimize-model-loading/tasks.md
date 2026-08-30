@@ -16,12 +16,12 @@
 
 ## 3. Lifecycle verification
 
-- [ ] 3.1 建立隔離 connector lifecycle 測試替身，驗證同步 model map 可在 readiness 完成前取得。
-- [ ] 3.2 驗證主模型、history 模型與 static model 的完整註冊順序，以及 model collision 的立即錯誤。
-- [ ] 3.3 驗證相同設定重複初始化共用 map 與 Promise，不同設定被拒絕，失敗 initialization 不自動重試。
-- [ ] 3.4 驗證 database、SearchParameter registry 與 sharding provisioning 的成功、失敗及相互獨立行為。
-- [ ] 3.5 驗證初始化 log 不洩漏 password 或認證 URL，且記錄各階段與總耗時。
-- [ ] 3.6 更新測試 helper 以覆蓋預先建立相同 database connection 的情境，並保留既有 model registration 與全資源 CRUD integration coverage。
+- [x] 3.1 建立隔離 connector lifecycle 測試替身，驗證同步 model map 可在 readiness 完成前取得。
+- [x] 3.2 驗證主模型、history 模型與 static model 的完整註冊順序，以及 model collision 的立即錯誤。
+- [x] 3.3 驗證相同設定重複初始化共用 map 與 Promise，不同設定被拒絕，失敗 initialization 不自動重試。
+- [x] 3.4 驗證 database、SearchParameter registry 與 sharding provisioning 的成功、失敗及相互獨立行為。
+- [x] 3.5 驗證初始化 log 不洩漏 password 或認證 URL，且記錄各階段與總耗時。
+- [x] 3.6 更新測試 helper 以覆蓋預先建立相同 database connection 的情境，並保留既有 model registration 與全資源 CRUD integration coverage。
 
 ## 4. Architecture documentation
 

@@ -503,6 +503,8 @@ function shardCollections(modelNames, dbName) {
 module.exports = exports = connect;
 exports.normalizeConfig = normalizeConfig;
 exports.buildConnectionUrl = buildConnectionUrl;
+exports.discoverModelFiles = discoverModelFiles;
+exports.registerDiscoveredModels = registerDiscoveredModels;
 exports.MongoDBInitializationConflictError = MongoDBInitializationConflictError;
 exports.MongoDBModelCollisionError = MongoDBModelCollisionError;
 exports.MongoDBConnectionConflictError = MongoDBConnectionConflictError;
