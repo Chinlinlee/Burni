@@ -1,10 +1,11 @@
 const { URL } = require("url");
 
 const { getUrlMatch } = require("@root/utils/fhir-url");
-const moment = require("moment");
-const momentTimezone = require("moment-timezone");
-
-momentTimezone.tz.setDefault("UTC");
+const { parseTemporalQueryValue } = require("./temporalQueryParser");
+const {
+    buildTemporalFilter,
+    buildPeriodTemporalFilter
+} = require("./temporalQueryFilter");
 
 const COMPARATOR_PREFIXES = ["eq", "ne", "lt", "gt", "ge", "le", "sa", "eb", "ap"];
 
@@ -119,99 +120,18 @@ function tokenQuery(item, type, field, required, isCodeableConcept = false) {
     return queryBuilder;
 }
 
-const dateQueryBuilder = {
-    eq: (queryBuilder, field, date, format) => {
-        const rangeStart = moment(date).startOf(format);
-        const rangeEnd = moment(date).endOf(format);
-        if (format === "date") {
-            queryBuilder[field] = {
-                $gte: rangeStart.format("YYYY-MM-DD"),
-                $lt: rangeEnd.clone().add(1, "day").format("YYYY-MM-DD")
-            };
-            return queryBuilder;
-        }
-        if (format === "month") {
-            queryBuilder[field] = {
-                $gte: rangeStart.format("YYYY-MM"),
-                $lt: rangeEnd.clone().add(1, "month").format("YYYY-MM")
-            };
-            return queryBuilder;
-        }
-
-        queryBuilder[field] = {
-            $gte: rangeStart.format("YYYY"),
-            $lt: rangeEnd.clone().add(1, "year").format("YYYY")
-        };
-        return queryBuilder;
-    },
-    ne: (queryBuilder, field, date, format) => {
-        const eqQuery = {};
-        dateQueryBuilder.eq(eqQuery, field, date, format);
-        queryBuilder = {
-            $nor: [eqQuery]
-        };
-        return queryBuilder;
-    },
-    lt: (queryBuilder, field, date) => {
-        queryBuilder[field] = { $lt: moment(date).format("YYYY-MM-DD") };
-        return queryBuilder;
-    },
-    gt: (queryBuilder, field, date) => {
-        queryBuilder[field] = { $gte: moment(date).clone().add(1, "day").format("YYYY-MM-DD") };
-        return queryBuilder;
-    },
-    ge: (queryBuilder, field, date) => {
-        queryBuilder[field] = { $gte: moment(date).format("YYYY-MM-DD") };
-        return queryBuilder;
-    },
-    le: (queryBuilder, field, date) => {
-        queryBuilder[field] = { $lt: moment(date).clone().add(1, "day").format("YYYY-MM-DD") };
-        return queryBuilder;
-    }
-};
-
 /**
  * @param {string} value
  * @param {string} field
  * @returns {Object | false}
  */
 function dateQuery(value, field) {
-    let queryBuilder = {};
-    let date = value.substring(2);
-    let queryPrefix = value.substring(0, 2);
-    if (COMPARATOR_PREFIXES.indexOf(queryPrefix) < 0) {
-        queryPrefix = "eq";
-        date = value;
-    }
-    if (!moment(new Date(date)).isValid()) {
+    try {
+        const temporal = parseTemporalQueryValue(value, "date");
+        return buildTemporalFilter(field, "date", temporal, temporal.comparator);
+    } catch {
         return false;
     }
-
-    const momentYYYYDate = moment(date, "YYYY", true);
-    const momentYYYYMMDate = moment(date, "YYYY-MM", true);
-    const momentYYYYMMDDDate = moment(date, "YYYY-MM-DD", true);
-    const momentValidArr = [
-        momentYYYYDate.isValid(),
-        momentYYYYMMDate.isValid(),
-        momentYYYYMMDDDate.isValid()
-    ];
-    let momentValidIndex = momentValidArr.indexOf(true);
-    if (momentValidIndex < 0) {
-        return false;
-    }
-    if (moment(date, moment.ISO_8601, true).isValid()) {
-        date = moment(date).format();
-    } else if (moment(date, "YYYY", true).isValid()) {
-        date = moment(new Date(date), moment.ISO_8601).format();
-    }
-    const inputFormat = ["year", "month", "date"];
-    queryBuilder = dateQueryBuilder[queryPrefix](
-        queryBuilder,
-        field,
-        date,
-        inputFormat[momentValidIndex]
-    );
-    return queryBuilder;
 }
 
 /**
@@ -220,48 +140,12 @@ function dateQuery(value, field) {
  * @returns {Object | false}
  */
 function dateTimeQuery(value, field) {
-    let queryBuilder = {};
-    const dateTimeRegex =
-        /([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)(-(0[1-9]|1[0-2])(-(0[1-9]|[1-2][0-9]|3[0-1])(T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\.[0-9]+)?(Z|(\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00)))?)?)?/gm;
-    if (!dateTimeRegex.test(value)) {
+    try {
+        const temporal = parseTemporalQueryValue(value, "dateTime");
+        return buildTemporalFilter(field, "dateTime", temporal, temporal.comparator);
+    } catch {
         return false;
     }
-
-    let date = value.substring(2);
-    let queryPrefix = value.substring(0, 2);
-    if (COMPARATOR_PREFIXES.indexOf(queryPrefix) < 0) {
-        queryPrefix = "eq";
-        date = value;
-    }
-    if (!moment(new Date(date)).isValid()) {
-        return false;
-    }
-
-    const momentYYYYDate = moment(date, "YYYY", true);
-    const momentYYYYMMDate = moment(date, "YYYY-MM", true);
-    const momentYYYYMMDDDate = moment(date, "YYYY-MM-DD", true);
-    const momentValidArr = [
-        momentYYYYDate.isValid(),
-        momentYYYYMMDate.isValid(),
-        momentYYYYMMDDDate.isValid()
-    ];
-    let momentValidIndex = momentValidArr.indexOf(true);
-    if (momentValidIndex < 0) {
-        momentValidIndex = 2;
-    }
-    if (moment(date, moment.ISO_8601, true).isValid()) {
-        date = moment(date).format();
-    } else if (moment(date, "YYYY", true).isValid()) {
-        date = moment(new Date(date), moment.ISO_8601).format();
-    }
-    const inputFormat = ["year", "month", "date"];
-    queryBuilder = dateQueryBuilder[queryPrefix](
-        queryBuilder,
-        field,
-        date,
-        inputFormat[momentValidIndex]
-    );
-    return queryBuilder;
 }
 
 /**
@@ -270,13 +154,8 @@ function dateTimeQuery(value, field) {
  * @returns {Object}
  */
 function periodQuery(value, field) {
-    const fieldOfStart = `${field}.start`;
-    const fieldOfEnd = `${field}.end`;
-    const queryOfStart = dateTimeQuery(value, fieldOfStart);
-    const queryOfEnd = dateTimeQuery(value, fieldOfEnd);
-    return {
-        $or: [{ ...queryOfStart }, { ...queryOfEnd }]
-    };
+    const temporal = parseTemporalQueryValue(value, "dateTime");
+    return buildPeriodTemporalFilter(field, temporal, temporal.comparator);
 }
 
 const numberQueryBuilder = {

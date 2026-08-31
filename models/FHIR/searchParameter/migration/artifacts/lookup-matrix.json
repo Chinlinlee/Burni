@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-30T14:37:55.687Z",
+  "generatedAt": "2026-08-31T15:49:29.811Z",
   "resourceCount": 146,
   "lookupCount": 1697,
   "totalSourceLookupCount": 1706,
@@ -1402,13 +1402,12 @@
         },
         "activity-date": {
           "lookupKey": "CarePlan::activity-date",
-          "outcome": "disabled",
-          "reason": "No executable extraction paths for any lookup",
+          "outcome": "compiled",
           "searchType": "date",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/CarePlan-activity-date::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "activity-reference": {
           "lookupKey": "CarePlan::activity-reference",
@@ -3383,13 +3382,12 @@
         },
         "date": {
           "lookupKey": "MedicationRequest::date",
-          "outcome": "disabled",
-          "reason": "No executable extraction paths for any lookup",
+          "outcome": "compiled",
           "searchType": "date",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/medications-date::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "encounter": {
           "lookupKey": "MedicationRequest::encounter",
@@ -15435,13 +15433,12 @@
         },
         "collected": {
           "lookupKey": "Specimen::collected",
-          "outcome": "disabled",
-          "reason": "No executable extraction paths for any lookup",
+          "outcome": "compiled",
           "searchType": "date",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/Specimen-collected::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "collector": {
           "lookupKey": "Specimen::collector",
@@ -16188,8 +16185,8 @@
     }
   },
   "summary": {
-    "compiled": 1614,
-    "disabled": 10,
+    "compiled": 1617,
+    "disabled": 7,
     "unsupported": 73,
     "noLookupResources": [
       "Binary",

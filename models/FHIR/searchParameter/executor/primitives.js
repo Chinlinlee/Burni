@@ -1,13 +1,13 @@
 const {
     stringQuery,
     numberQuery,
-    dateQuery,
-    dateTimeQuery,
     tokenQuery,
     referenceQuery,
     quantityQuery,
     uriQuery
 } = require("./queryPrimitives");
+const { parseTemporalQueryValue } = require("./temporalQueryParser");
+const { buildTemporalFilter } = require("./temporalQueryFilter");
 
 /**
  * @param {string} searchType
@@ -32,20 +32,31 @@ function buildPrimitiveFilter(searchType, value, fieldPath, modifier, comparator
             return result;
         }
         case "date": {
-            const prefixedValue = comparator && comparator !== "eq" ? `${comparator}${value}` : value;
-            const result = dateQuery(prefixedValue, fieldPath);
-            if (!result) {
-                throw new Error(`invalid date: ${value}`);
-            }
-            return result;
+            const temporal = parseTemporalQueryValue(value, "date");
+            return buildTemporalFilter(
+                fieldPath,
+                "date",
+                temporal,
+                comparator ?? temporal.comparator
+            );
         }
         case "dateTime": {
-            const prefixedValue = comparator && comparator !== "eq" ? `${comparator}${value}` : value;
-            const result = dateTimeQuery(prefixedValue, fieldPath);
-            if (!result) {
-                throw new Error(`invalid dateTime: ${value}`);
-            }
-            return result;
+            const temporal = parseTemporalQueryValue(value, "dateTime");
+            return buildTemporalFilter(
+                fieldPath,
+                "dateTime",
+                temporal,
+                comparator ?? temporal.comparator
+            );
+        }
+        case "instant": {
+            const temporal = parseTemporalQueryValue(value, "instant");
+            return buildTemporalFilter(
+                fieldPath,
+                "instant",
+                temporal,
+                comparator ?? temporal.comparator
+            );
         }
         case "token": {
             return tokenQuery(value, "", fieldPath, "");

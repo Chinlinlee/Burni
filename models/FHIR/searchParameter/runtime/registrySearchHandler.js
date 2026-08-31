@@ -1,6 +1,7 @@
 const { ensureRegistryLoaded } = require("../registry/registryManager");
 const { resolveLookupStatus, getEffectiveDefinition } = require("../registry/snapshot");
 const { applyPlanToQuery } = require("../executor/mongoExecutor");
+const { createTypedFilterPlan } = require("../executor/queryValueParser");
 const { buildRelationPlan, buildRelationAggregation } = require("../executor/relationPlan");
 const { parseSearchParameterName } = require("./parameterName");
 
@@ -33,7 +34,15 @@ async function tryApplyRegistryParameter(options) {
         if (!relation.valid || !relation.relationPlan) {
             return "disabled";
         }
-        const aggregation = buildRelationAggregation(relation.relationPlan, query[parameterName]);
+        const targetFilterPlan = createTypedFilterPlan(
+            relation.relationPlan.targetPlan,
+            query[parameterName],
+            relation.relationPlan.targetParameter
+        );
+        const aggregation = buildRelationAggregation(
+            relation.relationPlan,
+            targetFilterPlan
+        );
         if (!query.chain) {
             query.chain = [];
         }

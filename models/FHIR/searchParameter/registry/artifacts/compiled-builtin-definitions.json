@@ -1,13 +1,13 @@
 {
   "header": {
     "version": 1,
-    "generatedAt": "2026-08-30T14:37:55.585Z",
+    "generatedAt": "2026-08-31T15:49:29.718Z",
     "checksumAlgorithm": "sha256",
     "identity": {
       "bundleChecksum": "dc5927e3781a5aba26c08821904c4091664b3a40171aba9b01e563e9f7ca85df",
-      "compilerDirectoryHash": "c12e60b80a04f00a292bd2956f5fcd5355a78dd992737f974b205c5892b31e6b",
+      "compilerDirectoryHash": "3c79973b2ca4cc7f8cd65578107ff962c9211e0459b8e3a311c4d0d4d6901010",
       "typeMapsDirectoryHash": "0646d50f015f8dcc5f83c6b9a7e26978ecc26f9e8d522b32535d4cba710aa950",
-      "bodyChecksum": "983919bd889c4e551138a9a9e517175b87ce467945aa773fbcf28ffa5666bb8d"
+      "bodyChecksum": "fd666fb0ee622f3f14f9b83f556d9fb32e882079ca7662e347a9fa05e20d168a"
     }
   },
   "definitions": {
@@ -6825,7 +6825,10 @@
               "extractionPaths": [
                 {
                   "path": "reaction.onset",
-                  "datatype": "dateTime"
+                  "datatype": "dateTime",
+                  "arrayPaths": [
+                    "reaction"
+                  ]
                 }
               ],
               "multipleOr": true,
@@ -14911,27 +14914,64 @@
       ],
       "rawStatus": "draft",
       "compile": {
-        "compilable": false,
-        "reason": "No executable extraction paths for any lookup",
+        "compilable": true,
         "lookupPlans": {
           "CarePlan::activity-date": {
-            "compilable": false,
-            "reason": "No executable extraction paths for CarePlan"
+            "compilable": true,
+            "plan": {
+              "canonicalKey": "http://hl7.org/fhir/SearchParameter/CarePlan-activity-date::4.0.1",
+              "resourceType": "CarePlan",
+              "code": "activity-date",
+              "searchType": "date",
+              "kind": "filter",
+              "extractionPaths": [
+                {
+                  "path": "activity.detail.scheduledTiming.event",
+                  "datatype": "dateTime",
+                  "arrayPaths": [
+                    "activity",
+                    "activity.detail.scheduledTiming.event"
+                  ]
+                },
+                {
+                  "path": "activity.detail.scheduledPeriod",
+                  "datatype": "Period",
+                  "arrayPaths": [
+                    "activity"
+                  ]
+                }
+              ],
+              "multipleOr": true,
+              "multipleAnd": true,
+              "comparators": [
+                "eq",
+                "ne",
+                "gt",
+                "ge",
+                "lt",
+                "le",
+                "sa",
+                "eb",
+                "ap"
+              ],
+              "modifiers": [],
+              "targets": [],
+              "supportedValueForms": [],
+              "depth": 0,
+              "estimatedCost": 2,
+              "requiredIndexes": [
+                "activity",
+                "activity"
+              ],
+              "diagnostics": []
+            }
           }
         },
         "diagnostics": [
           {
             "code": "incompatible-branch",
             "category": "compile",
-            "message": "Path activity.detail.scheduled is missing from CarePlan type map",
-            "canonicalKey": "http://hl7.org/fhir/SearchParameter/CarePlan-activity-date::4.0.1",
-            "lookupKey": "CarePlan::activity-date",
-            "expression": "CarePlan.activity.detail.scheduled"
-          },
-          {
-            "code": "lookup-disabled",
-            "category": "compile",
-            "message": "No executable extraction paths for CarePlan",
+            "message": "No search-type projection for date on string at activity.detail.scheduledString",
             "canonicalKey": "http://hl7.org/fhir/SearchParameter/CarePlan-activity-date::4.0.1",
             "lookupKey": "CarePlan::activity-date",
             "expression": "CarePlan.activity.detail.scheduled"
@@ -17684,6 +17724,13 @@
                 {
                   "path": "occurrencePeriod",
                   "datatype": "Period"
+                },
+                {
+                  "path": "occurrenceTiming.event",
+                  "datatype": "dateTime",
+                  "arrayPaths": [
+                    "occurrenceTiming.event"
+                  ]
                 }
               ],
               "multipleOr": true,
@@ -17703,25 +17750,17 @@
               "targets": [],
               "supportedValueForms": [],
               "depth": 0,
-              "estimatedCost": 1,
+              "estimatedCost": 2,
               "requiredIndexes": [
                 "occurrenceDateTime",
-                "occurrencePeriod"
+                "occurrencePeriod",
+                "occurrenceTiming"
               ],
               "diagnostics": []
             }
           }
         },
-        "diagnostics": [
-          {
-            "code": "incompatible-branch",
-            "category": "compile",
-            "message": "No search-type projection for date on Timing at occurrenceTiming",
-            "canonicalKey": "http://hl7.org/fhir/SearchParameter/ChargeItem-occurrence::4.0.1",
-            "lookupKey": "ChargeItem::occurrence",
-            "expression": "ChargeItem.occurrence"
-          }
-        ]
+        "diagnostics": []
       }
     },
     "http://hl7.org/fhir/SearchParameter/ChargeItem-patient::4.0.1": {
@@ -23804,6 +23843,13 @@
                   "datatype": "Period"
                 },
                 {
+                  "path": "effectiveTiming.event",
+                  "datatype": "dateTime",
+                  "arrayPaths": [
+                    "effectiveTiming.event"
+                  ]
+                },
+                {
                   "path": "effectiveInstant",
                   "datatype": "instant"
                 }
@@ -23825,10 +23871,11 @@
               "targets": [],
               "supportedValueForms": [],
               "depth": 0,
-              "estimatedCost": 1,
+              "estimatedCost": 2,
               "requiredIndexes": [
                 "effectiveDateTime",
                 "effectivePeriod",
+                "effectiveTiming",
                 "effectiveInstant"
               ],
               "diagnostics": []
@@ -23961,14 +24008,6 @@
             "message": "No search-type projection for date on string at occurrenceString",
             "canonicalKey": "http://hl7.org/fhir/SearchParameter/clinical-date::4.0.1",
             "lookupKey": "Immunization::date",
-            "expression": "AllergyIntolerance.recordedDate | CarePlan.period | CareTeam.period | ClinicalImpression.date | Composition.date | Consent.dateTime | DiagnosticReport.effective | Encounter.period | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | Immunization.occurrence | List.date | Observation.effective | Procedure.performed | (RiskAssessment.occurrence as dateTime) | SupplyRequest.authoredOn"
-          },
-          {
-            "code": "incompatible-branch",
-            "category": "compile",
-            "message": "No search-type projection for date on Timing at effectiveTiming",
-            "canonicalKey": "http://hl7.org/fhir/SearchParameter/clinical-date::4.0.1",
-            "lookupKey": "Observation::date",
             "expression": "AllergyIntolerance.recordedDate | CarePlan.period | CareTeam.period | ClinicalImpression.date | Composition.date | Consent.dateTime | DiagnosticReport.effective | Encounter.period | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | Immunization.occurrence | List.date | Observation.effective | Procedure.performed | (RiskAssessment.occurrence as dateTime) | SupplyRequest.authoredOn"
           },
           {
@@ -34903,7 +34942,10 @@
               "extractionPaths": [
                 {
                   "path": "event.period",
-                  "datatype": "Period"
+                  "datatype": "Period",
+                  "arrayPaths": [
+                    "event"
+                  ]
                 }
               ],
               "multipleOr": true,
@@ -63843,7 +63885,10 @@
               "extractionPaths": [
                 {
                   "path": "location.period",
-                  "datatype": "Period"
+                  "datatype": "Period",
+                  "arrayPaths": [
+                    "location"
+                  ]
                 }
               ],
               "multipleOr": true,
@@ -83447,7 +83492,10 @@
               "extractionPaths": [
                 {
                   "path": "target.dueDate",
-                  "datatype": "date"
+                  "datatype": "date",
+                  "arrayPaths": [
+                    "target"
+                  ]
                 }
               ],
               "multipleOr": true,
@@ -87838,7 +87886,10 @@
               "extractionPaths": [
                 {
                   "path": "reaction.date",
-                  "datatype": "dateTime"
+                  "datatype": "dateTime",
+                  "arrayPaths": [
+                    "reaction"
+                  ]
                 }
               ],
               "multipleOr": true,
@@ -115723,32 +115774,52 @@
       ],
       "rawStatus": "draft",
       "compile": {
-        "compilable": false,
-        "reason": "No executable extraction paths for any lookup",
+        "compilable": true,
         "lookupPlans": {
           "MedicationRequest::date": {
-            "compilable": false,
-            "reason": "No executable extraction paths for MedicationRequest"
+            "compilable": true,
+            "plan": {
+              "canonicalKey": "http://hl7.org/fhir/SearchParameter/medications-date::4.0.1",
+              "resourceType": "MedicationRequest",
+              "code": "date",
+              "searchType": "date",
+              "kind": "filter",
+              "extractionPaths": [
+                {
+                  "path": "dosageInstruction.timing.event",
+                  "datatype": "dateTime",
+                  "arrayPaths": [
+                    "dosageInstruction",
+                    "dosageInstruction.timing.event"
+                  ]
+                }
+              ],
+              "multipleOr": true,
+              "multipleAnd": true,
+              "comparators": [
+                "eq",
+                "ne",
+                "gt",
+                "ge",
+                "lt",
+                "le",
+                "sa",
+                "eb",
+                "ap"
+              ],
+              "modifiers": [],
+              "targets": [],
+              "supportedValueForms": [],
+              "depth": 0,
+              "estimatedCost": 2,
+              "requiredIndexes": [
+                "dosageInstruction"
+              ],
+              "diagnostics": []
+            }
           }
         },
-        "diagnostics": [
-          {
-            "code": "incompatible-branch",
-            "category": "compile",
-            "message": "Path dosageInstruction.timing.eventHistory is missing from MedicationRequest type map",
-            "canonicalKey": "http://hl7.org/fhir/SearchParameter/medications-date::4.0.1",
-            "lookupKey": "MedicationRequest::date",
-            "expression": "MedicationRequest.dosageInstruction.timing.event"
-          },
-          {
-            "code": "lookup-disabled",
-            "category": "compile",
-            "message": "No executable extraction paths for MedicationRequest",
-            "canonicalKey": "http://hl7.org/fhir/SearchParameter/medications-date::4.0.1",
-            "lookupKey": "MedicationRequest::date",
-            "expression": "MedicationRequest.dosageInstruction.timing.event"
-          }
-        ]
+        "diagnostics": []
       }
     },
     "http://hl7.org/fhir/SearchParameter/medications-encounter::4.0.1": {
@@ -122183,7 +122254,10 @@
               "extractionPaths": [
                 {
                   "path": "uniqueId.period",
-                  "datatype": "Period"
+                  "datatype": "Period",
+                  "arrayPaths": [
+                    "uniqueId"
+                  ]
                 }
               ],
               "multipleOr": true,
@@ -162422,6 +162496,13 @@
                 {
                   "path": "occurrencePeriod",
                   "datatype": "Period"
+                },
+                {
+                  "path": "occurrenceTiming.event",
+                  "datatype": "dateTime",
+                  "arrayPaths": [
+                    "occurrenceTiming.event"
+                  ]
                 }
               ],
               "multipleOr": true,
@@ -162441,25 +162522,17 @@
               "targets": [],
               "supportedValueForms": [],
               "depth": 0,
-              "estimatedCost": 1,
+              "estimatedCost": 2,
               "requiredIndexes": [
                 "occurrenceDateTime",
-                "occurrencePeriod"
+                "occurrencePeriod",
+                "occurrenceTiming"
               ],
               "diagnostics": []
             }
           }
         },
-        "diagnostics": [
-          {
-            "code": "incompatible-branch",
-            "category": "compile",
-            "message": "No search-type projection for date on Timing at occurrenceTiming",
-            "canonicalKey": "http://hl7.org/fhir/SearchParameter/ServiceRequest-occurrence::4.0.1",
-            "lookupKey": "ServiceRequest::occurrence",
-            "expression": "ServiceRequest.occurrence"
-          }
-        ]
+        "diagnostics": []
       }
     },
     "http://hl7.org/fhir/SearchParameter/ServiceRequest-performer-type::4.0.1": {
@@ -164297,32 +164370,53 @@
       ],
       "rawStatus": "draft",
       "compile": {
-        "compilable": false,
-        "reason": "No executable extraction paths for any lookup",
+        "compilable": true,
         "lookupPlans": {
           "Specimen::collected": {
-            "compilable": false,
-            "reason": "No executable extraction paths for Specimen"
+            "compilable": true,
+            "plan": {
+              "canonicalKey": "http://hl7.org/fhir/SearchParameter/Specimen-collected::4.0.1",
+              "resourceType": "Specimen",
+              "code": "collected",
+              "searchType": "date",
+              "kind": "filter",
+              "extractionPaths": [
+                {
+                  "path": "collection.collectedDateTime",
+                  "datatype": "dateTime"
+                },
+                {
+                  "path": "collection.collectedPeriod",
+                  "datatype": "Period"
+                }
+              ],
+              "multipleOr": true,
+              "multipleAnd": true,
+              "comparators": [
+                "eq",
+                "ne",
+                "gt",
+                "ge",
+                "lt",
+                "le",
+                "sa",
+                "eb",
+                "ap"
+              ],
+              "modifiers": [],
+              "targets": [],
+              "supportedValueForms": [],
+              "depth": 0,
+              "estimatedCost": 2,
+              "requiredIndexes": [
+                "collection",
+                "collection"
+              ],
+              "diagnostics": []
+            }
           }
         },
-        "diagnostics": [
-          {
-            "code": "incompatible-branch",
-            "category": "compile",
-            "message": "Path collection.collected is missing from Specimen type map",
-            "canonicalKey": "http://hl7.org/fhir/SearchParameter/Specimen-collected::4.0.1",
-            "lookupKey": "Specimen::collected",
-            "expression": "Specimen.collection.collected"
-          },
-          {
-            "code": "lookup-disabled",
-            "category": "compile",
-            "message": "No executable extraction paths for Specimen",
-            "canonicalKey": "http://hl7.org/fhir/SearchParameter/Specimen-collected::4.0.1",
-            "lookupKey": "Specimen::collected",
-            "expression": "Specimen.collection.collected"
-          }
-        ]
+        "diagnostics": []
       }
     },
     "http://hl7.org/fhir/SearchParameter/Specimen-collector::4.0.1": {
@@ -167243,7 +167337,10 @@
               "extractionPaths": [
                 {
                   "path": "instance.expiry",
-                  "datatype": "dateTime"
+                  "datatype": "dateTime",
+                  "arrayPaths": [
+                    "instance"
+                  ]
                 }
               ],
               "multipleOr": true,

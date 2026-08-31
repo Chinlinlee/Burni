@@ -1,8 +1,7 @@
 const { parseLookupKey } = require("../registry/identity");
 const { getEffectiveDefinition, resolveLookupStatus } = require("../registry/snapshot");
 const { isDeclaredTarget } = require("../registry/referenceMetadata");
-const { executeSearchQueryPlan } = require("./mongoExecutor");
-const { MAX_QUERY_COST } = require("./queryValueParser");
+const { MAX_QUERY_COST, createTypedFilterPlan } = require("./queryValueParser");
 
 const MAX_RELATION_DEPTH = 1;
 const MAX_RELATION_COST = MAX_QUERY_COST;
@@ -180,7 +179,7 @@ function referenceValueExpression(extractionPath) {
 
 /**
  * @param {RelationPlan} relationPlan
- * @param {string | string[]} value
+ * @param {string | string[] | import('./queryValueParser').TypedFilterPlan} value
  * @returns {Object}
  */
 function buildRelationAggregation(relationPlan, value) {
@@ -191,11 +190,21 @@ function buildRelationAggregation(relationPlan, value) {
         throw new Error("Relation cost exceeds allowed limit");
     }
 
-    const targetFilter = executeSearchQueryPlan(
-        relationPlan.targetPlan,
-        value,
-        relationPlan.targetParameter
-    );
+    const targetFilterPlan =
+        value &&
+        typeof value === "object" &&
+        (value.kind === "temporal-filter-plan" || value.kind === "typed-filter-plan") &&
+        value.searchPlan
+            ? value
+            : createTypedFilterPlan(
+                  relationPlan.targetPlan,
+                  value,
+                  relationPlan.targetParameter
+              );
+    if (targetFilterPlan.searchPlan !== relationPlan.targetPlan) {
+        throw new Error("Typed filter plan does not belong to chained target plan");
+    }
+    const targetFilter = targetFilterPlan.filter;
     const aliases = [];
     /** @type {Object[]} */
     const pipeline = [];
@@ -252,7 +261,8 @@ function buildRelationAggregation(relationPlan, value) {
 
     return {
         isChain: true,
-        chain: [pipeline]
+        chain: [pipeline],
+        filterPlan: targetFilterPlan
     };
 }
 

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-08-30T14:37:56.363Z",
+  "generatedAt": "2026-08-31T15:49:30.393Z",
   "resources": {
     "Account": {
       "identifier": {
@@ -2723,6 +2723,26 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "activity.detail.code"
+        }
+      },
+      "activity-date": {
+        "status": "defined",
+        "hash": "2cd456052feb88aaad0cce4d53ced7fd40539d063fd9bf064d167fc44f5a1248",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "activity-date": "2000-01-01"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "activity.detail.scheduledTiming.event"
         }
       },
       "activity-reference": {
@@ -19373,6 +19393,26 @@
           "extractionPath": "subject"
         }
       },
+      "date": {
+        "status": "defined",
+        "hash": "17f3ab552d71ba0f7177302e6b3b95c22b0b06c184b7698400e1897bf943a095",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "date": "2000-01-01"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "dosageInstruction.timing.event"
+        }
+      },
       "encounter": {
         "status": "defined",
         "hash": "f67abff106106520a8955251dd15d70c1e74426fb8375dd1f573737c2e2f7a95",
@@ -29485,6 +29525,26 @@
           "extractionPath": "collection.bodySite"
         }
       },
+      "collected": {
+        "status": "defined",
+        "hash": "d7397f2c901801a26b570f74e2fa42710de9b11475d9c2e67624d88f04d96b52",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "collected": "2000-01-01"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "collection.collectedDateTime"
+        }
+      },
       "collector": {
         "status": "defined",
         "hash": "1ef67d5a7b2e1fb09ea17a61636e25ed0074f7f23133b77a9b5a6faddfca7d58",
@@ -32458,8 +32518,8 @@
     }
   },
   "summary": {
-    "compiledLookups": 1614,
-    "definedHitSets": 1614,
+    "compiledLookups": 1617,
+    "definedHitSets": 1617,
     "pendingHitSets": 0
   }
 }

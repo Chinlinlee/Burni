@@ -8,6 +8,7 @@
  * @property {string} datatype
  * @property {string} [referenceTargetType]
  * @property {{ kind: 'systemEquals' | 'deceasedPresence' | 'typeEquals', value?: string }[]} [predicates]
+ * @property {string[]} [arrayPaths]
  * @property {{ kind: 'same-array-element' | 'none', parentPath?: string, fields?: string[] }} [correlation]
  */
 

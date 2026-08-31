@@ -5,9 +5,14 @@ const TYPE_MAP_ROOT = path.join(
     __dirname,
     "../../../../api_generator/to-code-use-definition"
 );
+const FHIR_SCHEMA_PATH = path.join(
+    __dirname,
+    "../../../../FHIR-mongoose-Models-Generator/fhir.schema.json"
+);
 
 /** @type {Map<string, Object | null>} */
 const cache = new Map();
+let fhirSchemaDefinitions;
 
 const PRIMITIVE_TYPES = new Set([
     "string",
@@ -30,6 +35,7 @@ const PRIMITIVE_TYPES = new Set([
     "unsignedInt",
     "positiveInt"
 ]);
+const GENERATED_COMPLEX_TYPE_FIELDS = new Set(["Dosage", "Timing"]);
 
 /**
  * FHIR complex datatype field maps used for recursive path resolution.
@@ -192,7 +198,86 @@ function getComplexTypeFields(datatype) {
     if (!datatype || PRIMITIVE_TYPES.has(datatype)) {
         return null;
     }
-    return COMPLEX_TYPE_FIELDS[datatype] || null;
+    if (COMPLEX_TYPE_FIELDS[datatype]) {
+        return COMPLEX_TYPE_FIELDS[datatype];
+    }
+
+    if (!GENERATED_COMPLEX_TYPE_FIELDS.has(datatype)) {
+        return null;
+    }
+    const fields = getGeneratedComplexTypeFields(datatype);
+    return fields && Object.keys(fields).length > 0 ? fields : null;
+}
+
+function loadFhirSchemaDefinitions() {
+    if (fhirSchemaDefinitions !== undefined) {
+        return fhirSchemaDefinitions;
+    }
+    if (!fs.existsSync(FHIR_SCHEMA_PATH)) {
+        fhirSchemaDefinitions = null;
+        return fhirSchemaDefinitions;
+    }
+    const schema = JSON.parse(fs.readFileSync(FHIR_SCHEMA_PATH, "utf8"));
+    fhirSchemaDefinitions = schema.definitions || null;
+    return fhirSchemaDefinitions;
+}
+
+function getDefinitionName(ref) {
+    if (typeof ref !== "string") {
+        return null;
+    }
+    const match = ref.match(/^#\/definitions\/(.+)$/);
+    return match ? match[1] : null;
+}
+
+function getGeneratedComplexTypeField(datatype, segment) {
+    const definitions = loadFhirSchemaDefinitions();
+    const definition = definitions?.[datatype];
+    const property = definition?.properties?.[segment];
+    if (!property) {
+        return null;
+    }
+
+    const propertySchema = property.type === "array" ? property.items : property;
+    const propertyDatatype =
+        getDefinitionName(propertySchema?.$ref) ||
+        (typeof propertySchema?.type === "string" &&
+        propertySchema.type !== "array" &&
+        propertySchema.type !== "object"
+            ? propertySchema.type
+            : null);
+    if (!propertyDatatype) {
+        return null;
+    }
+    return {
+        datatype: propertyDatatype,
+        isArray: property.type === "array"
+    };
+}
+
+function getComplexTypeField(datatype, segment) {
+    const manualDatatype = COMPLEX_TYPE_FIELDS[datatype]?.[segment];
+    if (manualDatatype) {
+        return { datatype: manualDatatype, isArray: false };
+    }
+    if (!GENERATED_COMPLEX_TYPE_FIELDS.has(datatype)) {
+        return null;
+    }
+    return getGeneratedComplexTypeField(datatype, segment);
+}
+
+function getGeneratedComplexTypeFields(datatype) {
+    const definitions = loadFhirSchemaDefinitions();
+    const properties = definitions?.[datatype]?.properties;
+    if (!properties) {
+        return null;
+    }
+    return Object.fromEntries(
+        Object.keys(properties)
+            .filter((segment) => !segment.startsWith("_"))
+            .map((segment) => [segment, getComplexTypeField(datatype, segment)?.datatype])
+            .filter(([, fieldDatatype]) => fieldDatatype)
+    );
 }
 
 /**
@@ -208,43 +293,76 @@ function resolveSegmentNode(typeMap, segment) {
     return { node: field, datatype: readNodeDatatype(field) };
 }
 
-/**
- * @param {Object} typeMap
- * @param {string} dotPath
- * @returns {{ datatype: string | null, found: boolean }}
- */
-function resolvePathDatatype(typeMap, dotPath) {
+function resolvePathContextMap(typeMap, dotPath) {
     const segments = dotPath.split(".").filter(Boolean);
     if (segments.length === 0) {
-        return { datatype: null, found: false };
+        return typeMap;
     }
 
     let current = typeMap;
     let currentDatatype = null;
+    for (const segment of segments) {
+        const { node, datatype } = resolveSegmentNode(current, segment);
+        if (node) {
+            currentDatatype = datatype;
+            current = node;
+            continue;
+        }
+
+        const complexField = getComplexTypeField(currentDatatype, segment);
+        if (!complexField) {
+            return null;
+        }
+        currentDatatype = complexField.datatype;
+        current = getComplexTypeFields(currentDatatype) || {};
+    }
+    return current;
+}
+
+/**
+ * @param {Object} typeMap
+ * @param {string} dotPath
+ * @returns {{ datatype: string | null, found: boolean, arrayPaths: string[] }}
+ */
+function resolvePathMetadata(typeMap, dotPath) {
+    const segments = dotPath.split(".").filter(Boolean);
+    if (segments.length === 0) {
+        return { datatype: null, found: false, arrayPaths: [] };
+    }
+
+    let current = typeMap;
+    let currentDatatype = null;
+    const arrayPaths = [];
 
     for (let index = 0; index < segments.length; index += 1) {
         const segment = segments[index];
         const { node, datatype } = resolveSegmentNode(current, segment);
         if (!node) {
-            const complexFields = getComplexTypeFields(currentDatatype);
-            if (complexFields && complexFields[segment]) {
-                currentDatatype = complexFields[segment];
+            const complexField = getComplexTypeField(currentDatatype, segment);
+            if (complexField) {
+                if (complexField.isArray) {
+                    arrayPaths.push(segments.slice(0, index + 1).join("."));
+                }
+                currentDatatype = complexField.datatype;
                 if (index === segments.length - 1) {
-                    return { datatype: currentDatatype, found: true };
+                    return { datatype: currentDatatype, found: true, arrayPaths };
                 }
                 const nestedFields = getComplexTypeFields(currentDatatype);
                 if (!nestedFields) {
-                    return { datatype: currentDatatype, found: true };
+                    return { datatype: currentDatatype, found: true, arrayPaths };
                 }
                 current = nestedFields;
                 continue;
             }
-            return { datatype: null, found: false };
+            return { datatype: null, found: false, arrayPaths: [] };
         }
 
+        if (node.isArray === true) {
+            arrayPaths.push(segments.slice(0, index + 1).join("."));
+        }
         currentDatatype = datatype;
         if (index === segments.length - 1) {
-            return { datatype: currentDatatype, found: true };
+            return { datatype: currentDatatype, found: true, arrayPaths };
         }
 
         if (node[segments[index + 1]] !== undefined) {
@@ -252,16 +370,25 @@ function resolvePathDatatype(typeMap, dotPath) {
             continue;
         }
 
-        const complexFields = getComplexTypeFields(currentDatatype);
-        if (complexFields) {
-            current = complexFields;
+        if (getComplexTypeFields(currentDatatype)) {
+            current = getComplexTypeFields(currentDatatype);
             continue;
         }
 
-        return { datatype: null, found: false };
+        return { datatype: null, found: false, arrayPaths: [] };
     }
 
-    return { datatype: null, found: false };
+    return { datatype: null, found: false, arrayPaths: [] };
+}
+
+/**
+ * @param {Object} typeMap
+ * @param {string} dotPath
+ * @returns {{ datatype: string | null, found: boolean }}
+ */
+function resolvePathDatatype(typeMap, dotPath) {
+    const { datatype, found } = resolvePathMetadata(typeMap, dotPath);
+    return { datatype, found };
 }
 
 /**
@@ -291,6 +418,9 @@ module.exports = {
     PRIMITIVE_TYPES,
     loadResourceTypeMap,
     getComplexTypeFields,
+    getComplexTypeField,
+    resolvePathContextMap,
+    resolvePathMetadata,
     resolvePathDatatype,
     expandChoiceElementNames,
     clearResourceTypeMapCache

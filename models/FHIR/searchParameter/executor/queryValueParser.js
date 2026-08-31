@@ -4,6 +4,12 @@ const {
     buildProjectedFilter,
     buildDeceasedCombinedFilter
 } = require("./searchTypeProjection");
+const temporalQueryParser = require("./temporalQueryParser");
+const {
+    TEMPORAL_KINDS,
+    normalizeTemporalQueryRange,
+    splitComparatorPrefix
+} = temporalQueryParser;
 
 const MAX_QUERY_COST = 10;
 const COMPARATOR_PREFIX = /^(eq|ne|lt|gt|ge|le|sa|eb|ap)(.+)$/;
@@ -12,6 +18,8 @@ const COMPARATOR_PREFIX = /^(eq|ne|lt|gt|ge|le|sa|eb|ap)(.+)$/;
  * @typedef {Object} ParsedValueToken
  * @property {string} value
  * @property {string | undefined} comparator
+ * @property {import('./temporalQueryParser').TemporalQueryValue} [temporal]
+ * @property {Error} [temporalError]
  */
 
 /**
@@ -19,14 +27,34 @@ const COMPARATOR_PREFIX = /^(eq|ne|lt|gt|ge|le|sa|eb|ap)(.+)$/;
  * @property {ParsedValueToken[][]} groups
  * @property {'and' | 'or'} conjunction
  * @property {string | undefined} modifier
+ * @property {Error[]} [errors]
  */
 
 /**
  * @param {string} rawValue
  * @param {string} [searchType]
+ * @param {string} [modifier]
  * @returns {ParsedValueToken}
  */
-function parseValueToken(rawValue, searchType) {
+function parseValueToken(rawValue, searchType, modifier) {
+    if (searchType && TEMPORAL_KINDS.has(searchType) && modifier !== "missing") {
+        const split = splitComparatorPrefix(rawValue);
+        try {
+            const temporal = temporalQueryParser.parseTemporalQueryValue(rawValue, searchType);
+            return {
+                value: temporal.value,
+                comparator: temporal.comparator,
+                temporal
+            };
+        } catch (error) {
+            return {
+                value: split.value,
+                comparator: split.comparator,
+                temporalError: error instanceof Error ? error : new Error(String(error))
+            };
+        }
+    }
+
     const capability = searchType ? getTypeCapability(searchType) : null;
     if (capability?.comparators.length) {
         const prefixMatch = COMPARATOR_PREFIX.exec(rawValue);
@@ -48,14 +76,25 @@ function parseSearchValue(rawValue, parameterName, searchType) {
     const modifier = modifierParts.length > 0 ? modifierParts.join(":") : undefined;
     const isRepeated = Array.isArray(rawValue);
     const rawGroups = isRepeated ? rawValue.map(String) : [String(rawValue)];
+    const groups = rawGroups.map((group) =>
+        getCommaSplitArray(group).map((token) =>
+            parseValueToken(token, searchType, modifier)
+        )
+    );
 
-    return {
-        groups: rawGroups.map((group) =>
-            getCommaSplitArray(group).map((token) => parseValueToken(token, searchType))
-        ),
+    const parsed = {
+        groups,
         conjunction: isRepeated ? "and" : "or",
         modifier
     };
+    const errors = groups
+        .flat()
+        .map((token) => token.temporalError)
+        .filter((error) => error !== undefined);
+    if (searchType && TEMPORAL_KINDS.has(searchType)) {
+        parsed.errors = errors;
+    }
+    return parsed;
 }
 
 /**
@@ -63,11 +102,12 @@ function parseSearchValue(rawValue, parameterName, searchType) {
  * @param {string} value
  * @param {string | undefined} modifier
  * @param {string | undefined} comparator
+ * @param {import('./temporalQueryParser').TemporalQueryValue | undefined} [temporal]
  * @returns {Object}
  */
-function buildFilterForValue(plan, value, modifier, comparator) {
+function buildFilterForValue(plan, value, modifier, comparator, temporal) {
     if (plan.code === "deceased" && modifier !== "missing") {
-        return buildDeceasedCombinedFilter(plan, value, modifier, comparator);
+        return buildDeceasedCombinedFilter(plan, value, modifier, comparator, temporal);
     }
 
     const branchFilters = plan.extractionPaths.map((entry) =>
@@ -79,12 +119,20 @@ function buildFilterForValue(plan, value, modifier, comparator) {
             modifier,
             comparator,
             entry.referenceTargetType,
-            entry.predicates
+            entry.predicates,
+            temporal,
+            entry.arrayPaths
         )
     );
 
     if (branchFilters.length === 1) {
         return branchFilters[0];
+    }
+
+    if (modifier === "missing" && (plan.searchType === "date" || plan.searchType === "dateTime")) {
+        return String(value) === "true"
+            ? { $and: branchFilters }
+            : { $or: branchFilters };
     }
 
     return { $or: branchFilters };
@@ -98,7 +146,7 @@ function buildFilterForValue(plan, value, modifier, comparator) {
  */
 function buildGroupFilter(tokens, plan, modifier) {
     const filters = tokens.map((token) =>
-        buildFilterForValue(plan, token.value, modifier, token.comparator)
+        buildFilterForValue(plan, token.value, modifier, token.comparator, token.temporal)
     );
     if (filters.length === 1) {
         return filters[0];
@@ -110,9 +158,9 @@ function buildGroupFilter(tokens, plan, modifier) {
  * @param {import('../compiler/searchQueryPlan').SearchQueryPlan} plan
  * @param {string | string[]} rawValue
  * @param {string} parameterName
- * @returns {{ valid: boolean, reason?: string, filter?: Object }}
+ * @returns {{ valid: boolean, reason?: string, filter?: Object, filterPlan?: TypedFilterPlan }}
  */
-function validateAndBuildFilter(plan, rawValue, parameterName) {
+function buildFilterPlanResult(plan, rawValue, parameterName) {
     if (plan.estimatedCost > MAX_QUERY_COST) {
         return { valid: false, reason: "Estimated query cost exceeds limit" };
     }
@@ -121,6 +169,13 @@ function validateAndBuildFilter(plan, rawValue, parameterName) {
     const tokens = parsed.groups.flat();
     if (tokens.length === 0) {
         return { valid: false, reason: "Missing search value" };
+    }
+    if (parsed.errors?.length) {
+        return {
+            valid: false,
+            reason: parsed.errors.map((error) => error.message).join("; "),
+            errors: parsed.errors
+        };
     }
 
     for (const token of tokens) {
@@ -169,21 +224,71 @@ function validateAndBuildFilter(plan, rawValue, parameterName) {
         buildGroupFilter(group, plan, parsed.modifier)
     );
 
+    let filter;
     if (groupFilters.length === 1) {
-        return { valid: true, filter: groupFilters[0] };
+        filter = groupFilters[0];
+    } else {
+        filter = {
+            [parsed.conjunction === "and" ? "$and" : "$or"]: groupFilters
+        };
     }
 
     return {
         valid: true,
-        filter: {
-            [parsed.conjunction === "and" ? "$and" : "$or"]: groupFilters
+        filter,
+        filterPlan: {
+            kind: TEMPORAL_KINDS.has(plan.searchType)
+                ? "temporal-filter-plan"
+                : "typed-filter-plan",
+            searchPlan: plan,
+            parameterName,
+            rawValue,
+            parsed,
+            filter
         }
     };
 }
 
+/**
+ * @typedef {Object} TypedFilterPlan
+ * @property {'typed-filter-plan' | 'temporal-filter-plan'} kind
+ * @property {import('../compiler/searchQueryPlan').SearchQueryPlan} searchPlan
+ * @property {string} parameterName
+ * @property {string | string[]} rawValue
+ * @property {ParsedSearchValue} parsed
+ * @property {Object} filter
+ */
+
+/**
+ * @param {import('../compiler/searchQueryPlan').SearchQueryPlan} plan
+ * @param {string | string[]} rawValue
+ * @param {string} parameterName
+ * @returns {{ valid: boolean, reason?: string, filter?: Object, filterPlan?: TypedFilterPlan }}
+ */
+function validateAndBuildFilter(plan, rawValue, parameterName) {
+    return buildFilterPlanResult(plan, rawValue, parameterName);
+}
+
+/**
+ * @param {import('../compiler/searchQueryPlan').SearchQueryPlan} plan
+ * @param {string | string[]} rawValue
+ * @param {string} parameterName
+ * @returns {TypedFilterPlan}
+ */
+function createTypedFilterPlan(plan, rawValue, parameterName) {
+    const result = buildFilterPlanResult(plan, rawValue, parameterName);
+    if (!result.valid || !result.filterPlan) {
+        throw new Error(result.reason || "Invalid search query");
+    }
+    return result.filterPlan;
+}
+
 module.exports = {
     MAX_QUERY_COST,
+    normalizeTemporalQueryRange,
+    parseTemporalQueryValue: temporalQueryParser.parseTemporalQueryValue,
     parseSearchValue,
     validateAndBuildFilter,
-    buildFilterForValue
+    buildFilterForValue,
+    createTypedFilterPlan
 };

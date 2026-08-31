@@ -1,6 +1,8 @@
 const _ = require("lodash");
-const { validateAndBuildFilter } = require("./queryValueParser");
-const { MAX_QUERY_COST } = require("./queryValueParser");
+const {
+    createTypedFilterPlan,
+    MAX_QUERY_COST
+} = require("./queryValueParser");
 
 const ALLOWED_OPERATORS = new Set([
     "$and",
@@ -16,25 +18,30 @@ const ALLOWED_OPERATORS = new Set([
     "$nin",
     "$regex",
     "$exists",
-    "$elemMatch"
+    "$elemMatch",
+    "$type",
+    "$expr",
+    "$function"
 ]);
 
 /**
  * @param {import('../compiler/searchQueryPlan').SearchQueryPlan} plan
  * @param {string | string[]} rawValue
  * @param {string} parameterName
+ * @param {import('./queryValueParser').TypedFilterPlan} [typedFilterPlan]
  * @returns {Object}
  */
-function executeSearchQueryPlan(plan, rawValue, parameterName) {
+function executeSearchQueryPlan(plan, rawValue, parameterName, typedFilterPlan) {
     if (plan.kind === "relation") {
         throw new Error("Relation plans must be executed through relation executor");
     }
-    const result = validateAndBuildFilter(plan, rawValue, parameterName);
-    if (!result.valid || !result.filter) {
-        throw new Error(result.reason || "Invalid search query");
+    const filterPlan =
+        typedFilterPlan || createTypedFilterPlan(plan, rawValue, parameterName);
+    if (filterPlan.searchPlan !== plan) {
+        throw new Error("Typed filter plan does not belong to search query plan");
     }
-    assertSafeFilter(result.filter);
-    return result.filter;
+    assertSafeFilter(filterPlan.filter);
+    return filterPlan.filter;
 }
 
 /**
@@ -59,15 +66,22 @@ function assertSafeFilter(filter) {
  * @param {import('../compiler/searchQueryPlan').SearchQueryPlan} plan
  * @param {Object} query
  * @param {string} parameterName
+ * @param {import('./queryValueParser').TypedFilterPlan} [typedFilterPlan]
+ * @returns {import('./queryValueParser').TypedFilterPlan}
  */
-function applyPlanToQuery(plan, query, parameterName) {
-    const rawValue = query[parameterName];
-    const filter = executeSearchQueryPlan(plan, rawValue, parameterName);
+function applyPlanToQuery(plan, query, parameterName, typedFilterPlan) {
+    const filterPlan =
+        typedFilterPlan ||
+        createTypedFilterPlan(plan, query[parameterName], parameterName);
+    if (filterPlan.searchPlan !== plan) {
+        throw new Error("Typed filter plan does not belong to search query plan");
+    }
     if (!query.$and) {
         query.$and = [];
     }
-    query.$and.push(filter);
+    query.$and.push(filterPlan.filter);
     delete query[parameterName];
+    return filterPlan;
 }
 
 module.exports = {

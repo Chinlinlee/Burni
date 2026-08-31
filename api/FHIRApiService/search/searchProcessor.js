@@ -14,6 +14,7 @@ const _ = require("lodash");
  * @property {number} skip
  * @property {number} limit
  * @property {string} totalMode
+ * @property {SearchExecutionInterface} [execution]
  */
 
 /**
@@ -21,6 +22,43 @@ const _ = require("lodash");
  * @property {Object} docs
  * @property {number} count
  */
+
+/**
+ * @typedef {Object} SearchExecutionInterface
+ * @property {(options: { model: import('mongoose').Model, filter: Object, skip: number, limit: number }) => Promise<Object[]>} find
+ * @property {(options: { model: import('mongoose').Model, pipeline: Object[], filter: Object }) => Promise<Object[]>} aggregate
+ * @property {(options: { model: import('mongoose').Model, filter: Object, totalMode: string }) => Promise<number>} count
+ */
+
+/**
+ * @returns {SearchExecutionInterface}
+ */
+function createMongooseSearchExecution() {
+    return {
+        find: ({ model, filter, skip, limit }) =>
+            model
+                .find(filter)
+                .limit(limit)
+                .skip(skip)
+                .sort({
+                    _id: 1
+                })
+                .exec(),
+        aggregate: ({ model, pipeline }) => model.aggregate(pipeline).exec(),
+        count: async ({ model, filter, totalMode }) => {
+            if (_.isEmpty(filter)) {
+                if (totalMode === "estimate") {
+                    return model.estimatedDocumentCount();
+                }
+                if (totalMode === "accurate") {
+                    return model.countDocuments();
+                }
+                return 0;
+            }
+            return model.countDocuments(filter);
+        }
+    };
+}
 
 class SearchProcessor {
     /**
@@ -33,6 +71,7 @@ class SearchProcessor {
         this.skip = options.skip;
         this.limit = options.limit;
         this.totalMode = options.totalMode;
+        this.execution = options.execution || createMongooseSearchExecution();
     }
 
     /**
@@ -85,18 +124,21 @@ class SearchProcessor {
             aggregateQuery.push({ $skip: this.skip });
             aggregateQuery.push({ $limit: this.limit });
 
-            let docs = await mongoose
-                .model(this.resourceType)
-                .aggregate(aggregateQuery)
-                .exec();
+            const model = mongoose.model(this.resourceType);
+            let docs = await this.execution.aggregate({
+                model,
+                pipeline: aggregateQuery,
+                filter: this.query
+            });
 
             let count = 0;
             if (this.totalMode !== "none") {
                 aggregateQuery.push({ $count: "totalDocs" });
-                let totalDocs = (count = await mongoose
-                    .model(this.resourceType)
-                    .aggregate(aggregateQuery)
-                    .exec());
+                let totalDocs = (count = await this.execution.aggregate({
+                    model,
+                    pipeline: aggregateQuery,
+                    filter: this.query
+                }));
 
                 count = _.get(totalDocs, "0.totalDocs", 0);
             }
@@ -116,33 +158,21 @@ class SearchProcessor {
      */
     async searchNormal_() {
         try {
-            let docs = await mongoose
-                .model(this.resourceType)
-                .find(this.query)
-                .limit(this.limit)
-                .skip(this.skip)
-                .sort({
-                    _id: 1
-                })
-                .exec();
+            const model = mongoose.model(this.resourceType);
+            let docs = await this.execution.find({
+                model,
+                filter: this.query,
+                skip: this.skip,
+                limit: this.limit
+            });
 
             let count = 0;
             if (this.totalMode !== "none") {
-                if (_.isEmpty(this.query)) {
-                    if (this.totalMode === "estimate") {
-                        count = await mongoose
-                            .model(this.resourceType)
-                            .estimatedDocumentCount();
-                    } else if (this.totalMode === "accurate") {
-                        count = await mongoose
-                            .model(this.resourceType)
-                            .countDocuments();
-                    }
-                } else {
-                    count = await mongoose
-                        .model(this.resourceType)
-                        .countDocuments(this.query);
-                }
+                count = await this.execution.count({
+                    model,
+                    filter: this.query,
+                    totalMode: this.totalMode
+                });
             }
 
             return {
@@ -156,3 +186,4 @@ class SearchProcessor {
 }
 
 module.exports.SearchProcessor = SearchProcessor;
+module.exports.createMongooseSearchExecution = createMongooseSearchExecution;

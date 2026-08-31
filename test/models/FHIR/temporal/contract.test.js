@@ -119,6 +119,9 @@ describe("FHIR temporal contract", function () {
             expect(isCalendarDate("1995-06-15")).to.be.true;
             expect(isCalendarDate("1995-02-29")).to.be.false;
             expect(isCalendarDate("1996-02-29")).to.be.true;
+            expect(isCalendarDate("0004-02-29")).to.be.true;
+            expect(isCalendarDate("0099-02-29")).to.be.false;
+            expect(isCalendarDate("9999-12-31")).to.be.true;
         });
 
         it("compares calendar dates", function () {
@@ -127,6 +130,18 @@ describe("FHIR temporal contract", function () {
         });
 
         it("derives expected date boundaries", function () {
+            expect(expectedDateBoundaries("0001", DATE_PRECISION.YEAR)).to.deep.equal({
+                normalizedStart: "0001-01-01",
+                normalizedEnd: "0002-01-01"
+            });
+            expect(expectedDateBoundaries("0099-12", DATE_PRECISION.MONTH)).to.deep.equal({
+                normalizedStart: "0099-12-01",
+                normalizedEnd: "0100-01-01"
+            });
+            expect(expectedDateBoundaries("0099-12-31", DATE_PRECISION.DAY)).to.deep.equal({
+                normalizedStart: "0099-12-31",
+                normalizedEnd: "0100-01-01"
+            });
             expect(expectedDateBoundaries("1995", DATE_PRECISION.YEAR)).to.deep.equal({
                 normalizedStart: "1995-01-01",
                 normalizedEnd: "1996-01-01"
@@ -138,6 +153,22 @@ describe("FHIR temporal contract", function () {
             expect(expectedDateBoundaries("1995-06-15", DATE_PRECISION.DAY)).to.deep.equal({
                 normalizedStart: "1995-06-15",
                 normalizedEnd: "1995-06-16"
+            });
+            expect(expectedDateBoundaries("0099-12-31", DATE_PRECISION.DAY)).to.deep.equal({
+                normalizedStart: "0099-12-31",
+                normalizedEnd: "0100-01-01"
+            });
+            expect(expectedDateBoundaries("9999", DATE_PRECISION.YEAR)).to.deep.equal({
+                normalizedStart: "9999-01-01",
+                normalizedEnd: "9999-12-31"
+            });
+            expect(expectedDateBoundaries("9999-12", DATE_PRECISION.MONTH)).to.deep.equal({
+                normalizedStart: "9999-12-01",
+                normalizedEnd: "9999-12-31"
+            });
+            expect(expectedDateBoundaries("9999-12-31", DATE_PRECISION.DAY)).to.deep.equal({
+                normalizedStart: "9999-12-31",
+                normalizedEnd: "9999-12-31"
             });
         });
     });

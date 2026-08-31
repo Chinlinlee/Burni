@@ -21,35 +21,35 @@
 
 ## 4. Migration
 
-- [ ] 4.1 建立 read-only migration preflight，掃描 resource catalog、nested、choice、contained、history 與 temporal array。
-- [ ] 4.2 實作合法 legacy string 的 precision 推導與 normalized value 建立。
-- [ ] 4.3 實作 absolute-time field 的 legacy BSON Date UTC conversion，並保留 canonical response value。
-- [ ] 4.4 實作 `date` field legacy BSON Date 的 ambiguity detection；無法無歧義轉換時回報 path/value 並 fail-fast。
-- [ ] 4.5 讓 migration 可重跑且不重複包裝 canonical object，並加入批次記錄、preflight gate 與 backup/restore 操作說明。
+- [x] 4.1 建立 read-only migration preflight，掃描 resource catalog、nested、choice、contained、history 與 temporal array。
+- [x] 4.2 實作合法 legacy string 的 precision 推導與 normalized value 建立。
+- [x] 4.3 實作 absolute-time field 的 legacy BSON Date UTC conversion，並保留 canonical response value。
+- [x] 4.4 實作 `date` field legacy BSON Date 的 ambiguity detection；無法無歧義轉換時回報 path/value 並 fail-fast。
+- [x] 4.5 讓 migration 可重跑且不重複包裝 canonical object，並加入批次記錄、preflight gate 與 backup/restore 操作說明。
 
 ## 5. Temporal query parsing and comparators
 
-- [ ] 5.1 更新 date query parser，支援 year、month、day、minute、second、fraction 等 FHIR search precision。
-- [ ] 5.2 建立 date 與 dateTime 的 `[start, end)` query range normalization，修正 partial precision 的 ordered comparator boundaries。
-- [ ] 5.3 依 FHIR R4 semantics 實作 `eq`、`ne`、`lt`、`gt`、`ge`、`le`、`sa`、`eb` 與 deterministic `ap`。
-- [ ] 5.4 建立獨立 instant query builder，使用 Decimal128 `epochSeconds` 支援高精度 point comparison。
-- [ ] 5.5 確認 query parser 不對 raw FHIR string 做 lexical timezone comparison，且不依賴作業系統 local timezone。
+- [x] 5.1 更新 date query parser，支援 year、month、day、minute、second、fraction 等 FHIR search precision。
+- [x] 5.2 建立 date 與 dateTime 的 `[start, end)` query range normalization，修正 partial precision 的 ordered comparator boundaries。
+- [x] 5.3 依 FHIR R4 semantics 實作 `eq`、`ne`、`lt`、`gt`、`ge`、`le`、`sa`、`eb` 與 deterministic `ap`。
+- [x] 5.4 建立獨立 instant query builder，使用 Decimal128 `epochSeconds` 支援高精度 point comparison。
+- [x] 5.5 確認 query parser 不對 raw FHIR string 做 lexical timezone comparison，且不依賴作業系統 local timezone。
 
 ## 6. Search projection and execution
 
-- [ ] 6.1 更新 search-type projection，將 date、dateTime、instant extraction path 投影到 canonical normalized fields。
-- [ ] 6.2 更新 Period projection 為完整 interval semantics，支援缺少 start/end 的無限邊界。
-- [ ] 6.3 更新 temporal array filter 使用 `$elemMatch` 或等價的 element-correlated semantics。
-- [ ] 6.4 更新 temporal `:missing` 判斷，只有完整 canonical temporal object 才算可搜尋 value。
-- [ ] 6.5 讓 `.find()` 與 aggregate/chained execution 共用相同的 typed temporal filter、BSON types 與 boundaries。
-- [ ] 6.6 更新 choice element、nested path、history 與 contained resource 的 temporal extraction coverage。
+- [x] 6.1 更新 search-type projection，將 date、dateTime、instant extraction path 投影到 canonical normalized fields。
+- [x] 6.2 更新 Period projection 為完整 interval semantics，支援缺少 start/end 的無限邊界。
+- [x] 6.3 更新 temporal array filter 使用 `$elemMatch` 或等價的 element-correlated semantics。
+- [x] 6.4 更新 temporal `:missing` 判斷，只有完整 canonical temporal object 才算可搜尋 value。
+- [x] 6.5 讓 `.find()` 與 aggregate/chained execution 共用相同的 typed temporal filter、BSON types 與 boundaries。
+- [x] 6.6 更新 choice element、nested path、history 與 contained resource 的 temporal extraction coverage。
 
 ## 7. Indexes and operational rollout
 
-- [ ] 7.1 根據有效 SearchParameter extraction paths 產生 date calendar boundary、dateTime Decimal128 boundary 與 instant epoch indexes。
-- [ ] 7.2 驗證 Period、array 與 choice path 的 MongoDB index compatibility 與 query explain 結果。
-- [ ] 7.3 建立 migration、index creation、schema cutover 與 legacy fallback removal 的部署順序。
-- [ ] 7.4 在 cutover 前確認 migration 完成、preflight 無 unresolved invalid data，並保留可恢復的 backup/snapshot。
+- [x] 7.1 根據有效 SearchParameter extraction paths 產生 date calendar boundary、dateTime Decimal128 boundary 與 instant epoch indexes。
+- [x] 7.2 驗證 Period、array 與 choice path 的 MongoDB index compatibility 與 query explain 結果。
+- [x] 7.3 建立 migration、index creation、schema cutover 與 legacy fallback removal 的部署順序。
+- [x] 7.4 在 cutover 前確認 migration 完成、preflight 無 unresolved invalid data，並保留可恢復的 backup/snapshot。
 
 ## 8. Verification and acceptance
 

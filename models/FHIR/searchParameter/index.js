@@ -6,9 +6,19 @@ module.exports = {
     executor: {
         mongoExecutor: require("./executor/mongoExecutor"),
         queryValueParser: require("./executor/queryValueParser"),
+        temporalQueryParser: require("./executor/temporalQueryParser"),
+        temporalQueryFilter: require("./executor/temporalQueryFilter"),
+        instantQueryBuilder: require("./executor/instantQueryBuilder"),
         relationPlan: require("./executor/relationPlan"),
         primitives: require("./executor/primitives"),
         queryPrimitives: require("./executor/queryPrimitives")
+    },
+    indexes: require("./indexes"),
+    migration: {
+        temporalMigration: require("./migration/temporalMigration"),
+        temporalPreflight: require("./migration/temporalPreflight"),
+        temporalCutoverGate: require("./migration/temporalCutoverGate"),
+        temporalRollout: require("./migration/temporalRollout")
     },
     runtime: {
         registrySearchHandler: require("./runtime/registrySearchHandler")

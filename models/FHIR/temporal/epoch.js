@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const { DATE_PRECISION, DATETIME_PRECISION } = require("./constants");
-const { expectedDateBoundaries } = require("./calendar");
+const { expectedDateBoundaries, isCalendarDate } = require("./calendar");
 
 /**
  * @param {string} value
@@ -58,6 +58,14 @@ function parseDateTimeComponents(value) {
         day = Number(value.slice(8, 10));
     }
 
+    const calendarDate = `${String(year).padStart(4, "0")}-${String(month).padStart(
+        2,
+        "0"
+    )}-${String(day).padStart(2, "0")}`;
+    if (!isCalendarDate(calendarDate)) {
+        throw new Error(`Invalid FHIR dateTime calendar date: ${calendarDate}`);
+    }
+
     const timeIndex = value.indexOf("T");
     if (timeIndex !== -1) {
         const timePart = value.slice(timeIndex + 1);
@@ -96,27 +104,36 @@ function decimalAdd(left, right) {
     const [leftInteger, leftFraction = ""] = left.split(".");
     const [rightInteger, rightFraction = ""] = right.split(".");
     const maxFractionLength = Math.max(leftFraction.length, rightFraction.length);
-    const leftFractionPadded = leftFraction.padEnd(maxFractionLength, "0");
-    const rightFractionPadded = rightFraction.padEnd(maxFractionLength, "0");
+    const scale = 10n ** BigInt(maxFractionLength);
+    const toCoefficient = (integer, fraction) => {
+        const negative = integer.startsWith("-");
+        const absoluteInteger = negative ? integer.slice(1) : integer;
+        const coefficient =
+            BigInt(absoluteInteger || "0") * scale +
+            BigInt(fraction.padEnd(maxFractionLength, "0") || "0");
+        return negative ? -coefficient : coefficient;
+    };
+    const leftCoefficient = toCoefficient(leftInteger, leftFraction);
+    const rightCoefficient = toCoefficient(rightInteger, rightFraction);
+    const sum = leftCoefficient + rightCoefficient;
 
-    let fractionSum = BigInt(leftFractionPadded || "0") + BigInt(rightFractionPadded || "0");
-    let carry = 0n;
-
-    if (maxFractionLength > 0) {
-        const fractionMod = 10n ** BigInt(maxFractionLength);
-        if (fractionSum >= fractionMod) {
-            carry = 1n;
-            fractionSum -= fractionMod;
-        }
+    if (sum === 0n) {
+        return "0";
     }
-
-    const integerSum = BigInt(leftInteger) + BigInt(rightInteger) + carry;
     if (maxFractionLength === 0) {
-        return integerSum.toString();
+        return sum.toString();
     }
 
-    const fractionText = fractionSum.toString().padStart(maxFractionLength, "0").replace(/0+$/, "");
-    return fractionText ? `${integerSum}.${fractionText}` : integerSum.toString();
+    const sign = sum < 0n ? "-" : "";
+    const absolute = sum < 0n ? -sum : sum;
+    const integerPart = absolute / scale;
+    const fractionText = (absolute % scale)
+        .toString()
+        .padStart(maxFractionLength, "0")
+        .replace(/0+$/, "");
+    return fractionText
+        ? `${sign}${integerPart}.${fractionText}`
+        : `${sign}${integerPart}`;
 }
 
 /**
@@ -143,11 +160,42 @@ function addFractionStepToDecimal128(value, fractionDigits) {
  * @returns {import('mongoose').Types.Decimal128}
  */
 function calendarDateToUtcEpoch(calendarDate) {
-    const year = Number(calendarDate.slice(0, 4));
-    const month = Number(calendarDate.slice(5, 7));
-    const day = Number(calendarDate.slice(8, 10));
-    const epochSeconds = Date.UTC(year, month - 1, day) / 1000;
+    const [yearText, monthText, dayText] = calendarDate.split("-");
+    const date = new Date(0);
+    date.setUTCFullYear(Number(yearText), Number(monthText) - 1, Number(dayText));
+    date.setUTCHours(0, 0, 0, 0);
+    const epochSeconds = date.getTime() / 1000;
     return toDecimal128(String(epochSeconds));
+}
+
+function dateTimeComponentsToUtcMilliseconds({ year, month, day, hour, minute, second }) {
+    const date = new Date(0);
+    date.setUTCFullYear(year, month - 1, day);
+    date.setUTCHours(hour, minute, second, 0);
+    return date.getTime();
+}
+
+function epochSecondsWithFraction(integerEpoch, fraction) {
+    if (!fraction) {
+        return String(integerEpoch);
+    }
+    if (integerEpoch >= 0) {
+        return `${integerEpoch}.${fraction}`;
+    }
+
+    const scale = 10n ** BigInt(fraction.length);
+    const absolute = BigInt(-integerEpoch) * scale - BigInt(fraction);
+    if (absolute === 0n) {
+        return "0";
+    }
+    const integerPart = absolute / scale;
+    const fractionText = (absolute % scale)
+        .toString()
+        .padStart(fraction.length, "0")
+        .replace(/0+$/, "");
+    return fractionText
+        ? `-${integerPart}.${fractionText}`
+        : `-${integerPart}`;
 }
 
 /**
@@ -158,14 +206,18 @@ function parseDateTimeToUtcEpoch(value) {
     const { year, month, day, hour, minute, second, fraction, offsetSeconds } =
         parseDateTimeComponents(value);
     const utcMilliseconds =
-        Date.UTC(year, month - 1, day, hour, minute, second) - offsetSeconds * 1000;
-    const integerEpoch = Math.trunc(utcMilliseconds / 1000);
+        dateTimeComponentsToUtcMilliseconds({
+            year,
+            month,
+            day,
+            hour,
+            minute,
+            second
+        }) -
+        offsetSeconds * 1000;
+    const integerEpoch = Math.floor(utcMilliseconds / 1000);
 
-    if (fraction) {
-        return toDecimal128(`${integerEpoch}.${fraction}`);
-    }
-
-    return toDecimal128(String(integerEpoch));
+    return toDecimal128(epochSecondsWithFraction(integerEpoch, fraction));
 }
 
 /**
@@ -229,5 +281,6 @@ function expectedDateTimeBoundaries(value, precision, fractionDigits) {
 
 module.exports = {
     parseDateTimeToUtcEpoch,
-    expectedDateTimeBoundaries
+    expectedDateTimeBoundaries,
+    calendarDateToUtcEpoch
 };

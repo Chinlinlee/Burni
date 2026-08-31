@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-08-30T14:37:57.358Z",
+  "generatedAt": "2026-08-31T15:49:31.041Z",
   "source": {
     "fhirVersion": "4.0.1",
     "sourceUrl": "https://hl7.org/fhir/R4/search-parameters.json",
@@ -1671,7 +1671,7 @@
           "outcome": "compiled",
           "searchType": "date",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/AllergyIntolerance-onset::4.0.1",
-          "planHash": "e54cfbd7a43245228f57e9c828342e20d982f5e4b803a90417c9f043db3bf56b",
+          "planHash": "194a4b120fd147e323b6c6995ec2bd42320cb876a258f6552c38bbe7b7129aa7",
           "diagnostics": [],
           "hitSet": {
             "status": "defined",
@@ -4885,6 +4885,12 @@
           "archiveHash": "5639e7d874d70519bc487d3a374211f27942a7a1cc42153e2666b9fa7a0fa98b",
           "augmentations": [
             {
+              "path": "activity.detail.scheduledTiming.event|activity.detail.scheduledPeriod",
+              "field": "activity-date",
+              "value": null,
+              "reason": "Compiled lookup activity-date has no resolvable extraction path in official example"
+            },
+            {
               "path": "activity.reference",
               "field": "activity-reference",
               "value": null,
@@ -4947,21 +4953,34 @@
         },
         "activity-date": {
           "lookupKey": "CarePlan::activity-date",
-          "outcome": "disabled",
-          "reason": "No executable extraction paths for any lookup",
+          "outcome": "compiled",
           "searchType": "date",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/CarePlan-activity-date::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "No executable extraction paths for any lookup"
-          ],
+          "planHash": "48030726f906ab4f33feb928aa056f76c05454433f0b17a233b05ab9c3814a49",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "2cd456052feb88aaad0cce4d53ced7fd40539d063fd9bf064d167fc44f5a1248",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "activity-date": "2000-01-01"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "activity.detail.scheduledTiming.event"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "disabled"
+            "outcome": "compiled"
           }
         },
         "activity-reference": {
@@ -5865,7 +5884,7 @@
           "archiveHash": "29beb5429c01872eba9589b9db6a6a201b81d937526e584b8cc4cffd4a2f93fd",
           "augmentations": [
             {
-              "path": "occurrenceDateTime|occurrencePeriod",
+              "path": "occurrenceDateTime|occurrencePeriod|occurrenceTiming.event",
               "field": "occurrence",
               "value": null,
               "reason": "Compiled lookup occurrence has no resolvable extraction path in official example"
@@ -6116,7 +6135,7 @@
           "outcome": "compiled",
           "searchType": "date",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/ChargeItem-occurrence::4.0.1",
-          "planHash": "ba85be5b4131843e7bc4a81b13ef3f307d94ffa0ea1bd4adb8ae350a82cd5533",
+          "planHash": "d5f6da6cbf0b7fa73067cd36619a068431c67876c9dea1cebedade0f4a56c3ed",
           "diagnostics": [],
           "hitSet": {
             "status": "defined",
@@ -11118,7 +11137,7 @@
           "outcome": "compiled",
           "searchType": "date",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/Composition-period::4.0.1",
-          "planHash": "b45dc5f79604e78ca3db54697e9c22d0a729b4ff37af22fddbab2c5b93c5e320",
+          "planHash": "cea22195f635afb8e73ca16a2e863a3a76df19c8c71d77dd4c45fb6261bbf045",
           "diagnostics": [],
           "hitSet": {
             "status": "defined",
@@ -19753,7 +19772,7 @@
           "outcome": "compiled",
           "searchType": "date",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/Encounter-location-period::4.0.1",
-          "planHash": "735baf31f1d2b3455419a39b496294604a3b686fef94553d36058deb3a2c2b28",
+          "planHash": "3337f0f3c4351924b65a050b4b6cb34d1c0c096cf764f03e763783e2727bc1d3",
           "diagnostics": [],
           "hitSet": {
             "status": "defined",
@@ -25303,7 +25322,7 @@
           "outcome": "compiled",
           "searchType": "date",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/Goal-target-date::4.0.1",
-          "planHash": "6bff2612cb441c0a2ac871056c2eab6fa7892c8a1510fab6660ad8c5e0512474",
+          "planHash": "1aec49d9cd31933286077ecda158e204ab9bc9883a1c1745b0aeb03d6b5f0b1f",
           "diagnostics": [],
           "hitSet": {
             "status": "defined",
@@ -27652,7 +27671,7 @@
           "outcome": "compiled",
           "searchType": "date",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/Immunization-reaction-date::4.0.1",
-          "planHash": "b47cdaabdc5860530d99074708d0bfd959866650d5977f3ecd80025c8de5e838",
+          "planHash": "04064f2073a0e39f0fda36c45f25ed6648b81e4238938ab455c0df7b372ef206",
           "diagnostics": [],
           "hitSet": {
             "status": "defined",
@@ -35437,6 +35456,12 @@
               "field": "priority",
               "value": null,
               "reason": "Compiled lookup priority has no resolvable extraction path in official example"
+            },
+            {
+              "path": "dosageInstruction.timing.event",
+              "field": "date",
+              "value": null,
+              "reason": "Compiled lookup date has no resolvable extraction path in official example"
             }
           ]
         },
@@ -35841,21 +35866,34 @@
         },
         "date": {
           "lookupKey": "MedicationRequest::date",
-          "outcome": "disabled",
-          "reason": "No executable extraction paths for any lookup",
+          "outcome": "compiled",
           "searchType": "date",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/medications-date::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "No executable extraction paths for any lookup"
-          ],
+          "planHash": "58acd31fac0cc6ef82c0dc8c745fc4a05a9572ec7ffdc0003469a6baf1bd6927",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "17f3ab552d71ba0f7177302e6b3b95c22b0b06c184b7698400e1897bf943a095",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "date": "2000-01-01"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "dosageInstruction.timing.event"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "disabled"
+            "outcome": "compiled"
           }
         },
         "encounter": {
@@ -39308,7 +39346,7 @@
           "outcome": "compiled",
           "searchType": "date",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/NamingSystem-period::4.0.1",
-          "planHash": "6862cee4e0b4b53372dc8bcf13b592289c440b9b4f8432170b8bc0cb5cb28238",
+          "planHash": "2506f1fe3864ec84351d5ab4ab103af0754ac39aaebac877b23e58271922cdaa",
           "diagnostics": [],
           "hitSet": {
             "status": "defined",
@@ -39925,7 +39963,7 @@
           "archiveHash": "dcd407ab45612481283974b0b839da6b67e486d85290318f795d402d5c0fa802",
           "augmentations": [
             {
-              "path": "effectiveDateTime|effectivePeriod|effectiveInstant",
+              "path": "effectiveDateTime|effectivePeriod|effectiveTiming.event|effectiveInstant",
               "field": "date",
               "value": null,
               "reason": "Compiled lookup date has no resolvable extraction path in official example"
@@ -40116,7 +40154,7 @@
           "outcome": "compiled",
           "searchType": "date",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/clinical-date::4.0.1",
-          "planHash": "c911fb71ee8ef87ed88fa12753e0d21e93f8158548e482172d7436d28175eec6",
+          "planHash": "c9a2a0528daf270b53ed1a356b730140c70dc6c9e5f17127c4a3395790268f68",
           "diagnostics": [],
           "hitSet": {
             "status": "defined",
@@ -54118,7 +54156,7 @@
               "reason": "Compiled lookup instantiates-uri has no resolvable extraction path in official example"
             },
             {
-              "path": "occurrenceDateTime|occurrencePeriod",
+              "path": "occurrenceDateTime|occurrencePeriod|occurrenceTiming.event",
               "field": "occurrence",
               "value": null,
               "reason": "Compiled lookup occurrence has no resolvable extraction path in official example"
@@ -54539,7 +54577,7 @@
           "outcome": "compiled",
           "searchType": "date",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/ServiceRequest-occurrence::4.0.1",
-          "planHash": "1121be170eac1aaa63010a746446ce0266b19b93da8be377dd4aac3069b23b06",
+          "planHash": "f673048ef2e7cc1c3979fbd538fe3ba8b1f91fea616f42edc61cc57d70cc2172",
           "diagnostics": [],
           "hitSet": {
             "status": "defined",
@@ -55164,6 +55202,12 @@
           "archiveHash": "0d1d65651aebbe2947832357a1f9ec521ac1bfa5c223497519275bfb2aaa3a9e",
           "augmentations": [
             {
+              "path": "collection.collectedDateTime|collection.collectedPeriod",
+              "field": "collected",
+              "value": null,
+              "reason": "Compiled lookup collected has no resolvable extraction path in official example"
+            },
+            {
               "path": "parent",
               "field": "parent",
               "value": null,
@@ -55252,21 +55296,34 @@
         },
         "collected": {
           "lookupKey": "Specimen::collected",
-          "outcome": "disabled",
-          "reason": "No executable extraction paths for any lookup",
+          "outcome": "compiled",
           "searchType": "date",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/Specimen-collected::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "No executable extraction paths for any lookup"
-          ],
+          "planHash": "d5b4f140aeb315830d04dcec2d3e22a2fe4f0c713bfd3b12e290974579905661",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "d7397f2c901801a26b570f74e2fa42710de9b11475d9c2e67624d88f04d96b52",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "collected": "2000-01-01"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "collection.collectedDateTime"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "disabled"
+            "outcome": "compiled"
           }
         },
         "collector": {
@@ -57436,7 +57493,7 @@
           "outcome": "compiled",
           "searchType": "date",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/Substance-expiry::4.0.1",
-          "planHash": "15e6d6a57aa266f7c370fcd315e1ac4b8a920536c94a0269bb2a6da6254dfe46",
+          "planHash": "f0a95a33f18472bf2f1b73f042181bfc17e0ff1b961f3a04e96f7cbcef79ea5f",
           "diagnostics": [],
           "hitSet": {
             "status": "defined",
@@ -61077,10 +61134,10 @@
     }
   },
   "summary": {
-    "compiledLookups": 1614,
-    "definedHitSets": 1614,
+    "compiledLookups": 1617,
+    "definedHitSets": 1617,
     "pendingHitSets": 0,
     "enabledResources": 146
   },
-  "manifestHash": "218bbeefd4e7ed0955577acd7c3a459c9d8dfd4c2b416d17c32b8a04ff6cdd55"
+  "manifestHash": "710100c94ea2dc66625b0cdf2664152510658c10cf6ff938a880d6cd3298dbcf"
 }

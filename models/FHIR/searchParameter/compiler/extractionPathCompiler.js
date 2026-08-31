@@ -2,7 +2,9 @@ const { createDiagnostic } = require("../registry/diagnostics");
 const { getLookupKey } = require("../registry/identity");
 const {
     loadResourceTypeMap,
+    resolvePathMetadata,
     resolvePathDatatype,
+    resolvePathContextMap,
     expandChoiceElementNames,
     getComplexTypeFields
 } = require("./resourceTypeMap");
@@ -14,6 +16,11 @@ const {
     extractTypePredicate
 } = require("./astValidator");
 const { attachPathCorrelation } = require("./planMetadata");
+
+const TEMPORAL_DATATYPES = new Set(["date", "dateTime", "instant", "Period"]);
+const TEMPORAL_DATATYPE_PATHS = {
+    Timing: ["event"]
+};
 
 /**
  * @typedef {Object} PathPredicate
@@ -27,6 +34,7 @@ const { attachPathCorrelation } = require("./planMetadata");
  * @property {string} datatype
  * @property {string} [referenceTargetType]
  * @property {PathPredicate[]} [predicates]
+ * @property {string[]} [arrayPaths]
  * @property {{ kind: 'same-array-element' | 'none', parentPath?: string, fields?: string[] }} [correlation]
  */
 
@@ -216,11 +224,18 @@ function normalizePathForTypeResolution(dotPath) {
 /**
  * @param {Object} typeMap
  * @param {string} parentPath
+ * @param {string} searchType
  * @returns {Object}
  */
-function getContextMapForPath(typeMap, parentPath) {
+function getContextMapForPath(typeMap, parentPath, searchType) {
     if (!parentPath) {
         return typeMap;
+    }
+    if (searchType === "date" || searchType === "dateTime") {
+        const pathContext = resolvePathContextMap(typeMap, parentPath);
+        if (pathContext) {
+            return pathContext;
+        }
     }
     const resolved = resolvePathDatatype(typeMap, parentPath);
     if (!resolved.found || !resolved.datatype) {
@@ -232,9 +247,10 @@ function getContextMapForPath(typeMap, parentPath) {
 /**
  * @param {RawPath} rawPath
  * @param {Object} typeMap
+ * @param {string} searchType
  * @returns {RawPath[]}
  */
-function expandTerminalChoicePaths(rawPath, typeMap) {
+function expandTerminalChoicePaths(rawPath, typeMap, searchType) {
     const path = rawPath.segments.join(".");
     const resolved = resolvePathDatatype(typeMap, path);
     if (resolved.found && resolved.datatype) {
@@ -248,7 +264,7 @@ function expandTerminalChoicePaths(rawPath, typeMap) {
     }
 
     const parentPath = segments.join(".");
-    const contextMap = getContextMapForPath(typeMap, parentPath);
+    const contextMap = getContextMapForPath(typeMap, parentPath, searchType);
     const choiceFields = expandChoiceElementNames(contextMap, last);
     if (choiceFields.length === 0) {
         return [rawPath];
@@ -265,15 +281,40 @@ function expandTerminalChoicePaths(rawPath, typeMap) {
 /**
  * @param {RawPath[]} rawPaths
  * @param {Object} typeMap
+ * @param {string} searchType
  * @returns {RawPath[]}
  */
-function expandAllChoicePaths(rawPaths, typeMap) {
+function expandAllChoicePaths(rawPaths, typeMap, searchType) {
     /** @type {RawPath[]} */
     const expanded = [];
     for (const rawPath of rawPaths) {
-        expanded.push(...expandTerminalChoicePaths(rawPath, typeMap));
+        expanded.push(...expandTerminalChoicePaths(rawPath, typeMap, searchType));
     }
     return expanded;
+}
+
+function expandTemporalDatatypePaths(path, datatype, typeMap, searchType) {
+    if (!["date", "dateTime"].includes(searchType)) {
+        return [{ path, datatype }];
+    }
+    const nestedPaths = TEMPORAL_DATATYPE_PATHS[datatype];
+    if (!nestedPaths) {
+        return [{ path, datatype }];
+    }
+
+    return nestedPaths
+        .map((nestedPath) => {
+            const resolved = resolvePathMetadata(typeMap, `${path}.${nestedPath}`);
+            if (!resolved.found || !resolved.datatype) {
+                return null;
+            }
+            return {
+                path: `${path}.${nestedPath}`,
+                datatype: resolved.datatype,
+                arrayPaths: resolved.arrayPaths
+            };
+        })
+        .filter((entry) => entry !== null);
 }
 
 /**
@@ -311,7 +352,8 @@ function compileExtractionPaths(definition, resourceType, ast, searchType) {
             normalizeBareFieldPaths(collectRawPaths(ast, resourceType, typeMap), resourceType, typeMap),
             resourceType
         ),
-        typeMap
+        typeMap,
+        searchType
     );
     /** @type {ExtractionPath[]} */
     const extractionPaths = [];
@@ -323,7 +365,8 @@ function compileExtractionPaths(definition, resourceType, ast, searchType) {
             continue;
         }
 
-        const resolved = resolvePathDatatype(typeMap, normalizePathForTypeResolution(path));
+        const normalizedPath = normalizePathForTypeResolution(path);
+        const resolved = resolvePathMetadata(typeMap, normalizedPath);
         if (!resolved.found || !resolved.datatype) {
             diagnostics.push(
                 createDiagnostic({
@@ -338,36 +381,51 @@ function compileExtractionPaths(definition, resourceType, ast, searchType) {
             continue;
         }
 
-        if (!hasSearchTypeProjection(searchType, resolved.datatype)) {
-            diagnostics.push(
-                createDiagnostic({
-                    code: "incompatible-branch",
-                    category: "compile",
-                    message: `No search-type projection for ${searchType} on ${resolved.datatype} at ${path}`,
-                    canonicalKey: definition.canonicalKey,
-                    lookupKey,
-                    expression: definition.resource.expression
-                })
-            );
-            continue;
-        }
-
         /** @type {PathPredicate[]} */
         const predicates = [...(rawPath.predicates || [])];
         if (deceasedSemantics && path.startsWith("deceased")) {
             predicates.push({ kind: "deceasedPresence" });
         }
 
-        extractionPaths.push(
-            attachPathCorrelation({
-                path,
-                datatype: resolved.datatype,
+        const projectedPaths = expandTemporalDatatypePaths(
+            path,
+            resolved.datatype,
+            typeMap,
+            searchType
+        );
+        for (const projectedPath of projectedPaths) {
+            if (!hasSearchTypeProjection(searchType, projectedPath.datatype)) {
+                diagnostics.push(
+                    createDiagnostic({
+                        code: "incompatible-branch",
+                        category: "compile",
+                        message: `No search-type projection for ${searchType} on ${projectedPath.datatype} at ${projectedPath.path}`,
+                        canonicalKey: definition.canonicalKey,
+                        lookupKey,
+                        expression: definition.resource.expression
+                    })
+                );
+                continue;
+            }
+
+            const extractionPath = {
+                path: projectedPath.path,
+                datatype: projectedPath.datatype,
                 ...(rawPath.referenceTargetType
                     ? { referenceTargetType: rawPath.referenceTargetType }
                     : {}),
                 ...(predicates.length > 0 ? { predicates } : {})
-            })
-        );
+            };
+            const arrayPaths = projectedPath.arrayPaths || resolved.arrayPaths;
+            if (
+                TEMPORAL_DATATYPES.has(projectedPath.datatype) &&
+                !projectedPath.path.split(".").some((segment) => /^\d+$/.test(segment)) &&
+                arrayPaths.length > 0
+            ) {
+                extractionPath.arrayPaths = arrayPaths;
+            }
+            extractionPaths.push(attachPathCorrelation(extractionPath));
+        }
     }
 
     return { extractionPaths: dedupeExtractionPaths(extractionPaths), diagnostics };
@@ -388,7 +446,8 @@ function dedupeExtractionPaths(extractionPaths) {
             path: entry.path,
             datatype: entry.datatype,
             referenceTargetType: entry.referenceTargetType || "",
-            predicates: entry.predicates || []
+            predicates: entry.predicates || [],
+            arrayPaths: entry.arrayPaths || []
         });
         if (seen.has(key)) {
             continue;

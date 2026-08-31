@@ -17,5 +17,8 @@
         "no-useless-escape": "off",
         "no-useless-catch": "off"
     },
+    "globals": {
+        "BigInt": true
+    },
     "ignorePatterns": ["public/**", "temp/**", "models/FHIR/fhir/**", "docs/**"]
 }

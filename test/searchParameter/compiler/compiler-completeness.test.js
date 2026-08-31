@@ -18,13 +18,10 @@ const {
 const productionResources = require("@models/FHIR/fhir.resourceList.json");
 
 const EXPECTED_FIXABLE_DISABLED = [
-    "CarePlan::activity-date",
     "ConceptMap::product",
-    "MedicationRequest::date",
     "PlanDefinition::definition",
     "Provenance::signature-type",
     "RiskAssessment::probability",
-    "Specimen::collected",
     "StructureDefinition::base-path",
     "StructureDefinition::path",
     "StructureDefinition::valueset"

@@ -64,7 +64,7 @@ class Parser {
      */
     parsePostfix() {
         let node = this.parsePrimary();
-        while (true) {
+        while (this.peek().type === TOKEN_TYPES.DOT || this.peek().type === TOKEN_TYPES.LBRACKET) {
             if (this.match(TOKEN_TYPES.DOT)) {
                 const name = this.expectIdentifierOrKeyword();
                 if (name === "where") {

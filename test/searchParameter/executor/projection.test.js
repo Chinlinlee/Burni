@@ -1,6 +1,7 @@
 require("module-alias/register");
 
 const { expect } = require("chai");
+const mongoose = require("mongoose");
 const { compileDefinition } = require("@models/FHIR/searchParameter/compiler/compiler");
 const { toChoiceElementName } = require("@models/FHIR/searchParameter/compiler/extractionPathCompiler");
 const { validateAst } = require("@models/FHIR/searchParameter/compiler/astValidator");
@@ -9,7 +10,8 @@ const { createSearchQueryPlan } = require("@models/FHIR/searchParameter/compiler
 const { executeSearchQueryPlan } = require("@models/FHIR/searchParameter/executor/mongoExecutor");
 const {
     ADDRESS_STRING_FIELDS,
-    HUMAN_NAME_STRING_FIELDS
+    HUMAN_NAME_STRING_FIELDS,
+    buildProjectedFilter
 } = require("@models/FHIR/searchParameter/executor/searchTypeProjection");
 
 function buildDefinition(overrides = {}) {
@@ -37,6 +39,183 @@ function buildDefinition(overrides = {}) {
 }
 
 describe("Search-type projection golden filters", function () {
+    it("projects temporal datatypes to their canonical searchable leaves", function () {
+        const cases = [
+            {
+                datatype: "date",
+                expectedFields: ["effective.normalizedStart", "effective.normalizedEnd"],
+                expectedTypes: ["string", "string"]
+            },
+            {
+                datatype: "dateTime",
+                expectedFields: ["effective.normalizedStart", "effective.normalizedEnd"],
+                expectedTypes: ["Decimal128", "Decimal128"]
+            },
+            {
+                datatype: "instant",
+                expectedFields: ["effective.epochSeconds"],
+                expectedTypes: ["Decimal128"]
+            }
+        ];
+
+        for (const testCase of cases) {
+            const plan = createSearchQueryPlan({
+                canonicalKey: "test",
+                resourceType: "Observation",
+                code: "effective",
+                searchType: "date",
+                extractionPaths: [{ path: "effective", datatype: testCase.datatype }]
+            });
+            const filter = executeSearchQueryPlan(plan, "2020-02-07", "effective");
+            const fields = Object.keys(filter).filter((key) => !key.startsWith("$"));
+
+            expect(fields).to.have.members(testCase.expectedFields);
+            expect(fields).to.have.length(testCase.expectedFields.length);
+            for (const [index, field] of testCase.expectedFields.entries()) {
+                const operator = filter[field];
+                const value = Object.values(operator)[0];
+                const actualType =
+                    value instanceof mongoose.Types.Decimal128 ? "Decimal128" : typeof value;
+                expect(actualType).to.equal(testCase.expectedTypes[index]);
+            }
+        }
+    });
+
+    it("keeps nested and choice temporal extraction paths typed", function () {
+        const nestedDefinition = buildDefinition({
+            resource: {
+                code: "component-date",
+                base: ["Observation"],
+                type: "date",
+                expression: "Observation.component.valueDateTime"
+            }
+        });
+        nestedDefinition.lookupKeys = ["Observation::component-date"];
+        const nestedPlan =
+            compileDefinition(nestedDefinition).lookupPlans["Observation::component-date"].plan;
+        expect(nestedPlan.extractionPaths).to.deep.equal([
+            {
+                path: "component.valueDateTime",
+                datatype: "dateTime",
+                arrayPaths: ["component"]
+            }
+        ]);
+
+        const nestedFilter = executeSearchQueryPlan(
+            nestedPlan,
+            "2020-02-07",
+            "component-date"
+        );
+        const nestedElementFilter = nestedFilter.component.$elemMatch;
+        expect(nestedElementFilter).to.have.property("valueDateTime.normalizedStart");
+        expect(nestedElementFilter).to.have.property("valueDateTime.normalizedEnd");
+
+        const choiceDefinition = buildDefinition({
+            resource: {
+                code: "effective-date",
+                base: ["Observation"],
+                type: "date",
+                expression: "Observation.effective.as(dateTime)"
+            }
+        });
+        choiceDefinition.lookupKeys = ["Observation::effective-date"];
+        const choicePlan =
+            compileDefinition(choiceDefinition).lookupPlans["Observation::effective-date"].plan;
+        expect(choicePlan.extractionPaths).to.deep.equal([
+            { path: "effectiveDateTime", datatype: "dateTime" }
+        ]);
+        const choiceFilter = executeSearchQueryPlan(
+            choicePlan,
+            "2020-02-07",
+            "effective-date"
+        );
+        expect(choiceFilter).to.have.property("effectiveDateTime.normalizedStart");
+        expect(choiceFilter).to.have.property("effectiveDateTime.normalizedEnd");
+    });
+
+    it("resolves nested Timing paths and all temporal choice branches", function () {
+        const timingDefinition = buildDefinition({
+            resource: {
+                code: "activity-date",
+                base: ["CarePlan"],
+                type: "date",
+                expression: "CarePlan.activity.detail.scheduled"
+            }
+        });
+        timingDefinition.lookupKeys = ["CarePlan::activity-date"];
+        const timingPlan =
+            compileDefinition(timingDefinition).lookupPlans["CarePlan::activity-date"].plan;
+
+        expect(timingPlan.extractionPaths).to.deep.include({
+            path: "activity.detail.scheduledTiming.event",
+            datatype: "dateTime",
+            arrayPaths: ["activity", "activity.detail.scheduledTiming.event"]
+        });
+        expect(timingPlan.extractionPaths).to.deep.include({
+            path: "activity.detail.scheduledPeriod",
+            datatype: "Period",
+            arrayPaths: ["activity"]
+        });
+
+        const nestedDefinition = buildDefinition({
+            resource: {
+                code: "medication-date",
+                base: ["MedicationRequest"],
+                type: "date",
+                expression: "MedicationRequest.dosageInstruction.timing.event"
+            }
+        });
+        nestedDefinition.lookupKeys = ["MedicationRequest::medication-date"];
+        const nestedPlan =
+            compileDefinition(nestedDefinition).lookupPlans["MedicationRequest::medication-date"].plan;
+        expect(nestedPlan.extractionPaths).to.deep.equal([
+            {
+                path: "dosageInstruction.timing.event",
+                datatype: "dateTime",
+                arrayPaths: ["dosageInstruction", "dosageInstruction.timing.event"]
+            }
+        ]);
+
+        const instantDefinition = buildDefinition({
+            resource: {
+                code: "effective-instant",
+                base: ["Observation"],
+                type: "date",
+                expression: "Observation.effective.as(instant)"
+            }
+        });
+        instantDefinition.lookupKeys = ["Observation::effective-instant"];
+        const instantPlan =
+            compileDefinition(instantDefinition).lookupPlans["Observation::effective-instant"].plan;
+        expect(instantPlan.extractionPaths).to.deep.equal([
+            { path: "effectiveInstant", datatype: "instant" }
+        ]);
+        const instantFilter = executeSearchQueryPlan(
+            instantPlan,
+            "2020-02-07",
+            "effective-instant"
+        );
+        expect(instantFilter).to.have.property("effectiveInstant.epochSeconds");
+    });
+
+    it("does not project raw or incompatible temporal values", function () {
+        const plan = createSearchQueryPlan({
+            canonicalKey: "test",
+            resourceType: "Observation",
+            code: "effective",
+            searchType: "date",
+            extractionPaths: [{ path: "effective", datatype: "dateTime" }]
+        });
+        const filter = executeSearchQueryPlan(plan, "2020-02-07", "effective");
+
+        expect(filter).to.not.have.property("effective");
+        expect(filter).to.not.have.property("effective.value");
+        expect(JSON.stringify(filter)).to.not.include("effective.value");
+        expect(() =>
+            buildProjectedFilter("date", "2020-02-07", "effective", "string")
+        ).to.throw(/No search-type projection/);
+    });
+
     it("projects string search on Address leaf fields", function () {
         const plan = createSearchQueryPlan({
             canonicalKey: "test",
