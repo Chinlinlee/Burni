@@ -1,9 +1,15 @@
 require("module-alias/register");
 
 const { expect } = require("chai");
+const { EXPECTED_RESOURCE_COUNT } = require("../../support/fhir/resource-catalog");
 const {
     runIsolatedConnectorScenario
 } = require("../../support/mongodb/connector-lifecycle-fixture");
+
+const EXPECTED_STATIC_MODEL_COUNT = 2;
+const EXPECTED_CATALOG_MODEL_COUNT =
+    EXPECTED_RESOURCE_COUNT * 2 + EXPECTED_STATIC_MODEL_COUNT;
+const LIFECYCLE_FIXTURE_MODEL_COUNT = 4;
 
 describe("MongoDB connector lifecycle", function () {
     this.timeout(180000);
@@ -18,7 +24,11 @@ describe("MongoDB connector lifecycle", function () {
             expect(result.readyNotInModelKeys).to.equal(true);
             expect(result.shardingReadyNotInModelKeys).to.equal(true);
             expect(result.readySettledBeforeAwait).to.equal(true);
-            expect(result.modelCount).to.be.greaterThan(0);
+            expect(result.resourceModelCount).to.equal(EXPECTED_RESOURCE_COUNT);
+            expect(result.historyModelCount).to.equal(EXPECTED_RESOURCE_COUNT);
+            expect(result.staticModelCount).to.equal(EXPECTED_STATIC_MODEL_COUNT);
+            expect(result.modelCount).to.equal(EXPECTED_CATALOG_MODEL_COUNT);
+            expect(result.allDiscoveredModelsRegistered).to.equal(true);
         });
     });
 
@@ -82,6 +92,7 @@ describe("MongoDB connector lifecycle", function () {
             expect(result.ok).to.equal(true);
             expect(result.registryReady).to.equal(true);
             expect(result.shardingReady).to.equal(true);
+            expect(result.modelCount).to.equal(LIFECYCLE_FIXTURE_MODEL_COUNT);
         });
 
         it("rejects application readiness when database connection fails", function () {

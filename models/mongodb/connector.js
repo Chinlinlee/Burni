@@ -394,6 +394,10 @@ function provisionSharding(config, state) {
 }
 
 function connect(config) {
+    return initializeWithDiscovered(config);
+}
+
+function initializeWithDiscovered(config, discovered) {
     const normalizedConfig = normalizeConfig(config);
     const fingerprint = fingerprintFromNormalizedConfig(normalizedConfig);
 
@@ -419,7 +423,8 @@ function connect(config) {
 
     try {
         disableAutomaticSchemaProvisioning();
-        state.discovered = discoverModelFiles();
+        // Tests pass a short list so lifecycle cases do not register the full catalog.
+        state.discovered = discovered ?? discoverModelFiles();
         registerDiscoveredModels(state.discovered, state.modelMap);
         state.timings.modelRegistryEnd = performance.now();
         console.log(
@@ -524,6 +529,7 @@ exports.buildConnectionUrl = buildConnectionUrl;
 exports.buildMongooseConnectOptions = buildMongooseConnectOptions;
 exports.disableAutomaticSchemaProvisioning = disableAutomaticSchemaProvisioning;
 exports.discoverModelFiles = discoverModelFiles;
+exports.initializeWithDiscovered = initializeWithDiscovered;
 exports.registerDiscoveredModels = registerDiscoveredModels;
 exports.MongoDBInitializationConflictError = MongoDBInitializationConflictError;
 exports.MongoDBModelCollisionError = MongoDBModelCollisionError;

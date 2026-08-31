@@ -5,10 +5,22 @@ const { MongoMemoryServer } = require("mongodb-memory-server");
 const connect = require("@models/mongodb/connector");
 const {
     discoverModelFiles,
+    initializeWithDiscovered,
     registerDiscoveredModels,
     MongoDBInitializationConflictError,
     MongoDBModelCollisionError
 } = require("@models/mongodb/connector");
+
+// SearchParameter is required so reloadRegistry queries the collection instead of
+// taking the "model missing → []" shortcut.
+const LIFECYCLE_FIXTURE_DISCOVERED = {
+    resourceModels: ["Patient.js", "SearchParameter.js"],
+    historyModels: ["Patient_history.js"],
+    staticModels: ["FHIRStoredID.js"]
+};
+
+const UNREACHABLE_MONGO_URL =
+    "mongodb://127.0.0.1:1/burni-lifecycle-unreachable?serverSelectionTimeoutMS=2000";
 
 /** @type {MongoMemoryServer | null} */
 let memoryServer = null;
@@ -51,7 +63,12 @@ function buildConfigFromUri(uri, database = "burni-lifecycle-test") {
 
 async function startMemoryServer() {
     originalMongoUrl = process.env.MONGODB_CONNECTION_URL;
-    memoryServer = await MongoMemoryServer.create();
+    memoryServer = await MongoMemoryServer.create({
+        instance: {
+            // Parent full-suite already has a mongod; the default 10s start window is tight.
+            launchTimeout: 30000
+        }
+    });
     const uri = memoryServer.getUri("burni-lifecycle-test");
     process.env.MONGODB_CONNECTION_URL = uri;
     process.env.MONGODB_NAME = "burni-lifecycle-test";
@@ -88,6 +105,10 @@ function restoreShardingMode() {
     originalShardingMode = undefined;
 }
 
+function initConnector(config) {
+    return initializeWithDiscovered(config, LIFECYCLE_FIXTURE_DISCOVERED);
+}
+
 function serializeError(error) {
     if (!error) {
         return null;
@@ -117,6 +138,14 @@ async function syncMapBeforeReady() {
 
         await modelMap.ready;
 
+        const discovered = discoverModelFiles();
+        const registeredNames = new Set(Object.keys(modelMap));
+        const discoveredNames = [
+            ...discovered.resourceModels,
+            ...discovered.historyModels,
+            ...discovered.staticModels
+        ].map((file) => file.split(".")[0]);
+
         return {
             ok: true,
             hasPatientModel,
@@ -124,7 +153,13 @@ async function syncMapBeforeReady() {
             readyNotInModelKeys: !readyKeys.includes("ready"),
             shardingReadyNotInModelKeys: !readyKeys.includes("shardingReady"),
             readySettledBeforeAwait,
-            modelCount: Object.keys(modelMap).length
+            resourceModelCount: discovered.resourceModels.length,
+            historyModelCount: discovered.historyModels.length,
+            staticModelCount: discovered.staticModels.length,
+            modelCount: Object.keys(modelMap).length,
+            allDiscoveredModelsRegistered: discoveredNames.every((name) =>
+                registeredNames.has(name)
+            )
         };
     } finally {
         restoreConsole();
@@ -234,8 +269,8 @@ async function idempotentSameConfig() {
     try {
         const uri = await startMemoryServer();
         const config = buildConfigFromUri(uri);
-        const firstMap = connect(config);
-        const secondMap = connect(config);
+        const firstMap = initConnector(config);
+        const secondMap = initConnector(config);
 
         const readyBeforeFirstSettles = firstMap.ready === secondMap.ready;
         const shardingReadyShared =
@@ -262,11 +297,11 @@ async function rejectConflictingConfig() {
     try {
         const uri = await startMemoryServer();
         const firstConfig = buildConfigFromUri(uri, "burni-lifecycle-test");
-        connect(firstConfig);
+        initConnector(firstConfig);
 
         let thrown = null;
         try {
-            connect(buildConfigFromUri(uri, "different-database-name"));
+            initConnector(buildConfigFromUri(uri, "different-database-name"));
         } catch (error) {
             thrown = error;
         }
@@ -283,7 +318,7 @@ async function rejectConflictingConfig() {
 async function failedInitDoesNotRetry() {
     const restoreConsole = captureConsole();
     try {
-        process.env.MONGODB_CONNECTION_URL = "mongodb://127.0.0.1:1/burni-lifecycle-unreachable";
+        process.env.MONGODB_CONNECTION_URL = UNREACHABLE_MONGO_URL;
         process.env.MONGODB_NAME = "burni-lifecycle-unreachable";
         delete process.env.MONGODB_HOSTS;
         delete process.env.MONGODB_PORTS;
@@ -292,7 +327,7 @@ async function failedInitDoesNotRetry() {
             process.env.MONGODB_CONNECTION_URL,
             "burni-lifecycle-unreachable"
         );
-        const modelMap = connect(config);
+        const modelMap = initConnector(config);
 
         let readyError = null;
         try {
@@ -303,7 +338,7 @@ async function failedInitDoesNotRetry() {
 
         let secondInitError = null;
         try {
-            connect(config);
+            initConnector(config);
         } catch (error) {
             secondInitError = error;
         }
@@ -329,7 +364,7 @@ async function databaseAndRegistrySuccess() {
     try {
         const uri = await startMemoryServer();
         const config = buildConfigFromUri(uri);
-        const modelMap = connect(config);
+        const modelMap = initConnector(config);
 
         await modelMap.ready;
         await modelMap.shardingReady;
@@ -338,7 +373,8 @@ async function databaseAndRegistrySuccess() {
             ok: mongoose.connection.readyState === 1,
             databaseName: mongoose.connection.name,
             registryReady: true,
-            shardingReady: true
+            shardingReady: true,
+            modelCount: Object.keys(modelMap).length
         };
     } finally {
         await stopMemoryServer();
@@ -348,7 +384,7 @@ async function databaseAndRegistrySuccess() {
 async function databaseFailureBlocksReady() {
     const restoreConsole = captureConsole();
     try {
-        process.env.MONGODB_CONNECTION_URL = "mongodb://127.0.0.1:1/burni-lifecycle-unreachable";
+        process.env.MONGODB_CONNECTION_URL = UNREACHABLE_MONGO_URL;
         process.env.MONGODB_NAME = "burni-lifecycle-unreachable";
         delete process.env.MONGODB_HOSTS;
         delete process.env.MONGODB_PORTS;
@@ -358,7 +394,7 @@ async function databaseFailureBlocksReady() {
             process.env.MONGODB_CONNECTION_URL,
             "burni-lifecycle-unreachable"
         );
-        const modelMap = connect(config);
+        const modelMap = initConnector(config);
 
         let readyError = null;
         let shardingError = null;
@@ -402,7 +438,7 @@ async function registryFailureBlocksReady() {
             throw new Error("simulated SearchParameter registry failure");
         };
 
-        const modelMap = connect(config);
+        const modelMap = initConnector(config);
 
         let readyError = null;
         try {
@@ -448,7 +484,7 @@ async function staleArtifactBlocksReady() {
             };
         };
 
-        const modelMap = connect(config);
+        const modelMap = initConnector(config);
 
         let readyError = null;
         try {
@@ -501,7 +537,7 @@ async function shardingIndependentFromApplicationReady() {
             return result;
         };
 
-        const modelMap = connect(config);
+        const modelMap = initConnector(config);
         await modelMap.ready;
         await modelMap.shardingReady;
 
@@ -539,7 +575,7 @@ async function shardingFailureDoesNotRejectReady() {
             return result;
         };
 
-        const modelMap = connect(config);
+        const modelMap = initConnector(config);
         await modelMap.ready;
 
         let shardingError = null;
@@ -577,7 +613,7 @@ async function safeInitLogs() {
             MONGODB_AUTH_DB: "admin"
         };
 
-        const modelMap = connect(config);
+        const modelMap = initConnector(config);
         await modelMap.ready;
 
         const serializedLogs = capturedLogs
@@ -620,7 +656,7 @@ async function preExistingConnection() {
             return originalConnect(...args);
         };
 
-        const modelMap = connect(buildConfigFromUri(uri));
+        const modelMap = initConnector(buildConfigFromUri(uri));
         await modelMap.ready;
         mongoose.connect = originalConnect;
 
