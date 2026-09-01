@@ -180,3 +180,17 @@ _Avoid_: re-initializing with different settings in the same process; expecting 
 **Safe initialization observability**:
 Initialization logs that record model registry, database connection, SearchParameter registry, and total phase timings without printing passwords, full authenticated connection URLs, or other credentials. Connection details use masked hosts, database name, or similar metadata only.
 _Avoid_: logging raw `MONGODB_URL` with credentials; treating timing logs as proof of application ready
+
+## Temporal migration
+
+**Temporal data migration**:
+Converting legacy FHIR temporal scalars and BSON Dates into canonical temporal objects in stored resources. In the rollout sequence this covers migration preflight and the migration write only.
+_Avoid_: calling schema cutover or legacy fallback removal migration
+
+**Temporal rollout**:
+The full deployment sequence for normalized temporal search: preflight, backup, data migration, index creation, index verification, cutover gate, schema cutover, and legacy fallback removal.
+_Avoid_: treating data migration alone as a completed rollout
+
+**Temporal migration preflight**:
+A read-only scan that classifies stored temporal values before any write. Migration may proceed only when the report is valid and invalid and ambiguous BSON date counts are zero.
+_Avoid_: guessing dates to bypass preflight; treating preflight as optional before write
