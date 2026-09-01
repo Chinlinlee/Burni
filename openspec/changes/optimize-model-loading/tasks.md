@@ -31,5 +31,5 @@
 ## 5. Validation
 
 - [x] 5.1 執行 connector lifecycle focused tests、model registration tests 與相關 lint 檢查。
-- [ ] 5.2 執行完整 test suite，確認既有 FHIR API、SearchParameter 與全資源 CRUD 行為未回歸。
+- [x] 5.2 執行完整 test suite，確認既有 FHIR API、SearchParameter 與全資源 CRUD 行為未回歸。
 - [x] 5.3 執行 OpenSpec validation，確認所有規格、設計與任務文件完整且互相一致。
