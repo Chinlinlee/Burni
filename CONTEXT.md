@@ -184,7 +184,7 @@ _Avoid_: logging raw `MONGODB_URL` with credentials; treating timing logs as pro
 ## Temporal migration
 
 **Temporal data migration**:
-Converting legacy FHIR temporal scalars and BSON Dates into canonical temporal objects in stored resources. In the rollout sequence this covers migration preflight and the migration write only.
+Converting legacy FHIR temporal scalars and BSON Dates into canonical temporal objects in a target data store. In the rollout sequence this covers migration preflight and the migration write only.
 _Avoid_: calling schema cutover or legacy fallback removal migration
 
 **Temporal rollout**:
@@ -194,3 +194,27 @@ _Avoid_: treating data migration alone as a completed rollout
 **Temporal migration preflight**:
 A read-only scan that classifies stored temporal values before any write. Migration may proceed only when the report is valid and invalid and ambiguous BSON date counts are zero.
 _Avoid_: guessing dates to bypass preflight; treating preflight as optional before write
+
+**Temporal source database**:
+The read-only legacy database that supplies resources and history documents to temporal data migration.
+_Avoid_: treating the source database as the application write target during migration
+
+**Temporal target database**:
+The isolated database that receives transformed canonical resources and history documents before application cutover.
+_Avoid_: switching application traffic before target verification is complete
+
+**Lossy temporal conversion**:
+A deterministic temporal conversion whose generated canonical value is usable for the new search model but cannot reproduce the original FHIR lexical representation.
+_Avoid_: claiming lexical round-trip for a legacy BSON Date
+
+**Migration audit**:
+The evidence describing each lossy temporal conversion, including source identity, FHIR path, temporal type, applied policy, and generated canonical value.
+_Avoid_: treating an aggregate migration count as a complete audit
+
+**Migration checkpoint**:
+The durable progress state for a source collection and batch, used to resume a failed target migration without treating an incomplete target as verified.
+_Avoid_: using an audit report as the only recovery state
+
+**Temporal cutover verification**:
+The read-only comparison of source and target identity, transformed document content, temporal normalization, indexes, and representative search hit-sets before application connection switch.
+_Avoid_: treating document counts or preflight alone as cutover verification

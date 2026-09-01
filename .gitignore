@@ -26,3 +26,5 @@ docs/apidoc/apidoc-sources
 /utils/validator/igs/*
 
 !**/.gitkeep
+
+evidence/

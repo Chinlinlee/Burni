@@ -1,6 +1,8 @@
 # Temporal rollout deployment sequence
 
-本文件是 `normalize-fhir-temporal-search` 的 7.3 部署順序。它只定義 orchestration、prerequisite、abort point 與 rollback point；不會自動執行 production migration、MongoDB destructive operation 或 legacy code removal。
+本文件定義 normalized temporal search 的部署順序。它只定義 orchestration、prerequisite、abort point 與 rollback point；不會自動執行 production migration、MongoDB destructive operation 或 legacy code removal。
+
+Temporal data migration 使用隔離的 source/target database：source database 在 migration 期間停寫並保持唯讀，target database 必須是專用空 database。application 只有在 target 完成驗證後才切換 connection。
 
 ## 使用的既有 contract
 
@@ -18,7 +20,7 @@ Index manifest 必須由 7.1 generator 產生，並先通過 7.2 manifest、extr
 
 Prerequisite：載入與 production catalog、nested、choice、contained、history、temporal array 相符的 schema definitions 與 models。
 
-執行 `runTemporalMigrationPreflight` 的 read-only scan。只有 `valid: true`，且 `summary.invalid`、`summary.ambiguousBsonDates` 與 unavailable source 都是零，才可繼續。任何 invalid 或 ambiguous value 都要停止並修正來源資料；不得猜測日期或繞過 gate。
+執行 `runTemporalMigrationPreflight` 的 source read-only scan。只有 `valid: true`，且 `summary.invalid`、`summary.unresolvedAmbiguousBsonDates` 與 unavailable source 都是零，才可繼續。可接受的 BSON Date 轉換必須計入 `summary.lossyBsonDates` 並附有逐筆 audit；任何 invalid 或未定義 policy 的 value 都要停止，不得猜測日期或繞過 gate。
 
 Abort point：此步驟不寫資料，因此不需要 data rollback。保留 preflight report 作為 rollout evidence。
 
@@ -34,9 +36,9 @@ Abort point：backup 無法驗證時停止，不得開始 migration。此時尚�
 
 Prerequisite：backup/snapshot identifier、restore owner 與 restore procedure 已確認。
 
-使用既有 `runTemporalMigration`，設定合適的 `batchSize`，保存每個 batch 與總結結果。它會使用既有 preflight、canonical conversion 與 idempotent update contract；已是 canonical object 的值必須保持 skipped，不得重複包裝。
+使用雙 database migration entrypoint，設定合適的 `batchSize`，保存每個 batch、checkpoint、audit 與總結結果。source 使用 raw cursor；每批完整轉換並驗證文件後，寫入 target 的 resource 或 history collection。已是 canonical object 的值必須保持 skipped，不得重複包裝；target write 不得觸發 resource save hooks。
 
-Abort point：任何 write exception、failed batch 或不一致結果都停止後續步驟。依 backup/restore 文件確認目標資料庫後還原，restore 後重新執行 read-only preflight，再切回相容版本。
+Abort point：任何 write exception、failed batch 或不一致結果都停止後續步驟。保留 target partial state 與 checkpoint，修正問題後可安全重跑；未完成的 target 不得進入 cutover。依 backup/restore 文件確認目標資料庫後還原，restore 後重新執行 read-only preflight，再切回相容版本。
 
 ### 4. Index creation
 
@@ -56,7 +58,7 @@ Abort point：manifest compatibility、element correlation、choice branch、BSO
 
 ### 5.5 Cutover completion gate
 
-在 schema cutover 前執行 `models/FHIR/searchParameter/migration/temporalCutoverGate.js` 的 read-only verification API。它必須同時確認 migration completion、preflight 沒有 unresolved invalid/ambiguous diagnostics、7.1 manifest/7.2 compatibility 與 explain gate，以及 backup/snapshot 的 restoreability。任一 gate 缺失或失敗都會停止 rollout，並輸出 audit diagnostics、summary 與 rollback recommendation。
+在 schema cutover 前執行 `models/FHIR/searchParameter/migration/temporalCutoverGate.js` 的 read-only verification API。它必須同時確認 migration completion、preflight 沒有 unresolved invalid/ambiguous diagnostics、lossy BSON Date 都有 audit、source/target 對照、7.1 manifest/7.2 compatibility 與 explain gate，以及 backup/snapshot 的 restoreability。任一 gate 缺失或失敗都會停止 rollout，並輸出 audit diagnostics、summary 與 rollback recommendation。
 
 gate 可注入 migration/preflight status provider、backup verifier、index verifier 與 activation adapter；預設不執行寫入。`runTemporalRollout` 只有在 gate 通過後才會呼叫 schema activation，且 legacy fallback removal 仍依賴成功的 schema cutover。
 
@@ -113,4 +115,4 @@ await runTemporalRollout({
 
 ## Rollout evidence
 
-每次 rollout 應保存 plan、manifest identity、preflight report、backup/snapshot identifier、migration batch summary、index creation/verification 結果、schema activation 結果與 release rollback reference。non-temporal rollout 不需要加入這套 migration 或 index sequence。
+每次 rollout 應保存 plan、source/target database identity、manifest identity、preflight report、backup/snapshot identifier、migration checkpoint、migration audit、batch summary、source/target comparison、index creation/verification 結果、schema activation 結果與 release rollback reference。non-temporal rollout 不需要加入這套 migration 或 index sequence。
