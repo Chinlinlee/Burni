@@ -15,6 +15,7 @@ const {
     usesLegacyFilterEqualityAsEnablementGate
 } = require("@models/FHIR/searchParameter/migration/compatibilityPolicy");
 const { executeSearchQueryPlan } = require("@models/FHIR/searchParameter/executor/mongoExecutor");
+const { normalizeDate, normalizeDateTime } = require("@models/FHIR/temporal");
 const {
     startRegistryTestContext,
     stopRegistryTestContext
@@ -44,8 +45,8 @@ function buildCompanionPatientFixture() {
         resourceType: "Patient",
         active: false,
         gender: "female",
-        birthDate: "1985-06-01",
-        deceasedDateTime: "2020-01-15",
+        birthDate: normalizeDate("1985-06-01"),
+        deceasedDateTime: normalizeDateTime("2020-01-15"),
         name: [{ family: "Companion", given: ["Alex"], text: "Alex Companion" }],
         address: [
             {

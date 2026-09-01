@@ -109,12 +109,13 @@ describe("SearchParameter document fixture queries", function () {
     });
 
     it("matches Patient deceasedDateTime choice search", async function () {
+        const { normalizeDateTime } = require("@models/FHIR/temporal");
         const collection = mongoose.connection.collection("Patient_projection_test");
         await collection.deleteMany({});
         await collection.insertMany([
             {
                 resourceType: "Patient",
-                deceasedDateTime: "2020-01-15"
+                deceasedDateTime: normalizeDateTime("2020-01-15")
             },
             {
                 resourceType: "Patient",

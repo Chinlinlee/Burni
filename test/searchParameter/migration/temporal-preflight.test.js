@@ -117,6 +117,7 @@ describe("temporal migration preflight", function () {
 
     it("fails without writing for ambiguous dates and invalid temporal values", async function () {
         const calls = { find: 0, lean: 0 };
+        const readyStateBefore = mongoose.connection.readyState;
         const report = await runTemporalMigrationPreflight({
             catalog: ["Patient"],
             includeHistory: false,
@@ -162,7 +163,7 @@ describe("temporal migration preflight", function () {
             model: "Patient"
         });
         expect(calls).to.deep.equal({ find: 1, lean: 1 });
-        expect(mongoose.connection.readyState).to.equal(0);
+        expect(mongoose.connection.readyState).to.equal(readyStateBefore);
     });
 
     it("fails and audits unavailable resource sources", async function () {

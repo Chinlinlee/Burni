@@ -53,10 +53,10 @@
 
 ## 8. Verification and acceptance
 
-- [ ] 8.1 增加 date year/month/day precision 與所有 declared comparator 的 unit tests。
-- [ ] 8.2 增加 dateTime minute/second/fraction、timezone offset、UTC normalization 與 Decimal128 precision tests。
-- [ ] 8.3 增加 instant object、epoch fraction、high-precision ordering 與 instant-specific query tests。
-- [ ] 8.4 增加 Period、temporal array、choice、`:missing`、history、contained 與 primitive extension tests。
-- [ ] 8.5 增加 `.find()` 與 aggregate 等價 hit-set tests，包含 BSON type mismatch regression cases。
-- [ ] 8.6 增加 FHIR response lexical round-trip tests，確認 offset、尾端零與 precision 不遺失。
-- [ ] 8.7 執行 generator、migration preflight、migration tests、targeted temporal tests 與完整 test suite，確認 acceptance matrix 全部通過。
+- [x] 8.1 增加 date year/month/day precision 與所有 declared comparator 的 unit tests。
+- [x] 8.2 增加 dateTime minute/second/fraction、timezone offset、UTC normalization 與 Decimal128 precision tests。
+- [x] 8.3 增加 instant object、epoch fraction、high-precision ordering 與 instant-specific query tests。
+- [x] 8.4 增加 Period、temporal array、choice、`:missing`、history、contained 與 primitive extension tests。
+- [x] 8.5 增加 `.find()` 與 aggregate 等價 hit-set tests，包含 BSON type mismatch regression cases。
+- [x] 8.6 增加 FHIR response lexical round-trip tests，確認 offset、尾端零與 precision 不遺失。
+- [x] 8.7 執行 generator、migration preflight、migration tests、targeted temporal tests 與完整 test suite，確認 acceptance matrix 全部通過。

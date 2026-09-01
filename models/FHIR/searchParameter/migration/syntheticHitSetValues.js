@@ -156,10 +156,15 @@ function buildSyntheticFieldValue(searchType, code, extractionPath, resourceType
         case "date":
         case "dateTime":
             if (datatype === "Period") {
-                const date = new Date("2000-01-01T12:00:00.000Z");
-                return { start: date, end: date };
+                return { start: "2000-01-01", end: "2000-01-02" };
             }
-            return new Date("2000-01-01T12:00:00.000Z");
+            if (datatype === "instant") {
+                return "2000-01-01T12:00:00.000Z";
+            }
+            if (datatype === "dateTime") {
+                return "2000-01-01T12:00:00.000Z";
+            }
+            return "2000-01-01";
         case "quantity":
             return {
                 value: 10,
@@ -259,8 +264,13 @@ function formatSyntheticQueryValue(searchType, code, fieldValue, extractionPath)
  * @param {string[]} segments
  * @param {unknown} value
  * @param {string} datatype
+ * @param {string[]} [arrayPaths]
  */
-function setNestedValue(target, segments, value, datatype) {
+function setNestedValue(target, segments, value, datatype, arrayPaths = []) {
+    const arrayRoots = new Set([
+        ...ARRAY_PATH_ROOTS,
+        ...arrayPaths.map((entry) => entry.split(".")[0])
+    ]);
     if (
         value &&
         typeof value === "object" &&
@@ -272,12 +282,12 @@ function setNestedValue(target, segments, value, datatype) {
         return;
     }
 
-    if (segments.length > 1 && ARRAY_PATH_ROOTS.has(segments[0])) {
+    if (segments.length > 1 && arrayRoots.has(segments[0])) {
         const [root, ...rest] = segments;
         if (!Array.isArray(target[root]) || target[root].length === 0) {
             target[root] = [{}];
         }
-        setNestedValue(target[root][0], rest, value, datatype);
+        setNestedValue(target[root][0], rest, value, datatype, arrayPaths);
         return;
     }
 
@@ -345,7 +355,8 @@ function augmentDocumentForHitSet(document, plan) {
             augmented,
             extractionPath.path.split("."),
             fieldValue,
-            extractionPath.datatype
+            extractionPath.datatype,
+            extractionPath.arrayPaths || []
         );
     }
 

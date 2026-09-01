@@ -166,13 +166,13 @@ function parseInstantQueryValue(rawValue) {
 
 /**
  * @param {InstantQueryValue} query
- * @returns {import('mongoose').Types.Decimal128}
+ * @returns {string}
  */
-function getApproximationDelta(query) {
+function getApproximationDeltaString(query) {
     const unit = query.precision === INSTANT_PRECISION.SECOND
         ? "1"
         : `0.${"0".repeat(query.fractionDigits - 1)}1`;
-    return mongoose.Types.Decimal128.fromString(divideDecimalByTen(unit));
+    return divideDecimalByTen(unit);
 }
 
 /**
@@ -206,14 +206,14 @@ function buildInstantQuery(fieldPath, query, comparator = query?.comparator) {
         case "le":
             return { [field]: { $lte: point } };
         case "ap": {
-            const delta = getApproximationDelta(query);
+            const delta = getApproximationDeltaString(query);
             return {
                 [field]: {
                     $gte: mongoose.Types.Decimal128.fromString(
-                        addDecimal(point.toString(), delta.toString(), -1)
+                        addDecimal(point.toString(), delta, -1)
                     ),
                     $lte: mongoose.Types.Decimal128.fromString(
-                        addDecimal(point.toString(), delta.toString(), 1)
+                        addDecimal(point.toString(), delta, 1)
                     )
                 }
             };

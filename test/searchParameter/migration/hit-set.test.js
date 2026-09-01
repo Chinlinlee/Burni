@@ -58,8 +58,8 @@ describe("SearchParameter hit-set verification", function () {
     it("commits a hit-set artifact covering every compiled lookup", function () {
         expect(fs.existsSync(HIT_SETS_ARTIFACT)).to.equal(true);
         const artifact = loadHitSetArtifact();
-        expect(artifact.summary.compiledLookups).to.equal(1614);
-        expect(artifact.summary.definedHitSets).to.equal(1614);
+        expect(artifact.summary.compiledLookups).to.equal(1617);
+        expect(artifact.summary.definedHitSets).to.equal(1617);
         expect(artifact.summary.pendingHitSets).to.equal(0);
         const companionDir = path.join(ARCHIVE_ROOT, "companion");
         const companionFiles = fs.readdirSync(companionDir).filter((file) => file.endsWith(".json"));
@@ -120,10 +120,14 @@ describe("SearchParameter document hit-set gates", function () {
                 }
 
                 const preparedMain = prepareMainDocumentForHitSet(mainDocument, hitSet, plan);
+                const preparedCompanion =
+                    hitSet.positive.expectDocument === "companion"
+                        ? prepareMainDocumentForHitSet(companionDocument, hitSet, plan)
+                        : companionDocument;
                 await collection.deleteMany({});
                 await collection.insertMany([
                     { ...preparedMain, _fixtureRole: "main" },
-                    { ...companionDocument, _fixtureRole: "companion" }
+                    { ...preparedCompanion, _fixtureRole: "companion" }
                 ]);
 
                 const parameterName = Object.keys(hitSet.positive.query)[0];
