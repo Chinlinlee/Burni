@@ -11,6 +11,7 @@ const {
     buildPartialMigrationWarnings,
     parseResourceList,
     parseTemporalMigrateArgs,
+    resolveConfiguredDatabaseName,
     resolveExitCode,
     resolveReportPath,
     validateTemporalMigrateOptions
@@ -33,6 +34,20 @@ describe("temporal-migrate CLI", function () {
         expect(parsed.error).to.match(/Only one of/);
     });
 
+    it("resolves configured database name from MONGODB_NAME or connection URL", function () {
+        expect(
+            resolveConfiguredDatabaseName({
+                MONGODB_NAME: "FHIRTest"
+            })
+        ).to.equal("FHIRTest");
+        expect(
+            resolveConfiguredDatabaseName({
+                MONGODB_CONNECTION_URL: "mongodb://localhost:27017/FHIRTest"
+            })
+        ).to.equal("FHIRTest");
+        expect(resolveConfiguredDatabaseName({})).to.be.undefined;
+    });
+
     it("requires confirm-db for write mode", function () {
         const parsed = parseTemporalMigrateArgs(["--write"]);
         const validation = validateTemporalMigrateOptions(parsed.options, {
@@ -50,7 +65,7 @@ describe("temporal-migrate CLI", function () {
         const validation = validateTemporalMigrateOptions(parsed.options, {
             MONGODB_NAME: "burni-prod"
         });
-        expect(validation.error).to.match(/does not match MONGODB_NAME/);
+        expect(validation.error).to.match(/does not match configured database/);
     });
 
     it("accepts write mode when confirm-db matches", function () {

@@ -1,7 +1,11 @@
 require("module-alias/register");
 
-const fs = require("fs");
 const path = require("path");
+require("dotenv").config({
+    path: path.join(__dirname, "../.env")
+});
+
+const fs = require("fs");
 const mongoose = require("mongoose");
 const {
     runTemporalMigration,
@@ -19,6 +23,7 @@ const {
     formatUsage,
     parseResourceList,
     parseTemporalMigrateArgs,
+    resolveConfiguredDatabaseName,
     resolveExitCode,
     resolveReportPath,
     validateTemporalMigrateOptions
@@ -195,7 +200,7 @@ async function main() {
 
     const report = buildEvidenceReport({
         mode: options.mode,
-        database: process.env.MONGODB_NAME || null,
+        database: resolveConfiguredDatabaseName(process.env) || null,
         catalog,
         includeHistory: options.includeHistory,
         batchSize: options.batchSize,

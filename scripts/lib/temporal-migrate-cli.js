@@ -17,6 +17,29 @@ const BACKUP_REMINDER =
     "Create a verified backup before writing. See docs/temporal-migration-backup-restore.md";
 
 /**
+ * @param {NodeJS.ProcessEnv} env
+ * @returns {string | undefined}
+ */
+function resolveConfiguredDatabaseName(env) {
+    if (env.MONGODB_NAME) {
+        return env.MONGODB_NAME;
+    }
+    const connectionUrl = env.MONGODB_CONNECTION_URL;
+    if (!connectionUrl) {
+        return undefined;
+    }
+
+    try {
+        const normalized = connectionUrl.replace(/^mongodb(?:\+srv)?:\/\//, "http://");
+        const pathname = new URL(normalized).pathname.replace(/^\//, "");
+        const databaseName = pathname.split("/")[0];
+        return databaseName || undefined;
+    } catch {
+        return undefined;
+    }
+}
+
+/**
  * @param {string[]} argv
  * @returns {{ options?: object, error?: string, help?: boolean }}
  */
@@ -135,13 +158,16 @@ function validateTemporalMigrateOptions(options, env) {
         if (!options.confirmDb) {
             return { error: "--write requires --confirm-db <database-name>" };
         }
-        const configuredDb = env.MONGODB_NAME;
+        const configuredDb = resolveConfiguredDatabaseName(env);
         if (!configuredDb) {
-            return { error: "MONGODB_NAME must be set when using --write" };
+            return {
+                error:
+                    "MONGODB_NAME (or MONGODB_CONNECTION_URL with a database path) must be set when using --write"
+            };
         }
         if (options.confirmDb !== configuredDb) {
             return {
-                error: `--confirm-db "${options.confirmDb}" does not match MONGODB_NAME "${configuredDb}"`
+                error: `--confirm-db "${options.confirmDb}" does not match configured database "${configuredDb}"`
             };
         }
     }
@@ -260,6 +286,7 @@ module.exports = {
     formatUsage,
     parseResourceList,
     parseTemporalMigrateArgs,
+    resolveConfiguredDatabaseName,
     resolveExitCode,
     resolveReportPath,
     validateTemporalMigrateOptions
