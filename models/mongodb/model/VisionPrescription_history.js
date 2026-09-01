@@ -4,7 +4,9 @@ const _ = require('lodash');
 const {
     serializeResourceTemporals
 } = require("../../FHIR/temporal");
-module.exports = function() {
+module.exports = function(connection = mongoose) {
+    const modelConnection = connection;
+    const schemaConstructor = modelConnection.base?.Schema || mongoose.Schema;
     let VisionPrescription = require('./VisionPrescription').schema;
     VisionPrescription.id.unique = false;
     VisionPrescription.request = {
@@ -38,7 +40,7 @@ module.exports = function() {
             id: 1
         };
     }
-    const VisionPrescriptionHistorySchema = new mongoose.Schema(VisionPrescription, schemaConfig);
+    const VisionPrescriptionHistorySchema = new schemaConstructor(VisionPrescription, schemaConfig);
     VisionPrescriptionHistorySchema.methods.getFHIRField = function() {
         let result = this.toObject();
         delete result._id;
@@ -56,6 +58,6 @@ module.exports = function() {
         return serializeResourceTemporals(result);
     };
 
-    const VisionPrescriptionHistoryModel = mongoose.model("VisionPrescription_history", VisionPrescriptionHistorySchema, "VisionPrescription_history");
+    const VisionPrescriptionHistoryModel = modelConnection.model("VisionPrescription_history", VisionPrescriptionHistorySchema, "VisionPrescription_history");
     return VisionPrescriptionHistoryModel;
 };

@@ -4,7 +4,9 @@ const _ = require('lodash');
 const {
     serializeResourceTemporals
 } = require("../../FHIR/temporal");
-module.exports = function() {
+module.exports = function(connection = mongoose) {
+    const modelConnection = connection;
+    const schemaConstructor = modelConnection.base?.Schema || mongoose.Schema;
     let EffectEvidenceSynthesis = require('./EffectEvidenceSynthesis').schema;
     EffectEvidenceSynthesis.id.unique = false;
     EffectEvidenceSynthesis.request = {
@@ -38,7 +40,7 @@ module.exports = function() {
             id: 1
         };
     }
-    const EffectEvidenceSynthesisHistorySchema = new mongoose.Schema(EffectEvidenceSynthesis, schemaConfig);
+    const EffectEvidenceSynthesisHistorySchema = new schemaConstructor(EffectEvidenceSynthesis, schemaConfig);
     EffectEvidenceSynthesisHistorySchema.methods.getFHIRField = function() {
         let result = this.toObject();
         delete result._id;
@@ -56,6 +58,6 @@ module.exports = function() {
         return serializeResourceTemporals(result);
     };
 
-    const EffectEvidenceSynthesisHistoryModel = mongoose.model("EffectEvidenceSynthesis_history", EffectEvidenceSynthesisHistorySchema, "EffectEvidenceSynthesis_history");
+    const EffectEvidenceSynthesisHistoryModel = modelConnection.model("EffectEvidenceSynthesis_history", EffectEvidenceSynthesisHistorySchema, "EffectEvidenceSynthesis_history");
     return EffectEvidenceSynthesisHistoryModel;
 };

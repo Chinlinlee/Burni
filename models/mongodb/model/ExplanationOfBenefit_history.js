@@ -4,7 +4,9 @@ const _ = require('lodash');
 const {
     serializeResourceTemporals
 } = require("../../FHIR/temporal");
-module.exports = function() {
+module.exports = function(connection = mongoose) {
+    const modelConnection = connection;
+    const schemaConstructor = modelConnection.base?.Schema || mongoose.Schema;
     let ExplanationOfBenefit = require('./ExplanationOfBenefit').schema;
     ExplanationOfBenefit.id.unique = false;
     ExplanationOfBenefit.request = {
@@ -38,7 +40,7 @@ module.exports = function() {
             id: 1
         };
     }
-    const ExplanationOfBenefitHistorySchema = new mongoose.Schema(ExplanationOfBenefit, schemaConfig);
+    const ExplanationOfBenefitHistorySchema = new schemaConstructor(ExplanationOfBenefit, schemaConfig);
     ExplanationOfBenefitHistorySchema.methods.getFHIRField = function() {
         let result = this.toObject();
         delete result._id;
@@ -56,6 +58,6 @@ module.exports = function() {
         return serializeResourceTemporals(result);
     };
 
-    const ExplanationOfBenefitHistoryModel = mongoose.model("ExplanationOfBenefit_history", ExplanationOfBenefitHistorySchema, "ExplanationOfBenefit_history");
+    const ExplanationOfBenefitHistoryModel = modelConnection.model("ExplanationOfBenefit_history", ExplanationOfBenefitHistorySchema, "ExplanationOfBenefit_history");
     return ExplanationOfBenefitHistoryModel;
 };

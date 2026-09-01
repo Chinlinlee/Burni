@@ -4,7 +4,9 @@ const _ = require('lodash');
 const {
     serializeResourceTemporals
 } = require("../../FHIR/temporal");
-module.exports = function() {
+module.exports = function(connection = mongoose) {
+    const modelConnection = connection;
+    const schemaConstructor = modelConnection.base?.Schema || mongoose.Schema;
     let MedicationRequest = require('./MedicationRequest').schema;
     MedicationRequest.id.unique = false;
     MedicationRequest.request = {
@@ -38,7 +40,7 @@ module.exports = function() {
             id: 1
         };
     }
-    const MedicationRequestHistorySchema = new mongoose.Schema(MedicationRequest, schemaConfig);
+    const MedicationRequestHistorySchema = new schemaConstructor(MedicationRequest, schemaConfig);
     MedicationRequestHistorySchema.methods.getFHIRField = function() {
         let result = this.toObject();
         delete result._id;
@@ -56,6 +58,6 @@ module.exports = function() {
         return serializeResourceTemporals(result);
     };
 
-    const MedicationRequestHistoryModel = mongoose.model("MedicationRequest_history", MedicationRequestHistorySchema, "MedicationRequest_history");
+    const MedicationRequestHistoryModel = modelConnection.model("MedicationRequest_history", MedicationRequestHistorySchema, "MedicationRequest_history");
     return MedicationRequestHistoryModel;
 };

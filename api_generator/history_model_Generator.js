@@ -22,7 +22,9 @@ function genHistoryModel() {
            const moment = require('moment');
            const _ = require('lodash');
            const { serializeResourceTemporals } = require("../../FHIR/temporal");
-           module.exports = function() {
+           module.exports = function(connection = mongoose) {
+               const modelConnection = connection;
+               const schemaConstructor = modelConnection.base?.Schema || mongoose.Schema;
                let ${fileBaseName} = require('./${fileBaseName}').schema;
                ${fileBaseName}.id.unique = false;
                ${fileBaseName}.request = {
@@ -52,7 +54,7 @@ function genHistoryModel() {
                         id: 1
                     };
                 }
-                const ${fileBaseName}HistorySchema = new mongoose.Schema(${fileBaseName}, schemaConfig);
+               const ${fileBaseName}HistorySchema = new schemaConstructor(${fileBaseName}, schemaConfig);
                 ${fileBaseName}HistorySchema.methods.getFHIRField = function() {
                    let result = this.toObject();
                    delete result._id;
@@ -70,7 +72,7 @@ function genHistoryModel() {
                    return serializeResourceTemporals(result);
                 };
                 
-                const ${fileBaseName}HistoryModel = mongoose.model("${fileBaseName}_history", ${fileBaseName}HistorySchema, "${fileBaseName}_history");
+               const ${fileBaseName}HistoryModel = modelConnection.model("${fileBaseName}_history", ${fileBaseName}HistorySchema, "${fileBaseName}_history");
                 return ${fileBaseName}HistoryModel;
             };`;
             fs.writeFileSync(

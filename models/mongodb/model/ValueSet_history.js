@@ -4,7 +4,9 @@ const _ = require('lodash');
 const {
     serializeResourceTemporals
 } = require("../../FHIR/temporal");
-module.exports = function() {
+module.exports = function(connection = mongoose) {
+    const modelConnection = connection;
+    const schemaConstructor = modelConnection.base?.Schema || mongoose.Schema;
     let ValueSet = require('./ValueSet').schema;
     ValueSet.id.unique = false;
     ValueSet.request = {
@@ -38,7 +40,7 @@ module.exports = function() {
             id: 1
         };
     }
-    const ValueSetHistorySchema = new mongoose.Schema(ValueSet, schemaConfig);
+    const ValueSetHistorySchema = new schemaConstructor(ValueSet, schemaConfig);
     ValueSetHistorySchema.methods.getFHIRField = function() {
         let result = this.toObject();
         delete result._id;
@@ -56,6 +58,6 @@ module.exports = function() {
         return serializeResourceTemporals(result);
     };
 
-    const ValueSetHistoryModel = mongoose.model("ValueSet_history", ValueSetHistorySchema, "ValueSet_history");
+    const ValueSetHistoryModel = modelConnection.model("ValueSet_history", ValueSetHistorySchema, "ValueSet_history");
     return ValueSetHistoryModel;
 };

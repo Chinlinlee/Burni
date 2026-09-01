@@ -4,7 +4,9 @@ const _ = require('lodash');
 const {
     serializeResourceTemporals
 } = require("../../FHIR/temporal");
-module.exports = function() {
+module.exports = function(connection = mongoose) {
+    const modelConnection = connection;
+    const schemaConstructor = modelConnection.base?.Schema || mongoose.Schema;
     let MessageDefinition = require('./MessageDefinition').schema;
     MessageDefinition.id.unique = false;
     MessageDefinition.request = {
@@ -38,7 +40,7 @@ module.exports = function() {
             id: 1
         };
     }
-    const MessageDefinitionHistorySchema = new mongoose.Schema(MessageDefinition, schemaConfig);
+    const MessageDefinitionHistorySchema = new schemaConstructor(MessageDefinition, schemaConfig);
     MessageDefinitionHistorySchema.methods.getFHIRField = function() {
         let result = this.toObject();
         delete result._id;
@@ -56,6 +58,6 @@ module.exports = function() {
         return serializeResourceTemporals(result);
     };
 
-    const MessageDefinitionHistoryModel = mongoose.model("MessageDefinition_history", MessageDefinitionHistorySchema, "MessageDefinition_history");
+    const MessageDefinitionHistoryModel = modelConnection.model("MessageDefinition_history", MessageDefinitionHistorySchema, "MessageDefinition_history");
     return MessageDefinitionHistoryModel;
 };

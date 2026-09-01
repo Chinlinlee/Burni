@@ -4,7 +4,9 @@ const _ = require('lodash');
 const {
     serializeResourceTemporals
 } = require("../../FHIR/temporal");
-module.exports = function() {
+module.exports = function(connection = mongoose) {
+    const modelConnection = connection;
+    const schemaConstructor = modelConnection.base?.Schema || mongoose.Schema;
     let Consent = require('./Consent').schema;
     Consent.id.unique = false;
     Consent.request = {
@@ -38,7 +40,7 @@ module.exports = function() {
             id: 1
         };
     }
-    const ConsentHistorySchema = new mongoose.Schema(Consent, schemaConfig);
+    const ConsentHistorySchema = new schemaConstructor(Consent, schemaConfig);
     ConsentHistorySchema.methods.getFHIRField = function() {
         let result = this.toObject();
         delete result._id;
@@ -56,6 +58,6 @@ module.exports = function() {
         return serializeResourceTemporals(result);
     };
 
-    const ConsentHistoryModel = mongoose.model("Consent_history", ConsentHistorySchema, "Consent_history");
+    const ConsentHistoryModel = modelConnection.model("Consent_history", ConsentHistorySchema, "Consent_history");
     return ConsentHistoryModel;
 };

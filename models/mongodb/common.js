@@ -17,14 +17,14 @@ const mongoose = require("mongoose");
  * }
  * @param {Object} resource
  */
-async function storeResourceRefBy(resource) {
+async function storeResourceRefBy(resource, connection = mongoose) {
     let referenceInItem = jp.nodes(resource, "$..reference");
     for (let refNode of referenceInItem) {
         let referenceSplit = _.isObject(refNode.value) ? refNode.value["reference"].split("/") : refNode.value.split("/");
         let id = referenceSplit[referenceSplit.length - 1];
         let resourceType = referenceSplit[referenceSplit.length - 2];
 
-        await mongoose.model("resourceRefBy").findOneAndUpdate(
+        await connection.model("resourceRefBy").findOneAndUpdate(
             {
                 $and: [
                     {
@@ -59,9 +59,9 @@ async function storeResourceRefBy(resource) {
  * > Use in post delete
  * @param {Object} resource
  */
-async function updateRefBy(resource) {
+async function updateRefBy(resource, connection = mongoose) {
     try {
-        await mongoose.model("resourceRefBy").updateMany(
+        await connection.model("resourceRefBy").updateMany(
             {
                 $and: [
                     {
@@ -90,9 +90,9 @@ async function updateRefBy(resource) {
  * After updating refBy, some array will be empty that mean the resource is not referenced by any resource anymore.
  * So, we need to delete document that have empty refBy array.
  */
-async function deleteEmptyRefBy() {
+async function deleteEmptyRefBy(connection = mongoose) {
     try {
-        await mongoose.model("resourceRefBy").deleteMany({
+        await connection.model("resourceRefBy").deleteMany({
             $and: [
                 {
                     refBy: {
@@ -117,9 +117,12 @@ async function deleteEmptyRefBy() {
  * 2. Do next process otherwise.
  * > Use in pre delete
  */
-async function checkResourceHaveReferenceByOthers(resource) {
+async function checkResourceHaveReferenceByOthers(
+    resource,
+    connection = mongoose
+) {
     try {
-        let data = await mongoose
+        let data = await connection
             .model("resourceRefBy")
             .countDocuments({
                 $and: [

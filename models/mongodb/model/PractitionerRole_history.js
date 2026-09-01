@@ -4,7 +4,9 @@ const _ = require('lodash');
 const {
     serializeResourceTemporals
 } = require("../../FHIR/temporal");
-module.exports = function() {
+module.exports = function(connection = mongoose) {
+    const modelConnection = connection;
+    const schemaConstructor = modelConnection.base?.Schema || mongoose.Schema;
     let PractitionerRole = require('./PractitionerRole').schema;
     PractitionerRole.id.unique = false;
     PractitionerRole.request = {
@@ -38,7 +40,7 @@ module.exports = function() {
             id: 1
         };
     }
-    const PractitionerRoleHistorySchema = new mongoose.Schema(PractitionerRole, schemaConfig);
+    const PractitionerRoleHistorySchema = new schemaConstructor(PractitionerRole, schemaConfig);
     PractitionerRoleHistorySchema.methods.getFHIRField = function() {
         let result = this.toObject();
         delete result._id;
@@ -56,6 +58,6 @@ module.exports = function() {
         return serializeResourceTemporals(result);
     };
 
-    const PractitionerRoleHistoryModel = mongoose.model("PractitionerRole_history", PractitionerRoleHistorySchema, "PractitionerRole_history");
+    const PractitionerRoleHistoryModel = modelConnection.model("PractitionerRole_history", PractitionerRoleHistorySchema, "PractitionerRole_history");
     return PractitionerRoleHistoryModel;
 };

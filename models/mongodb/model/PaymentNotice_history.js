@@ -4,7 +4,9 @@ const _ = require('lodash');
 const {
     serializeResourceTemporals
 } = require("../../FHIR/temporal");
-module.exports = function() {
+module.exports = function(connection = mongoose) {
+    const modelConnection = connection;
+    const schemaConstructor = modelConnection.base?.Schema || mongoose.Schema;
     let PaymentNotice = require('./PaymentNotice').schema;
     PaymentNotice.id.unique = false;
     PaymentNotice.request = {
@@ -38,7 +40,7 @@ module.exports = function() {
             id: 1
         };
     }
-    const PaymentNoticeHistorySchema = new mongoose.Schema(PaymentNotice, schemaConfig);
+    const PaymentNoticeHistorySchema = new schemaConstructor(PaymentNotice, schemaConfig);
     PaymentNoticeHistorySchema.methods.getFHIRField = function() {
         let result = this.toObject();
         delete result._id;
@@ -56,6 +58,6 @@ module.exports = function() {
         return serializeResourceTemporals(result);
     };
 
-    const PaymentNoticeHistoryModel = mongoose.model("PaymentNotice_history", PaymentNoticeHistorySchema, "PaymentNotice_history");
+    const PaymentNoticeHistoryModel = modelConnection.model("PaymentNotice_history", PaymentNoticeHistorySchema, "PaymentNotice_history");
     return PaymentNoticeHistoryModel;
 };

@@ -4,7 +4,9 @@ const _ = require('lodash');
 const {
     serializeResourceTemporals
 } = require("../../FHIR/temporal");
-module.exports = function() {
+module.exports = function(connection = mongoose) {
+    const modelConnection = connection;
+    const schemaConstructor = modelConnection.base?.Schema || mongoose.Schema;
     let SubstanceNucleicAcid = require('./SubstanceNucleicAcid').schema;
     SubstanceNucleicAcid.id.unique = false;
     SubstanceNucleicAcid.request = {
@@ -38,7 +40,7 @@ module.exports = function() {
             id: 1
         };
     }
-    const SubstanceNucleicAcidHistorySchema = new mongoose.Schema(SubstanceNucleicAcid, schemaConfig);
+    const SubstanceNucleicAcidHistorySchema = new schemaConstructor(SubstanceNucleicAcid, schemaConfig);
     SubstanceNucleicAcidHistorySchema.methods.getFHIRField = function() {
         let result = this.toObject();
         delete result._id;
@@ -56,6 +58,6 @@ module.exports = function() {
         return serializeResourceTemporals(result);
     };
 
-    const SubstanceNucleicAcidHistoryModel = mongoose.model("SubstanceNucleicAcid_history", SubstanceNucleicAcidHistorySchema, "SubstanceNucleicAcid_history");
+    const SubstanceNucleicAcidHistoryModel = modelConnection.model("SubstanceNucleicAcid_history", SubstanceNucleicAcidHistorySchema, "SubstanceNucleicAcid_history");
     return SubstanceNucleicAcidHistoryModel;
 };

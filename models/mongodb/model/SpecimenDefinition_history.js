@@ -4,7 +4,9 @@ const _ = require('lodash');
 const {
     serializeResourceTemporals
 } = require("../../FHIR/temporal");
-module.exports = function() {
+module.exports = function(connection = mongoose) {
+    const modelConnection = connection;
+    const schemaConstructor = modelConnection.base?.Schema || mongoose.Schema;
     let SpecimenDefinition = require('./SpecimenDefinition').schema;
     SpecimenDefinition.id.unique = false;
     SpecimenDefinition.request = {
@@ -38,7 +40,7 @@ module.exports = function() {
             id: 1
         };
     }
-    const SpecimenDefinitionHistorySchema = new mongoose.Schema(SpecimenDefinition, schemaConfig);
+    const SpecimenDefinitionHistorySchema = new schemaConstructor(SpecimenDefinition, schemaConfig);
     SpecimenDefinitionHistorySchema.methods.getFHIRField = function() {
         let result = this.toObject();
         delete result._id;
@@ -56,6 +58,6 @@ module.exports = function() {
         return serializeResourceTemporals(result);
     };
 
-    const SpecimenDefinitionHistoryModel = mongoose.model("SpecimenDefinition_history", SpecimenDefinitionHistorySchema, "SpecimenDefinition_history");
+    const SpecimenDefinitionHistoryModel = modelConnection.model("SpecimenDefinition_history", SpecimenDefinitionHistorySchema, "SpecimenDefinition_history");
     return SpecimenDefinitionHistoryModel;
 };

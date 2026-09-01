@@ -4,7 +4,9 @@ const _ = require('lodash');
 const {
     serializeResourceTemporals
 } = require("../../FHIR/temporal");
-module.exports = function() {
+module.exports = function(connection = mongoose) {
+    const modelConnection = connection;
+    const schemaConstructor = modelConnection.base?.Schema || mongoose.Schema;
     let Composition = require('./Composition').schema;
     Composition.id.unique = false;
     Composition.request = {
@@ -38,7 +40,7 @@ module.exports = function() {
             id: 1
         };
     }
-    const CompositionHistorySchema = new mongoose.Schema(Composition, schemaConfig);
+    const CompositionHistorySchema = new schemaConstructor(Composition, schemaConfig);
     CompositionHistorySchema.methods.getFHIRField = function() {
         let result = this.toObject();
         delete result._id;
@@ -56,6 +58,6 @@ module.exports = function() {
         return serializeResourceTemporals(result);
     };
 
-    const CompositionHistoryModel = mongoose.model("Composition_history", CompositionHistorySchema, "Composition_history");
+    const CompositionHistoryModel = modelConnection.model("Composition_history", CompositionHistorySchema, "Composition_history");
     return CompositionHistoryModel;
 };

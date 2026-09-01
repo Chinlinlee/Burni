@@ -4,7 +4,9 @@ const _ = require('lodash');
 const {
     serializeResourceTemporals
 } = require("../../FHIR/temporal");
-module.exports = function() {
+module.exports = function(connection = mongoose) {
+    const modelConnection = connection;
+    const schemaConstructor = modelConnection.base?.Schema || mongoose.Schema;
     let GraphDefinition = require('./GraphDefinition').schema;
     GraphDefinition.id.unique = false;
     GraphDefinition.request = {
@@ -38,7 +40,7 @@ module.exports = function() {
             id: 1
         };
     }
-    const GraphDefinitionHistorySchema = new mongoose.Schema(GraphDefinition, schemaConfig);
+    const GraphDefinitionHistorySchema = new schemaConstructor(GraphDefinition, schemaConfig);
     GraphDefinitionHistorySchema.methods.getFHIRField = function() {
         let result = this.toObject();
         delete result._id;
@@ -56,6 +58,6 @@ module.exports = function() {
         return serializeResourceTemporals(result);
     };
 
-    const GraphDefinitionHistoryModel = mongoose.model("GraphDefinition_history", GraphDefinitionHistorySchema, "GraphDefinition_history");
+    const GraphDefinitionHistoryModel = modelConnection.model("GraphDefinition_history", GraphDefinitionHistorySchema, "GraphDefinition_history");
     return GraphDefinitionHistoryModel;
 };

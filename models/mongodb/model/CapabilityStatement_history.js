@@ -4,7 +4,9 @@ const _ = require('lodash');
 const {
     serializeResourceTemporals
 } = require("../../FHIR/temporal");
-module.exports = function() {
+module.exports = function(connection = mongoose) {
+    const modelConnection = connection;
+    const schemaConstructor = modelConnection.base?.Schema || mongoose.Schema;
     let CapabilityStatement = require('./CapabilityStatement').schema;
     CapabilityStatement.id.unique = false;
     CapabilityStatement.request = {
@@ -38,7 +40,7 @@ module.exports = function() {
             id: 1
         };
     }
-    const CapabilityStatementHistorySchema = new mongoose.Schema(CapabilityStatement, schemaConfig);
+    const CapabilityStatementHistorySchema = new schemaConstructor(CapabilityStatement, schemaConfig);
     CapabilityStatementHistorySchema.methods.getFHIRField = function() {
         let result = this.toObject();
         delete result._id;
@@ -56,6 +58,6 @@ module.exports = function() {
         return serializeResourceTemporals(result);
     };
 
-    const CapabilityStatementHistoryModel = mongoose.model("CapabilityStatement_history", CapabilityStatementHistorySchema, "CapabilityStatement_history");
+    const CapabilityStatementHistoryModel = modelConnection.model("CapabilityStatement_history", CapabilityStatementHistorySchema, "CapabilityStatement_history");
     return CapabilityStatementHistoryModel;
 };

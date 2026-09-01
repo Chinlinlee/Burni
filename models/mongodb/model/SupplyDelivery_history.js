@@ -4,7 +4,9 @@ const _ = require('lodash');
 const {
     serializeResourceTemporals
 } = require("../../FHIR/temporal");
-module.exports = function() {
+module.exports = function(connection = mongoose) {
+    const modelConnection = connection;
+    const schemaConstructor = modelConnection.base?.Schema || mongoose.Schema;
     let SupplyDelivery = require('./SupplyDelivery').schema;
     SupplyDelivery.id.unique = false;
     SupplyDelivery.request = {
@@ -38,7 +40,7 @@ module.exports = function() {
             id: 1
         };
     }
-    const SupplyDeliveryHistorySchema = new mongoose.Schema(SupplyDelivery, schemaConfig);
+    const SupplyDeliveryHistorySchema = new schemaConstructor(SupplyDelivery, schemaConfig);
     SupplyDeliveryHistorySchema.methods.getFHIRField = function() {
         let result = this.toObject();
         delete result._id;
@@ -56,6 +58,6 @@ module.exports = function() {
         return serializeResourceTemporals(result);
     };
 
-    const SupplyDeliveryHistoryModel = mongoose.model("SupplyDelivery_history", SupplyDeliveryHistorySchema, "SupplyDelivery_history");
+    const SupplyDeliveryHistoryModel = modelConnection.model("SupplyDelivery_history", SupplyDeliveryHistorySchema, "SupplyDelivery_history");
     return SupplyDeliveryHistoryModel;
 };

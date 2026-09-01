@@ -4,7 +4,9 @@ const _ = require('lodash');
 const {
     serializeResourceTemporals
 } = require("../../FHIR/temporal");
-module.exports = function() {
+module.exports = function(connection = mongoose) {
+    const modelConnection = connection;
+    const schemaConstructor = modelConnection.base?.Schema || mongoose.Schema;
     let GuidanceResponse = require('./GuidanceResponse').schema;
     GuidanceResponse.id.unique = false;
     GuidanceResponse.request = {
@@ -38,7 +40,7 @@ module.exports = function() {
             id: 1
         };
     }
-    const GuidanceResponseHistorySchema = new mongoose.Schema(GuidanceResponse, schemaConfig);
+    const GuidanceResponseHistorySchema = new schemaConstructor(GuidanceResponse, schemaConfig);
     GuidanceResponseHistorySchema.methods.getFHIRField = function() {
         let result = this.toObject();
         delete result._id;
@@ -56,6 +58,6 @@ module.exports = function() {
         return serializeResourceTemporals(result);
     };
 
-    const GuidanceResponseHistoryModel = mongoose.model("GuidanceResponse_history", GuidanceResponseHistorySchema, "GuidanceResponse_history");
+    const GuidanceResponseHistoryModel = modelConnection.model("GuidanceResponse_history", GuidanceResponseHistorySchema, "GuidanceResponse_history");
     return GuidanceResponseHistoryModel;
 };

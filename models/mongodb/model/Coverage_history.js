@@ -4,7 +4,9 @@ const _ = require('lodash');
 const {
     serializeResourceTemporals
 } = require("../../FHIR/temporal");
-module.exports = function() {
+module.exports = function(connection = mongoose) {
+    const modelConnection = connection;
+    const schemaConstructor = modelConnection.base?.Schema || mongoose.Schema;
     let Coverage = require('./Coverage').schema;
     Coverage.id.unique = false;
     Coverage.request = {
@@ -38,7 +40,7 @@ module.exports = function() {
             id: 1
         };
     }
-    const CoverageHistorySchema = new mongoose.Schema(Coverage, schemaConfig);
+    const CoverageHistorySchema = new schemaConstructor(Coverage, schemaConfig);
     CoverageHistorySchema.methods.getFHIRField = function() {
         let result = this.toObject();
         delete result._id;
@@ -56,6 +58,6 @@ module.exports = function() {
         return serializeResourceTemporals(result);
     };
 
-    const CoverageHistoryModel = mongoose.model("Coverage_history", CoverageHistorySchema, "Coverage_history");
+    const CoverageHistoryModel = modelConnection.model("Coverage_history", CoverageHistorySchema, "Coverage_history");
     return CoverageHistoryModel;
 };

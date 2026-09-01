@@ -4,7 +4,9 @@ const _ = require('lodash');
 const {
     serializeResourceTemporals
 } = require("../../FHIR/temporal");
-module.exports = function() {
+module.exports = function(connection = mongoose) {
+    const modelConnection = connection;
+    const schemaConstructor = modelConnection.base?.Schema || mongoose.Schema;
     let ConceptMap = require('./ConceptMap').schema;
     ConceptMap.id.unique = false;
     ConceptMap.request = {
@@ -38,7 +40,7 @@ module.exports = function() {
             id: 1
         };
     }
-    const ConceptMapHistorySchema = new mongoose.Schema(ConceptMap, schemaConfig);
+    const ConceptMapHistorySchema = new schemaConstructor(ConceptMap, schemaConfig);
     ConceptMapHistorySchema.methods.getFHIRField = function() {
         let result = this.toObject();
         delete result._id;
@@ -56,6 +58,6 @@ module.exports = function() {
         return serializeResourceTemporals(result);
     };
 
-    const ConceptMapHistoryModel = mongoose.model("ConceptMap_history", ConceptMapHistorySchema, "ConceptMap_history");
+    const ConceptMapHistoryModel = modelConnection.model("ConceptMap_history", ConceptMapHistorySchema, "ConceptMap_history");
     return ConceptMapHistoryModel;
 };

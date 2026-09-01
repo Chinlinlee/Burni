@@ -4,7 +4,9 @@ const _ = require('lodash');
 const {
     serializeResourceTemporals
 } = require("../../FHIR/temporal");
-module.exports = function() {
+module.exports = function(connection = mongoose) {
+    const modelConnection = connection;
+    const schemaConstructor = modelConnection.base?.Schema || mongoose.Schema;
     let DeviceUseStatement = require('./DeviceUseStatement').schema;
     DeviceUseStatement.id.unique = false;
     DeviceUseStatement.request = {
@@ -38,7 +40,7 @@ module.exports = function() {
             id: 1
         };
     }
-    const DeviceUseStatementHistorySchema = new mongoose.Schema(DeviceUseStatement, schemaConfig);
+    const DeviceUseStatementHistorySchema = new schemaConstructor(DeviceUseStatement, schemaConfig);
     DeviceUseStatementHistorySchema.methods.getFHIRField = function() {
         let result = this.toObject();
         delete result._id;
@@ -56,6 +58,6 @@ module.exports = function() {
         return serializeResourceTemporals(result);
     };
 
-    const DeviceUseStatementHistoryModel = mongoose.model("DeviceUseStatement_history", DeviceUseStatementHistorySchema, "DeviceUseStatement_history");
+    const DeviceUseStatementHistoryModel = modelConnection.model("DeviceUseStatement_history", DeviceUseStatementHistorySchema, "DeviceUseStatement_history");
     return DeviceUseStatementHistoryModel;
 };

@@ -14,7 +14,8 @@ const { canonicalInstantFromUtcDate } = require("../../FHIR/temporal");
  * @returns
  */
 module.exports = function (mongodb) {
-    let basicInfo = new mongodb.Schema(
+    const schemaConstructor = mongodb.Schema || mongodb.base.Schema;
+    let basicInfo = new schemaConstructor(
         {
             resourceType: {
                 type: String,
@@ -33,7 +34,7 @@ module.exports = function (mongodb) {
         }
     );
 
-    let resourceRefBy = new mongodb.Schema(
+    let resourceRefBy = new schemaConstructor(
         {},
         {
             versionKey: false
@@ -48,7 +49,7 @@ module.exports = function (mongodb) {
         }
     });
     resourceRefBy.add(
-        new mongodb.Schema(
+        new schemaConstructor(
             {
                 refBy: {
                     type: [basicInfo],

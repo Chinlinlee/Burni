@@ -4,7 +4,9 @@ const _ = require('lodash');
 const {
     serializeResourceTemporals
 } = require("../../FHIR/temporal");
-module.exports = function() {
+module.exports = function(connection = mongoose) {
+    const modelConnection = connection;
+    const schemaConstructor = modelConnection.base?.Schema || mongoose.Schema;
     let AppointmentResponse = require('./AppointmentResponse').schema;
     AppointmentResponse.id.unique = false;
     AppointmentResponse.request = {
@@ -38,7 +40,7 @@ module.exports = function() {
             id: 1
         };
     }
-    const AppointmentResponseHistorySchema = new mongoose.Schema(AppointmentResponse, schemaConfig);
+    const AppointmentResponseHistorySchema = new schemaConstructor(AppointmentResponse, schemaConfig);
     AppointmentResponseHistorySchema.methods.getFHIRField = function() {
         let result = this.toObject();
         delete result._id;
@@ -56,6 +58,6 @@ module.exports = function() {
         return serializeResourceTemporals(result);
     };
 
-    const AppointmentResponseHistoryModel = mongoose.model("AppointmentResponse_history", AppointmentResponseHistorySchema, "AppointmentResponse_history");
+    const AppointmentResponseHistoryModel = modelConnection.model("AppointmentResponse_history", AppointmentResponseHistorySchema, "AppointmentResponse_history");
     return AppointmentResponseHistoryModel;
 };

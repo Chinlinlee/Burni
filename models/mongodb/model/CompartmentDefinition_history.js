@@ -4,7 +4,9 @@ const _ = require('lodash');
 const {
     serializeResourceTemporals
 } = require("../../FHIR/temporal");
-module.exports = function() {
+module.exports = function(connection = mongoose) {
+    const modelConnection = connection;
+    const schemaConstructor = modelConnection.base?.Schema || mongoose.Schema;
     let CompartmentDefinition = require('./CompartmentDefinition').schema;
     CompartmentDefinition.id.unique = false;
     CompartmentDefinition.request = {
@@ -38,7 +40,7 @@ module.exports = function() {
             id: 1
         };
     }
-    const CompartmentDefinitionHistorySchema = new mongoose.Schema(CompartmentDefinition, schemaConfig);
+    const CompartmentDefinitionHistorySchema = new schemaConstructor(CompartmentDefinition, schemaConfig);
     CompartmentDefinitionHistorySchema.methods.getFHIRField = function() {
         let result = this.toObject();
         delete result._id;
@@ -56,6 +58,6 @@ module.exports = function() {
         return serializeResourceTemporals(result);
     };
 
-    const CompartmentDefinitionHistoryModel = mongoose.model("CompartmentDefinition_history", CompartmentDefinitionHistorySchema, "CompartmentDefinition_history");
+    const CompartmentDefinitionHistoryModel = modelConnection.model("CompartmentDefinition_history", CompartmentDefinitionHistorySchema, "CompartmentDefinition_history");
     return CompartmentDefinitionHistoryModel;
 };

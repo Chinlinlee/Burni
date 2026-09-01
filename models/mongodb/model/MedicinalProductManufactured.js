@@ -35,7 +35,8 @@ const {
     canonicalInstantFromUtcDate,
     serializeResourceTemporals
 } = require("../../FHIR/temporal");
-module.exports = function() {
+module.exports = function(connection = mongoose) {
+    const modelConnection = connection;
     const MedicinalProductManufactured = {
         meta: {
             type: Meta,
@@ -134,9 +135,9 @@ module.exports = function() {
     };
 
     MedicinalProductManufacturedSchema.pre('save', async function(next) {
-        let mongodb = require('../index');
+        const mongodb = modelConnection;
         if (process.env.ENABLE_CHECK_ALL_RESOURCE_ID == "true") {
-            let storedID = await mongodb.FHIRStoredID.findOne({
+            let storedID = await mongodb.model("FHIRStoredID").findOne({
                 id: this.id
             });
             if (storedID.resourceType != "MedicinalProductManufactured") {
@@ -145,7 +146,7 @@ module.exports = function() {
             }
         }
 
-        const docInHistory = await mongodb.MedicinalProductManufactured_history.findOne({
+        const docInHistory = await mongodb.model("MedicinalProductManufactured_history").findOne({
                 id: this.id
             })
             .sort({
@@ -168,7 +169,7 @@ module.exports = function() {
     });
 
     MedicinalProductManufacturedSchema.post('save', async function(result) {
-        let mongodb = require('../index');
+        const mongodb = modelConnection;
         let item = result.toObject();
         delete item._id;
         let version = item.meta.versionId;
@@ -181,7 +182,7 @@ module.exports = function() {
             _.set(item, "response", {
                 status: "201"
             });
-            let createdDocs = await mongodb['MedicinalProductManufactured_history'].create(item);
+            let createdDocs = await mongodb.model("MedicinalProductManufactured_history").create(item);
         } else {
             _.set(item, "request", {
                 "method": "PUT",
@@ -190,9 +191,9 @@ module.exports = function() {
             _.set(item, "response", {
                 status: "200"
             });
-            let createdDocs = await mongodb['MedicinalProductManufactured_history'].create(item);
+            let createdDocs = await mongodb.model("MedicinalProductManufactured_history").create(item);
         }
-        await mongodb.FHIRStoredID.findOneAndUpdate({
+        await mongodb.model("FHIRStoredID").findOneAndUpdate({
             id: result.id
         }, {
             id: result.id,
@@ -201,7 +202,7 @@ module.exports = function() {
             upsert: true
         });
 
-        await storeResourceRefBy(item);
+        await storeResourceRefBy(item, modelConnection);
     });
 
     MedicinalProductManufacturedSchema.pre('findOneAndUpdate', async function(next) {
@@ -219,7 +220,6 @@ module.exports = function() {
     });
 
     MedicinalProductManufacturedSchema.post('findOneAndUpdate', async function(result) {
-        let mongodb = require('../index');
         let item;
         if (result.value) {
             item = _.cloneDeep(result.value).toObject();
@@ -239,12 +239,12 @@ module.exports = function() {
         });
 
         try {
-            let history = await mongodb['MedicinalProductManufactured_history'].create(item);
+            let history = await modelConnection.model("MedicinalProductManufactured_history").create(item);
         } catch (e) {
             console.error(e);
         }
 
-        await storeResourceRefBy(item);
+        await storeResourceRefBy(item, modelConnection);
 
         return result;
     });
@@ -254,11 +254,10 @@ module.exports = function() {
         if (!docToDelete) {
             next(`The id->${this.getFilter().id} not found in MedicinalProductManufactured resource`);
         }
-        let mongodb = require('../index');
         let item = docToDelete.toObject();
         delete item._id;
 
-        if (process.env.ENABLE_CHECK_REF_DELETION === "true" && await checkResourceHaveReferenceByOthers(item)) {
+        if (process.env.ENABLE_CHECK_REF_DELETION === "true" && await checkResourceHaveReferenceByOthers(item, modelConnection)) {
             next(`The ${item.resourceType}:id->${item.id} is referenced by multiple resource, please do not delete resource that have association`);
         }
 
@@ -273,15 +272,15 @@ module.exports = function() {
         _.set(item, "response", {
             status: "200"
         });
-        let createdDocs = await mongodb['MedicinalProductManufactured_history'].create(item);
+        let createdDocs = await modelConnection.model("MedicinalProductManufactured_history").create(item);
         next();
     });
 
     MedicinalProductManufacturedSchema.post('findOneAndDelete', async function(resource) {
-        await updateRefBy(resource);
-        await deleteEmptyRefBy();
+        await updateRefBy(resource, modelConnection);
+        await deleteEmptyRefBy(modelConnection);
     });
 
-    const MedicinalProductManufacturedModel = mongoose.model("MedicinalProductManufactured", MedicinalProductManufacturedSchema, "MedicinalProductManufactured");
+    const MedicinalProductManufacturedModel = modelConnection.model("MedicinalProductManufactured", MedicinalProductManufacturedSchema, "MedicinalProductManufactured");
     return MedicinalProductManufacturedModel;
 };

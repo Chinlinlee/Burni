@@ -4,7 +4,9 @@ const _ = require('lodash');
 const {
     serializeResourceTemporals
 } = require("../../FHIR/temporal");
-module.exports = function() {
+module.exports = function(connection = mongoose) {
+    const modelConnection = connection;
+    const schemaConstructor = modelConnection.base?.Schema || mongoose.Schema;
     let AllergyIntolerance = require('./AllergyIntolerance').schema;
     AllergyIntolerance.id.unique = false;
     AllergyIntolerance.request = {
@@ -38,7 +40,7 @@ module.exports = function() {
             id: 1
         };
     }
-    const AllergyIntoleranceHistorySchema = new mongoose.Schema(AllergyIntolerance, schemaConfig);
+    const AllergyIntoleranceHistorySchema = new schemaConstructor(AllergyIntolerance, schemaConfig);
     AllergyIntoleranceHistorySchema.methods.getFHIRField = function() {
         let result = this.toObject();
         delete result._id;
@@ -56,6 +58,6 @@ module.exports = function() {
         return serializeResourceTemporals(result);
     };
 
-    const AllergyIntoleranceHistoryModel = mongoose.model("AllergyIntolerance_history", AllergyIntoleranceHistorySchema, "AllergyIntolerance_history");
+    const AllergyIntoleranceHistoryModel = modelConnection.model("AllergyIntolerance_history", AllergyIntoleranceHistorySchema, "AllergyIntolerance_history");
     return AllergyIntoleranceHistoryModel;
 };

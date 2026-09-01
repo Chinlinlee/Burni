@@ -5,6 +5,7 @@ const { execFileSync } = require("child_process");
 const fs = require("fs");
 const path = require("path");
 const { expect } = require("chai");
+const { loadResourceCatalog } = require("../support/fhir/resource-catalog");
 
 const REPO_ROOT = path.join(__dirname, "../..");
 const GENERATOR_SOURCE_DIR = "FHIR-mongoose-Models-Generator";
@@ -12,6 +13,7 @@ const GENERATED_SCHEMA_DIR = path.join(
     REPO_ROOT,
     "models/mongodb/FHIRDataTypesSchema"
 );
+const GENERATED_MODEL_DIR = path.join(REPO_ROOT, "models/mongodb/model");
 const GENERATOR_SCRIPT = path.join(
     REPO_ROOT,
     "scripts/run-fhir-schema-generators.js"
@@ -98,6 +100,64 @@ describe("FHIR schema generator idempotency CI gate", function () {
             changedFiles,
             `non-idempotent schema files: ${changedFiles.join(", ")}`
         ).to.deep.equal([]);
+    });
+
+    it("produces identical resource and history models on consecutive runs", function () {
+        runGenerator();
+
+        const modelFiles = listJsFiles(GENERATED_MODEL_DIR);
+        expect(modelFiles.length).to.be.greaterThan(0);
+        const catalog = loadResourceCatalog();
+        const generatedModelNames = modelFiles.map((filePath) =>
+            path.basename(filePath)
+        );
+        const generatedResourceNames = generatedModelNames
+            .filter((name) => !name.endsWith("_history.js"))
+            .sort();
+        const generatedHistoryNames = generatedModelNames
+            .filter((name) => name.endsWith("_history.js"))
+            .sort();
+
+        expect(generatedResourceNames).to.deep.equal(
+            catalog.map((resourceType) => `${resourceType}.js`).sort()
+        );
+        expect(generatedHistoryNames).to.deep.equal(
+            catalog.map((resourceType) => `${resourceType}_history.js`).sort()
+        );
+
+        const hashesAfterFirstRun = hashJsFiles(modelFiles);
+
+        runGenerator();
+
+        const hashesAfterSecondRun = hashJsFiles(modelFiles);
+        const changedFiles = [];
+        for (const [relativePath, firstHash] of hashesAfterFirstRun) {
+            if (hashesAfterSecondRun.get(relativePath) !== firstHash) {
+                changedFiles.push(relativePath);
+            }
+        }
+
+        expect(
+            changedFiles,
+            `non-idempotent resource/history models: ${changedFiles.join(", ")}`
+        ).to.deep.equal([]);
+    });
+
+    it("emits connection-aware resource/history factories", function () {
+        const modelFiles = listJsFiles(GENERATED_MODEL_DIR);
+
+        for (const modelFile of modelFiles) {
+            const source = fs.readFileSync(modelFile, "utf8");
+            expect(source, path.relative(REPO_ROOT, modelFile)).to.not.include(
+                "require('../index')"
+            );
+            expect(source, path.relative(REPO_ROOT, modelFile)).to.not.include(
+                "mongoose.model("
+            );
+            expect(source, path.relative(REPO_ROOT, modelFile)).to.include(
+                "function(connection = mongoose)"
+            );
+        }
     });
 
     it("spot-checks temporal canonical validators in generated schemas", function () {

@@ -4,7 +4,9 @@ const _ = require('lodash');
 const {
     serializeResourceTemporals
 } = require("../../FHIR/temporal");
-module.exports = function() {
+module.exports = function(connection = mongoose) {
+    const modelConnection = connection;
+    const schemaConstructor = modelConnection.base?.Schema || mongoose.Schema;
     let NamingSystem = require('./NamingSystem').schema;
     NamingSystem.id.unique = false;
     NamingSystem.request = {
@@ -38,7 +40,7 @@ module.exports = function() {
             id: 1
         };
     }
-    const NamingSystemHistorySchema = new mongoose.Schema(NamingSystem, schemaConfig);
+    const NamingSystemHistorySchema = new schemaConstructor(NamingSystem, schemaConfig);
     NamingSystemHistorySchema.methods.getFHIRField = function() {
         let result = this.toObject();
         delete result._id;
@@ -56,6 +58,6 @@ module.exports = function() {
         return serializeResourceTemporals(result);
     };
 
-    const NamingSystemHistoryModel = mongoose.model("NamingSystem_history", NamingSystemHistorySchema, "NamingSystem_history");
+    const NamingSystemHistoryModel = modelConnection.model("NamingSystem_history", NamingSystemHistorySchema, "NamingSystem_history");
     return NamingSystemHistoryModel;
 };

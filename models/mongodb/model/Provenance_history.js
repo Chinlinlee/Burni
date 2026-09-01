@@ -4,7 +4,9 @@ const _ = require('lodash');
 const {
     serializeResourceTemporals
 } = require("../../FHIR/temporal");
-module.exports = function() {
+module.exports = function(connection = mongoose) {
+    const modelConnection = connection;
+    const schemaConstructor = modelConnection.base?.Schema || mongoose.Schema;
     let Provenance = require('./Provenance').schema;
     Provenance.id.unique = false;
     Provenance.request = {
@@ -38,7 +40,7 @@ module.exports = function() {
             id: 1
         };
     }
-    const ProvenanceHistorySchema = new mongoose.Schema(Provenance, schemaConfig);
+    const ProvenanceHistorySchema = new schemaConstructor(Provenance, schemaConfig);
     ProvenanceHistorySchema.methods.getFHIRField = function() {
         let result = this.toObject();
         delete result._id;
@@ -56,6 +58,6 @@ module.exports = function() {
         return serializeResourceTemporals(result);
     };
 
-    const ProvenanceHistoryModel = mongoose.model("Provenance_history", ProvenanceHistorySchema, "Provenance_history");
+    const ProvenanceHistoryModel = modelConnection.model("Provenance_history", ProvenanceHistorySchema, "Provenance_history");
     return ProvenanceHistoryModel;
 };

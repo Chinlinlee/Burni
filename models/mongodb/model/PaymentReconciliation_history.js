@@ -4,7 +4,9 @@ const _ = require('lodash');
 const {
     serializeResourceTemporals
 } = require("../../FHIR/temporal");
-module.exports = function() {
+module.exports = function(connection = mongoose) {
+    const modelConnection = connection;
+    const schemaConstructor = modelConnection.base?.Schema || mongoose.Schema;
     let PaymentReconciliation = require('./PaymentReconciliation').schema;
     PaymentReconciliation.id.unique = false;
     PaymentReconciliation.request = {
@@ -38,7 +40,7 @@ module.exports = function() {
             id: 1
         };
     }
-    const PaymentReconciliationHistorySchema = new mongoose.Schema(PaymentReconciliation, schemaConfig);
+    const PaymentReconciliationHistorySchema = new schemaConstructor(PaymentReconciliation, schemaConfig);
     PaymentReconciliationHistorySchema.methods.getFHIRField = function() {
         let result = this.toObject();
         delete result._id;
@@ -56,6 +58,6 @@ module.exports = function() {
         return serializeResourceTemporals(result);
     };
 
-    const PaymentReconciliationHistoryModel = mongoose.model("PaymentReconciliation_history", PaymentReconciliationHistorySchema, "PaymentReconciliation_history");
+    const PaymentReconciliationHistoryModel = modelConnection.model("PaymentReconciliation_history", PaymentReconciliationHistorySchema, "PaymentReconciliation_history");
     return PaymentReconciliationHistoryModel;
 };

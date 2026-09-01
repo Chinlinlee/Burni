@@ -4,7 +4,9 @@ const _ = require('lodash');
 const {
     serializeResourceTemporals
 } = require("../../FHIR/temporal");
-module.exports = function() {
+module.exports = function(connection = mongoose) {
+    const modelConnection = connection;
+    const schemaConstructor = modelConnection.base?.Schema || mongoose.Schema;
     let ExampleScenario = require('./ExampleScenario').schema;
     ExampleScenario.id.unique = false;
     ExampleScenario.request = {
@@ -38,7 +40,7 @@ module.exports = function() {
             id: 1
         };
     }
-    const ExampleScenarioHistorySchema = new mongoose.Schema(ExampleScenario, schemaConfig);
+    const ExampleScenarioHistorySchema = new schemaConstructor(ExampleScenario, schemaConfig);
     ExampleScenarioHistorySchema.methods.getFHIRField = function() {
         let result = this.toObject();
         delete result._id;
@@ -56,6 +58,6 @@ module.exports = function() {
         return serializeResourceTemporals(result);
     };
 
-    const ExampleScenarioHistoryModel = mongoose.model("ExampleScenario_history", ExampleScenarioHistorySchema, "ExampleScenario_history");
+    const ExampleScenarioHistoryModel = modelConnection.model("ExampleScenario_history", ExampleScenarioHistorySchema, "ExampleScenario_history");
     return ExampleScenarioHistoryModel;
 };

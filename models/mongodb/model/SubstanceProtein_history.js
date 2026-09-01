@@ -4,7 +4,9 @@ const _ = require('lodash');
 const {
     serializeResourceTemporals
 } = require("../../FHIR/temporal");
-module.exports = function() {
+module.exports = function(connection = mongoose) {
+    const modelConnection = connection;
+    const schemaConstructor = modelConnection.base?.Schema || mongoose.Schema;
     let SubstanceProtein = require('./SubstanceProtein').schema;
     SubstanceProtein.id.unique = false;
     SubstanceProtein.request = {
@@ -38,7 +40,7 @@ module.exports = function() {
             id: 1
         };
     }
-    const SubstanceProteinHistorySchema = new mongoose.Schema(SubstanceProtein, schemaConfig);
+    const SubstanceProteinHistorySchema = new schemaConstructor(SubstanceProtein, schemaConfig);
     SubstanceProteinHistorySchema.methods.getFHIRField = function() {
         let result = this.toObject();
         delete result._id;
@@ -56,6 +58,6 @@ module.exports = function() {
         return serializeResourceTemporals(result);
     };
 
-    const SubstanceProteinHistoryModel = mongoose.model("SubstanceProtein_history", SubstanceProteinHistorySchema, "SubstanceProtein_history");
+    const SubstanceProteinHistoryModel = modelConnection.model("SubstanceProtein_history", SubstanceProteinHistorySchema, "SubstanceProtein_history");
     return SubstanceProteinHistoryModel;
 };

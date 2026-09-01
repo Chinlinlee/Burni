@@ -4,7 +4,9 @@ const _ = require('lodash');
 const {
     serializeResourceTemporals
 } = require("../../FHIR/temporal");
-module.exports = function() {
+module.exports = function(connection = mongoose) {
+    const modelConnection = connection;
+    const schemaConstructor = modelConnection.base?.Schema || mongoose.Schema;
     let MedicinalProductPharmaceutical = require('./MedicinalProductPharmaceutical').schema;
     MedicinalProductPharmaceutical.id.unique = false;
     MedicinalProductPharmaceutical.request = {
@@ -38,7 +40,7 @@ module.exports = function() {
             id: 1
         };
     }
-    const MedicinalProductPharmaceuticalHistorySchema = new mongoose.Schema(MedicinalProductPharmaceutical, schemaConfig);
+    const MedicinalProductPharmaceuticalHistorySchema = new schemaConstructor(MedicinalProductPharmaceutical, schemaConfig);
     MedicinalProductPharmaceuticalHistorySchema.methods.getFHIRField = function() {
         let result = this.toObject();
         delete result._id;
@@ -56,6 +58,6 @@ module.exports = function() {
         return serializeResourceTemporals(result);
     };
 
-    const MedicinalProductPharmaceuticalHistoryModel = mongoose.model("MedicinalProductPharmaceutical_history", MedicinalProductPharmaceuticalHistorySchema, "MedicinalProductPharmaceutical_history");
+    const MedicinalProductPharmaceuticalHistoryModel = modelConnection.model("MedicinalProductPharmaceutical_history", MedicinalProductPharmaceuticalHistorySchema, "MedicinalProductPharmaceutical_history");
     return MedicinalProductPharmaceuticalHistoryModel;
 };

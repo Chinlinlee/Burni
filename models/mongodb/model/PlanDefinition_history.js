@@ -4,7 +4,9 @@ const _ = require('lodash');
 const {
     serializeResourceTemporals
 } = require("../../FHIR/temporal");
-module.exports = function() {
+module.exports = function(connection = mongoose) {
+    const modelConnection = connection;
+    const schemaConstructor = modelConnection.base?.Schema || mongoose.Schema;
     let PlanDefinition = require('./PlanDefinition').schema;
     PlanDefinition.id.unique = false;
     PlanDefinition.request = {
@@ -38,7 +40,7 @@ module.exports = function() {
             id: 1
         };
     }
-    const PlanDefinitionHistorySchema = new mongoose.Schema(PlanDefinition, schemaConfig);
+    const PlanDefinitionHistorySchema = new schemaConstructor(PlanDefinition, schemaConfig);
     PlanDefinitionHistorySchema.methods.getFHIRField = function() {
         let result = this.toObject();
         delete result._id;
@@ -56,6 +58,6 @@ module.exports = function() {
         return serializeResourceTemporals(result);
     };
 
-    const PlanDefinitionHistoryModel = mongoose.model("PlanDefinition_history", PlanDefinitionHistorySchema, "PlanDefinition_history");
+    const PlanDefinitionHistoryModel = modelConnection.model("PlanDefinition_history", PlanDefinitionHistorySchema, "PlanDefinition_history");
     return PlanDefinitionHistoryModel;
 };

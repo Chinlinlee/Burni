@@ -4,7 +4,9 @@ const _ = require('lodash');
 const {
     serializeResourceTemporals
 } = require("../../FHIR/temporal");
-module.exports = function() {
+module.exports = function(connection = mongoose) {
+    const modelConnection = connection;
+    const schemaConstructor = modelConnection.base?.Schema || mongoose.Schema;
     let EnrollmentRequest = require('./EnrollmentRequest').schema;
     EnrollmentRequest.id.unique = false;
     EnrollmentRequest.request = {
@@ -38,7 +40,7 @@ module.exports = function() {
             id: 1
         };
     }
-    const EnrollmentRequestHistorySchema = new mongoose.Schema(EnrollmentRequest, schemaConfig);
+    const EnrollmentRequestHistorySchema = new schemaConstructor(EnrollmentRequest, schemaConfig);
     EnrollmentRequestHistorySchema.methods.getFHIRField = function() {
         let result = this.toObject();
         delete result._id;
@@ -56,6 +58,6 @@ module.exports = function() {
         return serializeResourceTemporals(result);
     };
 
-    const EnrollmentRequestHistoryModel = mongoose.model("EnrollmentRequest_history", EnrollmentRequestHistorySchema, "EnrollmentRequest_history");
+    const EnrollmentRequestHistoryModel = modelConnection.model("EnrollmentRequest_history", EnrollmentRequestHistorySchema, "EnrollmentRequest_history");
     return EnrollmentRequestHistoryModel;
 };

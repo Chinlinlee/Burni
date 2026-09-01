@@ -4,7 +4,9 @@ const _ = require('lodash');
 const {
     serializeResourceTemporals
 } = require("../../FHIR/temporal");
-module.exports = function() {
+module.exports = function(connection = mongoose) {
+    const modelConnection = connection;
+    const schemaConstructor = modelConnection.base?.Schema || mongoose.Schema;
     let AdverseEvent = require('./AdverseEvent').schema;
     AdverseEvent.id.unique = false;
     AdverseEvent.request = {
@@ -38,7 +40,7 @@ module.exports = function() {
             id: 1
         };
     }
-    const AdverseEventHistorySchema = new mongoose.Schema(AdverseEvent, schemaConfig);
+    const AdverseEventHistorySchema = new schemaConstructor(AdverseEvent, schemaConfig);
     AdverseEventHistorySchema.methods.getFHIRField = function() {
         let result = this.toObject();
         delete result._id;
@@ -56,6 +58,6 @@ module.exports = function() {
         return serializeResourceTemporals(result);
     };
 
-    const AdverseEventHistoryModel = mongoose.model("AdverseEvent_history", AdverseEventHistorySchema, "AdverseEvent_history");
+    const AdverseEventHistoryModel = modelConnection.model("AdverseEvent_history", AdverseEventHistorySchema, "AdverseEvent_history");
     return AdverseEventHistoryModel;
 };

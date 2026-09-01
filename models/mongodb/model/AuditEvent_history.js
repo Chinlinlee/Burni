@@ -4,7 +4,9 @@ const _ = require('lodash');
 const {
     serializeResourceTemporals
 } = require("../../FHIR/temporal");
-module.exports = function() {
+module.exports = function(connection = mongoose) {
+    const modelConnection = connection;
+    const schemaConstructor = modelConnection.base?.Schema || mongoose.Schema;
     let AuditEvent = require('./AuditEvent').schema;
     AuditEvent.id.unique = false;
     AuditEvent.request = {
@@ -38,7 +40,7 @@ module.exports = function() {
             id: 1
         };
     }
-    const AuditEventHistorySchema = new mongoose.Schema(AuditEvent, schemaConfig);
+    const AuditEventHistorySchema = new schemaConstructor(AuditEvent, schemaConfig);
     AuditEventHistorySchema.methods.getFHIRField = function() {
         let result = this.toObject();
         delete result._id;
@@ -56,6 +58,6 @@ module.exports = function() {
         return serializeResourceTemporals(result);
     };
 
-    const AuditEventHistoryModel = mongoose.model("AuditEvent_history", AuditEventHistorySchema, "AuditEvent_history");
+    const AuditEventHistoryModel = modelConnection.model("AuditEvent_history", AuditEventHistorySchema, "AuditEvent_history");
     return AuditEventHistoryModel;
 };

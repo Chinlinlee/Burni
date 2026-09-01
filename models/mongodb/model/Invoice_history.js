@@ -4,7 +4,9 @@ const _ = require('lodash');
 const {
     serializeResourceTemporals
 } = require("../../FHIR/temporal");
-module.exports = function() {
+module.exports = function(connection = mongoose) {
+    const modelConnection = connection;
+    const schemaConstructor = modelConnection.base?.Schema || mongoose.Schema;
     let Invoice = require('./Invoice').schema;
     Invoice.id.unique = false;
     Invoice.request = {
@@ -38,7 +40,7 @@ module.exports = function() {
             id: 1
         };
     }
-    const InvoiceHistorySchema = new mongoose.Schema(Invoice, schemaConfig);
+    const InvoiceHistorySchema = new schemaConstructor(Invoice, schemaConfig);
     InvoiceHistorySchema.methods.getFHIRField = function() {
         let result = this.toObject();
         delete result._id;
@@ -56,6 +58,6 @@ module.exports = function() {
         return serializeResourceTemporals(result);
     };
 
-    const InvoiceHistoryModel = mongoose.model("Invoice_history", InvoiceHistorySchema, "Invoice_history");
+    const InvoiceHistoryModel = modelConnection.model("Invoice_history", InvoiceHistorySchema, "Invoice_history");
     return InvoiceHistoryModel;
 };

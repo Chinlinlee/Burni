@@ -4,7 +4,9 @@ const _ = require('lodash');
 const {
     serializeResourceTemporals
 } = require("../../FHIR/temporal");
-module.exports = function() {
+module.exports = function(connection = mongoose) {
+    const modelConnection = connection;
+    const schemaConstructor = modelConnection.base?.Schema || mongoose.Schema;
     let CoverageEligibilityResponse = require('./CoverageEligibilityResponse').schema;
     CoverageEligibilityResponse.id.unique = false;
     CoverageEligibilityResponse.request = {
@@ -38,7 +40,7 @@ module.exports = function() {
             id: 1
         };
     }
-    const CoverageEligibilityResponseHistorySchema = new mongoose.Schema(CoverageEligibilityResponse, schemaConfig);
+    const CoverageEligibilityResponseHistorySchema = new schemaConstructor(CoverageEligibilityResponse, schemaConfig);
     CoverageEligibilityResponseHistorySchema.methods.getFHIRField = function() {
         let result = this.toObject();
         delete result._id;
@@ -56,6 +58,6 @@ module.exports = function() {
         return serializeResourceTemporals(result);
     };
 
-    const CoverageEligibilityResponseHistoryModel = mongoose.model("CoverageEligibilityResponse_history", CoverageEligibilityResponseHistorySchema, "CoverageEligibilityResponse_history");
+    const CoverageEligibilityResponseHistoryModel = modelConnection.model("CoverageEligibilityResponse_history", CoverageEligibilityResponseHistorySchema, "CoverageEligibilityResponse_history");
     return CoverageEligibilityResponseHistoryModel;
 };

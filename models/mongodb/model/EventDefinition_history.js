@@ -4,7 +4,9 @@ const _ = require('lodash');
 const {
     serializeResourceTemporals
 } = require("../../FHIR/temporal");
-module.exports = function() {
+module.exports = function(connection = mongoose) {
+    const modelConnection = connection;
+    const schemaConstructor = modelConnection.base?.Schema || mongoose.Schema;
     let EventDefinition = require('./EventDefinition').schema;
     EventDefinition.id.unique = false;
     EventDefinition.request = {
@@ -38,7 +40,7 @@ module.exports = function() {
             id: 1
         };
     }
-    const EventDefinitionHistorySchema = new mongoose.Schema(EventDefinition, schemaConfig);
+    const EventDefinitionHistorySchema = new schemaConstructor(EventDefinition, schemaConfig);
     EventDefinitionHistorySchema.methods.getFHIRField = function() {
         let result = this.toObject();
         delete result._id;
@@ -56,6 +58,6 @@ module.exports = function() {
         return serializeResourceTemporals(result);
     };
 
-    const EventDefinitionHistoryModel = mongoose.model("EventDefinition_history", EventDefinitionHistorySchema, "EventDefinition_history");
+    const EventDefinitionHistoryModel = modelConnection.model("EventDefinition_history", EventDefinitionHistorySchema, "EventDefinition_history");
     return EventDefinitionHistoryModel;
 };

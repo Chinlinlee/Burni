@@ -4,7 +4,9 @@ const _ = require('lodash');
 const {
     serializeResourceTemporals
 } = require("../../FHIR/temporal");
-module.exports = function() {
+module.exports = function(connection = mongoose) {
+    const modelConnection = connection;
+    const schemaConstructor = modelConnection.base?.Schema || mongoose.Schema;
     let MedicinalProductUndesirableEffect = require('./MedicinalProductUndesirableEffect').schema;
     MedicinalProductUndesirableEffect.id.unique = false;
     MedicinalProductUndesirableEffect.request = {
@@ -38,7 +40,7 @@ module.exports = function() {
             id: 1
         };
     }
-    const MedicinalProductUndesirableEffectHistorySchema = new mongoose.Schema(MedicinalProductUndesirableEffect, schemaConfig);
+    const MedicinalProductUndesirableEffectHistorySchema = new schemaConstructor(MedicinalProductUndesirableEffect, schemaConfig);
     MedicinalProductUndesirableEffectHistorySchema.methods.getFHIRField = function() {
         let result = this.toObject();
         delete result._id;
@@ -56,6 +58,6 @@ module.exports = function() {
         return serializeResourceTemporals(result);
     };
 
-    const MedicinalProductUndesirableEffectHistoryModel = mongoose.model("MedicinalProductUndesirableEffect_history", MedicinalProductUndesirableEffectHistorySchema, "MedicinalProductUndesirableEffect_history");
+    const MedicinalProductUndesirableEffectHistoryModel = modelConnection.model("MedicinalProductUndesirableEffect_history", MedicinalProductUndesirableEffectHistorySchema, "MedicinalProductUndesirableEffect_history");
     return MedicinalProductUndesirableEffectHistoryModel;
 };

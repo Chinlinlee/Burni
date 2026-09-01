@@ -1,5 +1,6 @@
 module.exports = function (mongodb) {
-    let FHIRStoredIDSchema = mongodb.Schema(
+    const schemaConstructor = mongodb.Schema || mongodb.base.Schema;
+    let FHIRStoredIDSchema = schemaConstructor(
         {
             id: {
                 type: String,

@@ -182,7 +182,8 @@ function generateResourceSchema(type) {
     }
 
     // let importLib = "const mongoose = require('mongoose');\r\nconst moment = require('moment');\r\nconst _ = require('lodash');\r\n";
-    let code = `module.exports = function () {
+    let code = `module.exports = function (connection = mongoose) {
+    const modelConnection = connection;
     const ${type} = ${JSON.stringify(result, null, 4)
         .replace(/\"/gm, "")
         .replace(/\\/gm, '"')};\r\n
@@ -221,9 +222,9 @@ function generateResourceSchema(type) {
     };
 
     ${type}Schema.pre('save', async function (next) {
-        let mongodb = require('../index');
+        const mongodb = modelConnection;
         if (process.env.ENABLE_CHECK_ALL_RESOURCE_ID == "true") {
-            let storedID = await mongodb.FHIRStoredID.findOne({
+            let storedID = await mongodb.model("FHIRStoredID").findOne({
                 id: this.id
             });
             if (storedID.resourceType != "${type}") {
@@ -232,7 +233,7 @@ function generateResourceSchema(type) {
             }
         }
 
-        const docInHistory = await mongodb.${type}_history.findOne({
+        const docInHistory = await mongodb.model("${type}_history").findOne({
             id: this.id
         })
         .sort({
@@ -253,7 +254,7 @@ function generateResourceSchema(type) {
     });
 
     ${type}Schema.post('save', async function (result) {
-        let mongodb = require('../index');
+        const mongodb = modelConnection;
         let item = result.toObject();
         delete item._id;
         let version = item.meta.versionId;
@@ -266,7 +267,7 @@ function generateResourceSchema(type) {
             _.set(item, "response", {
                 status: "201"
             });
-            let createdDocs = await mongodb['${type}_history'].create(item);
+            let createdDocs = await mongodb.model("${type}_history").create(item);
         } else {
             _.set(item, "request", {
                 "method": "PUT",
@@ -275,9 +276,9 @@ function generateResourceSchema(type) {
             _.set(item, "response", {
                 status: "200"
             });
-            let createdDocs = await mongodb['${type}_history'].create(item);
+            let createdDocs = await mongodb.model("${type}_history").create(item);
         }
-        await mongodb.FHIRStoredID.findOneAndUpdate({
+        await mongodb.model("FHIRStoredID").findOneAndUpdate({
             id : result.id
         } , {
             id: result.id,
@@ -286,7 +287,7 @@ function generateResourceSchema(type) {
             upsert : true
         });
 
-        await storeResourceRefBy(item);
+        await storeResourceRefBy(item, modelConnection);
     });
 
     ${type}Schema.pre('findOneAndUpdate' , async function (next) {
@@ -302,7 +303,6 @@ function generateResourceSchema(type) {
     });
 
     ${type}Schema.post('findOneAndUpdate' , async function (result) {
-        let mongodb = require('../index');
         let item;
         if (result.value) {
             item = _.cloneDeep(result.value).toObject();
@@ -322,12 +322,12 @@ function generateResourceSchema(type) {
         });
 
         try {
-            let history = await mongodb['${type}_history'].create(item);
+            let history = await modelConnection.model("${type}_history").create(item);
         } catch (e) {
             console.error(e);
         }
 
-        await storeResourceRefBy(item);
+        await storeResourceRefBy(item, modelConnection);
 
         return result;
     });
@@ -337,11 +337,10 @@ function generateResourceSchema(type) {
         if (!docToDelete) {
             next(\`The id->\${this.getFilter().id} not found in ${type} resource\`);
         }
-        let mongodb = require('../index');
         let item = docToDelete.toObject();
         delete item._id;
 
-        if (process.env.ENABLE_CHECK_REF_DELETION === "true" && await checkResourceHaveReferenceByOthers(item)) {
+        if (process.env.ENABLE_CHECK_REF_DELETION === "true" && await checkResourceHaveReferenceByOthers(item, modelConnection)) {
             next(\`The \${item.resourceType}:id->\${item.id} is referenced by multiple resource, please do not delete resource that have association\`);
         }
 
@@ -356,16 +355,16 @@ function generateResourceSchema(type) {
         _.set(item, "response", {
             status: "200"
         });
-        let createdDocs = await mongodb['${type}_history'].create(item);
+        let createdDocs = await modelConnection.model("${type}_history").create(item);
         next();
     });
 
     ${type}Schema.post('findOneAndDelete', async function (resource) {
-        await updateRefBy(resource);
-        await deleteEmptyRefBy();
+        await updateRefBy(resource, modelConnection);
+        await deleteEmptyRefBy(modelConnection);
     });
 
-    const ${type}Model = mongoose.model("${type}" , ${type}Schema , "${type}");
+    const ${type}Model = modelConnection.model("${type}" , ${type}Schema , "${type}");
     return ${type}Model;\r\n}`;
 
     let importLibs = getImportLibs(result);

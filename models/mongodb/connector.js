@@ -425,7 +425,7 @@ function initializeWithDiscovered(config, discovered) {
         disableAutomaticSchemaProvisioning();
         // Tests pass a short list so lifecycle cases do not register the full catalog.
         state.discovered = discovered ?? discoverModelFiles();
-        registerDiscoveredModels(state.discovered, state.modelMap);
+        registerDiscoveredModels(state.discovered, state.modelMap, mongoose);
         state.timings.modelRegistryEnd = performance.now();
         console.log(
             `[mongodb] model registry registered in ${elapsedMs(
@@ -472,7 +472,7 @@ function discoverModelFiles() {
     };
 }
 
-function registerModelFile(file, dirname, modelMap) {
+function registerModelFile(file, dirname, modelMap, connection = mongoose) {
     const moduleName = file.split(".")[0];
     if (Object.prototype.hasOwnProperty.call(modelMap, moduleName)) {
         throw new MongoDBModelCollisionError(
@@ -480,21 +480,24 @@ function registerModelFile(file, dirname, modelMap) {
             path.join(__dirname, dirname, file)
         );
     }
-    modelMap[moduleName] = require(
-        path.join(__dirname, dirname, moduleName)
-    )(mongoose);
+    const modelFactory = require(path.join(__dirname, dirname, moduleName));
+    modelMap[moduleName] = modelFactory(connection);
 }
 
-function registerModelGroup(files, dirname, modelMap) {
+function registerModelGroup(files, dirname, modelMap, connection = mongoose) {
     for (const file of files) {
-        registerModelFile(file, dirname, modelMap);
+        registerModelFile(file, dirname, modelMap, connection);
     }
 }
 
-function registerDiscoveredModels(discovered, modelMap) {
-    registerModelGroup(discovered.resourceModels, "/model", modelMap);
-    registerModelGroup(discovered.historyModels, "/model", modelMap);
-    registerModelGroup(discovered.staticModels, "/staticModel", modelMap);
+function registerDiscoveredModels(
+    discovered,
+    modelMap,
+    connection = mongoose
+) {
+    registerModelGroup(discovered.resourceModels, "/model", modelMap, connection);
+    registerModelGroup(discovered.historyModels, "/model", modelMap, connection);
+    registerModelGroup(discovered.staticModels, "/staticModel", modelMap, connection);
 }
 
 function getShardableModelNames(discovered) {

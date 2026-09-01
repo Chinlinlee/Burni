@@ -4,7 +4,9 @@ const _ = require('lodash');
 const {
     serializeResourceTemporals
 } = require("../../FHIR/temporal");
-module.exports = function() {
+module.exports = function(connection = mongoose) {
+    const modelConnection = connection;
+    const schemaConstructor = modelConnection.base?.Schema || mongoose.Schema;
     let TerminologyCapabilities = require('./TerminologyCapabilities').schema;
     TerminologyCapabilities.id.unique = false;
     TerminologyCapabilities.request = {
@@ -38,7 +40,7 @@ module.exports = function() {
             id: 1
         };
     }
-    const TerminologyCapabilitiesHistorySchema = new mongoose.Schema(TerminologyCapabilities, schemaConfig);
+    const TerminologyCapabilitiesHistorySchema = new schemaConstructor(TerminologyCapabilities, schemaConfig);
     TerminologyCapabilitiesHistorySchema.methods.getFHIRField = function() {
         let result = this.toObject();
         delete result._id;
@@ -56,6 +58,6 @@ module.exports = function() {
         return serializeResourceTemporals(result);
     };
 
-    const TerminologyCapabilitiesHistoryModel = mongoose.model("TerminologyCapabilities_history", TerminologyCapabilitiesHistorySchema, "TerminologyCapabilities_history");
+    const TerminologyCapabilitiesHistoryModel = modelConnection.model("TerminologyCapabilities_history", TerminologyCapabilitiesHistorySchema, "TerminologyCapabilities_history");
     return TerminologyCapabilitiesHistoryModel;
 };

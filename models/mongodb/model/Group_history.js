@@ -4,7 +4,9 @@ const _ = require('lodash');
 const {
     serializeResourceTemporals
 } = require("../../FHIR/temporal");
-module.exports = function() {
+module.exports = function(connection = mongoose) {
+    const modelConnection = connection;
+    const schemaConstructor = modelConnection.base?.Schema || mongoose.Schema;
     let Group = require('./Group').schema;
     Group.id.unique = false;
     Group.request = {
@@ -38,7 +40,7 @@ module.exports = function() {
             id: 1
         };
     }
-    const GroupHistorySchema = new mongoose.Schema(Group, schemaConfig);
+    const GroupHistorySchema = new schemaConstructor(Group, schemaConfig);
     GroupHistorySchema.methods.getFHIRField = function() {
         let result = this.toObject();
         delete result._id;
@@ -56,6 +58,6 @@ module.exports = function() {
         return serializeResourceTemporals(result);
     };
 
-    const GroupHistoryModel = mongoose.model("Group_history", GroupHistorySchema, "Group_history");
+    const GroupHistoryModel = modelConnection.model("Group_history", GroupHistorySchema, "Group_history");
     return GroupHistoryModel;
 };

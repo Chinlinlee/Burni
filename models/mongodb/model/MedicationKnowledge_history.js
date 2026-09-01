@@ -4,7 +4,9 @@ const _ = require('lodash');
 const {
     serializeResourceTemporals
 } = require("../../FHIR/temporal");
-module.exports = function() {
+module.exports = function(connection = mongoose) {
+    const modelConnection = connection;
+    const schemaConstructor = modelConnection.base?.Schema || mongoose.Schema;
     let MedicationKnowledge = require('./MedicationKnowledge').schema;
     MedicationKnowledge.id.unique = false;
     MedicationKnowledge.request = {
@@ -38,7 +40,7 @@ module.exports = function() {
             id: 1
         };
     }
-    const MedicationKnowledgeHistorySchema = new mongoose.Schema(MedicationKnowledge, schemaConfig);
+    const MedicationKnowledgeHistorySchema = new schemaConstructor(MedicationKnowledge, schemaConfig);
     MedicationKnowledgeHistorySchema.methods.getFHIRField = function() {
         let result = this.toObject();
         delete result._id;
@@ -56,6 +58,6 @@ module.exports = function() {
         return serializeResourceTemporals(result);
     };
 
-    const MedicationKnowledgeHistoryModel = mongoose.model("MedicationKnowledge_history", MedicationKnowledgeHistorySchema, "MedicationKnowledge_history");
+    const MedicationKnowledgeHistoryModel = modelConnection.model("MedicationKnowledge_history", MedicationKnowledgeHistorySchema, "MedicationKnowledge_history");
     return MedicationKnowledgeHistoryModel;
 };

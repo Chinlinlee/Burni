@@ -4,7 +4,9 @@ const _ = require('lodash');
 const {
     serializeResourceTemporals
 } = require("../../FHIR/temporal");
-module.exports = function() {
+module.exports = function(connection = mongoose) {
+    const modelConnection = connection;
+    const schemaConstructor = modelConnection.base?.Schema || mongoose.Schema;
     let MolecularSequence = require('./MolecularSequence').schema;
     MolecularSequence.id.unique = false;
     MolecularSequence.request = {
@@ -38,7 +40,7 @@ module.exports = function() {
             id: 1
         };
     }
-    const MolecularSequenceHistorySchema = new mongoose.Schema(MolecularSequence, schemaConfig);
+    const MolecularSequenceHistorySchema = new schemaConstructor(MolecularSequence, schemaConfig);
     MolecularSequenceHistorySchema.methods.getFHIRField = function() {
         let result = this.toObject();
         delete result._id;
@@ -56,6 +58,6 @@ module.exports = function() {
         return serializeResourceTemporals(result);
     };
 
-    const MolecularSequenceHistoryModel = mongoose.model("MolecularSequence_history", MolecularSequenceHistorySchema, "MolecularSequence_history");
+    const MolecularSequenceHistoryModel = modelConnection.model("MolecularSequence_history", MolecularSequenceHistorySchema, "MolecularSequence_history");
     return MolecularSequenceHistoryModel;
 };

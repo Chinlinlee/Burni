@@ -4,7 +4,9 @@ const _ = require('lodash');
 const {
     serializeResourceTemporals
 } = require("../../FHIR/temporal");
-module.exports = function() {
+module.exports = function(connection = mongoose) {
+    const modelConnection = connection;
+    const schemaConstructor = modelConnection.base?.Schema || mongoose.Schema;
     let ChargeItemDefinition = require('./ChargeItemDefinition').schema;
     ChargeItemDefinition.id.unique = false;
     ChargeItemDefinition.request = {
@@ -38,7 +40,7 @@ module.exports = function() {
             id: 1
         };
     }
-    const ChargeItemDefinitionHistorySchema = new mongoose.Schema(ChargeItemDefinition, schemaConfig);
+    const ChargeItemDefinitionHistorySchema = new schemaConstructor(ChargeItemDefinition, schemaConfig);
     ChargeItemDefinitionHistorySchema.methods.getFHIRField = function() {
         let result = this.toObject();
         delete result._id;
@@ -56,6 +58,6 @@ module.exports = function() {
         return serializeResourceTemporals(result);
     };
 
-    const ChargeItemDefinitionHistoryModel = mongoose.model("ChargeItemDefinition_history", ChargeItemDefinitionHistorySchema, "ChargeItemDefinition_history");
+    const ChargeItemDefinitionHistoryModel = modelConnection.model("ChargeItemDefinition_history", ChargeItemDefinitionHistorySchema, "ChargeItemDefinition_history");
     return ChargeItemDefinitionHistoryModel;
 };
