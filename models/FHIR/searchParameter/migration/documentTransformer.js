@@ -3,7 +3,10 @@ const {
     loadDefinitions,
     TEMPORAL_CATEGORIES
 } = require("./temporalPreflight");
-const { convertLegacyTemporalValue } = require("./temporalConversion");
+const {
+    convertLegacyTemporalValue,
+    CONVERSION_POLICY
+} = require("./temporalConversion");
 const {
     isCanonicalTemporalObject,
     toPlainCanonicalValue
@@ -31,16 +34,22 @@ class DocumentTransformError extends Error {
 /**
  * @param {unknown} originalValue
  * @param {string} category
+ * @param {"date" | "dateTime" | "instant"} temporalType
  * @returns {string}
  */
-function resolveConversionPolicy(originalValue, category) {
-    if (category === TEMPORAL_CATEGORIES.ABSOLUTE_BSON_DATE) {
-        return "absolute-bson-date";
+function resolveConversionPolicy(originalValue, category, temporalType) {
+    if (
+        originalValue instanceof Date ||
+        category === TEMPORAL_CATEGORIES.ABSOLUTE_BSON_DATE
+    ) {
+        if (temporalType === "date") {
+            return CONVERSION_POLICY.UTC_CALENDAR_DAY_LOSSY;
+        }
+        if (temporalType === "dateTime" || temporalType === "instant") {
+            return CONVERSION_POLICY.UTC_ABSOLUTE_TIME_LOSSY;
+        }
     }
-    if (originalValue instanceof Date) {
-        return "absolute-bson-date";
-    }
-    return "legacy-string";
+    return CONVERSION_POLICY.LEGACY_STRING;
 }
 
 /**
@@ -108,7 +117,7 @@ function createDocumentTransformer(config = {}) {
                             sourceDocumentId: sourceDoc._id ?? sourceDoc.id,
                             fhirPath: path,
                             temporalType: type,
-                            policy: resolveConversionPolicy(value, category),
+                            policy: resolveConversionPolicy(value, category, type),
                             originalValue: value,
                             generatedValue: converted
                         });

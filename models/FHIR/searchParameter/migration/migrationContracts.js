@@ -9,7 +9,7 @@ const {
     validateTransformedBatch
 } = require("./batchDocumentValidator");
 const { createCheckpointWriter: createCheckpointWriterImpl } = require("./checkpointWriter");
-const { createStubAuditWriter } = require("./auditWriter");
+const { createAuditWriter: createAuditWriterImpl } = require("./auditWriter");
 
 const MIGRATION_CONTRACT_INVALID_CONFIG = "MIGRATION_CONTRACT_INVALID_CONFIG";
 const MIGRATION_CONTRACT_INVALID_SHAPE = "MIGRATION_CONTRACT_INVALID_SHAPE";
@@ -466,7 +466,7 @@ function createAuditWriter(config) {
     requireObject(config, "config", "createAuditWriter");
     requireNonEmptyString(config.runId, "runId", "createAuditWriter");
     requireNonEmptyString(config.artifactPath, "artifactPath", "createAuditWriter");
-    return createStubAuditWriter(config);
+    return createAuditWriterImpl(config);
 }
 
 module.exports = {

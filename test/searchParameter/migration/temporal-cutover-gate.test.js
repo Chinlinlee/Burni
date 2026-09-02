@@ -46,7 +46,12 @@ function validOptions(overrides = {}) {
         preflightResult: {
             valid: true,
             diagnostics: [],
-            summary: { invalid: 0, ambiguousBsonDates: 0, unavailableSources: 0 }
+            summary: {
+                invalid: 0,
+                lossyBsonDates: 0,
+                unresolvedAmbiguousBsonDates: 0,
+                unavailableSources: 0
+            }
         },
         backupResult: { snapshotId: "snapshot-1", restorable: true },
         indexVerificationResult: { valid: true, diagnostics: [] },
@@ -73,7 +78,7 @@ describe("temporal cutover completion gate", function () {
                 preflightResult: {
                     valid: false,
                     diagnostics: [{ category: "invalid", path: "birthDate" }],
-                    summary: { invalid: 1, ambiguousBsonDates: 0 }
+                    summary: { invalid: 1, unresolvedAmbiguousBsonDates: 0 }
                 }
             })
         );
@@ -90,13 +95,35 @@ describe("temporal cutover completion gate", function () {
                     diagnostics: [
                         { category: "ambiguous-bson-date", path: "birthDate" }
                     ],
-                    summary: { invalid: 0, ambiguousBsonDates: 0 }
+                    summary: { invalid: 0, unresolvedAmbiguousBsonDates: 0 }
                 }
             })
         );
 
         expect(result.valid).to.equal(false);
         expect(result.summary.unresolvedAmbiguousDiagnostics).to.equal(1);
+    });
+
+    it("allows cutover when preflight reports lossy BSON dates without unresolved ambiguous values", async function () {
+        const result = await verifyTemporalCutover(
+            validOptions({
+                preflightResult: {
+                    valid: true,
+                    diagnostics: [],
+                    summary: {
+                        invalid: 0,
+                        unresolvedAmbiguousBsonDates: 0,
+                        lossyBsonDates: 5,
+                        unavailableSources: 0
+                    }
+                }
+            })
+        );
+
+        expect(result.valid).to.equal(true);
+        expect(result.summary.preflightValid).to.equal(true);
+        expect(result.summary.lossyBsonDates).to.equal(5);
+        expect(result.summary.unresolvedAmbiguousDiagnostics).to.equal(0);
     });
 
     it("fails when the backup is not restoreable", async function () {
@@ -177,7 +204,7 @@ describe("temporal cutover completion gate", function () {
                 return {
                     valid: true,
                     diagnostics: [],
-                    summary: { invalid: 0, ambiguousBsonDates: 0 }
+                    summary: { invalid: 0, unresolvedAmbiguousBsonDates: 0 }
                 };
             },
             backupResult: { snapshotId: "snapshot-1" },
@@ -211,7 +238,7 @@ describe("temporal cutover completion gate", function () {
                 preflight: async () => ({
                     valid: true,
                     diagnostics: [],
-                    summary: { invalid: 0, ambiguousBsonDates: 0 }
+                    summary: { invalid: 0, unresolvedAmbiguousBsonDates: 0 }
                 }),
                 backup: async () => ({
                     snapshotId: "snapshot-1",
@@ -248,7 +275,7 @@ describe("temporal cutover completion gate", function () {
                 preflight: async () => ({
                     valid: true,
                     diagnostics: [],
-                    summary: { invalid: 0, ambiguousBsonDates: 0 }
+                    summary: { invalid: 0, unresolvedAmbiguousBsonDates: 0 }
                 }),
                 backup: async () => ({
                     snapshotId: "snapshot-1",

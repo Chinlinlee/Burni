@@ -111,6 +111,12 @@ function classifyTemporalValue(value, type, resourceType, model, fieldPath) {
                 reason: "BSON Date contains an invalid time"
             };
         }
+        if (type === "date") {
+            return {
+                ...base,
+                category: TEMPORAL_CATEGORIES.ABSOLUTE_BSON_DATE
+            };
+        }
         const ambiguity = detectLegacyBsonDateAmbiguity(value, type, fieldPath, {
             resource: resourceType,
             model
@@ -125,10 +131,7 @@ function classifyTemporalValue(value, type, resourceType, model, fieldPath) {
         }
         return {
             ...base,
-            category:
-                type === "date"
-                    ? TEMPORAL_CATEGORIES.AMBIGUOUS_BSON_DATE
-                    : TEMPORAL_CATEGORIES.ABSOLUTE_BSON_DATE
+            category: TEMPORAL_CATEGORIES.ABSOLUTE_BSON_DATE
         };
     }
 
@@ -585,6 +588,14 @@ async function runTemporalMigrationPreflight({
     const temporalDiagnostics = diagnostics.filter((diagnostic) =>
         Object.values(TEMPORAL_CATEGORIES).includes(diagnostic.category)
     );
+    const lossyBsonDates = temporalDiagnostics.filter(
+        (diagnostic) =>
+            diagnostic.category === TEMPORAL_CATEGORIES.ABSOLUTE_BSON_DATE
+    ).length;
+    const unresolvedAmbiguousBsonDates = temporalDiagnostics.filter(
+        (diagnostic) =>
+            diagnostic.category === TEMPORAL_CATEGORIES.AMBIGUOUS_BSON_DATE
+    ).length;
     const summary = {
         resourcesInCatalog: catalog.length,
         sourcesScanned: sources.filter((source) => source.available).length,
@@ -597,14 +608,12 @@ async function runTemporalMigrationPreflight({
         legacyStrings: temporalDiagnostics.filter(
             (diagnostic) => diagnostic.category === TEMPORAL_CATEGORIES.LEGACY_STRING
         ).length,
-        absoluteBsonDates: temporalDiagnostics.filter(
-            (diagnostic) =>
-                diagnostic.category === TEMPORAL_CATEGORIES.ABSOLUTE_BSON_DATE
-        ).length,
-        ambiguousBsonDates: temporalDiagnostics.filter(
-            (diagnostic) =>
-                diagnostic.category === TEMPORAL_CATEGORIES.AMBIGUOUS_BSON_DATE
-        ).length,
+        lossyBsonDates,
+        unresolvedAmbiguousBsonDates,
+        /** @deprecated use lossyBsonDates */
+        absoluteBsonDates: lossyBsonDates,
+        /** @deprecated use unresolvedAmbiguousBsonDates */
+        ambiguousBsonDates: unresolvedAmbiguousBsonDates,
         invalid: temporalDiagnostics.filter(
             (diagnostic) => diagnostic.category === TEMPORAL_CATEGORIES.INVALID
         ).length
@@ -614,7 +623,7 @@ async function runTemporalMigrationPreflight({
         readOnly: true,
         valid:
             summary.invalid === 0 &&
-            summary.ambiguousBsonDates === 0 &&
+            summary.unresolvedAmbiguousBsonDates === 0 &&
             summary.unavailableSources === 0,
         diagnostics,
         sources,

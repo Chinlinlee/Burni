@@ -69,7 +69,7 @@ function patientDocument(overrides = {}) {
 }
 
 describe("temporal migration orchestration", function () {
-    it("blocks writes when preflight reports invalid or ambiguous values", async function () {
+    it("blocks writes when preflight reports invalid temporal values", async function () {
         const updateCalls = [];
         const model = fakeModel(
             [
@@ -92,13 +92,13 @@ describe("temporal migration orchestration", function () {
         } catch (error) {
             expect(error).to.be.instanceOf(TemporalMigrationPreflightError);
             expect(error.report.valid).to.equal(false);
+            expect(error.report.summary.lossyBsonDates).to.equal(1);
+            expect(error.report.summary.unresolvedAmbiguousBsonDates).to.equal(0);
             expect(
                 error.diagnostics.filter(
-                    (diagnostic) =>
-                        diagnostic.category === "ambiguous-bson-date" ||
-                        diagnostic.category === "invalid"
+                    (diagnostic) => diagnostic.category === "invalid"
                 )
-            ).to.have.length(2);
+            ).to.have.length(1);
             expect(error.diagnostics.every((diagnostic) => diagnostic.resource === "Patient")).to.equal(
                 true
             );

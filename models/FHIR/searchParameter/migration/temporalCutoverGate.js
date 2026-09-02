@@ -148,7 +148,9 @@ function validatePreflightCompletion(result) {
     const report = getPreflightReport(result);
     const summary = resultObject(report.summary);
     const invalid = Number(summary.invalid || 0);
-    const ambiguous = Number(summary.ambiguousBsonDates || 0);
+    const unresolvedAmbiguous = Number(
+        summary.unresolvedAmbiguousBsonDates ?? summary.ambiguousBsonDates ?? 0
+    );
     const unavailable = Math.max(
         Number(summary.unavailableSources || 0),
         Array.isArray(report.sources)
@@ -185,12 +187,16 @@ function validatePreflightCompletion(result) {
             )
         );
     }
-    if (invalid > 0 || ambiguous > 0 || unavailable > 0) {
+    if (invalid > 0 || unresolvedAmbiguous > 0 || unavailable > 0) {
         gateDiagnostics.push(
             diagnostic(
                 "temporal-preflight-unresolved-data",
                 "Temporal preflight contains unresolved invalid, ambiguous, or unavailable data",
-                { invalid, ambiguous, unavailable }
+                {
+                    invalid,
+                    unresolvedAmbiguousBsonDates: unresolvedAmbiguous,
+                    unavailable
+                }
             )
         );
     }
@@ -435,6 +441,16 @@ async function verifyTemporalCutover(options = {}) {
         summary: {
             migrationComplete: migration.valid,
             preflightValid: preflight.valid,
+            lossyBsonDates: Number(
+                preflight.summary?.lossyBsonDates ??
+                    preflight.summary?.absoluteBsonDates ??
+                    0
+            ),
+            unresolvedAmbiguousBsonDates: Number(
+                preflight.summary?.unresolvedAmbiguousBsonDates ??
+                    preflight.summary?.ambiguousBsonDates ??
+                    0
+            ),
             unresolvedInvalidDiagnostics: preflight.unresolvedDiagnostics.filter(
                 (entry) => entry.category === TEMPORAL_CATEGORIES.INVALID
             ).length,

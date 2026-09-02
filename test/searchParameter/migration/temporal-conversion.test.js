@@ -10,9 +10,11 @@ const {
 const {
     convertLegacyTemporalValue,
     convertLegacyBsonDate,
-    detectLegacyBsonDateAmbiguity
+    detectLegacyBsonDateAmbiguity,
+    UTC_CALENDAR_DAY_LOSSY_POLICY,
+    UTC_ABSOLUTE_TIME_LOSSY_POLICY,
+    resolveBsonDateConversionPolicy
 } = require("@models/FHIR/searchParameter/migration/temporalConversion");
-const { TEMPORAL_ERROR_CODE } = require("@models/FHIR/temporal");
 
 describe("temporal migration conversion", function () {
     describe("date", function () {
@@ -163,6 +165,20 @@ describe("temporal migration conversion", function () {
     });
 
     describe("legacy BSON Date", function () {
+        it("exports UTC lossy conversion policy constants", function () {
+            expect(UTC_CALENDAR_DAY_LOSSY_POLICY).to.equal("utc-calendar-day-lossy");
+            expect(UTC_ABSOLUTE_TIME_LOSSY_POLICY).to.equal("utc-absolute-time-lossy");
+            expect(resolveBsonDateConversionPolicy("date")).to.equal(
+                UTC_CALENDAR_DAY_LOSSY_POLICY
+            );
+            expect(resolveBsonDateConversionPolicy("dateTime")).to.equal(
+                UTC_ABSOLUTE_TIME_LOSSY_POLICY
+            );
+            expect(resolveBsonDateConversionPolicy("instant")).to.equal(
+                UTC_ABSOLUTE_TIME_LOSSY_POLICY
+            );
+        });
+
         it("converts an absolute dateTime to a UTC millisecond canonical value", function () {
             const legacyDate = new Date("2015-02-07T13:28:17.230+02:00");
             const result = convertLegacyBsonDate(
@@ -211,29 +227,38 @@ describe("temporal migration conversion", function () {
             }
         });
 
-        it("does not infer a calendar date from a BSON Date", function () {
+        it("converts a date BSON Date at midnight UTC to a day-precision canonical date", function () {
             const legacyDate = new Date("2020-01-15T00:00:00.000Z");
-            try {
-                convertLegacyBsonDate(legacyDate, "date", "Patient.birthDate", {
-                    resource: "Patient",
-                    model: "Patient"
-                });
-                expect.fail("expected conversion to fail");
-            } catch (error) {
-                expect(error).to.include({
-                    code: TEMPORAL_ERROR_CODE.AMBIGUOUS_LEGACY_BSON_DATE,
-                    category: "ambiguous-bson-date",
-                    temporalType: "date",
-                    resource: "Patient",
-                    model: "Patient",
-                    path: "Patient.birthDate",
-                    value: legacyDate
-                });
-                expect(error.message).to.include("2020-01-15T00:00:00.000Z");
-            }
+            const result = convertLegacyBsonDate(legacyDate, "date", "Patient.birthDate", {
+                resource: "Patient",
+                model: "Patient"
+            });
+
+            expect(result).to.deep.equal({
+                value: "2020-01-15",
+                precision: DATE_PRECISION.DAY,
+                normalizedStart: "2020-01-15",
+                normalizedEnd: "2020-01-16"
+            });
+            expect(convertLegacyTemporalValue(legacyDate, "date", "Patient.birthDate")).to.deep.equal(
+                result
+            );
         });
 
-        it("detects date BSON Date ambiguity without using a timezone policy", function () {
+        it("converts a date BSON Date with a time component using the UTC calendar day only", function () {
+            const legacyDate = new Date("2020-01-16T02:00:00+05:00");
+            const result = convertLegacyBsonDate(legacyDate, "date", "Patient.birthDate");
+
+            expect(result).to.deep.equal({
+                value: "2020-01-15",
+                precision: DATE_PRECISION.DAY,
+                normalizedStart: "2020-01-15",
+                normalizedEnd: "2020-01-16"
+            });
+            expect(legacyDate.toISOString()).to.equal("2020-01-15T21:00:00.000Z");
+        });
+
+        it("classifies date BSON Date as absolute lossy conversion, not ambiguous", function () {
             const legacyDate = new Date("2020-01-15T00:00:00.000Z");
             const result = detectLegacyBsonDateAmbiguity(
                 legacyDate,
@@ -243,15 +268,16 @@ describe("temporal migration conversion", function () {
             );
 
             expect(result).to.include({
-                ambiguous: true,
-                category: "ambiguous-bson-date",
-                code: TEMPORAL_ERROR_CODE.AMBIGUOUS_LEGACY_BSON_DATE,
+                ambiguous: false,
+                category: "absolute-bson-date",
+                policy: UTC_CALENDAR_DAY_LOSSY_POLICY,
                 temporalType: "date",
                 resource: "Patient",
                 model: "Patient",
                 path: "Patient.birthDate",
                 value: legacyDate
             });
+            expect(result).to.not.have.property("code");
         });
 
         it("does not classify absolute BSON Dates as ambiguous", function () {
@@ -262,7 +288,66 @@ describe("temporal migration conversion", function () {
 
                 expect(result.ambiguous).to.equal(false);
                 expect(result.category).to.equal("absolute-bson-date");
+                expect(result.policy).to.equal(UTC_ABSOLUTE_TIME_LOSSY_POLICY);
             }
+        });
+
+        it("classifies date BSON Date with UTC calendar day lossy policy", function () {
+            const legacyDate = new Date("2020-01-15T23:59:59+02:00");
+            const result = detectLegacyBsonDateAmbiguity(legacyDate, "date", "Patient.birthDate");
+
+            expect(result).to.include({
+                ambiguous: false,
+                category: "absolute-bson-date",
+                policy: UTC_CALENDAR_DAY_LOSSY_POLICY,
+                temporalType: "date",
+                path: "Patient.birthDate",
+                value: legacyDate
+            });
+        });
+    });
+
+    describe("idempotent conversion", function () {
+        it("returns deep-equal results when converting a legacy string twice", function () {
+            const first = convertLegacyTemporalValue("1995-06-15", "date", "Patient.birthDate");
+            const second = convertLegacyTemporalValue(first, "date", "Patient.birthDate");
+
+            expect(second).to.not.equal(first);
+            expect(second).to.deep.equal(first);
+        });
+
+        it("preserves the legacy string lexical value in canonical.value", function () {
+            const lexical = "2015-02-07T13:28:17.2300+02:00";
+            const canonical = convertLegacyTemporalValue(lexical, "dateTime", "Observation.effectiveDateTime");
+
+            expect(canonical.value).to.equal(lexical);
+            expect(convertLegacyTemporalValue(canonical, "dateTime", "Observation.effectiveDateTime").value).to.equal(
+                lexical
+            );
+        });
+
+        it("returns deep-equal results when converting a canonical object twice", function () {
+            const canonical = convertLegacyTemporalValue("1995-06", "date", "Patient.birthDate");
+            const converted = convertLegacyTemporalValue(canonical, "date", "Patient.birthDate");
+            const convertedAgain = convertLegacyTemporalValue(converted, "date", "Patient.birthDate");
+
+            expect(converted).to.deep.equal(canonical);
+            expect(convertedAgain).to.deep.equal(canonical);
+        });
+
+        it("preserves Decimal128 identity types on repeated canonical conversion", function () {
+            const canonical = convertLegacyBsonDate(
+                new Date("2020-01-15T00:00:00.001Z"),
+                "instant",
+                "Patient.meta.lastUpdated"
+            );
+            const converted = convertLegacyTemporalValue(canonical, "instant", "Patient.meta.lastUpdated");
+            const convertedAgain = convertLegacyTemporalValue(converted, "instant", "Patient.meta.lastUpdated");
+
+            expect(converted.epochSeconds).to.be.instanceOf(mongoose.Types.Decimal128);
+            expect(convertedAgain.epochSeconds).to.be.instanceOf(mongoose.Types.Decimal128);
+            expect(convertedAgain.epochSeconds.toString()).to.equal(canonical.epochSeconds.toString());
+            expect(convertedAgain).to.deep.equal(canonical);
         });
     });
 

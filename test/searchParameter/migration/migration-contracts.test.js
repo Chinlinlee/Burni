@@ -1,5 +1,8 @@
 require("module-alias/register");
 
+const fs = require("fs");
+const os = require("os");
+const path = require("path");
 const { expect } = require("chai");
 const mongoose = require("mongoose");
 const migrationContracts = require("@models/FHIR/searchParameter/migration/migrationContracts");
@@ -325,25 +328,32 @@ describe("migration contracts", function () {
             expect(checkpointWriter.listCompletedBatches).to.be.a("function");
         });
 
-        it("provides minimal audit writer no-op append and flush", async function () {
-            const auditWriter = createAuditWriter({
-                runId: "run-1",
-                artifactPath: "/tmp/audit.jsonl"
-            });
-            expect(auditWriter.getArtifactPath()).to.equal("/tmp/audit.jsonl");
-            await auditWriter.append([
-                {
-                    sourceDatabaseIdentity: "source-db",
-                    sourceCollection: "patients",
-                    sourceDocumentId: "doc-1",
-                    fhirPath: "birthDate",
-                    temporalType: "date",
-                    policy: "utc-calendar-day-lossy",
-                    originalValue: "2020-01",
-                    generatedValue: { value: "2020-01", precision: "month" }
-                }
-            ]);
-            await auditWriter.flush();
+        it("provides audit writer append and flush to artifact path", async function () {
+            const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "migration-contracts-audit-"));
+            const artifactPath = path.join(tempDir, "audit.jsonl");
+            try {
+                const auditWriter = createAuditWriter({
+                    runId: "run-1",
+                    artifactPath
+                });
+                expect(auditWriter.getArtifactPath()).to.equal(artifactPath);
+                await auditWriter.append([
+                    {
+                        sourceDatabaseIdentity: "source-db",
+                        sourceCollection: "patients",
+                        sourceDocumentId: "doc-1",
+                        fhirPath: "birthDate",
+                        temporalType: "date",
+                        policy: "utc-calendar-day-lossy",
+                        originalValue: "2020-01",
+                        generatedValue: { value: "2020-01", precision: "month" }
+                    }
+                ]);
+                await auditWriter.flush();
+                expect(fs.existsSync(artifactPath)).to.equal(true);
+            } finally {
+                fs.rmSync(tempDir, { recursive: true, force: true });
+            }
         });
 
         it("accepts a real mongoose connection for source and target factories", function () {

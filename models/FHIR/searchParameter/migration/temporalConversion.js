@@ -9,8 +9,43 @@ const {
 const TEMPORAL_TYPES = new Set(["date", "dateTime", "instant"]);
 const AMBIGUOUS_BSON_DATE_CATEGORY = "ambiguous-bson-date";
 const ABSOLUTE_BSON_DATE_CATEGORY = "absolute-bson-date";
+const CONVERSION_POLICY = Object.freeze({
+    LEGACY_STRING: "legacy-string",
+    UTC_CALENDAR_DAY_LOSSY: "utc-calendar-day-lossy",
+    UTC_ABSOLUTE_TIME_LOSSY: "utc-absolute-time-lossy"
+});
+const UTC_CALENDAR_DAY_LOSSY_POLICY = CONVERSION_POLICY.UTC_CALENDAR_DAY_LOSSY;
+const UTC_ABSOLUTE_TIME_LOSSY_POLICY = CONVERSION_POLICY.UTC_ABSOLUTE_TIME_LOSSY;
 const AMBIGUOUS_BSON_DATE_REASON =
     "Legacy BSON Date cannot be converted to FHIR date without guessing its calendar date, timezone, or precision";
+
+/**
+ * @param {Date} value
+ * @returns {string}
+ */
+function formatUtcCalendarDate(value) {
+    const year = value.getUTCFullYear();
+    const month = String(value.getUTCMonth() + 1).padStart(2, "0");
+    const day = String(value.getUTCDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+}
+
+/**
+ * @param {'date' | 'dateTime' | 'instant'} type
+ * @returns {string}
+ */
+function resolveBsonDateConversionPolicy(type) {
+    if (type === "date") {
+        return CONVERSION_POLICY.UTC_CALENDAR_DAY_LOSSY;
+    }
+    if (type === "dateTime" || type === "instant") {
+        return CONVERSION_POLICY.UTC_ABSOLUTE_TIME_LOSSY;
+    }
+    throw new TemporalValidationError(
+        TEMPORAL_ERROR_CODE.INVALID_TEMPORAL_VALUE,
+        `Unsupported temporal type: ${type}`
+    );
+}
 
 /**
  * @param {unknown} context
@@ -53,12 +88,9 @@ function detectLegacyBsonDateAmbiguity(value, type, path, context) {
         value
     };
 
-    if (!(value instanceof Date) || type !== "date") {
+    if (!(value instanceof Date)) {
         return {
             ambiguous: false,
-            ...(type !== "date" && value instanceof Date
-                ? { category: ABSOLUTE_BSON_DATE_CATEGORY }
-                : {}),
             ...metadata
         };
     }
@@ -72,11 +104,10 @@ function detectLegacyBsonDateAmbiguity(value, type, path, context) {
     }
 
     return {
-        ambiguous: true,
-        category: AMBIGUOUS_BSON_DATE_CATEGORY,
-        code: TEMPORAL_ERROR_CODE.AMBIGUOUS_LEGACY_BSON_DATE,
-        ...metadata,
-        reason: AMBIGUOUS_BSON_DATE_REASON
+        ambiguous: false,
+        category: ABSOLUTE_BSON_DATE_CATEGORY,
+        policy: resolveBsonDateConversionPolicy(type),
+        ...metadata
     };
 }
 
@@ -87,12 +118,11 @@ function detectLegacyBsonDateAmbiguity(value, type, path, context) {
  * @returns {TemporalValidationError}
  */
 function createLegacyBsonDateAmbiguityError(value, path, context) {
-    const metadata = detectLegacyBsonDateAmbiguity(value, "date", path, context);
     const pathText =
         path === undefined ? "<unknown path>" : Array.isArray(path) ? path.join(".") : path;
     const error = new TemporalValidationError(
         TEMPORAL_ERROR_CODE.AMBIGUOUS_LEGACY_BSON_DATE,
-        `${metadata.reason} at ${pathText}: ${value.toISOString()}`,
+        `${AMBIGUOUS_BSON_DATE_REASON} at ${pathText}: ${value.toISOString()}`,
         path
     );
     error.temporalType = "date";
@@ -150,16 +180,16 @@ function convertLegacyBsonDate(value, type, path, context) {
         );
     }
 
-    if (type === "date") {
-        throw createLegacyBsonDateAmbiguityError(value, path, context);
-    }
-
     if (Number.isNaN(value.getTime())) {
         throw new TemporalValidationError(
             TEMPORAL_ERROR_CODE.INVALID_TEMPORAL_VALUE,
             "Legacy BSON Date contains an invalid time",
             path
         );
+    }
+
+    if (type === "date") {
+        return normalizeTemporalSafe(formatUtcCalendarDate(value), type, path);
     }
 
     return normalizeTemporalSafe(value.toISOString(), type, path);
@@ -209,9 +239,15 @@ function convertLegacyTemporalString(value, type, path) {
 }
 
 module.exports = {
+    CONVERSION_POLICY,
+    UTC_CALENDAR_DAY_LOSSY_POLICY: CONVERSION_POLICY.UTC_CALENDAR_DAY_LOSSY,
+    UTC_ABSOLUTE_TIME_LOSSY_POLICY: CONVERSION_POLICY.UTC_ABSOLUTE_TIME_LOSSY,
+    ABSOLUTE_BSON_DATE_CATEGORY,
     detectLegacyBsonDateAmbiguity,
     createLegacyBsonDateAmbiguityError,
+    resolveBsonDateConversionPolicy,
     convertLegacyTemporalValue,
     convertLegacyTemporalString,
-    convertLegacyBsonDate
+    convertLegacyBsonDate,
+    formatUtcCalendarDate
 };

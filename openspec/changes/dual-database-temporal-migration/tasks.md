@@ -22,11 +22,11 @@
 
 ## 4. BSON Date policy and evidence
 
-- [ ] 4.1 將 `date` BSON Date 依 UTC calendar date 轉成 `day` precision canonical object。
-- [ ] 4.2 將 `dateTime` 與 `instant` BSON Date 依 UTC policy 轉成 canonical representation，並保留 lossy classification。
-- [ ] 4.3 區分 `lossyBsonDates`、`unresolvedAmbiguousBsonDates` 與 `invalid` diagnostics，更新 preflight 與 cutover gates。
-- [ ] 4.4 建立逐筆 audit JSON/JSONL，記錄 source identity、FHIR path、temporal type、policy、原始值與 generated value。
-- [ ] 4.5 確認 legacy string 與既有 canonical object 的 idempotent conversion 與 lexical round-trip behavior。
+- [x] 4.1 將 `date` BSON Date 依 UTC calendar date 轉成 `day` precision canonical object。
+- [x] 4.2 將 `dateTime` 與 `instant` BSON Date 依 UTC policy 轉成 canonical representation，並保留 lossy classification。
+- [x] 4.3 區分 `lossyBsonDates`、`unresolvedAmbiguousBsonDates` 與 `invalid` diagnostics，更新 preflight 與 cutover gates。
+- [x] 4.4 建立逐筆 audit JSON/JSONL，記錄 source identity、FHIR path、temporal type、policy、原始值與 generated value。
+- [x] 4.5 確認 legacy string 與既有 canonical object 的 idempotent conversion 與 lexical round-trip behavior。
 
 ## 5. Dual database operator entrypoint
 

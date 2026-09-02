@@ -80,8 +80,8 @@ describe("temporal migration preflight", function () {
             sourcesScanned: 2,
             documentsScanned: 2,
             legacyStrings: 5,
-            absoluteBsonDates: 2,
-            ambiguousBsonDates: 0,
+            lossyBsonDates: 2,
+            unresolvedAmbiguousBsonDates: 0,
             invalid: 0
         });
 
@@ -115,7 +115,7 @@ describe("temporal migration preflight", function () {
         });
     });
 
-    it("fails without writing for ambiguous dates and invalid temporal values", async function () {
+    it("fails without writing for invalid temporal values while allowing lossy BSON dates", async function () {
         const calls = { find: 0, lean: 0 };
         const readyStateBefore = mongoose.connection.readyState;
         const report = await runTemporalMigrationPreflight({
@@ -138,21 +138,21 @@ describe("temporal migration preflight", function () {
         expect(report.readOnly).to.equal(true);
         expect(report.valid).to.equal(false);
         expect(report.summary).to.include({
-            ambiguousBsonDates: 1,
+            lossyBsonDates: 1,
+            unresolvedAmbiguousBsonDates: 0,
             invalid: 1
         });
-        const ambiguousDate = report.diagnostics.find(
+        const lossyBirthDate = report.diagnostics.find(
             (diagnostic) => diagnostic.path === "birthDate"
         );
-        expect(ambiguousDate).to.include({
-            category: TEMPORAL_CATEGORIES.AMBIGUOUS_BSON_DATE,
+        expect(lossyBirthDate).to.include({
+            category: TEMPORAL_CATEGORIES.ABSOLUTE_BSON_DATE,
             temporalType: "date",
             resource: "Patient",
             model: "Patient",
             path: "birthDate"
         });
-        expect(ambiguousDate.value).to.be.instanceOf(Date);
-        expect(ambiguousDate.reason).to.match(/calendar date, timezone, or precision/);
+        expect(lossyBirthDate.value).to.be.instanceOf(Date);
         expect(
             report.diagnostics.find(
                 (diagnostic) => diagnostic.path === "deceasedDateTime"
@@ -164,6 +164,36 @@ describe("temporal migration preflight", function () {
         });
         expect(calls).to.deep.equal({ find: 1, lean: 1 });
         expect(mongoose.connection.readyState).to.equal(readyStateBefore);
+    });
+
+    it("reports lossyBsonDates count for BSON dates", async function () {
+        const report = await runTemporalMigrationPreflight({
+            catalog: ["Patient"],
+            includeHistory: false,
+            models: {
+                Patient: fakeModel(
+                    [
+                        {
+                            resourceType: "Patient",
+                            birthDate: new Date("2020-01-01T00:00:00.000Z"),
+                            deceasedDateTime: new Date("2021-06-15T12:00:00.000Z")
+                        }
+                    ],
+                    { find: 0, lean: 0 }
+                )
+            }
+        });
+
+        expect(report.valid).to.equal(true);
+        expect(report.summary).to.include({
+            lossyBsonDates: 2,
+            unresolvedAmbiguousBsonDates: 0,
+            invalid: 0
+        });
+        expect(report.summary.absoluteBsonDates).to.equal(report.summary.lossyBsonDates);
+        expect(report.summary.ambiguousBsonDates).to.equal(
+            report.summary.unresolvedAmbiguousBsonDates
+        );
     });
 
     it("fails and audits unavailable resource sources", async function () {

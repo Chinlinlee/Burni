@@ -263,4 +263,98 @@ describe("document transformer", function () {
             results[1].auditEntries.find((entry) => entry.fhirPath === "birthDate")?.originalValue
         ).to.equal("1996");
     });
+
+    it("converts date BSON Date to canonical day with utc-calendar-day-lossy audit", function () {
+        const legacyDate = new Date("2020-01-15T00:00:00.000Z");
+        const sourceDoc = {
+            _id: "patient-1",
+            id: "patient-1",
+            resourceType: "Patient",
+            birthDate: legacyDate
+        };
+        const { document, auditEntries } = transformer.transformDocument(
+            sourceDoc,
+            transformContext()
+        );
+
+        expect(document.birthDate).to.deep.include({
+            value: "2020-01-15",
+            precision: "day",
+            normalizedStart: "2020-01-15",
+            normalizedEnd: "2020-01-16"
+        });
+        expect(
+            auditEntries.some(
+                (entry) =>
+                    entry.fhirPath === "birthDate" &&
+                    entry.temporalType === "date" &&
+                    entry.policy === "utc-calendar-day-lossy" &&
+                    entry.originalValue === legacyDate
+            )
+        ).to.equal(true);
+        for (const entry of auditEntries) {
+            validateAuditRecord(entry);
+        }
+    });
+
+    it("converts dateTime BSON Date with utc-absolute-time-lossy audit policy", function () {
+        const legacyDate = new Date("2015-02-07T13:28:17.230+02:00");
+        const sourceDoc = {
+            _id: "patient-1",
+            id: "patient-1",
+            resourceType: "Patient",
+            deceasedDateTime: legacyDate
+        };
+        const { document, auditEntries } = transformer.transformDocument(
+            sourceDoc,
+            transformContext()
+        );
+
+        expect(document.deceasedDateTime).to.include({
+            value: "2015-02-07T11:28:17.230Z",
+            precision: "fraction",
+            fractionDigits: 3
+        });
+        expect(
+            auditEntries.some(
+                (entry) =>
+                    entry.fhirPath === "deceasedDateTime" &&
+                    entry.temporalType === "dateTime" &&
+                    entry.policy === "utc-absolute-time-lossy" &&
+                    entry.originalValue === legacyDate
+            )
+        ).to.equal(true);
+    });
+
+    it("produces no new audit entries when re-transforming an already-canonical document", function () {
+        const firstPass = transformer.transformDocument(patientDocument(), transformContext());
+        const secondPass = transformer.transformDocument(
+            firstPass.document,
+            transformContext({ batchId: "batch-2" })
+        );
+
+        expect(secondPass.auditEntries).to.deep.equal([]);
+        expect(secondPass.document.birthDate).to.deep.equal(firstPass.document.birthDate);
+        expect(secondPass.document.deceasedDateTime).to.deep.equal(firstPass.document.deceasedDateTime);
+    });
+
+    it("keeps BSON date conversion idempotent on a second transform", function () {
+        const legacyDate = new Date("2020-01-15T00:00:00.000Z");
+        const firstPass = transformer.transformDocument(
+            {
+                _id: "patient-1",
+                id: "patient-1",
+                resourceType: "Patient",
+                birthDate: legacyDate
+            },
+            transformContext()
+        );
+        const secondPass = transformer.transformDocument(
+            firstPass.document,
+            transformContext({ batchId: "batch-2" })
+        );
+
+        expect(secondPass.auditEntries).to.deep.equal([]);
+        expect(secondPass.document.birthDate).to.deep.equal(firstPass.document.birthDate);
+    });
 });
