@@ -1,4 +1,4 @@
-const { DEFAULT_BATCH_SIZE } = require("./temporalMigration");
+const DEFAULT_BATCH_SIZE = 100;
 
 const NOT_IMPLEMENTED = "Not implemented";
 

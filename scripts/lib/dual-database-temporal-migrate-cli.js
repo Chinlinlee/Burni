@@ -1,6 +1,7 @@
 "use strict";
 
 const path = require("path");
+const { DEFAULT_BATCH_SIZE } = require("../../models/FHIR/searchParameter/migration/sourceReader");
 
 const EXIT_SUCCESS = 0;
 const EXIT_PREFLIGHT_FAILED = 1;
@@ -145,7 +146,7 @@ function parseDualDatabaseTemporalMigrateArgs(argv) {
     const options = {
         sourceUri: null,
         targetUri: null,
-        batchSize: 100,
+        batchSize: DEFAULT_BATCH_SIZE,
         includeHistory: true,
         resources: null,
         confirmTarget: null,
@@ -406,16 +407,11 @@ function resolveExitCode({ preflightValid, summary, error }) {
     ) {
         return EXIT_USAGE;
     }
-    if (
-        error?.name === "DualDatabasePreflightError" ||
-        error?.name === "TemporalMigrationPreflightError" ||
-        preflightValid === false
-    ) {
+    if (error?.name === "DualDatabasePreflightError" || preflightValid === false) {
         return EXIT_PREFLIGHT_FAILED;
     }
     if (
         error?.name === "DualDatabaseMigrationError" ||
-        error?.name === "TemporalMigrationWriteError" ||
         (summary && summary.failed > 0) ||
         (summary && summary.status === "incomplete") ||
         (summary && summary.batchesFailed > 0)
@@ -444,7 +440,7 @@ Options:
   --confirm-target <name> Required with --write; must match target URI database name
   --resource <a,b,...>    Limit migration to specific resource types
   --skip-history          Skip *_history collections
-  --batch-size <n>        Batch size for migration (default: 100)
+  --batch-size <n>        Batch size for migration (default: ${DEFAULT_BATCH_SIZE})
   --report <path>         Evidence report path (default: ./evidence/dual-temporal-*.json)
   --audit <path>          Lossy conversion audit path (default: ./evidence/dual-temporal-audit-*.jsonl)
   --run-id <id>           Migration run identifier (default: generated)

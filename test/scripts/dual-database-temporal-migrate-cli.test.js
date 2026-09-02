@@ -22,9 +22,9 @@ const {
     validateDualDatabaseTemporalMigrateOptions
 } = require("../../scripts/lib/dual-database-temporal-migrate-cli");
 const {
-    TemporalMigrationPreflightError,
-    TemporalMigrationWriteError
-} = require("@models/FHIR/searchParameter/migration/temporalMigration");
+    DualDatabasePreflightError,
+    DualDatabaseMigrationError
+} = require("@models/FHIR/searchParameter/migration/dualDatabaseOperator");
 
 const SOURCE_URI = "mongodb://source-user:source-secret@source-host:27017/burni-source?authSource=admin";
 const TARGET_URI = "mongodb://target-user:target-secret@target-host:27017/burni-target?authSource=admin";
@@ -285,7 +285,7 @@ describe("dual-database-temporal-migrate CLI", function () {
         ).to.equal(EXIT_WRITE_FAILED);
         expect(
             resolveExitCode({
-                error: new TemporalMigrationPreflightError({
+                error: new DualDatabasePreflightError({
                     valid: false,
                     diagnostics: [],
                     summary: {}
@@ -294,7 +294,7 @@ describe("dual-database-temporal-migrate CLI", function () {
         ).to.equal(EXIT_PREFLIGHT_FAILED);
         expect(
             resolveExitCode({
-                error: new TemporalMigrationWriteError("write failed", {}, { failed: 1 })
+                error: new DualDatabaseMigrationError("write failed", {}, { failed: 1 })
             })
         ).to.equal(EXIT_WRITE_FAILED);
         expect(

@@ -15,7 +15,6 @@ module.exports = {
     },
     indexes: require("./indexes"),
     migration: {
-        temporalMigration: require("./migration/temporalMigration"),
         temporalPreflight: require("./migration/temporalPreflight"),
         temporalCutoverGate: require("./migration/temporalCutoverGate"),
         temporalRollout: require("./migration/temporalRollout"),

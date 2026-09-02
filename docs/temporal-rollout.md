@@ -6,7 +6,7 @@ Temporal data migration 使用隔離的 source/target database：source database
 
 ## 使用的既有 contract
 
-- Migration preflight 與 idempotent write API：`models/FHIR/searchParameter/migration/temporalPreflight.js`、`models/FHIR/searchParameter/migration/temporalMigration.js`
+- Migration preflight 與 dual-database write API：`models/FHIR/searchParameter/migration/temporalPreflight.js`、`models/FHIR/searchParameter/migration/dualDatabaseOperator.js`
 - 7.1 temporal index manifest/generator：`models/FHIR/searchParameter/indexes/indexManifest.js`、`models/FHIR/searchParameter/indexes/indexGenerator.js`
 - 7.2 compatibility 與 explain validator：`models/FHIR/searchParameter/indexes/indexValidation.js`、`models/FHIR/searchParameter/indexes/indexCompatibility.js`
 - Registry activation policy：`models/FHIR/searchParameter/registry/activationPolicy.js`；runtime reload 使用 `models/FHIR/searchParameter/runtime/registryLifecycle.js`

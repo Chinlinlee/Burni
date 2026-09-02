@@ -63,9 +63,7 @@ describe("source reader", function () {
         await connection.db.dropDatabase();
     });
 
-    it("uses DEFAULT_BATCH_SIZE aligned with temporal migration", function () {
-        const temporalMigration = require("@models/FHIR/searchParameter/migration/temporalMigration");
-        expect(DEFAULT_BATCH_SIZE).to.equal(temporalMigration.DEFAULT_BATCH_SIZE);
+    it("exports DEFAULT_BATCH_SIZE as 100", function () {
         expect(DEFAULT_BATCH_SIZE).to.equal(100);
     });
 
