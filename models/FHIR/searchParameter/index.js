@@ -18,7 +18,9 @@ module.exports = {
         temporalMigration: require("./migration/temporalMigration"),
         temporalPreflight: require("./migration/temporalPreflight"),
         temporalCutoverGate: require("./migration/temporalCutoverGate"),
-        temporalRollout: require("./migration/temporalRollout")
+        temporalRollout: require("./migration/temporalRollout"),
+        migrationContracts: require("./migration/migrationContracts"),
+        streamingMigration: require("./migration/streamingMigration")
     },
     runtime: {
         registrySearchHandler: require("./runtime/registrySearchHandler")

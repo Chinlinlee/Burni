@@ -12,13 +12,13 @@
 
 ## 3. Streaming migration core
 
-- [ ] 3.1 分離 source reader、document transformer、target writer、checkpoint writer 與 audit writer 的 migration contract。
-- [ ] 3.2 以 bounded cursor batches 讀取所有 catalog resource 與 history collection，避免將完整 collection 載入記憶體。
-- [ ] 3.3 將完整 source document 遞迴轉換後寫入 target，保留 `_id`、FHIR identity、version metadata、非 temporal fields 與結構關聯。
-- [ ] 3.4 以 target model collection 的低階 bulk operation 寫入，禁止 resource save hooks、history creation、ID allocation 與 reference tracking 副作用。
-- [ ] 3.5 在每個 target batch write 前執行 canonical temporal 與 full-document validation。
-- [ ] 3.6 建立 target migration metadata collection，保存 run identity、collection、batch boundary、status、counts 與 errors。
-- [ ] 3.7 實作 checkpoint retry 與 idempotent batch handling，確認 partial target 永遠不能被標記為完成。
+- [x] 3.1 分離 source reader、document transformer、target writer、checkpoint writer 與 audit writer 的 migration contract。
+- [x] 3.2 以 bounded cursor batches 讀取所有 catalog resource 與 history collection，避免將完整 collection 載入記憶體。
+- [x] 3.3 將完整 source document 遞迴轉換後寫入 target，保留 `_id`、FHIR identity、version metadata、非 temporal fields 與結構關聯。
+- [x] 3.4 以 target model collection 的低階 bulk operation 寫入，禁止 resource save hooks、history creation、ID allocation 與 reference tracking 副作用。
+- [x] 3.5 在每個 target batch write 前執行 canonical temporal 與 full-document validation。
+- [x] 3.6 建立 target migration metadata collection，保存 run identity、collection、batch boundary、status、counts 與 errors。
+- [x] 3.7 實作 checkpoint retry 與 idempotent batch handling，確認 partial target 永遠不能被標記為完成。
 
 ## 4. BSON Date policy and evidence
 

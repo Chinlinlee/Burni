@@ -627,6 +627,7 @@ module.exports = {
     classifyTemporalValue,
     scanTemporalDocument,
     mapTemporalDocument,
+    loadDefinitions,
     readModelDocuments,
     resolveModel,
     runTemporalMigrationPreflight,
