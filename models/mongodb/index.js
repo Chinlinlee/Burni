@@ -6,6 +6,10 @@ if (!process.env.MONGODB_HOSTS) {
     });
 }
 
-const modelMap = require("./connector")(process.env);
+const { searchParameterRegistryReadinessStep } = require("./readinessSteps");
+
+const modelMap = require("./connector")(process.env, {
+    readinessStep: searchParameterRegistryReadinessStep
+});
 
 module.exports = modelMap;

@@ -335,18 +335,21 @@ function beginDatabaseConnection(config, state) {
                 maskConnectionInfo(state.normalizedConfig)
             );
 
-            const { reloadRegistry } = require("../FHIR/searchParameter/registry/registryManager");
-            return reloadRegistry();
+            if (typeof state.readinessStep === "function") {
+                return state.readinessStep();
+            }
         })
         .then(() => {
-            state.timings.searchParameterEnd = performance.now();
-            console.log(
-                `[mongodb] SearchParameter registry loaded in ${elapsedMs(
-                    state.timings,
-                    state.timings.databaseEnd,
-                    state.timings.searchParameterEnd
-                )}ms`
-            );
+            if (typeof state.readinessStep === "function") {
+                state.timings.searchParameterEnd = performance.now();
+                console.log(
+                    `[mongodb] SearchParameter registry loaded in ${elapsedMs(
+                        state.timings,
+                        state.timings.databaseEnd,
+                        state.timings.searchParameterEnd
+                    )}ms`
+                );
+            }
 
             state.timings.totalEnd = performance.now();
             console.log(
@@ -361,7 +364,9 @@ function beginDatabaseConnection(config, state) {
         .catch((err) => {
             const failedPhase = !state.timings.databaseEnd
                 ? "database connection"
-                : "SearchParameter registry";
+                : typeof state.readinessStep === "function"
+                  ? "SearchParameter registry"
+                  : "readiness step";
             logInitPhaseFailure(state, failedPhase);
             console.error(err);
             failReady(state, err);
@@ -393,11 +398,11 @@ function provisionSharding(config, state) {
         });
 }
 
-function connect(config) {
-    return initializeWithDiscovered(config);
+function connect(config, options) {
+    return initializeWithDiscovered(config, undefined, options);
 }
 
-function initializeWithDiscovered(config, discovered) {
+function initializeWithDiscovered(config, discovered, options = {}) {
     const normalizedConfig = normalizeConfig(config);
     const fingerprint = fingerprintFromNormalizedConfig(normalizedConfig);
 
@@ -417,7 +422,8 @@ function initializeWithDiscovered(config, discovered) {
         modelMap: {},
         status: "initializing",
         error: null,
-        timings: createInitTimings()
+        timings: createInitTimings(),
+        readinessStep: options.readinessStep
     };
     initializationState = state;
 

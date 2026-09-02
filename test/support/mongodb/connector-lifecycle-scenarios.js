@@ -10,6 +10,9 @@ const {
     MongoDBInitializationConflictError,
     MongoDBModelCollisionError
 } = require("@models/mongodb/connector");
+const {
+    searchParameterRegistryReadinessStep
+} = require("@models/mongodb/readinessSteps");
 
 // SearchParameter is required so reloadRegistry queries the collection instead of
 // taking the "model missing → []" shortcut.
@@ -105,8 +108,19 @@ function restoreShardingMode() {
     originalShardingMode = undefined;
 }
 
-function initConnector(config) {
-    return initializeWithDiscovered(config, LIFECYCLE_FIXTURE_DISCOVERED);
+const LIFECYCLE_CONNECTOR_OPTIONS = {
+    readinessStep: searchParameterRegistryReadinessStep
+};
+
+function initConnector(config, connectorOptions = {}) {
+    return initializeWithDiscovered(
+        config,
+        LIFECYCLE_FIXTURE_DISCOVERED,
+        {
+            ...LIFECYCLE_CONNECTOR_OPTIONS,
+            ...connectorOptions
+        }
+    );
 }
 
 function serializeError(error) {
@@ -124,7 +138,7 @@ async function syncMapBeforeReady() {
     try {
         const uri = await startMemoryServer();
         const config = buildConfigFromUri(uri);
-        const modelMap = connect(config);
+        const modelMap = connect(config, LIFECYCLE_CONNECTOR_OPTIONS);
 
         const hasPatientModel = Object.prototype.hasOwnProperty.call(modelMap, "Patient");
         const hasReadyPromise = typeof modelMap.ready?.then === "function";
@@ -432,13 +446,11 @@ async function registryFailureBlocksReady() {
     try {
         const uri = await startMemoryServer();
         const config = buildConfigFromUri(uri);
-        const registryManager = require("@models/FHIR/searchParameter/registry/registryManager");
-        const originalReload = registryManager.reloadRegistry;
-        registryManager.reloadRegistry = async () => {
-            throw new Error("simulated SearchParameter registry failure");
-        };
-
-        const modelMap = initConnector(config);
+        const modelMap = initConnector(config, {
+            readinessStep: async () => {
+                throw new Error("simulated SearchParameter registry failure");
+            }
+        });
 
         let readyError = null;
         try {
@@ -446,8 +458,6 @@ async function registryFailureBlocksReady() {
         } catch (error) {
             readyError = error;
         }
-
-        registryManager.reloadRegistry = originalReload;
 
         return {
             ok:
@@ -517,31 +527,28 @@ async function shardingIndependentFromApplicationReady() {
     try {
         const uri = await startMemoryServer();
         const config = buildConfigFromUri(uri);
-        const registryManager = require("@models/FHIR/searchParameter/registry/registryManager");
-        const originalReload = registryManager.reloadRegistry;
-        registryManager.reloadRegistry = async (...args) => {
-            const result = await originalReload(...args);
-            mongoose.connection.db.admin = () => ({
-                command(command) {
-                    if (command.enableSharding) {
-                        return Promise.resolve({ ok: 1 });
+        const modelMap = initConnector(config, {
+            readinessStep: async () => {
+                await searchParameterRegistryReadinessStep();
+                mongoose.connection.db.admin = () => ({
+                    command(command) {
+                        if (command.enableSharding) {
+                            return Promise.resolve({ ok: 1 });
+                        }
+                        if (command.shardCollection) {
+                            return Promise.resolve({ ok: 1 });
+                        }
+                        return Promise.reject(
+                            new Error(
+                                `unexpected admin command: ${JSON.stringify(command)}`
+                            )
+                        );
                     }
-                    if (command.shardCollection) {
-                        return Promise.resolve({ ok: 1 });
-                    }
-                    return Promise.reject(
-                        new Error(`unexpected admin command: ${JSON.stringify(command)}`)
-                    );
-                }
-            });
-            return result;
-        };
-
-        const modelMap = initConnector(config);
+                });
+            }
+        });
         await modelMap.ready;
         await modelMap.shardingReady;
-
-        registryManager.reloadRegistry = originalReload;
 
         return {
             ok: true,
@@ -563,19 +570,16 @@ async function shardingFailureDoesNotRejectReady() {
     try {
         const uri = await startMemoryServer();
         const config = buildConfigFromUri(uri);
-        const registryManager = require("@models/FHIR/searchParameter/registry/registryManager");
-        const originalReload = registryManager.reloadRegistry;
-        registryManager.reloadRegistry = async (...args) => {
-            const result = await originalReload(...args);
-            mongoose.connection.db.admin = () => ({
-                command() {
-                    return Promise.reject(new Error("simulated sharding failure"));
-                }
-            });
-            return result;
-        };
-
-        const modelMap = initConnector(config);
+        const modelMap = initConnector(config, {
+            readinessStep: async () => {
+                await searchParameterRegistryReadinessStep();
+                mongoose.connection.db.admin = () => ({
+                    command() {
+                        return Promise.reject(new Error("simulated sharding failure"));
+                    }
+                });
+            }
+        });
         await modelMap.ready;
 
         let shardingError = null;
@@ -584,8 +588,6 @@ async function shardingFailureDoesNotRejectReady() {
         } catch (error) {
             shardingError = error;
         }
-
-        registryManager.reloadRegistry = originalReload;
 
         return {
             ok:
