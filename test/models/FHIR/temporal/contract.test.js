@@ -13,8 +13,13 @@ const {
     inferDateTimePrecision,
     inferInstantPrecision,
     isCalendarDate,
+    isLeapYear,
+    daysInMonth,
     compareCalendarDates,
     expectedDateBoundaries,
+    APPROXIMATION_RATIO,
+    approximateCalendarRange,
+    approximateDecimalRange,
     isDecimal128,
     compareDecimal128,
     validateCanonicalDate,
@@ -115,6 +120,20 @@ describe("FHIR temporal contract", function () {
     });
 
     describe("calendar helpers", function () {
+        it("identifies Gregorian leap years", function () {
+            expect(isLeapYear(2000)).to.equal(true);
+            expect(isLeapYear(1900)).to.equal(false);
+            expect(isLeapYear(2020)).to.equal(true);
+            expect(isLeapYear(2021)).to.equal(false);
+        });
+
+        it("returns days in month including February leap days", function () {
+            expect(daysInMonth(2020, 2)).to.equal(29);
+            expect(daysInMonth(2021, 2)).to.equal(28);
+            expect(daysInMonth(2021, 4)).to.equal(30);
+            expect(daysInMonth(2021, 1)).to.equal(31);
+        });
+
         it("validates calendar dates", function () {
             expect(isCalendarDate("1995-06-15")).to.be.true;
             expect(isCalendarDate("1995-02-29")).to.be.false;
@@ -170,6 +189,37 @@ describe("FHIR temporal contract", function () {
                 normalizedStart: "9999-12-31",
                 normalizedEnd: "9999-12-31"
             });
+        });
+    });
+
+    describe("approximation helpers", function () {
+        it("exports the FHIR 10 percent approximation ratio", function () {
+            expect(APPROXIMATION_RATIO).to.equal(0.1);
+        });
+
+        it("expands a one-day calendar range by one day on each side", function () {
+            expect(
+                approximateCalendarRange({
+                    start: "2020-02-29",
+                    end: "2020-03-01"
+                })
+            ).to.deep.equal({
+                kind: "date",
+                start: "2020-02-28",
+                end: "2020-03-02"
+            });
+        });
+
+        it("expands a Decimal128 range by 10 percent of its width", function () {
+            const approximated = approximateDecimalRange({
+                start: decimal128("10"),
+                end: decimal128("20")
+            });
+
+            expect(approximated.start).to.be.instanceOf(mongoose.Types.Decimal128);
+            expect(approximated.end).to.be.instanceOf(mongoose.Types.Decimal128);
+            expect(approximated.start.toString()).to.equal("9");
+            expect(approximated.end.toString()).to.equal("21");
         });
     });
 

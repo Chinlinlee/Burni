@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const { DATE_PRECISION, DATETIME_PRECISION } = require("./constants");
 const { expectedDateBoundaries, isCalendarDate } = require("./calendar");
+const { addDecimal } = require("./arithmetic");
 
 /**
  * @param {string} value
@@ -96,53 +97,12 @@ function parseDateTimeComponents(value) {
 }
 
 /**
- * @param {string} left
- * @param {string} right
- * @returns {string}
- */
-function decimalAdd(left, right) {
-    const [leftInteger, leftFraction = ""] = left.split(".");
-    const [rightInteger, rightFraction = ""] = right.split(".");
-    const maxFractionLength = Math.max(leftFraction.length, rightFraction.length);
-    const scale = 10n ** BigInt(maxFractionLength);
-    const toCoefficient = (integer, fraction) => {
-        const negative = integer.startsWith("-");
-        const absoluteInteger = negative ? integer.slice(1) : integer;
-        const coefficient =
-            BigInt(absoluteInteger || "0") * scale +
-            BigInt(fraction.padEnd(maxFractionLength, "0") || "0");
-        return negative ? -coefficient : coefficient;
-    };
-    const leftCoefficient = toCoefficient(leftInteger, leftFraction);
-    const rightCoefficient = toCoefficient(rightInteger, rightFraction);
-    const sum = leftCoefficient + rightCoefficient;
-
-    if (sum === 0n) {
-        return "0";
-    }
-    if (maxFractionLength === 0) {
-        return sum.toString();
-    }
-
-    const sign = sum < 0n ? "-" : "";
-    const absolute = sum < 0n ? -sum : sum;
-    const integerPart = absolute / scale;
-    const fractionText = (absolute % scale)
-        .toString()
-        .padStart(maxFractionLength, "0")
-        .replace(/0+$/, "");
-    return fractionText
-        ? `${sign}${integerPart}.${fractionText}`
-        : `${sign}${integerPart}`;
-}
-
-/**
  * @param {import('mongoose').Types.Decimal128} value
  * @param {number} seconds
  * @returns {import('mongoose').Types.Decimal128}
  */
 function addSecondsToDecimal128(value, seconds) {
-    return toDecimal128(decimalAdd(value.toString(), String(seconds)));
+    return toDecimal128(addDecimal(value.toString(), String(seconds), 1));
 }
 
 /**
@@ -152,7 +112,7 @@ function addSecondsToDecimal128(value, seconds) {
  */
 function addFractionStepToDecimal128(value, fractionDigits) {
     const step = fractionDigits > 0 ? `0.${"0".repeat(fractionDigits - 1)}1` : "1";
-    return toDecimal128(decimalAdd(value.toString(), step));
+    return toDecimal128(addDecimal(value.toString(), step, 1));
 }
 
 /**

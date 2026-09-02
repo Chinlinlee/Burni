@@ -1,10 +1,19 @@
 const { CALENDAR_DATE_PATTERN } = require("./constants");
 const { DATE_PRECISION } = require("./constants");
 
+/**
+ * @param {number} year
+ * @returns {boolean}
+ */
 function isLeapYear(year) {
     return year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
 }
 
+/**
+ * @param {number} year
+ * @param {number} month
+ * @returns {number}
+ */
 function daysInMonth(year, month) {
     if (month === 2) {
         return isLeapYear(year) ? 29 : 28;
@@ -125,6 +134,8 @@ function expectedDateBoundaries(value, precision) {
 }
 
 module.exports = {
+    isLeapYear,
+    daysInMonth,
     isCalendarDate,
     compareCalendarDates,
     expectedDateBoundaries,

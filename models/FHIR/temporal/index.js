@@ -18,9 +18,21 @@ const {
     inferDateTimePrecision,
     inferInstantPrecision
 } = require("./lexical");
-const { isCalendarDate, compareCalendarDates, expectedDateBoundaries, addCalendarDays } =
-    require("./calendar");
+const {
+    isLeapYear,
+    daysInMonth,
+    isCalendarDate,
+    compareCalendarDates,
+    expectedDateBoundaries,
+    addCalendarDays
+} = require("./calendar");
 const { parseDecimal, formatDecimal, addDecimal, divideDecimalByTen } = require("./arithmetic");
+const {
+    APPROXIMATION_RATIO,
+    approximateCalendarRange,
+    approximateDecimalRange
+} = require("./approximation");
+const { canonicalTemporalValueMatches } = require("./canonicalMatcher");
 const { isDecimal128, compareDecimal128 } = require("./decimal128");
 const {
     validateCanonicalDate,
@@ -78,6 +90,8 @@ module.exports = {
     inferDatePrecision,
     inferDateTimePrecision,
     inferInstantPrecision,
+    isLeapYear,
+    daysInMonth,
     isCalendarDate,
     compareCalendarDates,
     expectedDateBoundaries,
@@ -86,6 +100,10 @@ module.exports = {
     formatDecimal,
     addDecimal,
     divideDecimalByTen,
+    APPROXIMATION_RATIO,
+    approximateCalendarRange,
+    approximateDecimalRange,
+    canonicalTemporalValueMatches,
     isDecimal128,
     compareDecimal128,
     validateCanonicalDate,
