@@ -4,7 +4,6 @@ const fs = require("fs");
 const os = require("os");
 const path = require("path");
 const { expect } = require("chai");
-const mongoose = require("mongoose");
 const migrationContracts = require("@models/FHIR/searchParameter/migration/migrationContracts");
 
 const {
@@ -21,45 +20,17 @@ const {
     validateMigrationBatchBoundary,
     validateMigrationBatchResult,
     validateAuditRecord,
-    validateCheckpointRecord,
-    createSourceReader,
-    createDocumentTransformer,
-    createTargetBatchWriter,
-    createCheckpointWriter,
-    createAuditWriter
+    validateCheckpointRecord
 } = migrationContracts;
 
-function fakeConnection() {
-    const mockModel = {
-        async findOne() {
-            return null;
-        },
-        async findOneAndUpdate() {
-            return {};
-        },
-        find() {
-            return {
-                sort() {
-                    return {
-                        async lean() {
-                            return [];
-                        }
-                    };
-                }
-            };
-        }
-    };
-
-    return {
-        Schema: mongoose.Schema,
-        base: mongoose,
-        models: {},
-        model() {
-            return mockModel;
-        },
-        db: {}
-    };
-}
+const FACTORY_EXPORTS = [
+    "createSourceReader",
+    "createCatalogSourceIterator",
+    "createDocumentTransformer",
+    "createTargetBatchWriter",
+    "createCheckpointWriter",
+    "createAuditWriter"
+];
 
 function baseRunIdentity(overrides = {}) {
     return {
@@ -71,7 +42,7 @@ function baseRunIdentity(overrides = {}) {
 }
 
 describe("migration contracts", function () {
-    it("exports contract surface from migrationContracts and searchParameter index", function () {
+    it("exports validators from migrationContracts and dualDatabaseOperator from searchParameter index", function () {
         expect(MIGRATION_CONTRACT_INVALID_CONFIG).to.equal("MIGRATION_CONTRACT_INVALID_CONFIG");
         expect(MIGRATION_CONTRACT_INVALID_SHAPE).to.equal("MIGRATION_CONTRACT_INVALID_SHAPE");
         expect(MIGRATION_CONTRACT_NOT_IMPLEMENTED).to.equal("MIGRATION_CONTRACT_NOT_IMPLEMENTED");
@@ -87,81 +58,20 @@ describe("migration contracts", function () {
             "validateMigrationBatchBoundary",
             "validateMigrationBatchResult",
             "validateAuditRecord",
-            "validateCheckpointRecord",
-            "createSourceReader",
-            "createDocumentTransformer",
-            "createTargetBatchWriter",
-            "createCheckpointWriter",
-            "createAuditWriter"
+            "validateCheckpointRecord"
         ]) {
             expect(migrationContracts).to.have.property(exportName);
+        }
+
+        for (const exportName of FACTORY_EXPORTS) {
+            expect(migrationContracts).to.not.have.property(exportName);
         }
 
         const searchParameter = require("@models/FHIR/searchParameter");
         expect(searchParameter.migration).to.have.property("migrationContracts");
         expect(searchParameter.migration.migrationContracts).to.equal(migrationContracts);
-    });
-
-    describe("factory config validation", function () {
-        it("rejects missing sourceConnection for createSourceReader", function () {
-            expect(() => createSourceReader({})).to.throw(
-                MigrationContractError,
-                /sourceConnection/
-            );
-            try {
-                createSourceReader({});
-            } catch (error) {
-                expect(error.code).to.equal(MIGRATION_CONTRACT_INVALID_CONFIG);
-            }
-        });
-
-        it("rejects missing run identity fields for createDocumentTransformer", function () {
-            expect(() => createDocumentTransformer({})).to.throw(
-                MigrationContractError,
-                /runId/
-            );
-            expect(() =>
-                createDocumentTransformer({
-                    runId: "run-1",
-                    sourceDatabaseIdentity: "source-db"
-                })
-            ).to.throw(MigrationContractError, /targetDatabaseIdentity/);
-        });
-
-        it("accepts runIdentity object for createDocumentTransformer", function () {
-            const transformer = createDocumentTransformer({
-                runIdentity: baseRunIdentity()
-            });
-            expect(transformer).to.have.property("transformDocument").that.is.a("function");
-        });
-
-        it("rejects missing targetConnection and runId for createTargetBatchWriter", function () {
-            expect(() => createTargetBatchWriter({})).to.throw(
-                MigrationContractError,
-                /targetConnection/
-            );
-            expect(() =>
-                createTargetBatchWriter({ targetConnection: fakeConnection() })
-            ).to.throw(MigrationContractError, /runId/);
-        });
-
-        it("rejects missing targetConnection and run identity for createCheckpointWriter", function () {
-            expect(() => createCheckpointWriter({})).to.throw(
-                MigrationContractError,
-                /targetConnection/
-            );
-            expect(() =>
-                createCheckpointWriter({ targetConnection: fakeConnection() })
-            ).to.throw(MigrationContractError, /runId/);
-        });
-
-        it("rejects missing runId and artifactPath for createAuditWriter", function () {
-            expect(() => createAuditWriter({})).to.throw(MigrationContractError, /runId/);
-            expect(() => createAuditWriter({ runId: "run-1" })).to.throw(
-                MigrationContractError,
-                /artifactPath/
-            );
-        });
+        expect(searchParameter.migration).to.have.property("dualDatabaseOperator");
+        expect(searchParameter.migration).to.not.have.property("streamingMigration");
     });
 
     describe("contract shape validation", function () {
@@ -270,104 +180,6 @@ describe("migration contracts", function () {
                     counts: { sourceCount: -1 }
                 })
             ).to.throw(MigrationContractError, /counts\.sourceCount/);
-        });
-    });
-
-    describe("stub factory behavior", function () {
-        it("returns checkpoint writer surface while target writer handles empty batches", async function () {
-            const source = {
-                resource: "Patient",
-                model: "Patient",
-                kind: "resource",
-                collectionName: "patients"
-            };
-            const reader = createSourceReader({ sourceConnection: fakeConnection() });
-            try {
-                await reader.readBatch(source);
-                expect.fail("readBatch should throw without a connected db.collection");
-            } catch (error) {
-                expect(error).to.be.instanceOf(Error);
-                expect(error.message).to.match(/db\.collection/);
-            }
-            await reader.close();
-
-            const transformer = createDocumentTransformer({ runIdentity: baseRunIdentity() });
-            const result = transformer.transformDocument(
-                {
-                    _id: "doc-1",
-                    id: "doc-1",
-                    resourceType: "Patient",
-                    birthDate: "1995"
-                },
-                { runIdentity: baseRunIdentity(), source, batchId: "batch-1" }
-            );
-            expect(result.document.birthDate).to.have.property("precision", "year");
-            expect(result.auditEntries).to.have.length(1);
-
-            const targetWriter = createTargetBatchWriter({
-                targetConnection: fakeConnection(),
-                runId: "run-1",
-                targetModels: {}
-            });
-            const skipped = await targetWriter.writeBatch("patients", [], {
-                runIdentity: baseRunIdentity(),
-                source,
-                batchId: "batch-1"
-            });
-            validateMigrationBatchResult(skipped);
-            expect(skipped.status).to.equal("skipped");
-
-            const checkpointWriter = createCheckpointWriter({
-                targetConnection: fakeConnection(),
-                runIdentity: baseRunIdentity()
-            });
-            expect(checkpointWriter.getCheckpoint).to.be.a("function");
-            expect(checkpointWriter.markBatchStarted).to.be.a("function");
-            expect(checkpointWriter.markBatchCompleted).to.be.a("function");
-            expect(checkpointWriter.markBatchFailed).to.be.a("function");
-            expect(checkpointWriter.listCompletedBatches).to.be.a("function");
-        });
-
-        it("provides audit writer append and flush to artifact path", async function () {
-            const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "migration-contracts-audit-"));
-            const artifactPath = path.join(tempDir, "audit.jsonl");
-            try {
-                const auditWriter = createAuditWriter({
-                    runId: "run-1",
-                    artifactPath
-                });
-                expect(auditWriter.getArtifactPath()).to.equal(artifactPath);
-                await auditWriter.append([
-                    {
-                        sourceDatabaseIdentity: "source-db",
-                        sourceCollection: "patients",
-                        sourceDocumentId: "doc-1",
-                        fhirPath: "birthDate",
-                        temporalType: "date",
-                        policy: "utc-calendar-day-lossy",
-                        originalValue: "2020-01",
-                        generatedValue: { value: "2020-01", precision: "month" }
-                    }
-                ]);
-                await auditWriter.flush();
-                expect(fs.existsSync(artifactPath)).to.equal(true);
-            } finally {
-                fs.rmSync(tempDir, { recursive: true, force: true });
-            }
-        });
-
-        it("accepts a real mongoose connection for source and target factories", function () {
-            const connection = mongoose.createConnection();
-            expect(() =>
-                createSourceReader({ sourceConnection: connection })
-            ).to.not.throw();
-            expect(() =>
-                createTargetBatchWriter({
-                    targetConnection: connection,
-                    runId: "run-1"
-                })
-            ).to.not.throw();
-            connection.close().catch(() => {});
         });
     });
 });

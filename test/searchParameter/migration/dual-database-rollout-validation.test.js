@@ -19,9 +19,9 @@ const {
 } = require("@models/FHIR/searchParameter/migration/dualDatabaseOperator");
 const { buildCatalogSourceDescriptors } = require("@models/FHIR/searchParameter/migration/sourceReader");
 const {
-    runStreamingMigration,
+    runDualDatabaseMigrationBatchLoop,
     isMigrationRunComplete
-} = require("@models/FHIR/searchParameter/migration/streamingMigration");
+} = require("@models/FHIR/searchParameter/migration/dualDatabaseOperator");
 const { isCanonicalTemporalObject } = require("@models/FHIR/temporal");
 const {
     redactMongoUri,
@@ -355,7 +355,7 @@ describe("dual database rollout validation", function () {
             };
 
             try {
-                const summary = await runStreamingMigration({
+                const summary = await runDualDatabaseMigrationBatchLoop({
                     sourceConnection,
                     targetConnection,
                     targetModels,

@@ -6,9 +6,9 @@ const { MongoMemoryServer } = require("mongodb-memory-server");
 const { ObjectId } = require("mongodb");
 const { registerDiscoveredModels } = require("@models/mongodb/connector");
 const {
-    runStreamingMigration,
+    runDualDatabaseMigrationBatchLoop,
     isMigrationRunComplete
-} = require("@models/FHIR/searchParameter/migration/streamingMigration");
+} = require("@models/FHIR/searchParameter/migration/dualDatabaseOperator");
 const { isCanonicalTemporalObject } = require("@models/FHIR/temporal");
 
 const DISCOVERED_MODELS = {
@@ -104,7 +104,7 @@ describe("streaming migration", function () {
             }
         ]);
 
-        const summary = await runStreamingMigration(
+        const summary = await runDualDatabaseMigrationBatchLoop(
             migrationOptions({
                 runIdentity: baseRunIdentity(),
                 batchSize: 10
@@ -159,7 +159,7 @@ describe("streaming migration", function () {
         ]);
 
         const runIdentity = baseRunIdentity();
-        const firstPass = await runStreamingMigration(
+        const firstPass = await runDualDatabaseMigrationBatchLoop(
             migrationOptions({
                 runIdentity,
                 batchSize: 1,
@@ -176,7 +176,7 @@ describe("streaming migration", function () {
         });
         expect(await isMigrationRunComplete(runIdentity, targetConnection)).to.equal(false);
 
-        const secondPass = await runStreamingMigration(
+        const secondPass = await runDualDatabaseMigrationBatchLoop(
             migrationOptions({
                 runIdentity,
                 batchSize: 1
@@ -222,7 +222,7 @@ describe("streaming migration", function () {
 
         try {
             const runIdentity = baseRunIdentity();
-            const summary = await runStreamingMigration(
+            const summary = await runDualDatabaseMigrationBatchLoop(
                 migrationOptions({
                     runIdentity,
                     batchSize: 10
@@ -267,7 +267,7 @@ describe("streaming migration", function () {
         ]);
 
         const runIdentity = baseRunIdentity();
-        const firstRun = await runStreamingMigration(
+        const firstRun = await runDualDatabaseMigrationBatchLoop(
             migrationOptions({
                 runIdentity,
                 batchSize: 10
@@ -275,7 +275,7 @@ describe("streaming migration", function () {
         );
         expect(firstRun.status).to.equal("complete");
 
-        const secondRun = await runStreamingMigration(
+        const secondRun = await runDualDatabaseMigrationBatchLoop(
             migrationOptions({
                 runIdentity,
                 batchSize: 10
@@ -307,7 +307,7 @@ describe("streaming migration", function () {
             }
         ]);
 
-        const summary = await runStreamingMigration(
+        const summary = await runDualDatabaseMigrationBatchLoop(
             migrationOptions({
                 runIdentity: baseRunIdentity(),
                 batchSize: 1,

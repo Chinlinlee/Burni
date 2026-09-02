@@ -1,15 +1,7 @@
 const {
-    createSourceReader: createSourceReaderImpl,
-    createCatalogSourceIterator
-} = require("./sourceReader");
-const { createDocumentTransformer: createDocumentTransformerImpl } = require("./documentTransformer");
-const { createTargetBatchWriter: createTargetBatchWriterImpl } = require("./targetBatchWriter");
-const {
     validateTransformedDocument,
     validateTransformedBatch
 } = require("./batchDocumentValidator");
-const { createCheckpointWriter: createCheckpointWriterImpl } = require("./checkpointWriter");
-const { createAuditWriter: createAuditWriterImpl } = require("./auditWriter");
 
 const MIGRATION_CONTRACT_INVALID_CONFIG = "MIGRATION_CONTRACT_INVALID_CONFIG";
 const MIGRATION_CONTRACT_INVALID_SHAPE = "MIGRATION_CONTRACT_INVALID_SHAPE";
@@ -163,25 +155,6 @@ function requireObject(value, fieldName, factoryName) {
     if (value === null || typeof value !== "object" || Array.isArray(value)) {
         throw new MigrationContractError(
             `${factoryName} requires ${fieldName}`,
-            MIGRATION_CONTRACT_INVALID_CONFIG,
-            { factory: factoryName, field: fieldName }
-        );
-    }
-}
-
-/**
- * @param {unknown} connection
- * @param {string} fieldName
- * @param {string} factoryName
- */
-function requireMongooseConnection(connection, fieldName, factoryName) {
-    requireObject(connection, fieldName, factoryName);
-    const candidate = /** @type {Record<string, unknown>} */ (connection);
-    const hasModelFactory = typeof candidate.model === "function";
-    const hasDbHandle = candidate.db !== null && typeof candidate.db === "object";
-    if (!hasModelFactory && !hasDbHandle) {
-        throw new MigrationContractError(
-            `${factoryName} requires a Mongoose connection for ${fieldName}`,
             MIGRATION_CONTRACT_INVALID_CONFIG,
             { factory: factoryName, field: fieldName }
         );
@@ -368,51 +341,6 @@ function validateCheckpointRecord(value) {
 }
 
 /**
- * @param {unknown} config
- * @returns {MigrationRunIdentity}
- */
-function resolveRunIdentity(config) {
-    requireObject(config, "config", "migration factory");
-    if (config.runIdentity !== undefined) {
-        validateMigrationRunIdentity(config.runIdentity);
-        return config.runIdentity;
-    }
-    return {
-        runId: requireNonEmptyString(config.runId, "runId", "migration factory"),
-        sourceDatabaseIdentity: requireNonEmptyString(
-            config.sourceDatabaseIdentity,
-            "sourceDatabaseIdentity",
-            "migration factory"
-        ),
-        targetDatabaseIdentity: requireNonEmptyString(
-            config.targetDatabaseIdentity,
-            "targetDatabaseIdentity",
-            "migration factory"
-        )
-    };
-}
-
-/**
- * @param {object} config
- * @returns {SourceReader}
- */
-function createSourceReader(config) {
-    requireObject(config, "config", "createSourceReader");
-    requireMongooseConnection(config.sourceConnection, "sourceConnection", "createSourceReader");
-    return createSourceReaderImpl(config);
-}
-
-/**
- * @param {object} config
- * @returns {DocumentTransformer}
- */
-function createDocumentTransformer(config) {
-    requireObject(config, "config", "createDocumentTransformer");
-    resolveRunIdentity(config);
-    return createDocumentTransformerImpl(config);
-}
-
-/**
  * @param {unknown} value
  * @returns {asserts value is MigrationWriteContext}
  */
@@ -422,51 +350,6 @@ function validateMigrationWriteContext(value) {
     validateMigrationRunIdentity(record.runIdentity);
     validateMigrationSourceDescriptor(record.source);
     requireNonEmptyString(record.batchId, "batchId", "MigrationWriteContext");
-}
-
-/**
- * @param {object} config
- * @returns {TargetBatchWriter}
- */
-function createTargetBatchWriter(config) {
-    requireObject(config, "config", "createTargetBatchWriter");
-    requireMongooseConnection(config.targetConnection, "targetConnection", "createTargetBatchWriter");
-    requireNonEmptyString(config.runId, "runId", "createTargetBatchWriter");
-    if (
-        config.targetModels !== undefined &&
-        (config.targetModels === null ||
-            typeof config.targetModels !== "object" ||
-            Array.isArray(config.targetModels))
-    ) {
-        throw new MigrationContractError(
-            "createTargetBatchWriter targetModels must be an object when present",
-            MIGRATION_CONTRACT_INVALID_CONFIG,
-            { factory: "createTargetBatchWriter", field: "targetModels" }
-        );
-    }
-    return createTargetBatchWriterImpl(config);
-}
-
-/**
- * @param {object} config
- * @returns {CheckpointWriter}
- */
-function createCheckpointWriter(config) {
-    requireObject(config, "config", "createCheckpointWriter");
-    requireMongooseConnection(config.targetConnection, "targetConnection", "createCheckpointWriter");
-    const runIdentity = resolveRunIdentity(config);
-    return createCheckpointWriterImpl({ ...config, runIdentity });
-}
-
-/**
- * @param {object} config
- * @returns {AuditWriter}
- */
-function createAuditWriter(config) {
-    requireObject(config, "config", "createAuditWriter");
-    requireNonEmptyString(config.runId, "runId", "createAuditWriter");
-    requireNonEmptyString(config.artifactPath, "artifactPath", "createAuditWriter");
-    return createAuditWriterImpl(config);
 }
 
 module.exports = {
@@ -485,12 +368,6 @@ module.exports = {
     validateAuditRecord,
     validateCheckpointRecord,
     validateMigrationWriteContext,
-    createSourceReader,
-    createCatalogSourceIterator,
-    createDocumentTransformer,
-    createTargetBatchWriter,
-    createCheckpointWriter,
-    createAuditWriter,
     validateTransformedDocument,
     validateTransformedBatch
 };

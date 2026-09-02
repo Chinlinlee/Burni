@@ -20,7 +20,7 @@ module.exports = {
         temporalCutoverGate: require("./migration/temporalCutoverGate"),
         temporalRollout: require("./migration/temporalRollout"),
         migrationContracts: require("./migration/migrationContracts"),
-        streamingMigration: require("./migration/streamingMigration")
+        dualDatabaseOperator: require("./migration/dualDatabaseOperator")
     },
     runtime: {
         registrySearchHandler: require("./runtime/registrySearchHandler")

@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 const { MongoMemoryServer } = require("mongodb-memory-server");
 const { ObjectId } = require("mongodb");
 const { registerDiscoveredModels } = require("@models/mongodb/connector");
-const { runStreamingMigration } = require("@models/FHIR/searchParameter/migration/streamingMigration");
+const { runDualDatabaseMigrationBatchLoop } = require("@models/FHIR/searchParameter/migration/dualDatabaseOperator");
 const { buildMigrationRunIdentity } = require("@models/FHIR/searchParameter/migration/dualDatabaseOperator");
 const { verifySourceTargetMigration } = require("@models/FHIR/searchParameter/migration/sourceTargetVerification");
 const { normalizeDate } = require("@models/FHIR/temporal");
@@ -31,7 +31,7 @@ function runIdentity() {
 }
 
 async function migratePatientCatalog() {
-    return runStreamingMigration({
+    return runDualDatabaseMigrationBatchLoop({
         sourceConnection,
         targetConnection,
         targetModels,

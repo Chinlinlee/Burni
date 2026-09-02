@@ -1,19 +1,36 @@
+const os = require("os");
+const path = require("path");
 const mongoose = require("mongoose");
 const productionCatalog = require("../../fhir.resourceList.json");
 const {
     buildCatalogSourceDescriptors,
+    createCatalogSourceIterator,
     createSourceReader
 } = require("./sourceReader");
-const { createDocumentTransformer, DocumentTransformError } = require("./documentTransformer");
+const {
+    createDocumentTransformer,
+    DocumentTransformError
+} = require("./documentTransformer");
+const { createTargetBatchWriter } = require("./targetBatchWriter");
+const {
+    createCheckpointWriter,
+    resolveCheckpointModel
+} = require("./checkpointWriter");
+const { createAuditWriter } = require("./auditWriter");
 const {
     scanTemporalDocument,
     loadDefinitions,
     TEMPORAL_CATEGORIES
 } = require("./temporalPreflight");
-const { validateMigrationRunIdentity } = require("./migrationContracts");
+const {
+    validateMigrationRunIdentity,
+    MigrationContractError,
+    MIGRATION_CONTRACT_INVALID_CONFIG
+} = require("./migrationContracts");
 
 const PREFLIGHT_FAILED_CODE = "DUAL_DATABASE_PREFLIGHT_FAILED";
 const MIGRATION_FAILED_CODE = "DUAL_DATABASE_MIGRATION_FAILED";
+const INCOMPLETE_CHECKPOINT_STATUSES = Object.freeze(["pending", "started", "failed"]);
 
 class DualDatabasePreflightError extends Error {
     /**
@@ -160,6 +177,85 @@ function requireNativeDb(sourceConnection) {
         );
     }
     return db;
+}
+
+/**
+ * @param {unknown} connection
+ * @param {string} fieldName
+ */
+function requireMongooseConnection(connection, fieldName) {
+    if (
+        connection === null ||
+        typeof connection !== "object" ||
+        Array.isArray(connection) ||
+        (typeof /** @type {Record<string, unknown>} */ (connection).model !== "function" &&
+            (/** @type {Record<string, unknown>} */ (connection).db === null ||
+                typeof /** @type {Record<string, unknown>} */ (connection).db !== "object"))
+    ) {
+        throw new MigrationContractError(
+            `dual database migration requires a Mongoose connection for ${fieldName}`,
+            MIGRATION_CONTRACT_INVALID_CONFIG,
+            { field: fieldName }
+        );
+    }
+}
+
+/**
+ * @param {{ info?: Function, warn?: Function, error?: Function }} [logger]
+ */
+function normalizeLogger(logger) {
+    return {
+        info: typeof logger?.info === "function" ? logger.info.bind(logger) : () => {},
+        warn: typeof logger?.warn === "function" ? logger.warn.bind(logger) : () => {},
+        error: typeof logger?.error === "function" ? logger.error.bind(logger) : () => {}
+    };
+}
+
+/**
+ * @param {unknown} error
+ * @returns {{ message: string, code?: string }}
+ */
+function formatBatchError(error) {
+    if (error instanceof DocumentTransformError) {
+        return {
+            message: error.message,
+            code: error.code
+        };
+    }
+    if (error instanceof Error) {
+        return { message: error.message };
+    }
+    return { message: String(error) };
+}
+
+/**
+ * @param {import("./migrationContracts").MigrationRunIdentity | string} runIdentity
+ * @param {import("mongoose").Connection} targetConnection
+ * @returns {Promise<boolean>}
+ */
+async function isMigrationRunComplete(runIdentity, targetConnection) {
+    requireMongooseConnection(targetConnection, "targetConnection");
+    const runId =
+        typeof runIdentity === "string"
+            ? runIdentity
+            : (validateMigrationRunIdentity(runIdentity), runIdentity.runId);
+
+    const CheckpointModel = resolveCheckpointModel(targetConnection);
+    const incompleteCount = await CheckpointModel.countDocuments({
+        runId,
+        status: { $in: [...INCOMPLETE_CHECKPOINT_STATUSES] }
+    });
+    if (incompleteCount > 0) {
+        return false;
+    }
+
+    const runCompletion = await CheckpointModel.findOne({
+        runId,
+        collection: "_run",
+        batchId: "_complete",
+        status: "completed"
+    }).lean();
+    return runCompletion !== null;
 }
 
 /**
@@ -394,6 +490,325 @@ async function runDualDatabasePreflight({
 
 /**
  * @param {object} input
+ * @param {"dry-run" | "write"} input.mode
+ * @param {import("mongoose").Connection} input.sourceConnection
+ * @param {import("mongoose").Connection} [input.targetConnection]
+ * @param {import("./migrationContracts").MigrationRunIdentity} input.runIdentity
+ * @param {string[]} [input.catalog]
+ * @param {boolean} [input.includeHistory]
+ * @param {number} [input.batchSize]
+ * @param {number} [input.maxBatches]
+ * @param {string} [input.auditPath]
+ * @param {{ info?: Function, warn?: Function, error?: Function }} [input.logger]
+ * @param {boolean} [input.resume]
+ * @param {Record<string, object>} [input.definitions]
+ * @param {Record<string, import("mongoose").Model>} [input.targetModels]
+ * @param {ReturnType<typeof import("../../../mongodb/connector").discoverModelFiles>} [input.discovered]
+ * @returns {Promise<
+ *   | { documentsProcessed: number, batchesProcessed: number, auditEntries: import("./migrationContracts").AuditRecord[] }
+ *   | {
+ *       runIdentity: import("./migrationContracts").MigrationRunIdentity,
+ *       batchesCompleted: number,
+ *       batchesFailed: number,
+ *       batchesSkipped: number,
+ *       documentsProcessed: number,
+ *       status: "complete" | "incomplete"
+ *     }
+ * >}
+ */
+async function runMigrationBatchLoop({
+    mode,
+    sourceConnection,
+    targetConnection,
+    runIdentity,
+    catalog = productionCatalog,
+    includeHistory = true,
+    batchSize,
+    maxBatches,
+    auditPath,
+    logger,
+    resume = true,
+    definitions,
+    targetModels,
+    discovered
+}) {
+    const isWrite = mode === "write";
+    validateMigrationRunIdentity(runIdentity);
+    requireMongooseConnection(sourceConnection, "sourceConnection");
+    if (isWrite) {
+        requireMongooseConnection(targetConnection, "targetConnection");
+    }
+
+    const log = normalizeLogger(logger);
+    const documentTransformer = createDocumentTransformer({ definitions });
+    const targetBatchWriter = isWrite
+        ? createTargetBatchWriter({
+              targetConnection,
+              runId: runIdentity.runId,
+              targetModels,
+              discovered
+          })
+        : null;
+    const checkpointWriter = isWrite
+        ? createCheckpointWriter({ targetConnection, runIdentity })
+        : null;
+
+    /** @type {import("./migrationContracts").AuditWriter | null} */
+    let auditWriter = null;
+    if (isWrite || auditPath) {
+        auditWriter = createAuditWriter({
+            runId: runIdentity.runId,
+            artifactPath:
+                auditPath ||
+                path.join(os.tmpdir(), `temporal-migration-audit-${runIdentity.runId}.jsonl`)
+        });
+    }
+
+    /** @type {import("./migrationContracts").AuditRecord[]} */
+    const dryRunAuditEntries = [];
+    /** @type {{
+     *   runIdentity: import("./migrationContracts").MigrationRunIdentity,
+     *   batchesCompleted: number,
+     *   batchesFailed: number,
+     *   batchesSkipped: number,
+     *   documentsProcessed: number,
+     *   status: "complete" | "incomplete"
+     * }} */
+    const writeSummary = isWrite
+        ? {
+              runIdentity,
+              batchesCompleted: 0,
+              batchesFailed: 0,
+              batchesSkipped: 0,
+              documentsProcessed: 0,
+              status: "incomplete"
+          }
+        : null;
+    let dryRunDocumentsProcessed = 0;
+    let dryRunBatchesProcessed = 0;
+
+    let catalogExhausted = false;
+    let batchesHandled = 0;
+
+    try {
+        for await (const batch of createCatalogSourceIterator({
+            sourceConnection,
+            catalog,
+            includeHistory,
+            batchSize
+        })) {
+            if (typeof maxBatches === "number" && batchesHandled >= maxBatches) {
+                break;
+            }
+
+            const { source, documents, boundary } = batch;
+            if (!boundary || documents.length === 0) {
+                continue;
+            }
+
+            const { batchId, collection } = boundary;
+            batchesHandled += 1;
+
+            if (isWrite && resume) {
+                const existingCheckpoint = await checkpointWriter.getCheckpoint(
+                    runIdentity.runId,
+                    collection,
+                    batchId
+                );
+                if (existingCheckpoint?.status === "completed") {
+                    writeSummary.batchesSkipped += 1;
+                    writeSummary.documentsProcessed +=
+                        existingCheckpoint.counts?.sourceCount ?? documents.length;
+                    log.info("Skipping completed batch", { batchId, collection });
+                    continue;
+                }
+            }
+
+            if (isWrite) {
+                await checkpointWriter.markBatchStarted({
+                    runId: runIdentity.runId,
+                    collection,
+                    batchId,
+                    status: "started",
+                    counts: {},
+                    sourceIds: boundary.sourceIds,
+                    boundary
+                });
+            }
+
+            try {
+                const transformContext = {
+                    runIdentity,
+                    source,
+                    batchId
+                };
+                const transformedBatch = documentTransformer.transformBatch(
+                    documents,
+                    transformContext
+                );
+                const transformedDocuments = transformedBatch.map((entry) => entry.document);
+                const auditEntries = transformedBatch.flatMap((entry) => entry.auditEntries);
+
+                if (auditWriter && auditEntries.length > 0) {
+                    await auditWriter.append(auditEntries);
+                    await auditWriter.flush();
+                }
+                if (!isWrite) {
+                    dryRunAuditEntries.push(...auditEntries);
+                }
+
+                if (isWrite) {
+                    const writeResult = await targetBatchWriter.writeBatch(
+                        collection,
+                        transformedDocuments,
+                        {
+                            runIdentity,
+                            source,
+                            batchId,
+                            sourceDocuments: documents
+                        }
+                    );
+
+                    if (writeResult.status !== "completed") {
+                        await checkpointWriter.markBatchFailed({
+                            runId: runIdentity.runId,
+                            collection,
+                            batchId,
+                            status: "failed",
+                            counts: {
+                                sourceCount: writeResult.sourceCount,
+                                targetCount: writeResult.targetCount
+                            },
+                            sourceIds: boundary.sourceIds,
+                            boundary,
+                            errorMetadata: {
+                                message:
+                                    writeResult.errors[0]?.message || "target batch write failed",
+                                code: writeResult.errors[0]?.code,
+                                at: new Date().toISOString()
+                            }
+                        });
+                        writeSummary.batchesFailed += 1;
+                        log.error("Batch write failed", {
+                            batchId,
+                            collection,
+                            errors: writeResult.errors
+                        });
+                        continue;
+                    }
+
+                    await checkpointWriter.markBatchCompleted({
+                        runId: runIdentity.runId,
+                        collection,
+                        batchId,
+                        status: "completed",
+                        counts: {
+                            sourceCount: writeResult.sourceCount,
+                            targetCount: writeResult.targetCount
+                        },
+                        sourceIds: boundary.sourceIds,
+                        boundary
+                    });
+                    writeSummary.batchesCompleted += 1;
+                    writeSummary.documentsProcessed += writeResult.sourceCount;
+                    log.info("Batch completed", {
+                        batchId,
+                        collection,
+                        sourceCount: writeResult.sourceCount
+                    });
+                } else {
+                    dryRunDocumentsProcessed += documents.length;
+                    dryRunBatchesProcessed += 1;
+                    log.info("Dry-run batch transformed", {
+                        batchId,
+                        collection,
+                        documentCount: documents.length
+                    });
+                }
+            } catch (error) {
+                if (!isWrite) {
+                    const metadata =
+                        error instanceof DocumentTransformError
+                            ? { ...error.metadata, phase: "transform" }
+                            : { phase: "transform" };
+                    throw new DualDatabaseMigrationError(
+                        error instanceof Error ? error.message : String(error),
+                        metadata,
+                        {
+                            documentsProcessed: dryRunDocumentsProcessed,
+                            batchesProcessed: dryRunBatchesProcessed,
+                            auditEntries: dryRunAuditEntries
+                        },
+                        error
+                    );
+                }
+
+                const formatted = formatBatchError(error);
+                await checkpointWriter.markBatchFailed({
+                    runId: runIdentity.runId,
+                    collection,
+                    batchId,
+                    status: "failed",
+                    counts: {},
+                    sourceIds: boundary.sourceIds,
+                    boundary,
+                    errorMetadata: {
+                        message: formatted.message,
+                        code: formatted.code,
+                        at: new Date().toISOString()
+                    }
+                });
+                writeSummary.batchesFailed += 1;
+                log.error("Batch processing failed", {
+                    batchId,
+                    collection,
+                    message: formatted.message
+                });
+            }
+        }
+    } catch (error) {
+        if (!isWrite) {
+            if (error instanceof DualDatabaseMigrationError) {
+                throw error;
+            }
+            throw new DualDatabaseMigrationError(
+                error instanceof Error ? error.message : String(error),
+                { phase: "dry-run" },
+                {
+                    documentsProcessed: dryRunDocumentsProcessed,
+                    batchesProcessed: dryRunBatchesProcessed,
+                    auditEntries: dryRunAuditEntries
+                },
+                error
+            );
+        }
+        throw error;
+    } finally {
+        if (auditWriter) {
+            await auditWriter.flush();
+        }
+    }
+
+    catalogExhausted = typeof maxBatches !== "number" || batchesHandled < maxBatches;
+
+    if (isWrite) {
+        const runComplete = writeSummary.batchesFailed === 0 && catalogExhausted;
+        writeSummary.status = runComplete ? "complete" : "incomplete";
+        if (runComplete) {
+            await checkpointWriter.markRunCompleted(runIdentity.runId);
+        }
+        return writeSummary;
+    }
+
+    return {
+        documentsProcessed: dryRunDocumentsProcessed,
+        batchesProcessed: dryRunBatchesProcessed,
+        auditEntries: dryRunAuditEntries
+    };
+}
+
+/**
+ * @param {object} input
  * @param {import("mongoose").Connection} input.sourceConnection
  * @param {string[]} [input.catalog]
  * @param {boolean} [input.includeHistory]
@@ -423,12 +838,6 @@ async function runDualDatabaseDryRun({
     validateMigrationRunIdentity(runIdentity);
     requireNativeDb(sourceConnection);
 
-    const log = {
-        info: typeof logger?.info === "function" ? logger.info.bind(logger) : () => {},
-        warn: typeof logger?.warn === "function" ? logger.warn.bind(logger) : () => {},
-        error: typeof logger?.error === "function" ? logger.error.bind(logger) : () => {}
-    };
-
     /** @type {ReturnType<typeof buildPreflightReport> | undefined} */
     let preflight;
     if (runPreflight) {
@@ -448,90 +857,56 @@ async function runDualDatabaseDryRun({
         }
     }
 
-    const documentTransformer = createDocumentTransformer({ definitions });
-    let documentsProcessed = 0;
-    let batchesProcessed = 0;
-    /** @type {import("./migrationContracts").AuditRecord[]} */
-    const auditEntries = [];
-    const { createAuditWriter } = require("./auditWriter");
-    const auditWriter = auditPath
-        ? createAuditWriter({
-              runId: runIdentity.runId,
-              artifactPath: auditPath
-          })
-        : null;
-
-    const { createCatalogSourceIterator } = require("./sourceReader");
-
-    try {
-        for await (const batch of createCatalogSourceIterator({
-            sourceConnection,
-            catalog,
-            includeHistory,
-            batchSize
-        })) {
-            const { source, documents, boundary } = batch;
-            if (!boundary || documents.length === 0) {
-                continue;
-            }
-
-            try {
-                const transformedBatch = documentTransformer.transformBatch(documents, {
-                    runIdentity,
-                    source,
-                    batchId: boundary.batchId
-                });
-                auditEntries.push(...transformedBatch.flatMap((entry) => entry.auditEntries));
-                if (auditWriter && transformedBatch.some((entry) => entry.auditEntries.length > 0)) {
-                    await auditWriter.append(
-                        transformedBatch.flatMap((entry) => entry.auditEntries)
-                    );
-                }
-                documentsProcessed += documents.length;
-                batchesProcessed += 1;
-                log.info("Dry-run batch transformed", {
-                    batchId: boundary.batchId,
-                    collection: boundary.collection,
-                    documentCount: documents.length
-                });
-            } catch (error) {
-                const metadata =
-                    error instanceof DocumentTransformError
-                        ? { ...error.metadata, phase: "transform" }
-                        : { phase: "transform" };
-                throw new DualDatabaseMigrationError(
-                    error instanceof Error ? error.message : String(error),
-                    metadata,
-                    { documentsProcessed, batchesProcessed, auditEntries },
-                    error
-                );
-            }
-        }
-    } catch (error) {
-        if (error instanceof DualDatabaseMigrationError) {
-            throw error;
-        }
-        throw new DualDatabaseMigrationError(
-            error instanceof Error ? error.message : String(error),
-            { phase: "dry-run" },
-            { documentsProcessed, batchesProcessed, auditEntries },
-            error
-        );
-    } finally {
-        if (auditWriter) {
-            await auditWriter.flush();
-        }
-    }
+    const summary = await runMigrationBatchLoop({
+        mode: "dry-run",
+        sourceConnection,
+        runIdentity,
+        catalog,
+        includeHistory,
+        batchSize,
+        auditPath,
+        logger,
+        definitions
+    });
 
     return {
         ...(preflight ? { preflight } : {}),
-        summary: {
-            documentsProcessed,
-            batchesProcessed,
-            auditEntries
-        },
+        summary,
         runIdentity
     };
+}
+
+/**
+ * Write-mode batch loop for resume and checkpoint tests.
+ *
+ * @param {object} input
+ * @param {import("mongoose").Connection} input.sourceConnection
+ * @param {import("mongoose").Connection} input.targetConnection
+ * @param {import("./migrationContracts").MigrationRunIdentity} input.runIdentity
+ * @param {string[]} [input.catalog]
+ * @param {boolean} [input.includeHistory]
+ * @param {number} [input.batchSize]
+ * @param {number} [input.maxBatches]
+ * @param {string} [input.auditPath]
+ * @param {{ info?: Function, warn?: Function, error?: Function }} [input.logger]
+ * @param {boolean} [input.resume]
+ * @param {Record<string, import("mongoose").Model>} [input.targetModels]
+ * @param {ReturnType<typeof import("../../../mongodb/connector").discoverModelFiles>} [input.discovered]
+ * @returns {Promise<{
+ *   runIdentity: import("./migrationContracts").MigrationRunIdentity,
+ *   batchesCompleted: number,
+ *   batchesFailed: number,
+ *   batchesSkipped: number,
+ *   documentsProcessed: number,
+ *   status: "complete" | "incomplete"
+ * }>}
+ */
+async function runDualDatabaseMigrationBatchLoop(input) {
+    const summary = await runMigrationBatchLoop({
+        mode: "write",
+        ...input
+    });
+    return /** @type {Exclude<typeof summary, { batchesProcessed: number }>} */ (summary);
 }
 
 /**
@@ -548,7 +923,7 @@ async function runDualDatabaseDryRun({
  * @returns {Promise<{
  *   runIdentity: import("./migrationContracts").MigrationRunIdentity,
  *   preflight: ReturnType<typeof buildPreflightReport>,
- *   summary: Awaited<ReturnType<typeof import("./streamingMigration").runStreamingMigration>>
+ *   summary: Awaited<ReturnType<typeof runDualDatabaseMigrationBatchLoop>>
  * }>}
  */
 async function runDualDatabaseWrite({
@@ -577,12 +952,11 @@ async function runDualDatabaseWrite({
     }
 
     const { discoverModelFilesForCatalog, registerDiscoveredModels } = require("../../../mongodb/connector");
-    const { runStreamingMigration } = require("./streamingMigration");
     const discovered = discoverModelFilesForCatalog(catalog, includeHistory);
     const targetModels = {};
     registerDiscoveredModels(discovered, targetModels, targetConnection);
 
-    const summary = await runStreamingMigration({
+    const summary = await runDualDatabaseMigrationBatchLoop({
         sourceConnection,
         targetConnection,
         runIdentity,
@@ -610,6 +984,7 @@ async function runDualDatabaseWrite({
 module.exports = {
     PREFLIGHT_FAILED_CODE,
     MIGRATION_FAILED_CODE,
+    INCOMPLETE_CHECKPOINT_STATUSES,
     DualDatabasePreflightError,
     DualDatabaseMigrationError,
     buildMigrationRunIdentity,
@@ -618,5 +993,7 @@ module.exports = {
     redactUriCredentials,
     runDualDatabasePreflight,
     runDualDatabaseDryRun,
-    runDualDatabaseWrite
+    runDualDatabaseWrite,
+    runDualDatabaseMigrationBatchLoop,
+    isMigrationRunComplete
 };
