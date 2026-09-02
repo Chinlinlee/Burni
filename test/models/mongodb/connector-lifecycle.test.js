@@ -6,7 +6,7 @@ const {
     runIsolatedConnectorScenario
 } = require("../../support/mongodb/connector-lifecycle-fixture");
 
-const EXPECTED_STATIC_MODEL_COUNT = 2;
+const EXPECTED_STATIC_MODEL_COUNT = 3;
 const EXPECTED_CATALOG_MODEL_COUNT =
     EXPECTED_RESOURCE_COUNT * 2 + EXPECTED_STATIC_MODEL_COUNT;
 const LIFECYCLE_FIXTURE_MODEL_COUNT = 4;
