@@ -304,12 +304,6 @@ async function runDualDatabasePreflight({
             }
 
             if (!collectionExists) {
-                const { source: unavailableSource, diagnostic } = buildUnavailableSource(
-                    baseSource,
-                    "collection-missing"
-                );
-                sources.push(unavailableSource);
-                diagnostics.push(diagnostic);
                 continue;
             }
 
@@ -331,12 +325,11 @@ async function runDualDatabasePreflight({
             }
 
             if (!hasDocuments) {
-                const { source: unavailableSource, diagnostic } = buildUnavailableSource(
-                    baseSource,
-                    "collection-empty"
-                );
-                sources.push(unavailableSource);
-                diagnostics.push(diagnostic);
+                sources.push({
+                    ...baseSource,
+                    available: true,
+                    documentCount: 0
+                });
                 continue;
             }
 

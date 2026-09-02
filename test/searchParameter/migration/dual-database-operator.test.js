@@ -171,7 +171,7 @@ describe("dual database operator", function () {
         ]);
     });
 
-    it("runDualDatabasePreflight reports unavailable missing collections", async function () {
+    it("runDualDatabasePreflight skips missing collections without failing", async function () {
         const report = await runDualDatabasePreflight({
             sourceConnection,
             catalog: ["Patient", "Observation"],
@@ -179,18 +179,13 @@ describe("dual database operator", function () {
             batchSize: 10
         });
 
-        expect(report.valid).to.equal(false);
-        expect(report.summary.unavailableSources).to.equal(2);
+        expect(report.valid).to.equal(true);
+        expect(report.summary.unavailableSources).to.equal(0);
+        expect(report.summary.sourcesScanned).to.equal(0);
         expect(report.summary.documentsScanned).to.equal(0);
-        expect(
-            report.diagnostics.find((diagnostic) => diagnostic.resource === "Patient")
-        ).to.include({
-            code: "temporal-preflight-source-unavailable",
-            reason: "collection-missing"
-        });
     });
 
-    it("runDualDatabasePreflight treats empty collections as unavailable", async function () {
+    it("runDualDatabasePreflight treats empty collections as available with zero documents", async function () {
         await sourceConnection.db.createCollection("Patient");
 
         const report = await runDualDatabasePreflight({
@@ -199,11 +194,14 @@ describe("dual database operator", function () {
             includeHistory: false
         });
 
-        expect(report.valid).to.equal(false);
-        expect(report.summary.unavailableSources).to.equal(1);
-        expect(report.diagnostics[0]).to.include({
+        expect(report.valid).to.equal(true);
+        expect(report.summary.unavailableSources).to.equal(0);
+        expect(report.summary.sourcesScanned).to.equal(1);
+        expect(report.summary.documentsScanned).to.equal(0);
+        expect(report.sources[0]).to.include({
             resource: "Patient",
-            reason: "collection-empty"
+            available: true,
+            documentCount: 0
         });
     });
 
