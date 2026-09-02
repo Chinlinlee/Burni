@@ -542,6 +542,7 @@ async function runDualDatabaseDryRun({
  * @param {string[]} [input.catalog]
  * @param {boolean} [input.includeHistory]
  * @param {number} [input.batchSize]
+ * @param {number} [input.maxBatches]
  * @param {string} [input.auditPath]
  * @param {{ info?: Function, warn?: Function, error?: Function }} [input.logger]
  * @returns {Promise<{
@@ -557,6 +558,7 @@ async function runDualDatabaseWrite({
     catalog = productionCatalog,
     includeHistory = true,
     batchSize,
+    maxBatches,
     auditPath,
     logger
 }) {
@@ -574,9 +576,9 @@ async function runDualDatabaseWrite({
         throw new DualDatabasePreflightError(preflight);
     }
 
-    const { discoverModelFiles, registerDiscoveredModels } = require("../../../mongodb/connector");
+    const { discoverModelFilesForCatalog, registerDiscoveredModels } = require("../../../mongodb/connector");
     const { runStreamingMigration } = require("./streamingMigration");
-    const discovered = discoverModelFiles();
+    const discovered = discoverModelFilesForCatalog(catalog, includeHistory);
     const targetModels = {};
     registerDiscoveredModels(discovered, targetModels, targetConnection);
 
@@ -587,6 +589,7 @@ async function runDualDatabaseWrite({
         catalog,
         includeHistory,
         batchSize,
+        maxBatches,
         logger,
         targetModels,
         discovered,

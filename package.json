@@ -10,6 +10,7 @@
         "search-parameter:diagnostics": "node ./scripts/record-search-parameter-diagnostics.js",
         "search-parameter:verify": "node ./scripts/verify-search-parameter-diagnostics.js",
         "test:diagnostics-gate": "mocha --no-config --require test/hook.js --timeout 300000 --exit test/searchParameter/migration/diagnostics-ci-gate.test.js",
+        "test:dual-database-migration": "mocha --no-config --require test/hook.js --timeout 300000 --exit test/searchParameter/migration/dual-database-operator.test.js test/searchParameter/migration/dual-database-rollout-validation.test.js test/searchParameter/migration/dual-database-bson-policy.test.js test/searchParameter/migration/streaming-migration.test.js test/scripts/dual-database-temporal-migrate-cli.test.js",
         "test:all-resource-crud": "mocha --no-config --require test/hook.js --timeout 600000 --exit test/integration/FHIR/all-resource-crud.integration.test.js",
         "search-parameter:build-artifacts": "node ./scripts/build-search-parameter-migration-artifacts.js",
         "temporal:migrate": "node ./scripts/dual-database-temporal-migrate.js",

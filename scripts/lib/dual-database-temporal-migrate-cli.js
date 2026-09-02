@@ -86,6 +86,39 @@ function redactMongoUri(uri) {
 }
 
 /**
+ * @param {string} text
+ * @returns {string}
+ */
+function redactMongoUrisInText(text) {
+    return String(text).replace(/mongodb(?:\+srv)?:\/\/\S+/g, (uri) =>
+        redactMongoUri(uri.replace(/[.,;:]+$/u, ""))
+    );
+}
+
+/**
+ * @param {unknown} error
+ * @returns {{ name: string, message: string, code?: unknown } | undefined}
+ */
+function serializeCaughtError(error) {
+    if (!error) {
+        return undefined;
+    }
+
+    const serialized = {
+        name: error instanceof Error && error.name ? error.name : "Error",
+        message: redactMongoUrisInText(
+            error instanceof Error ? error.message : String(error)
+        )
+    };
+
+    if (error instanceof Error && "code" in error && error.code !== undefined) {
+        serialized.code = error.code;
+    }
+
+    return serialized;
+}
+
+/**
  * @param {string} sourceUri
  * @param {string} targetUri
  * @returns {boolean}
@@ -437,6 +470,7 @@ module.exports = {
     parseDualDatabaseTemporalMigrateArgs,
     parseResourceList,
     redactMongoUri,
+    serializeCaughtError,
     resolveAuditPath,
     resolveDatabaseIdentity,
     resolveDatabaseNameFromUri,

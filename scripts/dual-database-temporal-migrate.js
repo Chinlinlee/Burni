@@ -12,6 +12,7 @@ const {
     parseDualDatabaseTemporalMigrateArgs,
     parseResourceList,
     redactMongoUri,
+    serializeCaughtError,
     resolveAuditPath,
     resolveDatabaseIdentity,
     resolveExitCode,
@@ -61,6 +62,10 @@ function buildEvidenceReport(input) {
 
     if (input.diagnostics) {
         report.diagnostics = input.diagnostics;
+    }
+
+    if (input.error) {
+        report.error = input.error;
     }
 
     return report;
@@ -188,6 +193,7 @@ async function main() {
         }
     } catch (error) {
         caughtError = error;
+        console.error(error);
         if (error instanceof DualDatabasePreflightError) {
             preflight = error.report;
         }
@@ -216,7 +222,8 @@ async function main() {
         preflight,
         summary,
         auditPath: options.mode === MODES.PREFLIGHT ? undefined : auditPath,
-        diagnostics: preflight?.diagnostics
+        diagnostics: preflight?.diagnostics,
+        error: serializeCaughtError(caughtError)
     });
     writeEvidenceReport(reportPath, report);
 

@@ -472,6 +472,28 @@ function discoverModelFiles() {
     };
 }
 
+/**
+ * @param {string[]} catalog
+ * @param {boolean} [includeHistory]
+ * @returns {ReturnType<typeof discoverModelFiles>}
+ */
+function discoverModelFilesForCatalog(catalog, includeHistory = true) {
+    const resourceTypes = new Set(catalog);
+    const discovered = discoverModelFiles();
+
+    return {
+        resourceModels: discovered.resourceModels.filter((file) =>
+            resourceTypes.has(file.replace(/\.js$/, ""))
+        ),
+        historyModels: includeHistory
+            ? discovered.historyModels.filter((file) =>
+                  resourceTypes.has(file.replace(/_history\.js$/, ""))
+              )
+            : [],
+        staticModels: []
+    };
+}
+
 function registerModelFile(file, dirname, modelMap, connection = mongoose) {
     const moduleName = file.split(".")[0];
     if (Object.prototype.hasOwnProperty.call(modelMap, moduleName)) {
@@ -532,6 +554,7 @@ exports.buildConnectionUrl = buildConnectionUrl;
 exports.buildMongooseConnectOptions = buildMongooseConnectOptions;
 exports.disableAutomaticSchemaProvisioning = disableAutomaticSchemaProvisioning;
 exports.discoverModelFiles = discoverModelFiles;
+exports.discoverModelFilesForCatalog = discoverModelFilesForCatalog;
 exports.initializeWithDiscovered = initializeWithDiscovered;
 exports.registerDiscoveredModels = registerDiscoveredModels;
 exports.MongoDBInitializationConflictError = MongoDBInitializationConflictError;

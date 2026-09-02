@@ -13,6 +13,7 @@ const {
     parseDualDatabaseTemporalMigrateArgs,
     parseResourceList,
     redactMongoUri,
+    serializeCaughtError,
     resolveAuditPath,
     resolveDatabaseIdentity,
     resolveDatabaseNameFromUri,
@@ -115,6 +116,25 @@ describe("dual-database-temporal-migrate CLI", function () {
         expect(redactedSource).to.not.include("source-user");
         expect(redactedTarget).to.not.include("target-secret");
         expect(redactedTarget).to.not.include("target-user");
+    });
+
+    it("serializes caught errors without credentials", function () {
+        const authError = Object.assign(new Error("Authentication failed."), {
+            name: "MongoServerError",
+            code: 18
+        });
+        expect(serializeCaughtError(authError)).to.deep.equal({
+            name: "MongoServerError",
+            message: "Authentication failed.",
+            code: 18
+        });
+
+        const uriError = new Error(`failed to connect to ${SOURCE_URI}`);
+        const serialized = serializeCaughtError(uriError);
+        expect(serialized.message).to.include("source-host:27017/burni-source");
+        expect(serialized.message).to.not.include("source-secret");
+        expect(serialized.message).to.not.include("source-user");
+        expect(serializeCaughtError(undefined)).to.equal(undefined);
     });
 
     it("detects when source and target resolve to the same database", function () {

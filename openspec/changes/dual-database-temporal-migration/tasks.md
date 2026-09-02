@@ -45,8 +45,8 @@
 
 ## 7. Tests and rollout validation
 
-- [ ] 7.1 增加 source/target connection isolation、空 target、identity preservation 與 credential redaction tests。
-- [ ] 7.2 增加 streaming batch、checkpoint interruption、retry、duplicate prevention 與 partial target tests。
-- [ ] 7.3 增加所有 BSON Date UTC/lossy policy、invalid value 與 unresolved policy tests。
-- [ ] 7.4 增加完整 production catalog、history、nested、choice、contained 與 temporal array migration coverage。
-- [ ] 7.5 執行 targeted migration tests、generator checks、`npm test` 與 `npm run test:full`，確認所有 OpenSpec acceptance scenarios 通過。
+- [x] 7.1 增加 source/target connection isolation、空 target、identity preservation 與 credential redaction tests。
+- [x] 7.2 增加 streaming batch、checkpoint interruption、retry、duplicate prevention 與 partial target tests。
+- [x] 7.3 增加所有 BSON Date UTC/lossy policy、invalid value 與 unresolved policy tests。
+- [x] 7.4 增加完整 production catalog、history、nested、choice、contained 與 temporal array migration coverage。
+- [x] 7.5 執行 targeted migration tests、generator checks、`npm test` 與 `npm run test:full`，確認所有 OpenSpec acceptance scenarios 通過。
