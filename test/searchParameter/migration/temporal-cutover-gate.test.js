@@ -5,7 +5,8 @@ const { createSearchQueryPlan } = require("@models/FHIR/searchParameter/compiler
 const { generateTemporalIndexManifest } = require("@models/FHIR/searchParameter/indexes/indexGenerator");
 const {
     validateBackupRestoreability,
-    verifyTemporalCutover
+    verifyTemporalCutover,
+    requiresDualDatabaseVerification
 } = require("@models/FHIR/searchParameter/migration/temporalCutoverGate");
 const {
     runTemporalRollout
@@ -304,5 +305,70 @@ describe("temporal cutover completion gate", function () {
         expect(second.diagnostics).to.deep.equal(first.diagnostics);
         expect(second.readOnly).to.equal(true);
         expect(second.activationAllowed).to.equal(true);
+    });
+
+    it("skips dual-database verification gates when not configured", async function () {
+        const result = await verifyTemporalCutover(validOptions());
+
+        expect(requiresDualDatabaseVerification({})).to.equal(false);
+        expect(result.gates.sourceTargetComparison.skipped).to.equal(true);
+        expect(result.gates.auditCompleteness.skipped).to.equal(true);
+        expect(result.gates.searchVerification.skipped).to.equal(true);
+        expect(result.gates.targetPreflight.skipped).to.equal(true);
+        expect(result.summary.sourceTargetComparisonValid).to.equal(null);
+    });
+
+    it("requires dual-database verification gates when explicitly enabled", async function () {
+        const result = await verifyTemporalCutover({
+            ...validOptions(),
+            requireDualDatabaseVerification: true
+        });
+
+        expect(result.valid).to.equal(false);
+        expect(result.gates.sourceTargetComparison.valid).to.equal(false);
+        expect(result.gates.auditCompleteness.valid).to.equal(false);
+        expect(result.gates.searchVerification.valid).to.equal(false);
+        expect(result.gates.targetPreflight.valid).to.equal(false);
+        expect(result.summary.dualDatabaseVerificationRequired).to.equal(true);
+    });
+
+    it("wires injected dual-database verification results into the cutover gate", async function () {
+        const result = await verifyTemporalCutover({
+            ...validOptions(),
+            requireDualDatabaseVerification: true,
+            sourceTargetComparisonResult: { valid: true, diagnostics: [] },
+            auditCompletenessResult: { valid: true, diagnostics: [] },
+            searchVerificationResult: { valid: true, diagnostics: [] },
+            targetPreflightResult: {
+                valid: true,
+                diagnostics: [],
+                summary: { invalid: 0, unresolvedAmbiguousBsonDates: 0 }
+            }
+        });
+
+        expect(result.valid).to.equal(true);
+        expect(result.gates.sourceTargetComparison.valid).to.equal(true);
+        expect(result.gates.auditCompleteness.valid).to.equal(true);
+        expect(result.gates.searchVerification.valid).to.equal(true);
+        expect(result.gates.targetPreflight.valid).to.equal(true);
+        expect(result.summary.sourceTargetComparisonValid).to.equal(true);
+        expect(result.summary.auditCompletenessValid).to.equal(true);
+        expect(result.summary.searchVerificationValid).to.equal(true);
+        expect(result.summary.targetPreflightValid).to.equal(true);
+    });
+
+    it("fails dual-database cutover when injected source/target comparison is invalid", async function () {
+        const result = await verifyTemporalCutover({
+            ...validOptions(),
+            sourceTargetComparisonResult: {
+                valid: false,
+                diagnostics: [{ code: "source-target-count-mismatch" }]
+            }
+        });
+
+        expect(result.valid).to.equal(false);
+        expect(result.diagnostics.map((entry) => entry.code)).to.include(
+            "source-target-count-mismatch"
+        );
     });
 });

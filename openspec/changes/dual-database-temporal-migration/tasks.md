@@ -37,11 +37,11 @@
 
 ## 6. Verification and cutover gates
 
-- [ ] 6.1 建立 source/target collection count 與 identity comparison。
-- [ ] 6.2 建立 canonical-aware full-document deep comparison，區分預期 BSON Date lossy difference 與其他資料差異。
-- [ ] 6.3 對 target 執行 temporal preflight、index manifest compatibility 與 explain verification。
-- [ ] 6.4 建立 representative temporal search hit-set acceptance，涵蓋 precision、comparator、Period、array、choice、history、contained 與 execution modes。
-- [ ] 6.5 將 migration completion、audit completeness、source/target comparison 與 search verification 接入 cutover gate。
+- [x] 6.1 建立 source/target collection count 與 identity comparison。
+- [x] 6.2 建立 canonical-aware full-document deep comparison，區分預期 BSON Date lossy difference 與其他資料差異。
+- [x] 6.3 對 target 執行 temporal preflight、index manifest compatibility 與 explain verification。
+- [x] 6.4 建立 representative temporal search hit-set acceptance，涵蓋 precision、comparator、Period、array、choice、history、contained 與 execution modes。
+- [x] 6.5 將 migration completion、audit completeness、source/target comparison 與 search verification 接入 cutover gate。
 
 ## 7. Tests and rollout validation
 

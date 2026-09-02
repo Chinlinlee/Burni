@@ -27,6 +27,8 @@ const MONGODB_DEPENDENT_FILES = [
     "test/searchParameter/migration/compatibility-plus-corrections.test.js",
     "test/searchParameter/migration/hit-set.test.js",
     "test/searchParameter/migration/migration.test.js",
+    "test/searchParameter/migration/source-target-verification.test.js",
+    "test/searchParameter/migration/temporal-search-verification.test.js",
     "test/searchParameter/registry/registry-reload-lifecycle.test.js",
     // isolated child processes with MongoMemoryServer
     "test/models/mongodb/connector-lifecycle.test.js"
@@ -43,6 +45,8 @@ const FAST_PROFILE_EXCLUDE = [
     "test/searchParameter/migration/migration.test.js",
     "test/searchParameter/migration/hit-set.test.js",
     "test/searchParameter/migration/compatibility-plus-corrections.test.js",
+    "test/searchParameter/migration/source-target-verification.test.js",
+    "test/searchParameter/migration/temporal-search-verification.test.js",
     "test/searchParameter/registry/registry-reload-lifecycle.test.js",
     "test/support/fhir/crud-test-context.test.js",
     "test/support/fhir/fhir-service.test.js",

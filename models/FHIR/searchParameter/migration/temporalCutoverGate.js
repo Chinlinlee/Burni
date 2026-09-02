@@ -1,6 +1,9 @@
 const {
     TEMPORAL_CATEGORIES
 } = require("./temporalPreflight");
+const { verifyAuditCompleteness } = require("./auditCompleteness");
+const { verifySourceTargetMigration } = require("./sourceTargetVerification");
+const { verifyTemporalSearchHitSets } = require("./temporalSearchVerification");
 const {
     validateTemporalIndexManifest
 } = require("../indexes/indexValidation");
@@ -323,6 +326,68 @@ async function verifyIndexGate({
     };
 }
 
+function requiresDualDatabaseVerification(options = {}) {
+    return (
+        options.requireDualDatabaseVerification === true ||
+        options.sourceTargetComparisonResult !== undefined ||
+        typeof options.sourceTargetVerificationProvider === "function" ||
+        options.auditPath !== undefined ||
+        typeof options.auditCompletenessProvider === "function" ||
+        options.searchVerificationResult !== undefined ||
+        typeof options.searchVerificationProvider === "function" ||
+        options.targetPreflightResult !== undefined ||
+        typeof options.targetPreflightProvider === "function" ||
+        options.targetConnection !== undefined
+    );
+}
+
+function skippedGate(name) {
+    return {
+        valid: true,
+        skipped: true,
+        name,
+        diagnostics: []
+    };
+}
+
+async function resolveVerificationGate({
+    required,
+    configured,
+    provider,
+    defaultRunner,
+    invalidCode,
+    invalidMessage,
+    context,
+    field
+}) {
+    if (!required && configured === undefined && typeof provider !== "function") {
+        return skippedGate(field);
+    }
+
+    const candidate = await resolveProvider(provider, configured, context, field);
+    if (candidate !== undefined) {
+        return normalizeVerificationResult(candidate, invalidCode, invalidMessage);
+    }
+
+    if (typeof defaultRunner === "function") {
+        return normalizeVerificationResult(
+            await defaultRunner(context),
+            invalidCode,
+            invalidMessage
+        );
+    }
+
+    return {
+        valid: false,
+        diagnostics: [
+            diagnostic(
+                `${field}-verification-missing`,
+                `Dual-database cutover requires ${field} verification inputs`
+            )
+        ]
+    };
+}
+
 function buildRollbackRecommendation(valid, backup) {
     if (valid) {
         return {
@@ -416,11 +481,127 @@ async function verifyTemporalCutover(options = {}) {
         indexVerifier: options.indexVerifier,
         context
     });
+    const dualDatabaseRequired = requiresDualDatabaseVerification(options);
+    const verificationContext = {
+        ...context,
+        sourceConnection: options.sourceConnection,
+        targetConnection: options.targetConnection,
+        catalog: options.catalog,
+        includeHistory: options.includeHistory,
+        definitions: options.definitions,
+        runIdentity: options.runIdentity,
+        migrationResult: migrationStatus,
+        migrationSummary: unwrapResult(migrationStatus)?.summary,
+        preflightSummary: getPreflightReport(preflightStatus)?.summary,
+        auditPath: options.auditPath,
+        indexManifest: options.indexManifest || options.manifest,
+        plans: options.plans || []
+    };
+
+    const sourceTargetComparison = await resolveVerificationGate({
+        required: dualDatabaseRequired,
+        configured:
+            options.sourceTargetComparisonResult || options.sourceTargetVerificationResult,
+        provider: options.sourceTargetVerificationProvider,
+        defaultRunner:
+            options.sourceConnection &&
+            options.targetConnection &&
+            options.runIdentity &&
+            !options.sourceTargetVerificationProvider &&
+            options.sourceTargetComparisonResult === undefined &&
+            options.sourceTargetVerificationResult === undefined
+                ? () =>
+                      verifySourceTargetMigration({
+                          sourceConnection: options.sourceConnection,
+                          targetConnection: options.targetConnection,
+                          catalog: options.catalog,
+                          includeHistory: options.includeHistory,
+                          definitions: options.definitions,
+                          runIdentity: options.runIdentity
+                      })
+                : undefined,
+        invalidCode: "source-target-comparison-invalid",
+        invalidMessage: "The source/target comparison result is invalid",
+        context: verificationContext,
+        field: "sourceTargetComparison"
+    });
+
+    const auditCompleteness = await resolveVerificationGate({
+        required: dualDatabaseRequired,
+        configured: options.auditCompletenessResult,
+        provider: options.auditCompletenessProvider,
+        defaultRunner:
+            options.auditPath &&
+            !options.auditCompletenessProvider &&
+            options.auditCompletenessResult === undefined
+                ? () =>
+                      verifyAuditCompleteness({
+                          auditPath: options.auditPath,
+                          migrationSummary: verificationContext.migrationSummary,
+                          preflightSummary: verificationContext.preflightSummary,
+                          expectedLossyCount: options.expectedLossyCount
+                      })
+                : undefined,
+        invalidCode: "audit-completeness-invalid",
+        invalidMessage: "The audit completeness result is invalid",
+        context: verificationContext,
+        field: "auditCompleteness"
+    });
+
+    const searchVerification = await resolveVerificationGate({
+        required: dualDatabaseRequired,
+        configured: options.searchVerificationResult,
+        provider: options.searchVerificationProvider,
+        defaultRunner:
+            options.targetConnection &&
+            !options.searchVerificationProvider &&
+            options.searchVerificationResult === undefined
+                ? () =>
+                      verifyTemporalSearchHitSets({
+                          targetConnection: options.targetConnection,
+                          scenarios: options.searchVerificationScenarios
+                      })
+                : undefined,
+        invalidCode: "temporal-search-verification-invalid",
+        invalidMessage: "The temporal search verification result is invalid",
+        context: verificationContext,
+        field: "searchVerification"
+    });
+
+    const targetPreflight = await resolveVerificationGate({
+        required: dualDatabaseRequired,
+        configured: options.targetPreflightResult,
+        provider: options.targetPreflightProvider,
+        defaultRunner:
+            options.targetConnection &&
+            !options.targetPreflightProvider &&
+            options.targetPreflightResult === undefined
+                ? async () => {
+                      const { runDualDatabasePreflight } = require("./dualDatabaseOperator");
+                      const report = await runDualDatabasePreflight({
+                          sourceConnection: options.targetConnection,
+                          catalog: options.catalog,
+                          includeHistory: options.includeHistory,
+                          definitions: options.definitions
+                      });
+                      return validatePreflightCompletion(report);
+                  }
+                : undefined,
+        invalidCode: "target-preflight-invalid",
+        invalidMessage: "The target preflight result is invalid",
+        context: verificationContext,
+        field: "targetPreflight"
+    });
+
     const diagnostics = [
         ...migration.diagnostics,
         ...preflight.diagnostics,
         ...backup.diagnostics,
-        ...index.diagnostics
+        ...index.diagnostics,
+        ...sourceTargetComparison.diagnostics,
+        ...auditCompleteness.diagnostics,
+        ...searchVerification.diagnostics,
+        ...targetPreflight.diagnostics
     ];
     const valid = diagnostics.length === 0;
 
@@ -435,7 +616,11 @@ async function verifyTemporalCutover(options = {}) {
             migration,
             preflight,
             backup,
-            index
+            index,
+            sourceTargetComparison,
+            auditCompleteness,
+            searchVerification,
+            targetPreflight
         },
         diagnostics,
         summary: {
@@ -461,6 +646,17 @@ async function verifyTemporalCutover(options = {}) {
             backupRestorable: backup.valid,
             indexCompatible: index.compatibility.valid,
             explainValid: index.explain.valid,
+            sourceTargetComparisonValid:
+                sourceTargetComparison.skipped === true
+                    ? null
+                    : sourceTargetComparison.valid,
+            auditCompletenessValid:
+                auditCompleteness.skipped === true ? null : auditCompleteness.valid,
+            searchVerificationValid:
+                searchVerification.skipped === true ? null : searchVerification.valid,
+            targetPreflightValid:
+                targetPreflight.skipped === true ? null : targetPreflight.valid,
+            dualDatabaseVerificationRequired: dualDatabaseRequired,
             diagnosticCount: diagnostics.length
         },
         rollback: buildRollbackRecommendation(valid, backup)
@@ -480,6 +676,7 @@ module.exports = {
     GATE_KIND,
     GATE_VERSION,
     createTemporalCutoverGate,
+    requiresDualDatabaseVerification,
     validateBackupRestoreability,
     validateMigrationCompletion,
     validatePreflightCompletion,
