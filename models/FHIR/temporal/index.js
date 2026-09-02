@@ -18,7 +18,9 @@ const {
     inferDateTimePrecision,
     inferInstantPrecision
 } = require("./lexical");
-const { isCalendarDate, compareCalendarDates, expectedDateBoundaries } = require("./calendar");
+const { isCalendarDate, compareCalendarDates, expectedDateBoundaries, addCalendarDays } =
+    require("./calendar");
+const { parseDecimal, formatDecimal, addDecimal, divideDecimalByTen } = require("./arithmetic");
 const { isDecimal128, compareDecimal128 } = require("./decimal128");
 const {
     validateCanonicalDate,
@@ -79,6 +81,11 @@ module.exports = {
     isCalendarDate,
     compareCalendarDates,
     expectedDateBoundaries,
+    addCalendarDays,
+    parseDecimal,
+    formatDecimal,
+    addDecimal,
+    divideDecimalByTen,
     isDecimal128,
     compareDecimal128,
     validateCanonicalDate,

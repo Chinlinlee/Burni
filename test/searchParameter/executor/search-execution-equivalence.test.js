@@ -85,10 +85,10 @@ describe("typed temporal search execution", function () {
 
     it("reuses the typed plan in a chained lookup without parsing its value again", function () {
         const targetPlan = temporalPlan("date", "date");
-        const parser = require("@models/FHIR/searchParameter/executor/temporalQueryParser");
-        const original = parser.parseTemporalQueryValue;
+        const temporalQuery = require("@models/FHIR/searchParameter/executor/temporalQuery");
+        const original = temporalQuery.parseTemporalQueryValue;
         let calls = 0;
-        parser.parseTemporalQueryValue = function (...args) {
+        temporalQuery.parseTemporalQueryValue = function (...args) {
             calls += 1;
             return original(...args);
         };
@@ -114,7 +114,7 @@ describe("typed temporal search execution", function () {
                 $gte: "2015-02-01"
             });
         } finally {
-            parser.parseTemporalQueryValue = original;
+            temporalQuery.parseTemporalQueryValue = original;
         }
     });
 
@@ -159,10 +159,10 @@ describe("typed temporal search execution", function () {
     });
 
     it("parses a multi-branch temporal query once", function () {
-        const parser = require("@models/FHIR/searchParameter/executor/temporalQueryParser");
-        const original = parser.parseTemporalQueryValue;
+        const temporalQuery = require("@models/FHIR/searchParameter/executor/temporalQuery");
+        const original = temporalQuery.parseTemporalQueryValue;
         let calls = 0;
-        parser.parseTemporalQueryValue = function (...args) {
+        temporalQuery.parseTemporalQueryValue = function (...args) {
             calls += 1;
             return original(...args);
         };
@@ -181,7 +181,7 @@ describe("typed temporal search execution", function () {
             expect(calls).to.equal(1);
             expect(filterPlan.parsed.groups[0][0].temporal).to.exist;
         } finally {
-            parser.parseTemporalQueryValue = original;
+            temporalQuery.parseTemporalQueryValue = original;
         }
     });
 

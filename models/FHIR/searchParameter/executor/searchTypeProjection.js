@@ -11,11 +11,9 @@ const {
     validateReferenceQueryValue
 } = require("./referenceValueParser");
 const {
-    buildTemporalFilter,
-    buildPeriodTemporalFilter,
+    buildTemporalSearchFilter,
     correlateTemporalFilter
-} = require("./temporalQueryFilter");
-const { parseTemporalQueryValue } = require("./temporalQueryParser");
+} = require("./temporalQuery");
 const {
     DATE_PATTERN,
     DATETIME_PATTERN,
@@ -889,23 +887,18 @@ function buildDateProjection(
         throw new Error(`No search-type projection for ${searchType} on ${datatype}`);
     }
     if (datatype === "Period") {
-        const typedTemporal = temporal ?? parseTemporalQueryValue(value, searchType);
-        return buildPeriodTemporalFilter(
-            fieldPath,
-            typedTemporal,
-            comparator ?? typedTemporal.comparator,
-            arrayPaths
-        );
+        return buildTemporalSearchFilter(fieldPath, "Period", value, {
+            comparator,
+            arrayPaths,
+            temporal
+        });
     }
     if (TEMPORAL_DATATYPES.has(datatype)) {
-        const typedTemporal = temporal ?? parseTemporalQueryValue(value, searchType);
-        return buildTemporalFilter(
-            fieldPath,
-            datatype,
-            typedTemporal,
-            comparator ?? typedTemporal.comparator,
-            arrayPaths
-        );
+        return buildTemporalSearchFilter(fieldPath, datatype, value, {
+            comparator,
+            arrayPaths,
+            temporal
+        });
     }
 
     throw new Error(`No temporal projection for ${searchType} on ${datatype}`);

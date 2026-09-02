@@ -4,12 +4,12 @@ const {
     buildProjectedFilter,
     buildDeceasedCombinedFilter
 } = require("./searchTypeProjection");
-const temporalQueryParser = require("./temporalQueryParser");
+const temporalQuery = require("./temporalQuery");
 const {
     TEMPORAL_KINDS,
     normalizeTemporalQueryRange,
     splitComparatorPrefix
-} = temporalQueryParser;
+} = temporalQuery;
 
 const MAX_QUERY_COST = 10;
 const COMPARATOR_PREFIX = /^(eq|ne|lt|gt|ge|le|sa|eb|ap)(.+)$/;
@@ -40,7 +40,7 @@ function parseValueToken(rawValue, searchType, modifier) {
     if (searchType && TEMPORAL_KINDS.has(searchType) && modifier !== "missing") {
         const split = splitComparatorPrefix(rawValue);
         try {
-            const temporal = temporalQueryParser.parseTemporalQueryValue(rawValue, searchType);
+            const temporal = temporalQuery.parseTemporalQueryValue(rawValue, searchType);
             return {
                 value: temporal.value,
                 comparator: temporal.comparator,
@@ -286,7 +286,7 @@ function createTypedFilterPlan(plan, rawValue, parameterName) {
 module.exports = {
     MAX_QUERY_COST,
     normalizeTemporalQueryRange,
-    parseTemporalQueryValue: temporalQueryParser.parseTemporalQueryValue,
+    parseTemporalQueryValue: temporalQuery.parseTemporalQueryValue,
     parseSearchValue,
     validateAndBuildFilter,
     buildFilterForValue,

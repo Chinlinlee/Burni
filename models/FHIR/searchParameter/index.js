@@ -6,6 +6,7 @@ module.exports = {
     executor: {
         mongoExecutor: require("./executor/mongoExecutor"),
         queryValueParser: require("./executor/queryValueParser"),
+        temporalQuery: require("./executor/temporalQuery"),
         temporalQueryParser: require("./executor/temporalQueryParser"),
         temporalQueryFilter: require("./executor/temporalQueryFilter"),
         instantQueryBuilder: require("./executor/instantQueryBuilder"),

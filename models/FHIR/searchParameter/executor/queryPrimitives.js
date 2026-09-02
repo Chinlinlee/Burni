@@ -1,11 +1,7 @@
 const { URL } = require("url");
 
 const { getUrlMatch } = require("@root/utils/fhir-url");
-const { parseTemporalQueryValue } = require("./temporalQueryParser");
-const {
-    buildTemporalFilter,
-    buildPeriodTemporalFilter
-} = require("./temporalQueryFilter");
+const { buildTemporalSearchFilter } = require("./temporalQuery");
 
 const COMPARATOR_PREFIXES = ["eq", "ne", "lt", "gt", "ge", "le", "sa", "eb", "ap"];
 
@@ -127,8 +123,7 @@ function tokenQuery(item, type, field, required, isCodeableConcept = false) {
  */
 function dateQuery(value, field) {
     try {
-        const temporal = parseTemporalQueryValue(value, "date");
-        return buildTemporalFilter(field, "date", temporal, temporal.comparator);
+        return buildTemporalSearchFilter(field, "date", value);
     } catch {
         return false;
     }
@@ -141,8 +136,7 @@ function dateQuery(value, field) {
  */
 function dateTimeQuery(value, field) {
     try {
-        const temporal = parseTemporalQueryValue(value, "dateTime");
-        return buildTemporalFilter(field, "dateTime", temporal, temporal.comparator);
+        return buildTemporalSearchFilter(field, "dateTime", value);
     } catch {
         return false;
     }
@@ -154,8 +148,7 @@ function dateTimeQuery(value, field) {
  * @returns {Object}
  */
 function periodQuery(value, field) {
-    const temporal = parseTemporalQueryValue(value, "dateTime");
-    return buildPeriodTemporalFilter(field, temporal, temporal.comparator);
+    return buildTemporalSearchFilter(field, "Period", value);
 }
 
 const numberQueryBuilder = {

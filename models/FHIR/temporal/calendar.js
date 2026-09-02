@@ -127,5 +127,6 @@ function expectedDateBoundaries(value, precision) {
 module.exports = {
     isCalendarDate,
     compareCalendarDates,
-    expectedDateBoundaries
+    expectedDateBoundaries,
+    addCalendarDays
 };

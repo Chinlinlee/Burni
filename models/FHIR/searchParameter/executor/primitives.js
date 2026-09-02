@@ -6,8 +6,7 @@ const {
     quantityQuery,
     uriQuery
 } = require("./queryPrimitives");
-const { parseTemporalQueryValue } = require("./temporalQueryParser");
-const { buildTemporalFilter } = require("./temporalQueryFilter");
+const { buildTemporalSearchFilter } = require("./temporalQuery");
 
 /**
  * @param {string} searchType
@@ -31,33 +30,12 @@ function buildPrimitiveFilter(searchType, value, fieldPath, modifier, comparator
             }
             return result;
         }
-        case "date": {
-            const temporal = parseTemporalQueryValue(value, "date");
-            return buildTemporalFilter(
-                fieldPath,
-                "date",
-                temporal,
-                comparator ?? temporal.comparator
-            );
-        }
-        case "dateTime": {
-            const temporal = parseTemporalQueryValue(value, "dateTime");
-            return buildTemporalFilter(
-                fieldPath,
-                "dateTime",
-                temporal,
-                comparator ?? temporal.comparator
-            );
-        }
-        case "instant": {
-            const temporal = parseTemporalQueryValue(value, "instant");
-            return buildTemporalFilter(
-                fieldPath,
-                "instant",
-                temporal,
-                comparator ?? temporal.comparator
-            );
-        }
+        case "date":
+            return buildTemporalSearchFilter(fieldPath, "date", value, { comparator });
+        case "dateTime":
+            return buildTemporalSearchFilter(fieldPath, "dateTime", value, { comparator });
+        case "instant":
+            return buildTemporalSearchFilter(fieldPath, "instant", value, { comparator });
         case "token": {
             return tokenQuery(value, "", fieldPath, "");
         }
