@@ -97,6 +97,7 @@ function formatBatchError(error) {
  * @param {number} [input.maxBatches]
  * @param {Record<string, import("mongoose").Model>} [input.targetModels]
  * @param {ReturnType<typeof import("../../../mongodb/connector").discoverModelFiles>} [input.discovered]
+ * @param {string} [input.auditPath]
  * @returns {Promise<{
  *   runIdentity: import("./migrationContracts").MigrationRunIdentity,
  *   batchesCompleted: number,
@@ -117,7 +118,8 @@ async function runStreamingMigration({
     resume = true,
     maxBatches,
     targetModels,
-    discovered
+    discovered,
+    auditPath
 }) {
     requireMongooseConnection(sourceConnection, "sourceConnection");
     requireMongooseConnection(targetConnection, "targetConnection");
@@ -142,7 +144,9 @@ async function runStreamingMigration({
     });
     const auditWriter = createAuditWriter({
         runId: runIdentity.runId,
-        artifactPath: path.join(os.tmpdir(), `temporal-migration-audit-${runIdentity.runId}.jsonl`)
+        artifactPath:
+            auditPath ||
+            path.join(os.tmpdir(), `temporal-migration-audit-${runIdentity.runId}.jsonl`)
     });
 
     /** @type {{

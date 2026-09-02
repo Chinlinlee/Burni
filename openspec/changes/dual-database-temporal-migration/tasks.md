@@ -30,10 +30,10 @@
 
 ## 5. Dual database operator entrypoint
 
-- [ ] 5.1 建立新的雙 DB preflight、dry-run 與 write operator entrypoint，接受 source/target URI 與明確 database confirmation。
-- [ ] 5.2 拒絕 source/target 指向相同 database，並在 logs、reports、audit 中遮罩 authenticated URI 與 credentials。
-- [ ] 5.3 保留 `temporal:migrate` 與 `temporal:preflight` npm command，將其改指向新 entrypoint。
-- [ ] 5.4 移除 `scripts/temporal-migrate.js` 與 `scripts/lib/temporal-migrate-cli.js`，並將既有 CLI tests 改為新入口測試。
+- [x] 5.1 建立新的雙 DB preflight、dry-run 與 write operator entrypoint，接受 source/target URI 與明確 database confirmation。
+- [x] 5.2 拒絕 source/target 指向相同 database，並在 logs、reports、audit 中遮罩 authenticated URI 與 credentials。
+- [x] 5.3 保留 `temporal:migrate` 與 `temporal:preflight` npm command，將其改指向新 entrypoint。
+- [x] 5.4 移除 `scripts/temporal-migrate.js` 與 `scripts/lib/temporal-migrate-cli.js`，並將既有 CLI tests 改為新入口測試。
 
 ## 6. Verification and cutover gates
 
