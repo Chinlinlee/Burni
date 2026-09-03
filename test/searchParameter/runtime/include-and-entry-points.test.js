@@ -119,15 +119,11 @@ describe("Registry-driven include and control metadata", function () {
         expect(includeLookup.plan.searchType).to.equal("reference");
 
         const { buildRelationPlan } = require("@models/FHIR/searchParameter/executor/relationPlan");
-        const relation = buildRelationPlan(
-            searchDefinition.compiledPlan,
-            parsed.chain,
-            snapshot,
-            parsed.typeFilter
-        );
+        const relation = buildRelationPlan(searchDefinition.compiledPlan, parsed, snapshot);
         expect(relation.valid).to.equal(true);
-        expect(relation.relationPlan.targetPlan.resourceType).to.equal("Patient");
-        expect(relation.relationPlan.targetPlan.code).to.equal("name");
+        expect(relation.relationPlan.hops[0].typeFilter).to.equal("Patient");
+        expect(relation.relationPlan.hops[0].branches[0].targetResourceType).to.equal("Patient");
+        expect(relation.relationPlan.hops[0].branches[0].targetPlan.code).to.equal("name");
     });
 
     it("treats _include and _count as control parameters, not SearchParameter lookups", function () {

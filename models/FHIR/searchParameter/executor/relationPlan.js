@@ -1,126 +1,245 @@
-const { parseLookupKey } = require("../registry/identity");
+const fhirResourceCatalog = require("../../fhir.resourceList.json");
 const { getEffectiveDefinition, resolveLookupStatus } = require("../registry/snapshot");
-const { isDeclaredTarget } = require("../registry/referenceMetadata");
-const { MAX_QUERY_COST, createTypedFilterPlan } = require("./queryValueParser");
+const { createTypedFilterPlan } = require("./queryValueParser");
 
-const MAX_RELATION_DEPTH = 1;
-const MAX_RELATION_COST = MAX_QUERY_COST;
+const MAX_RELATION_DEPTH = 3;
+const MAX_RELATION_COST = 24;
 
 /**
- * @typedef {Object} RelationPlan
+ * @typedef {Object} RelationBranch
  * @property {string} sourceResourceType
- * @property {string} sourceParameter
- * @property {string[]} targetResourceTypes
- * @property {string} targetParameter
- * @property {string} targetLookupKey
- * @property {import('../compiler/searchQueryPlan').SearchQueryPlan} sourcePlan
+ * @property {string} targetResourceType
  * @property {import('../compiler/searchQueryPlan').SearchQueryPlan} targetPlan
+ */
+
+/**
+ * @typedef {Object} RelationHop
+ * @property {string} code
+ * @property {string} [typeFilter]
+ * @property {import('../compiler/searchQueryPlan').SearchQueryPlan} sourcePlan
+ * @property {RelationBranch[]} branches
+ */
+
+/**
+ * @typedef {Object} RelationPath
+ * @property {RelationHop[]} hops
+ * @property {{ code: string, modifier?: string }} terminal
  * @property {number} depth
  * @property {number} estimatedCost
+ * @property {string} sourceResourceType
+ * @property {string} sourceParameter
  */
 
 /**
- * @param {string} chainParameter
- * @returns {{ targetParameter: string, rest: string[] }}
+ * @param {string[]} declaredTargets
+ * @returns {boolean}
  */
-function splitChainParameter(chainParameter) {
-    const [targetParameter, ...rest] = chainParameter.split(".");
-    return { targetParameter, rest };
+function isOpenReferenceTarget(declaredTargets) {
+    if (!declaredTargets || declaredTargets.length === 0) {
+        return true;
+    }
+    if (declaredTargets.includes("Resource")) {
+        return true;
+    }
+    let missing = 0;
+    for (const resourceType of fhirResourceCatalog) {
+        if (!declaredTargets.includes(resourceType)) {
+            missing += 1;
+        }
+    }
+    return missing <= 1;
 }
 
 /**
- * Official R4 SearchParameter Bundle does not populate `chain`, so a declared
- * target type plus an effective target lookup is the bound for one-level chain.
- * An explicit `chain` list still restricts which target codes are allowed.
- * @param {import('../compiler/searchQueryPlan').SearchQueryPlan} plan
- * @param {string} chainParameter
- * @param {import('../registry/types').RegistrySnapshot} snapshot
- * @param {string} [typeFilter]
- * @returns {{ valid: boolean, reason?: string, relationPlan?: RelationPlan }}
+ * @param {import('../compiler/searchQueryPlan').SearchQueryPlan} referencePlan
+ * @param {string | undefined} typeFilter
+ * @returns {string[]}
  */
-function buildRelationPlan(plan, chainParameter, snapshot, typeFilter) {
-    if (plan.searchType !== "reference") {
-        return { valid: false, reason: "Chaining is only supported on reference search parameters" };
+function candidateTargetTypes(referencePlan, typeFilter) {
+    const declaredTargets = referencePlan.targets || referencePlan.target || [];
+    if (typeFilter) {
+        return [typeFilter];
+    }
+    return declaredTargets;
+}
+
+/**
+ * @param {import('../compiler/searchQueryPlan').SearchQueryPlan} referencePlan
+ * @param {string | undefined} typeFilter
+ * @returns {{ ok: true } | { ok: false, class: "missing-type-filter" | "unknown" }}
+ */
+function validateOpenHop(referencePlan, typeFilter) {
+    const declaredTargets = referencePlan.targets || referencePlan.target || [];
+    if (!isOpenReferenceTarget(declaredTargets)) {
+        return { ok: true };
+    }
+    if (!typeFilter) {
+        return { ok: false, class: "missing-type-filter" };
+    }
+    if (declaredTargets.length === 0 || declaredTargets.includes("Resource")) {
+        return { ok: true };
+    }
+    if (!declaredTargets.includes(typeFilter)) {
+        return { ok: false, class: "unknown" };
+    }
+    return { ok: true };
+}
+
+/**
+ * @param {import('../registry/types').RegistrySnapshot} snapshot
+ * @param {import('../compiler/searchQueryPlan').SearchQueryPlan} referencePlan
+ * @param {string} nextCode
+ * @param {string} sourceResourceType
+ * @param {string | undefined} typeFilter
+ * @returns {{ branches: RelationBranch[], failed: boolean }}
+ */
+function resolveReferenceBranches(snapshot, referencePlan, nextCode, sourceResourceType, typeFilter) {
+    if (referencePlan.chain?.length && !referencePlan.chain.includes(nextCode)) {
+        return { branches: [], failed: true };
     }
 
-    const { targetParameter, rest } = splitChainParameter(chainParameter);
-    if (!targetParameter) {
-        return { valid: false, reason: "Missing chained parameter" };
-    }
-    if (rest.length > 0) {
-        return { valid: false, reason: "Recursive chain is not supported" };
-    }
+    const declaredTargets = referencePlan.targets || referencePlan.target || [];
+    const open = isOpenReferenceTarget(declaredTargets);
+    const candidates = candidateTargetTypes(referencePlan, typeFilter);
 
-    if (plan.chain?.length && !plan.chain.includes(targetParameter.split(":")[0])) {
-        return { valid: false, reason: `Undeclared chain parameter: ${targetParameter}` };
+    if (!open && typeFilter && !declaredTargets.includes(typeFilter)) {
+        return { branches: [], failed: true };
     }
 
-    const declaredTargets = plan.targets || plan.target || [];
-    if (declaredTargets.length === 0) {
-        return { valid: false, reason: "Missing reference target type" };
-    }
+    /** @type {RelationBranch[]} */
+    const branches = [];
 
-    if (typeFilter && !isDeclaredTarget(plan, typeFilter)) {
-        return { valid: false, reason: `Undeclared reference target: ${typeFilter}` };
-    }
-
-    const candidateTargets = typeFilter ? [typeFilter] : declaredTargets;
-    /** @type {import('../compiler/searchQueryPlan').SearchQueryPlan | null} */
-    let targetPlan = null;
-    /** @type {string[]} */
-    const matchedTargets = [];
-
-    for (const targetResourceType of candidateTargets) {
-        const lookupKey = `${targetResourceType}::${targetParameter.split(":")[0]}`;
-        const status = resolveLookupStatus(snapshot, targetResourceType, targetParameter.split(":")[0]);
+    for (const targetResourceType of candidates) {
+        const status = resolveLookupStatus(snapshot, targetResourceType, nextCode);
         if (status === "disabled") {
-            return { valid: false, reason: `Chained parameter is disabled: ${lookupKey}` };
+            return { branches: [], failed: true };
         }
         if (status !== "effective") {
             continue;
         }
-        const definition = getEffectiveDefinition(
-            snapshot,
-            targetResourceType,
-            targetParameter.split(":")[0]
-        );
+        const definition = getEffectiveDefinition(snapshot, targetResourceType, nextCode);
         if (!definition?.compiledPlan) {
             continue;
         }
-        matchedTargets.push(targetResourceType);
-        targetPlan = definition.compiledPlan;
+        branches.push({
+            sourceResourceType,
+            targetResourceType,
+            targetPlan: definition.compiledPlan
+        });
     }
 
-    if (!targetPlan || matchedTargets.length === 0) {
-        return {
-            valid: false,
-            reason: `Unknown chained parameter: ${candidateTargets[0]}::${targetParameter.split(":")[0]}`
-        };
+    return { branches, failed: false };
+}
+
+/**
+ * @param {import('../compiler/searchQueryPlan').SearchQueryPlan} plan
+ * @param {import('../runtime/parameterName').ParsedSearchParameterName} parsedName
+ * @param {import('../registry/types').RegistrySnapshot} snapshot
+ * @returns {{ valid: true, relationPlan: RelationPath } | { valid: false, class: string }}
+ */
+function buildRelationPlan(plan, parsedName, snapshot) {
+    if (plan.searchType !== "reference") {
+        return { valid: false, class: "unknown" };
     }
 
-    const sourceLookupKey = `${plan.resourceType}::${plan.code}`;
-    const targetLookupKey = `${matchedTargets[0]}::${targetPlan.code}`;
-    if (sourceLookupKey === targetLookupKey) {
-        return { valid: false, reason: "Relation cycle is not allowed" };
+    const { hops, terminal } = parsedName;
+    if (!terminal?.code || !hops?.length) {
+        return { valid: false, class: "unknown" };
     }
 
-    const estimatedCost = plan.estimatedCost + targetPlan.estimatedCost + 3;
+    // Hop 0 is already resolved as `plan`; check it before depth so a 4-dot
+    // open chain missing `:Type` is missing-type-filter, not relation-depth.
+    const firstOpenCheck = validateOpenHop(plan, hops[0].typeFilter);
+    if (!firstOpenCheck.ok) {
+        return { valid: false, class: firstOpenCheck.class };
+    }
+
+    if (hops.length > MAX_RELATION_DEPTH) {
+        return { valid: false, class: "relation-depth" };
+    }
+
+    /** @type {RelationHop[]} */
+    const relationHops = [];
+    /** @type {RelationBranch[] | null} */
+    let currentBranches = null;
+    let estimatedCost = 0;
+
+    for (let hopIndex = 0; hopIndex < hops.length; hopIndex += 1) {
+        const hop = hops[hopIndex];
+        const nextCode = hops[hopIndex + 1]?.code ?? terminal.code;
+        /** @type {RelationBranch[]} */
+        const hopBranches = [];
+
+        if (hopIndex === 0) {
+            const openCheck = validateOpenHop(plan, hop.typeFilter);
+            if (!openCheck.ok) {
+                return { valid: false, class: openCheck.class };
+            }
+            const { branches, failed } = resolveReferenceBranches(
+                snapshot,
+                plan,
+                nextCode,
+                plan.resourceType,
+                hop.typeFilter
+            );
+            if (failed) {
+                return { valid: false, class: "unknown" };
+            }
+            hopBranches.push(...branches);
+        } else {
+            for (const incoming of currentBranches) {
+                const referencePlan = incoming.targetPlan;
+                if (referencePlan.searchType !== "reference") {
+                    return { valid: false, class: "unknown" };
+                }
+                const openCheck = validateOpenHop(referencePlan, hop.typeFilter);
+                if (!openCheck.ok) {
+                    return { valid: false, class: openCheck.class };
+                }
+                const { branches, failed } = resolveReferenceBranches(
+                    snapshot,
+                    referencePlan,
+                    nextCode,
+                    incoming.targetResourceType,
+                    hop.typeFilter
+                );
+                if (failed) {
+                    return { valid: false, class: "unknown" };
+                }
+                hopBranches.push(...branches);
+            }
+        }
+
+        if (hopBranches.length === 0) {
+            return { valid: false, class: "unknown" };
+        }
+
+        for (const branch of hopBranches) {
+            estimatedCost += 3 + branch.targetPlan.estimatedCost;
+        }
+
+        relationHops.push({
+            code: hop.code,
+            typeFilter: hop.typeFilter,
+            sourcePlan: hopIndex === 0 ? plan : currentBranches[0].targetPlan,
+            branches: hopBranches
+        });
+        currentBranches = hopBranches;
+    }
+
     if (estimatedCost > MAX_RELATION_COST) {
-        return { valid: false, reason: "Relation cost exceeds allowed limit" };
+        return { valid: false, class: "relation-cost" };
     }
 
     return {
         valid: true,
         relationPlan: {
+            hops: relationHops,
+            terminal,
+            depth: hops.length,
+            estimatedCost,
             sourceResourceType: plan.resourceType,
-            sourceParameter: plan.code,
-            targetResourceTypes: matchedTargets,
-            targetParameter,
-            targetLookupKey,
-            sourcePlan: plan,
-            targetPlan,
-            depth: 1,
-            estimatedCost
+            sourceParameter: plan.code
         }
     };
 }
@@ -178,7 +297,7 @@ function referenceValueExpression(extractionPath) {
 }
 
 /**
- * @param {RelationPlan} relationPlan
+ * @param {RelationPath} relationPlan
  * @param {string | string[] | import('./queryValueParser').TypedFilterPlan} value
  * @returns {Object}
  */
@@ -190,18 +309,27 @@ function buildRelationAggregation(relationPlan, value) {
         throw new Error("Relation cost exceeds allowed limit");
     }
 
+    const firstHop = relationPlan.hops[0];
+    const lastHop = relationPlan.hops[relationPlan.hops.length - 1];
+    const terminalParameter = relationPlan.terminal.modifier
+        ? `${relationPlan.terminal.code}:${relationPlan.terminal.modifier}`
+        : relationPlan.terminal.code;
+    const terminalPlan = lastHop.branches[0]?.targetPlan;
+    if (!terminalPlan) {
+        throw new Error("Relation plan has no executable branch");
+    }
+
     const targetFilterPlan =
         value &&
         typeof value === "object" &&
         (value.kind === "temporal-filter-plan" || value.kind === "typed-filter-plan") &&
         value.searchPlan
             ? value
-            : createTypedFilterPlan(
-                  relationPlan.targetPlan,
-                  value,
-                  relationPlan.targetParameter
-              );
-    if (targetFilterPlan.searchPlan !== relationPlan.targetPlan) {
+            : createTypedFilterPlan(terminalPlan, value, terminalParameter);
+    const matchingBranch = lastHop.branches.find(
+        (branch) => branch.targetPlan === targetFilterPlan.searchPlan
+    );
+    if (!matchingBranch) {
         throw new Error("Typed filter plan does not belong to chained target plan");
     }
     const targetFilter = targetFilterPlan.filter;
@@ -210,11 +338,12 @@ function buildRelationAggregation(relationPlan, value) {
     const pipeline = [];
     let aliasIndex = 0;
 
-    for (const extractionPath of relationPlan.sourcePlan.extractionPaths) {
+    for (const extractionPath of firstHop.sourcePlan.extractionPaths) {
         if (extractionPath.datatype === "Resource") {
             continue;
         }
-        for (const targetResourceType of relationPlan.targetResourceTypes) {
+        for (const branch of lastHop.branches) {
+            const targetResourceType = branch.targetResourceType;
             const alias = `__chain_${aliasIndex}`;
             aliasIndex += 1;
             aliases.push(alias);
@@ -269,7 +398,7 @@ function buildRelationAggregation(relationPlan, value) {
 module.exports = {
     MAX_RELATION_DEPTH,
     MAX_RELATION_COST,
+    isOpenReferenceTarget,
     buildRelationPlan,
-    buildRelationAggregation,
-    parseLookupKey
+    buildRelationAggregation
 };

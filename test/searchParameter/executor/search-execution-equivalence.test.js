@@ -96,14 +96,24 @@ describe("typed temporal search execution", function () {
         try {
             const filterPlan = createTypedFilterPlan(targetPlan, "2015-02", "birthdate");
             const relationPlan = {
-                sourcePlan: {
-                    extractionPaths: [{ path: "subject", datatype: "Reference" }]
-                },
-                targetPlan,
-                targetResourceTypes: ["Patient"],
-                targetParameter: "birthdate",
+                hops: [
+                    {
+                        code: "subject",
+                        sourcePlan: {
+                            extractionPaths: [{ path: "subject", datatype: "Reference" }]
+                        },
+                        branches: [
+                            {
+                                sourceResourceType: "Observation",
+                                targetResourceType: "Patient",
+                                targetPlan
+                            }
+                        ]
+                    }
+                ],
+                terminal: { code: "birthdate" },
                 depth: 1,
-                estimatedCost: 1
+                estimatedCost: 4
             };
             const aggregation = buildRelationAggregation(relationPlan, filterPlan);
             const lookup = aggregation.chain[0].find((stage) => stage.$lookup).$lookup;

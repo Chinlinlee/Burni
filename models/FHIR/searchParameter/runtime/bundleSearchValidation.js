@@ -38,12 +38,7 @@ async function validateBundleGetSearchParameters(resourceType, params, requestUr
                 handleError.processing
             );
         }
-        const relation = buildRelationPlan(
-            definition.compiledPlan,
-            parsed.chain,
-            snapshot,
-            parsed.typeFilter
-        );
+        const relation = buildRelationPlan(definition.compiledPlan, parsed, snapshot);
         if (!relation.valid) {
             throw new FhirWebServiceError(
                 400,

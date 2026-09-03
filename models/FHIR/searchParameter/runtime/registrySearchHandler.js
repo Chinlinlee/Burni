@@ -30,14 +30,19 @@ async function tryApplyRegistryParameter(options) {
     const plan = definition.compiledPlan;
 
     if (parsed.chain) {
-        const relation = buildRelationPlan(plan, parsed.chain, snapshot, parsed.typeFilter);
+        const relation = buildRelationPlan(plan, parsed, snapshot);
         if (!relation.valid || !relation.relationPlan) {
             return "disabled";
         }
+        const lastHop = relation.relationPlan.hops[relation.relationPlan.hops.length - 1];
+        const targetPlan = lastHop.branches[0].targetPlan;
+        const targetParameter = relation.relationPlan.terminal.modifier
+            ? `${relation.relationPlan.terminal.code}:${relation.relationPlan.terminal.modifier}`
+            : relation.relationPlan.terminal.code;
         const targetFilterPlan = createTypedFilterPlan(
-            relation.relationPlan.targetPlan,
+            targetPlan,
             query[parameterName],
-            relation.relationPlan.targetParameter
+            targetParameter
         );
         const aggregation = buildRelationAggregation(
             relation.relationPlan,
