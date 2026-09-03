@@ -133,19 +133,25 @@ describe("SearchQueryPlan reference metadata", function () {
             code: "subject",
             typeFilter: undefined,
             chain: "name",
-            modifier: undefined
+            modifier: undefined,
+            hops: [{ code: "subject", typeFilter: undefined }],
+            terminal: { code: "name", modifier: undefined }
         });
         expect(parseSearchParameterName("subject:Patient.name")).to.deep.equal({
             code: "subject",
             typeFilter: "Patient",
             chain: "name",
-            modifier: undefined
+            modifier: undefined,
+            hops: [{ code: "subject", typeFilter: "Patient" }],
+            terminal: { code: "name", modifier: undefined }
         });
         expect(parseSearchParameterName("name:exact")).to.deep.equal({
             code: "name",
             modifier: "exact",
             chain: undefined,
-            typeFilter: undefined
+            typeFilter: undefined,
+            hops: [],
+            terminal: { code: "name", modifier: "exact" }
         });
     });
 });

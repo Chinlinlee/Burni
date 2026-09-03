@@ -1,8 +1,8 @@
 ## 1. 解析 hop 與 type filter
 
-- [ ] 1.1 擴充 `models/FHIR/searchParameter/runtime/parameterName.js` 的 `parseSearchParameterName`：以 `.` 切開後，最後一段是 terminal filter（`:` 為 modifier），其餘每一段是 hop（`:` 為 type filter）；沒有點時 `:` 仍為 modifier。
-- [ ] 1.2 讓 parse 回傳 hop list（每 hop 含 code 與可選 type filter）與 terminal（code／modifier），並保留既有 head 的 `code`／`typeFilter`／`chain` 給非 chain 路徑；composer MUST 吃 hop list，不得只看 head 或把中間 `:Type` 當下一 hop 的 code。
-- [ ] 1.3 為 parse 補可獨立驗證的測試（新檔或擴充既有 `parameterName`／`relation-plan` 測試）：覆蓋 `subject:Patient.organization:Organization.name:exact`、無點時 `name:exact` 仍為 modifier、以及中間 hop type filter 不再整段留在 `chain` 字串。
+- [x] 1.1 擴充 `models/FHIR/searchParameter/runtime/parameterName.js` 的 `parseSearchParameterName`：以 `.` 切開後，最後一段是 terminal filter（`:` 為 modifier），其餘每一段是 hop（`:` 為 type filter）；沒有點時 `:` 仍為 modifier。
+- [x] 1.2 讓 parse 回傳 hop list（每 hop 含 code 與可選 type filter）與 terminal（code／modifier），並保留既有 head 的 `code`／`typeFilter`／`chain` 給非 chain 路徑；composer MUST 吃 hop list，不得只看 head 或把中間 `:Type` 當下一 hop 的 code。
+- [x] 1.3 為 parse 補可獨立驗證的測試（新檔或擴充既有 `parameterName`／`relation-plan` 測試）：覆蓋 `subject:Patient.organization:Organization.name:exact`、無點時 `name:exact` 仍為 modifier、以及中間 hop type filter 不再整段留在 `chain` 字串。
 
 ## 2. Open-target 偵測與 hop composer
 
