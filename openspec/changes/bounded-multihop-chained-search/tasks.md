@@ -16,9 +16,9 @@
 
 ## 3. 巢狀 aggregation 與 per-type typed filter
 
-- [ ] 3.1 將 `buildRelationAggregation` 改為對 hop list 遞迴組巢狀 `$lookup`：內層 hop 的 `$lookup` 放進外層 `$lookup.pipeline`；深度硬上限 3。對每個 source extraction path 與每個 hop branch 產出 `$unwind`、correlation `$match`、然後 `$lookup`。limit 失敗改由 composer 判定，本函式不得再 throw 內部 reason 字串。
-- [ ] 3.2 Contained datatype `Resource` 的 extraction path 仍跳過，不得進入 `$lookup`；它們不是 collections，也不是 open reference targets。最內層才套 terminal `createTypedFilterPlan`，且 MUST 用該 branch 自己的 plan，禁止再拿單一 `relationPlan.targetPlan` 套到所有 collection。
-- [ ] 3.3 改 `models/FHIR/searchParameter/runtime/registrySearchHandler.js`：吃組成後的 path（hop list／branches），不得只讀單一 `targetPlan` 再 `createTypedFilterPlan`。`query.chain` 維持 array，每個 chained parameter 各是一棵 hop tree、一條 pipeline。
+- [x] 3.1 將 `buildRelationAggregation` 改為對 hop list 遞迴組巢狀 `$lookup`：內層 hop 的 `$lookup` 放進外層 `$lookup.pipeline`；深度硬上限 3。對每個 source extraction path 與每個 hop branch 產出 `$unwind`、correlation `$match`、然後 `$lookup`。limit 失敗改由 composer 判定，本函式不得再 throw 內部 reason 字串。
+- [x] 3.2 Contained datatype `Resource` 的 extraction path 仍跳過，不得進入 `$lookup`；它們不是 collections，也不是 open reference targets。最內層才套 terminal `createTypedFilterPlan`，且 MUST 用該 branch 自己的 plan，禁止再拿單一 `relationPlan.targetPlan` 套到所有 collection。
+- [x] 3.3 改 `models/FHIR/searchParameter/runtime/registrySearchHandler.js`：吃組成後的 path（hop list／branches），不得只讀單一 `targetPlan` 再 `createTypedFilterPlan`。`query.chain` 維持 array，每個 chained parameter 各是一棵 hop tree、一條 pipeline。
 
 ## 4. 三入口錯誤對應
 

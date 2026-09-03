@@ -6,6 +6,7 @@ const { compileDefinition } = require("@models/FHIR/searchParameter/compiler/com
 const { applyActivationOverlay } = require("@models/FHIR/searchParameter/registry/activationPolicy");
 const { buildRegistrySnapshot } = require("@models/FHIR/searchParameter/registry/snapshot");
 const { parseSearchParameterName } = require("@models/FHIR/searchParameter/runtime/parameterName");
+const { createTypedFilterPlan } = require("@models/FHIR/searchParameter/executor/queryValueParser");
 const {
     MAX_RELATION_DEPTH,
     MAX_RELATION_COST,
@@ -108,6 +109,26 @@ const organizationPartof = definition(
     },
     ["Organization::partof"]
 );
+
+function collectLookups(stages) {
+    /** @type {Array<{ from: string, pipeline: Object[] }>} */
+    const found = [];
+    for (const stage of stages) {
+        if (stage.$lookup) {
+            found.push(stage.$lookup);
+            found.push(...collectLookups(stage.$lookup.pipeline || []));
+        }
+    }
+    return found;
+}
+
+function lookupTerminalFilter(pipeline) {
+    const idIndex = pipeline.findIndex((stage) => stage.$match?.$expr);
+    if (idIndex === -1) {
+        return undefined;
+    }
+    return pipeline[idIndex + 1]?.$match;
+}
 
 describe("isOpenReferenceTarget", function () {
     it("treats empty targets, Resource token, and catalog-minus-one as open", function () {
@@ -541,6 +562,228 @@ describe("bounded multihop relation composer", function () {
         expect(aggregation.chain[0].some((stage) => stage.$lookup?.from === "Patient")).to.equal(true);
         expect(JSON.stringify(aggregation.chain[0])).to.include("$unwind");
         expect(JSON.stringify(aggregation.chain[0])).to.include("$match");
+    });
+
+    it("nests $lookup pipelines for a two-hop subject.organization.name chain", function () {
+        const snapshot = snapshotFrom([
+            observationSubject,
+            patientOrganization,
+            organizationName,
+            groupName
+        ]);
+        const sourcePlan = snapshot.byLookupKey.get("Observation::subject").compiledPlan;
+        const organizationNamePlan = snapshot.byLookupKey.get("Organization::name").compiledPlan;
+        const relation = buildRelationPlan(
+            sourcePlan,
+            parseSearchParameterName("subject:Patient.organization.name"),
+            snapshot
+        );
+        const value = "Acme";
+        const expectedFilter = createTypedFilterPlan(organizationNamePlan, value, "name").filter;
+        const aggregation = buildRelationAggregation(relation.relationPlan, value);
+        const pipeline = aggregation.chain[0];
+        const patientLookup = pipeline.find((stage) => stage.$lookup?.from === "Patient").$lookup;
+        const orgLookup = collectLookups(patientLookup.pipeline).find((lookup) => lookup.from === "Organization");
+        expect(orgLookup).to.exist;
+        expect(lookupTerminalFilter(orgLookup.pipeline)).to.deep.equal(expectedFilter);
+        expect(lookupTerminalFilter(patientLookup.pipeline)).to.equal(undefined);
+    });
+
+    it("nests Organization lookups for partof.partof.name", function () {
+        const snapshot = snapshotFrom([organizationPartof, organizationName]);
+        const sourcePlan = snapshot.byLookupKey.get("Organization::partof").compiledPlan;
+        const organizationNamePlan = snapshot.byLookupKey.get("Organization::name").compiledPlan;
+        const relation = buildRelationPlan(
+            sourcePlan,
+            parseSearchParameterName("partof.partof.name"),
+            snapshot
+        );
+        const value = "Parent Org";
+        const expectedFilter = createTypedFilterPlan(organizationNamePlan, value, "name").filter;
+        const aggregation = buildRelationAggregation(relation.relationPlan, value);
+        const outerLookup = aggregation.chain[0].find((stage) => stage.$lookup?.from === "Organization").$lookup;
+        const innerLookup = collectLookups(outerLookup.pipeline).find((lookup) => lookup.from === "Organization");
+        expect(innerLookup).to.exist;
+        expect(lookupTerminalFilter(innerLookup.pipeline)).to.deep.equal(expectedFilter);
+    });
+
+    it("applies per-branch terminal filters for closed fan-out subject.name", function () {
+        const snapshot = snapshotFrom([observationSubject, patientName, groupName]);
+        const sourcePlan = snapshot.byLookupKey.get("Observation::subject").compiledPlan;
+        const patientNamePlan = snapshot.byLookupKey.get("Patient::name").compiledPlan;
+        const groupNamePlan = snapshot.byLookupKey.get("Group::name").compiledPlan;
+        const relation = buildRelationPlan(
+            sourcePlan,
+            parseSearchParameterName("subject.name"),
+            snapshot
+        );
+        const value = "Roel";
+        const expectedPatientFilter = createTypedFilterPlan(patientNamePlan, value, "name").filter;
+        const expectedGroupFilter = createTypedFilterPlan(groupNamePlan, value, "name").filter;
+        const aggregation = buildRelationAggregation(relation.relationPlan, value);
+        const pipeline = aggregation.chain[0];
+        const patientLookup = pipeline.find((stage) => stage.$lookup?.from === "Patient").$lookup;
+        const groupLookup = pipeline.find((stage) => stage.$lookup?.from === "Group").$lookup;
+        expect(patientLookup).to.exist;
+        expect(groupLookup).to.exist;
+        const patientFilter = lookupTerminalFilter(patientLookup.pipeline);
+        const groupFilter = lookupTerminalFilter(groupLookup.pipeline);
+        expect(patientFilter).to.deep.equal(expectedPatientFilter);
+        expect(groupFilter).to.deep.equal(expectedGroupFilter);
+        expect(patientFilter).to.not.deep.equal(groupFilter);
+    });
+
+    it("honors an intermediate type filter when nesting lookups", function () {
+        const snapshot = snapshotFrom([
+            observationSubject,
+            patientOrganization,
+            organizationName,
+            groupName
+        ]);
+        const sourcePlan = snapshot.byLookupKey.get("Observation::subject").compiledPlan;
+        const relation = buildRelationPlan(
+            sourcePlan,
+            parseSearchParameterName("subject:Patient.organization.name"),
+            snapshot
+        );
+        const aggregation = buildRelationAggregation(relation.relationPlan, "Acme");
+        const lookups = collectLookups(aggregation.chain[0]);
+        expect(lookups.some((lookup) => lookup.from === "Patient")).to.equal(true);
+        expect(lookups.some((lookup) => lookup.from === "Group")).to.equal(false);
+        expect(lookups.some((lookup) => lookup.from === "Organization")).to.equal(true);
+    });
+
+    it("skips contained Resource extraction paths when building lookups", function () {
+        const mixedSubject = definition(
+            {
+                code: "subject",
+                base: ["Observation"],
+                type: "reference",
+                expression: "Observation.subject",
+                target: ["Patient"]
+            },
+            ["Observation::subject"]
+        );
+        const snapshot = snapshotFrom([mixedSubject, patientName]);
+        const sourcePlan = snapshot.byLookupKey.get("Observation::subject").compiledPlan;
+        sourcePlan.extractionPaths = [
+            { path: "contained", datatype: "Resource" },
+            { path: "subject", datatype: "Reference" }
+        ];
+        const relation = buildRelationPlan(
+            sourcePlan,
+            parseSearchParameterName("subject:Patient.name"),
+            snapshot
+        );
+        const aggregation = buildRelationAggregation(relation.relationPlan, "Roel");
+        const unwindPaths = aggregation.chain[0]
+            .filter((stage) => stage.$unwind)
+            .map((stage) => stage.$unwind.path);
+        expect(unwindPaths).to.not.include("$contained");
+        expect(unwindPaths).to.include("$subject");
+        expect(aggregation.chain[0].some((stage) => stage.$lookup?.from === "Patient")).to.equal(true);
+    });
+
+    it("does not throw internal limit strings for synthetic over-depth or over-cost plans", function () {
+        const snapshot = snapshotFrom([observationSubject, patientName]);
+        const sourcePlan = snapshot.byLookupKey.get("Observation::subject").compiledPlan;
+        const deepRelation = buildRelationPlan(
+            sourcePlan,
+            parseSearchParameterName("a.b.c.d.e"),
+            snapshot
+        );
+        expect(deepRelation.valid).to.equal(false);
+
+        const overDepthPlan = {
+            hops: [
+                {
+                    code: "a",
+                    sourcePlan: {
+                        extractionPaths: [{ path: "subject", datatype: "Reference" }]
+                    },
+                    branches: [
+                        {
+                            sourceResourceType: "Observation",
+                            targetResourceType: "Patient",
+                            targetPlan: {
+                                extractionPaths: [{ path: "managingOrganization", datatype: "Reference" }]
+                            }
+                        }
+                    ]
+                },
+                {
+                    code: "b",
+                    branches: [
+                        {
+                            sourceResourceType: "Patient",
+                            targetResourceType: "Organization",
+                            targetPlan: {
+                                extractionPaths: [{ path: "partOf", datatype: "Reference" }]
+                            }
+                        }
+                    ]
+                },
+                {
+                    code: "c",
+                    branches: [
+                        {
+                            sourceResourceType: "Organization",
+                            targetResourceType: "Organization",
+                            targetPlan: {
+                                extractionPaths: [{ path: "partOf", datatype: "Reference" }]
+                            }
+                        }
+                    ]
+                },
+                {
+                    code: "d",
+                    branches: [
+                        {
+                            sourceResourceType: "Organization",
+                            targetResourceType: "Organization",
+                            targetPlan: {
+                                code: "name",
+                                searchType: "string",
+                                extractionPaths: [{ path: "name", datatype: "HumanName" }]
+                            }
+                        }
+                    ]
+                }
+            ],
+            terminal: { code: "name" },
+            depth: 4,
+            estimatedCost: 30
+        };
+
+        let threw = false;
+        let aggregation;
+        try {
+            aggregation = buildRelationAggregation(overDepthPlan, "x");
+        } catch (error) {
+            threw = true;
+            expect(String(error)).to.not.include("Relation depth exceeds allowed limit");
+            expect(String(error)).to.not.include("Relation cost exceeds allowed limit");
+        }
+        expect(threw).to.equal(false);
+        expect(collectLookups(aggregation.chain[0]).length).to.be.at.most(3);
+        expect(JSON.stringify(aggregation)).to.not.include("Relation depth exceeds allowed limit");
+        expect(JSON.stringify(aggregation)).to.not.include("Relation cost exceeds allowed limit");
+    });
+
+    it("matches nothing when every extraction path is contained Resource", function () {
+        const snapshot = snapshotFrom([observationSubject, patientName]);
+        const sourcePlan = snapshot.byLookupKey.get("Observation::subject").compiledPlan;
+        const relation = buildRelationPlan(
+            sourcePlan,
+            parseSearchParameterName("subject:Patient.name"),
+            snapshot
+        );
+        relation.relationPlan.hops[0].sourcePlan = {
+            extractionPaths: [{ path: "contained", datatype: "Resource" }]
+        };
+        const aggregation = buildRelationAggregation(relation.relationPlan, "Roel");
+        expect(aggregation.chain[0].some((stage) => stage.$lookup)).to.equal(false);
+        expect(aggregation.chain[0].some((stage) => stage.$match?.__chainNoExecutablePath)).to.equal(true);
     });
 
     it("exports bounded relation constants", function () {

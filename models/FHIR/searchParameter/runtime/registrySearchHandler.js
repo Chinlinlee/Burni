@@ -1,7 +1,6 @@
 const { ensureRegistryLoaded } = require("../registry/registryManager");
 const { resolveLookupStatus, getEffectiveDefinition } = require("../registry/snapshot");
 const { applyPlanToQuery } = require("../executor/mongoExecutor");
-const { createTypedFilterPlan } = require("../executor/queryValueParser");
 const { buildRelationPlan, buildRelationAggregation } = require("../executor/relationPlan");
 const { parseSearchParameterName } = require("./parameterName");
 
@@ -34,19 +33,9 @@ async function tryApplyRegistryParameter(options) {
         if (!relation.valid || !relation.relationPlan) {
             return "disabled";
         }
-        const lastHop = relation.relationPlan.hops[relation.relationPlan.hops.length - 1];
-        const targetPlan = lastHop.branches[0].targetPlan;
-        const targetParameter = relation.relationPlan.terminal.modifier
-            ? `${relation.relationPlan.terminal.code}:${relation.relationPlan.terminal.modifier}`
-            : relation.relationPlan.terminal.code;
-        const targetFilterPlan = createTypedFilterPlan(
-            targetPlan,
-            query[parameterName],
-            targetParameter
-        );
         const aggregation = buildRelationAggregation(
             relation.relationPlan,
-            targetFilterPlan
+            query[parameterName]
         );
         if (!query.chain) {
             query.chain = [];

@@ -1,5 +1,6 @@
 require("module-alias/register");
 
+const fs = require("fs");
 const { expect } = require("chai");
 const { compileDefinition } = require("@models/FHIR/searchParameter/compiler/compiler");
 const { applyActivationOverlay } = require("@models/FHIR/searchParameter/registry/activationPolicy");
@@ -20,6 +21,19 @@ const {
 } = require("@root/utils/fhir-url");
 const { reloadRegistry } = require("@models/FHIR/searchParameter/registry/registryManager");
 const { getEffectiveDefinition } = require("@models/FHIR/searchParameter/registry/snapshot");
+const { tryApplyRegistryParameter } = require("@models/FHIR/searchParameter/runtime/registrySearchHandler");
+
+function collectLookups(stages) {
+    /** @type {Array<{ from: string, pipeline: Object[] }>} */
+    const found = [];
+    for (const stage of stages) {
+        if (stage.$lookup) {
+            found.push(stage.$lookup);
+            found.push(...collectLookups(stage.$lookup.pipeline || []));
+        }
+    }
+    return found;
+}
 
 function definition(resource, lookupKeys) {
     return {
@@ -155,6 +169,46 @@ describe("Registry-driven include and control metadata", function () {
             expect(error.message).to.include("Unknown parameter");
         }
         expect(rejected).to.equal(true);
+    });
+});
+
+describe("Registry chained search handler", function () {
+    it("does not pre-build a single-branch typed filter before aggregation", function () {
+        const handlerPath = require.resolve(
+            "@models/FHIR/searchParameter/runtime/registrySearchHandler"
+        );
+        const source = fs.readFileSync(handlerPath, "utf8");
+        expect(source).to.not.include("lastHop.branches[0]");
+        expect(source).to.not.include("createTypedFilterPlan");
+    });
+
+    it("pushes one pipeline per chained parameter from composed relation paths", async function () {
+        const oneHopQuery = { "subject:Patient.name": "Roel" };
+        const oneHopResult = await tryApplyRegistryParameter({
+            resourceType: "Observation",
+            query: oneHopQuery,
+            parameterName: "subject:Patient.name"
+        });
+        expect(oneHopResult).to.equal("handled");
+        expect(oneHopQuery.chain).to.be.an("array");
+        expect(oneHopQuery.chain).to.have.length(1);
+        expect(oneHopQuery.chain[0].some((stage) => stage.$lookup?.from === "Patient")).to.equal(
+            true
+        );
+        expect(oneHopQuery["subject:Patient.name"]).to.equal(undefined);
+
+        const twoHopQuery = { "subject:Patient.organization.name": "Acme" };
+        const twoHopResult = await tryApplyRegistryParameter({
+            resourceType: "Observation",
+            query: twoHopQuery,
+            parameterName: "subject:Patient.organization.name"
+        });
+        expect(twoHopResult).to.equal("handled");
+        expect(twoHopQuery.chain).to.have.length(1);
+        const patientLookup = twoHopQuery.chain[0].find((stage) => stage.$lookup?.from === "Patient")
+            .$lookup;
+        expect(collectLookups(patientLookup.pipeline).some((lookup) => lookup.from === "Organization"))
+            .to.equal(true);
     });
 });
 

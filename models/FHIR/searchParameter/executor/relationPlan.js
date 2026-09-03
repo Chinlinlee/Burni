@@ -297,79 +297,153 @@ function referenceValueExpression(extractionPath) {
 }
 
 /**
- * @param {RelationPath} relationPlan
- * @param {string | string[] | import('./queryValueParser').TypedFilterPlan} value
- * @returns {Object}
+ * @param {unknown} value
+ * @returns {value is import('./queryValueParser').TypedFilterPlan}
  */
-function buildRelationAggregation(relationPlan, value) {
-    if (relationPlan.depth > MAX_RELATION_DEPTH) {
-        throw new Error("Relation depth exceeds allowed limit");
-    }
-    if (relationPlan.estimatedCost > MAX_RELATION_COST) {
-        throw new Error("Relation cost exceeds allowed limit");
-    }
-
-    const firstHop = relationPlan.hops[0];
-    const lastHop = relationPlan.hops[relationPlan.hops.length - 1];
-    const terminalParameter = relationPlan.terminal.modifier
-        ? `${relationPlan.terminal.code}:${relationPlan.terminal.modifier}`
-        : relationPlan.terminal.code;
-    const terminalPlan = lastHop.branches[0]?.targetPlan;
-    if (!terminalPlan) {
-        throw new Error("Relation plan has no executable branch");
-    }
-
-    const targetFilterPlan =
-        value &&
+function isTypedFilterPlan(value) {
+    return (
+        Boolean(value) &&
         typeof value === "object" &&
         (value.kind === "temporal-filter-plan" || value.kind === "typed-filter-plan") &&
-        value.searchPlan
-            ? value
-            : createTypedFilterPlan(terminalPlan, value, terminalParameter);
-    const matchingBranch = lastHop.branches.find(
-        (branch) => branch.targetPlan === targetFilterPlan.searchPlan
+        Boolean(value.searchPlan)
     );
-    if (!matchingBranch) {
-        throw new Error("Typed filter plan does not belong to chained target plan");
-    }
-    const targetFilter = targetFilterPlan.filter;
-    const aliases = [];
-    /** @type {Object[]} */
-    const pipeline = [];
-    let aliasIndex = 0;
+}
 
-    for (const extractionPath of firstHop.sourcePlan.extractionPaths) {
+/**
+ * @param {RelationPath} relationPlan
+ * @returns {string}
+ */
+function terminalParameterName(relationPlan) {
+    return relationPlan.terminal.modifier
+        ? `${relationPlan.terminal.code}:${relationPlan.terminal.modifier}`
+        : relationPlan.terminal.code;
+}
+
+/**
+ * @returns {Object}
+ */
+function idCorrelationStage() {
+    return {
+        $match: {
+            $expr: {
+                $eq: [
+                    "$id",
+                    {
+                        $arrayElemAt: [{ $split: ["$$refValue", "/"] }, -1]
+                    }
+                ]
+            }
+        }
+    };
+}
+
+/**
+ * @param {string[]} aliases
+ * @returns {Object}
+ */
+function matchNothingStage() {
+    return {
+        $match: {
+            __chainNoExecutablePath: { $exists: true },
+            __chainNoExecutablePath2: { $exists: false }
+        }
+    };
+}
+
+/**
+ * @param {string[]} aliases
+ * @returns {Object}
+ */
+function existenceMatchStage(aliases) {
+    if (aliases.length === 0) {
+        return matchNothingStage();
+    }
+    return {
+        $match: {
+            $or: aliases.map((alias) => ({
+                [`${alias}.0`]: { $exists: true }
+            }))
+        }
+    };
+}
+
+/**
+ * @param {RelationBranch} branch
+ * @param {string | string[] | import('./queryValueParser').TypedFilterPlan} value
+ * @param {string} terminalParameter
+ * @returns {import('./queryValueParser').TypedFilterPlan}
+ */
+function resolveTerminalFilterPlan(branch, value, terminalParameter) {
+    if (isTypedFilterPlan(value)) {
+        if (branch.targetPlan === value.searchPlan) {
+            return value;
+        }
+        return createTypedFilterPlan(branch.targetPlan, value.rawValue, terminalParameter);
+    }
+    return createTypedFilterPlan(branch.targetPlan, value, terminalParameter);
+}
+
+/**
+ * @param {number} hopIndex
+ * @param {RelationBranch} branch
+ * @param {RelationPath} relationPlan
+ * @param {string | string[] | import('./queryValueParser').TypedFilterPlan} value
+ * @param {{ counter: number }} aliasCounter
+ * @returns {{ stages: Object[], filterPlan?: import('./queryValueParser').TypedFilterPlan }}
+ */
+function buildBranchLookupPipeline(hopIndex, branch, relationPlan, value, aliasCounter) {
+    const hops = relationPlan.hops;
+    const isNaturalTerminal = hopIndex >= hops.length - 1;
+    const isTerminalHop = isNaturalTerminal || hopIndex >= MAX_RELATION_DEPTH - 1;
+    const terminalParameter = terminalParameterName(relationPlan);
+    /** @type {Object[]} */
+    const stages = [idCorrelationStage()];
+
+    if (isTerminalHop) {
+        if (isNaturalTerminal) {
+            const filterPlan = resolveTerminalFilterPlan(branch, value, terminalParameter);
+            stages.push({ $match: filterPlan.filter });
+            return { stages, filterPlan };
+        }
+        return { stages };
+    }
+
+    const nextHop = hops[hopIndex + 1];
+    const referencePlan = branch.targetPlan;
+    const nextBranches = nextHop.branches.filter(
+        (nextBranch) => nextBranch.sourceResourceType === branch.targetResourceType
+    );
+    const aliases = [];
+    /** @type {import('./queryValueParser').TypedFilterPlan | undefined} */
+    let retainedFilterPlan;
+
+    for (const extractionPath of referencePlan.extractionPaths) {
         if (extractionPath.datatype === "Resource") {
             continue;
         }
-        for (const branch of lastHop.branches) {
-            const targetResourceType = branch.targetResourceType;
-            const alias = `__chain_${aliasIndex}`;
-            aliasIndex += 1;
+        for (const nextBranch of nextBranches) {
+            const alias = `__chain_${aliasCounter.counter}`;
+            aliasCounter.counter += 1;
             aliases.push(alias);
-            pipeline.push(...unwindStagesForPath(extractionPath));
-            pipeline.push(...correlationMatchStages(extractionPath));
-            pipeline.push({
+            const nested = buildBranchLookupPipeline(
+                hopIndex + 1,
+                nextBranch,
+                relationPlan,
+                value,
+                aliasCounter
+            );
+            if (!retainedFilterPlan && nested.filterPlan) {
+                retainedFilterPlan = nested.filterPlan;
+            }
+            stages.push(...unwindStagesForPath(extractionPath));
+            stages.push(...correlationMatchStages(extractionPath));
+            stages.push({
                 $lookup: {
-                    from: targetResourceType,
+                    from: nextBranch.targetResourceType,
                     let: {
                         refValue: referenceValueExpression(extractionPath)
                     },
-                    pipeline: [
-                        {
-                            $match: {
-                                $expr: {
-                                    $eq: [
-                                        "$id",
-                                        {
-                                            $arrayElemAt: [{ $split: ["$$refValue", "/"] }, -1]
-                                        }
-                                    ]
-                                }
-                            }
-                        },
-                        { $match: targetFilter }
-                    ],
+                    pipeline: nested.stages,
                     as: alias
                 }
             });
@@ -377,21 +451,84 @@ function buildRelationAggregation(relationPlan, value) {
     }
 
     if (aliases.length === 0) {
-        throw new Error("Relation plan has no executable reference extraction path");
+        stages.push(matchNothingStage());
+    } else {
+        stages.push(existenceMatchStage(aliases));
     }
 
-    pipeline.push({
-        $match: {
-            $or: aliases.map((alias) => ({
-                [`${alias}.0`]: { $exists: true }
-            }))
+    return { stages, filterPlan: retainedFilterPlan };
+}
+
+/**
+ * @param {RelationPath} relationPlan
+ * @param {string | string[] | import('./queryValueParser').TypedFilterPlan} value
+ * @returns {Object}
+ */
+function buildRelationAggregation(relationPlan, value) {
+    const firstHop = relationPlan.hops[0];
+    const terminalParameter = terminalParameterName(relationPlan);
+    const aliases = [];
+    /** @type {Object[]} */
+    const pipeline = [];
+    const aliasCounter = { counter: 0 };
+    /** @type {import('./queryValueParser').TypedFilterPlan | undefined} */
+    let returnedFilterPlan = isTypedFilterPlan(value) ? value : undefined;
+
+    for (const extractionPath of firstHop.sourcePlan.extractionPaths) {
+        if (extractionPath.datatype === "Resource") {
+            continue;
         }
-    });
+        for (const branch of firstHop.branches) {
+            const alias = `__chain_${aliasCounter.counter}`;
+            aliasCounter.counter += 1;
+            aliases.push(alias);
+            const nested = buildBranchLookupPipeline(
+                0,
+                branch,
+                relationPlan,
+                value,
+                aliasCounter
+            );
+            if (!returnedFilterPlan && nested.filterPlan) {
+                returnedFilterPlan = nested.filterPlan;
+            }
+            pipeline.push(...unwindStagesForPath(extractionPath));
+            pipeline.push(...correlationMatchStages(extractionPath));
+            pipeline.push({
+                $lookup: {
+                    from: branch.targetResourceType,
+                    let: {
+                        refValue: referenceValueExpression(extractionPath)
+                    },
+                    pipeline: nested.stages,
+                    as: alias
+                }
+            });
+        }
+    }
+
+    if (aliases.length === 0) {
+        pipeline.push(matchNothingStage());
+    } else {
+        pipeline.push(existenceMatchStage(aliases));
+    }
+
+    if (!returnedFilterPlan) {
+        const lastHop = relationPlan.hops[relationPlan.hops.length - 1];
+        const fallbackBranch = lastHop.branches[0];
+        if (fallbackBranch) {
+            returnedFilterPlan = resolveTerminalFilterPlan(
+                fallbackBranch,
+                value,
+                terminalParameter
+            );
+        }
+    }
 
     return {
         isChain: true,
         chain: [pipeline],
-        filterPlan: targetFilterPlan
+        filterPlan: returnedFilterPlan
     };
 }
 
