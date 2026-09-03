@@ -39,6 +39,9 @@ async function insertPatient(connection, document) {
 }
 
 function loadTemporalPreflightWithAmbiguousStub() {
+    const transformPath = require.resolve(
+        "@models/FHIR/searchParameter/migration/temporalDocumentTransform"
+    );
     const conversionPath = require.resolve(
         "@models/FHIR/searchParameter/migration/temporalConversion"
     );
@@ -47,10 +50,11 @@ function loadTemporalPreflightWithAmbiguousStub() {
     );
     delete require.cache[preflightPath];
     delete require.cache[conversionPath];
+    delete require.cache[transformPath];
 
-    const conversionModule = require(conversionPath);
-    const originalDetect = conversionModule.detectLegacyBsonDateAmbiguity;
-    conversionModule.detectLegacyBsonDateAmbiguity = function ambiguousStub(
+    const transformModule = require(transformPath);
+    const originalDetect = transformModule.detectLegacyBsonDateAmbiguity;
+    transformModule.detectLegacyBsonDateAmbiguity = function ambiguousStub(
         value,
         type,
         path,
@@ -79,7 +83,11 @@ function reloadDualDatabasePreflightWithAmbiguousStub() {
     const operatorPath = require.resolve(
         "@models/FHIR/searchParameter/migration/dualDatabaseOperator"
     );
+    const transformPath = require.resolve(
+        "@models/FHIR/searchParameter/migration/temporalDocumentTransform"
+    );
     delete require.cache[operatorPath];
+    delete require.cache[transformPath];
     loadTemporalPreflightWithAmbiguousStub();
     return require(operatorPath).runDualDatabasePreflight;
 }

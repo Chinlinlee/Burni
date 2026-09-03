@@ -1,16 +1,8 @@
 const {
-    mapTemporalDocument,
+    processTemporalDocument,
     loadDefinitions,
     TEMPORAL_CATEGORIES
-} = require("./temporalPreflight");
-const {
-    convertLegacyTemporalValue,
-    CONVERSION_POLICY
-} = require("./temporalConversion");
-const {
-    isCanonicalTemporalObject,
-    toPlainCanonicalValue
-} = require("../../temporal");
+} = require("./temporalDocumentTransform");
 
 const TRANSFORM_FAILED_CODE = "DOCUMENT_TRANSFORM_FAILED";
 
@@ -32,27 +24,6 @@ class DocumentTransformError extends Error {
 }
 
 /**
- * @param {unknown} originalValue
- * @param {string} category
- * @param {"date" | "dateTime" | "instant"} temporalType
- * @returns {string}
- */
-function resolveConversionPolicy(originalValue, category, temporalType) {
-    if (
-        originalValue instanceof Date ||
-        category === TEMPORAL_CATEGORIES.ABSOLUTE_BSON_DATE
-    ) {
-        if (temporalType === "date") {
-            return CONVERSION_POLICY.UTC_CALENDAR_DAY_LOSSY;
-        }
-        if (temporalType === "dateTime" || temporalType === "instant") {
-            return CONVERSION_POLICY.UTC_ABSOLUTE_TIME_LOSSY;
-        }
-    }
-    return CONVERSION_POLICY.LEGACY_STRING;
-}
-
-/**
  * @param {object} config
  * @param {Record<string, object>} [config.definitions]
  * @returns {import("./migrationContracts").DocumentTransformer & { transformBatch: (documents: object[], context: import("./migrationContracts").MigrationTransformContext) => Array<{ document: object, auditEntries: import("./migrationContracts").AuditRecord[], diagnostics: object[] }> }}
@@ -65,7 +36,7 @@ function createDocumentTransformer(config = {}) {
      * @param {import("./migrationContracts").MigrationTransformContext} context
      */
     function transformDocument(sourceDoc, context) {
-        const { runIdentity, source } = context;
+        const { source } = context;
         const definition = definitions[source.resource];
         if (!definition) {
             throw new DocumentTransformError(
@@ -79,61 +50,30 @@ function createDocumentTransformer(config = {}) {
             );
         }
 
-        /** @type {import("./migrationContracts").AuditRecord[]} */
-        const auditEntries = [];
-        /** @type {object[]} */
-        const diagnostics = [];
         /** @type {{ value: unknown, type: string, path: string } | undefined} */
         let conversionContext;
 
         try {
-            const document = /** @type {object} */ (
-                mapTemporalDocument(
-                    sourceDoc,
-                    definition,
-                    { resourceType: source.resource, model: source.model },
-                    definitions,
-                    (value, type, path) => {
-                        const plain = toPlainCanonicalValue(value);
-                        if (isCanonicalTemporalObject(plain, type)) {
-                            return value;
-                        }
-
-                        conversionContext = { value, type, path };
-                        const converted = convertLegacyTemporalValue(
-                            value,
-                            type,
-                            path,
-                            { resource: source.resource, model: source.model }
-                        );
-                        const category =
-                            value instanceof Date
-                                ? TEMPORAL_CATEGORIES.ABSOLUTE_BSON_DATE
-                                : TEMPORAL_CATEGORIES.LEGACY_STRING;
-
-                        auditEntries.push({
-                            sourceDatabaseIdentity: runIdentity.sourceDatabaseIdentity,
-                            sourceCollection: source.collectionName,
-                            sourceDocumentId: sourceDoc._id ?? sourceDoc.id,
-                            fhirPath: path,
-                            temporalType: type,
-                            policy: resolveConversionPolicy(value, category, type),
-                            originalValue: value,
-                            generatedValue: converted
-                        });
-                        diagnostics.push({
-                            category,
-                            temporalType: type,
-                            resource: source.resource,
-                            model: source.model,
-                            path,
-                            batchId: context.batchId
-                        });
-                        return converted;
+            const {
+                document: transformed,
+                auditEntries,
+                diagnostics
+            } = processTemporalDocument(
+                sourceDoc,
+                definition,
+                { resourceType: source.resource, model: source.model },
+                definitions,
+                {
+                    mode: "write",
+                    auditContext: {
+                        ...context,
+                        sourceDocument: sourceDoc,
+                        sourceDocumentId: sourceDoc._id ?? sourceDoc.id
                     }
-                )
+                }
             );
 
+            const document = /** @type {object} */ (transformed);
             if (sourceDoc._id !== undefined) {
                 document._id = sourceDoc._id;
             }
