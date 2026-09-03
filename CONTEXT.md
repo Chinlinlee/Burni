@@ -147,6 +147,38 @@ _Avoid_: treating a service-level search test as a generic Patient CRUD test
 A reusable test-only capability that provides environment setup, lifecycle management, or request adaptation without asserting product behavior itself.
 _Avoid_: placing assertions or domain-specific test cases in shared support
 
+### Chained search
+
+**Chained search**:
+A search whose parameter name is a client-specified dotted path of relation hops ending in a filter parameter, for example `subject.organization.name`.
+_Avoid_: recursive chain, graph walk, unbounded reference following, relation cycle as a reason to reject `partof.partof`
+
+**Chain allowlist**:
+The SearchParameter `chain` field. Empty or absent means no extra restriction; non-empty means only the listed next-hop codes are allowed.
+_Avoid_: treating the official R4 bundle as if it populated `chain`; using `chain` as a synonym for chained search
+
+**Reference target type**:
+A resource type listed on a reference SearchParameter's `target`.
+_Avoid_: target, target resource; those collide with the temporal target database
+
+**Type filter**:
+The `:ResourceType` qualifier on a relation hop that narrows reference target types, for example `subject:Patient` in `subject:Patient.name`.
+_Avoid_: calling this a modifier. A colon without a dotted path is a modifier; a colon on a chained hop is a type filter.
+
+**Open reference target**:
+A reference lookup whose declared reference target types are unbounded for fan-out: empty, include `Resource`, or enumerate the FHIR resource catalog.
+_Avoid_: any; treating the official 145-type lists as a closed fan-out
+
+**Relation hop**:
+One step in a chained search, from a reference lookup to the next hop's lookups on its reference target types.
+
+**Relation depth**:
+The number of relation hops in one chained search, equal to the number of dots in the parameter name.
+_Avoid_: SearchQueryPlan `depth`, which is 0 when the official `chain` field is empty
+
+**Relation cost**:
+The estimated cost of one chained search path, including every lookup produced by fan-out at each hop. It is not a single lookup's `estimatedCost`, and it does not share that lookup's cost cap.
+
 ## MongoDB initialization
 
 **Model registry ready**:
