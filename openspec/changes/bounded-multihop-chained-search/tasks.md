@@ -22,10 +22,10 @@
 
 ## 4. 三入口錯誤對應
 
-- [ ] 4.1 為三個 limit class 建立 typed error，使 `api/FHIRApiService/search/searchParameterCreator.js` 不會把它們收進 `UnknownSearchParameterError`。停止 `tryApplyRegistryParameter` 對任何 `!relation.valid` 一律 `return "disabled"`；停止 creator catch-all 把內部 Error 收成 unknown。`api/FHIRApiService/services/search.service.js` MUST 把 limit class 映成 400 OperationOutcome 並標明 class token。
-- [ ] 4.2 改 `models/FHIR/searchParameter/runtime/bundleSearchValidation.js`：`!relation.valid` 不再一律 `Unknown parameter`。limit class 回 400 OperationOutcome 並標明 class token；unknown hop 維持 Unknown search parameter。
-- [ ] 4.3 確認 `api/FHIRApiService/condition-delete.js` 走同一套 SearchParameterCreator 驗證與具名錯誤，且其 catch-all MUST NOT 把 limit class 收成 unknown。合法 chain 之後既有 `isChain` 執行拒絕（`Chained search is not supported for conditional delete`）MUST 維持；本 change 不得改成 aggregation 刪除。
-- [ ] 4.4 公開 diagnostics 可含參數名稱與 class token（例如讓 `Composition.subject.name` 看起來像缺 `subject:Patient`）；MUST NOT 洩漏內部 reason string。範圍僅 normal search、Bundle GET、conditional delete；不含 `_include`／`_revinclude`／`_has`。
+- [x] 4.1 為三個 limit class 建立 typed error，使 `api/FHIRApiService/search/searchParameterCreator.js` 不會把它們收進 `UnknownSearchParameterError`。停止 `tryApplyRegistryParameter` 對任何 `!relation.valid` 一律 `return "disabled"`；停止 creator catch-all 把內部 Error 收成 unknown。`api/FHIRApiService/services/search.service.js` MUST 把 limit class 映成 400 OperationOutcome 並標明 class token。
+- [x] 4.2 改 `models/FHIR/searchParameter/runtime/bundleSearchValidation.js`：`!relation.valid` 不再一律 `Unknown parameter`。limit class 回 400 OperationOutcome 並標明 class token；unknown hop 維持 Unknown search parameter。
+- [x] 4.3 確認 `api/FHIRApiService/condition-delete.js` 走同一套 SearchParameterCreator 驗證與具名錯誤，且其 catch-all MUST NOT 把 limit class 收成 unknown。合法 chain 之後既有 `isChain` 執行拒絕（`Chained search is not supported for conditional delete`）MUST 維持；本 change 不得改成 aggregation 刪除。
+- [x] 4.4 公開 diagnostics 可含參數名稱與 class token（例如讓 `Composition.subject.name` 看起來像缺 `subject:Patient`）；MUST NOT 洩漏內部 reason string。範圍僅 normal search、Bundle GET、conditional delete；不含 `_include`／`_revinclude`／`_has`。
 
 ## 5. Spec 情境測試
 

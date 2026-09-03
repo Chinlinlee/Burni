@@ -4,7 +4,11 @@ const { BaseFhirApiService } = require("./base.service");
 const { handleError } = require("@models/FHIR/httpMessage");
 
 const { logger } = require("@root/utils/log");
-const { SearchParameterCreator, UnknownSearchParameterError } = require("../search/searchParameterCreator");
+const {
+    SearchParameterCreator,
+    UnknownSearchParameterError,
+    RelationLimitSearchParameterError
+} = require("../search/searchParameterCreator");
 const { SearchProcessor } = require("../search/searchProcessor");
 const { createBundle } = require("@root/models/FHIR/func");
 const {
@@ -43,13 +47,23 @@ class SearchService extends BaseFhirApiService {
     
             queryParameter = await searchParameterCreator.create();
         } catch (e) {
-            if (e instanceof UnknownSearchParameterError) {
+            if (e instanceof UnknownSearchParameterError || e instanceof RelationLimitSearchParameterError) {
                 return {
                     status: false,
                     code: 400,
                     result: handleError.processing(e.message)
                 };
             }
+            logger.error(e);
+            return {
+                status: false,
+                code: 400,
+                result: handleError.processing(
+                    e instanceof Error && e.message
+                        ? e.message
+                        : "Unknown search parameter or value"
+                )
+            };
         }
         logger.info(`[mongo query: ${JSON.stringify(queryParameter)}]`);
         

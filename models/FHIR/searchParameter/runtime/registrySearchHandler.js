@@ -3,6 +3,10 @@ const { resolveLookupStatus, getEffectiveDefinition } = require("../registry/sna
 const { applyPlanToQuery } = require("../executor/mongoExecutor");
 const { buildRelationPlan, buildRelationAggregation } = require("../executor/relationPlan");
 const { parseSearchParameterName } = require("./parameterName");
+const {
+    RelationLimitSearchParameterError,
+    isRelationLimitClass
+} = require("./relationLimitErrors");
 
 /**
  * @param {Object} options
@@ -30,7 +34,13 @@ async function tryApplyRegistryParameter(options) {
 
     if (parsed.chain) {
         const relation = buildRelationPlan(plan, parsed, snapshot);
-        if (!relation.valid || !relation.relationPlan) {
+        if (!relation.valid) {
+            if (isRelationLimitClass(relation.class)) {
+                throw new RelationLimitSearchParameterError(parameterName, relation.class);
+            }
+            return "disabled";
+        }
+        if (!relation.relationPlan) {
             return "disabled";
         }
         const aggregation = buildRelationAggregation(

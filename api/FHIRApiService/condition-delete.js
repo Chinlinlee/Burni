@@ -6,7 +6,8 @@ const { isRealObject } = require("../apiService");
 const { logger } = require("../../utils/log");
 const {
     SearchParameterCreator,
-    UnknownSearchParameterError
+    UnknownSearchParameterError,
+    RelationLimitSearchParameterError
 } = require("./search/searchParameterCreator");
 
 /**
@@ -51,21 +52,16 @@ module.exports = async function (req, res, resourceType) {
         });
         queryParameter = await searchParameterCreator.create();
     } catch (e) {
-        if (e instanceof UnknownSearchParameterError) {
+        if (e instanceof UnknownSearchParameterError || e instanceof RelationLimitSearchParameterError) {
             logger.error(
                 `[Error: ${e.message}] [Resource Type: ${resourceType}]`
             );
             return doRes(400, handleError.processing(e.message));
         }
         logger.error(
-            `[Error: Unknown search parameter] [Resource Type: ${resourceType}] [${e}]`
+            `[Error: Search parameter processing failed] [Resource Type: ${resourceType}] [${e}]`
         );
-        return doRes(
-            400,
-            handleError.processing(
-                `Unknown search parameter or value`
-            )
-        );
+        return doRes(400, handleError.processing("Unknown search parameter or value"));
     }
     if (queryParameter.isChain) {
         return doRes(

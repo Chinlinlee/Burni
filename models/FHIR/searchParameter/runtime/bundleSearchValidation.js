@@ -3,6 +3,10 @@ const { ensureRegistryLoaded } = require("../registry/registryManager");
 const { resolveLookupStatus, getEffectiveDefinition } = require("../registry/snapshot");
 const { parseSearchParameterName, isControlParameter } = require("./parameterName");
 const { buildRelationPlan } = require("../executor/relationPlan");
+const {
+    formatRelationLimitDiagnostic,
+    isRelationLimitClass
+} = require("./relationLimitErrors");
 
 /**
  * @param {string} resourceType
@@ -40,6 +44,13 @@ async function validateBundleGetSearchParameters(resourceType, params, requestUr
         }
         const relation = buildRelationPlan(definition.compiledPlan, parsed, snapshot);
         if (!relation.valid) {
+            if (isRelationLimitClass(relation.class)) {
+                throw new FhirWebServiceError(
+                    400,
+                    formatRelationLimitDiagnostic(key, relation.class),
+                    handleError.processing
+                );
+            }
             throw new FhirWebServiceError(
                 400,
                 `Invalid URL in request ${requestUrl} (Unknown parameter: ${key})`,

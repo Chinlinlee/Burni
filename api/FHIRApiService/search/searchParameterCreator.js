@@ -2,6 +2,9 @@ const _ = require("lodash");
 const { isRealObject } = require("../../apiService");
 const { logger } = require("@root/utils/log");
 const { tryApplyRegistryParameter } = require("@models/FHIR/searchParameter/runtime/registrySearchHandler");
+const {
+    RelationLimitSearchParameterError
+} = require("@models/FHIR/searchParameter/runtime/relationLimitErrors");
 
 /**
  * @typedef SearchParameterCreatorOption
@@ -49,18 +52,14 @@ class SearchParameterCreator {
                     `Unknown search parameter ${key} or value ${this.query[key]}`
                 );
             } catch (e) {
-                if (e instanceof UnknownSearchParameterError) {
+                if (e instanceof UnknownSearchParameterError || e instanceof RelationLimitSearchParameterError) {
                     throw e;
                 }
-                if (key != "$and") {
-                    logger.error(e);
-                    logger.error(
-                        `[Error: Unknown search parameter ${key} or value ${this.query[key]}] [Resource Type: ${this.resourceType}] [${e}]`
-                    );
-                    throw new UnknownSearchParameterError(
-                        `Unknown search parameter ${key} or value ${this.query[key]}`
-                    );
-                }
+                logger.error(e);
+                logger.error(
+                    `[Error: Search parameter processing failed for ${key}] [Resource Type: ${this.resourceType}] [${e}]`
+                );
+                throw e;
             }
         }
 
@@ -84,3 +83,4 @@ class UnknownSearchParameterError extends Error {
 
 module.exports.SearchParameterCreator = SearchParameterCreator;
 module.exports.UnknownSearchParameterError = UnknownSearchParameterError;
+module.exports.RelationLimitSearchParameterError = RelationLimitSearchParameterError;
