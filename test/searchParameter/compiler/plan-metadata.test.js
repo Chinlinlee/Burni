@@ -128,6 +128,24 @@ describe("SearchQueryPlan reference metadata", function () {
         expect(extractReferenceValues(doc, plan)).to.deep.equal(["Patient/123"]);
     });
 
+    it("records official chain presence as SearchQueryPlan.depth without relation hop depth", function () {
+        const withoutChain = compileDefinition(buildDefinition());
+        expect(withoutChain.lookupPlans["Observation::subject"].plan.depth).to.equal(0);
+
+        const withChain = compileDefinition(
+            buildDefinition({
+                resource: {
+                    chain: ["name", "identifier"]
+                }
+            })
+        );
+        expect(withChain.lookupPlans["Observation::subject"].plan.depth).to.equal(1);
+        expect(withChain.lookupPlans["Observation::subject"].plan.chain).to.deep.equal([
+            "name",
+            "identifier"
+        ]);
+    });
+
     it("parses chain, type filter, and modifier forms from parameter names", function () {
         expect(parseSearchParameterName("subject.name")).to.deep.equal({
             code: "subject",

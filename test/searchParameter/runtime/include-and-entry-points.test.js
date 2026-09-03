@@ -212,6 +212,72 @@ describe("Registry-driven include and control metadata", function () {
         expect(isDeclaredTarget(lookup.plan, "Practitioner")).to.equal(false);
     });
 
+    it("keeps empty declared targets open for include target checks", function () {
+        const openSubject = definition(
+            {
+                code: "subject",
+                base: ["Composition"],
+                type: "reference",
+                expression: "Composition.subject",
+                target: []
+            },
+            ["Composition::subject"]
+        );
+        const snapshot = snapshotFrom([openSubject]);
+        const lookup = getReferenceLookup(snapshot, "Composition", "subject");
+        expect(lookup).to.exist;
+        expect(isDeclaredTarget(lookup.plan, "Patient")).to.equal(true);
+        expect(isDeclaredTarget(lookup.plan, "Practitioner")).to.equal(true);
+    });
+
+    it("treats _include and _revinclude as control parameters even with dotted suffixes", function () {
+        expect(isControlParameter("_include")).to.equal(true);
+        expect(isControlParameter("_revinclude")).to.equal(true);
+        expect(isControlParameter("_include.subject.name")).to.equal(true);
+        expect(isControlParameter("_revinclude:Observation.subject")).to.equal(true);
+        expect(parseSearchParameterName("_include.subject.name").code).to.equal("_include");
+        expect(parseSearchParameterName("_revinclude:Observation.subject").code).to.equal("_revinclude");
+    });
+
+    it("does not run dotted chain composer for _include or _revinclude Bundle GET keys", async function () {
+        await require("@models/FHIR/searchParameter/registry/registryManager").reloadRegistry({
+            databaseResources: []
+        });
+
+        await validateBundleGetSearchParameters(
+            "Observation",
+            new URLSearchParams("?_include=Observation.subject"),
+            "Observation?_include=Observation.subject"
+        );
+
+        await validateBundleGetSearchParameters(
+            "Observation",
+            new URLSearchParams("?_revinclude=Observation:subject"),
+            "Observation?_revinclude=Observation:subject"
+        );
+
+        await validateBundleGetSearchParameters(
+            "Observation",
+            new URLSearchParams("?_include.subject.name=ignored"),
+            "Observation?_include.subject.name=ignored"
+        );
+
+        let rejected = false;
+        try {
+            await validateBundleGetSearchParameters(
+                "Observation",
+                new URLSearchParams("?_include=Observation.subject&subject.a.b.c.d=1"),
+                "Observation?_include=Observation.subject&subject.a.b.c.d=1"
+            );
+        } catch (error) {
+            rejected = true;
+            expect(error.message).to.include("relation-depth");
+            expect(error.message).to.include("subject.a.b.c.d");
+            expect(error.message).to.not.include("_include");
+        }
+        expect(rejected).to.equal(true);
+    });
+
     it("extracts include reference values from Registry extraction paths", function () {
         const snapshot = snapshotFrom([observationSubject]);
         const plan = getReferenceLookup(snapshot, "Observation", "subject").plan;
@@ -241,8 +307,7 @@ describe("Registry-driven include and control metadata", function () {
         expect(relation.relationPlan.hops[0].branches[0].targetPlan.code).to.equal("name");
     });
 
-    it("treats _include and _count as control parameters, not SearchParameter lookups", function () {
-        expect(isControlParameter("_include")).to.equal(true);
+    it("treats _count as a control parameter, not a SearchParameter lookup", function () {
         expect(isControlParameter("_count")).to.equal(true);
         expect(isControlParameter("subject")).to.equal(false);
     });

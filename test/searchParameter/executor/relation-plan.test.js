@@ -15,6 +15,37 @@ const {
     isOpenReferenceTarget
 } = require("@models/FHIR/searchParameter/executor/relationPlan");
 
+const RELATION_LIMIT_CLASSES = ["missing-type-filter", "relation-depth", "relation-cost"];
+
+/**
+ * @param {{ valid: boolean, class?: string }} result
+ */
+function expectUnknownClass(result) {
+    expect(result.valid).to.equal(false);
+    expect(result.class).to.equal("unknown");
+    for (const limitClass of RELATION_LIMIT_CLASSES) {
+        expect(result.class).to.not.equal(limitClass);
+    }
+    expect(JSON.stringify(result)).to.not.include("Relation cost exceeds allowed limit");
+    expect(JSON.stringify(result)).to.not.include("Recursive chain is not supported");
+    expect(JSON.stringify(result)).to.not.include("Relation cycle is not allowed");
+}
+
+/**
+ * @param {{ valid: boolean, class?: string }} result
+ * @param {string} limitClass
+ */
+function expectLimitClass(result, limitClass) {
+    expect(result.valid).to.equal(false);
+    expect(result.class).to.equal(limitClass);
+    expect(result.class).to.not.equal("unknown");
+    for (const otherClass of RELATION_LIMIT_CLASSES) {
+        if (otherClass !== limitClass) {
+            expect(result.class).to.not.equal(otherClass);
+        }
+    }
+}
+
 function definition(resource, lookupKeys) {
     return {
         resource: {
@@ -153,6 +184,7 @@ describe("bounded multihop relation composer", function () {
         const result = buildRelationPlan(sourcePlan, parsed, snapshot);
         expect(result.valid).to.equal(true);
         expect(result.relationPlan.depth).to.equal(1);
+        expect(result.relationPlan.depth).to.not.equal(MAX_RELATION_DEPTH);
         expect(result.relationPlan.hops).to.have.length(1);
         expect(result.relationPlan.hops[0].code).to.equal("subject");
         expect(result.relationPlan.terminal.code).to.equal("name");
@@ -178,6 +210,18 @@ describe("bounded multihop relation composer", function () {
         expect(result.relationPlan.hops[0].branches[0].targetResourceType).to.equal("Patient");
     });
 
+    it("returns unknown when no declared target has an effective next-hop lookup", function () {
+        const snapshot = snapshotFrom([observationSubject, patientName, groupName]);
+        const sourcePlan = snapshot.byLookupKey.get("Observation::subject").compiledPlan;
+        const result = buildRelationPlan(
+            sourcePlan,
+            parseSearchParameterName("subject.organization.name"),
+            snapshot
+        );
+        expectUnknownClass(result);
+        expect(result.relationPlan).to.equal(undefined);
+    });
+
     it("rejects non-reference chaining, unknown lookup, and undeclared closed type filter", function () {
         const snapshot = snapshotFrom([observationSubject, patientName]);
         const sourcePlan = snapshot.byLookupKey.get("Observation::subject").compiledPlan;
@@ -187,27 +231,24 @@ describe("bounded multihop relation composer", function () {
             parseSearchParameterName("subject.name.family"),
             snapshot
         );
-        expect(nonReference.valid).to.equal(false);
-        expect(nonReference.class).to.equal("unknown");
+        expectUnknownClass(nonReference);
 
         const undeclaredWithFilter = buildRelationPlan(
             sourcePlan,
             parseSearchParameterName("subject:Practitioner.name"),
             snapshot
         );
-        expect(undeclaredWithFilter.valid).to.equal(false);
-        expect(undeclaredWithFilter.class).to.equal("unknown");
+        expectUnknownClass(undeclaredWithFilter);
 
         const unknownHop = buildRelationPlan(
             sourcePlan,
             parseSearchParameterName("subject.not-a-param"),
             snapshot
         );
-        expect(unknownHop.valid).to.equal(false);
-        expect(unknownHop.class).to.equal("unknown");
+        expectUnknownClass(unknownHop);
     });
 
-    it("allows repeated lookup keys such as partof.partof", function () {
+    it("allows a one-hop partof relation", function () {
         const snapshot = snapshotFrom([organizationPartof, organizationName]);
         const sourcePlan = snapshot.byLookupKey.get("Organization::partof").compiledPlan;
         const result = buildRelationPlan(
@@ -271,7 +312,7 @@ describe("bounded multihop relation composer", function () {
             snapshot
         );
         expect(result.valid).to.equal(false);
-        expect(result.class).to.equal("unknown");
+        expectUnknownClass(result);
     });
 
     it("builds a two-hop relation path for subject.organization.name", function () {
@@ -379,7 +420,7 @@ describe("bounded multihop relation composer", function () {
         }
     });
 
-    it("looks up only the filtered type for an open hop with a type filter", function () {
+    it("looks up only the filtered type for an open hop with empty targets", function () {
         const emptyTargets = definition(
             {
                 code: "subject",
@@ -400,6 +441,38 @@ describe("bounded multihop relation composer", function () {
         expect(result.valid).to.equal(true);
         expect(result.relationPlan.hops[0].branches).to.have.length(1);
         expect(result.relationPlan.hops[0].branches[0].targetResourceType).to.equal("Patient");
+    });
+
+    it("looks up only the filtered type for a Resource-token open hop", function () {
+        const resourceTokenSubject = definition(
+            {
+                code: "subject",
+                base: ["Composition"],
+                type: "reference",
+                expression: "Composition.subject",
+                target: ["Resource"]
+            },
+            ["Composition::subject"]
+        );
+        const snapshot = snapshotFrom([resourceTokenSubject, patientName, groupName]);
+        const sourcePlan = snapshot.byLookupKey.get("Composition::subject").compiledPlan;
+        expect(isOpenReferenceTarget(sourcePlan.targets)).to.equal(true);
+
+        const result = buildRelationPlan(
+            sourcePlan,
+            parseSearchParameterName("subject:Patient.name"),
+            snapshot
+        );
+        expect(result.valid).to.equal(true);
+        expect(result.relationPlan.hops[0].typeFilter).to.equal("Patient");
+        expect(result.relationPlan.hops[0].branches).to.have.length(1);
+        expect(result.relationPlan.hops[0].branches[0].targetResourceType).to.equal("Patient");
+
+        const aggregation = buildRelationAggregation(result.relationPlan, "Roel");
+        const lookups = collectLookups(aggregation.chain[0]);
+        expect(lookups).to.have.length(1);
+        expect(lookups[0].from).to.equal("Patient");
+        expect(lookups.some((lookup) => lookup.from === "Group")).to.equal(false);
     });
 
     it("rejects a catalog-minus-one open hop when the type filter is not listed", function () {
@@ -424,7 +497,7 @@ describe("bounded multihop relation composer", function () {
             snapshot
         );
         expect(result.valid).to.equal(false);
-        expect(result.class).to.equal("unknown");
+        expectUnknownClass(result);
     });
 
     it("rejects an open hop missing a type filter before checking depth", function () {
@@ -458,11 +531,11 @@ describe("bounded multihop relation composer", function () {
             snapshot
         );
         expect(result.valid).to.equal(false);
-        expect(result.class).to.equal("relation-depth");
+        expectLimitClass(result, "relation-depth");
         expect(result.relationPlan).to.equal(undefined);
     });
 
-    it("rejects relation cost above the module limit without leaking internal strings", function () {
+    it("rejects one-hop fan-out when path cost exceeds the module limit", function () {
         const targetTypes = [
             "Patient",
             "Group",
@@ -501,14 +574,151 @@ describe("bounded multihop relation composer", function () {
             snapshot
         );
         expect(result.valid).to.equal(false);
-        expect(result.class).to.equal("relation-cost");
+        expectLimitClass(result, "relation-cost");
         expect(JSON.stringify(result)).to.not.include("Relation cost exceeds allowed limit");
         expect(JSON.stringify(result)).to.not.include("Recursive chain is not supported");
         expect(JSON.stringify(result)).to.not.include("Relation cycle is not allowed");
     });
 
-    it("allows an empty chain allowlist to continue effective next hops", function () {
-        const snapshot = snapshotFrom([observationSubject, patientName, groupName]);
+    it("rejects depth-3 fan-out when path cost exceeds the module limit", function () {
+        const targetTypes = ["Patient", "Group", "Organization", "Location"];
+        const multiTarget = definition(
+            {
+                code: "subject",
+                base: ["Observation"],
+                type: "reference",
+                expression: "Observation.subject",
+                target: targetTypes
+            },
+            ["Observation::subject"]
+        );
+        const organizationLinks = [
+            definition(
+                {
+                    code: "organization",
+                    base: ["Patient"],
+                    type: "reference",
+                    expression: "Patient.managingOrganization",
+                    target: ["Organization"]
+                },
+                ["Patient::organization"]
+            ),
+            definition(
+                {
+                    code: "organization",
+                    base: ["Group"],
+                    type: "reference",
+                    expression: "Group.managingEntity",
+                    target: ["Organization", "Practitioner", "RelatedPerson"]
+                },
+                ["Group::organization"]
+            ),
+            definition(
+                {
+                    code: "organization",
+                    base: ["Organization"],
+                    type: "reference",
+                    expression: "Organization.partOf",
+                    target: ["Organization"]
+                },
+                ["Organization::organization"]
+            ),
+            definition(
+                {
+                    code: "organization",
+                    base: ["Location"],
+                    type: "reference",
+                    expression: "Location.partOf",
+                    target: ["Organization", "Location"]
+                },
+                ["Location::organization"]
+            )
+        ];
+        const snapshot = snapshotFrom([
+            multiTarget,
+            ...organizationLinks,
+            organizationPartof,
+            organizationName
+        ]);
+        const sourcePlan = snapshot.byLookupKey.get("Observation::subject").compiledPlan;
+        const result = buildRelationPlan(
+            sourcePlan,
+            parseSearchParameterName("subject.organization.partof.name"),
+            snapshot
+        );
+        expect(result.valid).to.equal(false);
+        expectLimitClass(result, "relation-cost");
+        expect(result.relationPlan).to.equal(undefined);
+        expect(JSON.stringify(result)).to.not.include("Relation cost exceeds allowed limit");
+    });
+
+    it("builds a depth-3 relation path within the module depth and cost limits", function () {
+        const snapshot = snapshotFrom([
+            observationSubject,
+            patientOrganization,
+            organizationPartof,
+            organizationName,
+            groupName
+        ]);
+        const sourcePlan = snapshot.byLookupKey.get("Observation::subject").compiledPlan;
+        const result = buildRelationPlan(
+            sourcePlan,
+            parseSearchParameterName("subject:Patient.organization.partof.name"),
+            snapshot
+        );
+        expect(result.valid).to.equal(true);
+        expect(result.relationPlan.depth).to.equal(3);
+        expect(result.relationPlan.depth).to.equal(MAX_RELATION_DEPTH);
+        expect(result.relationPlan.estimatedCost).to.be.at.most(MAX_RELATION_COST);
+        expect(result.relationPlan.hops).to.have.length(3);
+    });
+
+    it("allows absent or empty chain allowlists to continue effective next hops", function () {
+        const absentSnapshot = snapshotFrom([observationSubject, patientName, groupName]);
+        const absentPlan = absentSnapshot.byLookupKey.get("Observation::subject").compiledPlan;
+        expect(
+            buildRelationPlan(
+                absentPlan,
+                parseSearchParameterName("subject.name"),
+                absentSnapshot
+            ).valid
+        ).to.equal(true);
+
+        const emptyChainHop = definition(
+            {
+                code: "parent",
+                base: ["Organization"],
+                type: "reference",
+                expression: "Organization.partOf",
+                target: ["Organization"],
+                chain: []
+            },
+            ["Organization::parent"]
+        );
+        const emptyChainSnapshot = snapshotFrom([emptyChainHop, organizationName]);
+        const emptyChainPlan = emptyChainSnapshot.byLookupKey.get("Organization::parent").compiledPlan;
+        expect(
+            buildRelationPlan(
+                emptyChainPlan,
+                parseSearchParameterName("parent.name"),
+                emptyChainSnapshot
+            ).valid
+        ).to.equal(true);
+    });
+
+    it("allows a non-empty chain allowlist when the next hop is listed", function () {
+        const chained = definition(
+            {
+                code: "subject",
+                base: ["Observation"],
+                type: "reference",
+                expression: "Observation.subject",
+                target: ["Patient"],
+                chain: ["name"]
+            },
+            ["Observation::subject"]
+        );
+        const snapshot = snapshotFrom([chained, patientName]);
         const sourcePlan = snapshot.byLookupKey.get("Observation::subject").compiledPlan;
         const result = buildRelationPlan(
             sourcePlan,
@@ -516,6 +726,7 @@ describe("bounded multihop relation composer", function () {
             snapshot
         );
         expect(result.valid).to.equal(true);
+        expect(result.relationPlan.terminal.code).to.equal("name");
     });
 
     it("returns unknown for disabled lookups", function () {
@@ -546,7 +757,7 @@ describe("bounded multihop relation composer", function () {
             snapshot
         );
         expect(result.valid).to.equal(false);
-        expect(result.class).to.equal("unknown");
+        expectUnknownClass(result);
     });
 
     it("builds a bounded $lookup aggregation from hop branches", function () {

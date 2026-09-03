@@ -29,9 +29,9 @@
 
 ## 5. Spec 情境測試
 
-- [ ] 5.1 擴充 `test/searchParameter/executor/relation-plan.test.js`：一層 chain（`subject.name`、`subject:Patient.name`）仍可執行，depth 等於點數 1（不得把 depth 期望成 `MAX_RELATION_DEPTH` 常數）。刪除 last-plan-wins、same-key cycle、recursive chain 的舊期望。
-- [ ] 5.2 覆蓋 `Observation?subject.organization.name=`、`Organization?partof.partof.name=`、中間 hop type filter（例如 `subject:Patient.organization.name`），以及封閉多 target 的 per-type plans（每個 branch 有自己的 plan／filter，不得只 assert HTTP 200）。
-- [ ] 5.3 覆蓋 open hop 無 type filter → `missing-type-filter`（在算 cost 之前）、open hop 有 type filter 只 lookup 該型別、點數 4 → `relation-depth`、path cost > 24 → `relation-cost` 且不洩漏內部 reason。
-- [ ] 5.4 覆蓋 empty／absent allowlist 允許 effective next hop、non-empty allowlist 未列出的 code 回 unknown、未知 hop／未宣告 type／disabled 回 unknown 且 MUST NOT 用具名 limit class。
-- [ ] 5.5 在 `test/searchParameter/runtime/include-and-entry-points.test.js`（必要時加上 parameterName／`test/searchParameter/compiler/plan-metadata.test.js`）驗證 search、Bundle GET、conditional delete 三入口對三個 limit class 的錯誤對應一致；conditional delete 在驗證通過後仍拒絕執行既有 chained-search 訊息。既有 `_include`／`_revinclude` 行為不得被當成 chained search path 改寫；`SearchQueryPlan.depth` 維持 compiler 對官方 `chain` 欄位的語意。
-- [ ] 5.6 以 focused Mocha 驗證上述檔案，例如 `mocha --no-config --require test/hook.js --timeout 300000 --exit test/searchParameter/executor/relation-plan.test.js`，必要時再跑 parameterName／plan-metadata／include-and-entry-points。不得新增 request 層 cost cap、env 設定、`SearchQueryPlan.depth` compiler 欄位重寫、或 conditional delete 的 aggregate 執行。
+- [x] 5.1 擴充 `test/searchParameter/executor/relation-plan.test.js`：一層 chain（`subject.name`、`subject:Patient.name`）仍可執行，depth 等於點數 1（不得把 depth 期望成 `MAX_RELATION_DEPTH` 常數）。刪除 last-plan-wins、same-key cycle、recursive chain 的舊期望。
+- [x] 5.2 覆蓋 `Observation?subject.organization.name=`、`Organization?partof.partof.name=`、中間 hop type filter（例如 `subject:Patient.organization.name`），以及封閉多 target 的 per-type plans（每個 branch 有自己的 plan／filter，不得只 assert HTTP 200）。
+- [x] 5.3 覆蓋 open hop 無 type filter → `missing-type-filter`（在算 cost 之前）、open hop 有 type filter 只 lookup 該型別、點數 4 → `relation-depth`、path cost > 24 → `relation-cost` 且不洩漏內部 reason。
+- [x] 5.4 覆蓋 empty／absent allowlist 允許 effective next hop、non-empty allowlist 未列出的 code 回 unknown、未知 hop／未宣告 type／disabled 回 unknown 且 MUST NOT 用具名 limit class。
+- [x] 5.5 在 `test/searchParameter/runtime/include-and-entry-points.test.js`（必要時加上 parameterName／`test/searchParameter/compiler/plan-metadata.test.js`）驗證 search、Bundle GET、conditional delete 三入口對三個 limit class 的錯誤對應一致；conditional delete 在驗證通過後仍拒絕執行既有 chained-search 訊息。既有 `_include`／`_revinclude` 行為不得被當成 chained search path 改寫；`SearchQueryPlan.depth` 維持 compiler 對官方 `chain` 欄位的語意。
+- [x] 5.6 以 focused Mocha 驗證上述檔案，例如 `mocha --no-config --require test/hook.js --timeout 300000 --exit test/searchParameter/executor/relation-plan.test.js`，必要時再跑 parameterName／plan-metadata／include-and-entry-points。不得新增 request 層 cost cap、env 設定、`SearchQueryPlan.depth` compiler 欄位重寫、或 conditional delete 的 aggregate 執行。
