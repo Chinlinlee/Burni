@@ -35,7 +35,7 @@
 
 ## 6. Documentation and verification
 
-- [ ] 6.1 更新 Bundle 搜尋文件，改用 `entry[0].resource` 與 Registry-driven `composition`／`message` chained examples，移除所有-entry legacy mapping。
-- [ ] 6.2 執行 focused Mocha tests，至少涵蓋 relation plan、parameter parsing、compiler plan metadata、Bundle search validation 與 entry-point integration。
-- [ ] 6.3 執行 `openspec validate --change "bundle-composition-message-search" --strict`，修正所有 artifact 格式或需求覆蓋問題。
-- [ ] 6.4 依 repository profile 執行必要的 fast/full verification；確認不涉及資料遷移與 `SearchQueryPlan.depth` compiler 語意改寫。
+- [x] 6.1 更新 Bundle 搜尋文件，改用 `entry[0].resource` 與 Registry-driven `composition`／`message` chained examples，移除所有-entry legacy mapping。
+- [x] 6.2 執行 focused Mocha tests，至少涵蓋 relation plan、parameter parsing、compiler plan metadata、Bundle search validation 與 entry-point integration。
+- [x] 6.3 執行 `openspec validate --change "bundle-composition-message-search" --strict`，修正所有 artifact 格式或需求覆蓋問題。
+- [x] 6.4 依 repository profile 執行必要的 fast/full verification；確認不涉及資料遷移與 `SearchQueryPlan.depth` compiler 語意改寫。

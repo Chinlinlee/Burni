@@ -9,31 +9,44 @@ The code about search parameters can be found in `models\FHIR\queryBuild.js` and
 
 Some search parameters from generator will got missing or incorrect. You can fix by using methods in `models\FHIR\searchParameterQueryHandler.js`.
 
-## Example: Bundle.composition [#example-bundlecomposition]
+## Example: Bundle.composition and Bundle.message [#example-bundlecomposition-and-bundlemessage]
 
-In some use cases, you may want to search `patient/{id}` in `entry.resource.subject.reference` of bundle resource.
+FHIR R4 defines `Bundle.composition` and `Bundle.message` as reference search parameters. Burni resolves them from the SearchParameter Registry and evaluates only `entry[0].resource`:
 
-* The example URL:
+* `composition` — `document` Bundles whose first entry is a `Composition`
+* `message` — `message` Bundles whose first entry is a `MessageHeader`
+
+Burni does not fan out across all `entry` elements. Only the first embedded resource participates in these special searches.
+
+### Direct identity search [#direct-identity-search]
+
+Supported value forms include relative `ResourceType/id`, a bare id normalized to the fixed target type, and an absolute URL that matches `entry[0].fullUrl`. Versioned, contained, and logical identifier references are rejected.
+
+Example URLs:
+
+```sh
+http://localhost:8080/fhir/Bundle?composition=Composition/comp-1
+http://localhost:8080/fhir/Bundle?message=https://example.org/fhir/MessageHeader/msg-1
+```
+
+### Chained search [#chained-search]
+
+After the inline hop, Burni applies the target resource SearchParameter plan from the Registry. Examples:
 
 ```sh
 http://localhost:8080/fhir/Bundle?composition.patient=Patient/123
+http://localhost:8080/fhir/Bundle?message.focus:Patient.name=Smith
 ```
 
-If you wanna support this parameter, you can add code in `api/FHIR/Bundle/BundleParametersHandler.js`.
+`composition.patient` follows `Composition::patient` and may fan out to `Patient` and `Group`. `MessageHeader.focus` is an open reference target, so a type filter is required before chaining further:
 
-```js
-//#region composition.patient
-// search parameter name: "composition.patient"
-// field in resource: "entry.resource.subject.reference"
-// type: reference
-paramsSearchFields["composition.patient"]= ["entry.resource.subject.reference"];
-paramsSearch["composition.patient"] = (query) => {
-    try {
-        queryHandler.getReferenceQuery(query, paramsSearchFields, "composition.patient");
-    } catch (e) {
-        console.error(e);
-        throw e;
-    }
-};
-//#endregion
+```sh
+http://localhost:8080/fhir/Bundle?message.focus.name=Smith
 ```
+
+This request is rejected with HTTP 400 and `missing-type-filter`.
+
+### Limitations [#limitations]
+
+* Only `entry[0].resource` is evaluated; later entries do not affect results even when they contain a matching Composition or MessageHeader.
+* Bundle type and first-entry resource type must match; invalid stored Bundles simply do not match rather than returning parameter errors.

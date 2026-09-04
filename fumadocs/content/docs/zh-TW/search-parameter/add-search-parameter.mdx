@@ -9,29 +9,41 @@ description: ""
 
 由產生器產生之部分搜尋參數可能是錯誤的或遺失。您可以使用 `models\FHIR\searchParameterQueryHandler.js` 內的方法修正。
 
-## 範例： Bundle.composition
-在一些使用案例，您也許會想使用 bundle 的 `entry.resource.subject.reference` 搜尋 `patient/{id}`。
+## 範例：Bundle.composition 與 Bundle.message
+FHIR R4 將 `Bundle.composition` 與 `Bundle.message` 定義為 reference 搜尋參數。Burni 透過 SearchParameter Registry 解析這兩個參數，且只評估 `entry[0].resource`：
 
-- The example URL:
+- `composition` — `type` 為 `document`、第一個 entry 為 `Composition` 的 Bundle
+- `message` — `type` 為 `message`、第一個 entry 為 `MessageHeader` 的 Bundle
+
+Burni 不會對整個 `entry` 陣列做 fan-out，只有第一個 embedded resource 會參與這類特殊搜尋。
+
+### 直接 identity 搜尋
+支援的值形式包含 relative `ResourceType/id`、依固定 target type 正規化的 bare id，以及可與 `entry[0].fullUrl` 比對的 absolute URL。versioned、contained 與 logical identifier reference 會被拒絕。
+
+範例 URL：
+```sh
+http://localhost:8080/fhir/Bundle?composition=Composition/comp-1
+http://localhost:8080/fhir/Bundle?message=https://example.org/fhir/MessageHeader/msg-1
+```
+
+### Chained search
+inline hop 之後，Burni 會套用 Registry 中 target resource 的 SearchParameter plan。範例：
+
 ```sh
 http://localhost:8080/fhir/Bundle?composition.patient=Patient/123
+http://localhost:8080/fhir/Bundle?message.focus:Patient.name=Smith
 ```
-如果您想支援此項搜尋參數，您可以在 `api/FHIR/Bundle/BundleParametersHandler.js` 檔案新增以下程式碼
-```js
-//#region composition.patient
-// search parameter name: "composition.patient"
-// field in resource: "entry.resource.subject.reference"
-// type: reference
-paramsSearchFields["composition.patient"]= ["entry.resource.subject.reference"];
-paramsSearch["composition.patient"] = (query) => {
-    try {
-        queryHandler.getReferenceQuery(query, paramsSearchFields, "composition.patient");
-    } catch (e) {
-        console.error(e);
-        throw e;
-    }
-};
-//#endregion
+
+`composition.patient` 遵循 `Composition::patient`，可 fan-out 到 `Patient` 與 `Group`。`MessageHeader.focus` 是 open reference target，因此繼續 chain 前必須提供 type filter：
+
+```sh
+http://localhost:8080/fhir/Bundle?message.focus.name=Smith
 ```
+
+此請求會以 HTTP 400 與 `missing-type-filter` 被拒絕。
+
+### 限制
+- 只評估 `entry[0].resource`；即使後續 entry 含有符合條件的 Composition 或 MessageHeader，也不會影響結果。
+- Bundle type 與第一個 entry 的 resource type 必須相符；不符合 FHIR 約束的 stored Bundle 只是不命中，不會回傳參數錯誤。
 
 
