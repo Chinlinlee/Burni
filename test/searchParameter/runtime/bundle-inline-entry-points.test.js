@@ -260,6 +260,47 @@ describe("Bundle inline special search entry points", function () {
         expect(operationOutcomeDiagnostics(response.body)).to.include(expected);
     });
 
+    it("maps Bundle inline relation-depth consistently across entry points", async function () {
+        const parameterName = "composition.patient.organization.partof.name";
+        const query = { [parameterName]: "Parent" };
+        const expected = formatRelationLimitDiagnostic(parameterName, "relation-depth");
+
+        let registryError;
+        try {
+            await tryApplyRegistryParameter({
+                resourceType: "Bundle",
+                query: JSON.parse(JSON.stringify(query)),
+                parameterName
+            });
+        } catch (error) {
+            registryError = error;
+        }
+        expect(registryError.message).to.equal(expected);
+
+        let bundleError;
+        try {
+            await validateBundleGetSearchParameters(
+                "Bundle",
+                new URLSearchParams(`?${parameterName}=Parent`),
+                `Bundle?${parameterName}=Parent`
+            );
+        } catch (error) {
+            bundleError = error;
+        }
+        expect(bundleError.message).to.equal(expected);
+
+        const searchResult = await searchViaService("Bundle", query);
+        expect(searchResult.status).to.equal(false);
+        expect(searchResult.code).to.equal(400);
+        expect(operationOutcomeDiagnostics(searchResult.result)).to.equal(expected);
+
+        const { req, res, response } = createConditionDeleteResponse();
+        req.query = query;
+        await conditionDelete(req, res, "Bundle");
+        expect(response.statusCode).to.equal(400);
+        expect(operationOutcomeDiagnostics(response.body)).to.equal(expected);
+    });
+
     it("maps Bundle inline relation limits consistently across entry points", async function () {
         const parameterName = "message.focus.name";
         const query = { [parameterName]: "Smith" };

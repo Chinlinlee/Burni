@@ -1,0 +1,22 @@
+{
+  "resourceType": "Bundle",
+  "type": "message",
+  "entry": [
+    {
+      "fullUrl": "https://example.org/fhir/MessageHeader/msg-main",
+      "resource": {
+        "resourceType": "MessageHeader",
+        "id": "msg-main",
+        "eventCoding": {
+          "system": "http://example.org/fhir/message-events",
+          "code": "admin-notify"
+        },
+        "source": {
+          "name": "Burni test gateway",
+          "endpoint": "https://example.org/fhir"
+        },
+        "focus": [{ "reference": "Patient/placeholder-patient-focus" }]
+      }
+    }
+  ]
+}

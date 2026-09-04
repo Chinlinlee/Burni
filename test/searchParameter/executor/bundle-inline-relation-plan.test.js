@@ -550,6 +550,35 @@ describe("Bundle inline relation composer", function () {
         expect(JSON.stringify(result)).to.not.include("Relation depth exceeds allowed limit");
     });
 
+    it("applies terminal modifiers on inline composition.patient.name fan-out", function () {
+        const snapshot = snapshotFrom([
+            bundleComposition,
+            compositionPatient,
+            patientName,
+            groupName
+        ]);
+        const sourcePlan = snapshot.byLookupKey.get("Bundle::composition").compiledPlan;
+        const patientNamePlan = snapshot.byLookupKey.get("Patient::name").compiledPlan;
+        const relation = buildRelationPlan(
+            sourcePlan,
+            parseSearchParameterName("composition.patient.name:exact"),
+            snapshot
+        );
+        expect(relation.valid).to.equal(true);
+        expect(relation.relationPlan.terminal).to.deep.equal({ code: "name", modifier: "exact" });
+
+        const value = "Bor";
+        const expectedPatientFilter = createTypedFilterPlan(
+            patientNamePlan,
+            value,
+            "name:exact"
+        ).filter;
+        const aggregation = buildRelationAggregation(relation.relationPlan, value);
+        const patientLookup = aggregation.chain[0].find((stage) => stage.$lookup?.from === "Patient")
+            .$lookup;
+        expect(lookupTerminalFilter(patientLookup.pipeline)).to.deep.equal(expectedPatientFilter);
+    });
+
     it("rejects inline relation cost above the module limit", function () {
         const targetTypes = [
             "Patient",

@@ -1,0 +1,18 @@
+{
+  "resourceType": "Bundle",
+  "type": "document",
+  "entry": [
+    {
+      "fullUrl": "https://example.org/fhir/Composition/comp-main",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "comp-main",
+        "status": "final",
+        "type": { "text": "Discharge summary" },
+        "subject": { "reference": "Patient/placeholder-patient-main" },
+        "date": "2020-01-01",
+        "title": "Main document bundle"
+      }
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "patients": [
+    {
+      "resourceType": "Patient",
+      "name": [{ "family": "Bor", "given": ["Roel"] }]
+    },
+    {
+      "resourceType": "Patient",
+      "name": [{ "family": "Companion", "given": ["Alex"] }]
+    },
+    {
+      "resourceType": "Patient",
+      "name": [{ "family": "Focus", "given": ["Mila"] }]
+    }
+  ],
+  "groups": [
+    {
+      "resourceType": "Group",
+      "type": "person",
+      "actual": true,
+      "name": "InlineGroupRoel"
+    }
+  ],
+  "organizations": [
+    {
+      "resourceType": "Organization",
+      "name": "Acme Health"
+    }
+  ],
+  "observations": [
+    {
+      "resourceType": "Observation",
+      "status": "final",
+      "code": {
+        "coding": [{ "system": "http://loinc.org", "code": "29463-7" }]
+      },
+      "subject": { "reference": "Patient/placeholder-patient-main" }
+    }
+  ]
+}
