@@ -1,4 +1,5 @@
 const { getTypeCapability, validatePlanOperator } = require("../compiler/capabilityMatrix");
+const { buildBundleInlineDirectFilter } = require("./bundleInlineDirectFilter");
 const { getCommaSplitArray } = require("./queryPrimitives");
 const {
     buildProjectedFilter,
@@ -108,6 +109,10 @@ function parseSearchValue(rawValue, parameterName, searchType) {
 function buildFilterForValue(plan, value, modifier, comparator, temporal) {
     if (plan.code === "deceased" && modifier !== "missing") {
         return buildDeceasedCombinedFilter(plan, value, modifier, comparator, temporal);
+    }
+
+    if (plan.inlineTarget && plan.searchType === "reference") {
+        return buildBundleInlineDirectFilter(plan.inlineTarget, value, modifier);
     }
 
     const branchFilters = plan.extractionPaths.map((entry) =>
