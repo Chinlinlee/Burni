@@ -359,6 +359,87 @@ function referenceValueExpression(extractionPath, inlinePath) {
 }
 
 /**
+ * @param {Object} filter
+ * @param {string} prefix
+ * @returns {Object}
+ */
+function prefixMongoFilterPaths(filter, prefix) {
+    if (Array.isArray(filter)) {
+        return filter.map((item) => prefixMongoFilterPaths(item, prefix));
+    }
+    if (!filter || typeof filter !== "object") {
+        return filter;
+    }
+
+    /** @type {Object} */
+    const prefixed = {};
+    for (const [key, value] of Object.entries(filter)) {
+        if (key.startsWith("$")) {
+            if (Array.isArray(value)) {
+                prefixed[key] = value.map((item) => prefixMongoFilterPaths(item, prefix));
+            } else if (key === "$not" && value && typeof value === "object") {
+                prefixed[key] = prefixMongoFilterPaths(value, prefix);
+            } else {
+                prefixed[key] = value;
+            }
+            continue;
+        }
+        prefixed[`${prefix}.${key}`] = value;
+    }
+    return prefixed;
+}
+
+/**
+ * @param {string} alias
+ * @param {string} targetResourceType
+ * @param {import('../compiler/searchQueryPlan').ExtractionPath} extractionPath
+ * @param {string} inlinePath
+ * @returns {Object}
+ */
+function localInlineTargetStage(alias, targetResourceType, extractionPath, inlinePath) {
+    const referenceValue = referenceValueExpression(extractionPath, inlinePath);
+    const referenceId = {
+        $arrayElemAt: [
+            {
+                $split: [
+                    {
+                        $ifNull: [referenceValue, ""]
+                    },
+                    "/"
+                ]
+            },
+            -1
+        ]
+    };
+    return {
+        $addFields: {
+            [alias]: {
+                $filter: {
+                    input: { $ifNull: ["$entry", []] },
+                    as: "bundleEntry",
+                    cond: {
+                        $and: [
+                            {
+                                $eq: [
+                                    "$$bundleEntry.resource.resourceType",
+                                    targetResourceType
+                                ]
+                            },
+                            {
+                                $or: [
+                                    { $eq: ["$$bundleEntry.resource.id", referenceId] },
+                                    { $eq: ["$$bundleEntry.fullUrl", referenceValue] }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            }
+        }
+    };
+}
+
+/**
  * @param {unknown} value
  * @returns {value is import('./queryValueParser').TypedFilterPlan}
  */
@@ -528,7 +609,12 @@ function buildBranchLookupPipeline(hopIndex, branch, relationPlan, value, aliasC
  * @param {RelationPath} relationPlan
  * @param {string | string[] | import('./queryValueParser').TypedFilterPlan} value
  * @param {{ counter: number }} aliasCounter
- * @returns {{ stages: Object[], filterPlan?: import('./queryValueParser').TypedFilterPlan, lookupAliases?: string[] }}
+ * @returns {{
+ *   stages: Object[],
+ *   filterPlan?: import('./queryValueParser').TypedFilterPlan,
+ *   lookupAliases?: string[],
+ *   matchConditions?: Object[]
+ * }}
  */
 function buildInlineEmbeddedHopStages(
     branch,
@@ -540,12 +626,15 @@ function buildInlineEmbeddedHopStages(
 ) {
     const hops = relationPlan.hops;
     const isNaturalTerminal = hopIndex >= hops.length - 1;
+    const isNextBranchTerminal = hopIndex + 1 >= hops.length - 1;
     const isTerminalHop = isNaturalTerminal || hopIndex >= MAX_RELATION_DEPTH - 1;
     const terminalParameter = terminalParameterName(relationPlan);
     /** @type {Object[]} */
     const stages = [];
     /** @type {string[]} */
     const lookupAliases = [];
+    /** @type {Object[]} */
+    const matchConditions = [];
     /** @type {import('./queryValueParser').TypedFilterPlan | undefined} */
     let retainedFilterPlan;
 
@@ -587,6 +676,19 @@ function buildInlineEmbeddedHopStages(
                 retainedFilterPlan = nested.filterPlan;
             }
             const inlinePath = relationPlan.hops[0].inline.inlinePath;
+            let localAlias;
+            if (isNextBranchTerminal && nested.filterPlan) {
+                localAlias = `__bundleInlineTarget_${aliasCounter.counter}`;
+                aliasCounter.counter += 1;
+                stages.push(
+                    localInlineTargetStage(
+                        localAlias,
+                        nextBranch.targetResourceType,
+                        extractionPath,
+                        inlinePath
+                    )
+                );
+            }
             stages.push(...unwindStagesForInlinePath(extractionPath, inlinePath));
             stages.push(...correlationMatchStages(extractionPath, inlinePath));
             stages.push({
@@ -599,6 +701,31 @@ function buildInlineEmbeddedHopStages(
                     as: alias
                 }
             });
+            if (localAlias && nested.filterPlan) {
+                matchConditions.push({
+                    $or: [
+                        {
+                            $and: [
+                                { [`${localAlias}.0`]: { $exists: true } },
+                                prefixMongoFilterPaths(
+                                    nested.filterPlan.filter,
+                                    `${localAlias}.resource`
+                                )
+                            ]
+                        },
+                        {
+                            $and: [
+                                { [`${localAlias}.0`]: { $exists: false } },
+                                { [`${alias}.0`]: { $exists: true } }
+                            ]
+                        }
+                    ]
+                });
+            } else {
+                matchConditions.push({
+                    [`${alias}.0`]: { $exists: true }
+                });
+            }
         }
     }
 
@@ -606,7 +733,7 @@ function buildInlineEmbeddedHopStages(
         stages.push(matchNothingStage());
     }
 
-    return { stages, filterPlan: retainedFilterPlan, lookupAliases };
+    return { stages, filterPlan: retainedFilterPlan, lookupAliases, matchConditions };
 }
 
 /**
@@ -647,6 +774,8 @@ function buildInlineFirstHopAggregation(relationPlan, value, aliasCounter) {
     const pipeline = [];
     /** @type {string[]} */
     const aliases = [];
+    /** @type {Object[]} */
+    const matchConditions = [];
     /** @type {import('./queryValueParser').TypedFilterPlan | undefined} */
     let returnedFilterPlan = isTypedFilterPlan(value) ? value : undefined;
 
@@ -676,12 +805,16 @@ function buildInlineFirstHopAggregation(relationPlan, value, aliasCounter) {
         if (hopStages.lookupAliases?.length) {
             pipeline.push(...hopStages.stages);
             aliases.push(...hopStages.lookupAliases);
+            matchConditions.push(...(hopStages.matchConditions || []));
             continue;
         }
         pipeline.push(...hopStages.stages);
+        matchConditions.push(...(hopStages.matchConditions || []));
     }
 
-    if (aliases.length > 0) {
+    if (matchConditions.length > 0) {
+        pipeline.push({ $match: { $or: matchConditions } });
+    } else if (aliases.length > 0) {
         pipeline.push(existenceMatchStage(aliases));
     } else if (
         pipeline.length === 0 ||

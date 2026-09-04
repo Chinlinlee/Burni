@@ -16,6 +16,7 @@ const {
     DIRECT_HIT_SETS,
     buildDocumentBundleCompanion,
     buildDocumentBundleMain,
+    buildDocumentEmbeddedPatient,
     buildDocumentEntryOneCompositionTrap,
     buildDocumentGroupSubject,
     buildDocumentNestedOrganization,
@@ -102,7 +103,7 @@ describe("Bundle inline special search integration", function () {
 
     /** @type {Map<string, string>} */
     let idsByRole;
-    /** @type {{ patientMainId: string, patientFocusId: string, patientNestedOrgId: string, observationId: string, groupMainId: string, organizationId: string }} */
+    /** @type {{ patientMainId: string, patientFocusId: string, patientNestedOrgId: string, observationId: string, groupMainId: string, organizationId: string, embeddedPatientId: string, embeddedPatientCompanionId: string }} */
     let fixtureIds;
 
     before(async function () {
@@ -160,7 +161,9 @@ describe("Bundle inline special search integration", function () {
             patientNestedOrgId: patientNestedOrg.id,
             observationId: observation.id,
             groupMainId: groupMain.id,
-            organizationId: organization.id
+            organizationId: organization.id,
+            embeddedPatientId: "embedded-eve",
+            embeddedPatientCompanionId: "embedded-companion"
         };
 
         const bundles = [
@@ -170,6 +173,18 @@ describe("Bundle inline special search integration", function () {
             buildDocumentWrongFirstEntry(fixtureIds),
             buildDocumentGroupSubject(fixtureIds),
             buildDocumentNestedOrganization(fixtureIds),
+            buildDocumentEmbeddedPatient({
+                embeddedPatientId: fixtureIds.embeddedPatientId,
+                role: "document-embedded-subject",
+                name: "Eve Everywoman",
+                phone: "555-555-2003"
+            }),
+            buildDocumentEmbeddedPatient({
+                embeddedPatientId: fixtureIds.embeddedPatientCompanionId,
+                role: "document-embedded-subject-companion",
+                name: "Other Patient",
+                phone: "555-555-2004"
+            }),
             buildMessageBundleMain(fixtureIds),
             buildMessageBundleCompanion(fixtureIds)
         ];

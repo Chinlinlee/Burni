@@ -167,6 +167,28 @@ function buildDocumentNestedOrganization(ids) {
 }
 
 /**
+ * @param {{ embeddedPatientId: string, role: string, name: string, phone: string }} options
+ */
+function buildDocumentEmbeddedPatient(options) {
+    const bundle = buildDocumentBundleMain({
+        patientMainId: options.embeddedPatientId,
+        patientFocusId: "unused-focus"
+    });
+    bundle.entry[0].resource.id = `comp-${options.embeddedPatientId}`;
+    bundle.entry[0].fullUrl = `https://example.org/fhir/Composition/comp-${options.embeddedPatientId}`;
+    bundle.entry.push({
+        fullUrl: `https://example.org/fhir/Patient/${options.embeddedPatientId}`,
+        resource: {
+            resourceType: "Patient",
+            id: options.embeddedPatientId,
+            name: [{ text: options.name }],
+            telecom: [{ system: "phone", value: options.phone }]
+        }
+    });
+    return withFixtureRole(bundle, options.role);
+}
+
+/**
  * @returns {Object}
  */
 function loadRelatedResourceTemplates() {
@@ -213,6 +235,24 @@ const CHAINED_HIT_SETS = {
         value: "Bor",
         expectRoles: ["document-main"],
         excludeRoles: ["document-group-subject", "document-nested-org"]
+    },
+    compositionSubjectName: {
+        parameter: "composition.subject:Patient.name",
+        value: "Eve Everywoman",
+        expectRoles: ["document-embedded-subject"],
+        excludeRoles: ["document-embedded-subject-companion", "document-main"]
+    },
+    compositionSubjectExternalName: {
+        parameter: "composition.subject:Patient.name",
+        value: "Roel",
+        expectRoles: ["document-main"],
+        excludeRoles: ["document-embedded-subject", "document-embedded-subject-companion"]
+    },
+    compositionSubjectPhone: {
+        parameter: "composition.subject:Patient.phone",
+        value: "555-555-2003",
+        expectRoles: ["document-embedded-subject"],
+        excludeRoles: ["document-embedded-subject-companion", "document-main"]
     }
 };
 
@@ -260,6 +300,7 @@ module.exports = {
     DIRECT_HIT_SETS,
     buildDocumentBundleCompanion,
     buildDocumentBundleMain,
+    buildDocumentEmbeddedPatient,
     buildDocumentEntryOneCompositionTrap,
     buildDocumentGroupSubject,
     buildDocumentNestedOrganization,
