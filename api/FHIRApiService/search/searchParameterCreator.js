@@ -5,6 +5,10 @@ const { tryApplyRegistryParameter } = require("@models/FHIR/searchParameter/runt
 const {
     RelationLimitSearchParameterError
 } = require("@models/FHIR/searchParameter/runtime/relationLimitErrors");
+const {
+    UnknownSearchParameterError,
+    InvalidSearchParameterValueError
+} = require("@models/FHIR/searchParameter/runtime/searchParameterErrors");
 
 /**
  * @typedef SearchParameterCreatorOption
@@ -48,11 +52,13 @@ class SearchParameterCreator {
                     continue;
                 }
 
-                throw new UnknownSearchParameterError(
-                    `Unknown search parameter ${key} or value ${this.query[key]}`
-                );
+                throw new UnknownSearchParameterError(key, this.query[key]);
             } catch (e) {
-                if (e instanceof UnknownSearchParameterError || e instanceof RelationLimitSearchParameterError) {
+                if (
+                    e instanceof UnknownSearchParameterError ||
+                    e instanceof RelationLimitSearchParameterError ||
+                    e instanceof InvalidSearchParameterValueError
+                ) {
                     throw e;
                 }
                 logger.error(e);
@@ -71,16 +77,7 @@ class SearchParameterCreator {
     }
 }
 
-class UnknownSearchParameterError extends Error {
-    constructor(message) {
-        super(message);
-
-        this.name = this.constructor.name;
-
-        Error.captureStackTrace(this, this.constructor);
-    }
-}
-
 module.exports.SearchParameterCreator = SearchParameterCreator;
 module.exports.UnknownSearchParameterError = UnknownSearchParameterError;
+module.exports.InvalidSearchParameterValueError = InvalidSearchParameterValueError;
 module.exports.RelationLimitSearchParameterError = RelationLimitSearchParameterError;

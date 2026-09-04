@@ -1,8 +1,10 @@
 const { ensureRegistryLoaded } = require("../registry/registryManager");
 const { resolveLookupStatus, getEffectiveDefinition } = require("../registry/snapshot");
 const { applyPlanToQuery } = require("../executor/mongoExecutor");
+const { validateAndBuildFilter } = require("../executor/queryValueParser");
 const { buildRelationPlan, buildRelationAggregation } = require("../executor/relationPlan");
 const { parseSearchParameterName } = require("./parameterName");
+const { InvalidSearchParameterValueError } = require("./searchParameterErrors");
 const {
     RelationLimitSearchParameterError,
     isRelationLimitClass
@@ -43,10 +45,17 @@ async function tryApplyRegistryParameter(options) {
         if (!relation.relationPlan) {
             return "disabled";
         }
-        const aggregation = buildRelationAggregation(
-            relation.relationPlan,
-            query[parameterName]
-        );
+        let aggregation;
+        try {
+            aggregation = buildRelationAggregation(
+                relation.relationPlan,
+                query[parameterName]
+            );
+        } catch (error) {
+            throw new InvalidSearchParameterValueError(
+                error instanceof Error ? error.message : String(error)
+            );
+        }
         if (!query.chain) {
             query.chain = [];
         }
@@ -56,7 +65,11 @@ async function tryApplyRegistryParameter(options) {
         return "handled";
     }
 
-    applyPlanToQuery(plan, query, parameterName);
+    const filterResult = validateAndBuildFilter(plan, query[parameterName], parameterName);
+    if (!filterResult.valid) {
+        throw new InvalidSearchParameterValueError(filterResult.reason || "Invalid search query");
+    }
+    applyPlanToQuery(plan, query, parameterName, filterResult.filterPlan);
 
     return "handled";
 }

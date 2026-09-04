@@ -7,6 +7,7 @@ const { logger } = require("@root/utils/log");
 const {
     SearchParameterCreator,
     UnknownSearchParameterError,
+    InvalidSearchParameterValueError,
     RelationLimitSearchParameterError
 } = require("../search/searchParameterCreator");
 const { SearchProcessor } = require("../search/searchProcessor");
@@ -47,7 +48,11 @@ class SearchService extends BaseFhirApiService {
     
             queryParameter = await searchParameterCreator.create();
         } catch (e) {
-            if (e instanceof UnknownSearchParameterError || e instanceof RelationLimitSearchParameterError) {
+            if (
+                e instanceof UnknownSearchParameterError ||
+                e instanceof InvalidSearchParameterValueError ||
+                e instanceof RelationLimitSearchParameterError
+            ) {
                 return {
                     status: false,
                     code: 400,

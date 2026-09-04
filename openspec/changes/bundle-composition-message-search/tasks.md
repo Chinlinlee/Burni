@@ -6,23 +6,23 @@
 
 ## 2. Direct identity and Bundle gating
 
-- [ ] 2.1 實作 `composition`／`message` direct identity filter：支援固定 target type 的 bare id、relative `ResourceType/id` 與 `entry[0].fullUrl` absolute URL。
-- [ ] 2.2 套用 Bundle type 與 `entry[0].resource.resourceType` 的雙重 gating；缺少或不符合 special first entry 的 stored Bundle SHALL 只是不命中。
-- [ ] 2.3 依既有 reference value contract 拒絕 versioned、contained、logical identifier 與錯誤 target type 的 direct value。
+- [x] 2.1 實作 `composition`／`message` direct identity filter：支援固定 target type 的 bare id、relative `ResourceType/id` 與 `entry[0].fullUrl` absolute URL。
+- [x] 2.2 套用 Bundle type 與 `entry[0].resource.resourceType` 的雙重 gating；缺少或不符合 special first entry 的 stored Bundle SHALL 只是不命中。
+- [x] 2.3 依既有 reference value contract 拒絕 versioned、contained、logical identifier 與錯誤 target type 的 direct value。
 
 ## 3. Inline chained aggregation
 
-- [ ] 3.1 讓 `composition.<target-code>` 與 `message.<target-code>` 使用 Composition/MessageHeader 的 effective Registry plan，並將 extraction path 正確 prefix 到 `entry.0.resource`。
-- [ ] 3.2 支援 inline target 後的外部 Reference hop；每個 branch 使用自己的 target plan、type filter、correlation 與 terminal typed filter。
-- [ ] 3.3 對 `Composition::patient` 保留 `Patient|Group` closed fan-out，對 `MessageHeader::focus` 套用 open-target type-filter requirement；不得搜尋整個 `entry` array。
-- [ ] 3.4 驗證 inline path 的 relation depth、path cost、unknown 與三種 limit class 行為，且不得洩漏內部 limit reason。
+- [x] 3.1 讓 `composition.<target-code>` 與 `message.<target-code>` 使用 Composition/MessageHeader 的 effective Registry plan，並將 extraction path 正確 prefix 到 `entry.0.resource`。
+- [x] 3.2 支援 inline target 後的外部 Reference hop；每個 branch 使用自己的 target plan、type filter、correlation 與 terminal typed filter。
+- [x] 3.3 對 `Composition::patient` 保留 `Patient|Group` closed fan-out，對 `MessageHeader::focus` 套用 open-target type-filter requirement；不得搜尋整個 `entry` array。
+- [x] 3.4 驗證 inline path 的 relation depth、path cost、unknown 與三種 limit class 行為，且不得洩漏內部 limit reason。
 
 ## 4. Search entry points
 
-- [ ] 4.1 接上 normal search 的 direct 與 chained Bundle special search，並維持 Registry-only lookup 與既有 multiple-value semantics。
-- [ ] 4.2 接上 Bundle GET search validation，使 direct、inline chain、unknown 與 relation-limit diagnostics 與 normal search 一致。
-- [ ] 4.3 接上 conditional delete 的 direct special search validation；合法 chained special search 驗證通過後仍回既有 chained-search unsupported 訊息。
-- [ ] 4.4 確認 `_include`、`_revinclude`、`_has` 與其他 contained Resource 行為未被 inline special branch 改寫。
+- [x] 4.1 接上 normal search 的 direct 與 chained Bundle special search，並維持 Registry-only lookup 與既有 multiple-value semantics。
+- [x] 4.2 接上 Bundle GET search validation，使 direct、inline chain、unknown 與 relation-limit diagnostics 與 normal search 一致。
+- [x] 4.3 接上 conditional delete 的 direct special search validation；合法 chained special search 驗證通過後仍回既有 chained-search unsupported 訊息。
+- [x] 4.4 確認 `_include`、`_revinclude`、`_has` 與其他 contained Resource 行為未被 inline special branch 改寫。
 
 ## 5. Tests and fixtures
 

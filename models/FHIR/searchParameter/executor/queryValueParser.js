@@ -225,9 +225,18 @@ function buildFilterPlanResult(plan, rawValue, parameterName) {
         return { valid: false, reason: "Missing extraction paths in query plan" };
     }
 
-    const groupFilters = parsed.groups.map((group) =>
-        buildGroupFilter(group, plan, parsed.modifier)
-    );
+    /** @type {Object[]} */
+    let groupFilters;
+    try {
+        groupFilters = parsed.groups.map((group) =>
+            buildGroupFilter(group, plan, parsed.modifier)
+        );
+    } catch (error) {
+        return {
+            valid: false,
+            reason: error instanceof Error ? error.message : String(error)
+        };
+    }
 
     let filter;
     if (groupFilters.length === 1) {

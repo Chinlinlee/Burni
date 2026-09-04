@@ -7,6 +7,7 @@ const { logger } = require("../../utils/log");
 const {
     SearchParameterCreator,
     UnknownSearchParameterError,
+    InvalidSearchParameterValueError,
     RelationLimitSearchParameterError
 } = require("./search/searchParameterCreator");
 
@@ -52,7 +53,11 @@ module.exports = async function (req, res, resourceType) {
         });
         queryParameter = await searchParameterCreator.create();
     } catch (e) {
-        if (e instanceof UnknownSearchParameterError || e instanceof RelationLimitSearchParameterError) {
+        if (
+            e instanceof UnknownSearchParameterError ||
+            e instanceof InvalidSearchParameterValueError ||
+            e instanceof RelationLimitSearchParameterError
+        ) {
             logger.error(
                 `[Error: ${e.message}] [Resource Type: ${resourceType}]`
             );
