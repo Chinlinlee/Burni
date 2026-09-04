@@ -6,6 +6,7 @@ const { createDiagnostic } = require("../registry/diagnostics");
 const { getBaseResourceTypes, getLookupKey } = require("../registry/identity");
 const { compileExtractionPaths } = require("./extractionPathCompiler");
 const { attachPlanMetadata } = require("./planMetadata");
+const { resolveBundleInlineTarget } = require("./bundleInlineMetadata");
 
 /**
  * @typedef {Object} LookupCompileResult
@@ -194,6 +195,12 @@ function buildLookupResult(definition, resourceType, ast, extractionPaths, searc
 
     const resource = definition.resource;
     const metadata = attachPlanMetadata(resource, extractionPaths, searchType);
+    const inlineTarget = resolveBundleInlineTarget(
+        resourceType,
+        resource.code || "",
+        metadata.extractionPaths,
+        metadata.targets
+    );
     const estimatedCost = metadata.extractionPaths.some((entry) => entry.path.includes("."))
         ? 2
         : 1;
@@ -216,6 +223,7 @@ function buildLookupResult(definition, resourceType, ast, extractionPaths, searc
             target: resource.target,
             targets: metadata.targets,
             supportedValueForms: metadata.supportedValueForms,
+            inlineTarget,
             depth: resource.chain?.length ? 1 : 0,
             estimatedCost,
             requiredIndexes: metadata.extractionPaths.map((entry) => entry.path.split(".")[0]),

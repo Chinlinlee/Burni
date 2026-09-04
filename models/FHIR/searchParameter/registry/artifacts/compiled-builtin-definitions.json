@@ -1,13 +1,13 @@
 {
   "header": {
     "version": 1,
-    "generatedAt": "2026-08-31T15:49:29.718Z",
+    "generatedAt": "2026-09-04T11:29:37.422Z",
     "checksumAlgorithm": "sha256",
     "identity": {
       "bundleChecksum": "dc5927e3781a5aba26c08821904c4091664b3a40171aba9b01e563e9f7ca85df",
-      "compilerDirectoryHash": "3c79973b2ca4cc7f8cd65578107ff962c9211e0459b8e3a311c4d0d4d6901010",
+      "compilerDirectoryHash": "7dc945840b068ef85a7bc32ca2d9071759bd0eb620bc2f128e17f5ad96d03046",
       "typeMapsDirectoryHash": "0646d50f015f8dcc5f83c6b9a7e26978ecc26f9e8d522b32535d4cba710aa950",
-      "bodyChecksum": "fd666fb0ee622f3f14f9b83f556d9fb32e882079ca7662e347a9fa05e20d168a"
+      "bodyChecksum": "b00d24213c0fc0d9feef8b6deb06a0132d57c8f61b186db613676ffa12257fef"
     }
   },
   "definitions": {
@@ -13566,6 +13566,12 @@
                 "id",
                 "absolute-url"
               ],
+              "inlineTarget": {
+                "mode": "embedded",
+                "inlinePath": "entry.0.resource",
+                "targetResourceType": "Composition",
+                "bundleTypePredicate": "document"
+              },
               "depth": 0,
               "estimatedCost": 2,
               "requiredIndexes": [
@@ -13750,6 +13756,12 @@
                 "id",
                 "absolute-url"
               ],
+              "inlineTarget": {
+                "mode": "embedded",
+                "inlinePath": "entry.0.resource",
+                "targetResourceType": "MessageHeader",
+                "bundleTypePredicate": "message"
+              },
               "depth": 0,
               "estimatedCost": 2,
               "requiredIndexes": [

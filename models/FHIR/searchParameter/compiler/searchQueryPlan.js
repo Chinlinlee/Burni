@@ -13,6 +13,14 @@
  */
 
 /**
+ * @typedef {Object} BundleInlineTarget
+ * @property {'embedded'} mode
+ * @property {string} inlinePath
+ * @property {string} targetResourceType
+ * @property {string} bundleTypePredicate
+ */
+
+/**
  * @typedef {Object} SearchQueryPlan
  * @property {string} canonicalKey
  * @property {string} resourceType
@@ -29,6 +37,7 @@
  * @property {string[]} [target]
  * @property {string[]} targets
  * @property {string[]} supportedValueForms
+ * @property {BundleInlineTarget} [inlineTarget]
  * @property {number} depth
  * @property {number} estimatedCost
  * @property {string[]} requiredIndexes
@@ -56,6 +65,7 @@ function createSearchQueryPlan(fields) {
         target: fields.target,
         targets: fields.targets || fields.target || [],
         supportedValueForms: fields.supportedValueForms || [],
+        inlineTarget: fields.inlineTarget,
         depth: fields.depth ?? 0,
         estimatedCost: fields.estimatedCost ?? 1,
         requiredIndexes: fields.requiredIndexes || [],

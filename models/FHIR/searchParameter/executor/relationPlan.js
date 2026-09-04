@@ -1,4 +1,5 @@
 const fhirResourceCatalog = require("../../fhir.resourceList.json");
+const { prefixPlanExtractionPaths } = require("../compiler/bundleInlineMetadata");
 const { getEffectiveDefinition, resolveLookupStatus } = require("../registry/snapshot");
 const { createTypedFilterPlan } = require("./queryValueParser");
 
@@ -13,11 +14,20 @@ const MAX_RELATION_COST = 24;
  */
 
 /**
+ * @typedef {Object} RelationInlineHop
+ * @property {'embedded'} mode
+ * @property {string} inlinePath
+ * @property {string} targetResourceType
+ * @property {string} bundleTypePredicate
+ */
+
+/**
  * @typedef {Object} RelationHop
  * @property {string} code
  * @property {string} [typeFilter]
  * @property {import('../compiler/searchQueryPlan').SearchQueryPlan} sourcePlan
  * @property {RelationBranch[]} branches
+ * @property {RelationInlineHop} [inline]
  */
 
 /**
@@ -222,7 +232,16 @@ function buildRelationPlan(plan, parsedName, snapshot) {
             code: hop.code,
             typeFilter: hop.typeFilter,
             sourcePlan: hopIndex === 0 ? plan : currentBranches[0].targetPlan,
-            branches: hopBranches
+            branches: hopBranches,
+            inline:
+                hopIndex === 0 && plan.inlineTarget
+                    ? {
+                              mode: plan.inlineTarget.mode,
+                          inlinePath: plan.inlineTarget.inlinePath,
+                          targetResourceType: plan.inlineTarget.targetResourceType,
+                          bundleTypePredicate: plan.inlineTarget.bundleTypePredicate
+                      }
+                    : undefined
         });
         currentBranches = hopBranches;
     }
@@ -460,6 +479,187 @@ function buildBranchLookupPipeline(hopIndex, branch, relationPlan, value, aliasC
 }
 
 /**
+ * @param {RelationBranch} branch
+ * @param {import('../compiler/searchQueryPlan').SearchQueryPlan} embeddedPlan
+ * @param {number} hopIndex
+ * @param {RelationPath} relationPlan
+ * @param {string | string[] | import('./queryValueParser').TypedFilterPlan} value
+ * @param {{ counter: number }} aliasCounter
+ * @returns {{ stages: Object[], filterPlan?: import('./queryValueParser').TypedFilterPlan, lookupAliases?: string[] }}
+ */
+function buildInlineEmbeddedHopStages(
+    branch,
+    embeddedPlan,
+    hopIndex,
+    relationPlan,
+    value,
+    aliasCounter
+) {
+    const hops = relationPlan.hops;
+    const isNaturalTerminal = hopIndex >= hops.length - 1;
+    const isTerminalHop = isNaturalTerminal || hopIndex >= MAX_RELATION_DEPTH - 1;
+    const terminalParameter = terminalParameterName(relationPlan);
+    /** @type {Object[]} */
+    const stages = [];
+    /** @type {string[]} */
+    const lookupAliases = [];
+    /** @type {import('./queryValueParser').TypedFilterPlan | undefined} */
+    let retainedFilterPlan;
+
+    if (isTerminalHop) {
+        if (isNaturalTerminal) {
+            const filterPlan = resolveTerminalFilterPlan(
+                { ...branch, targetPlan: embeddedPlan },
+                value,
+                terminalParameter
+            );
+            stages.push({ $match: filterPlan.filter });
+            return { stages, filterPlan };
+        }
+        return { stages };
+    }
+
+    const nextHop = hops[hopIndex + 1];
+    const referencePlan = embeddedPlan;
+    const nextBranches = nextHop.branches.filter(
+        (nextBranch) => nextBranch.sourceResourceType === branch.targetResourceType
+    );
+
+    for (const extractionPath of referencePlan.extractionPaths) {
+        if (extractionPath.datatype === "Resource") {
+            continue;
+        }
+        for (const nextBranch of nextBranches) {
+            const alias = `__chain_${aliasCounter.counter}`;
+            aliasCounter.counter += 1;
+            lookupAliases.push(alias);
+            const nested = buildBranchLookupPipeline(
+                hopIndex + 1,
+                nextBranch,
+                relationPlan,
+                value,
+                aliasCounter
+            );
+            if (!retainedFilterPlan && nested.filterPlan) {
+                retainedFilterPlan = nested.filterPlan;
+            }
+            stages.push(...unwindStagesForInlinePath(extractionPath, relationPlan.hops[0].inline.inlinePath));
+            stages.push(...correlationMatchStages(extractionPath));
+            stages.push({
+                $lookup: {
+                    from: nextBranch.targetResourceType,
+                    let: {
+                        refValue: referenceValueExpression(extractionPath)
+                    },
+                    pipeline: nested.stages,
+                    as: alias
+                }
+            });
+        }
+    }
+
+    if (lookupAliases.length === 0) {
+        stages.push(matchNothingStage());
+    }
+
+    return { stages, filterPlan: retainedFilterPlan, lookupAliases };
+}
+
+/**
+ * @param {import('../compiler/searchQueryPlan').ExtractionPath} extractionPath
+ * @param {string} inlinePath
+ * @returns {Object[]}
+ */
+function unwindStagesForInlinePath(extractionPath, inlinePath) {
+    const relativeSegments = extractionPath.path
+        .slice(`${inlinePath}.`.length)
+        .split(".");
+    /** @type {Object[]} */
+    const stages = [];
+    let current = inlinePath;
+    for (const segment of relativeSegments) {
+        current = `${current}.${segment}`;
+        stages.push({
+            $unwind: {
+                path: `$${current}`,
+                preserveNullAndEmptyArrays: true
+            }
+        });
+    }
+    return stages;
+}
+
+/**
+ * @param {RelationPath} relationPlan
+ * @param {string | string[] | import('./queryValueParser').TypedFilterPlan} value
+ * @param {{ counter: number }} aliasCounter
+ * @returns {{ pipeline: Object[], filterPlan?: import('./queryValueParser').TypedFilterPlan }}
+ */
+function buildInlineFirstHopAggregation(relationPlan, value, aliasCounter) {
+    const firstHop = relationPlan.hops[0];
+    const terminalParameter = terminalParameterName(relationPlan);
+    /** @type {Object[]} */
+    const pipeline = [];
+    /** @type {string[]} */
+    const aliases = [];
+    /** @type {import('./queryValueParser').TypedFilterPlan | undefined} */
+    let returnedFilterPlan = isTypedFilterPlan(value) ? value : undefined;
+
+    for (const branch of firstHop.branches) {
+        const embeddedPlan = prefixPlanExtractionPaths(
+            branch.targetPlan,
+            firstHop.inline.inlinePath
+        );
+        const hopStages = buildInlineEmbeddedHopStages(
+            branch,
+            embeddedPlan,
+            0,
+            relationPlan,
+            value,
+            aliasCounter
+        );
+        if (!returnedFilterPlan && hopStages.filterPlan) {
+            returnedFilterPlan = hopStages.filterPlan;
+        }
+        if (hopStages.lookupAliases?.length) {
+            pipeline.push(...hopStages.stages);
+            aliases.push(...hopStages.lookupAliases);
+            continue;
+        }
+        pipeline.push(...hopStages.stages);
+    }
+
+    if (aliases.length > 0) {
+        pipeline.push(existenceMatchStage(aliases));
+    } else if (
+        pipeline.length === 0 ||
+        pipeline.every((stage) => stage.$match?.__chainNoExecutablePath)
+    ) {
+        pipeline.push(matchNothingStage());
+    }
+
+    if (!returnedFilterPlan) {
+        const lastHop = relationPlan.hops[relationPlan.hops.length - 1];
+        const fallbackBranch = lastHop.branches[0];
+        if (fallbackBranch) {
+            const embeddedFallbackPlan = firstHop.inline
+                ? prefixPlanExtractionPaths(
+                      fallbackBranch.targetPlan,
+                      firstHop.inline.inlinePath
+                  )
+                : fallbackBranch.targetPlan;
+            returnedFilterPlan = resolveTerminalFilterPlan(
+                { ...fallbackBranch, targetPlan: embeddedFallbackPlan },
+                value,
+                terminalParameter
+            );
+        }
+    }
+
+    return { pipeline, filterPlan: returnedFilterPlan };
+}
+
+/**
  * @param {RelationPath} relationPlan
  * @param {string | string[] | import('./queryValueParser').TypedFilterPlan} value
  * @returns {Object}
@@ -473,6 +673,15 @@ function buildRelationAggregation(relationPlan, value) {
     const aliasCounter = { counter: 0 };
     /** @type {import('./queryValueParser').TypedFilterPlan | undefined} */
     let returnedFilterPlan = isTypedFilterPlan(value) ? value : undefined;
+
+    if (firstHop.inline) {
+        const inlineAggregation = buildInlineFirstHopAggregation(relationPlan, value, aliasCounter);
+        return {
+            isChain: true,
+            chain: [inlineAggregation.pipeline],
+            filterPlan: inlineAggregation.filterPlan
+        };
+    }
 
     for (const extractionPath of firstHop.sourcePlan.extractionPaths) {
         if (extractionPath.datatype === "Resource") {
