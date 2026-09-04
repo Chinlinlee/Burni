@@ -30,10 +30,10 @@
 - [x] 5.2 測試 direct identity、bare id、relative reference、absolute `fullUrl`、wrong target type、versioned/contained/logical identifier。
 - [x] 5.3 測試 `composition.patient` 的 Patient/Group fan-out、`message.focus:Patient` 的 type filter，以及缺 filter 的 `missing-type-filter`。
 - [x] 5.4 測試只在 `entry[0]` 評估、Bundle type gating、invalid stored Bundle 不命中，以及 `entry[1]` 不得造成誤命中。
-- [ ] 5.5 測試 normal search、Bundle GET validation、conditional delete 對 unknown、`missing-type-filter`、`relation-depth`、`relation-cost` 的一致 mapping。
-- [ ] 5.6 測試多值、terminal modifiers、nested external Reference hop、per-branch typed filters 與 existing one-hop chained search 回溯相容性。
+- [x] 5.5 測試 normal search、Bundle GET validation、conditional delete 對 unknown、`missing-type-filter`、`relation-depth`、`relation-cost` 的一致 mapping。
+- [x] 5.6 測試多值、terminal modifiers、nested external Reference hop、per-branch typed filters 與 existing one-hop chained search 回溯相容性。
 
-目前 5.5 與 5.6 尚未完成：`relation-cost` 尚未在三個 entry point 建立一致 mapping，且 inline chained Mongo positive hit-set 因 aggregation reference projection 問題暫為 pending；相關 relation-plan 與 entry-point unit coverage 已存在。
+inline chained Mongo positive hit-set 已透過 scalar projection 修正並納入 integration regression coverage；5.5/5.6 的 entry-point、composer 與 Mongo execution coverage 已完成。
 
 ## 6. Documentation and verification
 

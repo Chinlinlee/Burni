@@ -6,6 +6,39 @@ const { createTypedFilterPlan } = require("./queryValueParser");
 
 const MAX_RELATION_DEPTH = 3;
 const MAX_RELATION_COST = 24;
+const BUNDLE_INLINE_SCALAR_RESOURCE_FIELD = "__bundleInlineResource";
+
+/**
+ * @returns {Object}
+ */
+function bundleInlineScalarResourceProjectionStage() {
+    return {
+        $addFields: {
+            // Materialize entry[0] because aggregation expressions treat $entry.0 as array-valued.
+            [BUNDLE_INLINE_SCALAR_RESOURCE_FIELD]: {
+                $getField: {
+                    field: "resource",
+                    input: { $arrayElemAt: ["$entry", 0] }
+                }
+            }
+        }
+    };
+}
+
+/**
+ * @param {string} path
+ * @param {string} inlinePath
+ * @returns {string}
+ */
+function toInlineAggregationPath(path, inlinePath) {
+    if (path === inlinePath) {
+        return BUNDLE_INLINE_SCALAR_RESOURCE_FIELD;
+    }
+    if (path.startsWith(`${inlinePath}.`)) {
+        return `${BUNDLE_INLINE_SCALAR_RESOURCE_FIELD}.${path.slice(inlinePath.length + 1)}`;
+    }
+    return path;
+}
 
 /**
  * @typedef {Object} RelationBranch
@@ -287,11 +320,16 @@ function unwindStagesForPath(extractionPath) {
 
 /**
  * @param {import('../compiler/searchQueryPlan').ExtractionPath} extractionPath
+ * @param {string} [inlinePath]
  * @returns {Object[]}
  */
-function correlationMatchStages(extractionPath) {
+function correlationMatchStages(extractionPath, inlinePath) {
     const predicates = extractionPath.predicates || [];
-    const parentPath = extractionPath.correlation?.parentPath || extractionPath.path.split(".")[0];
+    const sourceParentPath =
+        extractionPath.correlation?.parentPath || extractionPath.path.split(".")[0];
+    const parentPath = inlinePath
+        ? toInlineAggregationPath(sourceParentPath, inlinePath)
+        : sourceParentPath;
     /** @type {Object[]} */
     const stages = [];
     for (const predicate of predicates) {
@@ -307,13 +345,17 @@ function correlationMatchStages(extractionPath) {
 
 /**
  * @param {import('../compiler/searchQueryPlan').ExtractionPath} extractionPath
+ * @param {string} [inlinePath]
  * @returns {string}
  */
-function referenceValueExpression(extractionPath) {
+function referenceValueExpression(extractionPath, inlinePath) {
+    const path = inlinePath
+        ? toInlineAggregationPath(extractionPath.path, inlinePath)
+        : extractionPath.path;
     if (extractionPath.datatype === "Reference") {
-        return `$${extractionPath.path}.reference`;
+        return `$${path}.reference`;
     }
-    return `$${extractionPath.path}`;
+    return `$${path}`;
 }
 
 /**
@@ -544,13 +586,14 @@ function buildInlineEmbeddedHopStages(
             if (!retainedFilterPlan && nested.filterPlan) {
                 retainedFilterPlan = nested.filterPlan;
             }
-            stages.push(...unwindStagesForInlinePath(extractionPath, relationPlan.hops[0].inline.inlinePath));
-            stages.push(...correlationMatchStages(extractionPath));
+            const inlinePath = relationPlan.hops[0].inline.inlinePath;
+            stages.push(...unwindStagesForInlinePath(extractionPath, inlinePath));
+            stages.push(...correlationMatchStages(extractionPath, inlinePath));
             stages.push({
                 $lookup: {
                     from: nextBranch.targetResourceType,
                     let: {
-                        refValue: referenceValueExpression(extractionPath)
+                        refValue: referenceValueExpression(extractionPath, inlinePath)
                     },
                     pipeline: nested.stages,
                     as: alias
@@ -572,12 +615,13 @@ function buildInlineEmbeddedHopStages(
  * @returns {Object[]}
  */
 function unwindStagesForInlinePath(extractionPath, inlinePath) {
-    const relativeSegments = extractionPath.path
-        .slice(`${inlinePath}.`.length)
+    const aggregationPath = toInlineAggregationPath(extractionPath.path, inlinePath);
+    const relativeSegments = aggregationPath
+        .slice(`${BUNDLE_INLINE_SCALAR_RESOURCE_FIELD}.`.length)
         .split(".");
     /** @type {Object[]} */
     const stages = [];
-    let current = inlinePath;
+    let current = BUNDLE_INLINE_SCALAR_RESOURCE_FIELD;
     for (const segment of relativeSegments) {
         current = `${current}.${segment}`;
         stages.push({
@@ -610,6 +654,7 @@ function buildInlineFirstHopAggregation(relationPlan, value, aliasCounter) {
         pipeline.push({
             $match: { $and: bundleInlineGatingConditions(firstHop.inline) }
         });
+        pipeline.push(bundleInlineScalarResourceProjectionStage());
     }
 
     for (const branch of firstHop.branches) {
@@ -751,6 +796,7 @@ function buildRelationAggregation(relationPlan, value) {
 module.exports = {
     MAX_RELATION_DEPTH,
     MAX_RELATION_COST,
+    BUNDLE_INLINE_SCALAR_RESOURCE_FIELD,
     isOpenReferenceTarget,
     buildRelationPlan,
     buildRelationAggregation

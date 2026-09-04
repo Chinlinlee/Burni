@@ -4,10 +4,6 @@ const path = require("path");
 const mongoose = require("mongoose");
 const { expect } = require("chai");
 const {
-    startRegistryTestContext,
-    stopRegistryTestContext
-} = require("../support/registry-test-context");
-const {
     clearCollections,
     insertResources,
     searchBundleViaService,
@@ -33,17 +29,13 @@ const { validateBundleGetSearchParameters } = require("@models/FHIR/searchParame
 const {
     formatRelationLimitDiagnostic
 } = require("@models/FHIR/searchParameter/runtime/relationLimitErrors");
-
-/**
- * @param {Object} body
- * @returns {string}
- */
-function operationOutcomeDiagnostics(body) {
-    if (body?.issue?.[0]?.diagnostics) {
-        return body.issue[0].diagnostics;
-    }
-    return JSON.stringify(body);
-}
+const {
+    assertBundleInlineLimitAcrossEntryPoints,
+    assertBundleInlineUnknownAcrossEntryPoints,
+    buildBundleInlineRelationCostResources,
+    operationOutcomeDiagnostics,
+    withBundleRegistry
+} = require("../../support/search/bundle-inline-entry-point-assertions");
 
 /**
  * @param {Record<string, string>} idsByRole
@@ -65,22 +57,77 @@ function expectHitRoles(idsByRole, returnedIds, expectedRoles, excludedRoles = [
     }
 }
 
+function createConditionDeleteResponse() {
+    /** @type {{ statusCode: number | null, body: unknown }} */
+    const response = {
+        statusCode: null,
+        body: null
+    };
+    return {
+        response,
+        req: {
+            query: {},
+            url: "/Bundle"
+        },
+        res: {
+            getHeader() {
+                return "application/fhir+json";
+            },
+            status(code) {
+                response.statusCode = code;
+                return this;
+            },
+            send(body) {
+                response.body = body;
+                return this;
+            },
+            header() {
+                return this;
+            }
+        }
+    };
+}
+
 describe("Bundle inline special search integration", function () {
     this.timeout(300000);
 
+    /** @type {typeof import('@root/api/FHIRApiService/search/searchParameterCreator').SearchParameterCreator} */
+    let SearchParameterCreator;
+    /** @type {typeof import('@root/api/FHIRApiService/search/searchParameterCreator').UnknownSearchParameterError} */
+    let UnknownSearchParameterError;
+    /** @type {import('@root/api/FHIRApiService/condition-delete')} */
+    let conditionDelete;
+    /** @type {typeof import('@root/api/FHIRApiService/services/search.service').SearchService} */
+    let SearchService;
+
     /** @type {Map<string, string>} */
     let idsByRole;
-    /** @type {{ patientMainId: string, patientFocusId: string, observationId: string, groupMainId: string, organizationId: string }} */
+    /** @type {{ patientMainId: string, patientFocusId: string, patientNestedOrgId: string, observationId: string, groupMainId: string, organizationId: string }} */
     let fixtureIds;
 
     before(async function () {
         const moduleAlias = require("module-alias");
         moduleAlias.addAlias("models/mongodb", path.join(__dirname, "../../../models/mongodb"));
-        await startRegistryTestContext();
+        const { startMongoMemory } = require("../../support/mongo-memory");
+        process.env.ENABLE_VALIDATOR = "false";
+        await startMongoMemory();
+        const creatorModule = require("@root/api/FHIRApiService/search/searchParameterCreator");
+        SearchParameterCreator = creatorModule.SearchParameterCreator;
+        UnknownSearchParameterError = creatorModule.UnknownSearchParameterError;
+        conditionDelete = require("@root/api/FHIRApiService/condition-delete");
+        SearchService = require("@root/api/FHIRApiService/services/search.service").SearchService;
+        const { reloadRegistry } = require("@models/FHIR/searchParameter/registry/registryManager");
+        await reloadRegistry({ databaseResources: [] });
     });
 
     after(async function () {
-        await stopRegistryTestContext();
+        const {
+            dropMongoTestDatabase,
+            stopMongoMemory
+        } = require("../../support/mongo-memory");
+        await dropMongoTestDatabase();
+        await stopMongoMemory();
+        delete process.env.ENABLE_VALIDATOR;
     });
 
     beforeEach(async function () {
@@ -92,8 +139,14 @@ describe("Bundle inline special search integration", function () {
         );
         const [groupMain] = await insertResources("Group", templates.groups);
         const [organization] = await insertResources("Organization", templates.organizations);
+        const [patientNestedOrg] = await insertResources("Patient", [
+            {
+                ...templates.patients[0],
+                name: [{ family: "NestedOrg", given: ["AcmePatient"] }]
+            }
+        ]);
         await mongoose.model("Patient").updateOne(
-            { id: patientMain.id },
+            { id: patientNestedOrg.id },
             { $set: { managingOrganization: { reference: `Organization/${organization.id}` } } }
         );
         const observationTemplate = replacePlaceholders(templates.observations[0], {
@@ -104,6 +157,7 @@ describe("Bundle inline special search integration", function () {
         fixtureIds = {
             patientMainId: patientMain.id,
             patientFocusId: patientFocus.id,
+            patientNestedOrgId: patientNestedOrg.id,
             observationId: observation.id,
             groupMainId: groupMain.id,
             organizationId: organization.id
@@ -222,10 +276,40 @@ describe("Bundle inline special search integration", function () {
     });
 
     describe("inline chained search hit-sets", function () {
-        // Mongo execution for inline chained Bundle search currently fails because
-        // aggregation ref extraction resolves entry.0.resource.*.reference as an array.
-        // Composer-level coverage lives in bundle-inline-relation-plan.test.js.
-        describe.skip("positive mongo hit-sets pending inline chain execution fix", function () {
+        describe("positive mongo hit-sets", function () {
+            const GROUP_NAME_SEARCH_PARAMETER_ID = "bundle-inline-test-group-name";
+
+            before(async function () {
+                await mongoose.connection.collection("SearchParameter").insertOne({
+                    resourceType: "SearchParameter",
+                    id: GROUP_NAME_SEARCH_PARAMETER_ID,
+                    url: "http://example.org/SearchParameter/Group-name",
+                    version: "4.0.1",
+                    status: "active",
+                    code: "name",
+                    base: ["Group"],
+                    type: "string",
+                    expression: "Group.name"
+                });
+                const {
+                    reloadRegistry,
+                    resetRegistryCache
+                } = require("@models/FHIR/searchParameter/registry/registryManager");
+                resetRegistryCache();
+                await reloadRegistry();
+            });
+
+            after(async function () {
+                await mongoose.connection.collection("SearchParameter").deleteMany({
+                    id: GROUP_NAME_SEARCH_PARAMETER_ID
+                });
+                const {
+                    reloadRegistry,
+                    resetRegistryCache
+                } = require("@models/FHIR/searchParameter/registry/registryManager");
+                resetRegistryCache();
+                await reloadRegistry();
+            });
             for (const [caseName, hitSet] of Object.entries(CHAINED_HIT_SETS)) {
                 it(`matches ${caseName} positive hit-set via normal search`, async function () {
                     const searchResult = await searchBundleViaService({
@@ -252,6 +336,7 @@ describe("Bundle inline special search integration", function () {
                 expectHitRoles(idsByRole, returnedIds, ["document-main", "document-group-subject"], [
                     "document-companion",
                     "document-entry1-trap",
+                    "document-nested-org",
                     "message-main"
                 ]);
             });
@@ -270,43 +355,104 @@ describe("Bundle inline special search integration", function () {
         });
     });
 
-    describe("relation limits and unknown parameters", function () {
-        it("maps relation-depth for inline chained search", async function () {
-            const parameterName = "composition.patient.organization.partof.name";
-            const searchResult = await searchBundleViaService({
-                [parameterName]: "Parent"
-            });
-            expect(searchResult.status).to.equal(false);
-            expect(searchResult.code).to.equal(400);
-            expect(operationOutcomeDiagnostics(searchResult.result)).to.equal(
-                formatRelationLimitDiagnostic(parameterName, "relation-depth")
-            );
-
-            let bundleError;
-            try {
-                await validateBundleGetSearchParameters(
-                    "Bundle",
-                    new URLSearchParams(`?${parameterName}=Parent`),
-                    `Bundle?${parameterName}=Parent`
-                );
-            } catch (error) {
-                bundleError = error;
+    describe("relation limits and unknown parameters (5.5)", function () {
+        const limitCases = [
+            {
+                limitClass: "missing-type-filter",
+                parameterName: "message.focus.name",
+                query: { "message.focus.name": "Mila" }
+            },
+            {
+                limitClass: "relation-depth",
+                parameterName: "composition.patient.organization.partof.name",
+                query: { "composition.patient.organization.partof.name": "Parent" }
             }
-            expect(bundleError.message).to.equal(
-                formatRelationLimitDiagnostic(parameterName, "relation-depth")
-            );
+        ];
+
+        for (const testCase of limitCases) {
+            it(`maps ${testCase.limitClass} consistently across search, Bundle GET, and conditional delete`, async function () {
+                await assertBundleInlineLimitAcrossEntryPoints({
+                    SearchService,
+                    conditionDelete,
+                    createConditionDeleteResponse,
+                    parameterName: testCase.parameterName,
+                    query: testCase.query,
+                    limitClass: testCase.limitClass
+                });
+            });
+        }
+
+        it("maps relation-cost consistently across search, Bundle GET, and conditional delete", async function () {
+            /** @type {import('@models/FHIR/searchParameter/registry/types').SearchParameterResource[]} */
+            const resources = [];
+            buildBundleInlineRelationCostResources(resources);
+            const parameterName = "composition.patient-multi.name";
+            const query = { [parameterName]: "test" };
+
+            await withBundleRegistry(resources, async () => {
+                await assertBundleInlineLimitAcrossEntryPoints({
+                    SearchService,
+                    conditionDelete,
+                    createConditionDeleteResponse,
+                    parameterName,
+                    query,
+                    limitClass: "relation-cost"
+                });
+            });
         });
 
-        it("maps unknown inline chained hops to unknown parameter errors", async function () {
+        it("maps unknown inline chained hops consistently across entry points", async function () {
             const parameterName = "composition.nocode.name";
-            const searchResult = await searchBundleViaService({
-                [parameterName]: "test"
+            const query = { [parameterName]: "test" };
+            await assertBundleInlineUnknownAcrossEntryPoints({
+                SearchParameterCreator,
+                UnknownSearchParameterError,
+                SearchService,
+                conditionDelete,
+                createConditionDeleteResponse,
+                parameterName,
+                query
             });
-            expect(searchResult.status).to.equal(false);
-            expect(searchResult.code).to.equal(400);
-            expect(operationOutcomeDiagnostics(searchResult.result)).to.include(parameterName);
-            expect(operationOutcomeDiagnostics(searchResult.result)).to.not.include(
-                "missing-type-filter"
+        });
+    });
+
+    describe("inline chained search semantics (5.6)", function () {
+        it("validates multiple inline chained patient name values through SearchParameterCreator", async function () {
+            const validatedQuery = await new SearchParameterCreator({
+                resourceType: "Bundle",
+                query: { "composition.patient.name": "Roel,InlineGroupRoel" }
+            }).create();
+            expect(validatedQuery.isChain).to.equal(true);
+            expect(validatedQuery.chain).to.be.an("array").that.is.not.empty;
+        });
+
+        it("validates nested external hop and terminal modifier through SearchParameterCreator", async function () {
+            const nestedQuery = await new SearchParameterCreator({
+                resourceType: "Bundle",
+                query: { "composition.patient:Patient.organization.name": "Acme" }
+            }).create();
+            expect(nestedQuery.isChain).to.equal(true);
+
+            const exactQuery = await new SearchParameterCreator({
+                resourceType: "Bundle",
+                query: { "composition.patient.name:exact": "Bor" }
+            }).create();
+            expect(exactQuery.isChain).to.equal(true);
+        });
+
+        it("rejects valid nested chained Bundle conditional delete after validation", async function () {
+            const query = { "composition.patient:Patient.organization.name": "Acme" };
+            await new SearchParameterCreator({
+                resourceType: "Bundle",
+                query: JSON.parse(JSON.stringify(query))
+            }).create();
+
+            const { req, res, response } = createConditionDeleteResponse();
+            req.query = query;
+            await conditionDelete(req, res, "Bundle");
+            expect(response.statusCode).to.equal(400);
+            expect(operationOutcomeDiagnostics(response.body)).to.include(
+                "Chained search is not supported for conditional delete"
             );
         });
     });

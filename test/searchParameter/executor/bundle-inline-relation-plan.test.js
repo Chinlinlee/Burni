@@ -14,6 +14,7 @@ const { createTypedFilterPlan } = require("@models/FHIR/searchParameter/executor
 const {
     MAX_RELATION_COST,
     MAX_RELATION_DEPTH,
+    BUNDLE_INLINE_SCALAR_RESOURCE_FIELD,
     buildRelationPlan,
     buildRelationAggregation
 } = require("@models/FHIR/searchParameter/executor/relationPlan");
@@ -362,8 +363,13 @@ describe("Bundle inline relation composer", function () {
             .map((stage) => stage.$unwind.path);
         expect(compositionUnwindPaths).to.not.include("$entry");
         expect(compositionUnwindPaths).to.not.include("$entry.0");
-        expect(compositionUnwindPaths.every((path) => path.startsWith("$entry.0.resource"))).to.equal(
-            true
+        expect(
+            compositionUnwindPaths.every((path) =>
+                path.startsWith(`$${BUNDLE_INLINE_SCALAR_RESOURCE_FIELD}`)
+            )
+        ).to.equal(true);
+        expect(compositionAggregation.chain[0][1].$addFields).to.have.property(
+            BUNDLE_INLINE_SCALAR_RESOURCE_FIELD
         );
 
         const messagePlan = snapshot.byLookupKey.get("Bundle::message").compiledPlan;
@@ -734,18 +740,22 @@ describe("Bundle inline relation composer", function () {
         const pipeline = aggregation.chain[0];
         const unwindPaths = collectUnwindPaths(pipeline);
         expect(unwindPaths).to.not.include("$entry");
-        expect(unwindPaths).to.include("$entry.0.resource.focus");
-        expect(unwindPaths.every((path) => path.startsWith("$entry.0.resource"))).to.equal(true);
+        expect(unwindPaths).to.include(`$${BUNDLE_INLINE_SCALAR_RESOURCE_FIELD}.focus`);
+        expect(
+            unwindPaths.every((path) => path.startsWith(`$${BUNDLE_INLINE_SCALAR_RESOURCE_FIELD}`))
+        ).to.equal(true);
 
         const matchKeys = collectPlainMatchKeys(pipeline);
-        expect(matchKeys).to.include("entry.0.resource.focus.type");
+        expect(matchKeys).to.include(`${BUNDLE_INLINE_SCALAR_RESOURCE_FIELD}.focus.type`);
         expect(matchKeys).to.not.include("entry.type");
         expect(matchKeys).to.not.include("entry.0.type");
         expect(matchKeys).to.not.include("focus.type");
+        expect(matchKeys).to.not.include("entry.0.resource.focus.type");
 
         const refValues = collectLookupRefValues(pipeline);
-        expect(refValues).to.include("$entry.0.resource.focus.reference");
+        expect(refValues).to.include(`$${BUNDLE_INLINE_SCALAR_RESOURCE_FIELD}.focus.reference`);
         expect(refValues).to.not.include("$focus.reference");
         expect(refValues).to.not.include("$entry.reference");
+        expect(refValues).to.not.include("$entry.0.resource.focus.reference");
     });
 });

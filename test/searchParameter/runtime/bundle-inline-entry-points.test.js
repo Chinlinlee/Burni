@@ -12,7 +12,15 @@ const {
 } = require("@models/FHIR/searchParameter/runtime/relationLimitErrors");
 const { reloadRegistry } = require("@models/FHIR/searchParameter/registry/registryManager");
 const { tryApplyRegistryParameter } = require("@models/FHIR/searchParameter/runtime/registrySearchHandler");
+const { createTypedFilterPlan } = require("@models/FHIR/searchParameter/executor/queryValueParser");
 const { createFakeRequest, createFakeResponse } = require("../../support/fake-http");
+const {
+    assertBundleInlineLimitAcrossEntryPoints,
+    assertBundleInlineUnknownAcrossEntryPoints,
+    buildBundleInlineChainedFanOutResources,
+    buildBundleInlineRelationCostResources,
+    withBundleRegistry
+} = require("../../support/search/bundle-inline-entry-point-assertions");
 
 function definition(resource, lookupKeys) {
     return {
@@ -365,24 +373,6 @@ describe("Bundle inline special search entry points", function () {
         expect(response.statusCode).to.equal(200);
     });
 
-    it("rejects valid chained Bundle special conditional delete after validation", async function () {
-        const parameterName = "composition.patient";
-        const query = { [parameterName]: "Patient/123" };
-        const validatedQuery = await new SearchParameterCreator({
-            resourceType: "Bundle",
-            query: JSON.parse(JSON.stringify(query))
-        }).create();
-        expect(validatedQuery.isChain).to.equal(true);
-
-        const { req, res, response } = createConditionDeleteResponse();
-        req.query = query;
-        await conditionDelete(req, res, "Bundle");
-        expect(response.statusCode).to.equal(400);
-        expect(operationOutcomeDiagnostics(response.body)).to.include(
-            "Chained search is not supported for conditional delete"
-        );
-    });
-
     it("keeps _include extraction on Registry reference paths without inline chain aggregation", function () {
         const bundleComposition = definition(
             {
@@ -434,35 +424,273 @@ describe("Bundle inline special search entry points", function () {
     it("rejects unknown Bundle inline chained hops across entry points", async function () {
         const parameterName = "composition.nocode.name";
         const query = { [parameterName]: "test" };
-        const result = await tryApplyRegistryParameter({
-            resourceType: "Bundle",
-            query: JSON.parse(JSON.stringify(query)),
-            parameterName
+        await assertBundleInlineUnknownAcrossEntryPoints({
+            SearchParameterCreator,
+            UnknownSearchParameterError,
+            SearchService,
+            conditionDelete,
+            createConditionDeleteResponse,
+            parameterName,
+            query
         });
-        expect(result).to.equal("disabled");
+    });
 
-        let creatorError;
-        try {
-            await new SearchParameterCreator({
+    describe("Bundle inline limit class mapping across entry points (5.5)", function () {
+        const limitCases = [
+            {
+                limitClass: "missing-type-filter",
+                parameterName: "message.focus.name",
+                query: { "message.focus.name": "Smith" }
+            },
+            {
+                limitClass: "relation-depth",
+                parameterName: "composition.patient.organization.partof.name",
+                query: { "composition.patient.organization.partof.name": "Parent" }
+            }
+        ];
+
+        for (const testCase of limitCases) {
+            it(`maps ${testCase.limitClass} consistently across search, Bundle GET, and conditional delete`, async function () {
+                await assertBundleInlineLimitAcrossEntryPoints({
+                    SearchService,
+                    conditionDelete,
+                    createConditionDeleteResponse,
+                    parameterName: testCase.parameterName,
+                    query: testCase.query,
+                    limitClass: testCase.limitClass
+                });
+            });
+        }
+
+        it("maps relation-cost consistently across search, Bundle GET, and conditional delete", async function () {
+            /** @type {import('@models/FHIR/searchParameter/registry/types').SearchParameterResource[]} */
+            const resources = [];
+            buildBundleInlineRelationCostResources(resources);
+            const parameterName = "composition.patient-multi.name";
+            const query = { [parameterName]: "test" };
+
+            await withBundleRegistry(resources, async () => {
+                await assertBundleInlineLimitAcrossEntryPoints({
+                    SearchService,
+                    conditionDelete,
+                    createConditionDeleteResponse,
+                    parameterName,
+                    query,
+                    limitClass: "relation-cost"
+                });
+            });
+        });
+    });
+
+    describe("Bundle inline chained search semantics (5.6)", function () {
+        function collectLookups(stages) {
+            /** @type {Array<{ from: string, pipeline: Object[] }>} */
+            const found = [];
+            for (const stage of stages) {
+                if (stage.$lookup) {
+                    found.push(stage.$lookup);
+                    found.push(...collectLookups(stage.$lookup.pipeline || []));
+                }
+            }
+            return found;
+        }
+
+        function lookupTerminalFilter(pipeline) {
+            const idIndex = pipeline.findIndex((stage) => stage.$match?.$expr);
+            if (idIndex === -1) {
+                return undefined;
+            }
+            return pipeline[idIndex + 1]?.$match;
+        }
+
+        it("accepts multiple inline chained patient name values at the registry handler", async function () {
+            /** @type {import('@models/FHIR/searchParameter/registry/types').SearchParameterResource[]} */
+            const resources = [];
+            buildBundleInlineChainedFanOutResources(resources);
+            const parameterName = "composition.patient.name";
+
+            await withBundleRegistry(resources, async () => {
+                const query = { [parameterName]: "Roel,InlineGroupRoel" };
+                const result = await tryApplyRegistryParameter({
+                    resourceType: "Bundle",
+                    query,
+                    parameterName
+                });
+                expect(result).to.equal("handled");
+                expect(query.isChain).to.equal(true);
+                const lookups = collectLookups(query.chain[0]);
+                expect(lookups.some((lookup) => lookup.from === "Patient")).to.equal(true);
+                expect(lookups.some((lookup) => lookup.from === "Group")).to.equal(true);
+                const patientLookup = query.chain[0].find((stage) => stage.$lookup?.from === "Patient")
+                    .$lookup;
+                const terminalFilter = lookupTerminalFilter(patientLookup.pipeline);
+                expect(JSON.stringify(terminalFilter)).to.include("$or");
+            });
+        });
+
+        it("applies terminal :exact modifier for inline composition.patient.name", async function () {
+            /** @type {import('@models/FHIR/searchParameter/registry/types').SearchParameterResource[]} */
+            const resources = [];
+            buildBundleInlineChainedFanOutResources(resources);
+            const parameterName = "composition.patient.name:exact";
+
+            await withBundleRegistry(resources, async () => {
+                const query = { [parameterName]: "Bor" };
+                const result = await tryApplyRegistryParameter({
+                    resourceType: "Bundle",
+                    query,
+                    parameterName
+                });
+                expect(result).to.equal("handled");
+                const patientLookup = query.chain[0].find((stage) => stage.$lookup?.from === "Patient")
+                    .$lookup;
+                const groupLookup = query.chain[0].find((stage) => stage.$lookup?.from === "Group")
+                    .$lookup;
+                const snapshot = snapshotFrom([
+                    definition(
+                        {
+                            code: "name",
+                            base: ["Patient"],
+                            type: "string",
+                            expression: "Patient.name"
+                        },
+                        ["Patient::name"]
+                    ),
+                    definition(
+                        {
+                            code: "name",
+                            base: ["Group"],
+                            type: "string",
+                            expression: "Group.name"
+                        },
+                        ["Group::name"]
+                    )
+                ]);
+                const patientNamePlan = snapshot.byLookupKey.get("Patient::name").compiledPlan;
+                const expectedPatientFilter = createTypedFilterPlan(
+                    patientNamePlan,
+                    "Bor",
+                    "name:exact"
+                ).filter;
+                expect(lookupTerminalFilter(patientLookup.pipeline)).to.deep.equal(
+                    expectedPatientFilter
+                );
+                expect(lookupTerminalFilter(groupLookup.pipeline)).to.not.deep.equal(
+                    lookupTerminalFilter(patientLookup.pipeline)
+                );
+            });
+        });
+
+        it("nests external Organization lookup for composition.patient:Patient.organization.name", async function () {
+            const parameterName = "composition.patient:Patient.organization.name";
+            const query = { [parameterName]: "Acme" };
+            const result = await tryApplyRegistryParameter({
+                resourceType: "Bundle",
+                query,
+                parameterName
+            });
+            expect(result).to.equal("handled");
+            const pipeline = query.chain[0];
+            const lookups = collectLookups(pipeline);
+            expect(lookups.some((lookup) => lookup.from === "Composition")).to.equal(false);
+            expect(lookups.some((lookup) => lookup.from === "Group")).to.equal(false);
+            const patientLookup = pipeline.find((stage) => stage.$lookup?.from === "Patient").$lookup;
+            const orgLookup = collectLookups(patientLookup.pipeline).find(
+                (lookup) => lookup.from === "Organization"
+            );
+            expect(orgLookup).to.exist;
+        });
+
+        it("applies per-branch typed filters for composition.patient.name fan-out", async function () {
+            /** @type {import('@models/FHIR/searchParameter/registry/types').SearchParameterResource[]} */
+            const resources = [];
+            buildBundleInlineChainedFanOutResources(resources);
+            const parameterName = "composition.patient.name";
+
+            await withBundleRegistry(resources, async () => {
+                const query = { [parameterName]: "Roel" };
+                const result = await tryApplyRegistryParameter({
+                    resourceType: "Bundle",
+                    query,
+                    parameterName
+                });
+                expect(result).to.equal("handled");
+                const snapshot = snapshotFrom([
+                    definition(
+                        {
+                            code: "name",
+                            base: ["Patient"],
+                            type: "string",
+                            expression: "Patient.name"
+                        },
+                        ["Patient::name"]
+                    ),
+                    definition(
+                        {
+                            code: "name",
+                            base: ["Group"],
+                            type: "string",
+                            expression: "Group.name"
+                        },
+                        ["Group::name"]
+                    )
+                ]);
+                const patientNamePlan = snapshot.byLookupKey.get("Patient::name").compiledPlan;
+                const groupNamePlan = snapshot.byLookupKey.get("Group::name").compiledPlan;
+                const expectedPatientFilter = createTypedFilterPlan(
+                    patientNamePlan,
+                    "Roel",
+                    "name"
+                ).filter;
+                const expectedGroupFilter = createTypedFilterPlan(groupNamePlan, "Roel", "name").filter;
+                const patientLookup = query.chain[0].find((stage) => stage.$lookup?.from === "Patient")
+                    .$lookup;
+                const groupLookup = query.chain[0].find((stage) => stage.$lookup?.from === "Group")
+                    .$lookup;
+                expect(lookupTerminalFilter(patientLookup.pipeline)).to.deep.equal(
+                    expectedPatientFilter
+                );
+                expect(lookupTerminalFilter(groupLookup.pipeline)).to.deep.equal(expectedGroupFilter);
+                expect(lookupTerminalFilter(patientLookup.pipeline)).to.not.deep.equal(
+                    lookupTerminalFilter(groupLookup.pipeline)
+                );
+            });
+        });
+
+        it("keeps existing Observation one-hop chained search working at the registry handler", async function () {
+            const parameterName = "subject:Patient.name";
+            const query = { [parameterName]: "Roel" };
+            const result = await tryApplyRegistryParameter({
+                resourceType: "Observation",
+                query,
+                parameterName
+            });
+            expect(result).to.equal("handled");
+            expect(query.isChain).to.equal(true);
+            expect(query.chain[0].some((stage) => stage.$lookup?.from === "Patient")).to.equal(true);
+            expect(query.chain[0].some((stage) => stage.$lookup?.from === "Observation")).to.equal(
+                false
+            );
+        });
+
+        it("rejects valid chained Bundle special conditional delete after validation", async function () {
+            const parameterName = "composition.patient:Patient.organization.name";
+            const query = { [parameterName]: "Acme" };
+            const validatedQuery = await new SearchParameterCreator({
                 resourceType: "Bundle",
                 query: JSON.parse(JSON.stringify(query))
             }).create();
-        } catch (error) {
-            creatorError = error;
-        }
-        expect(creatorError).to.be.instanceOf(UnknownSearchParameterError);
-        expect(creatorError.message).to.include(parameterName);
+            expect(validatedQuery.isChain).to.equal(true);
 
-        let bundleError;
-        try {
-            await validateBundleGetSearchParameters(
-                "Bundle",
-                new URLSearchParams(`?${parameterName}=test`),
-                `Bundle?${parameterName}=test`
+            const { req, res, response } = createConditionDeleteResponse();
+            req.query = query;
+            await conditionDelete(req, res, "Bundle");
+            expect(response.statusCode).to.equal(400);
+            expect(operationOutcomeDiagnostics(response.body)).to.include(
+                "Chained search is not supported for conditional delete"
             );
-        } catch (error) {
-            bundleError = error;
-        }
-        expect(bundleError.message).to.include("Unknown parameter");
+            expect(operationOutcomeDiagnostics(response.body)).to.not.include("relation-depth");
+            expect(operationOutcomeDiagnostics(response.body)).to.not.include("relation-cost");
+        });
     });
 });

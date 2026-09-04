@@ -154,11 +154,11 @@ function buildDocumentGroupSubject(ids) {
 }
 
 /**
- * @param {{ patientMainId: string, organizationId: string }} ids
+ * @param {{ patientMainId: string, organizationId: string, patientNestedOrgId: string }} ids
  */
 function buildDocumentNestedOrganization(ids) {
     const bundle = buildDocumentBundleMain({
-        patientMainId: ids.patientMainId,
+        patientMainId: ids.patientNestedOrgId,
         patientFocusId: "unused-focus"
     });
     bundle.entry[0].resource.id = "comp-nested";
@@ -186,6 +186,7 @@ const CHAINED_HIT_SETS = {
             "document-entry1-trap",
             "document-wrong-first-entry",
             "document-group-subject",
+            "document-nested-org",
             "message-main"
         ]
     },
@@ -211,7 +212,7 @@ const CHAINED_HIT_SETS = {
         parameter: "composition.patient.name:exact",
         value: "Bor",
         expectRoles: ["document-main"],
-        excludeRoles: ["document-group-subject"]
+        excludeRoles: ["document-group-subject", "document-nested-org"]
     }
 };
 
