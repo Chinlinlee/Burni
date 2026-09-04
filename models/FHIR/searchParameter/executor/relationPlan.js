@@ -1,5 +1,6 @@
 const fhirResourceCatalog = require("../../fhir.resourceList.json");
 const { prefixPlanExtractionPaths } = require("../compiler/bundleInlineMetadata");
+const { bundleInlineGatingConditions } = require("./bundleInlineDirectFilter");
 const { getEffectiveDefinition, resolveLookupStatus } = require("../registry/snapshot");
 const { createTypedFilterPlan } = require("./queryValueParser");
 
@@ -604,6 +605,12 @@ function buildInlineFirstHopAggregation(relationPlan, value, aliasCounter) {
     const aliases = [];
     /** @type {import('./queryValueParser').TypedFilterPlan | undefined} */
     let returnedFilterPlan = isTypedFilterPlan(value) ? value : undefined;
+
+    if (firstHop.inline) {
+        pipeline.push({
+            $match: { $and: bundleInlineGatingConditions(firstHop.inline) }
+        });
+    }
 
     for (const branch of firstHop.branches) {
         const embeddedPlan = prefixPlanExtractionPaths(
