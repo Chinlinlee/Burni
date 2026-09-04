@@ -132,6 +132,10 @@ Reference extraction used by normal search、`_include`、`_revinclude`、condit
 - **WHEN** client 使用 `composition.patient=Patient/123` 或 `message.focus:Patient.name=Smith`
 - **THEN** runtime SHALL 將 value parsing 與 multiple-value semantics 交由 chained target SearchParameter，並只在固定 inline target 內評估該條件
 
+#### Scenario: Resolve a Composition subject from the same document Bundle
+- **WHEN** client 使用 `composition.subject:Patient.name=Eve Everywoman` 或 `composition.subject:Patient.phone=555-555-2003`，且 `entry[0].resource.subject` 指向同一 Bundle 後續 entry 的 Patient
+- **THEN** runtime SHALL 以 target type 與 reference identity 在同一 Bundle 的 entry resource 中評估 Patient terminal filter；同一 Bundle 沒有相符 Patient 時 SHALL 保留外部 Patient collection fallback
+
 #### Scenario: Require a type filter for an open MessageHeader focus
 - **WHEN** client 使用 `message.focus.name=Smith`，而 `MessageHeader.focus` 的 targets 為 open
 - **THEN** API SHALL 回傳 400 OperationOutcome，並包含 `missing-type-filter`

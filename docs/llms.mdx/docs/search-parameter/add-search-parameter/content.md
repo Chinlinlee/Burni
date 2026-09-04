@@ -16,7 +16,7 @@ FHIR R4 defines `Bundle.composition` and `Bundle.message` as reference search pa
 * `composition` — `document` Bundles whose first entry is a `Composition`
 * `message` — `message` Bundles whose first entry is a `MessageHeader`
 
-Burni does not fan out across all `entry` elements. Only the first embedded resource participates in these special searches.
+Burni does not fan out across all `entry` elements to find the special Composition or MessageHeader. Chained reference targets may resolve from later entries when the reference identity and target type match.
 
 ### Direct identity search [#direct-identity-search]
 
@@ -35,10 +35,14 @@ After the inline hop, Burni applies the target resource SearchParameter plan fro
 
 ```sh
 http://localhost:8080/fhir/Bundle?composition.patient=Patient/123
+http://localhost:8080/fhir/Bundle?composition.subject:Patient.name=Eve%20Everywoman
+http://localhost:8080/fhir/Bundle?composition.subject:Patient.phone=555-555-2003
 http://localhost:8080/fhir/Bundle?message.focus:Patient.name=Smith
 ```
 
 `composition.patient` follows `Composition::patient` and may fan out to `Patient` and `Group`. `MessageHeader.focus` is an open reference target, so a type filter is required before chaining further:
+
+`composition.subject` follows the R4 `Composition::subject` SearchParameter. Its target is open, so a type filter such as `:Patient` is required. Burni first resolves the referenced Patient from later entries in the same document Bundle and falls back to the Patient collection when the Bundle does not contain that resource.
 
 ```sh
 http://localhost:8080/fhir/Bundle?message.focus.name=Smith
@@ -48,5 +52,5 @@ This request is rejected with HTTP 400 and `missing-type-filter`.
 
 ### Limitations [#limitations]
 
-* Only `entry[0].resource` is evaluated; later entries do not affect results even when they contain a matching Composition or MessageHeader.
+* Only `entry[0].resource` is evaluated as the special Composition or MessageHeader; later entries are considered only as referenced target resources for a chained search.
 * Bundle type and first-entry resource type must match; invalid stored Bundles simply do not match rather than returning parameter errors.

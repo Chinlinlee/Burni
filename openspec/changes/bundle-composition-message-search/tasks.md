@@ -13,8 +13,8 @@
 ## 3. Inline chained aggregation
 
 - [x] 3.1 讓 `composition.<target-code>` 與 `message.<target-code>` 使用 Composition/MessageHeader 的 effective Registry plan，並將 extraction path 正確 prefix 到 `entry.0.resource`。
-- [x] 3.2 支援 inline target 後的外部 Reference hop；每個 branch 使用自己的 target plan、type filter、correlation 與 terminal typed filter。
-- [x] 3.3 對 `Composition::patient` 保留 `Patient|Group` closed fan-out，對 `MessageHeader::focus` 套用 open-target type-filter requirement；不得搜尋整個 `entry` array。
+- [x] 3.2 支援 inline target 後的同 Bundle entry 與外部 Reference hop fallback；每個 branch 使用自己的 target plan、type filter、correlation 與 terminal typed filter。
+- [x] 3.3 對 `Composition::patient` 保留 `Patient|Group` closed fan-out，對 `Composition::subject`／`MessageHeader::focus` 套用 open-target type-filter requirement；不得搜尋整個 `entry` array 來替代 `entry[0]` special resource，但可依 reference identity 解析後續 target entry。
 - [x] 3.4 驗證 inline path 的 relation depth、path cost、unknown 與三種 limit class 行為，且不得洩漏內部 limit reason。
 
 ## 4. Search entry points
@@ -34,6 +34,8 @@
 - [x] 5.6 測試多值、terminal modifiers、nested external Reference hop、per-branch typed filters 與 existing one-hop chained search 回溯相容性。
 
 inline chained Mongo positive hit-set 已透過 scalar projection 修正並納入 integration regression coverage；5.5/5.6 的 entry-point、composer 與 Mongo execution coverage 已完成。
+
+subject chained search 的同 Bundle Patient entry 與外部 Patient collection fallback 已納入 regression coverage。
 
 ## 6. Documentation and verification
 

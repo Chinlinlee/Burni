@@ -9,12 +9,12 @@ FHIR R4 將 `Bundle.composition` 與 `Bundle.message` 定義為可進入 Bundle 
   - `message` 僅匹配 `type=message` 且第一筆 resource 為 `MessageHeader`。
 - 支援直接 identity search 與 chained search；直接 reference 可依嵌套 resource identity 或 `entry[0].fullUrl` 查詢。
 - 將第一個特殊 resource 以 inline relation 處理，不對已嵌套的 Composition 或 MessageHeader 建立 MongoDB collection `$lookup`。
-- 後續 chained hop SHALL 使用目標 resource 的有效 Registry SearchParameter plan；一般 Reference hop 仍使用既有 bounded relation composer。
-- `Composition::patient` 依 `Patient|Group` 的封閉 targets 處理；`MessageHeader::focus` 的 open targets 缺少 type filter 時回 `missing-type-filter`。
+- 後續 chained hop SHALL 使用目標 resource 的有效 Registry SearchParameter plan；reference target 先解析同一 Bundle 的後續 entry，無相符 entry 時再使用既有 bounded relation composer 的外部 collection `$lookup`。
+- `Composition::patient` 依 `Patient|Group` 的封閉 targets 處理；`Composition::subject` 與 `MessageHeader::focus` 的 open targets 缺少 type filter 時回 `missing-type-filter`。
 - 第一個 inline hop SHALL 納入 relation depth 與 relation cost；既有 depth `3`、path cost `24` 與三種 limit class 契約維持有效。
 - 對不符合 Bundle invariant 的已儲存資料回報不命中，不將資料錯誤轉成查詢參數錯誤。
 - 更新 normal search、Bundle GET validation、conditional delete 的驗證與錯誤對應。
-- 更新 Bundle 搜尋文件與測試，移除依賴所有 `entry` 或 legacy handler 的舊語意。
+- 更新 Bundle 搜尋文件與測試，移除依賴所有 `entry` 尋找第一個特殊 resource 或 legacy handler 的舊語意；後續 reference target 可依 identity 解析後續 entry。
 
 ## Capabilities
 

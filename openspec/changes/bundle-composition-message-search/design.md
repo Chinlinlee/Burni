@@ -52,11 +52,11 @@ Canonical FHIR R4 定義將 `Bundle.composition` 與 `Bundle.message` 編譯為 
 參數名稱解析後，第一個 hop 若為 `composition` 或 `message`，composer 將其視為固定 inline branch：
 
 - `composition.patient` 直接在 `entry.0.resource` 的 Composition context 套用 `Composition::patient`
-- `message.focus:Patient.name` 先在 `entry.0.resource` 的 MessageHeader context 讀取 `MessageHeader::focus`，再對 Patient collection 建立下一層 `$lookup`
+- `message.focus:Patient.name` 先在 `entry.0.resource` 的 MessageHeader context 讀取 `MessageHeader::focus`，再解析同一 Bundle 的後續 entry 或對 Patient collection 建立下一層 `$lookup`
 - 每個後續 hop 仍依 target resource type 取得自己的 effective plan
 - inline context 的 extraction path 與 predicates 以 `entry.0.resource` prefix 套用，不能展開整個 `entry` array
 
-內嵌 target 不建立 `$lookup`；只有由 embedded target 的 Reference extraction path 指向外部 resource 時才建立 `$lookup`。Terminal typed filter 必須使用實際 target branch 的 plan，避免 closed fan-out 的 last-plan-wins。
+由 embedded target 的 Reference extraction path 指向後續 resource 時，runtime SHALL 先在同一 Bundle 的 entry resource 中以 reference identity 與 target type 尋找 target；同 Bundle 沒有相符 resource 時，再建立外部 collection `$lookup`。Terminal typed filter 必須使用實際 target branch 的 plan，避免 closed fan-out 的 last-plan-wins。
 
 ### 4. Bundle gating 是 relation 的必要條件
 
@@ -69,9 +69,11 @@ Aggregation 與 direct filter 都必須同時加入：
 
 ### 5. Target type 與 open-target 規則沿用 Registry
 
-`Composition::patient` 使用其 canonical effective plan 的 `Patient|Group` target fan-out；`MessageHeader::focus` 使用其近乎完整 catalog target 的 open-target 規則：
+`Composition::patient` 使用其 canonical effective plan 的 `Patient|Group` target fan-out；`Composition::subject` 與 `MessageHeader::focus` 使用其近乎完整 catalog target 的 open-target 規則：
 
 - `composition.patient.name` 可對 Patient 與 Group 各自建立 branch
+- `composition.subject.name` 在沒有 `:ResourceType` 時回 `missing-type-filter`
+- `composition.subject:Patient.name` 只建立 Patient branch
 - `message.focus.name` 在沒有 type filter 時回 `missing-type-filter`
 - `message.focus:Patient.name` 只建立 Patient branch
 - 未宣告或 disabled 的 target lookup 維持 unknown
