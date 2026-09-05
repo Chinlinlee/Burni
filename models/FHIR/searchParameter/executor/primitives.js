@@ -3,10 +3,10 @@ const {
     numberQuery,
     tokenQuery,
     referenceQuery,
-    quantityQuery,
-    uriQuery
+    quantityQuery
 } = require("./queryPrimitives");
 const { buildTemporalSearchFilter } = require("./temporalQuery");
+const { buildUriSearchFilter } = require("./uriValueParser");
 
 /**
  * @param {string} searchType
@@ -45,10 +45,8 @@ function buildPrimitiveFilter(searchType, value, fieldPath, modifier, comparator
             const prefixedValue = comparator && comparator !== "eq" ? `${comparator}${value}` : value;
             return quantityQuery(prefixedValue, fieldPath);
         }
-        case "uri": {
-            const queryKey = modifier ? `${fieldPath}:${modifier}` : fieldPath;
-            return { [fieldPath]: uriQuery(value, queryKey) };
-        }
+        case "uri":
+            return buildUriSearchFilter(value, fieldPath, modifier);
         default:
             throw new Error(`Unsupported search type: ${searchType}`);
     }

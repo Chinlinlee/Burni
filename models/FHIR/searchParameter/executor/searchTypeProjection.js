@@ -3,13 +3,13 @@ const {
     tokenQuery,
     numberQuery,
     quantityQuery,
-    referenceQuery,
-    uriQuery
+    referenceQuery
 } = require("./queryPrimitives");
 const {
     normalizeReferenceQueryValue,
     validateReferenceQueryValue
 } = require("./referenceValueParser");
+const { buildUriSearchFilter } = require("./uriValueParser");
 const {
     buildTemporalSearchFilter,
     correlateTemporalFilter
@@ -629,8 +629,7 @@ function buildNumberProjection(value, fieldPath, comparator) {
  * @returns {Object}
  */
 function buildUriProjection(value, fieldPath, modifier) {
-    const queryKey = modifier ? `${fieldPath}:${modifier}` : fieldPath;
-    return { [fieldPath]: uriQuery(value, queryKey) };
+    return buildUriSearchFilter(value, fieldPath, modifier);
 }
 
 /**

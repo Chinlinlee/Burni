@@ -161,13 +161,16 @@ describe("Search type operator contracts", function () {
             expect(filter).to.deep.equal({ url: "http://acme.org/fhir/ValueSet/123" });
         });
 
-        it("applies :below as a prefix match", function () {
+        it("applies :below as a path-boundary prefix match", function () {
             const filter = executeSearchQueryPlan(
                 uriPlan(),
                 "http://example.org/fhir",
                 "url:below"
             );
             expect(filter.url.$regex).to.be.instanceOf(RegExp);
+            expect(filter.url.$regex.flags).to.not.include("i");
+            expect(filter.url.$regex.test("http://example.org/fhir/123")).to.be.true;
+            expect(filter.url.$regex.test("http://example.org/fhirx")).to.be.false;
         });
 
         it("ORs :below across multiple extraction paths", function () {
@@ -185,20 +188,34 @@ describe("Search type operator contracts", function () {
             expect(filter.$or[1]).to.have.nested.property("url2.$regex");
         });
 
-        it("applies :above as the uri prefix hierarchy", function () {
+        it("applies :above as the uri prefix hierarchy with $in", function () {
             const filter = executeSearchQueryPlan(
                 uriPlan(),
                 "http://acme.org/fhir/ValueSet/123/_history/5",
                 "url:above"
             );
 
-            expect(filter.url).to.be.an("array");
-            expect(filter.url).to.include("http://acme.org");
-            expect(filter.url).to.include("http://acme.org/fhir");
-            expect(filter.url).to.include("http://acme.org/fhir/ValueSet");
-            expect(filter.url).to.include("http://acme.org/fhir/ValueSet/123");
-            expect(filter.url).to.include("http://acme.org/fhir/ValueSet/123/_history");
-            expect(filter.url).to.include("http://acme.org/fhir/ValueSet/123/_history/5");
+            expect(filter.url).to.deep.equal({
+                $in: [
+                    "http://acme.org",
+                    "http://acme.org/fhir",
+                    "http://acme.org/fhir/ValueSet",
+                    "http://acme.org/fhir/ValueSet/123",
+                    "http://acme.org/fhir/ValueSet/123/_history",
+                    "http://acme.org/fhir/ValueSet/123/_history/5"
+                ]
+            });
+        });
+
+        it("rejects invalid uri search values", function () {
+            const empty = validateAndBuildFilter(uriPlan(), "", "url");
+            const urnBelow = validateAndBuildFilter(uriPlan(), "urn:oid:1.2.3", "url:below");
+            const relativeAbove = validateAndBuildFilter(uriPlan(), "Patient/example", "url:above");
+
+            expect(empty.valid).to.equal(false);
+            expect(empty.reason).to.include("Invalid uri search value");
+            expect(urnBelow.valid).to.equal(false);
+            expect(relativeAbove.valid).to.equal(false);
         });
 
         it("rejects an undeclared string modifier", function () {

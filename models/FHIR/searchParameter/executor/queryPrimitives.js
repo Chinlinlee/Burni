@@ -1,6 +1,5 @@
-const { URL } = require("url");
-
 const { getUrlMatch } = require("@root/utils/fhir-url");
+const { buildUriQueryMatcher, validateUriQueryValue } = require("./uriValueParser");
 const { buildTemporalSearchFilter } = require("./temporalQuery");
 
 const COMPARATOR_PREFIXES = ["eq", "ne", "lt", "gt", "ge", "le", "sa", "eb", "ap"];
@@ -275,28 +274,19 @@ function referenceQuery(query, field, type = "") {
 }
 
 /**
+ * Builds a MongoDB uri matcher. Invalid values throw `Invalid uri search value`
+ * instead of leaking Node URL parser errors.
+ *
  * @param {string} value
- * @param {string} field
- * @returns {string | string[] | Object}
+ * @param {string | undefined} modifier
+ * @returns {string | Object}
  */
-function uriQuery(value, field) {
-    const url = new URL(value);
-
-    if (field.includes(":below")) {
-        const escapedUrl = value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-        return {
-            $regex: new RegExp(`^${escapedUrl}(\\/.*)?$`, "i")
-        };
+function uriQuery(value, modifier) {
+    const validation = validateUriQueryValue(value, modifier);
+    if (!validation.valid) {
+        throw new Error(validation.reason || "Invalid uri search value");
     }
-    if (field.includes(":above")) {
-        const expectedUrls = [];
-        const pathnameSplit = url.pathname.split("/");
-        for (let index = 0; index < pathnameSplit.length; index += 1) {
-            expectedUrls.push(`${url.origin}${pathnameSplit.slice(0, index + 1).join("/")}`);
-        }
-        return expectedUrls;
-    }
-    return value;
+    return buildUriQueryMatcher(value, modifier);
 }
 
 module.exports = {

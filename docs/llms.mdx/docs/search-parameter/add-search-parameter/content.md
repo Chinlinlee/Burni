@@ -50,6 +50,20 @@ http://localhost:8080/fhir/Bundle?message.focus.name=Smith
 
 This request is rejected with HTTP 400 and `missing-type-filter`.
 
+## URI search (`uri`) [#uri-search]
+
+Burni evaluates `uri` search parameters with raw string equality for the default modifier. Matching is case-sensitive and treats escape sequences, query strings, and fragments as part of the value. Relative references, URNs, and non-http(s) schemes are valid for exact search when they satisfy basic RFC 3986 syntax. Empty or syntactically invalid values are rejected with HTTP 400 and `Invalid uri search value`. Canonical `|version` suffixes are not stripped or interpreted.
+
+The `:below` and `:above` modifiers apply only to hierarchical absolute URLs. URN, opaque, and relative values are rejected for these modifiers. Hierarchy is derived from the raw scheme, authority, and path segments of the search value; scheme and authority casing are preserved and never normalized. Query and fragment components in the search value are excluded when building hierarchy prefixes, but `:above` still matches stored values with MongoDB `$in` over that prefix set only—stored URIs that include query or fragment components are not matched unless the stored string exactly equals one of the generated prefixes. Trailing slash semantics are preserved and never normalized away. `:below` uses a path-boundary prefix match so `/fhir` does not match `/fhirx`. `:above` matches stored values with MongoDB `$in` over the ancestor prefix set of the search value.
+
+Example URLs:
+
+```sh
+http://localhost:8080/fhir/ValueSet?url=http://hl7.org/fhir/ValueSet/example
+http://localhost:8080/fhir/StructureDefinition?url:below=http://example.org/fhir
+http://localhost:8080/fhir/StructureDefinition?url:above=http://example.org/fhir/StructureDefinition/foo
+```
+
 ### Limitations [#limitations]
 
 * Only `entry[0].resource` is evaluated as the special Composition or MessageHeader; later entries are considered only as referenced target resources for a chained search.
