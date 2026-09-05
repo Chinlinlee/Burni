@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-09-04T11:29:38.301Z",
+  "generatedAt": "2026-09-05T08:12:32.748Z",
   "resources": {
     "Account": {
       "identifier": {
@@ -2183,11 +2183,11 @@
     "Bundle": {
       "composition": {
         "status": "defined",
-        "hash": "8e348839cf6115c65556fd28af1ed9b0dc9c4f29eba35ef53315077d0737c828",
+        "hash": "5425e1a9afecd88f5fcb5d6a6c07f8472b2f571c8c46f5081a13d1233cc8b0c9",
         "valueSource": "synthetic",
         "positive": {
           "query": {
-            "composition": "Patient/hit-set-composition"
+            "composition": "Composition/hit-set-composition"
           },
           "expectDocument": "main"
         },
@@ -2198,7 +2198,10 @@
           "applicable": true
         },
         "syntheticAugmentation": {
-          "extractionPath": "entry.0.resource"
+          "extractionPath": "entry.0.resource",
+          "inlinePath": "entry.0.resource",
+          "targetResourceType": "Composition",
+          "bundleTypePredicate": "document"
         }
       },
       "identifier": {
@@ -2223,11 +2226,11 @@
       },
       "message": {
         "status": "defined",
-        "hash": "5a8b6f17eecda574c561d68bfcfae888ed9e4beb3a79f4c0c01e213786de3b65",
+        "hash": "ffc88479af53ee09b89c5b681cb62d7a1e08a77eace3d6b1f9100c5dc0f18158",
         "valueSource": "synthetic",
         "positive": {
           "query": {
-            "message": "Patient/hit-set-message"
+            "message": "MessageHeader/hit-set-message"
           },
           "expectDocument": "main"
         },
@@ -2238,7 +2241,10 @@
           "applicable": true
         },
         "syntheticAugmentation": {
-          "extractionPath": "entry.0.resource"
+          "extractionPath": "entry.0.resource",
+          "inlinePath": "entry.0.resource",
+          "targetResourceType": "MessageHeader",
+          "bundleTypePredicate": "message"
         }
       },
       "timestamp": {

@@ -247,6 +247,16 @@ function buildLookupHitSet(resourceType, code, plan, mainDocument, companionDocu
     }
 
     const caseEntry = { code, query, expectHit: "main" };
+    const syntheticAugmentation = {
+        extractionPath: plan.extractionPaths[0]?.path || null,
+        ...(plan.inlineTarget
+            ? {
+                  inlinePath: plan.inlineTarget.inlinePath,
+                  targetResourceType: plan.inlineTarget.targetResourceType,
+                  bundleTypePredicate: plan.inlineTarget.bundleTypePredicate
+              }
+            : {})
+    };
     return {
         status: "defined",
         hash: hashHitSet(caseEntry),
@@ -261,9 +271,7 @@ function buildLookupHitSet(resourceType, code, plan, mainDocument, companionDocu
         missing: {
             applicable: true
         },
-        syntheticAugmentation: {
-            extractionPath: plan.extractionPaths[0]?.path || null
-        }
+        syntheticAugmentation
     };
 }
 

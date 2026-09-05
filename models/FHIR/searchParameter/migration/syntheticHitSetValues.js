@@ -327,10 +327,73 @@ function setNestedValue(target, segments, value, datatype, arrayPaths = []) {
 
 /**
  * @param {Object} document
+ * @param {import('../compiler/searchQueryPlan').BundleInlineTarget} inlineTarget
+ * @param {string} resourceId
+ */
+function setBundleInlineResource(document, inlineTarget, resourceId) {
+    document.type = inlineTarget.bundleTypePredicate;
+
+    const inlineResource = {
+        resourceType: inlineTarget.targetResourceType,
+        id: resourceId
+    };
+    const segments = inlineTarget.inlinePath.split(".");
+    let current = document;
+
+    for (let index = 0; index < segments.length; index += 1) {
+        const segment = segments[index];
+        const isLast = index === segments.length - 1;
+        if (isLast) {
+            current[segment] = inlineResource;
+            return;
+        }
+
+        const nextSegment = segments[index + 1];
+        if (/^\d+$/.test(nextSegment)) {
+            const arrayIndex = Number(nextSegment);
+            if (!Array.isArray(current[segment])) {
+                current[segment] = [];
+            }
+            while (current[segment].length <= arrayIndex) {
+                current[segment].push({});
+            }
+            current = current[segment][arrayIndex];
+            index += 1;
+            continue;
+        }
+
+        if (!(segment in current) || current[segment] == null) {
+            current[segment] = {};
+        }
+        current = current[segment];
+    }
+}
+
+/**
+ * @param {Object} document
+ * @param {import('../compiler/searchQueryPlan').SearchQueryPlan} plan
+ * @returns {{ document: Object, queryValue: string }}
+ */
+function augmentBundleInlineDocument(document, plan) {
+    const augmented = JSON.parse(JSON.stringify(document));
+    const hitSetId = `hit-set-${plan.code}`;
+    setBundleInlineResource(augmented, plan.inlineTarget, hitSetId);
+    return {
+        document: augmented,
+        queryValue: `${plan.inlineTarget.targetResourceType}/${hitSetId}`
+    };
+}
+
+/**
+ * @param {Object} document
  * @param {import('../compiler/searchQueryPlan').SearchQueryPlan} plan
  * @returns {{ document: Object, queryValue: string } | null}
  */
 function augmentDocumentForHitSet(document, plan) {
+    if (plan.inlineTarget) {
+        return augmentBundleInlineDocument(document, plan);
+    }
+
     const augmented = JSON.parse(JSON.stringify(document));
     const extractionPath = plan.extractionPaths[0];
     if (!extractionPath) {
