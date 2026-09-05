@@ -18,24 +18,44 @@ const {
     createMongoDdlClientFromConnection
 } = require("./mongoDdlClient");
 const { collectApprovedTemporalDerivedIndexes } = require("./temporalIndexAdapter");
+const { collectApprovedSearchParameterDerivedIndexes } = require("./searchParameterIndexAdapter");
 
 /**
  * @param {import('./types').DesiredManifest} manifest
  * @returns {string[]}
  */
-function collectTemporalIntegrationErrors(manifest) {
+function collectDerivedIntegrationErrors(manifest) {
     /** @type {string[]} */
     const errors = [];
 
     for (const entry of manifest.derivedIndexes) {
-        if (entry.source !== INDEX_SOURCES.TEMPORAL) {
-            errors.push(`Derived index ${entry.name} is not marked as temporal source`);
+        if (
+            entry.source !== INDEX_SOURCES.TEMPORAL &&
+            entry.source !== INDEX_SOURCES.SEARCH_PARAMETER
+        ) {
+            errors.push(`Derived index ${entry.name} has an unsupported source: ${entry.source}`);
+            continue;
         }
-        if (!entry.name.startsWith("fhir_temporal_")) {
-            errors.push(`Derived index ${entry.name} does not use deterministic temporal naming`);
+        if (entry.source === INDEX_SOURCES.TEMPORAL) {
+            if (!entry.name.startsWith("fhir_temporal_")) {
+                errors.push(`Derived index ${entry.name} does not use deterministic temporal naming`);
+            }
+            if (!entry.temporal?.extractionPath || !entry.temporal?.bsonType) {
+                errors.push(`Derived index ${entry.name} is missing temporal metadata`);
+            }
+            continue;
         }
-        if (!entry.temporal?.extractionPath || !entry.temporal?.bsonType) {
-            errors.push(`Derived index ${entry.name} is missing temporal metadata`);
+        if (!entry.name.startsWith("fhir_sp_")) {
+            errors.push(
+                `Derived index ${entry.name} does not use deterministic search-parameter naming`
+            );
+        }
+        if (
+            !entry.searchParameter?.extractionPath ||
+            !entry.searchParameter?.searchType ||
+            !entry.searchParameter?.keyPattern
+        ) {
+            errors.push(`Derived index ${entry.name} is missing search-parameter metadata`);
         }
     }
 
@@ -47,29 +67,74 @@ function collectTemporalIntegrationErrors(manifest) {
  * @param {Object} [options]
  * @returns {import('./types').DesiredManifest}
  */
-function assertApprovedTemporalManifest(manifest, options = {}) {
-    const approved = collectApprovedTemporalDerivedIndexes(options.temporalOptions);
-    const approvedIdentities = new Set(approved.entries.map((entry) => entry.name));
+function assertApprovedDerivedManifest(manifest, options = {}) {
+    const temporal = collectApprovedTemporalDerivedIndexes(options.temporalOptions);
+    const searchParameter = collectApprovedSearchParameterDerivedIndexes(
+        options.searchParameterOptions
+    );
+    const approvedNames = new Set([
+        ...temporal.entries.map((entry) => entry.name),
+        ...searchParameter.entries.map((entry) => entry.name)
+    ]);
     const manifestNames = manifest.derivedIndexes.map((entry) => entry.name);
 
-    if (manifestNames.length !== approved.entries.length) {
+    if (manifestNames.length !== approvedNames.size) {
         throw new Error(
-            `Desired manifest temporal index count ${manifestNames.length} does not match approved count ${approved.entries.length}`
+            `Desired manifest derived index count ${manifestNames.length} does not match approved count ${approvedNames.size}`
         );
     }
 
     for (const name of manifestNames) {
-        if (!approvedIdentities.has(name)) {
-            throw new Error(`Desired manifest includes unapproved temporal index: ${name}`);
+        if (!approvedNames.has(name)) {
+            throw new Error(`Desired manifest includes unapproved derived index: ${name}`);
         }
     }
 
-    const integrationErrors = collectTemporalIntegrationErrors(manifest);
+    if (
+        manifest.derivedIndexPolicy?.searchParameterPolicyVersion !==
+        searchParameter.policyVersion
+    ) {
+        throw new Error("Desired manifest search-parameter policy version drifted");
+    }
+
+    if (
+        manifest.derivedIndexPolicy?.searchParameterPolicySource !==
+        "search-parameter-derived-indexes"
+    ) {
+        throw new Error("Desired manifest search-parameter policy source drifted");
+    }
+    if (
+        JSON.stringify(manifest.artifactIdentity) !==
+        JSON.stringify(searchParameter.artifactIdentity)
+    ) {
+        throw new Error("Desired manifest SearchParameter artifact identity drifted");
+    }
+
+    const integrationErrors = collectDerivedIntegrationErrors(manifest);
     if (integrationErrors.length > 0) {
         throw new Error(integrationErrors.join("; "));
     }
 
     return manifest;
+}
+
+/**
+ * @deprecated Use assertApprovedDerivedManifest
+ * @param {import('./types').DesiredManifest} manifest
+ * @param {Object} [options]
+ * @returns {import('./types').DesiredManifest}
+ */
+function assertApprovedTemporalManifest(manifest, options = {}) {
+    return assertApprovedDerivedManifest(manifest, options);
+}
+
+/**
+ * @deprecated Use collectDerivedIntegrationErrors
+ * @param {import('./types').DesiredManifest} manifest
+ * @returns {string[]}
+ */
+function collectTemporalIntegrationErrors(manifest) {
+    return collectDerivedIntegrationErrors(manifest);
 }
 
 /**
@@ -204,7 +269,7 @@ async function provisionMongoDatabase(options = {}) {
 function resolveManifest(options) {
     if (options.manifest) {
         if (!options.skipTemporalValidation) {
-            assertApprovedTemporalManifest(options.manifest, options);
+            assertApprovedDerivedManifest(options.manifest, options);
         }
         return options.manifest;
     }
@@ -213,7 +278,7 @@ function resolveManifest(options) {
     }
     const manifest = generateDesiredManifest(options.modelMap, options);
     if (!options.skipTemporalValidation) {
-        assertApprovedTemporalManifest(manifest, options);
+        assertApprovedDerivedManifest(manifest, options);
     }
     return manifest;
 }
@@ -236,8 +301,10 @@ function resolveDdlClient(options) {
 }
 
 module.exports = {
+    assertApprovedDerivedManifest,
     assertApprovedTemporalManifest,
     buildReconcileResult,
+    collectDerivedIntegrationErrors,
     collectTemporalIntegrationErrors,
     isProvisioningVerified,
     provisionMongoDatabase,

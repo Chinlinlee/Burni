@@ -42,6 +42,7 @@ const {
     computeManifestChecksumValue,
     generateDesiredManifest
 } = require("@models/mongodb/provisioning/desiredManifest");
+const { assertApprovedDerivedManifest } = require("@models/mongodb/provisioning/provisioningService");
 
 const FIXTURE_CATALOG = ["Patient", "SearchParameter"];
 
@@ -91,6 +92,7 @@ describe("MongoDB provisioning contracts", function () {
             key: { "birthDate.normalizedStart": 1, "birthDate.normalizedEnd": 1 },
             options: { background: true },
             name: "fhir_temporal_example",
+            source: INDEX_SOURCES.TEMPORAL,
             identity: "example-identity",
             temporal: {
                 resourceType: "Patient",
@@ -235,14 +237,45 @@ describe("MongoDB provisioning desired manifest", function () {
         expect(patientHistoryBaseline.name).to.equal(HISTORY_VERSION_LOOKUP_NAME);
 
         const temporal = collectApprovedTemporalDerivedIndexes();
+        const searchParameter = require("@models/mongodb/provisioning/searchParameterIndexAdapter")
+            .collectApprovedSearchParameterDerivedIndexes();
         expect(temporal.entries.length).to.be.greaterThan(0);
-        expect(first.derivedIndexes.length).to.equal(temporal.entries.length);
+        expect(searchParameter.entries.length).to.be.greaterThan(0);
+        expect(first.derivedIndexes.length).to.equal(
+            temporal.entries.length + searchParameter.entries.length
+        );
         expect(
-            first.derivedIndexes.every((entry) => entry.source === INDEX_SOURCES.TEMPORAL)
+            first.derivedIndexes.some((entry) => entry.source === INDEX_SOURCES.TEMPORAL)
         ).to.equal(true);
-        expect(first.derivedIndexes.every((entry) => entry.name.startsWith("fhir_temporal_"))).to
+        expect(
+            first.derivedIndexes.some((entry) => entry.source === INDEX_SOURCES.SEARCH_PARAMETER)
+        ).to.equal(true);
+        expect(first.derivedIndexes.every((entry) => entry.name.startsWith("fhir_temporal_") || entry.name.startsWith("fhir_sp_"))).to
             .equal(true);
+        expect(first.derivedIndexPolicy.searchParameterPolicyVersion).to.equal(
+            searchParameter.policyVersion
+        );
         expect(first.artifactIdentity).to.deep.equal(temporal.artifactIdentity);
+    });
+
+    it("rejects desired manifests with SearchParameter artifact identity drift", function () {
+        const { modelMap, discovered } = registerFixtureModels();
+        const catalog = buildModelCatalog({
+            resourceCatalog: FIXTURE_CATALOG,
+            discovered
+        });
+        const manifest = generateDesiredManifest(modelMap, {
+            catalog,
+            generatedAt: "2026-09-05T00:00:00.000Z"
+        });
+        manifest.artifactIdentity = {
+            ...manifest.artifactIdentity,
+            bodyChecksum: "drifted"
+        };
+
+        expect(() => assertApprovedDerivedManifest(manifest)).to.throw(
+            "SearchParameter artifact identity drifted"
+        );
     });
 
     it("only includes built-in temporal definitions and excludes database custom definitions", function () {

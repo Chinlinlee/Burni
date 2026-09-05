@@ -239,10 +239,56 @@ describe("MongoDB provisioning service", function () {
         expect(ddlClient.calls.createIndex.length).to.equal(0);
     });
 
+    it("creates deterministic search-parameter derived indexes with approved metadata only", async function () {
+        const { modelMap, discovered } = registerFixtureModels();
+        const manifest = buildFixtureManifest(modelMap, discovered);
+        const searchParameterIndex = manifest.derivedIndexes.find(
+            (entry) => entry.source === INDEX_SOURCES.SEARCH_PARAMETER
+        );
+        expect(searchParameterIndex).to.exist;
+        expect(searchParameterIndex.name.startsWith("fhir_sp_")).to.equal(true);
+        expect(searchParameterIndex.searchParameter.searchType).to.be.a("string");
+
+        const existingCollections = new Set(manifest.collections.map((entry) => entry.collection));
+        /** @type {Record<string, Record<string, unknown>[]>} */
+        const indexesByCollection = {};
+        const createdIndexes = [];
+
+        const ddlClient = createDdlClient({
+            listCollectionNames: async () => [...existingCollections],
+            createCollection: async () => {},
+            listIndexes: async (collectionName) =>
+                indexesByCollection[collectionName] || [{ key: { _id: 1 }, name: "_id_" }],
+            createIndex: async (collectionName, key, options) => {
+                createdIndexes.push({ collectionName, key, options });
+                const bucket = indexesByCollection[collectionName] || [
+                    { key: { _id: 1 }, name: "_id_" }
+                ];
+                bucket.push({ key, name: options.name, background: true });
+                indexesByCollection[collectionName] = bucket;
+                return options.name;
+            }
+        });
+
+        const provisioned = await provisionMongoDatabase({ manifest, ddlClient });
+        const createdSearchParameter = createdIndexes.filter(
+            (entry) => entry.options.name === searchParameterIndex.name
+        );
+
+        expect(createdSearchParameter.length).to.equal(1);
+        expect(createdSearchParameter[0].key).to.deep.equal(searchParameterIndex.key);
+        expect(provisioned.indexes.some((entry) => entry.name === searchParameterIndex.name)).to.equal(
+            true
+        );
+    });
+
     it("creates deterministic temporal indexes with approved metadata only", async function () {
         const { modelMap, discovered } = registerFixtureModels();
         const manifest = buildFixtureManifest(modelMap, discovered);
-        const temporalIndex = manifest.derivedIndexes[0];
+        const temporalIndex = manifest.derivedIndexes.find(
+            (entry) => entry.source === INDEX_SOURCES.TEMPORAL
+        );
+        expect(temporalIndex).to.exist;
         expect(temporalIndex.source).to.equal(INDEX_SOURCES.TEMPORAL);
         expect(temporalIndex.name.startsWith("fhir_temporal_")).to.equal(true);
         expect(temporalIndex.temporal.extractionPath).to.be.a("string");

@@ -11,7 +11,7 @@ const {
     validateTemporalIndexEntryCompatibility
 } = require("../../FHIR/searchParameter/indexes/indexValidation");
 const { getIndexIdentity } = require("../../FHIR/searchParameter/indexes/indexManifest");
-const { createDerivedIndexContract } = require("./contracts");
+const { createDerivedIndexContract, INDEX_SOURCES } = require("./contracts");
 
 /**
  * @returns {{ definitions: import('../../FHIR/searchParameter/registry/types').SearchParameterDefinition[], artifactIdentity: import('../../FHIR/searchParameter/registry/artifacts/artifactIdentity').ArtifactIdentity, diagnostics: import('../../FHIR/searchParameter/registry/diagnostics').RegistryDiagnostic[] }}
@@ -128,6 +128,7 @@ function temporalEntryToDerivedIndex(entry) {
             background: true
         },
         name: entry.name,
+        source: INDEX_SOURCES.TEMPORAL,
         identity: getIndexIdentity(entry),
         temporal: {
             resourceType: entry.resourceType,

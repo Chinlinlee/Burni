@@ -23,6 +23,10 @@ const {
     temporalEntryToDerivedIndex,
     sortDerivedIndexes
 } = require("./temporalIndexAdapter");
+const {
+    collectApprovedSearchParameterDerivedIndexes,
+    searchParameterEntryToDerivedIndex
+} = require("./searchParameterIndexAdapter");
 const { sortRecordKeysDeep } = require("./indexIdentity");
 
 const DEFAULT_ARTIFACT_PATH = path.join(
@@ -98,9 +102,13 @@ function generateDesiredManifest(modelMap, options = {}) {
     ]);
 
     const temporal = collectApprovedTemporalDerivedIndexes(options.temporalOptions);
-    const derivedIndexes = sortDerivedIndexes(
-        temporal.entries.map((entry) => temporalEntryToDerivedIndex(entry))
+    const searchParameter = collectApprovedSearchParameterDerivedIndexes(
+        options.searchParameterOptions
     );
+    const derivedIndexes = sortDerivedIndexes([
+        ...temporal.entries.map((entry) => temporalEntryToDerivedIndex(entry)),
+        ...searchParameter.entries.map((entry) => searchParameterEntryToDerivedIndex(entry))
+    ]);
 
     /** @type {import('./types').DesiredManifest} */
     const manifest = {
@@ -108,6 +116,10 @@ function generateDesiredManifest(modelMap, options = {}) {
         kind: MANIFEST_KIND,
         generatedAt: options.generatedAt || new Date().toISOString(),
         artifactIdentity: temporal.artifactIdentity,
+        derivedIndexPolicy: {
+            searchParameterPolicyVersion: searchParameter.policyVersion,
+            searchParameterPolicySource: "search-parameter-derived-indexes"
+        },
         collections: catalog.entries,
         baselineIndexes,
         derivedIndexes,
@@ -116,7 +128,8 @@ function generateDesiredManifest(modelMap, options = {}) {
             baselineIndexes: baselineIndexes.length,
             derivedIndexes: derivedIndexes.length
         },
-        temporalDiagnostics: temporal.diagnostics
+        temporalDiagnostics: temporal.diagnostics,
+        searchParameterDiagnostics: searchParameter.diagnostics
     };
 
     const checksumValue = computeManifestChecksumValue(manifest);

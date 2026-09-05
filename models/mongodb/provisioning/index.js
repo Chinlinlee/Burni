@@ -8,6 +8,7 @@ module.exports = {
     ...require("./schemaIndexCollector"),
     ...require("./serviceIndexes"),
     ...require("./temporalIndexAdapter"),
+    ...require("./searchParameterIndexAdapter"),
     ...require("./desiredManifest"),
     ...require("./mongoDdlClient"),
     ...require("./collectionProvisioner"),

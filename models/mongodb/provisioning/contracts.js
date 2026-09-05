@@ -13,7 +13,8 @@ const MODEL_KINDS = Object.freeze({
 const INDEX_SOURCES = Object.freeze({
     SCHEMA: "schema",
     SERVICE: "service",
-    TEMPORAL: "temporal"
+    TEMPORAL: "temporal",
+    SEARCH_PARAMETER: "search-parameter"
 });
 
 const INDEX_DRIFT_TYPES = Object.freeze({
@@ -131,10 +132,14 @@ function createDerivedIndexContract(input) {
         key: input.key,
         options: input.options || {},
         name: input.name,
-        source: INDEX_SOURCES.TEMPORAL,
-        identity: input.identity,
-        temporal: input.temporal
+        source: input.source,
+        identity: input.identity
     };
+    if (input.source === INDEX_SOURCES.TEMPORAL) {
+        contract.temporal = input.temporal;
+    } else if (input.source === INDEX_SOURCES.SEARCH_PARAMETER) {
+        contract.searchParameter = input.searchParameter;
+    }
     assertDerivedIndexContract(contract);
     return contract;
 }
@@ -236,14 +241,25 @@ function assertDerivedIndexContract(contract) {
     if (!contract.name || typeof contract.name !== "string") {
         throw new TypeError("Derived index contract requires name");
     }
-    if (contract.source !== INDEX_SOURCES.TEMPORAL) {
-        throw new TypeError("Derived index contract source must be temporal");
+    if (
+        contract.source !== INDEX_SOURCES.TEMPORAL &&
+        contract.source !== INDEX_SOURCES.SEARCH_PARAMETER
+    ) {
+        throw new TypeError("Derived index contract source must be temporal or search-parameter");
     }
     if (!contract.identity || typeof contract.identity !== "string") {
         throw new TypeError("Derived index contract requires identity");
     }
-    if (!contract.temporal || typeof contract.temporal !== "object") {
-        throw new TypeError("Derived index contract requires temporal metadata");
+    if (contract.source === INDEX_SOURCES.TEMPORAL) {
+        if (!contract.temporal || typeof contract.temporal !== "object") {
+            throw new TypeError("Temporal derived index contract requires temporal metadata");
+        }
+        return;
+    }
+    if (!contract.searchParameter || typeof contract.searchParameter !== "object") {
+        throw new TypeError(
+            "Search-parameter derived index contract requires searchParameter metadata"
+        );
     }
 }
 

@@ -142,15 +142,25 @@ describe("MongoDB provisioning integration", function () {
         const patientTemporal = manifest.derivedIndexes.find(
             (entry) => entry.collection === "Patient" && entry.source === INDEX_SOURCES.TEMPORAL
         );
+        const patientSearchParameter = manifest.derivedIndexes.find(
+            (entry) => entry.collection === "Patient" && entry.source === INDEX_SOURCES.SEARCH_PARAMETER
+        );
         expect(patientTemporal).to.exist;
+        expect(patientSearchParameter).to.exist;
 
         const patientIndexes = await ddlClient.listIndexes("Patient");
         const createdTemporal = patientIndexes.find(
             (entry) => entry.name === patientTemporal.name
         );
+        const createdSearchParameter = patientIndexes.find(
+            (entry) => entry.name === patientSearchParameter.name
+        );
         expect(createdTemporal).to.exist;
         expect(createdTemporal.key).to.deep.equal(patientTemporal.key);
         expect(patientTemporal.name.startsWith("fhir_temporal_")).to.equal(true);
+        expect(createdSearchParameter).to.exist;
+        expect(createdSearchParameter.key).to.deep.equal(patientSearchParameter.key);
+        expect(patientSearchParameter.name.startsWith("fhir_sp_")).to.equal(true);
 
         const verified = await verifyMongoProvisioning({
             manifest,
@@ -182,7 +192,7 @@ describe("MongoDB provisioning integration", function () {
             lockStore: createProvisioningLockStore(lockModel),
             stateStore: createProvisioningStateStore(stateModel),
             ownerId: "integration-runner",
-            runId: "integration-locked-run",
+            runId: "integration-locked-run"
         });
 
         expect(result.status).to.equal(PROVISIONING_RUN_STATUS.SUCCEEDED);

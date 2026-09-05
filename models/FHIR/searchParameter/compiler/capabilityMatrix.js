@@ -9,7 +9,7 @@
 /** @type {Record<string, TypeCapability>} */
 const TYPE_CAPABILITY_MATRIX = {
     number: {
-        comparators: ["eq", "ne", "gt", "lt", "ge", "le", "sa", "eb", "ap"],
+        comparators: ["eq", "ne", "gt", "lt", "ge", "le"],
         modifiers: [],
         multipleOr: true,
         multipleAnd: true
@@ -45,7 +45,7 @@ const TYPE_CAPABILITY_MATRIX = {
         multipleAnd: true
     },
     quantity: {
-        comparators: ["eq", "ne", "gt", "lt", "ge", "le", "sa", "eb", "ap"],
+        comparators: ["eq", "ne", "gt", "lt", "ge", "le"],
         modifiers: [],
         multipleOr: true,
         multipleAnd: true

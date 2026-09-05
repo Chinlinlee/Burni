@@ -48,14 +48,28 @@
  */
 
 /**
+ * @typedef {Object} DerivedIndexSearchParameterMetadata
+ * @property {string} resourceType
+ * @property {string} extractionPath
+ * @property {string} datatype
+ * @property {string} searchType
+ * @property {string} keyPattern
+ * @property {string} policyVersion
+ * @property {string[]} fields
+ * @property {string[]} lookupKeys
+ * @property {string[]} canonicalKeys
+ */
+
+/**
  * @typedef {Object} DerivedIndexContract
  * @property {string} collection
  * @property {Record<string, number>} key
  * @property {Record<string, unknown>} options
  * @property {string} name
- * @property {"temporal"} source
+ * @property {"temporal" | "search-parameter"} source
  * @property {string} identity
- * @property {DerivedIndexTemporalMetadata} temporal
+ * @property {DerivedIndexTemporalMetadata} [temporal]
+ * @property {DerivedIndexSearchParameterMetadata} [searchParameter]
  */
 
 /**
@@ -72,17 +86,25 @@
  */
 
 /**
+ * @typedef {Object} DesiredManifestPolicyIdentity
+ * @property {string} searchParameterPolicyVersion
+ * @property {string} searchParameterPolicySource
+ */
+
+/**
  * @typedef {Object} DesiredManifest
  * @property {number} version
  * @property {string} kind
  * @property {string} generatedAt
  * @property {ManifestChecksum} checksum
  * @property {import('../../FHIR/searchParameter/registry/artifacts/artifactIdentity').ArtifactIdentity} artifactIdentity
+ * @property {DesiredManifestPolicyIdentity} derivedIndexPolicy
  * @property {CollectionContract[]} collections
  * @property {BaselineIndexContract[]} baselineIndexes
  * @property {DerivedIndexContract[]} derivedIndexes
  * @property {DesiredManifestCounts} counts
  * @property {string[]} temporalDiagnostics
+ * @property {string[]} searchParameterDiagnostics
  */
 
 /**
