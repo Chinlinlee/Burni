@@ -147,10 +147,17 @@ Relation cost SHALL 以每條 chained search path 計算，MUST NOT 與非 chain
 
 上述 chained search 規則 SHALL 同時套用在 normal search、Bundle GET search validation 與 conditional delete。
 
+`Bundle.composition` 與 `Bundle.message` SHALL 被視為固定 inline target 的特殊 reference entry point：前者 target 為 `Composition`，後者 target 為 `MessageHeader`。它們 SHALL 可作為 chained path 的第一個 hop，但不得因 embedded resource 而建立無界或跨任意 collection 的查詢。
+
 #### Scenario: Execute an allowed one-level chain
 
 - **WHEN** client 使用一層 chained search，且每個 hop 都有 effective lookup
 - **THEN** runtime SHALL 只匹配 reference target 中符合 chained SearchParameter 的資源
+
+#### Scenario: Execute a Bundle inline entry chain
+
+- **WHEN** client 使用 `Bundle?composition.patient=Patient/123` 或 `Bundle?message.focus:Patient.name=Smith`
+- **THEN** runtime SHALL 從符合 Bundle 特規條件的第一個 embedded resource 開始查詢，並將後續 target SearchParameter 的語意套用於該 resource
 
 #### Scenario: Execute an allowed multi-hop chain
 
@@ -387,19 +394,37 @@ For every `(resourceType, code)` lookup derived from the canonical SearchParamet
 
 ### Requirement: SearchQueryPlan semantics SHALL be consistent across search entry points
 
-Normal search, conditional delete, Bundle GET search validation, and controlled reference-chain evaluation SHALL use the same Registry-derived lookup semantics for a `(resourceType, code)`. They MUST NOT derive field paths, target types, operators, or value parsing from a reduced legacy parameter snapshot.
+Normal search、conditional delete、Bundle GET search validation，以及 controlled reference-chain evaluation SHALL 使用相同的 Registry-derived lookup semantics。Bundle inline special entry point 的直接 identity search 與 chained search SHALL 也使用其固定 target resource 的有效 SearchParameter 定義，不得從 legacy snapshot、舊 field mapping 或參數名稱猜測欄位。
 
 #### Scenario: Apply a plan to normal search
+
+- **WHEN** client 使用有效的 Bundle `composition` 或 `message` search parameter
+- **THEN** normal search SHALL 依 Bundle type、第一個 entry 的 resource type、reference value 或 target chain plan 建立一致的 hit-set
+
+#### Scenario: Apply a typed plan to normal resource search
+
 - **WHEN** a client searches a resource using an effective lookup
 - **THEN** the executor SHALL apply that lookup's typed plan and declared FHIR value semantics
 
 #### Scenario: Apply a plan to conditional delete
+
+- **WHEN** conditional delete 使用有效的直接 Bundle special search parameter
+- **THEN** delete filter SHALL 與 normal search 使用相同的 embedded identity、Bundle gating、value parsing 與 target plan semantics
+
+#### Scenario: Apply a typed plan to conditional delete
+
 - **WHEN** a conditional delete uses an effective SearchParameter lookup
 - **THEN** the delete filter SHALL be produced from the same typed plan and SHALL have the same matching semantics as normal search
 
 #### Scenario: Validate Bundle GET search parameters
-- **WHEN** a Bundle operation contains a GET entry with search parameters
-- **THEN** parameter validation and filter construction SHALL use Registry lookup metadata and SHALL reject disabled, unsupported, or unknown lookups without legacy fallback
+
+- **WHEN** Bundle operation 的 GET entry 使用 `composition`、`message` 或其 chained form
+- **THEN** validation SHALL 使用相同的 special entry point 與 relation rules，並拒絕 disabled、unsupported、unknown 或超出限制的查詢
+
+#### Scenario: Reject a legacy-only Bundle search
+
+- **WHEN** query 只符合 legacy handler 的所有-entry field mapping，而不符合 canonical Bundle special SearchParameter semantics
+- **THEN** request SHALL 不得使用 legacy fallback，也不得將 `entry[1]` 或其他 entry 當成 `entry[0]` special resource
 
 #### Scenario: Reject a legacy-only lookup
 - **WHEN** a search entry point receives a code that exists only in the removed legacy snapshot
@@ -407,7 +432,17 @@ Normal search, conditional delete, Bundle GET search validation, and controlled 
 
 ### Requirement: Controlled reference operations SHALL preserve correlated and bounded semantics
 
-Normal search、`_include`、`_revinclude`、conditional delete 與 bounded chained search 所使用的 Reference extraction SHALL 保留 Registry plan 定義的 typed target metadata 與同一 array element 關聯。Runtime MUST 拒絕未宣告的 reference target、不支援的 reference value、未知 hop，以及違反 chained search depth／cost／open-reference type-filter 限制的請求。未知 hop、未宣告的 reference target type 與 disabled lookup SHALL 回傳標準 unknown search parameter error。Relation depth 超過 3、relation cost 超過 24，以及 open reference target 缺少 type filter SHALL 回傳 HTTP 400 OperationOutcome 並 MUST 標明 limit class；MUST NOT 一律視為 unknown search parameter。`_include` 與 `_revinclude` SHALL 維持既有的宣告關係解析，MUST NOT 被當成 chained search path。
+Normal search、`_include`、`_revinclude`、conditional delete、Bundle inline special entry point 與 bounded chained search 所使用的 Reference extraction SHALL 保留 Registry plan 定義的 typed target metadata、同一 array element 關聯與 relation bounds。Runtime MUST 拒絕未宣告的 reference target、不支援的 reference value、未知 hop，以及違反 chained search depth／cost／open-reference type-filter 限制的請求。未知 hop、未宣告的 reference target type 與 disabled lookup SHALL 回傳標準 unknown search parameter error。Relation depth 超過 3、relation cost 超過 24，以及 open reference target 缺少 type filter SHALL 回傳 HTTP 400 OperationOutcome 並 MUST 標明 limit class；MUST NOT 一律視為 unknown search parameter。`Bundle.composition` 與 `Bundle.message` SHALL 只讀取 `entry[0].resource`，不得把 contained Resource 或其他 entry 當成相同的 relation。`_include` 與 `_revinclude` SHALL 維持既有的宣告關係解析，MUST NOT 被當成 chained search path。
+
+#### Scenario: Match a document Bundle composition entry
+
+- **WHEN** Bundle 的 type 為 `document` 且 `entry[0].resource.resourceType` 為 `Composition`
+- **THEN** `composition` direct 或 chained search SHALL 只在該 embedded Composition 上評估條件
+
+#### Scenario: Match a message Bundle message entry
+
+- **WHEN** Bundle 的 type 為 `message` 且 `entry[0].resource.resourceType` 為 `MessageHeader`
+- **THEN** `message` direct 或 chained search SHALL 只在該 embedded MessageHeader 上評估條件
 
 #### Scenario: Include a declared reference target
 
@@ -423,6 +458,16 @@ Normal search、`_include`、`_revinclude`、conditional delete 與 bounded chai
 
 - **WHEN** 一個 reference array element 同時包含 reference value 與 target-type guard
 - **THEN** matching SHALL 要求兩個條件都在同一個 array element 上成立，MUST NOT 組合不同 element 的值
+
+#### Scenario: Ignore a non-special first entry
+
+- **WHEN** `entry[0]` 不符合對應的 Bundle type/resource type，即使 `entry[1]` 含有符合的 Composition 或 MessageHeader
+- **THEN** special search SHALL 不命中，且不得查詢 `entry[1]` 或其他 entry
+
+#### Scenario: Preserve declared reference target behavior
+
+- **WHEN** chained search 從 Composition 或 MessageHeader 的 Reference 欄位繼續進入另一個 resource
+- **THEN** runtime SHALL 只使用 declared/effective target type 與該型別自己的 plan，並維持 reference value validation、type filter 與 relation depth/cost bounds
 
 #### Scenario: Reject an unknown or undeclared relation
 
@@ -538,3 +583,52 @@ Temporal filters SHALL 在一般查詢與 aggregation 查詢中使用相同的 n
 
 - **WHEN** 相同 temporal SearchParameter 透過 aggregation 或 chained execution 執行
 - **THEN** runtime SHALL 使用與一般查詢等價的 temporal filter 與 hit-set
+
+### Requirement: Bundle special reference entry points SHALL preserve R4 semantics
+
+`Bundle.composition` SHALL 提供對 `document` Bundle 第一個 `Composition` resource 的 reference search access；`Bundle.message` SHALL 提供對 `message` Bundle 第一個 `MessageHeader` resource 的 reference search access。兩者 SHALL 支援直接 identity value 與進入 target resource SearchParameter 的 chained path。直接 identity query SHALL 支援 relative `ResourceType/id`、符合固定 target type 的 bare id，以及可與 `entry[0].fullUrl` 比對的 absolute URL；versioned、contained 與 logical identifier reference MUST 被拒絕。
+
+#### Scenario: Search a Composition by relative identity
+
+- **WHEN** client 使用 `Bundle?composition=Composition/comp-1`
+- **THEN** request SHALL 命中第一個 embedded Composition 的 resource identity 為 `comp-1` 的 Bundle
+
+#### Scenario: Search a MessageHeader by absolute entry URL
+
+- **WHEN** client 使用 `Bundle?message=https://example.org/fhir/MessageHeader/msg-1`
+- **THEN** request SHALL 命中第一個 MessageHeader 的 `entry[0].fullUrl` 為該 URL 的 Bundle
+
+#### Scenario: Normalize a bare fixed-target id
+
+- **WHEN** client 使用 `Bundle?composition=comp-1` 或 `Bundle?message=msg-1`
+- **THEN** runtime SHALL 分別依 `Composition` 或 `MessageHeader` 解析該 bare id
+
+#### Scenario: Reject an identity with the wrong target type
+
+- **WHEN** client 使用 `composition=MessageHeader/msg-1` 或 `message=Composition/comp-1`
+- **THEN** request SHALL 回傳 invalid reference value error，且不得命中任何 Bundle
+
+#### Scenario: Reject an invalid reference form
+
+- **WHEN** client 使用 versioned、contained 或 logical identifier value 查詢 `composition` 或 `message`
+- **THEN** API SHALL 回傳標準 invalid search parameter/value error，不得降級為字串比對
+
+#### Scenario: Apply a chained target plan
+
+- **WHEN** client 使用 `composition.patient=Patient/123` 或 `message.focus:Patient.name=Smith`
+- **THEN** runtime SHALL 將 value parsing 與 multiple-value semantics 交由 chained target SearchParameter，並只在固定 inline target 內評估該條件
+
+#### Scenario: Resolve a Composition subject from the same document Bundle
+
+- **WHEN** client 使用 `composition.subject:Patient.name=Eve Everywoman` 或 `composition.subject:Patient.phone=555-555-2003`，且 `entry[0].resource.subject` 指向同一 Bundle 後續 entry 的 Patient
+- **THEN** runtime SHALL 以 target type 與 reference identity 在同一 Bundle 的 entry resource 中評估 Patient terminal filter；同一 Bundle 沒有相符 Patient 時 SHALL 保留外部 Patient collection fallback
+
+#### Scenario: Require a type filter for an open MessageHeader focus
+
+- **WHEN** client 使用 `message.focus.name=Smith`，而 `MessageHeader.focus` 的 targets 為 open
+- **THEN** API SHALL 回傳 400 OperationOutcome，並包含 `missing-type-filter`
+
+#### Scenario: Treat invalid stored Bundle content as a non-match
+
+- **WHEN** stored Bundle 缺少第一個 entry、第一個 resource type 錯誤，或 Bundle type 與 special resource 不一致
+- **THEN** special search SHALL 回傳不命中，不得將資料內容錯誤轉成 query parameter error
