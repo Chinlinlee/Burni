@@ -13,11 +13,13 @@ const {
     disableAutomaticSchemaProvisioning
 } = require("@models/mongodb/connector");
 const { buildModelCatalog } = require("@models/mongodb/provisioning/modelCatalog");
+const { generateDesiredManifest, computeManifestChecksumValue } = require("@models/mongodb/provisioning/desiredManifest");
 const {
-    computeManifestChecksumValue,
-    generateDesiredManifest
-} = require("@models/mongodb/provisioning/desiredManifest");
-const { createManifestChecksum, INDEX_SOURCES } = require("@models/mongodb/provisioning/contracts");
+    createCollectionContract,
+    createManifestChecksum,
+    INDEX_SOURCES,
+    MODEL_KINDS
+} = require("@models/mongodb/provisioning/contracts");
 const { HISTORY_VERSION_LOOKUP_NAME } = require("@models/mongodb/provisioning/serviceIndexes");
 const { createMongoDdlClientFromConnection } = require("@models/mongodb/provisioning/mongoDdlClient");
 const {
@@ -39,24 +41,38 @@ const FIXED_GENERATED_AT = "2026-09-05T00:00:00.000Z";
  * @returns {import("@models/mongodb/provisioning/types").DesiredManifest}
  */
 function buildFixtureIntegrationManifest(modelMap, discovered) {
-    const full = generateDesiredManifest(modelMap, {
+    const manifest = generateDesiredManifest(modelMap, {
         catalog: buildModelCatalog({
             resourceCatalog: FIXTURE_CATALOG,
             discovered
         }),
         generatedAt: FIXED_GENERATED_AT
     });
-    const collectionNames = new Set(full.collections.map((entry) => entry.collection));
-    const derivedIndexes = full.derivedIndexes.filter((entry) =>
-        collectionNames.has(entry.collection)
+    const collectionsByName = new Map(
+        manifest.collections.map((entry) => [entry.collection, entry])
     );
-    const manifest = {
-        ...full,
-        derivedIndexes,
-        counts: {
-            ...full.counts,
-            derivedIndexes: derivedIndexes.length
+
+    for (const entry of manifest.derivedIndexes) {
+        if (collectionsByName.has(entry.collection)) {
+            continue;
         }
+        collectionsByName.set(
+            entry.collection,
+            createCollectionContract({
+                collection: entry.collection,
+                modelName: entry.collection,
+                modelKind: MODEL_KINDS.RESOURCE,
+                resourceType: entry.collection
+            })
+        );
+    }
+
+    manifest.collections = [...collectionsByName.values()].sort((left, right) =>
+        left.collection.localeCompare(right.collection)
+    );
+    manifest.counts = {
+        ...manifest.counts,
+        collections: manifest.collections.length
     };
     manifest.checksum = createManifestChecksum(computeManifestChecksumValue(manifest));
     return manifest;
@@ -75,7 +91,7 @@ function registerFixtureModels(connection) {
 }
 
 describe("MongoDB provisioning integration", function () {
-    this.timeout(180000);
+    this.timeout(300000);
 
     /** @type {Record<string, import("mongoose").Model>} */
     let modelMap;
@@ -102,8 +118,7 @@ describe("MongoDB provisioning integration", function () {
 
         const provisioned = await provisionMongoDatabase({
             manifest,
-            ddlClient,
-            skipTemporalValidation: true
+            ddlClient
         });
 
         expect(provisioned.summary.collectionsCreated).to.be.greaterThan(0);
@@ -139,8 +154,7 @@ describe("MongoDB provisioning integration", function () {
 
         const verified = await verifyMongoProvisioning({
             manifest,
-            ddlClient,
-            skipTemporalValidation: true
+            ddlClient
         });
         expect(verified.verified).to.equal(true);
     });
@@ -149,8 +163,7 @@ describe("MongoDB provisioning integration", function () {
         const ddlClient = createMongoDdlClientFromConnection(mongoose.connection);
         const rerun = await provisionMongoDatabase({
             manifest,
-            ddlClient,
-            skipTemporalValidation: true
+            ddlClient
         });
 
         expect(rerun.summary.collectionsCreated).to.equal(0);
@@ -170,7 +183,6 @@ describe("MongoDB provisioning integration", function () {
             stateStore: createProvisioningStateStore(stateModel),
             ownerId: "integration-runner",
             runId: "integration-locked-run",
-            skipTemporalValidation: true
         });
 
         expect(result.status).to.equal(PROVISIONING_RUN_STATUS.SUCCEEDED);

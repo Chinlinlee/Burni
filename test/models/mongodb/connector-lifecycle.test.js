@@ -167,6 +167,15 @@ describe("MongoDB connector lifecycle", function () {
     });
 
     describe("4.x startup provisioning readiness", function () {
+        it("does not run provisioning on the default startup path while readiness still succeeds", function () {
+            const result = runIsolatedConnectorScenario("defaultStartupSkipsProvisioning");
+
+            expect(result.ok).to.equal(true);
+            expect(result.provisioningStepConfigured).to.equal(false);
+            expect(result.readyResolved).to.equal(true);
+            expect(result.hasTemporalPerformanceIndex).to.equal(false);
+        });
+
         it("runs provisioning before SearchParameter registry when opt-in step is configured", function () {
             const result = runIsolatedConnectorScenario("startupProvisioningRunsBeforeRegistry");
 

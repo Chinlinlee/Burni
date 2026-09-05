@@ -73,7 +73,7 @@ docker-compose up -d
 
 Burni 預設將 Mongoose `autoCreate` 與 `autoIndex` 設為 `false`。Model registration 只代表 application process 內已註冊 model，**不保證** MongoDB collection 或 index 已存在。正式部署應在 application 啟動前執行 provisioning，或明確啟用 startup opt-in。
 
-期望的 collection 與 index 狀態定義於版本控制中的 `models/mongodb/provisioning/artifacts/desired-index-manifest.json`。Provisioning 會依此 manifest 建立缺少的 collection 與 index，並將結果寫入 `MongoProvisioningState`；多 instance 執行時由 `MongoProvisioningLock` 以 database-scoped lease 互斥。
+期望的 collection 與 index manifest 會在執行時依已註冊 model、model catalog 與 approved built-in temporal 定義以 deterministic 方式產生。Provisioning 會依該 manifest 與 MongoDB 實際狀態 reconcile，並將結果寫入 `MongoProvisioningState`；多 instance 執行時由 `MongoProvisioningLock` 以 database-scoped lease 互斥。需要 JSON 副本時可用 `writeDesiredManifestArtifact()` 寫出（預設路徑 `models/mongodb/provisioning/artifacts/desired-index-manifest.json`）。
 
 ### 部署前 provisioning（建議）
 

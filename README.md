@@ -113,7 +113,7 @@ Burni does not create collections or indexes during default application startup.
 - `npm run mongodb:verify` reads actual state and reports missing, extra, and mismatch indexes plus manifest identity drift. It performs no DDL.
 - `npm run mongodb:audit-id` scans resource and history collections for duplicate `id` values. It is read-only and does not modify data; it supports a future unique-migration clean-audit gate.
 
-The desired state is defined in `models/mongodb/provisioning/artifacts/desired-index-manifest.json`. Multi-instance runs use `MongoProvisioningLock`; `MongoProvisioningState` stores the manifest checksum and drift summary. See [ADR 0009](docs/adr/0009-mongodb-schema-and-index-provisioning.md) and the deployment docs.
+The desired index manifest is generated deterministically at runtime from the model catalog, schema and service indexes, and approved built-in temporal definitions. Use `writeDesiredManifestArtifact()` to persist it (default path `models/mongodb/provisioning/artifacts/desired-index-manifest.json`) for inspection or operational workflows. Multi-instance runs use `MongoProvisioningLock`; `MongoProvisioningState` stores the manifest checksum and drift summary. See [ADR 0009](docs/adr/0009-mongodb-schema-and-index-provisioning.md) and the deployment docs.
 
 ## Usage
 ```

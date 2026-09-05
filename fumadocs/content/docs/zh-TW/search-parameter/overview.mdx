@@ -24,7 +24,7 @@ Burni 的 SearchParameter Registry 負責查詢正確性；MongoDB derived index
 
 **Database 自訂 SearchParameter** 預設仍可正常執行查詢，但**不會**進入 desired index manifest，因此不建立 derived index。這不代表查詢被禁止，只代表可能使用 COLLSCAN。若缺少 performance index，請以 `npm run mongodb:verify` 檢查 drift，並在部署流程執行 `npm run mongodb:provision`。
 
-期望的 derived index 狀態合併在 `models/mongodb/provisioning/artifacts/desired-index-manifest.json`；詳細部署步驟見 [部屬](/docs/getting-started/deploy) 的 MongoDB provisioning 章節。
+期望的 derived index 狀態合併在執行時產生的 desired index manifest；詳細部署步驟見 [部署](/docs/getting-started/deploy) 的 MongoDB provisioning 章節。
 
 <Callout type="info">
 下一章您將會知道如何修正 Burni 遺失或錯誤的搜尋參數。下一章[自行新增搜尋參數](/getting-started/configuration)

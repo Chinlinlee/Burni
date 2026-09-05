@@ -13,6 +13,7 @@ const {
 const {
     searchParameterRegistryReadinessStep
 } = require("@models/mongodb/readinessSteps");
+const { resolveConnectorOptions } = require("@models/mongodb/connectorOptions");
 
 // SearchParameter is required so reloadRegistry queries the collection instead of
 // taking the "model missing → []" shortcut.
@@ -674,6 +675,44 @@ async function preExistingConnection() {
     }
 }
 
+async function defaultStartupSkipsProvisioning() {
+    const restoreConsole = captureConsole();
+    try {
+        const uri = await startMemoryServer();
+        const config = buildConfigFromUri(uri);
+        delete process.env.MONGODB_PROVISION_ON_STARTUP;
+
+        const connectorOptions = resolveConnectorOptions(process.env);
+        const modelMap = initConnector(config, connectorOptions);
+        await modelMap.ready;
+        await modelMap.shardingReady;
+
+        /** @type {Record<string, unknown>[]} */
+        let patientIndexes = [];
+        try {
+            patientIndexes = await mongoose.connection.db.collection("Patient").indexes();
+        } catch (_error) {
+            patientIndexes = [];
+        }
+        const hasTemporalPerformanceIndex = patientIndexes.some((entry) =>
+            String(entry.name || "").startsWith("fhir_temporal_")
+        );
+
+        return {
+            ok:
+                !connectorOptions.provisioningReadinessStep &&
+                mongoose.connection.readyState === 1 &&
+                !hasTemporalPerformanceIndex,
+            provisioningStepConfigured: Boolean(connectorOptions.provisioningReadinessStep),
+            readyResolved: true,
+            hasTemporalPerformanceIndex
+        };
+    } finally {
+        restoreConsole();
+        await stopMemoryServer();
+    }
+}
+
 async function startupProvisioningFailureBlocksReady() {
     const restoreConsole = captureConsole();
     try {
@@ -752,6 +791,7 @@ module.exports = {
     shardingFailureDoesNotRejectReady,
     safeInitLogs,
     preExistingConnection,
+    defaultStartupSkipsProvisioning,
     startupProvisioningFailureBlocksReady,
     startupProvisioningRunsBeforeRegistry
 };

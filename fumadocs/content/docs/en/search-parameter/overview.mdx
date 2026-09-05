@@ -24,4 +24,4 @@ First-phase provisioning creates derived indexes only for **approved built-in te
 
 **Custom database SearchParameters** remain executable by default but are **not** added to the desired index manifest, so they do not receive derived indexes. That does not disable the query; it means MongoDB may use COLLSCAN. When performance indexes are missing, run `npm run mongodb:verify` to inspect drift and run `npm run mongodb:provision` as part of deployment.
 
-The expected derived index state is merged into `models/mongodb/provisioning/artifacts/desired-index-manifest.json`. See the MongoDB provisioning section in [Deploy](/docs/getting-started/deploy).
+The expected derived index state is merged into the runtime-generated desired index manifest. See the MongoDB provisioning section in [Deploy](/docs/getting-started/deploy).

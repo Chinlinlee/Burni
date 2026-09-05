@@ -113,7 +113,7 @@ Burni 預設不在 application startup 建立 collection 或 index。部署時�
 - `npm run mongodb:verify` 只讀取 actual state，回報 missing、extra、mismatch index 與 manifest identity drift；不執行 DDL。
 - `npm run mongodb:audit-id` 掃描 resource/history duplicate `id`；只讀、不修改資料，供未來 unique migration 前的 clean-audit gate 使用。
 
-期望狀態定義於 `models/mongodb/provisioning/artifacts/desired-index-manifest.json`。多 instance 執行時由 `MongoProvisioningLock` 互斥，`MongoProvisioningState` 保存 manifest checksum 與 drift 摘要。詳見 [ADR 0009](docs/adr/0009-mongodb-schema-and-index-provisioning.md) 與部署文件。
+期望 index manifest 會在執行時依 model catalog、schema/service index 與 approved built-in temporal 定義以 deterministic 方式產生。需要檢視或操作時，可用 `writeDesiredManifestArtifact()` 寫出（預設路徑 `models/mongodb/provisioning/artifacts/desired-index-manifest.json`）。多 instance 執行時由 `MongoProvisioningLock` 互斥，`MongoProvisioningState` 保存 manifest checksum 與 drift 摘要。詳見 [ADR 0009](docs/adr/0009-mongodb-schema-and-index-provisioning.md) 與部署文件。
 
 ## 啟動服務
 ```

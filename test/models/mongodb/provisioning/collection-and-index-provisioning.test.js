@@ -20,9 +20,10 @@ const {
     verifyMongoProvisioning
 } = require("@models/mongodb/provisioning/provisioningService");
 const { createSearchQueryPlan } = require("@models/FHIR/searchParameter/compiler/searchQueryPlan");
-const { createTemporalIndexEntry } = require("@models/FHIR/searchParameter/indexes/indexManifest");
+const {
+    generateTemporalIndexManifestWithDiagnostics
+} = require("@models/FHIR/searchParameter/indexes/indexGenerator");
 const { validateTemporalIndexEntryCompatibility } = require("@models/FHIR/searchParameter/indexes/indexCompatibility");
-const { collectApprovedTemporalDerivedIndexes } = require("@models/mongodb/provisioning/temporalIndexAdapter");
 const {
     generateDesiredManifest
 } = require("@models/mongodb/provisioning/desiredManifest");
@@ -282,46 +283,68 @@ describe("MongoDB provisioning service", function () {
 
     it("excludes unsafe temporal index shapes from the approved derived manifest", function () {
         const unsafePlan = createSearchQueryPlan({
-            resourceType: "Observation",
-            code: "effective",
+            resourceType: "CarePlan",
+            code: "unsafe-activity-date",
             searchType: "date",
-            extractionPaths: [{ path: "effectivePeriod", datatype: "Period" }],
+            extractionPaths: [
+                {
+                    path: "activity.detail.scheduledPeriod",
+                    datatype: "Period",
+                    arrayPaths: ["activity", "goal"]
+                }
+            ],
             comparators: ["eq"]
         });
-        const unsafeEntry = createTemporalIndexEntry(
-            "Observation",
-            {
-                canonicalKey: "http://example.org/SearchParameter/effective::4.0.1",
-                effectiveStatus: "active",
-                resource: {
-                    code: "effective",
-                    resourceType: "SearchParameter"
-                },
-                lookupPlans: {
-                    "Observation::effective": {
-                        compilable: true,
-                        plan: unsafePlan
-                    }
-                }
+        const unsafeDefinition = {
+            canonicalKey: "http://example.org/SearchParameter/unsafe-activity-date::4.0.1",
+            effectiveStatus: "active",
+            resource: {
+                code: "unsafe-activity-date",
+                resourceType: "SearchParameter"
             },
-            "Observation::effective",
-            {
-                path: "periods",
-                datatype: "Period",
-                arrayPaths: ["periods", "otherPeriods"]
+            lookupPlans: {
+                "CarePlan::unsafe-activity-date": {
+                    compilable: true,
+                    plan: unsafePlan
+                }
             }
-        );
+        };
 
+        const generated = generateTemporalIndexManifestWithDiagnostics([unsafeDefinition]);
+        expect(generated.manifest.indexes).to.have.length(1);
+
+        const unsafeEntry = generated.manifest.indexes[0];
         const compatibility = validateTemporalIndexEntryCompatibility(unsafeEntry);
         expect(compatibility.valid).to.equal(false);
         expect(compatibility.diagnostics.map((entry) => entry.code)).to.include(
             "parallel-multikey-paths"
         );
 
-        const approved = collectApprovedTemporalDerivedIndexes();
-        expect(approved.entries.some((entry) => entry.name === unsafeEntry.name)).to.equal(false);
+        /** @type {import("@models/FHIR/searchParameter/indexes/indexManifest").TemporalIndexEntry[]} */
+        const approvedEntries = [];
+        /** @type {string[]} */
+        const pipelineDiagnostics = generated.diagnostics.map((diagnostic) =>
+            typeof diagnostic === "string" ? diagnostic : `${diagnostic.code}: ${diagnostic.message}`
+        );
+        for (const entry of generated.manifest.indexes) {
+            const result = validateTemporalIndexEntryCompatibility(entry);
+            if (!result.valid) {
+                pipelineDiagnostics.push(
+                    ...result.diagnostics.map(
+                        (diagnostic) => `${diagnostic.code}: ${diagnostic.message}`
+                    )
+                );
+                continue;
+            }
+            approvedEntries.push(entry);
+        }
+
+        expect(approvedEntries).to.deep.equal([]);
         expect(
-            approved.entries.every((entry) => validateTemporalIndexEntryCompatibility(entry).valid)
+            pipelineDiagnostics.some((diagnostic) => diagnostic.startsWith("parallel-multikey-paths:"))
+        ).to.equal(true);
+        expect(
+            approvedEntries.every((entry) => validateTemporalIndexEntryCompatibility(entry).valid)
         ).to.equal(true);
     });
 

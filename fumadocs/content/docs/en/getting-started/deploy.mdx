@@ -73,7 +73,7 @@ docker-compose up -d
 
 Burni sets Mongoose `autoCreate` and `autoIndex` to `false` by default. Model registration only means models are registered inside the application process; it does **not** guarantee that MongoDB collections or indexes exist. Production deployments should run provisioning before application startup, or explicitly enable startup opt-in.
 
-The desired collection and index state is defined in the committed artifact at `models/mongodb/provisioning/artifacts/desired-index-manifest.json`. Provisioning creates missing collections and indexes from that manifest, persists results in `MongoProvisioningState`, and uses `MongoProvisioningLock` with a database-scoped lease for multi-instance runs.
+The desired collection and index manifest is generated deterministically at runtime from registered models, the model catalog, and approved built-in temporal definitions. Provisioning reconciles MongoDB against that generated manifest, persists results in `MongoProvisioningState`, and uses `MongoProvisioningLock` with a database-scoped lease for multi-instance runs. Use `writeDesiredManifestArtifact()` when you need a persisted JSON copy (default path `models/mongodb/provisioning/artifacts/desired-index-manifest.json`).
 
 ### Pre-deployment provisioning (recommended)
 
