@@ -13,9 +13,14 @@
 
 ## SearchParameter index boundary
 
-- 目前第一階段的 derived index 範圍是 built-in、明確標記為 indexable 的 temporal SearchParameter。
-- database 自訂 SearchParameter 預設可執行但不產生 derived index。
-- SearchParameter index 應改善查詢效能，不得改變查詢結果的正確性。
+- SearchParameter-derived index 是由 built-in、active、可執行且通過對應 index policy
+  的 lookup 所產生的效能能力；SearchParameter 可執行不代表它一定可建立 derived index。
+- 目前允許的 derived index 範圍包含通過 policy 的 temporal，以及 token、reference、
+  string、number、quantity、uri lookup；database 自訂 SearchParameter 預設可執行但不
+  產生 derived index。
+- Derived index 應改善查詢效能，不得改變查詢結果、FHIR response 或 stored value semantics。
+- Index policy 是 Burni 對 MongoDB indexability 的部署判斷，不是 FHIR
+  SearchParameter source resource 的語意欄位。
 
 ## Data integrity boundary
 

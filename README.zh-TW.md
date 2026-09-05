@@ -109,11 +109,11 @@ Registry 是 production SearchParameter 唯一的執行路徑。以下指令用�
 
 Burni 預設不在 application startup 建立 collection 或 index。部署時請在啟動服務前執行 provisioning，或使用 `MONGODB_PROVISION_ON_STARTUP=true` 明確 opt-in。
 
-- `npm run mongodb:provision` 建立全部 resource、history 與 static collections，以及 baseline 與 approved built-in temporal derived indexes，最後執行 verify。失敗時回傳非零狀態；部分完成後可安全重試，不 rollback 已建立的 DDL。
+- `npm run mongodb:provision` 建立全部 resource、history 與 static collections，以及 baseline 與通過 policy 的 temporal、非 temporal SearchParameter derived indexes，最後執行 verify。失敗時回傳非零狀態；部分完成後可安全重試，不 rollback 已建立的 DDL。
 - `npm run mongodb:verify` 只讀取 actual state，回報 missing、extra、mismatch index 與 manifest identity drift；不執行 DDL。
 - `npm run mongodb:audit-id` 掃描 resource/history duplicate `id`；只讀、不修改資料，供未來 unique migration 前的 clean-audit gate 使用。
 
-期望 index manifest 會在執行時依 model catalog、schema/service index 與 approved built-in temporal 定義以 deterministic 方式產生。需要檢視或操作時，可用 `writeDesiredManifestArtifact()` 寫出（預設路徑 `models/mongodb/provisioning/artifacts/desired-index-manifest.json`）。多 instance 執行時由 `MongoProvisioningLock` 互斥，`MongoProvisioningState` 保存 manifest checksum 與 drift 摘要。詳見 [ADR 0009](docs/adr/0009-mongodb-schema-and-index-provisioning.md) 與部署文件。
+期望 index manifest 會在執行時依 model catalog、schema/service index，以及通過 index policy 的 approved built-in temporal 與非 temporal SearchParameter 定義以 deterministic 方式產生。非 temporal index 涵蓋 token、reference、exact string、number、quantity 與 raw URI；custom parameter、unsupported modifier 與不安全 array shape 會排除並留下 diagnostics。需要檢視或操作時，可用 `writeDesiredManifestArtifact()` 寫出（預設路徑 `models/mongodb/provisioning/artifacts/desired-index-manifest.json`）。多 instance 執行時由 `MongoProvisioningLock` 互斥，`MongoProvisioningState` 保存 manifest checksum 與 drift 摘要。詳見 [ADR 0009](docs/adr/0009-mongodb-schema-and-index-provisioning.md)、[ADR 0010](docs/adr/0010-searchparameter-derived-index-policy.md) 與部署文件。
 
 ## 啟動服務
 ```

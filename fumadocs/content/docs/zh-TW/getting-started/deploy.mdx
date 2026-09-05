@@ -73,7 +73,7 @@ docker-compose up -d
 
 Burni 預設將 Mongoose `autoCreate` 與 `autoIndex` 設為 `false`。Model registration 只代表 application process 內已註冊 model，**不保證** MongoDB collection 或 index 已存在。正式部署應在 application 啟動前執行 provisioning，或明確啟用 startup opt-in。
 
-期望的 collection 與 index manifest 會在執行時依已註冊 model、model catalog 與 approved built-in temporal 定義以 deterministic 方式產生。Provisioning 會依該 manifest 與 MongoDB 實際狀態 reconcile，並將結果寫入 `MongoProvisioningState`；多 instance 執行時由 `MongoProvisioningLock` 以 database-scoped lease 互斥。需要 JSON 副本時可用 `writeDesiredManifestArtifact()` 寫出（預設路徑 `models/mongodb/provisioning/artifacts/desired-index-manifest.json`）。
+期望的 collection 與 index manifest 會在執行時依已註冊 model、model catalog、approved built-in temporal 定義，以及通過 policy 的非 temporal SearchParameter derived index 以 deterministic 方式產生。Manifest 會保存 `artifactIdentity`（compiled SearchParameter artifact）與 `derivedIndexPolicy.searchParameterPolicyVersion`（non-temporal index policy）。Provisioning 會依該 manifest 與 MongoDB 實際狀態 reconcile，並將結果寫入 `MongoProvisioningState`；多 instance 執行時由 `MongoProvisioningLock` 以 database-scoped lease 互斥。需要 JSON 副本時可用 `writeDesiredManifestArtifact()` 寫出（預設路徑 `models/mongodb/provisioning/artifacts/desired-index-manifest.json`）。
 
 ### 部署前 provisioning（建議）
 
@@ -83,7 +83,7 @@ Burni 預設將 Mongoose `autoCreate` 與 `autoIndex` 設為 `false`。Model reg
 npm run mongodb:provision
 ```
 
-此 command 依序完成 control-plane 初始化、取得 lock、建立 collections、建立 baseline indexes、建立 approved built-in temporal derived indexes、執行 verify，並保存 manifest checksum 與 drift 摘要。成功時 exit code 為 `0`；任一 phase 失敗時回傳非零狀態。
+此 command 依序完成 control-plane 初始化、取得 lock、建立 collections、建立 baseline indexes、建立 approved built-in derived indexes（temporal 與非 temporal SearchParameter）、執行 verify，並保存 manifest checksum 與 drift 摘要。成功時 exit code 為 `0`；任一 phase 失敗時回傳非零狀態。
 
 **部分完成與重試**：Provisioning 採 additive-only policy，不 rollback 已建立的 collection 或 index。若 run 在中途失敗，已完成的 DDL 會保留；再次執行 `mongodb:provision` 會從 desired/actual diff 繼續補齊缺少項目。Lock lease 到期後可由其他 process 回收 expired lock 並重試。
 
@@ -112,7 +112,7 @@ npm run mongodb:audit-id
 
 ### Startup opt-in
 
-預設 `node server.js` **不會**執行 provisioning；application readiness（`mongodb.ready`）與 provisioning readiness 是分開的狀態。缺少 performance index 不會阻止 HTTP listen，但可能導致 COLLSCAN。
+預設 `node server.js` **不會**執行 provisioning；application readiness（`mongodb.ready`）與 provisioning readiness 是分開的狀態。缺少 performance index（包含 non-temporal derived index）不會阻止 HTTP listen，但可能導致 COLLSCAN；`mongodb:verify` diagnostics 會標示 missing performance index。
 
 若要在 application ready 前等待完整 provisioning run，設定：
 
@@ -124,4 +124,4 @@ MONGODB_PROVISION_ON_STARTUP=true
 
 ### 與 SearchParameter derived index 的關係
 
-第一階段 derived index 只涵蓋 built-in artifact 中 approved 的 temporal SearchParameter。Database 自訂 SearchParameter 仍可執行查詢，但預設不建立 derived index。詳見 [搜尋參數概觀](/docs/search-parameter/overview)。
+Derived index manifest 合併 temporal 與通過 policy 的非 temporal（token、reference、string、number、quantity、uri）built-in lookup。Database 自訂 SearchParameter 仍可執行查詢，但預設不建立 derived index。Derived index reconcile 為 additive-only：missing 可由 `provision` 建立，extra 或 mismatch 只由 `verify` 報告，不自動刪除；query runtime 不使用 `$hint`。Rollback 時可停止新 policy 或回復 manifest 版本，已建立的 index 不會被自動刪除。詳見 [搜尋參數概觀](/docs/search-parameter/overview) 與 [ADR 0010](/docs/adr/0010-searchparameter-derived-index-policy)。

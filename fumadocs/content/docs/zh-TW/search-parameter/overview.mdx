@@ -20,7 +20,16 @@ Burni 目前支援的 [FHIR search operations](http://www.hl7.org/fhir/search.ht
 
 Burni 的 SearchParameter Registry 負責查詢正確性；MongoDB derived index 只負責查詢效能。兩者是分開的生命週期。
 
-第一階段 provisioning 只會為 **built-in artifact 中 approved 的 temporal SearchParameter** 建立 derived index。這些 lookup 必須同時滿足 active、可編譯、通過 temporal index compatibility policy，且 extraction path 具備安全的 index contract。
+第一階段 provisioning 會為 **built-in artifact 中 approved 的 temporal 與非 temporal SearchParameter** 建立 derived index。這些 lookup 必須同時滿足 active、可編譯、通過對應 index policy，且 extraction/projection 具備安全的 index contract。
+
+### 非 temporal derived index 邊界
+
+- **token**：支援 Coding/CodeableConcept 的 system-code correlation，以及 Identifier/ContactPoint 的 system-value correlation；`:text` 查詢不建立 derived index。
+- **reference**：只索引 stored `reference` field；`Reference.type` target guard 仍由 runtime filter 負責。
+- **string**：只為 exact projected leaf 建立 equality index；default prefix 與 `:contains` 維持 regex 語意，不宣稱 B-tree index。
+- **number / quantity**：使用現有 numeric BSON field；`sa`、`eb`、`ap` comparator 尚未支援，不進 capability matrix。
+- **uri**：使用 raw URI single-field index；`:above` / `:below` 共用同一 raw key identity。
+- **array correlation**：只接受可證明的單一 array scope；parallel multikey、positional path 與 unsafe branch 會產生 rejection diagnostic。
 
 **Database 自訂 SearchParameter** 預設仍可正常執行查詢，但**不會**進入 desired index manifest，因此不建立 derived index。這不代表查詢被禁止，只代表可能使用 COLLSCAN。若缺少 performance index，請以 `npm run mongodb:verify` 檢查 drift，並在部署流程執行 `npm run mongodb:provision`。
 

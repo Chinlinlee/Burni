@@ -109,11 +109,11 @@ The committed canonical source is the FHIR R4/4.0.1 SearchParameter Bundle. Lega
 
 Burni does not create collections or indexes during default application startup. Run provisioning before starting the server, or set `MONGODB_PROVISION_ON_STARTUP=true` to opt in explicitly.
 
-- `npm run mongodb:provision` creates all resource, history, and static collections plus baseline and approved built-in temporal derived indexes, then runs verify. It exits with a non-zero status on failure; partial runs are safe to retry without rolling back completed DDL.
+- `npm run mongodb:provision` creates all resource, history, and static collections plus baseline and approved temporal and non-temporal SearchParameter derived indexes, then runs verify. It exits with a non-zero status on failure; partial runs are safe to retry without rolling back completed DDL.
 - `npm run mongodb:verify` reads actual state and reports missing, extra, and mismatch indexes plus manifest identity drift. It performs no DDL.
 - `npm run mongodb:audit-id` scans resource and history collections for duplicate `id` values. It is read-only and does not modify data; it supports a future unique-migration clean-audit gate.
 
-The desired index manifest is generated deterministically at runtime from the model catalog, schema and service indexes, and approved built-in temporal definitions. Use `writeDesiredManifestArtifact()` to persist it (default path `models/mongodb/provisioning/artifacts/desired-index-manifest.json`) for inspection or operational workflows. Multi-instance runs use `MongoProvisioningLock`; `MongoProvisioningState` stores the manifest checksum and drift summary. See [ADR 0009](docs/adr/0009-mongodb-schema-and-index-provisioning.md) and the deployment docs.
+The desired index manifest is generated deterministically at runtime from the model catalog, schema and service indexes, plus approved built-in temporal and non-temporal SearchParameter definitions that pass the index policy. Non-temporal indexes cover token, reference, exact string, number, quantity, and raw URI lookups; custom parameters, unsupported modifiers, and unsafe array shapes are excluded with diagnostics. Use `writeDesiredManifestArtifact()` to persist it (default path `models/mongodb/provisioning/artifacts/desired-index-manifest.json`) for inspection or operational workflows. Multi-instance runs use `MongoProvisioningLock`; `MongoProvisioningState` stores the manifest checksum and drift summary. See [ADR 0009](docs/adr/0009-mongodb-schema-and-index-provisioning.md), [ADR 0010](docs/adr/0010-searchparameter-derived-index-policy.md), and the deployment docs.
 
 ## Usage
 ```
