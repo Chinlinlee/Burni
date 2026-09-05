@@ -54,6 +54,42 @@ function verifyGoldenFilter(plan, hitSet) {
  * @returns {{ single: string, or: string, and: string[] }}
  */
 function sampleValuesForPlan(plan) {
+    if (plan.searchType === "composite") {
+        const componentSample = (component, alternate = false) => {
+            switch (component.searchType) {
+                case "number":
+                    return alternate ? "eq20" : "eq10";
+                case "date":
+                case "dateTime":
+                    return alternate ? "2001-01-01" : "2000-01-01";
+                case "quantity":
+                    return alternate ? "eq20|kg" : "eq10|kg";
+                case "reference":
+                    return alternate ? "Patient/example-2" : "Patient/example";
+                case "uri":
+                    return alternate
+                        ? "http://example.org/test-2"
+                        : "http://example.org/test";
+                case "token":
+                    return alternate ? "urn:burni:sample|code-2" : "urn:burni:sample|code";
+                case "string":
+                default:
+                    return alternate ? "sample-2" : "sample";
+            }
+        };
+        const firstPair = (plan.composite?.components || [])
+            .map(componentSample)
+            .join("$");
+        const secondPair = (plan.composite?.components || [])
+            .map((component) => componentSample(component, true))
+            .join("$");
+        return {
+            single: firstPair,
+            or: `${firstPair},${secondPair}`,
+            and: [firstPair, secondPair]
+        };
+    }
+
     const referenceTarget =
         plan.extractionPaths.find((entry) => entry.referenceTargetType)?.referenceTargetType ||
         plan.targets?.[0] ||
@@ -110,6 +146,25 @@ function verifyOperatorMultiplicity(plan) {
     const errors = [];
     const parameterName = plan.code;
     const samples = sampleValuesForPlan(plan);
+
+    if (plan.searchType === "composite") {
+        for (const [rawValue, label] of [
+            [samples.single, "single"],
+            [samples.or, "OR"],
+            [samples.and, "AND"]
+        ]) {
+            try {
+                executeSearchQueryPlan(
+                    plan,
+                    rawValue,
+                    parameterName
+                );
+            } catch (error) {
+                errors.push(`Composite ${label} verification failed: ${error.message}`);
+            }
+        }
+        return { passed: errors.length === 0, errors };
+    }
 
     let presentFilter;
     let absentFilter;

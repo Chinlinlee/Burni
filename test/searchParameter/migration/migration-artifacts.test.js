@@ -10,7 +10,9 @@ const { verifyRegistryIntegrity } = require("@models/FHIR/searchParameter/migrat
 const { reloadRegistry } = require("@models/FHIR/searchParameter/registry/registryManager");
 const { loadBuiltinDefinitions } = require("@models/FHIR/searchParameter/registry/sourceAdapter");
 const { applyActivationOverlay } = require("@models/FHIR/searchParameter/registry/activationPolicy");
-const { compileDefinition } = require("@models/FHIR/searchParameter/compiler/compiler");
+const {
+    compileDefinitions: compileAllDefinitions
+} = require("@models/FHIR/searchParameter/compiler/compiler");
 const { mergeDefinitions } = require("@models/FHIR/searchParameter/registry/merge");
 const productionResources = require("@models/FHIR/fhir.resourceList.json");
 
@@ -20,10 +22,11 @@ const MATRIX_ARTIFACT = path.join(
 );
 async function compileDefinitions() {
     const builtin = loadBuiltinDefinitions();
+    const compileResults = compileAllDefinitions(builtin.definitions);
     const compiledDefinitions = [];
 
     for (const definition of builtin.definitions) {
-        const compileResult = compileDefinition(definition);
+        const compileResult = compileResults[definition.canonicalKey];
         const activated = applyActivationOverlay(definition, {
             compilable: compileResult.compilable,
             reason: compileResult.reason

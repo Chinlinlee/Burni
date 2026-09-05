@@ -194,6 +194,9 @@ function numberQuery(value, field) {
             queryPrefix = "eq";
             num = value;
         }
+        if (num.trim() === "" || !Number.isFinite(Number(num))) {
+            return false;
+        }
         queryBuilder = numberQueryBuilder[queryPrefix](queryBuilder, field, num);
         return queryBuilder;
     } catch {

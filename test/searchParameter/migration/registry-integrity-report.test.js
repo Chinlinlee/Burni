@@ -81,8 +81,7 @@ describe("Registry integrity diagnostics report", function () {
         expect(patientActive.enablement.registryEnabled).to.equal(true);
 
         const composite = report.resources.ActivityDefinition.lookups["context-type-quantity"];
-        expect(composite.outcome).to.equal("unsupported");
-        expect(composite.unsupportedReason).to.include("composite");
+        expect(composite.outcome).to.equal("compiled");
         expect(composite.conflict).to.equal(false);
         expect(composite.enablement.registryEnabled).to.equal(true);
 

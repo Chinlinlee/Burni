@@ -8,7 +8,15 @@ const ALLOWED_COMPILE_DIAGNOSTIC_CODES = new Set([
     "missing-expression",
     "lookup-disabled",
     "incompatible-branch",
-    "missing-type-map"
+    "missing-type-map",
+    "incompatible-component-branch",
+    "component-not-found",
+    "component-version-mismatch",
+    "missing-component-definition",
+    "missing-component-expression",
+    "missing-component",
+    "unsupported-component-type",
+    "chained-component"
 ]);
 
 /**

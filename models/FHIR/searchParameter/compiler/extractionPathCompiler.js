@@ -5,6 +5,7 @@ const {
     resolvePathMetadata,
     resolvePathDatatype,
     resolvePathContextMap,
+    resolveContextPathMetadata,
     expandChoiceElementNames,
     getComplexTypeFields
 } = require("./resourceTypeMap");
@@ -318,6 +319,301 @@ function expandTemporalDatatypePaths(path, datatype, typeMap, searchType) {
 }
 
 /**
+ * @param {Object} contextMap
+ * @returns {boolean}
+ */
+function hasScopeFieldEntries(contextMap) {
+    return Object.keys(contextMap || {}).some(
+        (key) => !["type", "isArray", "isRequired", "ref"].includes(key)
+    );
+}
+
+/**
+ * @param {Object} typeMap
+ * @param {string} scopePath
+ * @param {string | null} scopeDatatype
+ * @returns {Object}
+ */
+function resolveScopeContextMap(typeMap, scopePath, scopeDatatype) {
+    const fromPath = scopePath ? resolvePathContextMap(typeMap, scopePath) : typeMap;
+    if (fromPath && hasScopeFieldEntries(fromPath)) {
+        return fromPath;
+    }
+
+    const nodeType = typeof fromPath?.type === "string" ? fromPath.type : scopeDatatype;
+    if (nodeType) {
+        const complexFields = getComplexTypeFields(nodeType);
+        if (complexFields) {
+            return complexFields;
+        }
+    }
+
+    return fromPath || typeMap;
+}
+
+/**
+ * @param {string} expression
+ * @param {string} resourceType
+ * @returns {string}
+ */
+function preprocessResourceExpression(expression, resourceType) {
+    return String(expression || "").replace(/%resource/g, resourceType);
+}
+
+/**
+ * @param {Object} typeMap
+ * @param {string} scopePath
+ * @returns {{
+ *   found: boolean,
+ *   scopePath: string,
+ *   correlationMode: 'scalar' | 'array-element',
+ *   contextMap: Object,
+ *   scopeDatatype: string | null,
+ *   isArrayScope: boolean
+ * }}
+ */
+function resolveScopeContext(typeMap, scopePath) {
+    if (!scopePath) {
+        return {
+            found: true,
+            scopePath: "",
+            correlationMode: "scalar",
+            contextMap: typeMap,
+            scopeDatatype: null,
+            isArrayScope: false
+        };
+    }
+
+    const resolved = resolvePathMetadata(typeMap, scopePath);
+    if (!resolved.found) {
+        return {
+            found: false,
+            scopePath,
+            correlationMode: "scalar",
+            contextMap: typeMap,
+            scopeDatatype: null,
+            isArrayScope: false
+        };
+    }
+
+    const contextMap = resolveScopeContextMap(typeMap, scopePath, resolved.datatype);
+    return {
+        found: true,
+        scopePath,
+        correlationMode: resolved.arrayPaths.includes(scopePath) ? "array-element" : "scalar",
+        contextMap,
+        scopeDatatype: resolved.datatype,
+        isArrayScope: resolved.arrayPaths.includes(scopePath)
+    };
+}
+
+/**
+ * @param {import('./parser/ast').AstNode} node
+ * @param {Object} contextMap
+ * @returns {RawPath[]}
+ */
+function collectScopeRelativePaths(node, contextMap) {
+    switch (node.type) {
+        case "Identifier":
+            return [{ rootType: "", segments: [node.name || ""] }];
+        case "PropertyAccess": {
+            const parentPaths = collectScopeRelativePaths(node.left, contextMap);
+            return parentPaths.map((entry) => ({
+                rootType: entry.rootType,
+                segments: [...entry.segments, node.name || ""],
+                referenceTargetType: entry.referenceTargetType,
+                predicates: entry.predicates
+            }));
+        }
+        case "Union":
+            return [
+                ...collectScopeRelativePaths(node.left, contextMap),
+                ...collectScopeRelativePaths(node.right, contextMap)
+            ];
+        case "And":
+            return [
+                ...collectScopeRelativePaths(node.left, contextMap),
+                ...collectScopeRelativePaths(node.right, contextMap)
+            ];
+        case "Comparison":
+            return collectScopeRelativePaths(node.left, contextMap);
+        case "As":
+        case "OfType": {
+            const operandPaths = collectScopeRelativePaths(node.operand, contextMap);
+            const valueType = node.valueType || "";
+            return operandPaths.map((entry) => {
+                const segments = [...entry.segments];
+                const last = segments.pop() || "";
+                return {
+                    rootType: entry.rootType,
+                    segments: [...segments, toChoiceElementName(last, valueType)],
+                    referenceTargetType: entry.referenceTargetType,
+                    predicates: entry.predicates
+                };
+            });
+        }
+        case "Exists": {
+            const operandPaths = collectScopeRelativePaths(node.operand, contextMap);
+            /** @type {RawPath[]} */
+            const expanded = [];
+            for (const entry of operandPaths) {
+                const segments = [...entry.segments];
+                const last = segments.pop() || "";
+                const parentPath = segments.join(".");
+                const parentResolved = parentPath
+                    ? resolvePathDatatype(contextMap, parentPath)
+                    : { found: true, datatype: null };
+                const localContext =
+                    parentPath && parentResolved.found ? contextMap : contextMap;
+                const choiceFields = expandChoiceElementNames(localContext, last);
+                if (choiceFields.length > 0) {
+                    for (const field of choiceFields) {
+                        expanded.push({
+                            rootType: entry.rootType,
+                            segments: [...segments, field],
+                            referenceTargetType: entry.referenceTargetType,
+                            predicates: entry.predicates
+                        });
+                    }
+                } else {
+                    expanded.push({
+                        rootType: entry.rootType,
+                        segments: [...segments, toChoiceElementName(last, "boolean")],
+                        referenceTargetType: entry.referenceTargetType,
+                        predicates: entry.predicates
+                    });
+                }
+            }
+            return expanded;
+        }
+        case "Where": {
+            const operandPaths = collectScopeRelativePaths(node.operand, contextMap);
+            const referenceTargetType = extractReferenceTargetType(node);
+            const systemPredicate = extractSystemPredicate(node);
+            const typePredicate = extractTypePredicate(node);
+            /** @type {PathPredicate[]} */
+            const predicates = [];
+            if (systemPredicate?.property === "system") {
+                predicates.push({ kind: "systemEquals", value: systemPredicate.value });
+            }
+            if (typePredicate?.property === "type") {
+                predicates.push({ kind: "typeEquals", value: typePredicate.value });
+            }
+            return operandPaths.map((entry) => ({
+                rootType: entry.rootType,
+                segments: entry.segments,
+                referenceTargetType: referenceTargetType || entry.referenceTargetType,
+                predicates: [...(entry.predicates || []), ...predicates]
+            }));
+        }
+        case "ArrayIndex": {
+            const operandPaths = collectScopeRelativePaths(node.operand, contextMap);
+            return operandPaths.map((entry) => ({
+                rootType: entry.rootType,
+                segments: [...entry.segments, String(node.index ?? 0)],
+                referenceTargetType: entry.referenceTargetType,
+                predicates: entry.predicates
+            }));
+        }
+        default:
+            return [];
+    }
+}
+
+/**
+ * @param {Object} input
+ * @param {import('../registry/types').SearchParameterDefinition} input.definition
+ * @param {string} input.lookupKey
+ * @param {string} input.resourceType
+ * @param {ReturnType<typeof resolveScopeContext>} input.scopeContext
+ * @param {import('./searchQueryPlan').CompositeComponentDefinition} input.componentDefinition
+ * @param {import('./parser/ast').AstNode} input.ast
+ * @returns {{ extractionPaths: ExtractionPath[], diagnostics: import('../registry/diagnostics').RegistryDiagnostic[] }}
+ */
+function compileScopeRelativeExtractionPaths(input) {
+    const diagnostics = [];
+    const { definition, lookupKey, scopeContext, componentDefinition, ast } = input;
+    const searchType = componentDefinition.searchType;
+    const contextMap = scopeContext.contextMap;
+
+    const rawPaths = expandAllChoicePaths(
+        collectScopeRelativePaths(ast, contextMap).filter((entry) => entry.segments.length > 0),
+        contextMap,
+        searchType
+    );
+
+    /** @type {ExtractionPath[]} */
+    const extractionPaths = [];
+    const deceasedSemantics = hasDeceasedNotFalsePredicate(ast);
+
+    for (const rawPath of rawPaths) {
+        const path = rawPath.segments.join(".");
+        if (!path) {
+            continue;
+        }
+
+        const normalizedPath = normalizePathForTypeResolution(path);
+        const resolved = resolveContextPathMetadata(contextMap, normalizedPath);
+        if (!resolved.found || !resolved.datatype) {
+            diagnostics.push(
+                createDiagnostic({
+                    code: "incompatible-component-branch",
+                    category: "compile",
+                    message: `Component path ${path} is incompatible with composite scope ${scopeContext.scopePath || "resource root"}`,
+                    canonicalKey: definition.canonicalKey,
+                    lookupKey,
+                    expression: componentDefinition.expression
+                })
+            );
+            continue;
+        }
+
+        /** @type {PathPredicate[]} */
+        const predicates = [...(rawPath.predicates || [])];
+        if (deceasedSemantics && path.startsWith("deceased")) {
+            predicates.push({ kind: "deceasedPresence" });
+        }
+
+        const projectedPaths = expandTemporalDatatypePaths(path, resolved.datatype, contextMap, searchType);
+        for (const projectedPath of projectedPaths) {
+            if (!hasSearchTypeProjection(searchType, projectedPath.datatype)) {
+                diagnostics.push(
+                    createDiagnostic({
+                        code: "incompatible-component-branch",
+                        category: "compile",
+                        message: `No search-type projection for ${searchType} on ${projectedPath.datatype} at ${projectedPath.path}`,
+                        canonicalKey: definition.canonicalKey,
+                        lookupKey,
+                        expression: componentDefinition.expression
+                    })
+                );
+                continue;
+            }
+
+            const extractionPath = {
+                path: projectedPath.path,
+                datatype: projectedPath.datatype,
+                ...(rawPath.referenceTargetType
+                    ? { referenceTargetType: rawPath.referenceTargetType }
+                    : {}),
+                ...(predicates.length > 0 ? { predicates } : {})
+            };
+            const arrayPaths = projectedPath.arrayPaths || resolved.arrayPaths;
+            if (
+                TEMPORAL_DATATYPES.has(projectedPath.datatype) &&
+                !projectedPath.path.split(".").some((segment) => /^\d+$/.test(segment)) &&
+                arrayPaths.length > 0
+            ) {
+                extractionPath.arrayPaths = arrayPaths;
+            }
+            extractionPaths.push(attachPathCorrelation(extractionPath));
+        }
+    }
+
+    return { extractionPaths: dedupeExtractionPaths(extractionPaths), diagnostics };
+}
+
+/**
  * @param {import('../registry/types').SearchParameterDefinition} definition
  * @param {string} resourceType
  * @param {import('./parser/ast').AstNode | null} ast
@@ -482,11 +778,15 @@ function deriveSystemExtractionPaths(resource, typeMap) {
 module.exports = {
     toChoiceElementName,
     collectRawPaths,
+    collectScopeRelativePaths,
     filterPathsForResource,
     normalizeBareFieldPaths,
     normalizePathForTypeResolution,
     expandTerminalChoicePaths,
     expandAllChoicePaths,
+    preprocessResourceExpression,
+    resolveScopeContext,
     compileExtractionPaths,
+    compileScopeRelativeExtractionPaths,
     deriveSystemExtractionPaths
 };

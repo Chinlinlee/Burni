@@ -50,6 +50,26 @@ http://localhost:8080/fhir/Bundle?message.focus.name=Smith
 
 This request is rejected with HTTP 400 and `missing-type-filter`.
 
+## Composite search [#composite-search]
+
+Burni supports FHIR R4 composite SearchParameters through the SearchParameter Registry. A composite value joins component values with `$`; each component is evaluated against the same composite scope. For an array scope, all components must match the same array element.
+
+Examples:
+
+```sh
+http://localhost:8080/fhir/Observation?code-value-quantity=http://loinc.org%7C29463-7$gt5.4
+http://localhost:8080/fhir/Observation?component-code-value-quantity=http://loinc.org%7C8480-6$lt60
+http://localhost:8080/fhir/Group?characteristic-value=gender$mixed,owner$Eve
+```
+
+An unescaped comma separates multiple composite Pairs with OR semantics. Repeating the same composite parameter combines Pairs with AND semantics:
+
+```sh
+http://localhost:8080/fhir/Group?characteristic-value=gender$mixed&characteristic-value=owner$Eve
+```
+
+The characters `$`, `,`, `|`, and `\` in literal component values must be escaped with `\` (`\$`, `\,`, `\|`, `\\`). Composite parameters do not accept modifiers. Missing or extra components, empty components, incomplete escapes, unsupported component operators, and invalid composite values are rejected with HTTP 400; Burni does not broaden them into independent component filters.
+
 ## URI search (`uri`) [#uri-search]
 
 Burni evaluates `uri` search parameters with raw string equality for the default modifier. Matching is case-sensitive and treats escape sequences, query strings, and fragments as part of the value. Relative references, URNs, and non-http(s) schemes are valid for exact search when they satisfy basic RFC 3986 syntax. Empty or syntactically invalid values are rejected with HTTP 400 and `Invalid uri search value`. Canonical `|version` suffixes are not stripped or interpreted.

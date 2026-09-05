@@ -98,7 +98,7 @@ function normalizeDateAtPath(target, segments, datatype, pathPrefix = "") {
  * @returns {Object}
  */
 function ensureTemporalArrayShape(document, plan) {
-    for (const extractionPath of plan.extractionPaths) {
+    for (const extractionPath of getDocumentExtractionPaths(plan)) {
         const arrayPaths = extractionPath.arrayPaths || [];
         if (!arrayPaths.includes(extractionPath.path)) {
             continue;
@@ -140,13 +140,30 @@ function ensureTemporalArrayShape(document, plan) {
 }
 
 /**
+ * @param {import('../compiler/searchQueryPlan').SearchQueryPlan} plan
+ * @returns {import('../compiler/searchQueryPlan').ExtractionPath[]}
+ */
+function getDocumentExtractionPaths(plan) {
+    if (plan.searchType !== "composite") {
+        return plan.extractionPaths;
+    }
+
+    return (plan.composite?.branches || []).flatMap((branch) =>
+        branch.components.map((component) => ({
+            ...component.extractionPath,
+            path: [branch.scopePath, component.extractionPath.path].filter(Boolean).join(".")
+        }))
+    );
+}
+
+/**
  * @param {Object} document
  * @param {import('../compiler/searchQueryPlan').SearchQueryPlan} plan
  * @returns {Object}
  */
 function normalizeDocumentDates(document, plan) {
     const normalized = cloneDocument(document);
-    for (const extractionPath of plan.extractionPaths) {
+    for (const extractionPath of getDocumentExtractionPaths(plan)) {
         if (!TEMPORAL_DATATYPES.has(extractionPath.datatype)) {
             continue;
         }

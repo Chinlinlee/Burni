@@ -1,4 +1,25 @@
 /**
+ * @typedef {Object} SearchParameterComponent
+ * @property {string} definition
+ * @property {string} [expression]
+ */
+
+/**
+ * @typedef {Object} SearchParameterComponentDefinition
+ * @property {number} index
+ * @property {string} definitionKey
+ * @property {string} definitionUrl
+ * @property {string} code
+ * @property {string} searchType
+ * @property {string} expression
+ * @property {string[]} comparators
+ * @property {string[]} modifiers
+ * @property {boolean} multipleOr
+ * @property {boolean} multipleAnd
+ * @property {string[]} targets
+ */
+
+/**
  * @typedef {Object} SearchParameterResource
  * @property {string} resourceType
  * @property {string} [id]
@@ -16,7 +37,7 @@
  * @property {string[]} [modifier]
  * @property {boolean} [multipleOr]
  * @property {boolean} [multipleAnd]
- * @property {Object[]} [component]
+ * @property {SearchParameterComponent[]} [component]
  */
 
 /**

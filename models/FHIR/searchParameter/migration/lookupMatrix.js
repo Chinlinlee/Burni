@@ -22,7 +22,7 @@ function classifyLookup(definition, lookupKey, snapshot) {
     const disableReason = definition.disableReason || "";
     const lookupPlan = definition.lookupPlans?.[lookupKey];
 
-    if (type === "composite" || type === "special") {
+    if (type === "special") {
         return { outcome: "unsupported", reason: `Unsupported SearchParameter type: ${type}` };
     }
     if (!definition.resource.expression) {

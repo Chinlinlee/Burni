@@ -139,6 +139,110 @@ function attachPlanMetadata(resource, extractionPaths, searchType) {
     };
 }
 
+/**
+ * @param {import('./searchQueryPlan').CompositeRootBranch} branch
+ * @returns {import('./extractionPathCompiler').ExtractionPath}
+ */
+function buildCompositeRootExtractionPath(branch) {
+    const fields = branch.components.map((entry) => entry.extractionPath.path);
+    if (branch.correlationMode === "array-element") {
+        return {
+            path: branch.scopePath,
+            datatype: "BackboneElement",
+            correlation: {
+                kind: "same-array-element",
+                parentPath: branch.scopePath,
+                fields
+            }
+        };
+    }
+
+    return {
+        path: branch.scopePath || branch.branchId || "",
+        datatype: "BackboneElement",
+        correlation: undefined
+    };
+}
+
+/**
+ * @param {import('./searchQueryPlan').CompositeRootBranch[]} branches
+ * @returns {import('./extractionPathCompiler').ExtractionPath[]}
+ */
+function buildCompositeRootExtractionPaths(branches) {
+    return branches.map(buildCompositeRootExtractionPath).filter((entry) => entry.path || entry.correlation);
+}
+
+/**
+ * @param {import('./searchQueryPlan').CompositeRootBranch[]} branches
+ * @returns {string[]}
+ */
+function deriveCompositeRequiredIndexes(branches) {
+    const indexes = [];
+    for (const branch of branches) {
+        const root = branch.scopePath.split(".")[0];
+        if (root && !indexes.includes(root)) {
+            indexes.push(root);
+        }
+    }
+    return indexes;
+}
+
+/**
+ * @param {import('./searchQueryPlan').CompositeRootBranch[]} branches
+ * @param {number} componentCount
+ * @returns {number}
+ */
+function estimateCompositeCost(branches, componentCount) {
+    const branchCount = Math.max(branches.length, 1);
+    const extractionBranchCount = branches.reduce((total, branch) => {
+        return (
+            total +
+            branch.components.reduce(
+                (componentTotal, component) => componentTotal + (component.extractionPath.path.includes(".") ? 2 : 1),
+                0
+            )
+        );
+    }, 0);
+    return Math.max(branchCount * componentCount, extractionBranchCount);
+}
+
+/**
+ * @param {Object} input
+ * @param {import('../registry/types').SearchParameterResource} input.resource
+ * @param {import('./searchQueryPlan').CompositeComponentDefinition[]} input.compositeComponents
+ * @param {import('./searchQueryPlan').CompositeComponentSummary[]} input.componentSummaries
+ * @param {import('./searchQueryPlan').CompositeRootBranch[]} input.branches
+ * @returns {{
+ *   extractionPaths: import('./extractionPathCompiler').ExtractionPath[],
+ *   components: import('./searchQueryPlan').CompositeComponentSummary[],
+ *   composite: import('./searchQueryPlan').CompositePlanMetadata,
+ *   estimatedCost: number,
+ *   requiredIndexes: string[]
+ * }}
+ */
+function attachCompositePlanMetadata(input) {
+    const extractionPaths = buildCompositeRootExtractionPaths(input.branches);
+    return {
+        extractionPaths,
+        components: input.componentSummaries,
+        composite: {
+            components: input.compositeComponents.map((component) => ({
+                index: component.index,
+                definitionKey: component.definitionKey,
+                code: component.code,
+                searchType: component.searchType,
+                comparators: component.comparators,
+                modifiers: component.modifiers,
+                multipleOr: component.multipleOr,
+                multipleAnd: component.multipleAnd
+            })),
+            branches: input.branches
+        },
+        estimatedCost: estimateCompositeCost(input.branches, input.compositeComponents.length),
+        requiredIndexes: deriveCompositeRequiredIndexes(input.branches)
+    };
+}
+
 module.exports = {
     REFERENCE_VALUE_FORMS,
     UNSUPPORTED_REFERENCE_VALUE_FORMS,
@@ -146,5 +250,10 @@ module.exports = {
     attachPathCorrelation,
     deriveTargets,
     deriveSupportedValueForms,
-    attachPlanMetadata
+    attachPlanMetadata,
+    buildCompositeRootExtractionPath,
+    buildCompositeRootExtractionPaths,
+    deriveCompositeRequiredIndexes,
+    estimateCompositeCost,
+    attachCompositePlanMetadata
 };

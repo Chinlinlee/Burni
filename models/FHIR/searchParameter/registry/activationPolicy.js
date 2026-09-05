@@ -1,6 +1,6 @@
 const { createDiagnostic } = require("./diagnostics");
 
-const UNSUPPORTED_TYPES = new Set(["composite", "special"]);
+const UNSUPPORTED_TYPES = new Set(["special"]);
 
 /**
  * @param {import('./types').SearchParameterDefinition} definition

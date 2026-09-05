@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-09-05T08:12:32.748Z",
+  "generatedAt": "2026-09-05T09:38:12.913Z",
   "resources": {
     "Account": {
       "identifier": {
@@ -203,6 +203,46 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "useContext.valueQuantity"
+        }
+      },
+      "context-type-quantity": {
+        "status": "defined",
+        "hash": "636d1aeef71319e01e0d07496e1b50a64e5086cbc3c16ea8088a0aa9542af2cc",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context-type-quantity": "urn:burni:hit-set|context-type-quantity-context-type-value$10"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext"
+        }
+      },
+      "context-type-value": {
+        "status": "defined",
+        "hash": "5af72fbc2aa2292996faa3251a2facd430631e0cfe2034e408ee1b4861bace73",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context-type-value": "urn:burni:hit-set|context-type-value-context-type-value$urn:burni:hit-set|context-type-value-context-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext"
         }
       },
       "context-type": {
@@ -2489,6 +2529,46 @@
           "extractionPath": "useContext.valueQuantity"
         }
       },
+      "context-type-quantity": {
+        "status": "defined",
+        "hash": "636d1aeef71319e01e0d07496e1b50a64e5086cbc3c16ea8088a0aa9542af2cc",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context-type-quantity": "urn:burni:hit-set|context-type-quantity-context-type-value$10"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext"
+        }
+      },
+      "context-type-value": {
+        "status": "defined",
+        "hash": "5af72fbc2aa2292996faa3251a2facd430631e0cfe2034e408ee1b4861bace73",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context-type-value": "urn:burni:hit-set|context-type-value-context-type-value$urn:burni:hit-set|context-type-value-context-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext"
+        }
+      },
       "context-type": {
         "status": "defined",
         "hash": "84a2741b43d71bb23c986b70f70e6d5133d0c775ca4bfd3a86ced404e820ba27",
@@ -3635,6 +3715,46 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "useContext.valueQuantity"
+        }
+      },
+      "context-type-quantity": {
+        "status": "defined",
+        "hash": "636d1aeef71319e01e0d07496e1b50a64e5086cbc3c16ea8088a0aa9542af2cc",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context-type-quantity": "urn:burni:hit-set|context-type-quantity-context-type-value$10"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext"
+        }
+      },
+      "context-type-value": {
+        "status": "defined",
+        "hash": "5af72fbc2aa2292996faa3251a2facd430631e0cfe2034e408ee1b4861bace73",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context-type-value": "urn:burni:hit-set|context-type-value-context-type-value$urn:burni:hit-set|context-type-value-context-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext"
         }
       },
       "context-type": {
@@ -4825,6 +4945,46 @@
           "extractionPath": "useContext.valueQuantity"
         }
       },
+      "context-type-quantity": {
+        "status": "defined",
+        "hash": "636d1aeef71319e01e0d07496e1b50a64e5086cbc3c16ea8088a0aa9542af2cc",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context-type-quantity": "urn:burni:hit-set|context-type-quantity-context-type-value$10"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext"
+        }
+      },
+      "context-type-value": {
+        "status": "defined",
+        "hash": "5af72fbc2aa2292996faa3251a2facd430631e0cfe2034e408ee1b4861bace73",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context-type-value": "urn:burni:hit-set|context-type-value-context-type-value$urn:burni:hit-set|context-type-value-context-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext"
+        }
+      },
       "context-type": {
         "status": "defined",
         "hash": "84a2741b43d71bb23c986b70f70e6d5133d0c775ca4bfd3a86ced404e820ba27",
@@ -5751,6 +5911,46 @@
           "extractionPath": "useContext.valueQuantity"
         }
       },
+      "context-type-quantity": {
+        "status": "defined",
+        "hash": "636d1aeef71319e01e0d07496e1b50a64e5086cbc3c16ea8088a0aa9542af2cc",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context-type-quantity": "urn:burni:hit-set|context-type-quantity-context-type-value$10"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext"
+        }
+      },
+      "context-type-value": {
+        "status": "defined",
+        "hash": "5af72fbc2aa2292996faa3251a2facd430631e0cfe2034e408ee1b4861bace73",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context-type-value": "urn:burni:hit-set|context-type-value-context-type-value$urn:burni:hit-set|context-type-value-context-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext"
+        }
+      },
       "context-type": {
         "status": "defined",
         "hash": "84a2741b43d71bb23c986b70f70e6d5133d0c775ca4bfd3a86ced404e820ba27",
@@ -6513,6 +6713,46 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "useContext.valueQuantity"
+        }
+      },
+      "context-type-quantity": {
+        "status": "defined",
+        "hash": "636d1aeef71319e01e0d07496e1b50a64e5086cbc3c16ea8088a0aa9542af2cc",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context-type-quantity": "urn:burni:hit-set|context-type-quantity-context-type-value$10"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext"
+        }
+      },
+      "context-type-value": {
+        "status": "defined",
+        "hash": "5af72fbc2aa2292996faa3251a2facd430631e0cfe2034e408ee1b4861bace73",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context-type-value": "urn:burni:hit-set|context-type-value-context-type-value$urn:burni:hit-set|context-type-value-context-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext"
         }
       },
       "context-type": {
@@ -10287,6 +10527,46 @@
           "extractionPath": "useContext.valueQuantity"
         }
       },
+      "context-type-quantity": {
+        "status": "defined",
+        "hash": "636d1aeef71319e01e0d07496e1b50a64e5086cbc3c16ea8088a0aa9542af2cc",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context-type-quantity": "urn:burni:hit-set|context-type-quantity-context-type-value$10"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext"
+        }
+      },
+      "context-type-value": {
+        "status": "defined",
+        "hash": "5af72fbc2aa2292996faa3251a2facd430631e0cfe2034e408ee1b4861bace73",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context-type-value": "urn:burni:hit-set|context-type-value-context-type-value$urn:burni:hit-set|context-type-value-context-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext"
+        }
+      },
       "context-type": {
         "status": "defined",
         "hash": "84a2741b43d71bb23c986b70f70e6d5133d0c775ca4bfd3a86ced404e820ba27",
@@ -11499,6 +11779,46 @@
           "extractionPath": "useContext.valueQuantity"
         }
       },
+      "context-type-quantity": {
+        "status": "defined",
+        "hash": "636d1aeef71319e01e0d07496e1b50a64e5086cbc3c16ea8088a0aa9542af2cc",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context-type-quantity": "urn:burni:hit-set|context-type-quantity-context-type-value$10"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext"
+        }
+      },
+      "context-type-value": {
+        "status": "defined",
+        "hash": "5af72fbc2aa2292996faa3251a2facd430631e0cfe2034e408ee1b4861bace73",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context-type-value": "urn:burni:hit-set|context-type-value-context-type-value$urn:burni:hit-set|context-type-value-context-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext"
+        }
+      },
       "context-type": {
         "status": "defined",
         "hash": "84a2741b43d71bb23c986b70f70e6d5133d0c775ca4bfd3a86ced404e820ba27",
@@ -11899,6 +12219,46 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "useContext.valueQuantity"
+        }
+      },
+      "context-type-quantity": {
+        "status": "defined",
+        "hash": "636d1aeef71319e01e0d07496e1b50a64e5086cbc3c16ea8088a0aa9542af2cc",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context-type-quantity": "urn:burni:hit-set|context-type-quantity-context-type-value$10"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext"
+        }
+      },
+      "context-type-value": {
+        "status": "defined",
+        "hash": "5af72fbc2aa2292996faa3251a2facd430631e0cfe2034e408ee1b4861bace73",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context-type-value": "urn:burni:hit-set|context-type-value-context-type-value$urn:burni:hit-set|context-type-value-context-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext"
         }
       },
       "context-type": {
@@ -12303,6 +12663,46 @@
           "extractionPath": "useContext.valueQuantity"
         }
       },
+      "context-type-quantity": {
+        "status": "defined",
+        "hash": "636d1aeef71319e01e0d07496e1b50a64e5086cbc3c16ea8088a0aa9542af2cc",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context-type-quantity": "urn:burni:hit-set|context-type-quantity-context-type-value$10"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext"
+        }
+      },
+      "context-type-value": {
+        "status": "defined",
+        "hash": "5af72fbc2aa2292996faa3251a2facd430631e0cfe2034e408ee1b4861bace73",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context-type-value": "urn:burni:hit-set|context-type-value-context-type-value$urn:burni:hit-set|context-type-value-context-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext"
+        }
+      },
       "context-type": {
         "status": "defined",
         "hash": "84a2741b43d71bb23c986b70f70e6d5133d0c775ca4bfd3a86ced404e820ba27",
@@ -12683,6 +13083,46 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "useContext.valueQuantity"
+        }
+      },
+      "context-type-quantity": {
+        "status": "defined",
+        "hash": "636d1aeef71319e01e0d07496e1b50a64e5086cbc3c16ea8088a0aa9542af2cc",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context-type-quantity": "urn:burni:hit-set|context-type-quantity-context-type-value$10"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext"
+        }
+      },
+      "context-type-value": {
+        "status": "defined",
+        "hash": "5af72fbc2aa2292996faa3251a2facd430631e0cfe2034e408ee1b4861bace73",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context-type-value": "urn:burni:hit-set|context-type-value-context-type-value$urn:burni:hit-set|context-type-value-context-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext"
         }
       },
       "context-type": {
@@ -13715,6 +14155,46 @@
           "extractionPath": "useContext.valueQuantity"
         }
       },
+      "context-type-quantity": {
+        "status": "defined",
+        "hash": "636d1aeef71319e01e0d07496e1b50a64e5086cbc3c16ea8088a0aa9542af2cc",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context-type-quantity": "urn:burni:hit-set|context-type-quantity-context-type-value$10"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext"
+        }
+      },
+      "context-type-value": {
+        "status": "defined",
+        "hash": "5af72fbc2aa2292996faa3251a2facd430631e0cfe2034e408ee1b4861bace73",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context-type-value": "urn:burni:hit-set|context-type-value-context-type-value$urn:burni:hit-set|context-type-value-context-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext"
+        }
+      },
       "context-type": {
         "status": "defined",
         "hash": "84a2741b43d71bb23c986b70f70e6d5133d0c775ca4bfd3a86ced404e820ba27",
@@ -13955,6 +14435,26 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "actual"
+        }
+      },
+      "characteristic-value": {
+        "status": "defined",
+        "hash": "a708108c08879fb93b763e4d18245667e8b373144ebfc5a1bf00b54eb93f2abd",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "characteristic-value": "urn:burni:hit-set|characteristic-value-characteristic-value$urn:burni:hit-set|characteristic-value-value-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "characteristic"
         }
       },
       "characteristic": {
@@ -15431,6 +15931,46 @@
           "extractionPath": "useContext.valueQuantity"
         }
       },
+      "context-type-quantity": {
+        "status": "defined",
+        "hash": "636d1aeef71319e01e0d07496e1b50a64e5086cbc3c16ea8088a0aa9542af2cc",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context-type-quantity": "urn:burni:hit-set|context-type-quantity-context-type-value$10"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext"
+        }
+      },
+      "context-type-value": {
+        "status": "defined",
+        "hash": "5af72fbc2aa2292996faa3251a2facd430631e0cfe2034e408ee1b4861bace73",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context-type-value": "urn:burni:hit-set|context-type-value-context-type-value$urn:burni:hit-set|context-type-value-context-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext"
+        }
+      },
       "context-type": {
         "status": "defined",
         "hash": "84a2741b43d71bb23c986b70f70e6d5133d0c775ca4bfd3a86ced404e820ba27",
@@ -16335,6 +16875,46 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "useContext.valueQuantity"
+        }
+      },
+      "context-type-quantity": {
+        "status": "defined",
+        "hash": "636d1aeef71319e01e0d07496e1b50a64e5086cbc3c16ea8088a0aa9542af2cc",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context-type-quantity": "urn:burni:hit-set|context-type-quantity-context-type-value$10"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext"
+        }
+      },
+      "context-type-value": {
+        "status": "defined",
+        "hash": "5af72fbc2aa2292996faa3251a2facd430631e0cfe2034e408ee1b4861bace73",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context-type-value": "urn:burni:hit-set|context-type-value-context-type-value$urn:burni:hit-set|context-type-value-context-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext"
         }
       },
       "context-type": {
@@ -17343,6 +17923,46 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "useContext.valueQuantity"
+        }
+      },
+      "context-type-quantity": {
+        "status": "defined",
+        "hash": "636d1aeef71319e01e0d07496e1b50a64e5086cbc3c16ea8088a0aa9542af2cc",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context-type-quantity": "urn:burni:hit-set|context-type-quantity-context-type-value$10"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext"
+        }
+      },
+      "context-type-value": {
+        "status": "defined",
+        "hash": "5af72fbc2aa2292996faa3251a2facd430631e0cfe2034e408ee1b4861bace73",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context-type-value": "urn:burni:hit-set|context-type-value-context-type-value$urn:burni:hit-set|context-type-value-context-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext"
         }
       },
       "context-type": {
@@ -20079,6 +20699,46 @@
           "extractionPath": "useContext.valueQuantity"
         }
       },
+      "context-type-quantity": {
+        "status": "defined",
+        "hash": "636d1aeef71319e01e0d07496e1b50a64e5086cbc3c16ea8088a0aa9542af2cc",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context-type-quantity": "urn:burni:hit-set|context-type-quantity-context-type-value$10"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext"
+        }
+      },
+      "context-type-value": {
+        "status": "defined",
+        "hash": "5af72fbc2aa2292996faa3251a2facd430631e0cfe2034e408ee1b4861bace73",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context-type-value": "urn:burni:hit-set|context-type-value-context-type-value$urn:burni:hit-set|context-type-value-context-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext"
+        }
+      },
       "context-type": {
         "status": "defined",
         "hash": "84a2741b43d71bb23c986b70f70e6d5133d0c775ca4bfd3a86ced404e820ba27",
@@ -20683,6 +21343,26 @@
       }
     },
     "MolecularSequence": {
+      "chromosome-window-coordinate": {
+        "status": "defined",
+        "hash": "38c5d6f30e2498103c3bf1e2b104ef0104b736bce39bef92a5e46d186d752ae8",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "chromosome-window-coordinate": "urn:burni:hit-set|chromosome-window-coordinate-chromosome-value$42$42"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "referenceSeq"
+        }
+      },
       "chromosome": {
         "status": "defined",
         "hash": "1e2a94ac7148c97857694c8ee035d99cec9d4bd036b19d5101ee908db5ad53c5",
@@ -20741,6 +21421,26 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "patient"
+        }
+      },
+      "referenceseqid-window-coordinate": {
+        "status": "defined",
+        "hash": "9ca0301ec7517003ccb0fdf7e3f7a01b264b76ca7bc0fbb2557e91eb9f257965",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "referenceseqid-window-coordinate": "urn:burni:hit-set|referenceseqid-window-coordinate-referenceseqid-value$42$42"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "referenceSeq"
         }
       },
       "referenceseqid": {
@@ -20883,6 +21583,46 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "useContext.valueQuantity"
+        }
+      },
+      "context-type-quantity": {
+        "status": "defined",
+        "hash": "636d1aeef71319e01e0d07496e1b50a64e5086cbc3c16ea8088a0aa9542af2cc",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context-type-quantity": "urn:burni:hit-set|context-type-quantity-context-type-value$10"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext"
+        }
+      },
+      "context-type-value": {
+        "status": "defined",
+        "hash": "5af72fbc2aa2292996faa3251a2facd430631e0cfe2034e408ee1b4861bace73",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context-type-value": "urn:burni:hit-set|context-type-value-context-type-value$urn:burni:hit-set|context-type-value-context-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext"
         }
       },
       "context-type": {
@@ -21589,6 +22329,126 @@
           "extractionPath": "category"
         }
       },
+      "code-value-concept": {
+        "status": "defined",
+        "hash": "2790482937163add2dadb12e17472bc3759b3cb6bd4fee79ec3a865dec0e23c9",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "code-value-concept": "urn:burni:hit-set|code-value-concept-code-value$urn:burni:hit-set|code-value-concept-value-concept-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "Observation"
+        }
+      },
+      "code-value-date": {
+        "status": "defined",
+        "hash": "201f41e975ad1ba35862b319efba94c9bef2fe50003d3cf3338c59b9002f4788",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "code-value-date": "urn:burni:hit-set|code-value-date-code-value$2000-01-01"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "Observation"
+        }
+      },
+      "code-value-quantity": {
+        "status": "defined",
+        "hash": "3748591ed41bbc877ce1bae5adbbe40ba3debe3fd38857917b828a0fd6fbe499",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "code-value-quantity": "urn:burni:hit-set|code-value-quantity-code-value$10"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "Observation"
+        }
+      },
+      "code-value-string": {
+        "status": "defined",
+        "hash": "e784379ada316b1dfcd55b057cde467773e857a2e9447479f25ebe6558aaecf1",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "code-value-string": "urn:burni:hit-set|code-value-string-code-value$hit-set-code-value-string-value-string"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "Observation"
+        }
+      },
+      "combo-code-value-concept": {
+        "status": "defined",
+        "hash": "d2d0489202ac2eb98093db2f6331ee2bfe6a1af60ffbf679c12730d4c6d684c8",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "combo-code-value-concept": "urn:burni:hit-set|combo-code-value-concept-combo-code-value$urn:burni:hit-set|combo-code-value-concept-combo-value-concept-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "Observation"
+        }
+      },
+      "combo-code-value-quantity": {
+        "status": "defined",
+        "hash": "811c0956af26287af88e13deb15fcffd940fd30e3a1e362f43616cc62f0b4dc8",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "combo-code-value-quantity": "urn:burni:hit-set|combo-code-value-quantity-combo-code-value$10"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "Observation"
+        }
+      },
       "combo-code": {
         "status": "defined",
         "hash": "d2f361e899fc058730361d48fec26580dc5eac3300443a443bcf8697ddac8d5b",
@@ -21667,6 +22527,46 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "valueQuantity"
+        }
+      },
+      "component-code-value-concept": {
+        "status": "defined",
+        "hash": "7f3a1893c2d3ea63318992650fe6ad27e3de83785577fd96857d6b338ff106b7",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "component-code-value-concept": "urn:burni:hit-set|component-code-value-concept-component-code-value$urn:burni:hit-set|component-code-value-concept-component-value-concept-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "component"
+        }
+      },
+      "component-code-value-quantity": {
+        "status": "defined",
+        "hash": "07c306b27eb827e9cb2c032ae5d7c9f508a9c852def3a743e6341028df7ac17a",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "component-code-value-quantity": "urn:burni:hit-set|component-code-value-quantity-component-code-value$10"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "component"
         }
       },
       "component-code": {
@@ -22069,6 +22969,46 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "useContext.valueQuantity"
+        }
+      },
+      "context-type-quantity": {
+        "status": "defined",
+        "hash": "636d1aeef71319e01e0d07496e1b50a64e5086cbc3c16ea8088a0aa9542af2cc",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context-type-quantity": "urn:burni:hit-set|context-type-quantity-context-type-value$10"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext"
+        }
+      },
+      "context-type-value": {
+        "status": "defined",
+        "hash": "5af72fbc2aa2292996faa3251a2facd430631e0cfe2034e408ee1b4861bace73",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context-type-value": "urn:burni:hit-set|context-type-value-context-type-value$urn:burni:hit-set|context-type-value-context-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext"
         }
       },
       "context-type": {
@@ -24093,6 +25033,46 @@
           "extractionPath": "useContext.valueQuantity"
         }
       },
+      "context-type-quantity": {
+        "status": "defined",
+        "hash": "636d1aeef71319e01e0d07496e1b50a64e5086cbc3c16ea8088a0aa9542af2cc",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context-type-quantity": "urn:burni:hit-set|context-type-quantity-context-type-value$10"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext"
+        }
+      },
+      "context-type-value": {
+        "status": "defined",
+        "hash": "5af72fbc2aa2292996faa3251a2facd430631e0cfe2034e408ee1b4861bace73",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context-type-value": "urn:burni:hit-set|context-type-value-context-type-value$urn:burni:hit-set|context-type-value-context-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext"
+        }
+      },
       "context-type": {
         "status": "defined",
         "hash": "84a2741b43d71bb23c986b70f70e6d5133d0c775ca4bfd3a86ced404e820ba27",
@@ -25623,6 +26603,46 @@
           "extractionPath": "useContext.valueQuantity"
         }
       },
+      "context-type-quantity": {
+        "status": "defined",
+        "hash": "636d1aeef71319e01e0d07496e1b50a64e5086cbc3c16ea8088a0aa9542af2cc",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context-type-quantity": "urn:burni:hit-set|context-type-quantity-context-type-value$10"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext"
+        }
+      },
+      "context-type-value": {
+        "status": "defined",
+        "hash": "5af72fbc2aa2292996faa3251a2facd430631e0cfe2034e408ee1b4861bace73",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context-type-value": "urn:burni:hit-set|context-type-value-context-type-value$urn:burni:hit-set|context-type-value-context-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext"
+        }
+      },
       "context-type": {
         "status": "defined",
         "hash": "84a2741b43d71bb23c986b70f70e6d5133d0c775ca4bfd3a86ced404e820ba27",
@@ -26811,6 +27831,46 @@
           "extractionPath": "useContext.valueQuantity"
         }
       },
+      "context-type-quantity": {
+        "status": "defined",
+        "hash": "636d1aeef71319e01e0d07496e1b50a64e5086cbc3c16ea8088a0aa9542af2cc",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context-type-quantity": "urn:burni:hit-set|context-type-quantity-context-type-value$10"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext"
+        }
+      },
+      "context-type-value": {
+        "status": "defined",
+        "hash": "5af72fbc2aa2292996faa3251a2facd430631e0cfe2034e408ee1b4861bace73",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context-type-value": "urn:burni:hit-set|context-type-value-context-type-value$urn:burni:hit-set|context-type-value-context-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext"
+        }
+      },
       "context-type": {
         "status": "defined",
         "hash": "84a2741b43d71bb23c986b70f70e6d5133d0c775ca4bfd3a86ced404e820ba27",
@@ -27211,6 +28271,46 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "useContext.valueQuantity"
+        }
+      },
+      "context-type-quantity": {
+        "status": "defined",
+        "hash": "636d1aeef71319e01e0d07496e1b50a64e5086cbc3c16ea8088a0aa9542af2cc",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context-type-quantity": "urn:burni:hit-set|context-type-quantity-context-type-value$10"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext"
+        }
+      },
+      "context-type-value": {
+        "status": "defined",
+        "hash": "5af72fbc2aa2292996faa3251a2facd430631e0cfe2034e408ee1b4861bace73",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context-type-value": "urn:burni:hit-set|context-type-value-context-type-value$urn:burni:hit-set|context-type-value-context-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext"
         }
       },
       "context-type": {
@@ -28161,6 +29261,46 @@
           "extractionPath": "useContext.valueQuantity"
         }
       },
+      "context-type-quantity": {
+        "status": "defined",
+        "hash": "636d1aeef71319e01e0d07496e1b50a64e5086cbc3c16ea8088a0aa9542af2cc",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context-type-quantity": "urn:burni:hit-set|context-type-quantity-context-type-value$10"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext"
+        }
+      },
+      "context-type-value": {
+        "status": "defined",
+        "hash": "5af72fbc2aa2292996faa3251a2facd430631e0cfe2034e408ee1b4861bace73",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context-type-value": "urn:burni:hit-set|context-type-value-context-type-value$urn:burni:hit-set|context-type-value-context-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext"
+        }
+      },
       "context-type": {
         "status": "defined",
         "hash": "84a2741b43d71bb23c986b70f70e6d5133d0c775ca4bfd3a86ced404e820ba27",
@@ -28583,6 +29723,46 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "useContext.valueQuantity"
+        }
+      },
+      "context-type-quantity": {
+        "status": "defined",
+        "hash": "636d1aeef71319e01e0d07496e1b50a64e5086cbc3c16ea8088a0aa9542af2cc",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context-type-quantity": "urn:burni:hit-set|context-type-quantity-context-type-value$10"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext"
+        }
+      },
+      "context-type-value": {
+        "status": "defined",
+        "hash": "5af72fbc2aa2292996faa3251a2facd430631e0cfe2034e408ee1b4861bace73",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context-type-value": "urn:burni:hit-set|context-type-value-context-type-value$urn:burni:hit-set|context-type-value-context-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext"
         }
       },
       "context-type": {
@@ -29815,6 +30995,46 @@
           "extractionPath": "useContext.valueQuantity"
         }
       },
+      "context-type-quantity": {
+        "status": "defined",
+        "hash": "636d1aeef71319e01e0d07496e1b50a64e5086cbc3c16ea8088a0aa9542af2cc",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context-type-quantity": "urn:burni:hit-set|context-type-quantity-context-type-value$10"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext"
+        }
+      },
+      "context-type-value": {
+        "status": "defined",
+        "hash": "5af72fbc2aa2292996faa3251a2facd430631e0cfe2034e408ee1b4861bace73",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context-type-value": "urn:burni:hit-set|context-type-value-context-type-value$urn:burni:hit-set|context-type-value-context-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext"
+        }
+      },
       "context-type": {
         "status": "defined",
         "hash": "84a2741b43d71bb23c986b70f70e6d5133d0c775ca4bfd3a86ced404e820ba27",
@@ -30235,6 +31455,46 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "useContext.valueQuantity"
+        }
+      },
+      "context-type-quantity": {
+        "status": "defined",
+        "hash": "636d1aeef71319e01e0d07496e1b50a64e5086cbc3c16ea8088a0aa9542af2cc",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context-type-quantity": "urn:burni:hit-set|context-type-quantity-context-type-value$10"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext"
+        }
+      },
+      "context-type-value": {
+        "status": "defined",
+        "hash": "5af72fbc2aa2292996faa3251a2facd430631e0cfe2034e408ee1b4861bace73",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context-type-value": "urn:burni:hit-set|context-type-value-context-type-value$urn:burni:hit-set|context-type-value-context-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext"
         }
       },
       "context-type": {
@@ -31431,6 +32691,46 @@
           "extractionPath": "useContext.valueQuantity"
         }
       },
+      "context-type-quantity": {
+        "status": "defined",
+        "hash": "636d1aeef71319e01e0d07496e1b50a64e5086cbc3c16ea8088a0aa9542af2cc",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context-type-quantity": "urn:burni:hit-set|context-type-quantity-context-type-value$10"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext"
+        }
+      },
+      "context-type-value": {
+        "status": "defined",
+        "hash": "5af72fbc2aa2292996faa3251a2facd430631e0cfe2034e408ee1b4861bace73",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context-type-value": "urn:burni:hit-set|context-type-value-context-type-value$urn:burni:hit-set|context-type-value-context-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext"
+        }
+      },
       "context-type": {
         "status": "defined",
         "hash": "84a2741b43d71bb23c986b70f70e6d5133d0c775ca4bfd3a86ced404e820ba27",
@@ -31795,6 +33095,46 @@
           "extractionPath": "useContext.valueQuantity"
         }
       },
+      "context-type-quantity": {
+        "status": "defined",
+        "hash": "636d1aeef71319e01e0d07496e1b50a64e5086cbc3c16ea8088a0aa9542af2cc",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context-type-quantity": "urn:burni:hit-set|context-type-quantity-context-type-value$10"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext"
+        }
+      },
+      "context-type-value": {
+        "status": "defined",
+        "hash": "5af72fbc2aa2292996faa3251a2facd430631e0cfe2034e408ee1b4861bace73",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context-type-value": "urn:burni:hit-set|context-type-value-context-type-value$urn:burni:hit-set|context-type-value-context-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext"
+        }
+      },
       "context-type": {
         "status": "defined",
         "hash": "84a2741b43d71bb23c986b70f70e6d5133d0c775ca4bfd3a86ced404e820ba27",
@@ -32075,6 +33415,46 @@
         },
         "syntheticAugmentation": {
           "extractionPath": "useContext.valueQuantity"
+        }
+      },
+      "context-type-quantity": {
+        "status": "defined",
+        "hash": "636d1aeef71319e01e0d07496e1b50a64e5086cbc3c16ea8088a0aa9542af2cc",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context-type-quantity": "urn:burni:hit-set|context-type-quantity-context-type-value$10"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext"
+        }
+      },
+      "context-type-value": {
+        "status": "defined",
+        "hash": "5af72fbc2aa2292996faa3251a2facd430631e0cfe2034e408ee1b4861bace73",
+        "valueSource": "synthetic",
+        "positive": {
+          "query": {
+            "context-type-value": "urn:burni:hit-set|context-type-value-context-type-value$urn:burni:hit-set|context-type-value-context-value"
+          },
+          "expectDocument": "main"
+        },
+        "companionNegative": {
+          "expectDocument": "companion"
+        },
+        "missing": {
+          "applicable": true
+        },
+        "syntheticAugmentation": {
+          "extractionPath": "useContext"
         }
       },
       "context-type": {
@@ -32524,8 +33904,8 @@
     }
   },
   "summary": {
-    "compiledLookups": 1617,
-    "definedHitSets": 1617,
+    "compiledLookups": 1686,
+    "definedHitSets": 1686,
     "pendingHitSets": 0
   }
 }

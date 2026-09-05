@@ -92,8 +92,8 @@ describe("SearchParameter fixture archive", function () {
         });
 
         expect(manifest.source.bundleChecksum).to.match(/^[a-f0-9]{64}$/);
-        expect(manifest.summary.compiledLookups).to.equal(1617);
-        expect(manifest.summary.definedHitSets).to.equal(1617);
+        expect(manifest.summary.compiledLookups).to.equal(1686);
+        expect(manifest.summary.definedHitSets).to.equal(1686);
         expect(manifest.summary.pendingHitSets).to.equal(0);
         expect(manifest.resources.Patient.lookups.name.planHash).to.match(/^[a-f0-9]{64}$/);
         expect(manifest.resources.Patient.lookups.name.hitSet.status).to.equal("defined");

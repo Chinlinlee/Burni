@@ -58,8 +58,8 @@ describe("SearchParameter hit-set verification", function () {
     it("commits a hit-set artifact covering every compiled lookup", function () {
         expect(fs.existsSync(HIT_SETS_ARTIFACT)).to.equal(true);
         const artifact = loadHitSetArtifact();
-        expect(artifact.summary.compiledLookups).to.equal(1617);
-        expect(artifact.summary.definedHitSets).to.equal(1617);
+        expect(artifact.summary.compiledLookups).to.equal(1686);
+        expect(artifact.summary.definedHitSets).to.equal(1686);
         expect(artifact.summary.pendingHitSets).to.equal(0);
         const companionDir = path.join(ARCHIVE_ROOT, "companion");
         const companionFiles = fs.readdirSync(companionDir).filter((file) => file.endsWith(".json"));
@@ -158,20 +158,23 @@ describe("SearchParameter document hit-set gates", function () {
                     failures.push(`${lookupKey}: Mongo positive query unexpectedly matched main fixture`);
                 }
 
-                const presentMissingFilter = executeSearchQueryPlan(
-                    plan,
-                    "false",
-                    `${code}:missing`
-                );
-                const absentMissingFilter = executeSearchQueryPlan(
-                    plan,
-                    "true",
-                    `${code}:missing`
-                );
-                if (
-                    JSON.stringify(presentMissingFilter) === JSON.stringify(absentMissingFilter)
-                ) {
-                    failures.push(`${lookupKey}: Mongo missing=true/false filters are identical`);
+                if (plan.searchType !== "composite") {
+                    const presentMissingFilter = executeSearchQueryPlan(
+                        plan,
+                        "false",
+                        `${code}:missing`
+                    );
+                    const absentMissingFilter = executeSearchQueryPlan(
+                        plan,
+                        "true",
+                        `${code}:missing`
+                    );
+                    if (
+                        JSON.stringify(presentMissingFilter) ===
+                        JSON.stringify(absentMissingFilter)
+                    ) {
+                        failures.push(`${lookupKey}: Mongo missing=true/false filters are identical`);
+                    }
                 }
             }
 

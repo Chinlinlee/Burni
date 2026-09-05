@@ -408,6 +408,73 @@ function expandChoiceElementNames(typeMap, choiceBaseName) {
     });
 }
 
+/**
+ * @param {Object} contextMap
+ * @returns {boolean}
+ */
+function isStructuredTypeMapNode(contextMap) {
+    return Object.entries(contextMap || {}).some(([key, value]) => {
+        if (["type", "isArray", "isRequired", "ref"].includes(key)) {
+            return false;
+        }
+        return Boolean(value && typeof value === "object" && typeof value.type === "string");
+    });
+}
+
+/**
+ * Resolve a path against either a resource type map or a flat complex-type field map.
+ * @param {Object} contextMap
+ * @param {string} dotPath
+ * @returns {{ datatype: string | null, found: boolean, arrayPaths: string[] }}
+ */
+function resolveContextPathMetadata(contextMap, dotPath) {
+    if (!contextMap || typeof contextMap !== "object") {
+        return { datatype: null, found: false, arrayPaths: [] };
+    }
+
+    if (isStructuredTypeMapNode(contextMap)) {
+        return resolvePathMetadata(contextMap, dotPath);
+    }
+
+    const segments = dotPath.split(".").filter(Boolean);
+    if (segments.length === 0) {
+        return { datatype: null, found: false, arrayPaths: [] };
+    }
+
+    let currentMap = contextMap;
+    let currentDatatype = null;
+    const arrayPaths = [];
+
+    for (let index = 0; index < segments.length; index += 1) {
+        const segment = segments[index];
+        const fieldDatatype = currentMap[segment];
+        if (typeof fieldDatatype !== "string") {
+            const choiceFields = expandChoiceElementNames(currentMap, segment);
+            if (choiceFields.length > 0 && index === segments.length - 1) {
+                return {
+                    datatype: currentMap[choiceFields[0]] || null,
+                    found: true,
+                    arrayPaths
+                };
+            }
+            return { datatype: null, found: false, arrayPaths: [] };
+        }
+
+        currentDatatype = fieldDatatype;
+        if (index === segments.length - 1) {
+            return { datatype: currentDatatype, found: true, arrayPaths };
+        }
+
+        const nestedFields = getComplexTypeFields(currentDatatype);
+        if (!nestedFields) {
+            return { datatype: currentDatatype, found: true, arrayPaths };
+        }
+        currentMap = nestedFields;
+    }
+
+    return { datatype: null, found: false, arrayPaths: [] };
+}
+
 function clearResourceTypeMapCache() {
     cache.clear();
 }
@@ -422,6 +489,7 @@ module.exports = {
     resolvePathContextMap,
     resolvePathMetadata,
     resolvePathDatatype,
+    resolveContextPathMetadata,
     expandChoiceElementNames,
     clearResourceTypeMapCache
 };

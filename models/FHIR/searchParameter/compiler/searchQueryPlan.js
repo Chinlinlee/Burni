@@ -1,5 +1,5 @@
 /**
- * @typedef {'filter' | 'relation'} SearchQueryPlanKind
+ * @typedef {'filter' | 'relation' | 'composite'} SearchQueryPlanKind
  */
 
 /**
@@ -18,6 +18,48 @@
  * @property {string} inlinePath
  * @property {string} targetResourceType
  * @property {string} bundleTypePredicate
+ */
+
+/**
+ * @typedef {Object} CompositeComponentDefinition
+ * @property {number} index
+ * @property {string} definitionKey
+ * @property {string} definitionUrl
+ * @property {string} code
+ * @property {string} searchType
+ * @property {string} expression
+ * @property {string[]} comparators
+ * @property {string[]} modifiers
+ * @property {boolean} multipleOr
+ * @property {boolean} multipleAnd
+ * @property {string[]} targets
+ */
+
+/**
+ * @typedef {Object} CompositeComponentSummary
+ * @property {string} canonicalKey
+ * @property {string} searchType
+ * @property {string} expression
+ */
+
+/**
+ * @typedef {Object} CompositeBranchComponent
+ * @property {number} componentIndex
+ * @property {ExtractionPath} extractionPath
+ */
+
+/**
+ * @typedef {Object} CompositeRootBranch
+ * @property {string} [branchId]
+ * @property {'scalar' | 'array-element'} correlationMode
+ * @property {string} scopePath
+ * @property {CompositeBranchComponent[]} components
+ */
+
+/**
+ * @typedef {Object} CompositePlanMetadata
+ * @property {CompositeComponentDefinition[]} components
+ * @property {CompositeRootBranch[]} branches
  */
 
 /**
@@ -42,6 +84,9 @@
  * @property {number} estimatedCost
  * @property {string[]} requiredIndexes
  * @property {import('../registry/diagnostics').RegistryDiagnostic[]} diagnostics
+ * @property {number} [componentCount]
+ * @property {CompositeComponentSummary[]} [components]
+ * @property {CompositePlanMetadata} [composite]
  */
 
 /**
@@ -69,7 +114,10 @@ function createSearchQueryPlan(fields) {
         depth: fields.depth ?? 0,
         estimatedCost: fields.estimatedCost ?? 1,
         requiredIndexes: fields.requiredIndexes || [],
-        diagnostics: fields.diagnostics || []
+        diagnostics: fields.diagnostics || [],
+        ...(fields.componentCount !== undefined ? { componentCount: fields.componentCount } : {}),
+        ...(fields.components ? { components: fields.components } : {}),
+        ...(fields.composite ? { composite: fields.composite } : {})
     };
 }
 

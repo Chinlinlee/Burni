@@ -2,6 +2,7 @@ const { ensureRegistryLoaded } = require("../registry/registryManager");
 const { resolveLookupStatus, getEffectiveDefinition } = require("../registry/snapshot");
 const { applyPlanToQuery } = require("../executor/mongoExecutor");
 const { validateAndBuildFilter } = require("../executor/queryValueParser");
+const { validateAndBuildCompositeFilter } = require("../executor/compositeQueryExecutor");
 const { buildRelationPlan, buildRelationAggregation } = require("../executor/relationPlan");
 const { parseSearchParameterName } = require("./parameterName");
 const { InvalidSearchParameterValueError } = require("./searchParameterErrors");
@@ -65,7 +66,15 @@ async function tryApplyRegistryParameter(options) {
         return "handled";
     }
 
-    const filterResult = validateAndBuildFilter(plan, query[parameterName], parameterName);
+    const filterResult =
+        plan.searchType === "composite"
+            ? validateAndBuildCompositeFilter(
+                  plan,
+                  query[parameterName],
+                  parameterName,
+                  parsed.modifier
+              )
+            : validateAndBuildFilter(plan, query[parameterName], parameterName);
     if (!filterResult.valid) {
         throw new InvalidSearchParameterValueError(filterResult.reason || "Invalid search query");
     }

@@ -79,7 +79,7 @@ describe("SearchParameter diagnostics CI gate", function () {
     it("verifies committed lookup matrix and migration manifest artifacts without drift", function () {
         expect(gate.summary.manifestDriftValid).to.equal(true);
         expect(gate.matrix.lookupCount).to.equal(1697);
-        expect(gate.migrationManifest.summary.compiledLookups).to.equal(1617);
+        expect(gate.migrationManifest.summary.compiledLookups).to.equal(1686);
         expect(gate.migrationManifest.summary.pendingHitSets).to.equal(0);
     });
 });

@@ -301,6 +301,7 @@ module.exports = {
     MAX_QUERY_COST,
     normalizeTemporalQueryRange,
     parseTemporalQueryValue: temporalQuery.parseTemporalQueryValue,
+    parseValueToken,
     parseSearchValue,
     validateAndBuildFilter,
     buildFilterForValue,

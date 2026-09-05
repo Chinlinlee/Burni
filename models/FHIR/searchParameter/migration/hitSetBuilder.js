@@ -83,6 +83,9 @@ function matchesCondition(value, condition) {
         return value == null;
     }
     if (typeof condition !== "object" || Array.isArray(condition)) {
+        if (Array.isArray(value)) {
+            return value.some((entry) => matchesCondition(entry, condition));
+        }
         return value === condition;
     }
 
@@ -130,6 +133,9 @@ function matchesCondition(value, condition) {
         }
         return value.some((entry) => matchesObject(entry, condition.$elemMatch));
     }
+    if (Array.isArray(value)) {
+        return value.some((entry) => matchesCondition(entry, condition));
+    }
 
     if (typeof value === "object" && value != null && !Array.isArray(value)) {
         return matchesObject(value, condition);
@@ -144,8 +150,17 @@ function matchesCondition(value, condition) {
  * @returns {boolean}
  */
 function matchesObject(value, condition) {
+    if (condition.$and) {
+        return condition.$and.every((entry) => matchesObject(value, entry));
+    }
+    if (condition.$or) {
+        return condition.$or.some((entry) => matchesObject(value, entry));
+    }
+    if (condition.$nor) {
+        return !condition.$nor.some((entry) => matchesObject(value, entry));
+    }
     for (const [key, nested] of Object.entries(condition)) {
-        if (!matchesCondition(value[key], nested)) {
+        if (!matchesCondition(getDocumentValue(value, key), nested)) {
             return false;
         }
     }

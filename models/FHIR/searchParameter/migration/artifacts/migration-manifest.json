@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-09-05T08:12:33.422Z",
+  "generatedAt": "2026-09-05T09:38:13.563Z",
   "source": {
     "fhirVersion": "4.0.1",
     "sourceUrl": "https://hl7.org/fhir/R4/search-parameters.json",
@@ -401,40 +401,66 @@
         },
         "context-type-quantity": {
           "lookupKey": "ActivityDefinition::context-type-quantity",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/ActivityDefinition-context-type-quantity::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "Unsupported SearchParameter type: composite"
-          ],
+          "planHash": "f80979fea194c2f9c9df07f0d364876b17c6d683b3b5a0b876b46196574168ab",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "636d1aeef71319e01e0d07496e1b50a64e5086cbc3c16ea8088a0aa9542af2cc",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "context-type-quantity": "urn:burni:hit-set|context-type-quantity-context-type-value$10"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "useContext"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "compiled"
           }
         },
         "context-type-value": {
           "lookupKey": "ActivityDefinition::context-type-value",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/ActivityDefinition-context-type-value::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "Unsupported SearchParameter type: composite"
-          ],
+          "planHash": "70a01bbed5b0c819fc641b21bdacee69c5db1e44ef772b323ad0eeadc40913d0",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "5af72fbc2aa2292996faa3251a2facd430631e0cfe2034e408ee1b4861bace73",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "context-type-value": "urn:burni:hit-set|context-type-value-context-type-value$urn:burni:hit-set|context-type-value-context-value"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "useContext"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "compiled"
           }
         },
         "context-type": {
@@ -4487,40 +4513,66 @@
         },
         "context-type-quantity": {
           "lookupKey": "CapabilityStatement::context-type-quantity",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/conformance-context-type-quantity::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "Unsupported SearchParameter type: composite"
-          ],
+          "planHash": "e1dc2111497b9f6d4bb0364e9eab335c664819c7032438f10ce31fe005fd8c80",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "636d1aeef71319e01e0d07496e1b50a64e5086cbc3c16ea8088a0aa9542af2cc",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "context-type-quantity": "urn:burni:hit-set|context-type-quantity-context-type-value$10"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "useContext"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "compiled"
           }
         },
         "context-type-value": {
           "lookupKey": "CapabilityStatement::context-type-value",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/conformance-context-type-value::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "Unsupported SearchParameter type: composite"
-          ],
+          "planHash": "f76b6e16333b7136dd84aa195f0e73cfcfbfc8600180b025f3f9ac0e91cc86b4",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "5af72fbc2aa2292996faa3251a2facd430631e0cfe2034e408ee1b4861bace73",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "context-type-value": "urn:burni:hit-set|context-type-value-context-type-value$urn:burni:hit-set|context-type-value-context-value"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "useContext"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "compiled"
           }
         },
         "context-type": {
@@ -6478,6 +6530,18 @@
               "reason": "Compiled lookup context-quantity has no resolvable extraction path in official example"
             },
             {
+              "path": "useContext",
+              "field": "context-type-quantity",
+              "value": null,
+              "reason": "Compiled lookup context-type-quantity has no resolvable extraction path in official example"
+            },
+            {
+              "path": "useContext",
+              "field": "context-type-value",
+              "value": null,
+              "reason": "Compiled lookup context-type-value has no resolvable extraction path in official example"
+            },
+            {
               "path": "useContext.code",
               "field": "context-type",
               "value": null,
@@ -6582,40 +6646,66 @@
         },
         "context-type-quantity": {
           "lookupKey": "ChargeItemDefinition::context-type-quantity",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/ChargeItemDefinition-context-type-quantity::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "Unsupported SearchParameter type: composite"
-          ],
+          "planHash": "6d523537ed402149c027f5edc18cc8a268e6b192059d1e79713e45b14860a997",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "636d1aeef71319e01e0d07496e1b50a64e5086cbc3c16ea8088a0aa9542af2cc",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "context-type-quantity": "urn:burni:hit-set|context-type-quantity-context-type-value$10"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "useContext"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "compiled"
           }
         },
         "context-type-value": {
           "lookupKey": "ChargeItemDefinition::context-type-value",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/ChargeItemDefinition-context-type-value::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "Unsupported SearchParameter type: composite"
-          ],
+          "planHash": "8fab5135b8a2308beed3d3b4b844ccf99a09a9d0bd7dcfc0360f4618bb06d1a9",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "5af72fbc2aa2292996faa3251a2facd430631e0cfe2034e408ee1b4861bace73",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "context-type-value": "urn:burni:hit-set|context-type-value-context-type-value$urn:burni:hit-set|context-type-value-context-value"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "useContext"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "compiled"
           }
         },
         "context-type": {
@@ -8505,6 +8595,18 @@
               "reason": "Compiled lookup context-quantity has no resolvable extraction path in official example"
             },
             {
+              "path": "useContext",
+              "field": "context-type-quantity",
+              "value": null,
+              "reason": "Compiled lookup context-type-quantity has no resolvable extraction path in official example"
+            },
+            {
+              "path": "useContext",
+              "field": "context-type-value",
+              "value": null,
+              "reason": "Compiled lookup context-type-value has no resolvable extraction path in official example"
+            },
+            {
               "path": "useContext.code",
               "field": "context-type",
               "value": null,
@@ -8733,40 +8835,66 @@
         },
         "context-type-quantity": {
           "lookupKey": "CodeSystem::context-type-quantity",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/conformance-context-type-quantity::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "Unsupported SearchParameter type: composite"
-          ],
+          "planHash": "aaf53402f65e3a95fe61caeb8ee322b030c6a5d29176875b81fe264fbf28aaae",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "636d1aeef71319e01e0d07496e1b50a64e5086cbc3c16ea8088a0aa9542af2cc",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "context-type-quantity": "urn:burni:hit-set|context-type-quantity-context-type-value$10"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "useContext"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "compiled"
           }
         },
         "context-type-value": {
           "lookupKey": "CodeSystem::context-type-value",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/conformance-context-type-value::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "Unsupported SearchParameter type: composite"
-          ],
+          "planHash": "15be1f159ce91738ab08f93b369180aa810a9e1c02607ba0fe241d80639453d5",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "5af72fbc2aa2292996faa3251a2facd430631e0cfe2034e408ee1b4861bace73",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "context-type-value": "urn:burni:hit-set|context-type-value-context-type-value$urn:burni:hit-set|context-type-value-context-value"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "useContext"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "compiled"
           }
         },
         "context-type": {
@@ -10435,40 +10563,66 @@
         },
         "context-type-quantity": {
           "lookupKey": "CompartmentDefinition::context-type-quantity",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/conformance-context-type-quantity::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "Unsupported SearchParameter type: composite"
-          ],
+          "planHash": "2d0ee3f7d291b6e6c8b6154df5c53b921277bcfa048d9008423f29bb055d573d",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "636d1aeef71319e01e0d07496e1b50a64e5086cbc3c16ea8088a0aa9542af2cc",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "context-type-quantity": "urn:burni:hit-set|context-type-quantity-context-type-value$10"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "useContext"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "compiled"
           }
         },
         "context-type-value": {
           "lookupKey": "CompartmentDefinition::context-type-value",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/conformance-context-type-value::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "Unsupported SearchParameter type: composite"
-          ],
+          "planHash": "c5bdd2a2dd410790953fc45f408bd616ba8e7fdd0851bc1106dab4efe1261fe7",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "5af72fbc2aa2292996faa3251a2facd430631e0cfe2034e408ee1b4861bace73",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "context-type-value": "urn:burni:hit-set|context-type-value-context-type-value$urn:burni:hit-set|context-type-value-context-value"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "useContext"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "compiled"
           }
         },
         "context-type": {
@@ -11797,40 +11951,66 @@
         },
         "context-type-quantity": {
           "lookupKey": "ConceptMap::context-type-quantity",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/conformance-context-type-quantity::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "Unsupported SearchParameter type: composite"
-          ],
+          "planHash": "556f3d18fd0c205db27197d2657d38bcd2f94190dfdd960457eb70286294acfb",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "636d1aeef71319e01e0d07496e1b50a64e5086cbc3c16ea8088a0aa9542af2cc",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "context-type-quantity": "urn:burni:hit-set|context-type-quantity-context-type-value$10"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "useContext"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "compiled"
           }
         },
         "context-type-value": {
           "lookupKey": "ConceptMap::context-type-value",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/conformance-context-type-value::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "Unsupported SearchParameter type: composite"
-          ],
+          "planHash": "4c3007608a91650c8b624033bef24156b035a6d19e04505eba68c274fd6df432",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "5af72fbc2aa2292996faa3251a2facd430631e0cfe2034e408ee1b4861bace73",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "context-type-value": "urn:burni:hit-set|context-type-value-context-type-value$urn:burni:hit-set|context-type-value-context-value"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "useContext"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "compiled"
           }
         },
         "context-type": {
@@ -18534,13 +18714,13 @@
         },
         "relationship": {
           "lookupKey": "DocumentReference::relationship",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "disabled",
+          "reason": "No executable composite extraction branches for DocumentReference",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/DocumentReference-relationship::4.0.1",
           "planHash": null,
           "diagnostics": [
-            "Unsupported SearchParameter type: composite"
+            "No executable composite extraction branches for DocumentReference"
           ],
           "hitSet": {
             "status": "not-applicable",
@@ -18548,7 +18728,7 @@
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "disabled"
           }
         },
         "security-label": {
@@ -18701,6 +18881,18 @@
               "reason": "Compiled lookup context-quantity has no resolvable extraction path in official example"
             },
             {
+              "path": "useContext",
+              "field": "context-type-quantity",
+              "value": null,
+              "reason": "Compiled lookup context-type-quantity has no resolvable extraction path in official example"
+            },
+            {
+              "path": "useContext",
+              "field": "context-type-value",
+              "value": null,
+              "reason": "Compiled lookup context-type-value has no resolvable extraction path in official example"
+            },
+            {
               "path": "useContext.code",
               "field": "context-type",
               "value": null,
@@ -18823,40 +19015,66 @@
         },
         "context-type-quantity": {
           "lookupKey": "EffectEvidenceSynthesis::context-type-quantity",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/EffectEvidenceSynthesis-context-type-quantity::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "Unsupported SearchParameter type: composite"
-          ],
+          "planHash": "f49a8b206203528fc7bfd4d40dac95bf44447b48b3cd3125fde347a1519fe30c",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "636d1aeef71319e01e0d07496e1b50a64e5086cbc3c16ea8088a0aa9542af2cc",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "context-type-quantity": "urn:burni:hit-set|context-type-quantity-context-type-value$10"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "useContext"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "compiled"
           }
         },
         "context-type-value": {
           "lookupKey": "EffectEvidenceSynthesis::context-type-value",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/EffectEvidenceSynthesis-context-type-value::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "Unsupported SearchParameter type: composite"
-          ],
+          "planHash": "c770f41f8f27e7fa65d1719e8389b32d7787a94efac65c138bfc90784089be29",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "5af72fbc2aa2292996faa3251a2facd430631e0cfe2034e408ee1b4861bace73",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "context-type-value": "urn:burni:hit-set|context-type-value-context-type-value$urn:burni:hit-set|context-type-value-context-value"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "useContext"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "compiled"
           }
         },
         "context-type": {
@@ -20997,6 +21215,18 @@
               "reason": "Compiled lookup context-quantity has no resolvable extraction path in official example"
             },
             {
+              "path": "useContext",
+              "field": "context-type-quantity",
+              "value": null,
+              "reason": "Compiled lookup context-type-quantity has no resolvable extraction path in official example"
+            },
+            {
+              "path": "useContext",
+              "field": "context-type-value",
+              "value": null,
+              "reason": "Compiled lookup context-type-value has no resolvable extraction path in official example"
+            },
+            {
               "path": "useContext.code",
               "field": "context-type",
               "value": null,
@@ -21181,40 +21411,66 @@
         },
         "context-type-quantity": {
           "lookupKey": "EventDefinition::context-type-quantity",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/EventDefinition-context-type-quantity::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "Unsupported SearchParameter type: composite"
-          ],
+          "planHash": "ebee6aa88f88ee065f13f1c1a5c63118919c2120d79cdbadb3dac8890ca823eb",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "636d1aeef71319e01e0d07496e1b50a64e5086cbc3c16ea8088a0aa9542af2cc",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "context-type-quantity": "urn:burni:hit-set|context-type-quantity-context-type-value$10"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "useContext"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "compiled"
           }
         },
         "context-type-value": {
           "lookupKey": "EventDefinition::context-type-value",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/EventDefinition-context-type-value::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "Unsupported SearchParameter type: composite"
-          ],
+          "planHash": "e51f20ff9f2c5bdad7e13d27e3e6eef5e2d6f6d2838d5feda660df37434a7742",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "5af72fbc2aa2292996faa3251a2facd430631e0cfe2034e408ee1b4861bace73",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "context-type-value": "urn:burni:hit-set|context-type-value-context-type-value$urn:burni:hit-set|context-type-value-context-value"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "useContext"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "compiled"
           }
         },
         "context-type": {
@@ -21821,6 +22077,18 @@
               "reason": "Compiled lookup context-quantity has no resolvable extraction path in official example"
             },
             {
+              "path": "useContext",
+              "field": "context-type-quantity",
+              "value": null,
+              "reason": "Compiled lookup context-type-quantity has no resolvable extraction path in official example"
+            },
+            {
+              "path": "useContext",
+              "field": "context-type-value",
+              "value": null,
+              "reason": "Compiled lookup context-type-value has no resolvable extraction path in official example"
+            },
+            {
               "path": "useContext.code",
               "field": "context-type",
               "value": null,
@@ -22005,40 +22273,66 @@
         },
         "context-type-quantity": {
           "lookupKey": "Evidence::context-type-quantity",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/Evidence-context-type-quantity::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "Unsupported SearchParameter type: composite"
-          ],
+          "planHash": "cc2dcec5f9a55abfa3dac8a2a73fa960e4d6e4b0dc65f5d41b6296e56d6002f5",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "636d1aeef71319e01e0d07496e1b50a64e5086cbc3c16ea8088a0aa9542af2cc",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "context-type-quantity": "urn:burni:hit-set|context-type-quantity-context-type-value$10"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "useContext"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "compiled"
           }
         },
         "context-type-value": {
           "lookupKey": "Evidence::context-type-value",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/Evidence-context-type-value::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "Unsupported SearchParameter type: composite"
-          ],
+          "planHash": "adbdd0e08b20c69842915b0fe4477b5330b3a92784011c87c171147ff8e5b6b4",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "5af72fbc2aa2292996faa3251a2facd430631e0cfe2034e408ee1b4861bace73",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "context-type-value": "urn:burni:hit-set|context-type-value-context-type-value$urn:burni:hit-set|context-type-value-context-value"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "useContext"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "compiled"
           }
         },
         "context-type": {
@@ -22645,6 +22939,18 @@
               "reason": "Compiled lookup context-quantity has no resolvable extraction path in official example"
             },
             {
+              "path": "useContext",
+              "field": "context-type-quantity",
+              "value": null,
+              "reason": "Compiled lookup context-type-quantity has no resolvable extraction path in official example"
+            },
+            {
+              "path": "useContext",
+              "field": "context-type-value",
+              "value": null,
+              "reason": "Compiled lookup context-type-value has no resolvable extraction path in official example"
+            },
+            {
               "path": "useContext.code",
               "field": "context-type",
               "value": null,
@@ -22829,40 +23135,66 @@
         },
         "context-type-quantity": {
           "lookupKey": "EvidenceVariable::context-type-quantity",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/EvidenceVariable-context-type-quantity::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "Unsupported SearchParameter type: composite"
-          ],
+          "planHash": "ff6ea4af1fde06ba1a6c7097342577f14c3462add816b5b42533d5684ddec66a",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "636d1aeef71319e01e0d07496e1b50a64e5086cbc3c16ea8088a0aa9542af2cc",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "context-type-quantity": "urn:burni:hit-set|context-type-quantity-context-type-value$10"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "useContext"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "compiled"
           }
         },
         "context-type-value": {
           "lookupKey": "EvidenceVariable::context-type-value",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/EvidenceVariable-context-type-value::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "Unsupported SearchParameter type: composite"
-          ],
+          "planHash": "77fd04e3e7d5f39ea9a44fb9b8628d8853bc0fb2d5c3c918972e753b71e55d96",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "5af72fbc2aa2292996faa3251a2facd430631e0cfe2034e408ee1b4861bace73",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "context-type-value": "urn:burni:hit-set|context-type-value-context-type-value$urn:burni:hit-set|context-type-value-context-value"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "useContext"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "compiled"
           }
         },
         "context-type": {
@@ -23463,6 +23795,18 @@
               "reason": "Compiled lookup context-quantity has no resolvable extraction path in official example"
             },
             {
+              "path": "useContext",
+              "field": "context-type-quantity",
+              "value": null,
+              "reason": "Compiled lookup context-type-quantity has no resolvable extraction path in official example"
+            },
+            {
+              "path": "useContext",
+              "field": "context-type-value",
+              "value": null,
+              "reason": "Compiled lookup context-type-value has no resolvable extraction path in official example"
+            },
+            {
               "path": "useContext.code",
               "field": "context-type",
               "value": null,
@@ -23567,40 +23911,66 @@
         },
         "context-type-quantity": {
           "lookupKey": "ExampleScenario::context-type-quantity",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/ExampleScenario-context-type-quantity::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "Unsupported SearchParameter type: composite"
-          ],
+          "planHash": "5930cf8d5f9cdca333fc40056cd519a120fec81a4b95f7d11fa81966d4b99179",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "636d1aeef71319e01e0d07496e1b50a64e5086cbc3c16ea8088a0aa9542af2cc",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "context-type-quantity": "urn:burni:hit-set|context-type-quantity-context-type-value$10"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "useContext"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "compiled"
           }
         },
         "context-type-value": {
           "lookupKey": "ExampleScenario::context-type-value",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/ExampleScenario-context-type-value::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "Unsupported SearchParameter type: composite"
-          ],
+          "planHash": "df468cb162293b9f67faa6b2b7cd93b53449432e2387e74ecc7b1713e9090edc",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "5af72fbc2aa2292996faa3251a2facd430631e0cfe2034e408ee1b4861bace73",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "context-type-value": "urn:burni:hit-set|context-type-value-context-type-value$urn:burni:hit-set|context-type-value-context-value"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "useContext"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "compiled"
           }
         },
         "context-type": {
@@ -25377,6 +25747,18 @@
               "reason": "Compiled lookup context-quantity has no resolvable extraction path in official example"
             },
             {
+              "path": "useContext",
+              "field": "context-type-quantity",
+              "value": null,
+              "reason": "Compiled lookup context-type-quantity has no resolvable extraction path in official example"
+            },
+            {
+              "path": "useContext",
+              "field": "context-type-value",
+              "value": null,
+              "reason": "Compiled lookup context-type-value has no resolvable extraction path in official example"
+            },
+            {
               "path": "useContext.code",
               "field": "context-type",
               "value": null,
@@ -25451,40 +25833,66 @@
         },
         "context-type-quantity": {
           "lookupKey": "GraphDefinition::context-type-quantity",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/conformance-context-type-quantity::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "Unsupported SearchParameter type: composite"
-          ],
+          "planHash": "15f76b8983fbf9526aeb8bf82cac8b2a1089e9c9b87c411ea2b16bccd2e269d7",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "636d1aeef71319e01e0d07496e1b50a64e5086cbc3c16ea8088a0aa9542af2cc",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "context-type-quantity": "urn:burni:hit-set|context-type-quantity-context-type-value$10"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "useContext"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "compiled"
           }
         },
         "context-type-value": {
           "lookupKey": "GraphDefinition::context-type-value",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/conformance-context-type-value::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "Unsupported SearchParameter type: composite"
-          ],
+          "planHash": "520f183624c2cf8975c2e3794adeebda274f504a4192efe7ae2ddd3bd33ec0f4",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "5af72fbc2aa2292996faa3251a2facd430631e0cfe2034e408ee1b4861bace73",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "context-type-value": "urn:burni:hit-set|context-type-value-context-type-value$urn:burni:hit-set|context-type-value-context-value"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "useContext"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "compiled"
           }
         },
         "context-type": {
@@ -25923,21 +26331,34 @@
         },
         "characteristic-value": {
           "lookupKey": "Group::characteristic-value",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/Group-characteristic-value::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "Unsupported SearchParameter type: composite"
-          ],
+          "planHash": "a3fa8777e01b85061c91923ecbfdae34a99e563d0d7c6ca3e4b2464cccd764f1",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "a708108c08879fb93b763e4d18245667e8b373144ebfc5a1bf00b54eb93f2abd",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "characteristic-value": "urn:burni:hit-set|characteristic-value-characteristic-value$urn:burni:hit-set|characteristic-value-value-value"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "characteristic"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "compiled"
           }
         },
         "characteristic": {
@@ -28527,6 +28948,18 @@
               "reason": "Compiled lookup context-quantity has no resolvable extraction path in official example"
             },
             {
+              "path": "useContext",
+              "field": "context-type-quantity",
+              "value": null,
+              "reason": "Compiled lookup context-type-quantity has no resolvable extraction path in official example"
+            },
+            {
+              "path": "useContext",
+              "field": "context-type-value",
+              "value": null,
+              "reason": "Compiled lookup context-type-value has no resolvable extraction path in official example"
+            },
+            {
               "path": "useContext.code",
               "field": "context-type",
               "value": null,
@@ -28595,40 +29028,66 @@
         },
         "context-type-quantity": {
           "lookupKey": "ImplementationGuide::context-type-quantity",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/conformance-context-type-quantity::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "Unsupported SearchParameter type: composite"
-          ],
+          "planHash": "54c8b81fe70f658bdfa06522c16f4091acab79431eb7ce5851e835b7ff532fab",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "636d1aeef71319e01e0d07496e1b50a64e5086cbc3c16ea8088a0aa9542af2cc",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "context-type-quantity": "urn:burni:hit-set|context-type-quantity-context-type-value$10"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "useContext"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "compiled"
           }
         },
         "context-type-value": {
           "lookupKey": "ImplementationGuide::context-type-value",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/conformance-context-type-value::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "Unsupported SearchParameter type: composite"
-          ],
+          "planHash": "8e511fa978722b4d177c64ac9f8677e42536221ead271f2ace77b8a9d6ad9125",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "5af72fbc2aa2292996faa3251a2facd430631e0cfe2034e408ee1b4861bace73",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "context-type-value": "urn:burni:hit-set|context-type-value-context-type-value$urn:burni:hit-set|context-type-value-context-value"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "useContext"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "compiled"
           }
         },
         "context-type": {
@@ -30151,6 +30610,18 @@
               "reason": "Compiled lookup context-quantity has no resolvable extraction path in official example"
             },
             {
+              "path": "useContext",
+              "field": "context-type-quantity",
+              "value": null,
+              "reason": "Compiled lookup context-type-quantity has no resolvable extraction path in official example"
+            },
+            {
+              "path": "useContext",
+              "field": "context-type-value",
+              "value": null,
+              "reason": "Compiled lookup context-type-value has no resolvable extraction path in official example"
+            },
+            {
               "path": "useContext.code",
               "field": "context-type",
               "value": null,
@@ -30307,40 +30778,66 @@
         },
         "context-type-quantity": {
           "lookupKey": "Library::context-type-quantity",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/Library-context-type-quantity::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "Unsupported SearchParameter type: composite"
-          ],
+          "planHash": "567ade9751ca7823363b48f4c10ed300e09ba76513de210202abd2cd83a8b7f7",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "636d1aeef71319e01e0d07496e1b50a64e5086cbc3c16ea8088a0aa9542af2cc",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "context-type-quantity": "urn:burni:hit-set|context-type-quantity-context-type-value$10"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "useContext"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "compiled"
           }
         },
         "context-type-value": {
           "lookupKey": "Library::context-type-value",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/Library-context-type-value::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "Unsupported SearchParameter type: composite"
-          ],
+          "planHash": "1c401387b2bfdd17b4afc6f2949410a910add4324307354e8cbca404406c1e7c",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "5af72fbc2aa2292996faa3251a2facd430631e0cfe2034e408ee1b4861bace73",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "context-type-value": "urn:burni:hit-set|context-type-value-context-type-value$urn:burni:hit-set|context-type-value-context-value"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "useContext"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "compiled"
           }
         },
         "context-type": {
@@ -32171,40 +32668,66 @@
         },
         "context-type-quantity": {
           "lookupKey": "Measure::context-type-quantity",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/Measure-context-type-quantity::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "Unsupported SearchParameter type: composite"
-          ],
+          "planHash": "369768c5d231c8c509f1d9b30e336ec8bb2f03635f988a524e545b3f3cbe4cab",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "636d1aeef71319e01e0d07496e1b50a64e5086cbc3c16ea8088a0aa9542af2cc",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "context-type-quantity": "urn:burni:hit-set|context-type-quantity-context-type-value$10"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "useContext"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "compiled"
           }
         },
         "context-type-value": {
           "lookupKey": "Measure::context-type-value",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/Measure-context-type-value::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "Unsupported SearchParameter type: composite"
-          ],
+          "planHash": "397a75e37ebec742d017b456a183f2613d8969b7292b6fc13b0021700607ba71",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "5af72fbc2aa2292996faa3251a2facd430631e0cfe2034e408ee1b4861bace73",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "context-type-value": "urn:burni:hit-set|context-type-value-context-type-value$urn:burni:hit-set|context-type-value-context-value"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "useContext"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "compiled"
           }
         },
         "context-type": {
@@ -37317,6 +37840,18 @@
               "reason": "Compiled lookup context-quantity has no resolvable extraction path in official example"
             },
             {
+              "path": "useContext",
+              "field": "context-type-quantity",
+              "value": null,
+              "reason": "Compiled lookup context-type-quantity has no resolvable extraction path in official example"
+            },
+            {
+              "path": "useContext",
+              "field": "context-type-value",
+              "value": null,
+              "reason": "Compiled lookup context-type-value has no resolvable extraction path in official example"
+            },
+            {
               "path": "useContext.code",
               "field": "context-type",
               "value": null,
@@ -37415,40 +37950,66 @@
         },
         "context-type-quantity": {
           "lookupKey": "MessageDefinition::context-type-quantity",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/conformance-context-type-quantity::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "Unsupported SearchParameter type: composite"
-          ],
+          "planHash": "c96105b68e3eb42faecb84822a2df68338c8926cc4e12db0b20be4cfaa99701e",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "636d1aeef71319e01e0d07496e1b50a64e5086cbc3c16ea8088a0aa9542af2cc",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "context-type-quantity": "urn:burni:hit-set|context-type-quantity-context-type-value$10"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "useContext"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "compiled"
           }
         },
         "context-type-value": {
           "lookupKey": "MessageDefinition::context-type-value",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/conformance-context-type-value::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "Unsupported SearchParameter type: composite"
-          ],
+          "planHash": "b0e6fb68b4acd68e97d351dd6202071b7144d63a9b488ef7a91ac3fe4129f9a8",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "5af72fbc2aa2292996faa3251a2facd430631e0cfe2034e408ee1b4861bace73",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "context-type-value": "urn:burni:hit-set|context-type-value-context-type-value$urn:burni:hit-set|context-type-value-context-value"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "useContext"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "compiled"
           }
         },
         "context-type": {
@@ -38495,13 +39056,13 @@
       "lookups": {
         "chromosome-variant-coordinate": {
           "lookupKey": "MolecularSequence::chromosome-variant-coordinate",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "disabled",
+          "reason": "No executable composite extraction branches for MolecularSequence",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/MolecularSequence-chromosome-variant-coordinate::4.0.1",
           "planHash": null,
           "diagnostics": [
-            "Unsupported SearchParameter type: composite"
+            "No executable composite extraction branches for MolecularSequence"
           ],
           "hitSet": {
             "status": "not-applicable",
@@ -38509,26 +39070,39 @@
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "disabled"
           }
         },
         "chromosome-window-coordinate": {
           "lookupKey": "MolecularSequence::chromosome-window-coordinate",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/MolecularSequence-chromosome-window-coordinate::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "Unsupported SearchParameter type: composite"
-          ],
+          "planHash": "4188cadc390f0141705cd845576ab326a600c6f971c6f0f838763e61048b69b0",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "38c5d6f30e2498103c3bf1e2b104ef0104b736bce39bef92a5e46d186d752ae8",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "chromosome-window-coordinate": "urn:burni:hit-set|chromosome-window-coordinate-chromosome-value$42$42"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "referenceSeq"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "compiled"
           }
         },
         "chromosome": {
@@ -38629,13 +39203,13 @@
         },
         "referenceseqid-variant-coordinate": {
           "lookupKey": "MolecularSequence::referenceseqid-variant-coordinate",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "disabled",
+          "reason": "No executable composite extraction branches for MolecularSequence",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/MolecularSequence-referenceseqid-variant-coordinate::4.0.1",
           "planHash": null,
           "diagnostics": [
-            "Unsupported SearchParameter type: composite"
+            "No executable composite extraction branches for MolecularSequence"
           ],
           "hitSet": {
             "status": "not-applicable",
@@ -38643,26 +39217,39 @@
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "disabled"
           }
         },
         "referenceseqid-window-coordinate": {
           "lookupKey": "MolecularSequence::referenceseqid-window-coordinate",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/MolecularSequence-referenceseqid-window-coordinate::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "Unsupported SearchParameter type: composite"
-          ],
+          "planHash": "54b53722aaf244e7c2c85df2e939dfc248e37724f88b85c99d35bfffb3504280",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "9ca0301ec7517003ccb0fdf7e3f7a01b264b76ca7bc0fbb2557e91eb9f257965",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "referenceseqid-window-coordinate": "urn:burni:hit-set|referenceseqid-window-coordinate-referenceseqid-value$42$42"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "referenceSeq"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "compiled"
           }
         },
         "referenceseqid": {
@@ -38879,6 +39466,18 @@
               "reason": "Compiled lookup context-quantity has no resolvable extraction path in official example"
             },
             {
+              "path": "useContext",
+              "field": "context-type-quantity",
+              "value": null,
+              "reason": "Compiled lookup context-type-quantity has no resolvable extraction path in official example"
+            },
+            {
+              "path": "useContext",
+              "field": "context-type-value",
+              "value": null,
+              "reason": "Compiled lookup context-type-value has no resolvable extraction path in official example"
+            },
+            {
               "path": "useContext.code",
               "field": "context-type",
               "value": null,
@@ -38959,40 +39558,66 @@
         },
         "context-type-quantity": {
           "lookupKey": "NamingSystem::context-type-quantity",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/conformance-context-type-quantity::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "Unsupported SearchParameter type: composite"
-          ],
+          "planHash": "a343a4de4a98732d4c80e7cdeac069dc0945e852ee035d7e0426f61852cfd22d",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "636d1aeef71319e01e0d07496e1b50a64e5086cbc3c16ea8088a0aa9542af2cc",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "context-type-quantity": "urn:burni:hit-set|context-type-quantity-context-type-value$10"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "useContext"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "compiled"
           }
         },
         "context-type-value": {
           "lookupKey": "NamingSystem::context-type-value",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/conformance-context-type-value::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "Unsupported SearchParameter type: composite"
-          ],
+          "planHash": "b4af7e3d473716e4216b21a47a3de8b1fa82a2a6bb75f7c3cf413a19456a1c6c",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "5af72fbc2aa2292996faa3251a2facd430631e0cfe2034e408ee1b4861bace73",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "context-type-value": "urn:burni:hit-set|context-type-value-context-type-value$urn:burni:hit-set|context-type-value-context-value"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "useContext"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "compiled"
           }
         },
         "context-type": {
@@ -39987,6 +40612,42 @@
               "reason": "Compiled lookup based-on has no resolvable extraction path in official example"
             },
             {
+              "path": "Observation",
+              "field": "code-value-concept",
+              "value": null,
+              "reason": "Compiled lookup code-value-concept has no resolvable extraction path in official example"
+            },
+            {
+              "path": "Observation",
+              "field": "code-value-date",
+              "value": null,
+              "reason": "Compiled lookup code-value-date has no resolvable extraction path in official example"
+            },
+            {
+              "path": "Observation",
+              "field": "code-value-quantity",
+              "value": null,
+              "reason": "Compiled lookup code-value-quantity has no resolvable extraction path in official example"
+            },
+            {
+              "path": "Observation",
+              "field": "code-value-string",
+              "value": null,
+              "reason": "Compiled lookup code-value-string has no resolvable extraction path in official example"
+            },
+            {
+              "path": "Observation|component",
+              "field": "combo-code-value-concept",
+              "value": null,
+              "reason": "Compiled lookup combo-code-value-concept has no resolvable extraction path in official example"
+            },
+            {
+              "path": "Observation|component",
+              "field": "combo-code-value-quantity",
+              "value": null,
+              "reason": "Compiled lookup combo-code-value-quantity has no resolvable extraction path in official example"
+            },
+            {
               "path": "code|component.code",
               "field": "combo-code",
               "value": null,
@@ -40009,6 +40670,18 @@
               "field": "combo-value-quantity",
               "value": null,
               "reason": "Compiled lookup combo-value-quantity has no resolvable extraction path in official example"
+            },
+            {
+              "path": "component",
+              "field": "component-code-value-concept",
+              "value": null,
+              "reason": "Compiled lookup component-code-value-concept has no resolvable extraction path in official example"
+            },
+            {
+              "path": "component",
+              "field": "component-code-value-quantity",
+              "value": null,
+              "reason": "Compiled lookup component-code-value-quantity has no resolvable extraction path in official example"
             },
             {
               "path": "component.code",
@@ -40349,116 +41022,194 @@
         },
         "code-value-concept": {
           "lookupKey": "Observation::code-value-concept",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/Observation-code-value-concept::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "Unsupported SearchParameter type: composite"
-          ],
+          "planHash": "5771948d5d409def2f4b92b7f8bf4727833de4f38f145a1fb18e6d32a96511b7",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "2790482937163add2dadb12e17472bc3759b3cb6bd4fee79ec3a865dec0e23c9",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "code-value-concept": "urn:burni:hit-set|code-value-concept-code-value$urn:burni:hit-set|code-value-concept-value-concept-value"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "Observation"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "compiled"
           }
         },
         "code-value-date": {
           "lookupKey": "Observation::code-value-date",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/Observation-code-value-date::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "Unsupported SearchParameter type: composite"
-          ],
+          "planHash": "0b973c0a554cc90082b6e6668cf6cb4e4d0f254c7711a82449fe7e9cf51992f8",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "201f41e975ad1ba35862b319efba94c9bef2fe50003d3cf3338c59b9002f4788",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "code-value-date": "urn:burni:hit-set|code-value-date-code-value$2000-01-01"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "Observation"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "compiled"
           }
         },
         "code-value-quantity": {
           "lookupKey": "Observation::code-value-quantity",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/Observation-code-value-quantity::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "Unsupported SearchParameter type: composite"
-          ],
+          "planHash": "7bf3278a265296a6182a74d1c88ff6d3f6b91f704c3a340210b7097bcf4f39b7",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "3748591ed41bbc877ce1bae5adbbe40ba3debe3fd38857917b828a0fd6fbe499",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "code-value-quantity": "urn:burni:hit-set|code-value-quantity-code-value$10"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "Observation"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "compiled"
           }
         },
         "code-value-string": {
           "lookupKey": "Observation::code-value-string",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/Observation-code-value-string::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "Unsupported SearchParameter type: composite"
-          ],
+          "planHash": "aeebe6755fa61b10016204ac14ac664aac107090747584c645e26ac67f7164de",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "e784379ada316b1dfcd55b057cde467773e857a2e9447479f25ebe6558aaecf1",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "code-value-string": "urn:burni:hit-set|code-value-string-code-value$hit-set-code-value-string-value-string"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "Observation"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "compiled"
           }
         },
         "combo-code-value-concept": {
           "lookupKey": "Observation::combo-code-value-concept",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/Observation-combo-code-value-concept::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "Unsupported SearchParameter type: composite"
-          ],
+          "planHash": "b37fed2cc2d75b0979391a482004a88d55acd542f275d7860557f084a9cb2e67",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "d2d0489202ac2eb98093db2f6331ee2bfe6a1af60ffbf679c12730d4c6d684c8",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "combo-code-value-concept": "urn:burni:hit-set|combo-code-value-concept-combo-code-value$urn:burni:hit-set|combo-code-value-concept-combo-value-concept-value"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "Observation"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "compiled"
           }
         },
         "combo-code-value-quantity": {
           "lookupKey": "Observation::combo-code-value-quantity",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/Observation-combo-code-value-quantity::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "Unsupported SearchParameter type: composite"
-          ],
+          "planHash": "f1a4048bef9d95452e27d07bb184ae6ff80b16948fb4f7741bf1441dc269d3d4",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "811c0956af26287af88e13deb15fcffd940fd30e3a1e362f43616cc62f0b4dc8",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "combo-code-value-quantity": "urn:burni:hit-set|combo-code-value-quantity-combo-code-value$10"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "Observation"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "compiled"
           }
         },
         "combo-code": {
@@ -40591,40 +41342,66 @@
         },
         "component-code-value-concept": {
           "lookupKey": "Observation::component-code-value-concept",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/Observation-component-code-value-concept::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "Unsupported SearchParameter type: composite"
-          ],
+          "planHash": "cf266871672d818a46b2e568bbadc794b0da1b9ba246d7811733a7bf6fb68b80",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "7f3a1893c2d3ea63318992650fe6ad27e3de83785577fd96857d6b338ff106b7",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "component-code-value-concept": "urn:burni:hit-set|component-code-value-concept-component-code-value$urn:burni:hit-set|component-code-value-concept-component-value-concept-value"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "component"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "compiled"
           }
         },
         "component-code-value-quantity": {
           "lookupKey": "Observation::component-code-value-quantity",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/Observation-component-code-value-quantity::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "Unsupported SearchParameter type: composite"
-          ],
+          "planHash": "ba4bb0027eebe3bdcd5d6199f64ed64f4d7a1806b782c2e0dc7f756405f6ddb7",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "07c306b27eb827e9cb2c032ae5d7c9f508a9c852def3a743e6341028df7ac17a",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "component-code-value-quantity": "urn:burni:hit-set|component-code-value-quantity-component-code-value$10"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "component"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "compiled"
           }
         },
         "component-code": {
@@ -41351,40 +42128,66 @@
         },
         "context-type-quantity": {
           "lookupKey": "OperationDefinition::context-type-quantity",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/conformance-context-type-quantity::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "Unsupported SearchParameter type: composite"
-          ],
+          "planHash": "1fe8f5ef4e377566b2bc51127cd460b650ea8f315424a5c9dce75bdef6867d2a",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "636d1aeef71319e01e0d07496e1b50a64e5086cbc3c16ea8088a0aa9542af2cc",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "context-type-quantity": "urn:burni:hit-set|context-type-quantity-context-type-value$10"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "useContext"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "compiled"
           }
         },
         "context-type-value": {
           "lookupKey": "OperationDefinition::context-type-value",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/conformance-context-type-value::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "Unsupported SearchParameter type: composite"
-          ],
+          "planHash": "74f458e660ba7bdf23290908ae342d2e6c437b690886582a97b076117c9c524f",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "5af72fbc2aa2292996faa3251a2facd430631e0cfe2034e408ee1b4861bace73",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "context-type-value": "urn:burni:hit-set|context-type-value-context-type-value$urn:burni:hit-set|context-type-value-context-value"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "useContext"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "compiled"
           }
         },
         "context-type": {
@@ -45017,40 +45820,66 @@
         },
         "context-type-quantity": {
           "lookupKey": "PlanDefinition::context-type-quantity",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/PlanDefinition-context-type-quantity::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "Unsupported SearchParameter type: composite"
-          ],
+          "planHash": "20e06bf4ce64c445350eff1497dc7c02bee3d3244d241db54b1cfe64f3d8a940",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "636d1aeef71319e01e0d07496e1b50a64e5086cbc3c16ea8088a0aa9542af2cc",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "context-type-quantity": "urn:burni:hit-set|context-type-quantity-context-type-value$10"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "useContext"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "compiled"
           }
         },
         "context-type-value": {
           "lookupKey": "PlanDefinition::context-type-value",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/PlanDefinition-context-type-value::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "Unsupported SearchParameter type: composite"
-          ],
+          "planHash": "f6f9b0cd119c306d022855476cb452dc129f6f1a82b27bdd34ce2c27f6ec0e85",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "5af72fbc2aa2292996faa3251a2facd430631e0cfe2034e408ee1b4861bace73",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "context-type-value": "urn:burni:hit-set|context-type-value-context-type-value$urn:burni:hit-set|context-type-value-context-value"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "useContext"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "compiled"
           }
         },
         "context-type": {
@@ -47712,6 +48541,18 @@
               "reason": "Compiled lookup context-quantity has no resolvable extraction path in official example"
             },
             {
+              "path": "useContext",
+              "field": "context-type-quantity",
+              "value": null,
+              "reason": "Compiled lookup context-type-quantity has no resolvable extraction path in official example"
+            },
+            {
+              "path": "useContext",
+              "field": "context-type-value",
+              "value": null,
+              "reason": "Compiled lookup context-type-value has no resolvable extraction path in official example"
+            },
+            {
               "path": "useContext.code",
               "field": "context-type",
               "value": null,
@@ -47854,40 +48695,66 @@
         },
         "context-type-quantity": {
           "lookupKey": "Questionnaire::context-type-quantity",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/Questionnaire-context-type-quantity::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "Unsupported SearchParameter type: composite"
-          ],
+          "planHash": "4df2c37caca464e4eb88f1690bb2ec055a14f2e875fdfdbe1a3b7bd61e94e17d",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "636d1aeef71319e01e0d07496e1b50a64e5086cbc3c16ea8088a0aa9542af2cc",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "context-type-quantity": "urn:burni:hit-set|context-type-quantity-context-type-value$10"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "useContext"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "compiled"
           }
         },
         "context-type-value": {
           "lookupKey": "Questionnaire::context-type-value",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/Questionnaire-context-type-value::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "Unsupported SearchParameter type: composite"
-          ],
+          "planHash": "32ba45370580f0ea41a1228d948c2ee74ad092a5253dc9be09b6f722840ee76a",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "5af72fbc2aa2292996faa3251a2facd430631e0cfe2034e408ee1b4861bace73",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "context-type-value": "urn:burni:hit-set|context-type-value-context-type-value$urn:burni:hit-set|context-type-value-context-value"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "useContext"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "compiled"
           }
         },
         "context-type": {
@@ -49886,6 +50753,18 @@
               "reason": "Compiled lookup context-quantity has no resolvable extraction path in official example"
             },
             {
+              "path": "useContext",
+              "field": "context-type-quantity",
+              "value": null,
+              "reason": "Compiled lookup context-type-quantity has no resolvable extraction path in official example"
+            },
+            {
+              "path": "useContext",
+              "field": "context-type-value",
+              "value": null,
+              "reason": "Compiled lookup context-type-value has no resolvable extraction path in official example"
+            },
+            {
               "path": "useContext.code",
               "field": "context-type",
               "value": null,
@@ -50070,40 +50949,66 @@
         },
         "context-type-quantity": {
           "lookupKey": "ResearchDefinition::context-type-quantity",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/ResearchDefinition-context-type-quantity::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "Unsupported SearchParameter type: composite"
-          ],
+          "planHash": "010d7b943a488a70179c1eb3d939263e1572fe99a006cfbd1f590182b01ca165",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "636d1aeef71319e01e0d07496e1b50a64e5086cbc3c16ea8088a0aa9542af2cc",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "context-type-quantity": "urn:burni:hit-set|context-type-quantity-context-type-value$10"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "useContext"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "compiled"
           }
         },
         "context-type-value": {
           "lookupKey": "ResearchDefinition::context-type-value",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/ResearchDefinition-context-type-value::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "Unsupported SearchParameter type: composite"
-          ],
+          "planHash": "da1f8bf312ddd6d5fc48be764f7f62b0333628fbf82ebb9539382500250ce766",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "5af72fbc2aa2292996faa3251a2facd430631e0cfe2034e408ee1b4861bace73",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "context-type-value": "urn:burni:hit-set|context-type-value-context-type-value$urn:burni:hit-set|context-type-value-context-value"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "useContext"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "compiled"
           }
         },
         "context-type": {
@@ -50710,6 +51615,18 @@
               "reason": "Compiled lookup context-quantity has no resolvable extraction path in official example"
             },
             {
+              "path": "useContext",
+              "field": "context-type-quantity",
+              "value": null,
+              "reason": "Compiled lookup context-type-quantity has no resolvable extraction path in official example"
+            },
+            {
+              "path": "useContext",
+              "field": "context-type-value",
+              "value": null,
+              "reason": "Compiled lookup context-type-value has no resolvable extraction path in official example"
+            },
+            {
               "path": "useContext.code",
               "field": "context-type",
               "value": null,
@@ -50894,40 +51811,66 @@
         },
         "context-type-quantity": {
           "lookupKey": "ResearchElementDefinition::context-type-quantity",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/ResearchElementDefinition-context-type-quantity::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "Unsupported SearchParameter type: composite"
-          ],
+          "planHash": "bbc026670e92196625b036c79e193aa015a0357dbaa071d763cd5bff136f4a54",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "636d1aeef71319e01e0d07496e1b50a64e5086cbc3c16ea8088a0aa9542af2cc",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "context-type-quantity": "urn:burni:hit-set|context-type-quantity-context-type-value$10"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "useContext"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "compiled"
           }
         },
         "context-type-value": {
           "lookupKey": "ResearchElementDefinition::context-type-value",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/ResearchElementDefinition-context-type-value::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "Unsupported SearchParameter type: composite"
-          ],
+          "planHash": "7541c273930c2b383ed2b5a68221a8e24f3975e03a1bebbc6d59ef05e6178a8a",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "5af72fbc2aa2292996faa3251a2facd430631e0cfe2034e408ee1b4861bace73",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "context-type-value": "urn:burni:hit-set|context-type-value-context-type-value$urn:burni:hit-set|context-type-value-context-value"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "useContext"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "compiled"
           }
         },
         "context-type": {
@@ -52647,6 +53590,18 @@
               "reason": "Compiled lookup context-quantity has no resolvable extraction path in official example"
             },
             {
+              "path": "useContext",
+              "field": "context-type-quantity",
+              "value": null,
+              "reason": "Compiled lookup context-type-quantity has no resolvable extraction path in official example"
+            },
+            {
+              "path": "useContext",
+              "field": "context-type-value",
+              "value": null,
+              "reason": "Compiled lookup context-type-value has no resolvable extraction path in official example"
+            },
+            {
               "path": "useContext.code",
               "field": "context-type",
               "value": null,
@@ -52769,40 +53724,66 @@
         },
         "context-type-quantity": {
           "lookupKey": "RiskEvidenceSynthesis::context-type-quantity",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/RiskEvidenceSynthesis-context-type-quantity::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "Unsupported SearchParameter type: composite"
-          ],
+          "planHash": "7e70f241e11f1bb1a116349fc66e8692120da888be5fa50654e3be729aeb72f5",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "636d1aeef71319e01e0d07496e1b50a64e5086cbc3c16ea8088a0aa9542af2cc",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "context-type-quantity": "urn:burni:hit-set|context-type-quantity-context-type-value$10"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "useContext"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "compiled"
           }
         },
         "context-type-value": {
           "lookupKey": "RiskEvidenceSynthesis::context-type-value",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/RiskEvidenceSynthesis-context-type-value::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "Unsupported SearchParameter type: composite"
-          ],
+          "planHash": "6a74db8ba3ec2ba7e1e70b9dda6d595257068db927b4ff954644981e740e9d49",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "5af72fbc2aa2292996faa3251a2facd430631e0cfe2034e408ee1b4861bace73",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "context-type-value": "urn:burni:hit-set|context-type-value-context-type-value$urn:burni:hit-set|context-type-value-context-value"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "useContext"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "compiled"
           }
         },
         "context-type": {
@@ -53556,40 +54537,66 @@
         },
         "context-type-quantity": {
           "lookupKey": "SearchParameter::context-type-quantity",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/conformance-context-type-quantity::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "Unsupported SearchParameter type: composite"
-          ],
+          "planHash": "3f90253c2644aaf0e0f51b4a8032a0c82d51bc6ab0566eca417fe505dbde9ecd",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "636d1aeef71319e01e0d07496e1b50a64e5086cbc3c16ea8088a0aa9542af2cc",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "context-type-quantity": "urn:burni:hit-set|context-type-quantity-context-type-value$10"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "useContext"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "compiled"
           }
         },
         "context-type-value": {
           "lookupKey": "SearchParameter::context-type-value",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/conformance-context-type-value::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "Unsupported SearchParameter type: composite"
-          ],
+          "planHash": "fdff98bb994619411caf075963f3053f076ac1f9a2dc606610865da8b497419f",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "5af72fbc2aa2292996faa3251a2facd430631e0cfe2034e408ee1b4861bace73",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "context-type-value": "urn:burni:hit-set|context-type-value-context-type-value$urn:burni:hit-set|context-type-value-context-value"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "useContext"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "compiled"
           }
         },
         "context-type": {
@@ -55776,6 +56783,18 @@
               "reason": "Compiled lookup context-quantity has no resolvable extraction path in official example"
             },
             {
+              "path": "useContext",
+              "field": "context-type-quantity",
+              "value": null,
+              "reason": "Compiled lookup context-type-quantity has no resolvable extraction path in official example"
+            },
+            {
+              "path": "useContext",
+              "field": "context-type-value",
+              "value": null,
+              "reason": "Compiled lookup context-type-value has no resolvable extraction path in official example"
+            },
+            {
               "path": "useContext.code",
               "field": "context-type",
               "value": null,
@@ -55880,40 +56899,66 @@
         },
         "context-type-quantity": {
           "lookupKey": "StructureDefinition::context-type-quantity",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/conformance-context-type-quantity::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "Unsupported SearchParameter type: composite"
-          ],
+          "planHash": "fe8663fe7820c4d52000f611d3601574b0665fba2222581aecccd700be00b20a",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "636d1aeef71319e01e0d07496e1b50a64e5086cbc3c16ea8088a0aa9542af2cc",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "context-type-quantity": "urn:burni:hit-set|context-type-quantity-context-type-value$10"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "useContext"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "compiled"
           }
         },
         "context-type-value": {
           "lookupKey": "StructureDefinition::context-type-value",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/conformance-context-type-value::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "Unsupported SearchParameter type: composite"
-          ],
+          "planHash": "8b98b294f87f06641f39edaf7c45475b2eca2a72c0254a072faa2c3a38a1a8a2",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "5af72fbc2aa2292996faa3251a2facd430631e0cfe2034e408ee1b4861bace73",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "context-type-value": "urn:burni:hit-set|context-type-value-context-type-value$urn:burni:hit-set|context-type-value-context-value"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "useContext"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "compiled"
           }
         },
         "context-type": {
@@ -56635,6 +57680,18 @@
               "reason": "Compiled lookup context-quantity has no resolvable extraction path in official example"
             },
             {
+              "path": "useContext",
+              "field": "context-type-quantity",
+              "value": null,
+              "reason": "Compiled lookup context-type-quantity has no resolvable extraction path in official example"
+            },
+            {
+              "path": "useContext",
+              "field": "context-type-value",
+              "value": null,
+              "reason": "Compiled lookup context-type-value has no resolvable extraction path in official example"
+            },
+            {
               "path": "useContext.code",
               "field": "context-type",
               "value": null,
@@ -56697,40 +57754,66 @@
         },
         "context-type-quantity": {
           "lookupKey": "StructureMap::context-type-quantity",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/conformance-context-type-quantity::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "Unsupported SearchParameter type: composite"
-          ],
+          "planHash": "3ac1f76baae83adb79561372b2bfc90e1e48a333cc9e5f4277bf3f1b6f258702",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "636d1aeef71319e01e0d07496e1b50a64e5086cbc3c16ea8088a0aa9542af2cc",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "context-type-quantity": "urn:burni:hit-set|context-type-quantity-context-type-value$10"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "useContext"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "compiled"
           }
         },
         "context-type-value": {
           "lookupKey": "StructureMap::context-type-value",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/conformance-context-type-value::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "Unsupported SearchParameter type: composite"
-          ],
+          "planHash": "a2ce2f87c54d5733a419a355e4f0afe643568416454acba8374137986c2ab4f4",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "5af72fbc2aa2292996faa3251a2facd430631e0cfe2034e408ee1b4861bace73",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "context-type-value": "urn:burni:hit-set|context-type-value-context-type-value$urn:burni:hit-set|context-type-value-context-value"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "useContext"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "compiled"
           }
         },
         "context-type": {
@@ -59025,6 +60108,18 @@
               "reason": "Compiled lookup context-quantity has no resolvable extraction path in official example"
             },
             {
+              "path": "useContext",
+              "field": "context-type-quantity",
+              "value": null,
+              "reason": "Compiled lookup context-type-quantity has no resolvable extraction path in official example"
+            },
+            {
+              "path": "useContext",
+              "field": "context-type-value",
+              "value": null,
+              "reason": "Compiled lookup context-type-value has no resolvable extraction path in official example"
+            },
+            {
               "path": "useContext.code",
               "field": "context-type",
               "value": null,
@@ -59093,40 +60188,66 @@
         },
         "context-type-quantity": {
           "lookupKey": "TerminologyCapabilities::context-type-quantity",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/conformance-context-type-quantity::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "Unsupported SearchParameter type: composite"
-          ],
+          "planHash": "69bbcbb202a2a0eb935bd874de271f6e0802110054af00767a2668427749aa73",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "636d1aeef71319e01e0d07496e1b50a64e5086cbc3c16ea8088a0aa9542af2cc",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "context-type-quantity": "urn:burni:hit-set|context-type-quantity-context-type-value$10"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "useContext"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "compiled"
           }
         },
         "context-type-value": {
           "lookupKey": "TerminologyCapabilities::context-type-value",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/conformance-context-type-value::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "Unsupported SearchParameter type: composite"
-          ],
+          "planHash": "445e56c5b3d06c05f054966eb76c1e7d6ffcb02ef4337f2e7f0c3a5a70bed9f2",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "5af72fbc2aa2292996faa3251a2facd430631e0cfe2034e408ee1b4861bace73",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "context-type-value": "urn:burni:hit-set|context-type-value-context-type-value$urn:burni:hit-set|context-type-value-context-value"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "useContext"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "compiled"
           }
         },
         "context-type": {
@@ -59778,40 +60899,66 @@
         },
         "context-type-quantity": {
           "lookupKey": "TestScript::context-type-quantity",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/TestScript-context-type-quantity::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "Unsupported SearchParameter type: composite"
-          ],
+          "planHash": "a1d9a6e0616c8730cb63a71a43dda81f7cf513993581ff5db82633f6c0318013",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "636d1aeef71319e01e0d07496e1b50a64e5086cbc3c16ea8088a0aa9542af2cc",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "context-type-quantity": "urn:burni:hit-set|context-type-quantity-context-type-value$10"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "useContext"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "compiled"
           }
         },
         "context-type-value": {
           "lookupKey": "TestScript::context-type-value",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/TestScript-context-type-value::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "Unsupported SearchParameter type: composite"
-          ],
+          "planHash": "3ea2089a1feb26d37c17b2f662a595a45ea5d7ca8f8fae1bd037de9439176c50",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "5af72fbc2aa2292996faa3251a2facd430631e0cfe2034e408ee1b4861bace73",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "context-type-value": "urn:burni:hit-set|context-type-value-context-type-value$urn:burni:hit-set|context-type-value-context-value"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "useContext"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "compiled"
           }
         },
         "context-type": {
@@ -60320,40 +61467,66 @@
         },
         "context-type-quantity": {
           "lookupKey": "ValueSet::context-type-quantity",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/conformance-context-type-quantity::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "Unsupported SearchParameter type: composite"
-          ],
+          "planHash": "18c9d3dcb0a7a85c4ecb81bdc735d6a9fa2b9583074943c7f725f20eac7b6a52",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "636d1aeef71319e01e0d07496e1b50a64e5086cbc3c16ea8088a0aa9542af2cc",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "context-type-quantity": "urn:burni:hit-set|context-type-quantity-context-type-value$10"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "useContext"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "compiled"
           }
         },
         "context-type-value": {
           "lookupKey": "ValueSet::context-type-value",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/conformance-context-type-value::4.0.1",
-          "planHash": null,
-          "diagnostics": [
-            "Unsupported SearchParameter type: composite"
-          ],
+          "planHash": "bc466e79f02c287064e982cb3d177fce6229d9f1617a6520a98b774314c6acac",
+          "diagnostics": [],
           "hitSet": {
-            "status": "not-applicable",
-            "hash": null
+            "status": "defined",
+            "hash": "5af72fbc2aa2292996faa3251a2facd430631e0cfe2034e408ee1b4861bace73",
+            "valueSource": "synthetic",
+            "positive": {
+              "query": {
+                "context-type-value": "urn:burni:hit-set|context-type-value-context-type-value$urn:burni:hit-set|context-type-value-context-value"
+              },
+              "expectDocument": "main"
+            },
+            "companionNegative": {
+              "expectDocument": "companion"
+            },
+            "missing": {
+              "applicable": true
+            },
+            "syntheticAugmentation": {
+              "extractionPath": "useContext"
+            }
           },
           "enablement": {
             "registryEnabled": true,
-            "outcome": "unsupported"
+            "outcome": "compiled"
           }
         },
         "context-type": {
@@ -61140,10 +62313,10 @@
     }
   },
   "summary": {
-    "compiledLookups": 1617,
-    "definedHitSets": 1617,
+    "compiledLookups": 1686,
+    "definedHitSets": 1686,
     "pendingHitSets": 0,
     "enabledResources": 146
   },
-  "manifestHash": "3039930cbbc8f9cf0fd98832d793d61117f01f93394099bc453e3c91f8d0fc4c"
+  "manifestHash": "0d204babb4d833fc18d51f8958098f9bce63f1d211130b8b2da28415f213272d"
 }

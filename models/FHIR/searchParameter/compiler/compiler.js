@@ -1,12 +1,16 @@
 const { parseFhirPath } = require("./parserAdapter");
 const { validateAst } = require("./astValidator");
-const { isSupportedSearchType } = require("./capabilityMatrix");
+const { isSupportedSearchType, isCompositeSearchType } = require("./capabilityMatrix");
 const { createSearchQueryPlan } = require("./searchQueryPlan");
 const { createDiagnostic } = require("../registry/diagnostics");
 const { getBaseResourceTypes, getLookupKey } = require("../registry/identity");
 const { compileExtractionPaths } = require("./extractionPathCompiler");
 const { attachPlanMetadata } = require("./planMetadata");
 const { resolveBundleInlineTarget } = require("./bundleInlineMetadata");
+const {
+    createComponentResolver,
+    compileCompositeDefinition
+} = require("./compositeCompiler");
 
 /**
  * @typedef {Object} LookupCompileResult
@@ -16,13 +20,40 @@ const { resolveBundleInlineTarget } = require("./bundleInlineMetadata");
  */
 
 /**
+ * @typedef {Object} CompileDefinitionOptions
+ * @property {import('./componentResolver').ComponentResolver} [componentResolver]
+ */
+
+/**
  * @param {import('../registry/types').SearchParameterDefinition} definition
+ * @param {CompileDefinitionOptions} [options]
  * @returns {{ compilable: boolean, reason?: string, lookupPlans: Record<string, LookupCompileResult>, diagnostics: import('../registry/diagnostics').RegistryDiagnostic[] }}
  */
-function compileDefinition(definition) {
+function compileDefinition(definition, options = {}) {
     const resource = definition.resource;
     const diagnostics = [];
     const searchType = resource.type || "";
+
+    if (isCompositeSearchType(searchType)) {
+        if (!options.componentResolver) {
+            const reason = `Unsupported search type: ${searchType}`;
+            const resourceTypes = getBaseResourceTypes(resource);
+            return {
+                compilable: false,
+                reason,
+                lookupPlans: buildDisabledLookupPlans(definition, resourceTypes, reason),
+                diagnostics: [
+                    createDiagnostic({
+                        code: "unsupported-type",
+                        category: "compile",
+                        message: reason,
+                        canonicalKey: definition.canonicalKey
+                    })
+                ]
+            };
+        }
+        return compileCompositeDefinition(definition, options.componentResolver);
+    }
 
     const expression = resource.expression;
     const resourceTypes = getBaseResourceTypes(resource);
@@ -250,6 +281,38 @@ function buildDisabledLookupPlans(definition, resourceTypes, reason) {
     return lookupPlans;
 }
 
+/**
+ * @param {import('../registry/types').SearchParameterDefinition[]} definitions
+ * @returns {Record<string, ReturnType<typeof compileDefinition>>}
+ */
+function compileDefinitions(definitions) {
+    const componentResolver = createComponentResolver(definitions);
+    /** @type {Record<string, ReturnType<typeof compileDefinition>>} */
+    const compileResults = {};
+
+    for (const definition of definitions) {
+        if (isCompositeSearchType(definition.resource.type || "")) {
+            continue;
+        }
+        compileResults[definition.canonicalKey] = module.exports.compileDefinition(definition, {
+            componentResolver
+        });
+    }
+
+    for (const definition of definitions) {
+        if (!isCompositeSearchType(definition.resource.type || "")) {
+            continue;
+        }
+        compileResults[definition.canonicalKey] = compileCompositeDefinition(
+            definition,
+            componentResolver
+        );
+    }
+
+    return compileResults;
+}
+
 module.exports = {
-    compileDefinition
+    compileDefinition,
+    compileDefinitions
 };

@@ -84,8 +84,32 @@ function getTypeCapability(type) {
  * @param {string} type
  * @returns {boolean}
  */
-function isSupportedSearchType(type) {
+function isCompositeSearchType(type) {
+    return type === "composite";
+}
+
+/**
+ * @param {string} type
+ * @returns {boolean}
+ */
+function isPrimitiveSearchType(type) {
     return Boolean(TYPE_CAPABILITY_MATRIX[type]) && !["composite", "special"].includes(type);
+}
+
+/**
+ * @param {string} type
+ * @returns {boolean}
+ */
+function isSupportedSearchType(type) {
+    return isPrimitiveSearchType(type);
+}
+
+/**
+ * @param {string} type
+ * @returns {boolean}
+ */
+function isKnownSearchType(type) {
+    return Boolean(TYPE_CAPABILITY_MATRIX[type]);
 }
 
 /**
@@ -146,10 +170,37 @@ function validatePlanOperator(plan, modifier, comparator) {
     return { valid: true };
 }
 
+/**
+ * @param {import('./searchQueryPlan').SearchQueryPlan} plan
+ * @returns {{ valid: boolean, reason?: string }}
+ */
+function validateCompositePlanCapability(plan) {
+    if (plan.searchType !== "composite") {
+        return { valid: false, reason: "Search query plan is not composite" };
+    }
+    if (!plan.composite?.components?.length) {
+        return {
+            valid: false,
+            reason: "Composite search parameter is missing component metadata"
+        };
+    }
+    if (!plan.composite.branches?.length) {
+        return {
+            valid: false,
+            reason: "Composite search parameter is missing executable branches"
+        };
+    }
+    return { valid: true };
+}
+
 module.exports = {
     TYPE_CAPABILITY_MATRIX,
     getTypeCapability,
+    isCompositeSearchType,
+    isPrimitiveSearchType,
     isSupportedSearchType,
+    isKnownSearchType,
     validateOperator,
-    validatePlanOperator
+    validatePlanOperator,
+    validateCompositePlanCapability
 };

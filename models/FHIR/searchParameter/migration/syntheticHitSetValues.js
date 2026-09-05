@@ -389,9 +389,74 @@ function augmentBundleInlineDocument(document, plan) {
  * @param {import('../compiler/searchQueryPlan').SearchQueryPlan} plan
  * @returns {{ document: Object, queryValue: string } | null}
  */
+function augmentCompositeDocument(document, plan) {
+    const branch = plan.composite?.branches?.[0];
+    const components = plan.composite?.components || [];
+    if (!branch || components.length === 0 || branch.components.length !== components.length) {
+        return null;
+    }
+
+    const augmented = JSON.parse(JSON.stringify(document));
+    const componentValues = [];
+    const scopeElement = {};
+
+    for (const branchComponent of branch.components) {
+        const component = components[branchComponent.componentIndex];
+        const extractionPath = branchComponent.extractionPath;
+        const fieldValue = buildSyntheticFieldValue(
+            component.searchType,
+            `${plan.code}-${component.code}`,
+            extractionPath,
+            plan.resourceType
+        );
+        const target = branch.correlationMode === "array-element" ? scopeElement : augmented;
+        const targetPath =
+            branch.correlationMode === "array-element"
+                ? extractionPath.path
+                : [branch.scopePath, extractionPath.path].filter(Boolean).join(".");
+        setNestedValue(
+            target,
+            targetPath.split("."),
+            fieldValue,
+            extractionPath.datatype,
+            extractionPath.arrayPaths || []
+        );
+        componentValues.push(
+            formatSyntheticQueryValue(
+                component.searchType,
+                component.code,
+                fieldValue,
+                extractionPath
+            )
+        );
+    }
+
+    if (branch.correlationMode === "array-element") {
+        setNestedValue(
+            augmented,
+            branch.scopePath.split("."),
+            [scopeElement],
+            "BackboneElement"
+        );
+    }
+
+    return {
+        document: augmented,
+        queryValue: componentValues.join("$")
+    };
+}
+
+/**
+ * @param {Object} document
+ * @param {import('../compiler/searchQueryPlan').SearchQueryPlan} plan
+ * @returns {{ document: Object, queryValue: string } | null}
+ */
 function augmentDocumentForHitSet(document, plan) {
     if (plan.inlineTarget) {
         return augmentBundleInlineDocument(document, plan);
+    }
+    if (plan.searchType === "composite") {
+        return augmentCompositeDocument(document, plan);
     }
 
     const augmented = JSON.parse(JSON.stringify(document));
@@ -438,6 +503,7 @@ function augmentDocumentForHitSet(document, plan) {
 
 module.exports = {
     augmentDocumentForHitSet,
+    augmentCompositeDocument,
     buildSyntheticFieldValue,
     formatSyntheticQueryValue,
     normalizeAssignedValue

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-05T08:12:32.163Z",
+  "generatedAt": "2026-09-05T09:38:12.361Z",
   "resourceCount": 146,
   "lookupCount": 1697,
   "totalSourceLookupCount": 1706,
@@ -187,23 +187,21 @@
         },
         "context-type-quantity": {
           "lookupKey": "ActivityDefinition::context-type-quantity",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/ActivityDefinition-context-type-quantity::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "context-type-value": {
           "lookupKey": "ActivityDefinition::context-type-value",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/ActivityDefinition-context-type-value::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "context-type": {
           "lookupKey": "ActivityDefinition::context-type",
@@ -1269,23 +1267,21 @@
         },
         "context-type-quantity": {
           "lookupKey": "CapabilityStatement::context-type-quantity",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/conformance-context-type-quantity::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "context-type-value": {
           "lookupKey": "CapabilityStatement::context-type-value",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/conformance-context-type-value::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "context-type": {
           "lookupKey": "CapabilityStatement::context-type",
@@ -1822,23 +1818,21 @@
         },
         "context-type-quantity": {
           "lookupKey": "ChargeItemDefinition::context-type-quantity",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/ChargeItemDefinition-context-type-quantity::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "context-type-value": {
           "lookupKey": "ChargeItemDefinition::context-type-value",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/ChargeItemDefinition-context-type-value::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "context-type": {
           "lookupKey": "ChargeItemDefinition::context-type",
@@ -3590,63 +3584,57 @@
         },
         "code-value-concept": {
           "lookupKey": "Observation::code-value-concept",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/Observation-code-value-concept::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "code-value-date": {
           "lookupKey": "Observation::code-value-date",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/Observation-code-value-date::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "code-value-quantity": {
           "lookupKey": "Observation::code-value-quantity",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/Observation-code-value-quantity::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "code-value-string": {
           "lookupKey": "Observation::code-value-string",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/Observation-code-value-string::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "combo-code-value-concept": {
           "lookupKey": "Observation::combo-code-value-concept",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/Observation-combo-code-value-concept::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "combo-code-value-quantity": {
           "lookupKey": "Observation::combo-code-value-quantity",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/Observation-combo-code-value-quantity::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "combo-code": {
           "lookupKey": "Observation::combo-code",
@@ -3686,23 +3674,21 @@
         },
         "component-code-value-concept": {
           "lookupKey": "Observation::component-code-value-concept",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/Observation-component-code-value-concept::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "component-code-value-quantity": {
           "lookupKey": "Observation::component-code-value-quantity",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/Observation-component-code-value-quantity::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "component-code": {
           "lookupKey": "Observation::component-code",
@@ -5504,8 +5490,8 @@
         },
         "relationship": {
           "lookupKey": "DocumentReference::relationship",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "disabled",
+          "reason": "No executable composite extraction branches for DocumentReference",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/DocumentReference-relationship::4.0.1",
           "rawStatus": "draft",
@@ -6288,23 +6274,21 @@
         },
         "context-type-quantity": {
           "lookupKey": "CodeSystem::context-type-quantity",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/conformance-context-type-quantity::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "context-type-value": {
           "lookupKey": "CodeSystem::context-type-value",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/conformance-context-type-value::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "context-type": {
           "lookupKey": "CodeSystem::context-type",
@@ -6737,23 +6721,21 @@
         },
         "context-type-quantity": {
           "lookupKey": "CompartmentDefinition::context-type-quantity",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/conformance-context-type-quantity::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "context-type-value": {
           "lookupKey": "CompartmentDefinition::context-type-value",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/conformance-context-type-value::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "context-type": {
           "lookupKey": "CompartmentDefinition::context-type",
@@ -6952,23 +6934,21 @@
         },
         "context-type-quantity": {
           "lookupKey": "ConceptMap::context-type-quantity",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/conformance-context-type-quantity::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "context-type-value": {
           "lookupKey": "ConceptMap::context-type-value",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/conformance-context-type-value::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "context-type": {
           "lookupKey": "ConceptMap::context-type",
@@ -7094,23 +7074,21 @@
         },
         "context-type-quantity": {
           "lookupKey": "GraphDefinition::context-type-quantity",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/conformance-context-type-quantity::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "context-type-value": {
           "lookupKey": "GraphDefinition::context-type-value",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/conformance-context-type-value::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "context-type": {
           "lookupKey": "GraphDefinition::context-type",
@@ -7227,23 +7205,21 @@
         },
         "context-type-quantity": {
           "lookupKey": "ImplementationGuide::context-type-quantity",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/conformance-context-type-quantity::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "context-type-value": {
           "lookupKey": "ImplementationGuide::context-type-value",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/conformance-context-type-value::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "context-type": {
           "lookupKey": "ImplementationGuide::context-type",
@@ -7396,23 +7372,21 @@
         },
         "context-type-quantity": {
           "lookupKey": "MessageDefinition::context-type-quantity",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/conformance-context-type-quantity::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "context-type-value": {
           "lookupKey": "MessageDefinition::context-type-value",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/conformance-context-type-value::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "context-type": {
           "lookupKey": "MessageDefinition::context-type",
@@ -7574,23 +7548,21 @@
         },
         "context-type-quantity": {
           "lookupKey": "NamingSystem::context-type-quantity",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/conformance-context-type-quantity::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "context-type-value": {
           "lookupKey": "NamingSystem::context-type-value",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/conformance-context-type-value::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "context-type": {
           "lookupKey": "NamingSystem::context-type",
@@ -7752,23 +7724,21 @@
         },
         "context-type-quantity": {
           "lookupKey": "OperationDefinition::context-type-quantity",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/conformance-context-type-quantity::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "context-type-value": {
           "lookupKey": "OperationDefinition::context-type-value",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/conformance-context-type-value::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "context-type": {
           "lookupKey": "OperationDefinition::context-type",
@@ -7957,23 +7927,21 @@
         },
         "context-type-quantity": {
           "lookupKey": "SearchParameter::context-type-quantity",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/conformance-context-type-quantity::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "context-type-value": {
           "lookupKey": "SearchParameter::context-type-value",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/conformance-context-type-value::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "context-type": {
           "lookupKey": "SearchParameter::context-type",
@@ -8135,23 +8103,21 @@
         },
         "context-type-quantity": {
           "lookupKey": "StructureDefinition::context-type-quantity",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/conformance-context-type-quantity::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "context-type-value": {
           "lookupKey": "StructureDefinition::context-type-value",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/conformance-context-type-value::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "context-type": {
           "lookupKey": "StructureDefinition::context-type",
@@ -8379,23 +8345,21 @@
         },
         "context-type-quantity": {
           "lookupKey": "StructureMap::context-type-quantity",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/conformance-context-type-quantity::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "context-type-value": {
           "lookupKey": "StructureMap::context-type-value",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/conformance-context-type-value::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "context-type": {
           "lookupKey": "StructureMap::context-type",
@@ -8521,23 +8485,21 @@
         },
         "context-type-quantity": {
           "lookupKey": "TerminologyCapabilities::context-type-quantity",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/conformance-context-type-quantity::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "context-type-value": {
           "lookupKey": "TerminologyCapabilities::context-type-value",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/conformance-context-type-value::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "context-type": {
           "lookupKey": "TerminologyCapabilities::context-type",
@@ -8654,23 +8616,21 @@
         },
         "context-type-quantity": {
           "lookupKey": "ValueSet::context-type-quantity",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/conformance-context-type-quantity::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "context-type-value": {
           "lookupKey": "ValueSet::context-type-value",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/conformance-context-type-value::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "context-type": {
           "lookupKey": "ValueSet::context-type",
@@ -9371,23 +9331,21 @@
         },
         "context-type-quantity": {
           "lookupKey": "EffectEvidenceSynthesis::context-type-quantity",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/EffectEvidenceSynthesis-context-type-quantity::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "context-type-value": {
           "lookupKey": "EffectEvidenceSynthesis::context-type-value",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/EffectEvidenceSynthesis-context-type-value::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "context-type": {
           "lookupKey": "EffectEvidenceSynthesis::context-type",
@@ -9663,23 +9621,21 @@
         },
         "context-type-quantity": {
           "lookupKey": "EventDefinition::context-type-quantity",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/EventDefinition-context-type-quantity::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "context-type-value": {
           "lookupKey": "EventDefinition::context-type-value",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/EventDefinition-context-type-value::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "context-type": {
           "lookupKey": "EventDefinition::context-type",
@@ -9868,23 +9824,21 @@
         },
         "context-type-quantity": {
           "lookupKey": "Evidence::context-type-quantity",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/Evidence-context-type-quantity::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "context-type-value": {
           "lookupKey": "Evidence::context-type-value",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/Evidence-context-type-value::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "context-type": {
           "lookupKey": "Evidence::context-type",
@@ -10073,23 +10027,21 @@
         },
         "context-type-quantity": {
           "lookupKey": "EvidenceVariable::context-type-quantity",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/EvidenceVariable-context-type-quantity::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "context-type-value": {
           "lookupKey": "EvidenceVariable::context-type-value",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/EvidenceVariable-context-type-value::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "context-type": {
           "lookupKey": "EvidenceVariable::context-type",
@@ -10269,23 +10221,21 @@
         },
         "context-type-quantity": {
           "lookupKey": "ExampleScenario::context-type-quantity",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/ExampleScenario-context-type-quantity::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "context-type-value": {
           "lookupKey": "ExampleScenario::context-type-value",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/ExampleScenario-context-type-value::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "context-type": {
           "lookupKey": "ExampleScenario::context-type",
@@ -10551,13 +10501,12 @@
         },
         "characteristic-value": {
           "lookupKey": "Group::characteristic-value",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/Group-characteristic-value::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "characteristic": {
           "lookupKey": "Group::characteristic",
@@ -12043,23 +11992,21 @@
         },
         "context-type-quantity": {
           "lookupKey": "Library::context-type-quantity",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/Library-context-type-quantity::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "context-type-value": {
           "lookupKey": "Library::context-type-value",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/Library-context-type-value::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "context-type": {
           "lookupKey": "Library::context-type",
@@ -12430,23 +12377,21 @@
         },
         "context-type-quantity": {
           "lookupKey": "Measure::context-type-quantity",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/Measure-context-type-quantity::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "context-type-value": {
           "lookupKey": "Measure::context-type-value",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/Measure-context-type-value::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "context-type": {
           "lookupKey": "Measure::context-type",
@@ -13271,8 +13216,8 @@
       "lookups": {
         "chromosome-variant-coordinate": {
           "lookupKey": "MolecularSequence::chromosome-variant-coordinate",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "disabled",
+          "reason": "No executable composite extraction branches for MolecularSequence",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/MolecularSequence-chromosome-variant-coordinate::4.0.1",
           "rawStatus": "draft",
@@ -13281,13 +13226,12 @@
         },
         "chromosome-window-coordinate": {
           "lookupKey": "MolecularSequence::chromosome-window-coordinate",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/MolecularSequence-chromosome-window-coordinate::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "chromosome": {
           "lookupKey": "MolecularSequence::chromosome",
@@ -13318,8 +13262,8 @@
         },
         "referenceseqid-variant-coordinate": {
           "lookupKey": "MolecularSequence::referenceseqid-variant-coordinate",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "disabled",
+          "reason": "No executable composite extraction branches for MolecularSequence",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/MolecularSequence-referenceseqid-variant-coordinate::4.0.1",
           "rawStatus": "draft",
@@ -13328,13 +13272,12 @@
         },
         "referenceseqid-window-coordinate": {
           "lookupKey": "MolecularSequence::referenceseqid-window-coordinate",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/MolecularSequence-referenceseqid-window-coordinate::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "referenceseqid": {
           "lookupKey": "MolecularSequence::referenceseqid",
@@ -13813,23 +13756,21 @@
         },
         "context-type-quantity": {
           "lookupKey": "PlanDefinition::context-type-quantity",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/PlanDefinition-context-type-quantity::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "context-type-value": {
           "lookupKey": "PlanDefinition::context-type-value",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/PlanDefinition-context-type-value::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "context-type": {
           "lookupKey": "PlanDefinition::context-type",
@@ -14133,23 +14074,21 @@
         },
         "context-type-quantity": {
           "lookupKey": "Questionnaire::context-type-quantity",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/Questionnaire-context-type-quantity::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "context-type-value": {
           "lookupKey": "Questionnaire::context-type-value",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/Questionnaire-context-type-value::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "context-type": {
           "lookupKey": "Questionnaire::context-type",
@@ -14546,23 +14485,21 @@
         },
         "context-type-quantity": {
           "lookupKey": "ResearchDefinition::context-type-quantity",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/ResearchDefinition-context-type-quantity::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "context-type-value": {
           "lookupKey": "ResearchDefinition::context-type-value",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/ResearchDefinition-context-type-value::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "context-type": {
           "lookupKey": "ResearchDefinition::context-type",
@@ -14751,23 +14688,21 @@
         },
         "context-type-quantity": {
           "lookupKey": "ResearchElementDefinition::context-type-quantity",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/ResearchElementDefinition-context-type-quantity::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "context-type-value": {
           "lookupKey": "ResearchElementDefinition::context-type-value",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/ResearchElementDefinition-context-type-value::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "context-type": {
           "lookupKey": "ResearchElementDefinition::context-type",
@@ -15128,23 +15063,21 @@
         },
         "context-type-quantity": {
           "lookupKey": "RiskEvidenceSynthesis::context-type-quantity",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/RiskEvidenceSynthesis-context-type-quantity::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "context-type-value": {
           "lookupKey": "RiskEvidenceSynthesis::context-type-value",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/RiskEvidenceSynthesis-context-type-value::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "context-type": {
           "lookupKey": "RiskEvidenceSynthesis::context-type",
@@ -15954,23 +15887,21 @@
         },
         "context-type-quantity": {
           "lookupKey": "TestScript::context-type-quantity",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/TestScript-context-type-quantity::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "context-type-value": {
           "lookupKey": "TestScript::context-type-value",
-          "outcome": "unsupported",
-          "reason": "Unsupported SearchParameter type: composite",
+          "outcome": "compiled",
           "searchType": "composite",
           "canonicalKey": "http://hl7.org/fhir/SearchParameter/TestScript-context-type-value::4.0.1",
           "rawStatus": "draft",
-          "effectiveStatus": "disabled",
-          "fixtureCoverage": "not-applicable"
+          "effectiveStatus": "active",
+          "fixtureCoverage": "pending"
         },
         "context-type": {
           "lookupKey": "TestScript::context-type",
@@ -16185,9 +16116,9 @@
     }
   },
   "summary": {
-    "compiled": 1617,
-    "disabled": 7,
-    "unsupported": 73,
+    "compiled": 1686,
+    "disabled": 10,
+    "unsupported": 1,
     "noLookupResources": [
       "Binary",
       "BiologicallyDerivedProduct",

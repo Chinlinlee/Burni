@@ -4,7 +4,7 @@ const fs = require("fs");
 const path = require("path");
 const { loadBuiltinDefinitions } = require("@models/FHIR/searchParameter/registry/sourceAdapter");
 const { applyActivationOverlay } = require("@models/FHIR/searchParameter/registry/activationPolicy");
-const { compileDefinition } = require("@models/FHIR/searchParameter/compiler/compiler");
+const { compileDefinitions } = require("@models/FHIR/searchParameter/compiler/compiler");
 const { mergeDefinitions } = require("@models/FHIR/searchParameter/registry/merge");
 const { buildRegistrySnapshot } = require("@models/FHIR/searchParameter/registry/snapshot");
 const {
@@ -48,14 +48,14 @@ const ARTIFACTS_DIR = path.join(
 function compileBuiltinDefinitionsOnce() {
     const builtin = loadBuiltinDefinitions();
     /** @type {Record<string, ReturnType<typeof compileDefinition>>} */
-    const compileResults = {};
+    const compileResults = compileDefinitions(builtin.definitions);
     /** @type {import('@models/FHIR/searchParameter/registry/types').SearchParameterDefinition[]} */
     const activatedDefinitions = [];
     /** @type {import('@models/FHIR/searchParameter/registry/diagnostics').RegistryDiagnostic[]} */
     const diagnostics = [...builtin.diagnostics];
 
     for (const definition of builtin.definitions) {
-        const compileResult = compileDefinition(definition);
+        const compileResult = compileResults[definition.canonicalKey];
         compileResults[definition.canonicalKey] = compileResult;
         diagnostics.push(...compileResult.diagnostics);
 

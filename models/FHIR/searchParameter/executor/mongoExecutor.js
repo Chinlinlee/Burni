@@ -3,6 +3,7 @@ const {
     createTypedFilterPlan,
     MAX_QUERY_COST
 } = require("./queryValueParser");
+const { createCompositeFilterPlan } = require("./compositeQueryExecutor");
 
 const ALLOWED_OPERATORS = new Set([
     "$and",
@@ -36,7 +37,10 @@ function executeSearchQueryPlan(plan, rawValue, parameterName, typedFilterPlan) 
         throw new Error("Relation plans must be executed through relation executor");
     }
     const filterPlan =
-        typedFilterPlan || createTypedFilterPlan(plan, rawValue, parameterName);
+        typedFilterPlan ||
+        (plan.searchType === "composite"
+            ? createCompositeFilterPlan(plan, rawValue, parameterName)
+            : createTypedFilterPlan(plan, rawValue, parameterName));
     if (filterPlan.searchPlan !== plan) {
         throw new Error("Typed filter plan does not belong to search query plan");
     }
@@ -72,7 +76,9 @@ function assertSafeFilter(filter) {
 function applyPlanToQuery(plan, query, parameterName, typedFilterPlan) {
     const filterPlan =
         typedFilterPlan ||
-        createTypedFilterPlan(plan, query[parameterName], parameterName);
+        (plan.searchType === "composite"
+            ? createCompositeFilterPlan(plan, query[parameterName], parameterName)
+            : createTypedFilterPlan(plan, query[parameterName], parameterName));
     if (filterPlan.searchPlan !== plan) {
         throw new Error("Typed filter plan does not belong to search query plan");
     }

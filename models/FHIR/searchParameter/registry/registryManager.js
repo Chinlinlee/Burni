@@ -116,13 +116,19 @@ function activateHydratedBuiltinDefinitions(entries) {
  * @returns {{ compiledDefinitions: import('./types').SearchParameterDefinition[], diagnostics: import('./diagnostics').RegistryDiagnostic[] }}
  */
 function compileDefinitions(definitions) {
+    const compileResults = compiler.compileDefinitions(definitions);
     /** @type {import('./types').SearchParameterDefinition[]} */
     const compiledDefinitions = [];
     /** @type {import('./diagnostics').RegistryDiagnostic[]} */
     const diagnostics = [];
 
     for (const definition of definitions) {
-        const compileResult = compiler.compileDefinition(definition);
+        const compileResult = compileResults[definition.canonicalKey];
+        if (!compileResult) {
+            throw new Error(
+                `Missing compile result for SearchParameter definition: ${definition.canonicalKey}`
+            );
+        }
         diagnostics.push(...compileResult.diagnostics);
         const activated = applyActivationOverlay(definition, {
             compilable: compileResult.compilable,
