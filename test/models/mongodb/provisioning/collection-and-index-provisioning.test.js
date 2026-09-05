@@ -19,6 +19,10 @@ const {
     provisionMongoDatabase,
     verifyMongoProvisioning
 } = require("@models/mongodb/provisioning/provisioningService");
+const { createSearchQueryPlan } = require("@models/FHIR/searchParameter/compiler/searchQueryPlan");
+const { createTemporalIndexEntry } = require("@models/FHIR/searchParameter/indexes/indexManifest");
+const { validateTemporalIndexEntryCompatibility } = require("@models/FHIR/searchParameter/indexes/indexCompatibility");
+const { collectApprovedTemporalDerivedIndexes } = require("@models/mongodb/provisioning/temporalIndexAdapter");
 const {
     generateDesiredManifest
 } = require("@models/mongodb/provisioning/desiredManifest");
@@ -274,6 +278,51 @@ describe("MongoDB provisioning service", function () {
         expect(provisioned.indexes.some((entry) => entry.name === temporalIndex.name)).to.equal(
             true
         );
+    });
+
+    it("excludes unsafe temporal index shapes from the approved derived manifest", function () {
+        const unsafePlan = createSearchQueryPlan({
+            resourceType: "Observation",
+            code: "effective",
+            searchType: "date",
+            extractionPaths: [{ path: "effectivePeriod", datatype: "Period" }],
+            comparators: ["eq"]
+        });
+        const unsafeEntry = createTemporalIndexEntry(
+            "Observation",
+            {
+                canonicalKey: "http://example.org/SearchParameter/effective::4.0.1",
+                effectiveStatus: "active",
+                resource: {
+                    code: "effective",
+                    resourceType: "SearchParameter"
+                },
+                lookupPlans: {
+                    "Observation::effective": {
+                        compilable: true,
+                        plan: unsafePlan
+                    }
+                }
+            },
+            "Observation::effective",
+            {
+                path: "periods",
+                datatype: "Period",
+                arrayPaths: ["periods", "otherPeriods"]
+            }
+        );
+
+        const compatibility = validateTemporalIndexEntryCompatibility(unsafeEntry);
+        expect(compatibility.valid).to.equal(false);
+        expect(compatibility.diagnostics.map((entry) => entry.code)).to.include(
+            "parallel-multikey-paths"
+        );
+
+        const approved = collectApprovedTemporalDerivedIndexes();
+        expect(approved.entries.some((entry) => entry.name === unsafeEntry.name)).to.equal(false);
+        expect(
+            approved.entries.every((entry) => validateTemporalIndexEntryCompatibility(entry).valid)
+        ).to.equal(true);
     });
 
     it("does not auto-change an existing non-unique id index to unique", async function () {

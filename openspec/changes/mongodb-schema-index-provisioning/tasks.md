@@ -36,13 +36,13 @@
 
 ## 6. Tests
 
-- [ ] 6.1 新增 model catalog 與 desired manifest deterministic tests，涵蓋 schema、service、temporal source 合併與 checksum。
-- [ ] 6.2 新增 collection provisioning tests，涵蓋完整 catalog、already-existing collection、失敗回報與重跑。
-- [ ] 6.3 新增 baseline/temporal index reconcile tests，涵蓋相容 index、missing index、mismatch、extra index 與 unsafe temporal shape。
-- [ ] 6.4 新增 lock/state tests，涵蓋 concurrent owner、lease expiry、部分完成與 retry。
-- [ ] 6.5 新增 MongoDB integration tests，驗證 `listCollections`、`listIndexes`、history compound index 與 temporal index 實際存在。
-- [ ] 6.6 新增 lifecycle tests，驗證預設 startup 不 provisioning、startup opt-in readiness gate 與 provisioning failure 不 listen。
-- [ ] 6.7 新增 duplicate audit tests，驗證 duplicate report、unique migration block 與不修改資料。
+- [x] 6.1 新增 model catalog 與 desired manifest deterministic tests，涵蓋 schema、service、temporal source 合併與 checksum。
+- [x] 6.2 新增 collection provisioning tests，涵蓋完整 catalog、already-existing collection、失敗回報與重跑。
+- [x] 6.3 新增 baseline/temporal index reconcile tests，涵蓋相容 index、missing index、mismatch、extra index 與 unsafe temporal shape。
+- [x] 6.4 新增 lock/state tests，涵蓋 concurrent owner、lease expiry、部分完成與 retry。
+- [x] 6.5 新增 MongoDB integration tests，驗證 `listCollections`、`listIndexes`、history compound index 與 temporal index 實際存在。
+- [x] 6.6 新增 lifecycle tests，驗證預設 startup 不 provisioning、startup opt-in readiness gate 與 provisioning failure 不 listen。
+- [x] 6.7 新增 duplicate audit tests，驗證 duplicate report、unique migration block 與不修改資料。
 
 ## 7. Documentation and verification
 

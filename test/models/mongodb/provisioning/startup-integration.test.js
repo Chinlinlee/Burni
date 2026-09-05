@@ -1,6 +1,8 @@
 require("module-alias/register");
 
+const express = require("express");
 const { expect } = require("chai");
+const { startServer } = require("../../../../server/bootstrap");
 const {
     resolveConnectorOptions,
     isStartupProvisioningEnabled
@@ -35,6 +37,33 @@ describe("mongodb startup provisioning integration", function () {
     it("attaches provisioning readiness step when startup opt-in is enabled", function () {
         const options = resolveConnectorOptions({ MONGODB_PROVISION_ON_STARTUP: "true" });
         expect(options.provisioningReadinessStep).to.be.a("function");
+    });
+
+    it("does not listen when startup provisioning readiness fails", async function () {
+        let listened = false;
+        const app = express();
+        const step = createStartupProvisioningReadinessStep({
+            getConnection: () => ({ db: { databaseName: "burni-test" } }),
+            ensureControlPlaneOnConnection: async () => ({
+                lockModel: {},
+                stateModel: {}
+            }),
+            runLockedMongoProvisioning: async () => ({
+                status: PROVISIONING_RUN_STATUS.FAILED,
+                errors: ["simulated provisioning failure"]
+            })
+        });
+
+        await startServer(app, {
+            readyPromise: step({}),
+            configureDatabaseDependentMiddleware: () => {},
+            listen: () => {
+                listened = true;
+            },
+            throwOnFailure: true
+        }).catch(() => {});
+
+        expect(listened).to.equal(false);
     });
 
     it("fails startup provisioning when locked run does not succeed", async function () {

@@ -21,6 +21,7 @@ const MONGODB_DEPENDENT_FILES = [
     "test/support/fhir/fhir-service.test.js",
     // startMongoMemory (test/support/mongo-memory.js)
     "test/integration/FHIR/Patient/patient-service.integration.test.js",
+    "test/models/mongodb/provisioning/mongodb-integration.test.js",
     // startRegistryTestContext (test/searchParameter/support/registry-test-context.js)
     "test/searchParameter/integration/patient-registry-search.integration.test.js",
     "test/searchParameter/integration/structural-mongo.integration.test.js",
@@ -54,6 +55,7 @@ const FAST_PROFILE_EXCLUDE = [
     "test/searchParameter/registry/registry-reload-lifecycle.test.js",
     "test/support/fhir/crud-test-context.test.js",
     "test/support/fhir/fhir-service.test.js",
+    "test/models/mongodb/provisioning/mongodb-integration.test.js",
     "test/models/mongodb/connector-lifecycle.test.js"
 ];
 
