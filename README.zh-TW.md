@@ -105,6 +105,16 @@ Registry 是 production SearchParameter 唯一的執行路徑。以下指令用�
 
 版本控制中的 canonical source 是 FHIR R4/4.0.1 SearchParameter Bundle。Legacy inventory 檔案不是 runtime input，也不會由上述指令重新產生。`npm run build` 不會重新產生 SearchParameter compile artifact；上述輸入變更時請另外執行 `search-parameter:build-artifacts`。
 
+### MongoDB provisioning 指令
+
+Burni 預設不在 application startup 建立 collection 或 index。部署時請在啟動服務前執行 provisioning，或使用 `MONGODB_PROVISION_ON_STARTUP=true` 明確 opt-in。
+
+- `npm run mongodb:provision` 建立全部 resource、history 與 static collections，以及 baseline 與 approved built-in temporal derived indexes，最後執行 verify。失敗時回傳非零狀態；部分完成後可安全重試，不 rollback 已建立的 DDL。
+- `npm run mongodb:verify` 只讀取 actual state，回報 missing、extra、mismatch index 與 manifest identity drift；不執行 DDL。
+- `npm run mongodb:audit-id` 掃描 resource/history duplicate `id`；只讀、不修改資料，供未來 unique migration 前的 clean-audit gate 使用。
+
+期望狀態定義於 `models/mongodb/provisioning/artifacts/desired-index-manifest.json`。多 instance 執行時由 `MongoProvisioningLock` 互斥，`MongoProvisioningState` 保存 manifest checksum 與 drift 摘要。詳見 [ADR 0009](docs/adr/0009-mongodb-schema-and-index-provisioning.md) 與部署文件。
+
 ## 啟動服務
 ```
 node server.js

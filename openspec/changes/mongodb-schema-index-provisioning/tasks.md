@@ -46,8 +46,8 @@
 
 ## 7. Documentation and verification
 
-- [ ] 7.1 更新部署 runbook，記錄 provision、verify、audit command、startup opt-in、lock、drift 與 partial retry 行為。
-- [ ] 7.2 更新 SearchParameter 文件，說明第一階段只有 approved built-in temporal definitions 會建立 derived index，custom definitions 預設不建立。
-- [ ] 7.3 執行 artifact identity、manifest drift、diagnostics 與 resource enablement gates。
-- [ ] 7.4 執行 `npm test` fast profile，以及 MongoDB 可用時的 targeted integration tests 或 `npm run test:full`。
-- [ ] 7.5 執行 OpenSpec validation，確認所有 proposal、spec、design 與 tasks artifact 完整。
+- [x] 7.1 更新部署 runbook，記錄 provision、verify、audit command、startup opt-in、lock、drift 與 partial retry 行為。
+- [x] 7.2 更新 SearchParameter 文件，說明第一階段只有 approved built-in temporal definitions 會建立 derived index，custom definitions 預設不建立。
+- [x] 7.3 執行 artifact identity、manifest drift、diagnostics 與 resource enablement gates。
+- [x] 7.4 執行 `npm test` fast profile，以及 MongoDB 可用時的 targeted integration tests 或 `npm run test:full`。
+- [x] 7.5 執行 OpenSpec validation，確認所有 proposal、spec、design 與 tasks artifact 完整。

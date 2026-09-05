@@ -68,3 +68,60 @@ services:
 ```sh
 docker-compose up -d
 ```
+
+## MongoDB schema 與 index provisioning
+
+Burni 預設將 Mongoose `autoCreate` 與 `autoIndex` 設為 `false`。Model registration 只代表 application process 內已註冊 model，**不保證** MongoDB collection 或 index 已存在。正式部署應在 application 啟動前執行 provisioning，或明確啟用 startup opt-in。
+
+期望的 collection 與 index 狀態定義於版本控制中的 `models/mongodb/provisioning/artifacts/desired-index-manifest.json`。Provisioning 會依此 manifest 建立缺少的 collection 與 index，並將結果寫入 `MongoProvisioningState`；多 instance 執行時由 `MongoProvisioningLock` 以 database-scoped lease 互斥。
+
+### 部署前 provisioning（建議）
+
+設定與 application 相同的 MongoDB 連線環境變數（`MONGODB_CONNECTION_URL`，或 `MONGODB_HOSTS` / `MONGODB_PORTS` / `MONGODB_NAME`），然後執行：
+
+```sh
+npm run mongodb:provision
+```
+
+此 command 依序完成 control-plane 初始化、取得 lock、建立 collections、建立 baseline indexes、建立 approved built-in temporal derived indexes、執行 verify，並保存 manifest checksum 與 drift 摘要。成功時 exit code 為 `0`；任一 phase 失敗時回傳非零狀態。
+
+**部分完成與重試**：Provisioning 採 additive-only policy，不 rollback 已建立的 collection 或 index。若 run 在中途失敗，已完成的 DDL 會保留；再次執行 `mongodb:provision` 會從 desired/actual diff 繼續補齊缺少項目。Lock lease 到期後可由其他 process 回收 expired lock 並重試。
+
+### 只讀 verify
+
+```sh
+npm run mongodb:verify
+```
+
+`mongodb:verify` **不執行任何 DDL**，也不修改資料。它只讀取 actual collections 與 indexes，回報：
+
+- **missing**：期望存在但資料庫缺少的 index
+- **extra**：資料庫存在但 manifest 未宣告的 index（只報告，不刪除）
+- **mismatch**：key 或 options 與期望不一致的 index
+- **manifest identity drift**：目前 desired manifest 的 checksum 或 version 與 `MongoProvisioningState` 中最近一次成功 run 保存的值不一致
+
+verify 失敗時 exit code 為 `2`。
+
+### `id` duplicate audit（只讀）
+
+```sh
+npm run mongodb:audit-id
+```
+
+掃描 resource 與 history collections 中的 duplicate `id`，供未來 unique migration 前的 clean-audit gate 使用。**不修改任何資料**。一般 provisioning **不會**自動將既有 `id` index 改為 unique。
+
+### Startup opt-in
+
+預設 `node server.js` **不會**執行 provisioning；application readiness（`mongodb.ready`）與 provisioning readiness 是分開的狀態。缺少 performance index 不會阻止 HTTP listen，但可能導致 COLLSCAN。
+
+若要在 application ready 前等待完整 provisioning run，設定：
+
+```sh
+MONGODB_PROVISION_ON_STARTUP=true
+```
+
+或 `MONGODB_PROVISION_ON_STARTUP=1`。啟用後，server bootstrap 會在 listen 前執行與 `mongodb:provision` 相同的 locked run；失敗時不宣告 ready、不 listen，並以非零狀態結束 process。正式環境仍建議使用獨立 deployment command，而非 startup opt-in。
+
+### 與 SearchParameter derived index 的關係
+
+第一階段 derived index 只涵蓋 built-in artifact 中 approved 的 temporal SearchParameter。Database 自訂 SearchParameter 仍可執行查詢，但預設不建立 derived index。詳見 [搜尋參數概觀](/docs/search-parameter/overview)。

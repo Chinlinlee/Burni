@@ -68,3 +68,60 @@ services:
 ```sh
 docker-compose up -d
 ```
+
+## MongoDB schema and index provisioning
+
+Burni sets Mongoose `autoCreate` and `autoIndex` to `false` by default. Model registration only means models are registered inside the application process; it does **not** guarantee that MongoDB collections or indexes exist. Production deployments should run provisioning before application startup, or explicitly enable startup opt-in.
+
+The desired collection and index state is defined in the committed artifact at `models/mongodb/provisioning/artifacts/desired-index-manifest.json`. Provisioning creates missing collections and indexes from that manifest, persists results in `MongoProvisioningState`, and uses `MongoProvisioningLock` with a database-scoped lease for multi-instance runs.
+
+### Pre-deployment provisioning (recommended)
+
+Configure the same MongoDB connection environment variables as the application (`MONGODB_CONNECTION_URL`, or `MONGODB_HOSTS` / `MONGODB_PORTS` / `MONGODB_NAME`), then run:
+
+```sh
+npm run mongodb:provision
+```
+
+This command runs control-plane initialization, acquires the lock, creates collections, creates baseline indexes, creates approved built-in temporal derived indexes, runs verify, and persists the manifest checksum and drift summary. Exit code `0` on success; any failed phase returns a non-zero status.
+
+**Partial completion and retry**: Provisioning is additive-only and does not roll back collections or indexes that were already created. If a run fails midway, completed DDL remains in place; rerunning `mongodb:provision` continues from the desired/actual diff. After lock lease expiry, another process can reclaim the expired lock and retry.
+
+### Read-only verify
+
+```sh
+npm run mongodb:verify
+```
+
+`mongodb:verify` performs **no DDL** and does not modify data. It reads actual collections and indexes and reports:
+
+- **missing**: indexes expected by the manifest but absent in the database
+- **extra**: indexes present in the database but not declared in the manifest (reported only, never deleted)
+- **mismatch**: indexes whose key or options do not match the expected identity
+- **manifest identity drift**: the current desired manifest checksum or version differs from the value stored in `MongoProvisioningState` for the latest successful run
+
+Verify failure uses exit code `2`.
+
+### `id` duplicate audit (read-only)
+
+```sh
+npm run mongodb:audit-id
+```
+
+Scans resource and history collections for duplicate `id` values for a future unique-migration clean-audit gate. It **does not modify data**. General provisioning does **not** automatically change an existing `id` index to unique.
+
+### Startup opt-in
+
+By default, `node server.js` does **not** run provisioning. Application readiness (`mongodb.ready`) and provisioning readiness are separate. Missing performance indexes do not block HTTP listen, but queries may fall back to COLLSCAN.
+
+To wait for a full provisioning run before application ready, set:
+
+```sh
+MONGODB_PROVISION_ON_STARTUP=true
+```
+
+or `MONGODB_PROVISION_ON_STARTUP=1`. When enabled, server bootstrap runs the same locked run as `mongodb:provision` before listen. On failure it does not declare ready, does not listen, and exits with a non-zero status. Production deployments should still prefer the standalone deployment command over startup opt-in.
+
+### Relationship to SearchParameter derived indexes
+
+First-phase derived indexes cover approved built-in temporal SearchParameters only. Custom database SearchParameters remain executable but do not create derived indexes by default. See [Search parameters overview](/docs/search-parameter/overview).

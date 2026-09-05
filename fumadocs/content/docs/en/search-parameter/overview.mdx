@@ -15,3 +15,13 @@ The burni currently support [FHIR search operations](http://www.hl7.org/fhir/sea
 - _lastUpdated
 ## Search result parameters
 - _count
+
+## Derived indexes and custom SearchParameters
+
+The SearchParameter Registry owns query correctness; MongoDB derived indexes only improve query performance. They are separate lifecycle concerns.
+
+First-phase provisioning creates derived indexes only for **approved built-in temporal SearchParameters**. Each included lookup must be active, compilable, pass the temporal index compatibility policy, and expose a safe index contract for its extraction path.
+
+**Custom database SearchParameters** remain executable by default but are **not** added to the desired index manifest, so they do not receive derived indexes. That does not disable the query; it means MongoDB may use COLLSCAN. When performance indexes are missing, run `npm run mongodb:verify` to inspect drift and run `npm run mongodb:provision` as part of deployment.
+
+The expected derived index state is merged into `models/mongodb/provisioning/artifacts/desired-index-manifest.json`. See the MongoDB provisioning section in [Deploy](/docs/getting-started/deploy).
