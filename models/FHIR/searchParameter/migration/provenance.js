@@ -30,12 +30,21 @@ function loadProvenance() {
 }
 
 /**
+ * @param {Buffer} content
+ * @returns {string}
+ */
+function normalizeFileContentForChecksum(content) {
+    return content.toString("utf8").replace(/\r\n/g, "\n");
+}
+
+/**
  * @param {string} filePath
  * @returns {string}
  */
 function computeFileChecksum(filePath) {
     const content = fs.readFileSync(filePath);
-    return crypto.createHash("sha256").update(content).digest("hex");
+    const normalized = normalizeFileContentForChecksum(content);
+    return crypto.createHash("sha256").update(normalized, "utf8").digest("hex");
 }
 
 /**
@@ -91,6 +100,7 @@ module.exports = {
     FIXTURES_DIR,
     PROVENANCE_PATH,
     loadProvenance,
+    normalizeFileContentForChecksum,
     computeFileChecksum,
     verifyProvenance,
     getBundlePath

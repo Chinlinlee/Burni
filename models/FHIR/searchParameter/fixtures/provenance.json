@@ -7,7 +7,7 @@
   "fixtureFile": "search-parameters-r4-4.0.1.json",
   "definitionCount": 1375,
   "checksumAlgorithm": "sha256",
-  "checksum": "dc5927e3781a5aba26c08821904c4091664b3a40171aba9b01e563e9f7ca85df",
+  "checksum": "a098c966051d98e4f96fb9c6751059203dc714d965ae66333319b2bb98b2db20",
   "fetchedAt": "2026-08-29",
   "trusted": true,
   "notes": "Official HL7 FHIR R4/4.0.1 SearchParameter definitions. Raw resource status is preserved; effective activation is applied by the registry overlay."

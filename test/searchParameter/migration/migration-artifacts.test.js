@@ -2,8 +2,9 @@ require("module-alias/register");
 
 const { expect } = require("chai");
 const fs = require("fs");
+const os = require("os");
 const path = require("path");
-const { verifyProvenance } = require("@models/FHIR/searchParameter/migration/provenance");
+const { verifyProvenance, computeFileChecksum } = require("@models/FHIR/searchParameter/migration/provenance");
 const { buildLookupMatrix } = require("@models/FHIR/searchParameter/migration/lookupMatrix");
 const { verifyRegistryIntegrity } = require("@models/FHIR/searchParameter/migration/diagnosticsIntegrity");
 const { reloadRegistry } = require("@models/FHIR/searchParameter/registry/registryManager");
@@ -37,6 +38,16 @@ async function compileDefinitions() {
 }
 
 describe("SearchParameter migration artifacts", function () {
+    it("computes stable checksums regardless of CRLF vs LF line endings", function () {
+        const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "burni-sp-checksum-"));
+        const crlfPath = path.join(tempDir, "crlf.txt");
+        const lfPath = path.join(tempDir, "lf.txt");
+        fs.writeFileSync(crlfPath, "alpha\r\nbeta\r\n");
+        fs.writeFileSync(lfPath, "alpha\nbeta\n");
+
+        expect(computeFileChecksum(crlfPath)).to.equal(computeFileChecksum(lfPath));
+    });
+
     it("verifies bundle provenance with checksum and metadata", function () {
         const result = verifyProvenance();
         expect(result.valid).to.equal(true, result.errors.join("; "));
