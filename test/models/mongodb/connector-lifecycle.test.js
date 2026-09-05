@@ -165,4 +165,23 @@ describe("MongoDB connector lifecycle", function () {
             expect(result.connectCalledAgain).to.equal(false);
         });
     });
+
+    describe("4.x startup provisioning readiness", function () {
+        it("runs provisioning before SearchParameter registry when opt-in step is configured", function () {
+            const result = runIsolatedConnectorScenario("startupProvisioningRunsBeforeRegistry");
+
+            expect(result.ok).to.equal(true);
+            expect(result.order).to.deep.equal(["provisioning", "registry"]);
+        });
+
+        it("rejects application readiness when startup provisioning fails", function () {
+            const result = runIsolatedConnectorScenario("startupProvisioningFailureBlocksReady");
+
+            expect(result.ok).to.equal(true);
+            expect(result.readyError?.message).to.include(
+                "simulated MongoDB provisioning failure"
+            );
+            expect(result.databaseConnected).to.equal(true);
+        });
+    });
 });

@@ -1,3 +1,26 @@
+# Domain Context
+
+## MongoDB model lifecycle
+
+- **Model registration**：在 application process 內建立並註冊 Mongoose model，使既有同步 model map 與 Mongoose model registry 可以取得 resource、history 和 static model。
+- **Collection provisioning**：讓 MongoDB 中應用程式需要的 collection 明確存在；它與 model registration 是不同生命週期。
+- **Index provisioning**：依應用程式的索引契約建立 MongoDB index。
+- **Index reconciliation**：比較期望的 index 狀態與 MongoDB 實際狀態，處理缺少或不一致的 index。
+- **Baseline index**：由資源模型、history 查詢或系統服務本身固定需要的 index。
+- **SearchParameter-derived index**：由可執行 SearchParameter 定義推導的 index；只有通過對應 index policy 的定義才屬於此類。
+- **Indexable capability**：SearchParameter 是否允許產生 derived index 的明確能力，不等同於 SearchParameter 是否可執行。
+- **Provisioning readiness**：collection 與 index provisioning 是否完成的部署狀態；它與 application readiness 分開表示。
+
+## SearchParameter index boundary
+
+- 目前第一階段的 derived index 範圍是 built-in、明確標記為 indexable 的 temporal SearchParameter。
+- database 自訂 SearchParameter 預設可執行但不產生 derived index。
+- SearchParameter index 應改善查詢效能，不得改變查詢結果的正確性。
+
+## Data integrity boundary
+
+- `id` unique migration 是資料完整性變更，不屬於一般 provisioning。
+- unique migration 必須先完成 duplicate audit；發現 duplicate 時只報告並拒絕 migration，不由通用流程自動刪除資料。
 # Burni
 
 Burni is a FHIR server. A resource may be profile-validated by a remote Validator before Burni stores it or answers `$validate`.

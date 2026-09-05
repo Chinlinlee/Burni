@@ -674,6 +674,69 @@ async function preExistingConnection() {
     }
 }
 
+async function startupProvisioningFailureBlocksReady() {
+    const restoreConsole = captureConsole();
+    try {
+        const uri = await startMemoryServer();
+        const config = buildConfigFromUri(uri);
+        const modelMap = initConnector(config, {
+            provisioningReadinessStep: async () => {
+                throw new Error("simulated MongoDB provisioning failure");
+            },
+            readinessStep: async () => {
+                throw new Error("registry step should not run");
+            }
+        });
+
+        let readyError = null;
+        try {
+            await modelMap.ready;
+        } catch (error) {
+            readyError = error;
+        }
+
+        return {
+            ok:
+                Boolean(readyError) &&
+                readyError.message.includes("simulated MongoDB provisioning failure") &&
+                mongoose.connection.readyState === 1,
+            readyError: serializeError(readyError),
+            databaseConnected: mongoose.connection.readyState === 1
+        };
+    } finally {
+        restoreConsole();
+        await stopMemoryServer();
+    }
+}
+
+async function startupProvisioningRunsBeforeRegistry() {
+    const restoreConsole = captureConsole();
+    try {
+        const uri = await startMemoryServer();
+        const config = buildConfigFromUri(uri);
+        /** @type {string[]} */
+        const order = [];
+        const modelMap = initConnector(config, {
+            provisioningReadinessStep: async () => {
+                order.push("provisioning");
+            },
+            readinessStep: async () => {
+                order.push("registry");
+            }
+        });
+
+        await modelMap.ready;
+
+        return {
+            ok: order.length === 2 && order[0] === "provisioning" && order[1] === "registry",
+            order
+        };
+    } finally {
+        restoreConsole();
+        await stopMemoryServer();
+    }
+}
+
 module.exports = {
     syncMapBeforeReady,
     registrationOrderAndDiscovery,
@@ -688,5 +751,7 @@ module.exports = {
     shardingIndependentFromApplicationReady,
     shardingFailureDoesNotRejectReady,
     safeInitLogs,
-    preExistingConnection
+    preExistingConnection,
+    startupProvisioningFailureBlocksReady,
+    startupProvisioningRunsBeforeRegistry
 };

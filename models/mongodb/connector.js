@@ -324,7 +324,7 @@ function beginDatabaseConnection(config, state) {
     }
 
     waitForDatabaseReady(config, state)
-        .then(() => {
+        .then(async () => {
             state.timings.databaseEnd = performance.now();
             console.log(
                 `[mongodb] database ready in ${elapsedMs(
@@ -334,6 +334,18 @@ function beginDatabaseConnection(config, state) {
                 )}ms`,
                 maskConnectionInfo(state.normalizedConfig)
             );
+
+            if (typeof state.provisioningReadinessStep === "function") {
+                await state.provisioningReadinessStep(state.modelMap);
+                state.timings.provisioningEnd = performance.now();
+                console.log(
+                    `[mongodb] provisioning complete in ${elapsedMs(
+                        state.timings,
+                        state.timings.databaseEnd,
+                        state.timings.provisioningEnd
+                    )}ms`
+                );
+            }
 
             if (typeof state.readinessStep === "function") {
                 return state.readinessStep();
@@ -364,9 +376,12 @@ function beginDatabaseConnection(config, state) {
         .catch((err) => {
             const failedPhase = !state.timings.databaseEnd
                 ? "database connection"
-                : typeof state.readinessStep === "function"
-                  ? "SearchParameter registry"
-                  : "readiness step";
+                : typeof state.provisioningReadinessStep === "function" &&
+                    !state.timings.provisioningEnd
+                  ? "MongoDB provisioning"
+                  : typeof state.readinessStep === "function"
+                    ? "SearchParameter registry"
+                    : "readiness step";
             logInitPhaseFailure(state, failedPhase);
             console.error(err);
             failReady(state, err);
@@ -423,7 +438,8 @@ function initializeWithDiscovered(config, discovered, options = {}) {
         status: "initializing",
         error: null,
         timings: createInitTimings(),
-        readinessStep: options.readinessStep
+        readinessStep: options.readinessStep,
+        provisioningReadinessStep: options.provisioningReadinessStep
     };
     initializationState = state;
 

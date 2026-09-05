@@ -145,6 +145,8 @@ app.use((req, res, next) => {
 
 app.use(morganMiddleware);
 
+const { startServer: runBootstrap } = require("./server/bootstrap");
+
 function configureDatabaseDependentMiddleware() {
     app.use(
         session({
@@ -165,20 +167,19 @@ function configureDatabaseDependentMiddleware() {
     app.engine("html", require("ejs").renderFile);
 }
 
-async function startServer() {
-    try {
-        await mongodb.ready;
-        configureDatabaseDependentMiddleware();
-
-        http.createServer(app).listen(port, function () {
-            console.log(`http server is listening on port:${port}`);
-        });
-    } catch (err) {
-        console.error("[server] application readiness failed:", err);
-        process.exit(1);
-    }
+async function startServer(options = {}) {
+    return runBootstrap(app, {
+        ...options,
+        configureDatabaseDependentMiddleware:
+            options.configureMiddleware ??
+            options.configureDatabaseDependentMiddleware ??
+            configureDatabaseDependentMiddleware
+    });
 }
 
-void startServer();
+if (require.main === module) {
+    void startServer();
+}
 
 module.exports = app;
+module.exports.startServer = startServer;
