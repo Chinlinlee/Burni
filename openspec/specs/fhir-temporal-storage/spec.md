@@ -63,24 +63,24 @@ FHIR create、update、Bundle write、read、search response 與 history respons
 - **WHEN** client 直接提交包含 `value`、`precision` 或 normalized fields 的 temporal object
 - **THEN** public FHIR API SHALL 回傳標準 invalid resource/value error
 
-### Requirement: Temporal migration SHALL produce canonical data with explicit loss policy
+### Requirement: Temporal migration SHALL produce canonical data without guessing
 
-Migration SHALL convert valid legacy strings and BSON Dates into canonical temporal objects without silently guessing invalid values. Legacy BSON Dates SHALL use a deterministic policy: a BSON Date in a `date` field SHALL become a UTC calendar date with `day` precision, while a BSON Date in an absolute-time field SHALL become a canonical UTC value. Any conversion that cannot reproduce the original FHIR lexical value SHALL be marked as lossy and recorded in migration audit evidence. Invalid values and values without an applicable policy SHALL fail-fast.
+Migration SHALL 將可解析的 legacy string 與 BSON Date 轉換為 canonical temporal object。legacy BSON Date 在 absolute-time field SHALL 轉成 canonical UTC value；legacy BSON Date 在無法無歧義判定 calendar date 的 `date` field SHALL 使 migration fail-fast。Migration MUST NOT 靜默猜測或自動修正 invalid temporal data。
 
 #### Scenario: Migrate a legacy temporal string
 
 - **WHEN** legacy field 保存合法的 `date` 或 `dateTime` string
 - **THEN** migration SHALL 保留該 string 作為 `value`，推導 precision，並建立 canonical normalized interval
 
-#### Scenario: Migrate a legacy BSON Date in a date field
+#### Scenario: Migrate a legacy BSON Date instant
 
-- **WHEN** legacy `date` field 保存有效 BSON Date
-- **THEN** migration SHALL 使用 BSON Date 的 UTC calendar date 建立 `day` precision 的 canonical date object，並將 conversion 標記為 lossy
+- **WHEN** legacy `instant` field 保存 BSON Date
+- **THEN** migration SHALL 以 UTC canonical string 建立 `value`，並以 Decimal128 `epochSeconds` 建立 instant object
 
-#### Scenario: Migrate a legacy BSON Date in an absolute-time field
+#### Scenario: Reject an ambiguous legacy date
 
-- **WHEN** legacy `instant` 或 `dateTime` field 保存有效 BSON Date
-- **THEN** migration SHALL 以 UTC canonical value 建立 temporal object，並將無法恢復的原始 lexical details 寫入 audit evidence
+- **WHEN** legacy `date` field 保存無法判定原始 calendar date 的 BSON Date
+- **THEN** migration SHALL fail-fast、回報欄位與資料值，且 MUST NOT 將猜測結果寫回資料庫
 
 #### Scenario: Reject an invalid or unsupported temporal value
 
