@@ -4,7 +4,7 @@ const _ = require("lodash");
 const {
     handleError
 } = require('./models/FHIR/httpMessage');
-const FHIR = require('fhir-tool').Fhir;
+const FHIR = require("fhir-tool").Fhir;
 let pluginsConfig;
 if (fs.existsSync(path.join(__dirname, "./plugins/config.js"))) {
     pluginsConfig = require("./plugins/config").pluginsConfig;
