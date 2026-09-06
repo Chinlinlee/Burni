@@ -63,7 +63,7 @@
         "moment": "^2.30.1",
         "moment-timezone": "^0.5.45",
         "mongoose": "^8.24.4",
-        "morgan": "^1.10.0",
+        "morgan": "^1.12.0",
         "node-schedule": "^2.1.1",
         "normalize-text": "^2.4.1",
         "object-hash": "^3.0.0",
