@@ -37,6 +37,25 @@ function doPrettyJson(app, req) {
     }
 }
 
+function registerFallbackRoutes(app) {
+    app.get(
+        [
+            "/api",
+            "/api/*splat",
+            "/auth",
+            "/auth/*splat",
+            "/web",
+            "/web/*splat"
+        ],
+        (req, res) => {
+            res.status(404).json({
+                status: 404,
+                message: "not found"
+            });
+        }
+    );
+}
+
 module.exports = function (app) {
     app.set("json spaces", 4);
 
@@ -125,12 +144,7 @@ module.exports = function (app) {
         }
     }
     //#endregion
-    app.route("/:url(api|auth|web)/*").get((req, res) => {
-        res.status(404).json({
-            status: 404,
-            message: "not found"
-        });
-    });
+    registerFallbackRoutes(app);
 
     for (let pluginName in pluginsConfig) {
         let plugin = pluginsConfig[pluginName];
@@ -138,3 +152,5 @@ module.exports = function (app) {
             require(`plugins/${pluginName}`)(app);
     }
 };
+
+module.exports.registerFallbackRoutes = registerFallbackRoutes;
