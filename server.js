@@ -164,7 +164,6 @@ function configureDatabaseDependentMiddleware() {
     );
 
     require("routes.js")(app);
-    app.engine("html", require("ejs").renderFile);
 }
 
 async function startServer(options = {}) {
