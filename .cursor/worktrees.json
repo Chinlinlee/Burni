@@ -1,0 +1,10 @@
+{
+  "setup-worktree-unix": [
+    "cp \"$ROOT_WORKTREE_PATH/.env\" .env",
+    "cp \"$ROOT_WORKTREE_PATH/config/config.js\" config/config.js"
+  ],
+  "setup-worktree-windows": [
+    "copy /Y \"%ROOT_WORKTREE_PATH%\\.env\" .env",
+    "copy /Y \"%ROOT_WORKTREE_PATH%\\config\\config.js\" config\\config.js"
+  ]
+}

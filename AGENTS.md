@@ -1,5 +1,25 @@
 # Agent Notes
 
+## Git worktrees
+
+`config/config.js` and `.env` are gitignored, so a new worktree will not have them. Cursor copies both from the main checkout via `.cursor/worktrees.json` (`$ROOT_WORKTREE_PATH`).
+
+If either file is still missing, copy it from the main repo before running the app or tests:
+
+```bash
+cp "$ROOT_WORKTREE_PATH/.env" .env
+cp "$ROOT_WORKTREE_PATH/config/config.js" config/config.js
+```
+
+On Windows PowerShell:
+
+```powershell
+Copy-Item "$env:ROOT_WORKTREE_PATH\.env" .env
+Copy-Item "$env:ROOT_WORKTREE_PATH\config\config.js" config\config.js
+```
+
+Do not generate a fresh `config/config.js` or `.env` for a worktree when the main repo already has working copies.
+
 ## Test profiles
 
 - `npm test` runs the **fast profile** (`.mocharc.fast.js`): non-MongoDB suites only.
