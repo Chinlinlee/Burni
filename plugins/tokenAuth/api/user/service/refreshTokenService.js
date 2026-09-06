@@ -1,6 +1,5 @@
 const jwt = require("jsonwebtoken");
-const UIDGenerator = require("uid-generator");
-const uidGenerator = new UIDGenerator(256);
+const { generateRandomToken } = require("@root/utils/randomToken");
 const mongoose = require("mongoose");
 const tokenAuthPluginConfig =
     require("../../../../config").pluginsConfig.tokenAuth;
@@ -18,8 +17,8 @@ module.exports = async function (refreshToken, expiresIn = "1y") {
             };
         }
         let decodedTokenObj = jwt.decode(hitTokenObj.token, { complete: true });
-        let id = await uidGenerator.generate();
-        let newRefreshToken = await uidGenerator.generate();
+        let id = generateRandomToken();
+        let newRefreshToken = generateRandomToken();
         let token = jwt.sign(
             decodedTokenObj,
             tokenAuthPluginConfig.jwt.secretKey,

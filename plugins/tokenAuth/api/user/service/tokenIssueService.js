@@ -1,15 +1,14 @@
 const _ = require("lodash");
 const jwt = require("jsonwebtoken");
-const UIDGenerator = require("uid-generator");
-const uidGenerator = new UIDGenerator(256);
+const { generateRandomToken } = require("@root/utils/randomToken");
 const mongoose = require("mongoose");
 const tokenAuthPluginConfig =
     require("../../../../config").pluginsConfig.tokenAuth;
 
 module.exports = async function (needSignData, expiresIn = "1y") {
     try {
-        let id = await uidGenerator.generate();
-        let refresh_token = await uidGenerator.generate();
+        let id = generateRandomToken();
+        let refresh_token = generateRandomToken();
 
         let scope = accessListToScope(needSignData.accessList);
         _.set(needSignData, "scope", scope);
