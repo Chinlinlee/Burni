@@ -37,7 +37,7 @@ describe("$validate handler", () => {
 
     afterEach(() => {
         process.env = originalEnv;
-        setFetch(require("node-fetch"));
+        setFetch(fetch);
     });
 
     it("ignores the profile query parameter when posting to the validator", async () => {

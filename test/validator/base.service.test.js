@@ -16,7 +16,7 @@ describe("BaseFhirApiService.validateRequestResource", () => {
 
     afterEach(() => {
         process.env = originalEnv;
-        setFetch(require("node-fetch"));
+        setFetch(fetch);
     });
 
     it("returns status false with 503 when the validator is unreachable", async () => {

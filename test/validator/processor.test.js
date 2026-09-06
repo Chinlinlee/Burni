@@ -18,7 +18,7 @@ describe("remote validator processor", () => {
 
     afterEach(() => {
         process.env = originalEnv;
-        setFetch(require("node-fetch"));
+        setFetch(fetch);
     });
 
     describe("OperationOutcome mapping", () => {

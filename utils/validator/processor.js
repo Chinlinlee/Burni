@@ -1,16 +1,14 @@
-const nodeFetch = require("node-fetch");
-const AbortController = require("abort-controller");
 const { handleError } = require("../../models/FHIR/httpMessage");
 const { getValidatorTimeoutMs } = require("./config");
 
-/** @type {typeof nodeFetch} */
-let fetchImpl = nodeFetch;
+/** @type {typeof fetch} */
+let fetchImpl = fetch;
 
 /**
- * @param {typeof nodeFetch} fetch
+ * @param {typeof fetch} fetchFn
  */
-function setFetch(fetch) {
-    fetchImpl = fetch;
+function setFetch(fetchFn) {
+    fetchImpl = fetchFn;
 }
 
 /**

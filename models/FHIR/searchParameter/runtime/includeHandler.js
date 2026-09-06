@@ -1,6 +1,5 @@
 const _ = require("lodash");
 const mongoose = require("mongoose");
-const fetch = require("node-fetch");
 const { handleError, ErrorOperationOutcome } = require("@models/FHIR/httpMessage");
 const { ensureRegistryLoaded } = require("../registry/registryManager");
 const {
