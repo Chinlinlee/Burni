@@ -29,7 +29,7 @@ This server supported FHIR RESTFul API below:
 <font color=red>**Don't remove Bundle.js in models/mongodb/FHIRTypeSchema**</font>
 
 ## Requirements
-- node.js >= 16
+- node.js >= 22
 - MongoDB >= 4
 - A running [Inferno FHIR validator wrapper](https://github.com/Chinlinlee/inferno-fhir-validator-wrapper) if `ENABLE_VALIDATOR=true`
 
