@@ -46,9 +46,9 @@
     },
     "dependencies": {
         "abort-controller": "^3.0.0",
-        "compression": "^1.7.4",
+        "compression": "^1.8.1",
         "connect-mongo": "^6.0.0",
-        "cookie-parser": "^1.4.6",
+        "cookie-parser": "^1.4.7",
         "dotenv": "^17.4.2",
         "express": "5.2.1",
         "express-rate-limit": "^7.1.5",
