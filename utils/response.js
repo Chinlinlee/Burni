@@ -1,4 +1,4 @@
-const FHIR = require("fhir").Fhir;
+const FHIR = require("fhir-tool").Fhir;
 const _ = require("lodash");
 
 /**

@@ -1,5 +1,5 @@
 const _ = require("lodash");
-const FHIR = require("fhir").Fhir;
+const FHIR = require("fhir-tool").Fhir;
 const mongodb = require("../../models/mongodb");
 const {
     handleError,

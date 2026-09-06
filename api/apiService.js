@@ -1,6 +1,6 @@
 const mongodb = require("../models/mongodb");
 const _ = require("lodash");
-const FHIR = require("fhir").Fhir;
+const FHIR = require("fhir-tool").Fhir;
 const { handleError } = require("../models/FHIR/httpMessage");
 const jwt = require("jsonwebtoken");
 const jsonPath = require("jsonpath");
