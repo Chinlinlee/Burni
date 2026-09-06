@@ -44,7 +44,8 @@ module.exports = defineConfig([
             "no-unused-vars": "off",
             "no-console": "off",
             "no-useless-escape": "off",
-            "no-useless-catch": "off"
+            "no-useless-catch": "off",
+            "no-useless-assignment": "off"
         }
     },
     eslintConfigPrettier
