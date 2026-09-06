@@ -1,5 +1,7 @@
 const path = require("path");
-const appDir = path.dirname(require.main.filename);
+const appDir = path.dirname(
+    require.main?.filename ?? path.join(__dirname, "..", "..")
+);
 if (!process.env.MONGODB_HOSTS) {
     require("dotenv").config({
         path: `${appDir}/.env`
