@@ -39,7 +39,7 @@ if (_.get(config, "MedicinalProductAuthorization.interaction.create", true)) {
     router.post('/', require('./controller/postMedicinalProductAuthorization'));
 }
 
-router.post('/([\$])validate', require('./controller/postMedicinalProductAuthorizationValidate'));
+router.post('/$validate', require('./controller/postMedicinalProductAuthorizationValidate'));
 
 if (_.get(config, "MedicinalProductAuthorization.interaction.update", true)) {
     router.put('/:id', require("./controller/putMedicinalProductAuthorization"));

@@ -39,7 +39,7 @@ if (_.get(config, "DiagnosticReport.interaction.create", true)) {
     router.post('/', require('./controller/postDiagnosticReport'));
 }
 
-router.post('/([\$])validate', require('./controller/postDiagnosticReportValidate'));
+router.post('/$validate', require('./controller/postDiagnosticReportValidate'));
 
 if (_.get(config, "DiagnosticReport.interaction.update", true)) {
     router.put('/:id', require("./controller/putDiagnosticReport"));

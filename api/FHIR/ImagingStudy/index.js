@@ -39,7 +39,7 @@ if (_.get(config, "ImagingStudy.interaction.create", true)) {
     router.post('/', require('./controller/postImagingStudy'));
 }
 
-router.post('/([\$])validate', require('./controller/postImagingStudyValidate'));
+router.post('/$validate', require('./controller/postImagingStudyValidate'));
 
 if (_.get(config, "ImagingStudy.interaction.update", true)) {
     router.put('/:id', require("./controller/putImagingStudy"));

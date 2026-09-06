@@ -39,7 +39,7 @@ if (_.get(config, "AuditEvent.interaction.create", true)) {
     router.post('/', require('./controller/postAuditEvent'));
 }
 
-router.post('/([\$])validate', require('./controller/postAuditEventValidate'));
+router.post('/$validate', require('./controller/postAuditEventValidate'));
 
 if (_.get(config, "AuditEvent.interaction.update", true)) {
     router.put('/:id', require("./controller/putAuditEvent"));

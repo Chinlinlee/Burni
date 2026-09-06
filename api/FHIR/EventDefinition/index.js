@@ -39,7 +39,7 @@ if (_.get(config, "EventDefinition.interaction.create", true)) {
     router.post('/', require('./controller/postEventDefinition'));
 }
 
-router.post('/([\$])validate', require('./controller/postEventDefinitionValidate'));
+router.post('/$validate', require('./controller/postEventDefinitionValidate'));
 
 if (_.get(config, "EventDefinition.interaction.update", true)) {
     router.put('/:id', require("./controller/putEventDefinition"));

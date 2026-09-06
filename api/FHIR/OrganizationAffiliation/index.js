@@ -39,7 +39,7 @@ if (_.get(config, "OrganizationAffiliation.interaction.create", true)) {
     router.post('/', require('./controller/postOrganizationAffiliation'));
 }
 
-router.post('/([\$])validate', require('./controller/postOrganizationAffiliationValidate'));
+router.post('/$validate', require('./controller/postOrganizationAffiliationValidate'));
 
 if (_.get(config, "OrganizationAffiliation.interaction.update", true)) {
     router.put('/:id', require("./controller/putOrganizationAffiliation"));

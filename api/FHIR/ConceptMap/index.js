@@ -39,7 +39,7 @@ if (_.get(config, "ConceptMap.interaction.create", true)) {
     router.post('/', require('./controller/postConceptMap'));
 }
 
-router.post('/([\$])validate', require('./controller/postConceptMapValidate'));
+router.post('/$validate', require('./controller/postConceptMapValidate'));
 
 if (_.get(config, "ConceptMap.interaction.update", true)) {
     router.put('/:id', require("./controller/putConceptMap"));

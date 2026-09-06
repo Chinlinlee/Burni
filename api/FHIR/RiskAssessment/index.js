@@ -39,7 +39,7 @@ if (_.get(config, "RiskAssessment.interaction.create", true)) {
     router.post('/', require('./controller/postRiskAssessment'));
 }
 
-router.post('/([\$])validate', require('./controller/postRiskAssessmentValidate'));
+router.post('/$validate', require('./controller/postRiskAssessmentValidate'));
 
 if (_.get(config, "RiskAssessment.interaction.update", true)) {
     router.put('/:id', require("./controller/putRiskAssessment"));

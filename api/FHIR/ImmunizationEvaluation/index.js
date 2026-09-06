@@ -39,7 +39,7 @@ if (_.get(config, "ImmunizationEvaluation.interaction.create", true)) {
     router.post('/', require('./controller/postImmunizationEvaluation'));
 }
 
-router.post('/([\$])validate', require('./controller/postImmunizationEvaluationValidate'));
+router.post('/$validate', require('./controller/postImmunizationEvaluationValidate'));
 
 if (_.get(config, "ImmunizationEvaluation.interaction.update", true)) {
     router.put('/:id', require("./controller/putImmunizationEvaluation"));

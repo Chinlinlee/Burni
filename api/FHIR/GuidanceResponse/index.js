@@ -39,7 +39,7 @@ if (_.get(config, "GuidanceResponse.interaction.create", true)) {
     router.post('/', require('./controller/postGuidanceResponse'));
 }
 
-router.post('/([\$])validate', require('./controller/postGuidanceResponseValidate'));
+router.post('/$validate', require('./controller/postGuidanceResponseValidate'));
 
 if (_.get(config, "GuidanceResponse.interaction.update", true)) {
     router.put('/:id', require("./controller/putGuidanceResponse"));

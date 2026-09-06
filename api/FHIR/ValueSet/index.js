@@ -39,7 +39,7 @@ if (_.get(config, "ValueSet.interaction.create", true)) {
     router.post('/', require('./controller/postValueSet'));
 }
 
-router.post('/([\$])validate', require('./controller/postValueSetValidate'));
+router.post('/$validate', require('./controller/postValueSetValidate'));
 
 if (_.get(config, "ValueSet.interaction.update", true)) {
     router.put('/:id', require("./controller/putValueSet"));

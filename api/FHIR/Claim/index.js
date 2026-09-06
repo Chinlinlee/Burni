@@ -39,7 +39,7 @@ if (_.get(config, "Claim.interaction.create", true)) {
     router.post('/', require('./controller/postClaim'));
 }
 
-router.post('/([\$])validate', require('./controller/postClaimValidate'));
+router.post('/$validate', require('./controller/postClaimValidate'));
 
 if (_.get(config, "Claim.interaction.update", true)) {
     router.put('/:id', require("./controller/putClaim"));

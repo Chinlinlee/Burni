@@ -39,7 +39,7 @@ if (_.get(config, "Goal.interaction.create", true)) {
     router.post('/', require('./controller/postGoal'));
 }
 
-router.post('/([\$])validate', require('./controller/postGoalValidate'));
+router.post('/$validate', require('./controller/postGoalValidate'));
 
 if (_.get(config, "Goal.interaction.update", true)) {
     router.put('/:id', require("./controller/putGoal"));

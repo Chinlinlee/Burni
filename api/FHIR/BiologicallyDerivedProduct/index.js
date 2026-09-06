@@ -39,7 +39,7 @@ if (_.get(config, "BiologicallyDerivedProduct.interaction.create", true)) {
     router.post('/', require('./controller/postBiologicallyDerivedProduct'));
 }
 
-router.post('/([\$])validate', require('./controller/postBiologicallyDerivedProductValidate'));
+router.post('/$validate', require('./controller/postBiologicallyDerivedProductValidate'));
 
 if (_.get(config, "BiologicallyDerivedProduct.interaction.update", true)) {
     router.put('/:id', require("./controller/putBiologicallyDerivedProduct"));

@@ -39,7 +39,7 @@ if (_.get(config, "RelatedPerson.interaction.create", true)) {
     router.post('/', require('./controller/postRelatedPerson'));
 }
 
-router.post('/([\$])validate', require('./controller/postRelatedPersonValidate'));
+router.post('/$validate', require('./controller/postRelatedPersonValidate'));
 
 if (_.get(config, "RelatedPerson.interaction.update", true)) {
     router.put('/:id', require("./controller/putRelatedPerson"));

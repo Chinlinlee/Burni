@@ -39,7 +39,7 @@ if (_.get(config, "DocumentReference.interaction.create", true)) {
     router.post('/', require('./controller/postDocumentReference'));
 }
 
-router.post('/([\$])validate', require('./controller/postDocumentReferenceValidate'));
+router.post('/$validate', require('./controller/postDocumentReferenceValidate'));
 
 if (_.get(config, "DocumentReference.interaction.update", true)) {
     router.put('/:id', require("./controller/putDocumentReference"));

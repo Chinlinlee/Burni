@@ -39,7 +39,7 @@ if (_.get(config, "MedicinalProductUndesirableEffect.interaction.create", true))
     router.post('/', require('./controller/postMedicinalProductUndesirableEffect'));
 }
 
-router.post('/([\$])validate', require('./controller/postMedicinalProductUndesirableEffectValidate'));
+router.post('/$validate', require('./controller/postMedicinalProductUndesirableEffectValidate'));
 
 if (_.get(config, "MedicinalProductUndesirableEffect.interaction.update", true)) {
     router.put('/:id', require("./controller/putMedicinalProductUndesirableEffect"));

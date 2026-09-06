@@ -39,7 +39,7 @@ if (_.get(config, "ChargeItemDefinition.interaction.create", true)) {
     router.post('/', require('./controller/postChargeItemDefinition'));
 }
 
-router.post('/([\$])validate', require('./controller/postChargeItemDefinitionValidate'));
+router.post('/$validate', require('./controller/postChargeItemDefinitionValidate'));
 
 if (_.get(config, "ChargeItemDefinition.interaction.update", true)) {
     router.put('/:id', require("./controller/putChargeItemDefinition"));

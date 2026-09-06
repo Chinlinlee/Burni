@@ -39,7 +39,7 @@ if (_.get(config, "Coverage.interaction.create", true)) {
     router.post('/', require('./controller/postCoverage'));
 }
 
-router.post('/([\$])validate', require('./controller/postCoverageValidate'));
+router.post('/$validate', require('./controller/postCoverageValidate'));
 
 if (_.get(config, "Coverage.interaction.update", true)) {
     router.put('/:id', require("./controller/putCoverage"));

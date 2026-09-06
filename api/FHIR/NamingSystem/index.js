@@ -39,7 +39,7 @@ if (_.get(config, "NamingSystem.interaction.create", true)) {
     router.post('/', require('./controller/postNamingSystem'));
 }
 
-router.post('/([\$])validate', require('./controller/postNamingSystemValidate'));
+router.post('/$validate', require('./controller/postNamingSystemValidate'));
 
 if (_.get(config, "NamingSystem.interaction.update", true)) {
     router.put('/:id', require("./controller/putNamingSystem"));

@@ -39,7 +39,7 @@ if (_.get(config, "EnrollmentResponse.interaction.create", true)) {
     router.post('/', require('./controller/postEnrollmentResponse'));
 }
 
-router.post('/([\$])validate', require('./controller/postEnrollmentResponseValidate'));
+router.post('/$validate', require('./controller/postEnrollmentResponseValidate'));
 
 if (_.get(config, "EnrollmentResponse.interaction.update", true)) {
     router.put('/:id', require("./controller/putEnrollmentResponse"));

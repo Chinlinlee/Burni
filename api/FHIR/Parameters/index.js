@@ -39,7 +39,7 @@ if (_.get(config, "Parameters.interaction.create", true)) {
     router.post('/', require('./controller/postParameters'));
 }
 
-router.post('/([\$])validate', require('./controller/postParametersValidate'));
+router.post('/$validate', require('./controller/postParametersValidate'));
 
 if (_.get(config, "Parameters.interaction.update", true)) {
     router.put('/:id', require("./controller/putParameters"));

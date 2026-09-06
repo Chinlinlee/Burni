@@ -39,7 +39,7 @@ if (_.get(config, "CoverageEligibilityRequest.interaction.create", true)) {
     router.post('/', require('./controller/postCoverageEligibilityRequest'));
 }
 
-router.post('/([\$])validate', require('./controller/postCoverageEligibilityRequestValidate'));
+router.post('/$validate', require('./controller/postCoverageEligibilityRequestValidate'));
 
 if (_.get(config, "CoverageEligibilityRequest.interaction.update", true)) {
     router.put('/:id', require("./controller/putCoverageEligibilityRequest"));

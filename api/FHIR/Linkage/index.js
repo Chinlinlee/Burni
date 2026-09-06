@@ -39,7 +39,7 @@ if (_.get(config, "Linkage.interaction.create", true)) {
     router.post('/', require('./controller/postLinkage'));
 }
 
-router.post('/([\$])validate', require('./controller/postLinkageValidate'));
+router.post('/$validate', require('./controller/postLinkageValidate'));
 
 if (_.get(config, "Linkage.interaction.update", true)) {
     router.put('/:id', require("./controller/putLinkage"));

@@ -39,7 +39,7 @@ if (_.get(config, "SupplyDelivery.interaction.create", true)) {
     router.post('/', require('./controller/postSupplyDelivery'));
 }
 
-router.post('/([\$])validate', require('./controller/postSupplyDeliveryValidate'));
+router.post('/$validate', require('./controller/postSupplyDeliveryValidate'));
 
 if (_.get(config, "SupplyDelivery.interaction.update", true)) {
     router.put('/:id', require("./controller/putSupplyDelivery"));

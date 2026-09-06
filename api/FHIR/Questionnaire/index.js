@@ -39,7 +39,7 @@ if (_.get(config, "Questionnaire.interaction.create", true)) {
     router.post('/', require('./controller/postQuestionnaire'));
 }
 
-router.post('/([\$])validate', require('./controller/postQuestionnaireValidate'));
+router.post('/$validate', require('./controller/postQuestionnaireValidate'));
 
 if (_.get(config, "Questionnaire.interaction.update", true)) {
     router.put('/:id', require("./controller/putQuestionnaire"));

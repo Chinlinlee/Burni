@@ -39,7 +39,7 @@ if (_.get(config, "DetectedIssue.interaction.create", true)) {
     router.post('/', require('./controller/postDetectedIssue'));
 }
 
-router.post('/([\$])validate', require('./controller/postDetectedIssueValidate'));
+router.post('/$validate', require('./controller/postDetectedIssueValidate'));
 
 if (_.get(config, "DetectedIssue.interaction.update", true)) {
     router.put('/:id', require("./controller/putDetectedIssue"));

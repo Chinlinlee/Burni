@@ -39,7 +39,7 @@ if (_.get(config, "SubstanceNucleicAcid.interaction.create", true)) {
     router.post('/', require('./controller/postSubstanceNucleicAcid'));
 }
 
-router.post('/([\$])validate', require('./controller/postSubstanceNucleicAcidValidate'));
+router.post('/$validate', require('./controller/postSubstanceNucleicAcidValidate'));
 
 if (_.get(config, "SubstanceNucleicAcid.interaction.update", true)) {
     router.put('/:id', require("./controller/putSubstanceNucleicAcid"));

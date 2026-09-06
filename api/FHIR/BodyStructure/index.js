@@ -39,7 +39,7 @@ if (_.get(config, "BodyStructure.interaction.create", true)) {
     router.post('/', require('./controller/postBodyStructure'));
 }
 
-router.post('/([\$])validate', require('./controller/postBodyStructureValidate'));
+router.post('/$validate', require('./controller/postBodyStructureValidate'));
 
 if (_.get(config, "BodyStructure.interaction.update", true)) {
     router.put('/:id', require("./controller/putBodyStructure"));

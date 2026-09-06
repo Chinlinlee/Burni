@@ -39,7 +39,7 @@ if (_.get(config, "MessageDefinition.interaction.create", true)) {
     router.post('/', require('./controller/postMessageDefinition'));
 }
 
-router.post('/([\$])validate', require('./controller/postMessageDefinitionValidate'));
+router.post('/$validate', require('./controller/postMessageDefinitionValidate'));
 
 if (_.get(config, "MessageDefinition.interaction.update", true)) {
     router.put('/:id', require("./controller/putMessageDefinition"));

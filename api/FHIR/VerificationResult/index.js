@@ -39,7 +39,7 @@ if (_.get(config, "VerificationResult.interaction.create", true)) {
     router.post('/', require('./controller/postVerificationResult'));
 }
 
-router.post('/([\$])validate', require('./controller/postVerificationResultValidate'));
+router.post('/$validate', require('./controller/postVerificationResultValidate'));
 
 if (_.get(config, "VerificationResult.interaction.update", true)) {
     router.put('/:id', require("./controller/putVerificationResult"));

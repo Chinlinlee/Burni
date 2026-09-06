@@ -39,7 +39,7 @@ if (_.get(config, "EvidenceVariable.interaction.create", true)) {
     router.post('/', require('./controller/postEvidenceVariable'));
 }
 
-router.post('/([\$])validate', require('./controller/postEvidenceVariableValidate'));
+router.post('/$validate', require('./controller/postEvidenceVariableValidate'));
 
 if (_.get(config, "EvidenceVariable.interaction.update", true)) {
     router.put('/:id', require("./controller/putEvidenceVariable"));

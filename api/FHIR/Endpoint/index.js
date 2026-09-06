@@ -39,7 +39,7 @@ if (_.get(config, "Endpoint.interaction.create", true)) {
     router.post('/', require('./controller/postEndpoint'));
 }
 
-router.post('/([\$])validate', require('./controller/postEndpointValidate'));
+router.post('/$validate', require('./controller/postEndpointValidate'));
 
 if (_.get(config, "Endpoint.interaction.update", true)) {
     router.put('/:id', require("./controller/putEndpoint"));

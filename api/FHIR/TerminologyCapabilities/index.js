@@ -39,7 +39,7 @@ if (_.get(config, "TerminologyCapabilities.interaction.create", true)) {
     router.post('/', require('./controller/postTerminologyCapabilities'));
 }
 
-router.post('/([\$])validate', require('./controller/postTerminologyCapabilitiesValidate'));
+router.post('/$validate', require('./controller/postTerminologyCapabilitiesValidate'));
 
 if (_.get(config, "TerminologyCapabilities.interaction.update", true)) {
     router.put('/:id', require("./controller/putTerminologyCapabilities"));

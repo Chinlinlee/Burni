@@ -39,7 +39,7 @@ if (_.get(config, "Specimen.interaction.create", true)) {
     router.post('/', require('./controller/postSpecimen'));
 }
 
-router.post('/([\$])validate', require('./controller/postSpecimenValidate'));
+router.post('/$validate', require('./controller/postSpecimenValidate'));
 
 if (_.get(config, "Specimen.interaction.update", true)) {
     router.put('/:id', require("./controller/putSpecimen"));

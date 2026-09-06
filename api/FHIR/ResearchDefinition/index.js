@@ -39,7 +39,7 @@ if (_.get(config, "ResearchDefinition.interaction.create", true)) {
     router.post('/', require('./controller/postResearchDefinition'));
 }
 
-router.post('/([\$])validate', require('./controller/postResearchDefinitionValidate'));
+router.post('/$validate', require('./controller/postResearchDefinitionValidate'));
 
 if (_.get(config, "ResearchDefinition.interaction.update", true)) {
     router.put('/:id', require("./controller/putResearchDefinition"));

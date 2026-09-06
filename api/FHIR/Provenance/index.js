@@ -39,7 +39,7 @@ if (_.get(config, "Provenance.interaction.create", true)) {
     router.post('/', require('./controller/postProvenance'));
 }
 
-router.post('/([\$])validate', require('./controller/postProvenanceValidate'));
+router.post('/$validate', require('./controller/postProvenanceValidate'));
 
 if (_.get(config, "Provenance.interaction.update", true)) {
     router.put('/:id', require("./controller/putProvenance"));

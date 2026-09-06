@@ -39,7 +39,7 @@ if (_.get(config, "AdverseEvent.interaction.create", true)) {
     router.post('/', require('./controller/postAdverseEvent'));
 }
 
-router.post('/([\$])validate', require('./controller/postAdverseEventValidate'));
+router.post('/$validate', require('./controller/postAdverseEventValidate'));
 
 if (_.get(config, "AdverseEvent.interaction.update", true)) {
     router.put('/:id', require("./controller/putAdverseEvent"));

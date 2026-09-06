@@ -39,7 +39,7 @@ if (_.get(config, "ClinicalImpression.interaction.create", true)) {
     router.post('/', require('./controller/postClinicalImpression'));
 }
 
-router.post('/([\$])validate', require('./controller/postClinicalImpressionValidate'));
+router.post('/$validate', require('./controller/postClinicalImpressionValidate'));
 
 if (_.get(config, "ClinicalImpression.interaction.update", true)) {
     router.put('/:id', require("./controller/putClinicalImpression"));

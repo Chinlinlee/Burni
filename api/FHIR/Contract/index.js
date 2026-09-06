@@ -39,7 +39,7 @@ if (_.get(config, "Contract.interaction.create", true)) {
     router.post('/', require('./controller/postContract'));
 }
 
-router.post('/([\$])validate', require('./controller/postContractValidate'));
+router.post('/$validate', require('./controller/postContractValidate'));
 
 if (_.get(config, "Contract.interaction.update", true)) {
     router.put('/:id', require("./controller/putContract"));

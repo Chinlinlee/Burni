@@ -39,7 +39,7 @@ if (_.get(config, "SubstanceSourceMaterial.interaction.create", true)) {
     router.post('/', require('./controller/postSubstanceSourceMaterial'));
 }
 
-router.post('/([\$])validate', require('./controller/postSubstanceSourceMaterialValidate'));
+router.post('/$validate', require('./controller/postSubstanceSourceMaterialValidate'));
 
 if (_.get(config, "SubstanceSourceMaterial.interaction.update", true)) {
     router.put('/:id', require("./controller/putSubstanceSourceMaterial"));

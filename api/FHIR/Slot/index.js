@@ -39,7 +39,7 @@ if (_.get(config, "Slot.interaction.create", true)) {
     router.post('/', require('./controller/postSlot'));
 }
 
-router.post('/([\$])validate', require('./controller/postSlotValidate'));
+router.post('/$validate', require('./controller/postSlotValidate'));
 
 if (_.get(config, "Slot.interaction.update", true)) {
     router.put('/:id', require("./controller/putSlot"));

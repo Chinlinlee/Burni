@@ -39,7 +39,7 @@ if (_.get(config, "SearchParameter.interaction.create", true)) {
     router.post('/', require('./controller/postSearchParameter'));
 }
 
-router.post('/([\$])validate', require('./controller/postSearchParameterValidate'));
+router.post('/$validate', require('./controller/postSearchParameterValidate'));
 
 if (_.get(config, "SearchParameter.interaction.update", true)) {
     router.put('/:id', require("./controller/putSearchParameter"));

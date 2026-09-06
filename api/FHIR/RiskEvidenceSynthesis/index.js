@@ -39,7 +39,7 @@ if (_.get(config, "RiskEvidenceSynthesis.interaction.create", true)) {
     router.post('/', require('./controller/postRiskEvidenceSynthesis'));
 }
 
-router.post('/([\$])validate', require('./controller/postRiskEvidenceSynthesisValidate'));
+router.post('/$validate', require('./controller/postRiskEvidenceSynthesisValidate'));
 
 if (_.get(config, "RiskEvidenceSynthesis.interaction.update", true)) {
     router.put('/:id', require("./controller/putRiskEvidenceSynthesis"));

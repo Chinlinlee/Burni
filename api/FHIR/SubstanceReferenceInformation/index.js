@@ -39,7 +39,7 @@ if (_.get(config, "SubstanceReferenceInformation.interaction.create", true)) {
     router.post('/', require('./controller/postSubstanceReferenceInformation'));
 }
 
-router.post('/([\$])validate', require('./controller/postSubstanceReferenceInformationValidate'));
+router.post('/$validate', require('./controller/postSubstanceReferenceInformationValidate'));
 
 if (_.get(config, "SubstanceReferenceInformation.interaction.update", true)) {
     router.put('/:id', require("./controller/putSubstanceReferenceInformation"));

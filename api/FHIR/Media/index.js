@@ -39,7 +39,7 @@ if (_.get(config, "Media.interaction.create", true)) {
     router.post('/', require('./controller/postMedia'));
 }
 
-router.post('/([\$])validate', require('./controller/postMediaValidate'));
+router.post('/$validate', require('./controller/postMediaValidate'));
 
 if (_.get(config, "Media.interaction.update", true)) {
     router.put('/:id', require("./controller/putMedia"));

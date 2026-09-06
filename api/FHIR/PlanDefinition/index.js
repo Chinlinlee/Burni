@@ -39,7 +39,7 @@ if (_.get(config, "PlanDefinition.interaction.create", true)) {
     router.post('/', require('./controller/postPlanDefinition'));
 }
 
-router.post('/([\$])validate', require('./controller/postPlanDefinitionValidate'));
+router.post('/$validate', require('./controller/postPlanDefinitionValidate'));
 
 if (_.get(config, "PlanDefinition.interaction.update", true)) {
     router.put('/:id', require("./controller/putPlanDefinition"));

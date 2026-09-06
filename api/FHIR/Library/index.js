@@ -39,7 +39,7 @@ if (_.get(config, "Library.interaction.create", true)) {
     router.post('/', require('./controller/postLibrary'));
 }
 
-router.post('/([\$])validate', require('./controller/postLibraryValidate'));
+router.post('/$validate', require('./controller/postLibraryValidate'));
 
 if (_.get(config, "Library.interaction.update", true)) {
     router.put('/:id', require("./controller/putLibrary"));

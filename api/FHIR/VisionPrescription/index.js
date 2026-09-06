@@ -39,7 +39,7 @@ if (_.get(config, "VisionPrescription.interaction.create", true)) {
     router.post('/', require('./controller/postVisionPrescription'));
 }
 
-router.post('/([\$])validate', require('./controller/postVisionPrescriptionValidate'));
+router.post('/$validate', require('./controller/postVisionPrescriptionValidate'));
 
 if (_.get(config, "VisionPrescription.interaction.update", true)) {
     router.put('/:id', require("./controller/putVisionPrescription"));

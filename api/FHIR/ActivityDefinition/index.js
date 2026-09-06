@@ -39,7 +39,7 @@ if (_.get(config, "ActivityDefinition.interaction.create", true)) {
     router.post('/', require('./controller/postActivityDefinition'));
 }
 
-router.post('/([\$])validate', require('./controller/postActivityDefinitionValidate'));
+router.post('/$validate', require('./controller/postActivityDefinitionValidate'));
 
 if (_.get(config, "ActivityDefinition.interaction.update", true)) {
     router.put('/:id', require("./controller/putActivityDefinition"));

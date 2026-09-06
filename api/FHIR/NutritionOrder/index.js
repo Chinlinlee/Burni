@@ -39,7 +39,7 @@ if (_.get(config, "NutritionOrder.interaction.create", true)) {
     router.post('/', require('./controller/postNutritionOrder'));
 }
 
-router.post('/([\$])validate', require('./controller/postNutritionOrderValidate'));
+router.post('/$validate', require('./controller/postNutritionOrderValidate'));
 
 if (_.get(config, "NutritionOrder.interaction.update", true)) {
     router.put('/:id', require("./controller/putNutritionOrder"));

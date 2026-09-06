@@ -39,7 +39,7 @@ if (_.get(config, "PaymentReconciliation.interaction.create", true)) {
     router.post('/', require('./controller/postPaymentReconciliation'));
 }
 
-router.post('/([\$])validate', require('./controller/postPaymentReconciliationValidate'));
+router.post('/$validate', require('./controller/postPaymentReconciliationValidate'));
 
 if (_.get(config, "PaymentReconciliation.interaction.update", true)) {
     router.put('/:id', require("./controller/putPaymentReconciliation"));

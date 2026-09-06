@@ -39,7 +39,7 @@ if (_.get(config, "EffectEvidenceSynthesis.interaction.create", true)) {
     router.post('/', require('./controller/postEffectEvidenceSynthesis'));
 }
 
-router.post('/([\$])validate', require('./controller/postEffectEvidenceSynthesisValidate'));
+router.post('/$validate', require('./controller/postEffectEvidenceSynthesisValidate'));
 
 if (_.get(config, "EffectEvidenceSynthesis.interaction.update", true)) {
     router.put('/:id', require("./controller/putEffectEvidenceSynthesis"));

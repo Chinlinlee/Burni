@@ -39,7 +39,7 @@ if (_.get(config, "AllergyIntolerance.interaction.create", true)) {
     router.post('/', require('./controller/postAllergyIntolerance'));
 }
 
-router.post('/([\$])validate', require('./controller/postAllergyIntoleranceValidate'));
+router.post('/$validate', require('./controller/postAllergyIntoleranceValidate'));
 
 if (_.get(config, "AllergyIntolerance.interaction.update", true)) {
     router.put('/:id', require("./controller/putAllergyIntolerance"));

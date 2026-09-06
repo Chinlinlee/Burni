@@ -39,7 +39,7 @@ if (_.get(config, "ImplementationGuide.interaction.create", true)) {
     router.post('/', require('./controller/postImplementationGuide'));
 }
 
-router.post('/([\$])validate', require('./controller/postImplementationGuideValidate'));
+router.post('/$validate', require('./controller/postImplementationGuideValidate'));
 
 if (_.get(config, "ImplementationGuide.interaction.update", true)) {
     router.put('/:id', require("./controller/putImplementationGuide"));

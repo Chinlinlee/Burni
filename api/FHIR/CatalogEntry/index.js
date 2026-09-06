@@ -39,7 +39,7 @@ if (_.get(config, "CatalogEntry.interaction.create", true)) {
     router.post('/', require('./controller/postCatalogEntry'));
 }
 
-router.post('/([\$])validate', require('./controller/postCatalogEntryValidate'));
+router.post('/$validate', require('./controller/postCatalogEntryValidate'));
 
 if (_.get(config, "CatalogEntry.interaction.update", true)) {
     router.put('/:id', require("./controller/putCatalogEntry"));

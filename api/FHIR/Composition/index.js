@@ -39,7 +39,7 @@ if (_.get(config, "Composition.interaction.create", true)) {
     router.post('/', require('./controller/postComposition'));
 }
 
-router.post('/([\$])validate', require('./controller/postCompositionValidate'));
+router.post('/$validate', require('./controller/postCompositionValidate'));
 
 if (_.get(config, "Composition.interaction.update", true)) {
     router.put('/:id', require("./controller/putComposition"));

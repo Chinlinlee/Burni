@@ -39,7 +39,7 @@ if (_.get(config, "Binary.interaction.create", true)) {
     router.post('/', require('./controller/postBinary'));
 }
 
-router.post('/([\$])validate', require('./controller/postBinaryValidate'));
+router.post('/$validate', require('./controller/postBinaryValidate'));
 
 if (_.get(config, "Binary.interaction.update", true)) {
     router.put('/:id', require("./controller/putBinary"));

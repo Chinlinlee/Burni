@@ -39,7 +39,7 @@ if (_.get(config, "ExampleScenario.interaction.create", true)) {
     router.post('/', require('./controller/postExampleScenario'));
 }
 
-router.post('/([\$])validate', require('./controller/postExampleScenarioValidate'));
+router.post('/$validate', require('./controller/postExampleScenarioValidate'));
 
 if (_.get(config, "ExampleScenario.interaction.update", true)) {
     router.put('/:id', require("./controller/putExampleScenario"));

@@ -39,7 +39,7 @@ if (_.get(config, "AppointmentResponse.interaction.create", true)) {
     router.post('/', require('./controller/postAppointmentResponse'));
 }
 
-router.post('/([\$])validate', require('./controller/postAppointmentResponseValidate'));
+router.post('/$validate', require('./controller/postAppointmentResponseValidate'));
 
 if (_.get(config, "AppointmentResponse.interaction.update", true)) {
     router.put('/:id', require("./controller/putAppointmentResponse"));

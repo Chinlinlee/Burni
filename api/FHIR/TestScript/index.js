@@ -39,7 +39,7 @@ if (_.get(config, "TestScript.interaction.create", true)) {
     router.post('/', require('./controller/postTestScript'));
 }
 
-router.post('/([\$])validate', require('./controller/postTestScriptValidate'));
+router.post('/$validate', require('./controller/postTestScriptValidate'));
 
 if (_.get(config, "TestScript.interaction.update", true)) {
     router.put('/:id', require("./controller/putTestScript"));

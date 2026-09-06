@@ -39,7 +39,7 @@ if (_.get(config, "ExplanationOfBenefit.interaction.create", true)) {
     router.post('/', require('./controller/postExplanationOfBenefit'));
 }
 
-router.post('/([\$])validate', require('./controller/postExplanationOfBenefitValidate'));
+router.post('/$validate', require('./controller/postExplanationOfBenefitValidate'));
 
 if (_.get(config, "ExplanationOfBenefit.interaction.update", true)) {
     router.put('/:id', require("./controller/putExplanationOfBenefit"));

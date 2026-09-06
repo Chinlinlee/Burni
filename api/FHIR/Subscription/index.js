@@ -39,7 +39,7 @@ if (_.get(config, "Subscription.interaction.create", true)) {
     router.post('/', require('./controller/postSubscription'));
 }
 
-router.post('/([\$])validate', require('./controller/postSubscriptionValidate'));
+router.post('/$validate', require('./controller/postSubscriptionValidate'));
 
 if (_.get(config, "Subscription.interaction.update", true)) {
     router.put('/:id', require("./controller/putSubscription"));

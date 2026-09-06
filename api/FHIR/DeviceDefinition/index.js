@@ -39,7 +39,7 @@ if (_.get(config, "DeviceDefinition.interaction.create", true)) {
     router.post('/', require('./controller/postDeviceDefinition'));
 }
 
-router.post('/([\$])validate', require('./controller/postDeviceDefinitionValidate'));
+router.post('/$validate', require('./controller/postDeviceDefinitionValidate'));
 
 if (_.get(config, "DeviceDefinition.interaction.update", true)) {
     router.put('/:id', require("./controller/putDeviceDefinition"));

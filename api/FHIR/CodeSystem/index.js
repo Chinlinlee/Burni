@@ -39,7 +39,7 @@ if (_.get(config, "CodeSystem.interaction.create", true)) {
     router.post('/', require('./controller/postCodeSystem'));
 }
 
-router.post('/([\$])validate', require('./controller/postCodeSystemValidate'));
+router.post('/$validate', require('./controller/postCodeSystemValidate'));
 
 if (_.get(config, "CodeSystem.interaction.update", true)) {
     router.put('/:id', require("./controller/putCodeSystem"));

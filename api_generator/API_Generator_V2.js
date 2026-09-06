@@ -179,7 +179,7 @@ function getGeneratedApiFiles(resource) {
             router.post('/', require('./controller/post${resource}'));
         }
 
-        router.post('/([\\$])validate', require('./controller/post${resource}Validate'));
+        router.post('/$validate', require('./controller/post${resource}Validate'));
 
         if (_.get(config, "${resource}.interaction.update", true)) {
             router.put('/:id', require("./controller/put${resource}"));

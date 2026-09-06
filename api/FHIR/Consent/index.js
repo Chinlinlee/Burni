@@ -39,7 +39,7 @@ if (_.get(config, "Consent.interaction.create", true)) {
     router.post('/', require('./controller/postConsent'));
 }
 
-router.post('/([\$])validate', require('./controller/postConsentValidate'));
+router.post('/$validate', require('./controller/postConsentValidate'));
 
 if (_.get(config, "Consent.interaction.update", true)) {
     router.put('/:id', require("./controller/putConsent"));

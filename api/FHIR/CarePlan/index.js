@@ -39,7 +39,7 @@ if (_.get(config, "CarePlan.interaction.create", true)) {
     router.post('/', require('./controller/postCarePlan'));
 }
 
-router.post('/([\$])validate', require('./controller/postCarePlanValidate'));
+router.post('/$validate', require('./controller/postCarePlanValidate'));
 
 if (_.get(config, "CarePlan.interaction.update", true)) {
     router.put('/:id', require("./controller/putCarePlan"));

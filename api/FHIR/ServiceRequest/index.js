@@ -39,7 +39,7 @@ if (_.get(config, "ServiceRequest.interaction.create", true)) {
     router.post('/', require('./controller/postServiceRequest'));
 }
 
-router.post('/([\$])validate', require('./controller/postServiceRequestValidate'));
+router.post('/$validate', require('./controller/postServiceRequestValidate'));
 
 if (_.get(config, "ServiceRequest.interaction.update", true)) {
     router.put('/:id', require("./controller/putServiceRequest"));

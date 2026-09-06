@@ -39,7 +39,7 @@ if (_.get(config, "Bundle.interaction.create", true)) {
     router.post('/', require('./controller/postBundle'));
 }
 
-router.post('/([\$])validate', require('./controller/postBundleValidate'));
+router.post('/$validate', require('./controller/postBundleValidate'));
 
 if (_.get(config, "Bundle.interaction.update", true)) {
     router.put('/:id', require("./controller/putBundle"));

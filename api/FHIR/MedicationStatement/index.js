@@ -39,7 +39,7 @@ if (_.get(config, "MedicationStatement.interaction.create", true)) {
     router.post('/', require('./controller/postMedicationStatement'));
 }
 
-router.post('/([\$])validate', require('./controller/postMedicationStatementValidate'));
+router.post('/$validate', require('./controller/postMedicationStatementValidate'));
 
 if (_.get(config, "MedicationStatement.interaction.update", true)) {
     router.put('/:id', require("./controller/putMedicationStatement"));

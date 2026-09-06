@@ -39,7 +39,7 @@ if (_.get(config, "Flag.interaction.create", true)) {
     router.post('/', require('./controller/postFlag'));
 }
 
-router.post('/([\$])validate', require('./controller/postFlagValidate'));
+router.post('/$validate', require('./controller/postFlagValidate'));
 
 if (_.get(config, "Flag.interaction.update", true)) {
     router.put('/:id', require("./controller/putFlag"));

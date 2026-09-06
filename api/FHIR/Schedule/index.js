@@ -39,7 +39,7 @@ if (_.get(config, "Schedule.interaction.create", true)) {
     router.post('/', require('./controller/postSchedule'));
 }
 
-router.post('/([\$])validate', require('./controller/postScheduleValidate'));
+router.post('/$validate', require('./controller/postScheduleValidate'));
 
 if (_.get(config, "Schedule.interaction.update", true)) {
     router.put('/:id', require("./controller/putSchedule"));

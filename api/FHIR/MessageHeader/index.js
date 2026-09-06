@@ -39,7 +39,7 @@ if (_.get(config, "MessageHeader.interaction.create", true)) {
     router.post('/', require('./controller/postMessageHeader'));
 }
 
-router.post('/([\$])validate', require('./controller/postMessageHeaderValidate'));
+router.post('/$validate', require('./controller/postMessageHeaderValidate'));
 
 if (_.get(config, "MessageHeader.interaction.update", true)) {
     router.put('/:id', require("./controller/putMessageHeader"));

@@ -39,7 +39,7 @@ if (_.get(config, "EpisodeOfCare.interaction.create", true)) {
     router.post('/', require('./controller/postEpisodeOfCare'));
 }
 
-router.post('/([\$])validate', require('./controller/postEpisodeOfCareValidate'));
+router.post('/$validate', require('./controller/postEpisodeOfCareValidate'));
 
 if (_.get(config, "EpisodeOfCare.interaction.update", true)) {
     router.put('/:id', require("./controller/putEpisodeOfCare"));

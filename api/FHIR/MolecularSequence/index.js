@@ -39,7 +39,7 @@ if (_.get(config, "MolecularSequence.interaction.create", true)) {
     router.post('/', require('./controller/postMolecularSequence'));
 }
 
-router.post('/([\$])validate', require('./controller/postMolecularSequenceValidate'));
+router.post('/$validate', require('./controller/postMolecularSequenceValidate'));
 
 if (_.get(config, "MolecularSequence.interaction.update", true)) {
     router.put('/:id', require("./controller/putMolecularSequence"));

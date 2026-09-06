@@ -39,7 +39,7 @@ if (_.get(config, "Account.interaction.create", true)) {
     router.post('/', require('./controller/postAccount'));
 }
 
-router.post('/([\$])validate', require('./controller/postAccountValidate'));
+router.post('/$validate', require('./controller/postAccountValidate'));
 
 if (_.get(config, "Account.interaction.update", true)) {
     router.put('/:id', require("./controller/putAccount"));

@@ -39,7 +39,7 @@ if (_.get(config, "ResearchStudy.interaction.create", true)) {
     router.post('/', require('./controller/postResearchStudy'));
 }
 
-router.post('/([\$])validate', require('./controller/postResearchStudyValidate'));
+router.post('/$validate', require('./controller/postResearchStudyValidate'));
 
 if (_.get(config, "ResearchStudy.interaction.update", true)) {
     router.put('/:id', require("./controller/putResearchStudy"));

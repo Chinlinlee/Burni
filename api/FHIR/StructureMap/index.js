@@ -39,7 +39,7 @@ if (_.get(config, "StructureMap.interaction.create", true)) {
     router.post('/', require('./controller/postStructureMap'));
 }
 
-router.post('/([\$])validate', require('./controller/postStructureMapValidate'));
+router.post('/$validate', require('./controller/postStructureMapValidate'));
 
 if (_.get(config, "StructureMap.interaction.update", true)) {
     router.put('/:id', require("./controller/putStructureMap"));

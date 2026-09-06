@@ -39,7 +39,7 @@ if (_.get(config, "Basic.interaction.create", true)) {
     router.post('/', require('./controller/postBasic'));
 }
 
-router.post('/([\$])validate', require('./controller/postBasicValidate'));
+router.post('/$validate', require('./controller/postBasicValidate'));
 
 if (_.get(config, "Basic.interaction.update", true)) {
     router.put('/:id', require("./controller/putBasic"));

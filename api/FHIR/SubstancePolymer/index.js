@@ -39,7 +39,7 @@ if (_.get(config, "SubstancePolymer.interaction.create", true)) {
     router.post('/', require('./controller/postSubstancePolymer'));
 }
 
-router.post('/([\$])validate', require('./controller/postSubstancePolymerValidate'));
+router.post('/$validate', require('./controller/postSubstancePolymerValidate'));
 
 if (_.get(config, "SubstancePolymer.interaction.update", true)) {
     router.put('/:id', require("./controller/putSubstancePolymer"));

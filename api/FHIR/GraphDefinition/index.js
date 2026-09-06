@@ -39,7 +39,7 @@ if (_.get(config, "GraphDefinition.interaction.create", true)) {
     router.post('/', require('./controller/postGraphDefinition'));
 }
 
-router.post('/([\$])validate', require('./controller/postGraphDefinitionValidate'));
+router.post('/$validate', require('./controller/postGraphDefinitionValidate'));
 
 if (_.get(config, "GraphDefinition.interaction.update", true)) {
     router.put('/:id', require("./controller/putGraphDefinition"));

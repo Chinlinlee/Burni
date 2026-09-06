@@ -39,7 +39,7 @@ if (_.get(config, "List.interaction.create", true)) {
     router.post('/', require('./controller/postList'));
 }
 
-router.post('/([\$])validate', require('./controller/postListValidate'));
+router.post('/$validate', require('./controller/postListValidate'));
 
 if (_.get(config, "List.interaction.update", true)) {
     router.put('/:id', require("./controller/putList"));

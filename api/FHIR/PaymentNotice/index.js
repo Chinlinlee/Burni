@@ -39,7 +39,7 @@ if (_.get(config, "PaymentNotice.interaction.create", true)) {
     router.post('/', require('./controller/postPaymentNotice'));
 }
 
-router.post('/([\$])validate', require('./controller/postPaymentNoticeValidate'));
+router.post('/$validate', require('./controller/postPaymentNoticeValidate'));
 
 if (_.get(config, "PaymentNotice.interaction.update", true)) {
     router.put('/:id', require("./controller/putPaymentNotice"));

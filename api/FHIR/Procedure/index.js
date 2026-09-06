@@ -39,7 +39,7 @@ if (_.get(config, "Procedure.interaction.create", true)) {
     router.post('/', require('./controller/postProcedure'));
 }
 
-router.post('/([\$])validate', require('./controller/postProcedureValidate'));
+router.post('/$validate', require('./controller/postProcedureValidate'));
 
 if (_.get(config, "Procedure.interaction.update", true)) {
     router.put('/:id', require("./controller/putProcedure"));

@@ -39,7 +39,7 @@ if (_.get(config, "PractitionerRole.interaction.create", true)) {
     router.post('/', require('./controller/postPractitionerRole'));
 }
 
-router.post('/([\$])validate', require('./controller/postPractitionerRoleValidate'));
+router.post('/$validate', require('./controller/postPractitionerRoleValidate'));
 
 if (_.get(config, "PractitionerRole.interaction.update", true)) {
     router.put('/:id', require("./controller/putPractitionerRole"));

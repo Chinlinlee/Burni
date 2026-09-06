@@ -39,7 +39,7 @@ if (_.get(config, "OperationOutcome.interaction.create", true)) {
     router.post('/', require('./controller/postOperationOutcome'));
 }
 
-router.post('/([\$])validate', require('./controller/postOperationOutcomeValidate'));
+router.post('/$validate', require('./controller/postOperationOutcomeValidate'));
 
 if (_.get(config, "OperationOutcome.interaction.update", true)) {
     router.put('/:id', require("./controller/putOperationOutcome"));

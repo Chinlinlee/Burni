@@ -39,7 +39,7 @@ if (_.get(config, "Invoice.interaction.create", true)) {
     router.post('/', require('./controller/postInvoice'));
 }
 
-router.post('/([\$])validate', require('./controller/postInvoiceValidate'));
+router.post('/$validate', require('./controller/postInvoiceValidate'));
 
 if (_.get(config, "Invoice.interaction.update", true)) {
     router.put('/:id', require("./controller/putInvoice"));

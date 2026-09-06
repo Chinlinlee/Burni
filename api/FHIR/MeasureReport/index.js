@@ -39,7 +39,7 @@ if (_.get(config, "MeasureReport.interaction.create", true)) {
     router.post('/', require('./controller/postMeasureReport'));
 }
 
-router.post('/([\$])validate', require('./controller/postMeasureReportValidate'));
+router.post('/$validate', require('./controller/postMeasureReportValidate'));
 
 if (_.get(config, "MeasureReport.interaction.update", true)) {
     router.put('/:id', require("./controller/putMeasureReport"));

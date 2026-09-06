@@ -39,7 +39,7 @@ if (_.get(config, "Condition.interaction.create", true)) {
     router.post('/', require('./controller/postCondition'));
 }
 
-router.post('/([\$])validate', require('./controller/postConditionValidate'));
+router.post('/$validate', require('./controller/postConditionValidate'));
 
 if (_.get(config, "Condition.interaction.update", true)) {
     router.put('/:id', require("./controller/putCondition"));

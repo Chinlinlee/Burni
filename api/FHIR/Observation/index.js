@@ -39,7 +39,7 @@ if (_.get(config, "Observation.interaction.create", true)) {
     router.post('/', require('./controller/postObservation'));
 }
 
-router.post('/([\$])validate', require('./controller/postObservationValidate'));
+router.post('/$validate', require('./controller/postObservationValidate'));
 
 if (_.get(config, "Observation.interaction.update", true)) {
     router.put('/:id', require("./controller/putObservation"));

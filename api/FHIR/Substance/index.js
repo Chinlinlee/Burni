@@ -39,7 +39,7 @@ if (_.get(config, "Substance.interaction.create", true)) {
     router.post('/', require('./controller/postSubstance'));
 }
 
-router.post('/([\$])validate', require('./controller/postSubstanceValidate'));
+router.post('/$validate', require('./controller/postSubstanceValidate'));
 
 if (_.get(config, "Substance.interaction.update", true)) {
     router.put('/:id', require("./controller/putSubstance"));

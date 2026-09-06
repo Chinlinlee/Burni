@@ -39,7 +39,7 @@ if (_.get(config, "StructureDefinition.interaction.create", true)) {
     router.post('/', require('./controller/postStructureDefinition'));
 }
 
-router.post('/([\$])validate', require('./controller/postStructureDefinitionValidate'));
+router.post('/$validate', require('./controller/postStructureDefinitionValidate'));
 
 if (_.get(config, "StructureDefinition.interaction.update", true)) {
     router.put('/:id', require("./controller/putStructureDefinition"));

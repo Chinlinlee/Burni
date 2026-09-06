@@ -39,7 +39,7 @@ if (_.get(config, "Location.interaction.create", true)) {
     router.post('/', require('./controller/postLocation'));
 }
 
-router.post('/([\$])validate', require('./controller/postLocationValidate'));
+router.post('/$validate', require('./controller/postLocationValidate'));
 
 if (_.get(config, "Location.interaction.update", true)) {
     router.put('/:id', require("./controller/putLocation"));

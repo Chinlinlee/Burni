@@ -39,7 +39,7 @@ if (_.get(config, "FamilyMemberHistory.interaction.create", true)) {
     router.post('/', require('./controller/postFamilyMemberHistory'));
 }
 
-router.post('/([\$])validate', require('./controller/postFamilyMemberHistoryValidate'));
+router.post('/$validate', require('./controller/postFamilyMemberHistoryValidate'));
 
 if (_.get(config, "FamilyMemberHistory.interaction.update", true)) {
     router.put('/:id', require("./controller/putFamilyMemberHistory"));

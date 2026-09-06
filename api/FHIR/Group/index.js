@@ -39,7 +39,7 @@ if (_.get(config, "Group.interaction.create", true)) {
     router.post('/', require('./controller/postGroup'));
 }
 
-router.post('/([\$])validate', require('./controller/postGroupValidate'));
+router.post('/$validate', require('./controller/postGroupValidate'));
 
 if (_.get(config, "Group.interaction.update", true)) {
     router.put('/:id', require("./controller/putGroup"));

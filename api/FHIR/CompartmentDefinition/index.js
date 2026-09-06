@@ -39,7 +39,7 @@ if (_.get(config, "CompartmentDefinition.interaction.create", true)) {
     router.post('/', require('./controller/postCompartmentDefinition'));
 }
 
-router.post('/([\$])validate', require('./controller/postCompartmentDefinitionValidate'));
+router.post('/$validate', require('./controller/postCompartmentDefinitionValidate'));
 
 if (_.get(config, "CompartmentDefinition.interaction.update", true)) {
     router.put('/:id', require("./controller/putCompartmentDefinition"));

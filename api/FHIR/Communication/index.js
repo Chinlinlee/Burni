@@ -39,7 +39,7 @@ if (_.get(config, "Communication.interaction.create", true)) {
     router.post('/', require('./controller/postCommunication'));
 }
 
-router.post('/([\$])validate', require('./controller/postCommunicationValidate'));
+router.post('/$validate', require('./controller/postCommunicationValidate'));
 
 if (_.get(config, "Communication.interaction.update", true)) {
     router.put('/:id', require("./controller/putCommunication"));

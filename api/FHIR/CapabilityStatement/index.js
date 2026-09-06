@@ -39,7 +39,7 @@ if (_.get(config, "CapabilityStatement.interaction.create", true)) {
     router.post('/', require('./controller/postCapabilityStatement'));
 }
 
-router.post('/([\$])validate', require('./controller/postCapabilityStatementValidate'));
+router.post('/$validate', require('./controller/postCapabilityStatementValidate'));
 
 if (_.get(config, "CapabilityStatement.interaction.update", true)) {
     router.put('/:id', require("./controller/putCapabilityStatement"));

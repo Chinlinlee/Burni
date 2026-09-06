@@ -39,7 +39,7 @@ if (_.get(config, "DocumentManifest.interaction.create", true)) {
     router.post('/', require('./controller/postDocumentManifest'));
 }
 
-router.post('/([\$])validate', require('./controller/postDocumentManifestValidate'));
+router.post('/$validate', require('./controller/postDocumentManifestValidate'));
 
 if (_.get(config, "DocumentManifest.interaction.update", true)) {
     router.put('/:id', require("./controller/putDocumentManifest"));

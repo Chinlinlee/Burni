@@ -39,7 +39,7 @@ if (_.get(config, "Task.interaction.create", true)) {
     router.post('/', require('./controller/postTask'));
 }
 
-router.post('/([\$])validate', require('./controller/postTaskValidate'));
+router.post('/$validate', require('./controller/postTaskValidate'));
 
 if (_.get(config, "Task.interaction.update", true)) {
     router.put('/:id', require("./controller/putTask"));
