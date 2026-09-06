@@ -21,7 +21,6 @@ const { handleError } = require('./models/FHIR/httpMessage');
 //login
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
-const flash = require("connect-flash");
 const mongodb = require("./models/mongodb");
 const mongoose = require("mongoose");
 const MongoStore = require("connect-mongo");
@@ -61,7 +60,6 @@ let limiter = RateLimit({
 app.use(limiter);
 
 app.use(compress());
-app.use(flash());
 app.use(express.static("public"));
 app.use(
     express.urlencoded({
