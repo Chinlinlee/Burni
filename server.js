@@ -23,7 +23,7 @@ const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const mongodb = require("./models/mongodb");
 const mongoose = require("mongoose");
-const MongoStore = require("connect-mongo");
+const { MongoStore } = require("connect-mongo");
 const morgan = require("morgan");
 const { httpLogger } = require("./utils/log");
 //

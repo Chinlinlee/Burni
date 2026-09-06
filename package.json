@@ -48,7 +48,7 @@
         "abort-controller": "^3.0.0",
         "bcrypt": "^5.1.1",
         "compression": "^1.7.4",
-        "connect-mongo": "^5.1.0",
+        "connect-mongo": "^6.0.0",
         "cookie-parser": "^1.4.6",
         "dotenv": "^16.4.1",
         "express": "5.2.1",
