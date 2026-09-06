@@ -50,7 +50,7 @@
         "compression": "^1.7.4",
         "connect-mongo": "^6.0.0",
         "cookie-parser": "^1.4.6",
-        "dotenv": "^16.4.1",
+        "dotenv": "^17.4.2",
         "express": "5.2.1",
         "express-rate-limit": "^7.1.5",
         "express-session": "^1.18.0",
