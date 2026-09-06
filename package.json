@@ -56,7 +56,6 @@
         "express-rate-limit": "^7.1.5",
         "express-session": "^1.18.0",
         "fhir": "^4.12.0",
-        "flat": "^5.0.2",
         "joi": "^17.12.1",
         "js-beautify": "^1.14.11",
         "jsonpath": "^1.1.1",
