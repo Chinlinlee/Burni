@@ -24,6 +24,7 @@ const MONGODB_DEPENDENT_FILES = [
     "test/models/mongodb/provisioning/mongodb-integration.test.js",
     // startRegistryTestContext (test/searchParameter/support/registry-test-context.js)
     "test/searchParameter/integration/patient-registry-search.integration.test.js",
+    "test/searchParameter/integration/system-search.integration.test.js",
     "test/searchParameter/integration/structural-mongo.integration.test.js",
     "test/searchParameter/migration/compatibility-plus-corrections.test.js",
     "test/searchParameter/migration/hit-set.test.js",

@@ -623,6 +623,12 @@ function compileScopeRelativeExtractionPaths(input) {
 function compileExtractionPaths(definition, resourceType, ast, searchType) {
     const diagnostics = [];
     const lookupKey = getLookupKey(resourceType, definition.resource.code || "");
+    if (definition.resource.code === "_id" || definition.resource.code === "_lastUpdated") {
+        return {
+            extractionPaths: deriveSystemExtractionPaths(definition.resource, null),
+            diagnostics
+        };
+    }
     const typeMap = loadResourceTypeMap(resourceType);
 
     if (!typeMap) {
@@ -761,10 +767,12 @@ function dedupeExtractionPaths(extractionPaths) {
  */
 function deriveSystemExtractionPaths(resource, typeMap) {
     if (resource.code === "_id") {
-        return [{ path: "id", datatype: "string" }];
+        return [{ path: "id", datatype: "id" }];
     }
     if (resource.code === "_lastUpdated") {
-        const resolved = resolvePathDatatype(typeMap, "meta.lastUpdated");
+        const resolved = typeMap
+            ? resolvePathDatatype(typeMap, "meta.lastUpdated")
+            : { datatype: "instant" };
         return [
             {
                 path: "meta.lastUpdated",

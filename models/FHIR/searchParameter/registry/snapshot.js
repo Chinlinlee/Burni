@@ -1,5 +1,7 @@
 const { parseLookupKey } = require("./identity");
 
+const ABSTRACT_RESOURCE_FALLBACK_CODES = new Set(["_id", "_lastUpdated"]);
+
 /**
  * @param {import('./types').SearchParameterDefinition} definition
  * @param {string} lookupKey
@@ -80,15 +82,21 @@ function buildRegistrySnapshot({ definitions, diagnostics, version }) {
  * @returns {'effective' | 'disabled' | 'unknown'}
  */
 function resolveLookupStatus(snapshot, resourceType, code) {
-    const lookupKey = `${resourceType}::${code}`;
-    if (snapshot.byLookupKey.has(lookupKey)) {
-        return "effective";
+    const lookupKeys = [`${resourceType}::${code}`];
+    if (resourceType !== "Resource" && ABSTRACT_RESOURCE_FALLBACK_CODES.has(code)) {
+        lookupKeys.push(`Resource::${code}`);
     }
-    if (
-        snapshot.disabledLookupKeys.has(lookupKey) ||
-        snapshot.conflictLookupKeys.has(lookupKey)
-    ) {
-        return "disabled";
+
+    for (const lookupKey of lookupKeys) {
+        if (snapshot.byLookupKey.has(lookupKey)) {
+            return "effective";
+        }
+        if (
+            snapshot.disabledLookupKeys.has(lookupKey) ||
+            snapshot.conflictLookupKeys.has(lookupKey)
+        ) {
+            return "disabled";
+        }
     }
     return "unknown";
 }
@@ -100,11 +108,39 @@ function resolveLookupStatus(snapshot, resourceType, code) {
  * @returns {import('./types').SearchParameterDefinition | null}
  */
 function getEffectiveDefinition(snapshot, resourceType, code) {
-    const status = resolveLookupStatus(snapshot, resourceType, code);
-    if (status !== "effective") {
-        return null;
+    const lookupKeys = [`${resourceType}::${code}`];
+    if (resourceType !== "Resource" && ABSTRACT_RESOURCE_FALLBACK_CODES.has(code)) {
+        lookupKeys.push(`Resource::${code}`);
     }
-    return snapshot.byLookupKey.get(`${resourceType}::${code}`) || null;
+
+    for (const lookupKey of lookupKeys) {
+        if (!snapshot.byLookupKey.has(lookupKey)) {
+            if (
+                snapshot.disabledLookupKeys.has(lookupKey) ||
+                snapshot.conflictLookupKeys.has(lookupKey)
+            ) {
+                return null;
+            }
+            continue;
+        }
+
+        const definition = snapshot.byLookupKey.get(lookupKey);
+        if (!definition) {
+            continue;
+        }
+        if (lookupKey === `${resourceType}::${code}`) {
+            return definition;
+        }
+        return {
+            ...definition,
+            compiledPlan: {
+                ...definition.compiledPlan,
+                resourceType
+            }
+        };
+    }
+
+    return null;
 }
 
 module.exports = {
