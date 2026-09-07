@@ -1,12 +1,12 @@
 {
   "version": 1,
   "kind": "mongodb-desired-index-manifest",
-  "generatedAt": "2026-09-05T13:13:58.769Z",
+  "generatedAt": "2026-09-07T15:18:07.975Z",
   "artifactIdentity": {
     "bundleChecksum": "a098c966051d98e4f96fb9c6751059203dc714d965ae66333319b2bb98b2db20",
-    "compilerDirectoryHash": "9d4810588dc5eb44520c4b56fbf4501ae00fbe2c8035932c6af334d3494841e6",
+    "compilerDirectoryHash": "74a07ae485c2353c6c151d80edb171e3b27d544d1d9f60579111647d9c76cad0",
     "typeMapsDirectoryHash": "262072f2c71a7cfec64694b6344668742892b642a26de9ce51f23acb590fcc83",
-    "bodyChecksum": "69ee87321ad5e35e8887c0601f072bbbb72a009a1e7a5bf038105c6191aab5a4"
+    "bodyChecksum": "2e0fb39cceb3db5e5762ce8c351d1b1909a6fc8f39feef0a7515e78fa51023f4"
   },
   "derivedIndexPolicy": {
     "searchParameterPolicyVersion": "1.0.0",
@@ -52648,6 +52648,35 @@
       }
     },
     {
+      "collection": "Resource",
+      "key": {
+        "id": 1
+      },
+      "options": {
+        "background": true
+      },
+      "name": "fhir_sp_token_7d1e2e7175d4fb14e8de",
+      "source": "search-parameter",
+      "identity": "{\"resourceType\":\"Resource\",\"extractionPath\":\"id\",\"datatype\":\"id\",\"searchType\":\"token\",\"keyPattern\":\"token-single-field\",\"key\":{\"id\":1},\"options\":{\"background\":true},\"policyVersion\":\"1.0.0\"}",
+      "searchParameter": {
+        "resourceType": "Resource",
+        "extractionPath": "id",
+        "datatype": "id",
+        "searchType": "token",
+        "keyPattern": "token-single-field",
+        "policyVersion": "1.0.0",
+        "fields": [
+          "id"
+        ],
+        "lookupKeys": [
+          "Resource::_id"
+        ],
+        "canonicalKeys": [
+          "http://hl7.org/fhir/SearchParameter/Resource-id::4.0.1"
+        ]
+      }
+    },
+    {
       "collection": "RiskAssessment",
       "key": {
         "condition.reference": 1
@@ -60788,7 +60817,7 @@
   "counts": {
     "collections": 295,
     "baselineIndexes": 444,
-    "derivedIndexes": 1813
+    "derivedIndexes": 1814
   },
   "temporalDiagnostics": [
     "incompatible-branch: No search-type projection for date on Age at performedAge lookup=Procedure::date",
@@ -60878,14 +60907,13 @@
     "incompatible-component-branch: No search-type projection for token on Quantity at valueQuantity lookup=Group::characteristic-value",
     "incompatible-component-branch: No search-type projection for token on Range at valueRange lookup=Group::characteristic-value",
     "incompatible-component-branch: No search-type projection for token on Reference at valueReference lookup=Group::characteristic-value",
+    "invalid-temporal-extraction-path: {\"code\":\"invalid-temporal-extraction-path\",\"resourceType\":\"Resource\",\"lookupKey\":\"Resource::_lastUpdated\",\"path\":\"meta.lastUpdated\"} lookup=Resource::_lastUpdated path=meta.lastUpdated",
     "lookup-disabled: No executable composite extraction branches for DocumentReference lookup=DocumentReference::relationship",
     "lookup-disabled: No executable composite extraction branches for MolecularSequence lookup=MolecularSequence::chromosome-variant-coordinate",
     "lookup-disabled: No executable composite extraction branches for MolecularSequence lookup=MolecularSequence::referenceseqid-variant-coordinate",
     "lookup-disabled: No executable extraction paths for ConceptMap lookup=ConceptMap::product",
     "lookup-disabled: No executable extraction paths for PlanDefinition lookup=PlanDefinition::definition",
     "lookup-disabled: No executable extraction paths for Provenance lookup=Provenance::signature-type",
-    "lookup-disabled: No executable extraction paths for Resource lookup=Resource::_id",
-    "lookup-disabled: No executable extraction paths for Resource lookup=Resource::_lastUpdated",
     "lookup-disabled: No executable extraction paths for Resource lookup=Resource::_profile",
     "lookup-disabled: No executable extraction paths for Resource lookup=Resource::_security",
     "lookup-disabled: No executable extraction paths for Resource lookup=Resource::_source",
@@ -60899,8 +60927,6 @@
     "missing-expression: SearchParameter expression is required",
     "missing-type-map: Resource type map not found for DomainResource lookup=DomainResource::_text",
     "missing-type-map: Resource type map not found for Resource lookup=Resource::_content",
-    "missing-type-map: Resource type map not found for Resource lookup=Resource::_id",
-    "missing-type-map: Resource type map not found for Resource lookup=Resource::_lastUpdated",
     "missing-type-map: Resource type map not found for Resource lookup=Resource::_profile",
     "missing-type-map: Resource type map not found for Resource lookup=Resource::_query",
     "missing-type-map: Resource type map not found for Resource lookup=Resource::_security",
@@ -61002,8 +61028,6 @@
     "lookup-disabled: No executable extraction paths for ConceptMap lookup=ConceptMap::product",
     "lookup-disabled: No executable extraction paths for PlanDefinition lookup=PlanDefinition::definition",
     "lookup-disabled: No executable extraction paths for Provenance lookup=Provenance::signature-type",
-    "lookup-disabled: No executable extraction paths for Resource lookup=Resource::_id",
-    "lookup-disabled: No executable extraction paths for Resource lookup=Resource::_lastUpdated",
     "lookup-disabled: No executable extraction paths for Resource lookup=Resource::_profile",
     "lookup-disabled: No executable extraction paths for Resource lookup=Resource::_security",
     "lookup-disabled: No executable extraction paths for Resource lookup=Resource::_source",
@@ -61017,8 +61041,6 @@
     "missing-expression: SearchParameter expression is required",
     "missing-type-map: Resource type map not found for DomainResource lookup=DomainResource::_text",
     "missing-type-map: Resource type map not found for Resource lookup=Resource::_content",
-    "missing-type-map: Resource type map not found for Resource lookup=Resource::_id",
-    "missing-type-map: Resource type map not found for Resource lookup=Resource::_lastUpdated",
     "missing-type-map: Resource type map not found for Resource lookup=Resource::_profile",
     "missing-type-map: Resource type map not found for Resource lookup=Resource::_query",
     "missing-type-map: Resource type map not found for Resource lookup=Resource::_security",
@@ -61366,6 +61388,6 @@
   ],
   "checksum": {
     "algorithm": "sha256",
-    "value": "d58578543504098ba64ae662b2c27bc812ff6823a532144d461c4d88d2a58f29"
+    "value": "1030d9201e808a8b6adb3e08153301add2e723eb0cc909648ea290c7b6575dad"
   }
 }

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-05T12:59:50.451Z",
+  "generatedAt": "2026-09-07T15:01:09.920Z",
   "resourceCount": 146,
   "lookupCount": 1697,
   "totalSourceLookupCount": 1706,
@@ -26,8 +26,7 @@
       "lookupKey": "Resource::_id",
       "resourceType": "Resource",
       "code": "_id",
-      "outcome": "disabled",
-      "reason": "No executable extraction paths for any lookup",
+      "outcome": "compiled",
       "searchType": "token",
       "canonicalKey": "http://hl7.org/fhir/SearchParameter/Resource-id::4.0.1"
     },
@@ -35,8 +34,7 @@
       "lookupKey": "Resource::_lastUpdated",
       "resourceType": "Resource",
       "code": "_lastUpdated",
-      "outcome": "disabled",
-      "reason": "No executable extraction paths for any lookup",
+      "outcome": "compiled",
       "searchType": "date",
       "canonicalKey": "http://hl7.org/fhir/SearchParameter/Resource-lastUpdated::4.0.1"
     },
