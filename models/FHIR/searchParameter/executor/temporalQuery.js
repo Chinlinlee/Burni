@@ -231,6 +231,23 @@ function parseInstantQueryValue(rawValue) {
 }
 
 /**
+ * @param {string} value
+ * @returns {'date' | 'dateTime' | 'instant'}
+ */
+function inferDateQueryKind(value) {
+    if (DATE_PATTERN.test(value)) {
+        return "date";
+    }
+    if (INSTANT_PATTERN.test(value)) {
+        return "instant";
+    }
+    if (DATETIME_PATTERN.test(value)) {
+        return "dateTime";
+    }
+    return "date";
+}
+
+/**
  * @param {unknown} rawValue
  * @param {'date' | 'dateTime' | 'instant'} kind
  * @returns {TemporalQueryValue}
@@ -244,20 +261,21 @@ function parseTemporalQueryValue(rawValue, kind) {
     }
 
     const split = splitComparatorPrefix(rawValue);
-    if (kind === "instant") {
+    const queryKind = kind === "date" ? inferDateQueryKind(split.value) : kind;
+    if (queryKind === "instant") {
         return parseInstantQueryValue(rawValue);
     }
-    assertPublicTemporalScalar(split.value, kind);
-    const inferred = parseTemporalLexicalValue(split.value, kind);
+    assertPublicTemporalScalar(split.value, queryKind);
+    const inferred = parseTemporalLexicalValue(split.value, queryKind);
     const parsed = {
         rawValue,
         value: split.value,
-        kind,
+        kind: queryKind,
         precision: inferred.precision
     };
 
-    if (kind === "date" || kind === "dateTime") {
-        parsed.range = normalizeTemporalQueryRange(split.value, kind);
+    if (queryKind === "date" || queryKind === "dateTime") {
+        parsed.range = normalizeTemporalQueryRange(split.value, queryKind);
         parsed.queryStart = parsed.range.start;
         parsed.queryEnd = parsed.range.end;
     }

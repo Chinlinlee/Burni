@@ -64,18 +64,26 @@ describe("FHIR system search parameters", function () {
     it("searches the logical id with an exact, case-sensitive match", async function () {
         const exactResult = await searchPatientViaService({ _id: "CaseSensitiveId" });
         const differentCaseResult = await searchPatientViaService({ _id: "casesensitiveid" });
+        const missingResult = await searchPatientViaService({ _id: "missing-id" });
 
         expect(exactResult.status).to.equal(true);
         expect(exactResult.code).to.equal(200);
         expect(exactResult.result.resourceType).to.equal("Bundle");
+        expect(exactResult.result.type).to.equal("searchset");
         expect(getBundlePatientIds(exactResult.result)).to.deep.equal(["CaseSensitiveId"]);
         expect(getBundlePatientIds(differentCaseResult.result)).to.deep.equal([]);
+        expect(missingResult.status).to.equal(true);
+        expect(missingResult.result.type).to.equal("searchset");
+        expect(getBundlePatientIds(missingResult.result)).to.deep.equal([]);
     });
 
     for (const testCase of [
         { query: "eq2020-06-15", expected: ["updated-midday"] },
+        { query: "eq2020-06", expected: ["updated-midday"] },
+        { query: "ge2020", expected: ["CaseSensitiveId", "updated-midday", "updated-late"] },
         { query: "ne2020-06-15", expected: ["CaseSensitiveId", "updated-late"] },
         { query: "gt2020-06-15", expected: ["updated-late"] },
+        { query: "gt2020-06-15T12:00:00Z", expected: ["updated-late"] },
         { query: "ge2020-06-15", expected: ["updated-midday", "updated-late"] },
         { query: "lt2020-06-15", expected: ["CaseSensitiveId"] },
         { query: "le2020-06-15", expected: ["CaseSensitiveId", "updated-midday"] },
