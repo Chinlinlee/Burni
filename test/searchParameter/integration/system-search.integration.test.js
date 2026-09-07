@@ -84,6 +84,7 @@ describe("FHIR system search parameters", function () {
         { query: "ne2020-06-15", expected: ["CaseSensitiveId", "updated-late"] },
         { query: "gt2020-06-15", expected: ["updated-late"] },
         { query: "gt2020-06-15T12:00:00Z", expected: ["updated-late"] },
+        { query: "gt2020-06-15T14:00:00+02:00", expected: ["updated-late"] },
         { query: "ge2020-06-15", expected: ["updated-midday", "updated-late"] },
         { query: "lt2020-06-15", expected: ["CaseSensitiveId"] },
         { query: "le2020-06-15", expected: ["CaseSensitiveId", "updated-midday"] },
@@ -99,6 +100,7 @@ describe("FHIR system search parameters", function () {
             expect(result.status).to.equal(true);
             expect(result.code).to.equal(200);
             expect(result.result.resourceType).to.equal("Bundle");
+            expect(result.result.type).to.equal("searchset");
             expect(getBundlePatientIds(result.result)).to.have.members(testCase.expected);
             expect(getBundlePatientIds(result.result)).to.have.lengthOf(testCase.expected.length);
         });

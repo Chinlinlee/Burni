@@ -63,7 +63,7 @@ function buildSnapshot(definitions) {
 }
 
 describe("FHIR system search registry fallback", function () {
-    it("falls back from a concrete resource to Resource", function () {
+    it("falls back from concrete resources to Resource", function () {
         const snapshot = buildSnapshot([
             buildDefinition({
                 resourceType: "Resource",
@@ -72,11 +72,13 @@ describe("FHIR system search registry fallback", function () {
             })
         ]);
 
-        expect(resolveLookupStatus(snapshot, "Patient", "_id")).to.equal("effective");
-        expect(getEffectiveDefinition(snapshot, "Patient", "_id").compiledPlan).to.include({
-            resourceType: "Patient",
-            code: "_id"
-        });
+        for (const resourceType of ["Patient", "Observation", "Binary"]) {
+            expect(resolveLookupStatus(snapshot, resourceType, "_id")).to.equal("effective");
+            expect(getEffectiveDefinition(snapshot, resourceType, "_id").compiledPlan).to.include({
+                resourceType,
+                code: "_id"
+            });
+        }
     });
 
     it("prefers a concrete system parameter definition", function () {
