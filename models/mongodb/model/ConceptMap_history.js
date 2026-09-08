@@ -4,12 +4,16 @@ const _ = require('lodash');
 const {
     serializeResourceTemporals
 } = require("../../FHIR/temporal");
+const {
+    stripHistoryProvenanceForVread
+} = require("../historyProvenance");
 module.exports = function(connection = mongoose) {
     const modelConnection = connection;
     const schemaConstructor = modelConnection.base?.Schema || mongoose.Schema;
     let ConceptMap = require('./ConceptMap').schema;
     ConceptMap.id.unique = false;
-    ConceptMap.request = {
+
+    ConceptMap.bundleRequest = {
         "type": Object,
         "method": {
             type: String,
@@ -20,7 +24,7 @@ module.exports = function(connection = mongoose) {
             required: true
         }
     };
-    ConceptMap.response = {
+    ConceptMap.bundleResponse = {
         "type": Object,
         "status": {
             type: String,
@@ -43,12 +47,7 @@ module.exports = function(connection = mongoose) {
     const ConceptMapHistorySchema = new schemaConstructor(ConceptMap, schemaConfig);
     ConceptMapHistorySchema.methods.getFHIRField = function() {
         let result = this.toObject();
-        delete result._id;
-        delete result.__v;
-        delete result['name._id'];
-        delete result['request'];
-        delete result['response'];
-        return serializeResourceTemporals(result);
+        return serializeResourceTemporals(stripHistoryProvenanceForVread(result));
     };
     ConceptMapHistorySchema.methods.getFHIRBundleField = function() {
         let result = this.toObject();

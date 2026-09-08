@@ -49,6 +49,9 @@ const {
     canonicalInstantFromUtcDate,
     serializeResourceTemporals
 } = require("../../FHIR/temporal");
+const {
+    setHistoryProvenance
+} = require("../historyProvenance");
 module.exports = function(connection = mongoose) {
     const modelConnection = connection;
     const AllergyIntolerance = {
@@ -230,20 +233,16 @@ module.exports = function(connection = mongoose) {
         let version = item.meta.versionId;
         let port = (process.env.FHIRSERVER_PORT == "80" || process.env.FHIRSERVER_PORT == "443") ? "" : `:${process.env.FHIRSERVER_PORT}`;
         if (version == "1") {
-            _.set(item, "request", {
-                "method": "POST",
-                url: `http://${process.env.FHIRSERVER_HOST}${port}/${process.env.FHIRSERVER_APIPATH}/AllergyIntolerance/${item.id}/_history/${version}`
-            });
-            _.set(item, "response", {
+            setHistoryProvenance(item, {
+                method: "POST",
+                url: `http://${process.env.FHIRSERVER_HOST}${port}/${process.env.FHIRSERVER_APIPATH}/AllergyIntolerance/${item.id}/_history/${version}`,
                 status: "201"
             });
             let createdDocs = await mongodb.model("AllergyIntolerance_history").create(item);
         } else {
-            _.set(item, "request", {
-                "method": "PUT",
-                url: `http://${process.env.FHIRSERVER_HOST}${port}/${process.env.FHIRSERVER_APIPATH}/AllergyIntolerance/${item.id}/_history/${version}`
-            });
-            _.set(item, "response", {
+            setHistoryProvenance(item, {
+                method: "PUT",
+                url: `http://${process.env.FHIRSERVER_HOST}${port}/${process.env.FHIRSERVER_APIPATH}/AllergyIntolerance/${item.id}/_history/${version}`,
                 status: "200"
             });
             let createdDocs = await mongodb.model("AllergyIntolerance_history").create(item);
@@ -285,11 +284,9 @@ module.exports = function(connection = mongoose) {
         delete item._id;
         let port = (process.env.FHIRSERVER_PORT == "80" || process.env.FHIRSERVER_PORT == "443") ? "" : `:${process.env.FHIRSERVER_PORT}`;
 
-        _.set(item, "request", {
-            "method": "PUT",
-            url: `http://${process.env.FHIRSERVER_HOST}${port}/${process.env.FHIRSERVER_APIPATH}/AllergyIntolerance/${item.id}/_history/${version}`
-        });
-        _.set(item, "response", {
+        setHistoryProvenance(item, {
+            method: "PUT",
+            url: `http://${process.env.FHIRSERVER_HOST}${port}/${process.env.FHIRSERVER_APIPATH}/AllergyIntolerance/${item.id}/_history/${version}`,
             status: "200"
         });
 
@@ -320,11 +317,9 @@ module.exports = function(connection = mongoose) {
         let version = item.meta.versionId;
 
         let port = (process.env.FHIRSERVER_PORT == "80" || process.env.FHIRSERVER_PORT == "443") ? "" : `:${process.env.FHIRSERVER_PORT}`;
-        _.set(item, "request", {
-            "method": "DELETE",
-            url: `http://${process.env.FHIRSERVER_HOST}${port}/${process.env.FHIRSERVER_APIPATH}/AllergyIntolerance/${item.id}/_history/${version}`
-        });
-        _.set(item, "response", {
+        setHistoryProvenance(item, {
+            method: "DELETE",
+            url: `http://${process.env.FHIRSERVER_HOST}${port}/${process.env.FHIRSERVER_APIPATH}/AllergyIntolerance/${item.id}/_history/${version}`,
             status: "200"
         });
         let createdDocs = await modelConnection.model("AllergyIntolerance_history").create(item);

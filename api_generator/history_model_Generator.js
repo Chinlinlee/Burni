@@ -9,6 +9,28 @@ const FHIRResourceList =
         }
     );
 
+function getHistoryProvenanceSchemaFields(fileBaseName) {
+    return `
+               ${fileBaseName}.bundleRequest = {
+                   "type" : Object ,
+                   "method" : {
+                       type : String ,
+                       required : true
+                   } ,
+                   "url" : {
+                       type: String ,
+                       required : true
+                   }
+               };
+               ${fileBaseName}.bundleResponse = {
+                    "type" : Object ,
+                    "status" : {
+                        type : String ,
+                        required : true
+                    }
+                };`;
+}
+
 function genHistoryModel() {
     let FHIRModelFolder = fs.readdirSync("./models/mongodb/model");
     for (let item of FHIRModelFolder) {
@@ -22,29 +44,13 @@ function genHistoryModel() {
            const moment = require('moment');
            const _ = require('lodash');
            const { serializeResourceTemporals } = require("../../FHIR/temporal");
+           const { stripHistoryProvenanceForVread } = require("../historyProvenance");
            module.exports = function(connection = mongoose) {
                const modelConnection = connection;
                const schemaConstructor = modelConnection.base?.Schema || mongoose.Schema;
                let ${fileBaseName} = require('./${fileBaseName}').schema;
                ${fileBaseName}.id.unique = false;
-               ${fileBaseName}.request = {
-                   "type" : Object , 
-                   "method" : {
-                       type : String , 
-                       required : true
-                   } ,
-                   "url" : {
-                       type: String , 
-                       required : true
-                   }
-               };
-               ${fileBaseName}.response = {
-                    "type" : Object , 
-                    "status" : {
-                        type : String , 
-                        required : true
-                    } 
-                };
+               ${getHistoryProvenanceSchemaFields(fileBaseName)}
                 let schemaConfig = {
                     toObject : { getters : true},
                     toJSON : { getters : true}
@@ -57,12 +63,7 @@ function genHistoryModel() {
                const ${fileBaseName}HistorySchema = new schemaConstructor(${fileBaseName}, schemaConfig);
                 ${fileBaseName}HistorySchema.methods.getFHIRField = function() {
                    let result = this.toObject();
-                   delete result._id;
-                   delete result.__v;
-                   delete result['name._id'];
-                   delete result['request'];
-                   delete result['response'];
-                   return serializeResourceTemporals(result);
+                   return serializeResourceTemporals(stripHistoryProvenanceForVread(result));
                 };
                 ${fileBaseName}HistorySchema.methods.getFHIRBundleField = function() {
                    let result = this.toObject();

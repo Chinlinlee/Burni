@@ -4,12 +4,16 @@ const _ = require('lodash');
 const {
     serializeResourceTemporals
 } = require("../../FHIR/temporal");
+const {
+    stripHistoryProvenanceForVread
+} = require("../historyProvenance");
 module.exports = function(connection = mongoose) {
     const modelConnection = connection;
     const schemaConstructor = modelConnection.base?.Schema || mongoose.Schema;
     let InsurancePlan = require('./InsurancePlan').schema;
     InsurancePlan.id.unique = false;
-    InsurancePlan.request = {
+
+    InsurancePlan.bundleRequest = {
         "type": Object,
         "method": {
             type: String,
@@ -20,7 +24,7 @@ module.exports = function(connection = mongoose) {
             required: true
         }
     };
-    InsurancePlan.response = {
+    InsurancePlan.bundleResponse = {
         "type": Object,
         "status": {
             type: String,
@@ -43,12 +47,7 @@ module.exports = function(connection = mongoose) {
     const InsurancePlanHistorySchema = new schemaConstructor(InsurancePlan, schemaConfig);
     InsurancePlanHistorySchema.methods.getFHIRField = function() {
         let result = this.toObject();
-        delete result._id;
-        delete result.__v;
-        delete result['name._id'];
-        delete result['request'];
-        delete result['response'];
-        return serializeResourceTemporals(result);
+        return serializeResourceTemporals(stripHistoryProvenanceForVread(result));
     };
     InsurancePlanHistorySchema.methods.getFHIRBundleField = function() {
         let result = this.toObject();

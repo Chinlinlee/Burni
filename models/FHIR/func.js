@@ -1,5 +1,9 @@
 const _ = require("lodash");
 const bundleClass = require("../mongodb/FHIRTypeSchema/Bundle");
+const {
+    extractBundleProvenance,
+    stripInternalProvenanceFields
+} = require("../mongodb/historyProvenance");
 
 function isFirst(offset) {
     return offset == 0;
@@ -113,13 +117,11 @@ function createBundle(req, docs, count, skip, limit, resource, option) {
     }
     if (type == "history") {
         for (let i in docs) {
-            let requestObj = _.cloneDeep(docs[i].request);
-            let responseObj = _.cloneDeep(docs[i].response);
-            delete docs[i].request;
-            delete docs[i].response;
+            const { request: requestObj, response: responseObj } = extractBundleProvenance(docs[i]);
+            const resourceDoc = stripInternalProvenanceFields(docs[i]);
             let entry = new bundleClass.entry(
-                getEntryFullUrl(docs[i], req, docs[i].resourceType, "history"),
-                docs[i]
+                getEntryFullUrl(resourceDoc, req, resourceDoc.resourceType, "history"),
+                resourceDoc
             );
             entry.request = requestObj;
             entry.response = responseObj;

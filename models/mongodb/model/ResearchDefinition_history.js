@@ -4,12 +4,16 @@ const _ = require('lodash');
 const {
     serializeResourceTemporals
 } = require("../../FHIR/temporal");
+const {
+    stripHistoryProvenanceForVread
+} = require("../historyProvenance");
 module.exports = function(connection = mongoose) {
     const modelConnection = connection;
     const schemaConstructor = modelConnection.base?.Schema || mongoose.Schema;
     let ResearchDefinition = require('./ResearchDefinition').schema;
     ResearchDefinition.id.unique = false;
-    ResearchDefinition.request = {
+
+    ResearchDefinition.bundleRequest = {
         "type": Object,
         "method": {
             type: String,
@@ -20,7 +24,7 @@ module.exports = function(connection = mongoose) {
             required: true
         }
     };
-    ResearchDefinition.response = {
+    ResearchDefinition.bundleResponse = {
         "type": Object,
         "status": {
             type: String,
@@ -43,12 +47,7 @@ module.exports = function(connection = mongoose) {
     const ResearchDefinitionHistorySchema = new schemaConstructor(ResearchDefinition, schemaConfig);
     ResearchDefinitionHistorySchema.methods.getFHIRField = function() {
         let result = this.toObject();
-        delete result._id;
-        delete result.__v;
-        delete result['name._id'];
-        delete result['request'];
-        delete result['response'];
-        return serializeResourceTemporals(result);
+        return serializeResourceTemporals(stripHistoryProvenanceForVread(result));
     };
     ResearchDefinitionHistorySchema.methods.getFHIRBundleField = function() {
         let result = this.toObject();

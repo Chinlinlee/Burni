@@ -260,20 +260,16 @@ function generateResourceSchema(type) {
         let version = item.meta.versionId;
         let port = (process.env.FHIRSERVER_PORT == "80" || process.env.FHIRSERVER_PORT == "443") ? "" : \`:\${process.env.FHIRSERVER_PORT}\`;
         if (version == "1" ) {
-            _.set(item, "request", {
-                "method": "POST",
-                url: \`http://\${process.env.FHIRSERVER_HOST}\${port}/\${process.env.FHIRSERVER_APIPATH}/${type}/\${item.id}/_history/\${version}\`
-            });
-            _.set(item, "response", {
+            setHistoryProvenance(item, {
+                method: "POST",
+                url: \`http://\${process.env.FHIRSERVER_HOST}\${port}/\${process.env.FHIRSERVER_APIPATH}/${type}/\${item.id}/_history/\${version}\`,
                 status: "201"
             });
             let createdDocs = await mongodb.model("${type}_history").create(item);
         } else {
-            _.set(item, "request", {
-                "method": "PUT",
-                url: \`http://\${process.env.FHIRSERVER_HOST}\${port}/\${process.env.FHIRSERVER_APIPATH}/${type}/\${item.id}/_history/\${version}\`
-            });
-            _.set(item, "response", {
+            setHistoryProvenance(item, {
+                method: "PUT",
+                url: \`http://\${process.env.FHIRSERVER_HOST}\${port}/\${process.env.FHIRSERVER_APIPATH}/${type}/\${item.id}/_history/\${version}\`,
                 status: "200"
             });
             let createdDocs = await mongodb.model("${type}_history").create(item);
@@ -313,11 +309,9 @@ function generateResourceSchema(type) {
         delete item._id;
         let port = (process.env.FHIRSERVER_PORT == "80" || process.env.FHIRSERVER_PORT == "443") ? "" : \`:\${process.env.FHIRSERVER_PORT}\`;
 
-        _.set(item, "request", {
-            "method": "PUT",
-            url: \`http://\${process.env.FHIRSERVER_HOST}\${port}/\${process.env.FHIRSERVER_APIPATH}/${type}/\${item.id}/_history/\${version}\`
-        });
-        _.set(item, "response", {
+        setHistoryProvenance(item, {
+            method: "PUT",
+            url: \`http://\${process.env.FHIRSERVER_HOST}\${port}/\${process.env.FHIRSERVER_APIPATH}/${type}/\${item.id}/_history/\${version}\`,
             status: "200"
         });
 
@@ -348,11 +342,9 @@ function generateResourceSchema(type) {
         let version = item.meta.versionId;
 
         let port = (process.env.FHIRSERVER_PORT == "80" || process.env.FHIRSERVER_PORT == "443") ? "" : \`:\${process.env.FHIRSERVER_PORT}\`;
-        _.set(item, "request", {
-            "method": "DELETE",
-            url: \`http://\${process.env.FHIRSERVER_HOST}\${port}/\${process.env.FHIRSERVER_APIPATH}/${type}/\${item.id}/_history/\${version}\`
-        });
-        _.set(item, "response", {
+        setHistoryProvenance(item, {
+            method: "DELETE",
+            url: \`http://\${process.env.FHIRSERVER_HOST}\${port}/\${process.env.FHIRSERVER_APIPATH}/${type}/\${item.id}/_history/\${version}\`,
             status: "200"
         });
         let createdDocs = await modelConnection.model("${type}_history").create(item);
@@ -368,7 +360,7 @@ function generateResourceSchema(type) {
     return ${type}Model;\r\n}`;
 
     let importLibs = getImportLibs(result);
-    const temporalInstantImport = `const { canonicalInstantFromUtcDate, serializeResourceTemporals } = require("../../FHIR/temporal");\r\n`;
+    const temporalInstantImport = `const { canonicalInstantFromUtcDate, serializeResourceTemporals } = require("../../FHIR/temporal");\r\nconst { setHistoryProvenance } = require("../historyProvenance");\r\n`;
     if (!importLibs.includes("const id = require")) {
         importLibs = `const moment = require('moment');\r\nconst _ = require('lodash');\r\n${importLibs}const id = require('${config.requirePath}/id');\r\nconst { storeResourceRefBy, updateRefBy, deleteEmptyRefBy, checkResourceHaveReferenceByOthers } = require("../common");\r\n${temporalInstantImport}`;
     } else {

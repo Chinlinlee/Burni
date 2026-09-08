@@ -4,12 +4,16 @@ const _ = require('lodash');
 const {
     serializeResourceTemporals
 } = require("../../FHIR/temporal");
+const {
+    stripHistoryProvenanceForVread
+} = require("../historyProvenance");
 module.exports = function(connection = mongoose) {
     const modelConnection = connection;
     const schemaConstructor = modelConnection.base?.Schema || mongoose.Schema;
     let MedicinalProductInteraction = require('./MedicinalProductInteraction').schema;
     MedicinalProductInteraction.id.unique = false;
-    MedicinalProductInteraction.request = {
+
+    MedicinalProductInteraction.bundleRequest = {
         "type": Object,
         "method": {
             type: String,
@@ -20,7 +24,7 @@ module.exports = function(connection = mongoose) {
             required: true
         }
     };
-    MedicinalProductInteraction.response = {
+    MedicinalProductInteraction.bundleResponse = {
         "type": Object,
         "status": {
             type: String,
@@ -43,12 +47,7 @@ module.exports = function(connection = mongoose) {
     const MedicinalProductInteractionHistorySchema = new schemaConstructor(MedicinalProductInteraction, schemaConfig);
     MedicinalProductInteractionHistorySchema.methods.getFHIRField = function() {
         let result = this.toObject();
-        delete result._id;
-        delete result.__v;
-        delete result['name._id'];
-        delete result['request'];
-        delete result['response'];
-        return serializeResourceTemporals(result);
+        return serializeResourceTemporals(stripHistoryProvenanceForVread(result));
     };
     MedicinalProductInteractionHistorySchema.methods.getFHIRBundleField = function() {
         let result = this.toObject();
