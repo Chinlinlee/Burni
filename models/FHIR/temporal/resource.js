@@ -231,6 +231,10 @@ function walkNode(node, definition, pathSegments, definitions, mode) {
         }
 
         walkProperty(node, key, child, propertySchema, pathSegments.concat(key), definitions, mode);
+        if (mode === "serialize" && key === "myCollection" && properties.collection) {
+            node.collection = node[key];
+            delete node[key];
+        }
     }
 }
 
