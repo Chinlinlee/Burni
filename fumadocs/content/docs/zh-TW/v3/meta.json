@@ -1,0 +1,10 @@
+{
+  "title": "v3 (Preview)",
+  "root": true,
+  "pages": [
+    "index",
+    "migration-preview",
+    "temporal-architecture",
+    "system-search-parameters"
+  ]
+}

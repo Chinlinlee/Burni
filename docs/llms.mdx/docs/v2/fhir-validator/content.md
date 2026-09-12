@@ -1,0 +1,43 @@
+# FHIR Validator (/docs/v2/fhir-validator)
+
+
+
+Profile validation is a remote [Inferno FHIR validator wrapper](https://github.com/Chinlinlee/inferno-fhir-validator-wrapper). Burni does not embed a Java validator and does not load IGs. The decision is in `docs/adr/0001-remote-fhir-validator.md`.
+
+<Callout type="info" title="ENABLE_VALIDATOR is not a $validate switch">
+  `$validate` always exists. `ENABLE_VALIDATOR=false` means mongoose structure validation only. `true` means Burni waits on the remote Validator.
+</Callout>
+
+## Configuration [#configuration]
+
+When `ENABLE_VALIDATOR=true`:
+
+* `VALIDATOR_URL` (required): absolute `http`/`https` URL of Inferno `POST /validate`, for example `http://localhost:4567/validate`. Burni does not append `/validate`.
+* `VALIDATOR_TIMEOUT_MS` (optional): positive integer milliseconds. Defaults to `30000`. `0` or a non-integer fails boot.
+
+Boot checks these values. It does not ping the Validator. When the Validator is disabled, both variables are ignored.
+
+## Request [#request]
+
+Burni `POST`s the resource as JSON to `VALIDATOR_URL`. If `meta.profile` is present, it adds `?profile=` with those URLs joined by commas. It does not read `$validate?profile=` and does not unwrap a Parameters body. It does not retry.
+
+Load StructureDefinitions and IG packages on the Inferno service ([REST API](https://github.com/Chinlinlee/inferno-fhir-validator-wrapper/blob/main/rest-api.md)), not under `utils/validator/igs`.
+
+## Which APIs use the Validator? [#which-apis-use-the-fhir-validator]
+
+When enabled:
+
+* create and update: wait on the Validator before writing. Validation failure is 422. Validator unavailable is 503 or 502. The resource is not stored.
+* Bundle writes that create or update a resource: same rule.
+* `$validate`: 200 when the OperationOutcome has no error or fatal issue, 422 when it does.
+
+When disabled, those APIs still run mongoose structure validation (and contained checks on write).
+
+## HTTP status [#http-status]
+
+Inferno typically returns HTTP 200 with an OperationOutcome. Burni maps the result:
+
+* OperationOutcome issue severity `error` or `fatal`: 422, the Validator's OperationOutcome
+* Only information or warning issues: 200, the Validator's OperationOutcome
+* Unreachable or timeout: 503, OperationOutcome created by Burni
+* HTTP response whose body is not an OperationOutcome: 502, OperationOutcome created by Burni

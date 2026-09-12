@@ -1,0 +1,38 @@
+---
+title: "Burni v2 (LTS) 總覽"
+description: "Burni v2 長期支援版本（v2.8）官方文件與指南"
+---
+
+# Burni v2 (LTS) 文件指南
+
+歡迎查閱 **Burni v2 (LTS)** 官方文檔。Burni 是一個基於 Node.js、Express 與 MongoDB / Mongoose 建構的高效能 FHIR R4 (v4.0.1) 伺服器。
+
+v2 系列為當前長期維護之穩定分支（Production Ready），提供成熟的 FHIR 資源儲存、驗證與查詢功能。
+
+---
+
+## 核心章節導覽
+
+- **[簡介與能力聲明](./v2/introduction)**  
+  了解 Burni 的核心設計目標、FHIR R4 合規性以及 AEGIS Touchstone 測試通過指標（100% 通過）。
+
+- **[快速開始](./v2/getting-started/installation)**  
+  包含伺服器環境安裝（Windows / Linux）、`.env` 與伺服器參數設定，以及正式環境部署建議。
+
+- **[FHIR API 規格文件](./v2/fhir-api-documentation/overview)**  
+  詳細介紹 Burni 提供的 FHIR RESTful 交互介面（CRUD、vread、history 等）與 OpenAPI / Swagger 規格產生方式。
+
+- **[搜尋參數 (Search Parameters)](./v2/search-parameter/overview)**  
+  說明 FHIR Search 機制、自定義搜尋參數的擴展方法與 MongoDB 查詢優化。
+
+- **[內部程式碼與 Model 結構](./v2/code-api-documentation/models/fhir/search-parameter-query-handler)**  
+  深入解析 Mongoose Schema 生成邏輯與 Search Parameter Query Handler 內部運作。
+
+- **[FHIR 驗證器](./v2/fhir-validator)**  
+  使用內建或外部驗證工具對輸入之 FHIR 資源進行結構與規範校驗。
+
+---
+
+## 預覽下一代架構
+
+如果您正在規劃系統升級或希望體驗次世代功能，歡迎瀏覽 **[Burni v3 (Preview)](../v3)** 文件，搶先了解 Express 5、雙資料庫時序資料儲存（Temporal Migration）及增強型 FHIR 系統參數等全新突破！

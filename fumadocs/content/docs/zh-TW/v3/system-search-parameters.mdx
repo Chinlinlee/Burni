@@ -1,0 +1,70 @@
+---
+title: "FHIR 系統參數支援 (System Search Parameters)"
+description: "Burni v3 對 FHIR 標準系統層級搜尋參數的完整支援與使用範例"
+---
+
+# FHIR 系統搜尋參數指南
+
+FHIR 規範定義了一組可應用於任何資源類型的系統全域搜尋參數（System Search Parameters）。在 **Burni v3** 中，系統搜尋參數經過全面重構，具備了更完整的標準支援與高效的 MongoDB 索引映射。
+
+---
+
+## 1. `_tag` 參數：標籤篩選
+
+用於檢索資源中含有特定標籤（`Resource.meta.tag`）的資源。
+
+### 查詢語法
+```http
+GET [baseUrl]/Patient?_tag=http://example.org/codes|VIP
+GET [baseUrl]/Observation?_tag=critical
+```
+
+### 多標籤組合
+支援以逗號表示 OR（或）、多個 `_tag` 參數表示 AND（且）：
+```http
+# 含有 code1 或 code2
+GET [baseUrl]/Patient?_tag=http://example.org|code1,http://example.org|code2
+
+# 同時含有 tagA 且含有 tagB
+GET [baseUrl]/Patient?_tag=http://example.org|tagA&_tag=http://example.org|tagB
+```
+
+---
+
+## 2. `_security` 參數：安全標籤
+
+用於依據資源的敏感等級或安全分類（`Resource.meta.security`）進行篩選：
+
+```http
+GET [baseUrl]/DocumentReference?_security=http://terminology.hl7.org/CodeSystem/v3-ActCode|R
+```
+
+適用於資安稽核、多租戶隔離或臨床病歷受限閱覽情境。
+
+---
+
+## 3. `_profile` 參數：Profile 規格符合性
+
+用於查詢符合特定 StructureDefinition Profile Canonical URI（`Resource.meta.profile`）的資源：
+
+```http
+GET [baseUrl]/Patient?_profile=http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient
+```
+
+---
+
+## 4. 完整的日期與時區精度支援 (Full Date/Time Precision)
+
+FHIR 日期查詢規格對時間範圍（Period）與精度有極為嚴格的要求。在 Burni v3 中：
+- 支援 `eq`, `ne`, `gt`, `lt`, `ge`, `le`, `sa`, `eb`, `ap` 前綴修飾符。
+- 精確解析帶有時區位移（Timezone Offset，如 `+08:00`、`-05:00` 或 `Z`）的時間字串。
+- 若只給予年份（例如 `ge2026`）或月份（例如 `2026-09`），Burni 會自動換算為該年份或月份的精確起始與結束毫秒邊界，杜絕邊界值落空或誤判問題。
+
+範例：
+```http
+# 查詢 2026 年 9 月所有排程
+GET [baseUrl]/Appointment?date=ge2026-09-01&date=le2026-09-30
+
+# 查詢特定時區偏移的觀察記錄
+GET [baseUrl]/Observation?date=gt2026-09-12T00:00:00+08:00
+```
