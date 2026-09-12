@@ -756,24 +756,49 @@ None
 
 
 
-Burni's FHIR Validator is implemented through the integration of Node.js and Java from the project [node-java-fhir-validator](https://www.npmjs.com/package/node-java-fhir-validator).
+Profile validation is a remote [Inferno FHIR validator wrapper](https://github.com/Chinlinlee/inferno-fhir-validator-wrapper). Burni does not embed a Java validator and does not load IGs. The decision is in `docs/adr/0001-remote-fhir-validator.md`.
 
-<Callout type="warn" title="Important Note">
-  Please use version 0.2.0 of [node-java-fhir-validator](https://www.npmjs.com/package/node-java-fhir-validator). Subsequent versions have not been integrated into Burni yet.
-
-  * Version 0.2.0 of node-java-fhir-validator uses [joeferner / node-java](https://github.com/joeferner/node-java).
-  * Subsequent versions use [node-java-bridge](https://github.com/MarkusJx/node-java-bridge) to replicate the functionality of [fhir-validator-wrapper](https://github.com/inferno-framework/fhir-validator-wrapper).
+<Callout type="info" title="ENABLE_VALIDATOR is not a $validate switch">
+  `$validate` always exists. `ENABLE_VALIDATOR=false` means mongoose structure validation only. `true` means Burni waits on the remote Validator.
 </Callout>
 
-* The path where Burni places the FHIR Validator: `utils/validator`
-  * `index.js`: Initializes and imports StructureDefinition (profile json file) and xxx.package.tgz (ig tgz file) from the `utils/validator/igs` folder into the validator code.
-  * `processor.js`: Implements the code for `validateResource`.
+## Configuration [#configuration]
 
-## Which APIs use the FHIR Validator? [#which-apis-use-the-fhir-validator]
+When `ENABLE_VALIDATOR=true`:
 
-* create: When POSTing data, validation is performed first. If validation passes, then create operation is executed; otherwise, a 422 error is returned.
-* update: When PUTting data, validation is performed first. If validation passes, then update operation is executed; otherwise, a 422 error is returned.
-* $validate: Validation function that returns a 200 response if successful; otherwise, a 422 error is returned.
+| Variable               | Required | Meaning                                                                                                                                   |
+| ---------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| `VALIDATOR_URL`        | yes      | Absolute `http`/`https` URL of Inferno `POST /validate`, for example `http://localhost:4567/validate`. Burni does not append `/validate`. |
+| `VALIDATOR_TIMEOUT_MS` | no       | Positive integer milliseconds. Defaults to `30000`. `0` or a non-integer fails boot.                                                      |
+
+Boot checks these values. It does not ping the Validator. When the Validator is disabled, both variables are ignored.
+
+## Request [#request]
+
+Burni `POST`s the resource as JSON to `VALIDATOR_URL`. If `meta.profile` is present, it adds `?profile=` with those URLs joined by commas. It does not read `$validate?profile=` and does not unwrap a Parameters body. It does not retry.
+
+Load StructureDefinitions and IG packages on the Inferno service ([REST API](https://github.com/Chinlinlee/inferno-fhir-validator-wrapper/blob/main/rest-api.md)), not under `utils/validator/igs`.
+
+## Which APIs use the Validator? [#which-apis-use-the-validator]
+
+When enabled:
+
+* create and update: wait on the Validator before writing. Validation failure is 422. Validator unavailable is 503 or 502. The resource is not stored.
+* Bundle writes that create or update a resource: same rule.
+* `$validate`: 200 when the OperationOutcome has no error or fatal issue, 422 when it does.
+
+When disabled, those APIs still run mongoose structure validation (and contained checks on write).
+
+## HTTP status [#http-status]
+
+Inferno typically returns HTTP 200 with an OperationOutcome. Burni maps the result:
+
+| Situation                                           | Status | Body                              |
+| --------------------------------------------------- | ------ | --------------------------------- |
+| OperationOutcome issue severity `error` or `fatal`  | 422    | The Validator's OperationOutcome  |
+| Only information or warning issues                  | 200    | The Validator's OperationOutcome  |
+| Unreachable or timeout                              | 503    | OperationOutcome created by Burni |
+| HTTP response whose body is not an OperationOutcome | 502    | OperationOutcome created by Burni |
 
 
 # Configuration (/docs/v2/getting-started/configuration)
@@ -839,9 +864,9 @@ ADMIN_PASSWORD="adminPassword"
 ENABLE_CHECK_ALL_RESOURCE_ID=false #true that want to check resource id cross all resource
 ENABLE_CHECK_REFERENCE #true that want to check reference is exist in resource content
 
-ENABLE_CSHARP_VALIDATOR=false 
-VALIDATION_FILES_ROOT_PATH="FHIRValidatorAPI/FHIRValidatorAPI/assets/validationResources" # Please config the path corresponded to CSharp assets/validationResources directory
-VALIDATION_API_URL="https://localhost:44381/api/validate"
+ENABLE_VALIDATOR=true
+VALIDATOR_URL=http://localhost:4567/validate
+VALIDATOR_TIMEOUT_MS=30000
 ```
 
 ## Generate code [#generate-code]
@@ -936,6 +961,63 @@ services:
 docker-compose up -d
 ```
 
+## MongoDB schema and index provisioning [#mongodb-schema-and-index-provisioning]
+
+Burni sets Mongoose `autoCreate` and `autoIndex` to `false` by default. Model registration only means models are registered inside the application process; it does **not** guarantee that MongoDB collections or indexes exist. Production deployments should run provisioning before application startup, or explicitly enable startup opt-in.
+
+The desired collection and index manifest is generated deterministically at runtime from registered models, the model catalog, approved built-in temporal definitions, and non-temporal SearchParameter derived indexes that pass policy. The manifest stores `artifactIdentity` (compiled SearchParameter artifact) and `derivedIndexPolicy.searchParameterPolicyVersion` (non-temporal index policy). Provisioning reconciles MongoDB against that generated manifest, persists results in `MongoProvisioningState`, and uses `MongoProvisioningLock` with a database-scoped lease for multi-instance runs. Use `writeDesiredManifestArtifact()` when you need a persisted JSON copy (default path `models/mongodb/provisioning/artifacts/desired-index-manifest.json`).
+
+### Pre-deployment provisioning (recommended) [#pre-deployment-provisioning-recommended]
+
+Configure the same MongoDB connection environment variables as the application (`MONGODB_CONNECTION_URL`, or `MONGODB_HOSTS` / `MONGODB_PORTS` / `MONGODB_NAME`), then run:
+
+```sh
+npm run mongodb:provision
+```
+
+This command runs control-plane initialization, acquires the lock, creates collections, creates baseline indexes, creates approved built-in derived indexes (temporal and non-temporal SearchParameters), runs verify, and persists the manifest checksum and drift summary. Exit code `0` on success; any failed phase returns a non-zero status.
+
+**Partial completion and retry**: Provisioning is additive-only and does not roll back collections or indexes that were already created. If a run fails midway, completed DDL remains in place; rerunning `mongodb:provision` continues from the desired/actual diff. After lock lease expiry, another process can reclaim the expired lock and retry.
+
+### Read-only verify [#read-only-verify]
+
+```sh
+npm run mongodb:verify
+```
+
+`mongodb:verify` performs **no DDL** and does not modify data. It reads actual collections and indexes and reports:
+
+* **missing**: indexes expected by the manifest but absent in the database
+* **extra**: indexes present in the database but not declared in the manifest (reported only, never deleted)
+* **mismatch**: indexes whose key or options do not match the expected identity
+* **manifest identity drift**: the current desired manifest checksum or version differs from the value stored in `MongoProvisioningState` for the latest successful run
+
+Verify failure uses exit code `2`.
+
+### `id` duplicate audit (read-only) [#id-duplicate-audit-read-only]
+
+```sh
+npm run mongodb:audit-id
+```
+
+Scans resource and history collections for duplicate `id` values for a future unique-migration clean-audit gate. It **does not modify data**. General provisioning does **not** automatically change an existing `id` index to unique.
+
+### Startup opt-in [#startup-opt-in]
+
+By default, `node server.js` does **not** run provisioning. Application readiness (`mongodb.ready`) and provisioning readiness are separate. Missing performance indexes (including non-temporal derived indexes) do not block HTTP listen, but queries may fall back to COLLSCAN; `mongodb:verify` diagnostics report missing performance indexes.
+
+To wait for a full provisioning run before application ready, set:
+
+```sh
+MONGODB_PROVISION_ON_STARTUP=true
+```
+
+or `MONGODB_PROVISION_ON_STARTUP=1`. When enabled, server bootstrap runs the same locked run as `mongodb:provision` before listen. On failure it does not declare ready, does not listen, and exits with a non-zero status. Production deployments should still prefer the standalone deployment command over startup opt-in.
+
+### Relationship to SearchParameter derived indexes [#relationship-to-searchparameter-derived-indexes]
+
+The derived index manifest merges temporal and policy-approved non-temporal built-in lookups (token, reference, string, number, quantity, uri). Custom database SearchParameters remain executable but do not create derived indexes by default. Derived index reconcile is additive-only: missing indexes can be created by `provision`, while extra or mismatched indexes are reported by `verify` and never auto-deleted; query runtime does not use `$hint`. Rollback can disable the new policy or restore a manifest version without auto-deleting indexes already created. See [Search parameters overview](/docs/search-parameter/overview) and ADR 0010.
+
 
 # Installation (/docs/v2/getting-started/installation)
 
@@ -944,7 +1026,7 @@ docker-compose up -d
 Please confirm that you have the:
 
 * [git](https://git-scm.com/downloads)
-* [Node.JS](https://nodejs.org/zh-tw/download)
+* [Node.js](https://nodejs.org/en/download) >= 22
 * [MongoDB](https://www.mongodb.com/try/download/community) > 4.2
 
 ## With git [#with-git]
@@ -1062,6 +1144,25 @@ The burni currently support [FHIR search operations](http://www.hl7.org/fhir/sea
 ## Search result parameters [#search-result-parameters]
 
 * \_count
+
+## Derived indexes and custom SearchParameters [#derived-indexes-and-custom-searchparameters]
+
+The SearchParameter Registry owns query correctness; MongoDB derived indexes only improve query performance. They are separate lifecycle concerns.
+
+First-phase provisioning creates derived indexes for **approved built-in temporal and non-temporal SearchParameters**. Each included lookup must be active, compilable, pass the corresponding index policy, and expose a safe index contract for its extraction/projection branch.
+
+### Non-temporal derived index boundary [#non-temporal-derived-index-boundary]
+
+* **token**: system-code or system-value correlation for Coding/CodeableConcept/Identifier/ContactPoint; `:text` queries are not indexed.
+* **reference**: indexes stored `reference` only; `Reference.type` target guards remain runtime filters.
+* **string**: equality indexes on exact projected leaves only; default prefix and `:contains` keep regex semantics without B-tree claims.
+* **number / quantity**: use existing numeric BSON fields; `sa`, `eb`, and `ap` comparators are not supported in the capability matrix.
+* **uri**: raw URI single-field index shared by exact, `:above`, and `:below`.
+* **array correlation**: only a single verifiable array scope is admitted; parallel multikey, positional paths, and unsafe branches produce stable rejection diagnostics.
+
+**Custom database SearchParameters** remain executable by default but are **not** added to the desired index manifest, so they do not receive derived indexes. That does not disable the query; it means MongoDB may use COLLSCAN. When performance indexes are missing, run `npm run mongodb:verify` to inspect drift and run `npm run mongodb:provision` as part of deployment.
+
+The expected derived index state is merged into the runtime-generated desired index manifest. See the MongoDB provisioning section in [Deploy](/docs/getting-started/deploy).
 
 
 # searchParameterQueryHandler (/docs/v2/code-api-documentation/models/fhir/search-parameter-query-handler)
@@ -2170,24 +2271,49 @@ None
 
 
 
-Burni 的 FHIR Validator 透過 Node.js 與 Java 融合的專案 [node-java-fhir-validator](https://www.npmjs.com/package/node-java-fhir-validator) 實現
+Profile validation 打遠端 [Inferno FHIR validator wrapper](https://github.com/Chinlinlee/inferno-fhir-validator-wrapper)。Burni 不內嵌 Java validator，也不載入 IG。決策寫在 `docs/adr/0001-remote-fhir-validator.md`。
 
-<Callout type="warn" title="注意事項">
-  [node-java-fhir-validator](https://www.npmjs.com/package/node-java-fhir-validator) **請使用 0.2.0 版本**，後續版本還未整合至 Burni
-
-  * node-java-fhir-validator 0.2.0 版本使用 [joeferner / node-java](https://github.com/joeferner/node-java)
-  * 後續版本則是使用 [node-java-bridge](https://github.com/MarkusJx/node-java-bridge) 重現 [fhir-validator-wrapper](https://github.com/inferno-framework/fhir-validator-wrapper) 的功能
+<Callout type="info" title="ENABLE_VALIDATOR 不是 $validate 的開關">
+  `$validate` 永遠存在。`ENABLE_VALIDATOR=false` 只做 mongoose 結構檢查。`true` 才會等遠端 Validator。
 </Callout>
 
-* Burni 放置 FHIR Validator 的路徑: `utils/validator`
-  * `index.js`: 初始化引入 `utils/validator/igs` 資料夾中的 StructureDefinition (profile json file) 和 xxx.package.tgz (ig tgz file) 到 validator 的程式碼
-  * `processor.js`: 實作 `validateResource` 的程式碼
+## 設定 [#設定]
 
-## 哪些 API 使用了 FHIR Validator? [#哪些-api-使用了-fhir-validator]
+`ENABLE_VALIDATOR=true` 時：
 
-* create: 當 POST 資料時，會先進行驗證，驗證通過才會進行 create，反之回傳 422 錯誤
-* update: 當 PUT 資料時，會先進行驗證，驗證通過才會進行 update，反之回傳 422 錯誤
-* $validate: 驗證功能，通過返回 200，反之回傳 422 錯誤
+| 變數                     | 必填 | 意義                                                                                                           |
+| ---------------------- | -- | ------------------------------------------------------------------------------------------------------------ |
+| `VALIDATOR_URL`        | 是  | Inferno `POST /validate` 的絕對 `http`/`https` URL，例如 `http://localhost:4567/validate`。Burni 不會自己補 `/validate`。 |
+| `VALIDATOR_TIMEOUT_MS` | 否  | 正整數毫秒。預設 `30000`。`0` 或非整數會讓啟動失敗。                                                                             |
+
+啟動只檢查這些值，不會 ping Validator。關掉時兩個變數都忽略。
+
+## 請求 [#請求]
+
+Burni 把 resource JSON `POST` 到 `VALIDATOR_URL`。有 `meta.profile` 才加 `?profile=`（逗號分隔）。不讀 `$validate?profile=`，不拆 Parameters，不重試。
+
+StructureDefinition 和 IG package 在 Inferno 服務載入（[REST API](https://github.com/Chinlinlee/inferno-fhir-validator-wrapper/blob/main/rest-api.md)），不要放進 `utils/validator/igs`。
+
+## 哪些 API 會打 Validator？ [#哪些-api-會打-validator]
+
+開啟時：
+
+* create、update：寫入前先等 Validator。驗證失敗 422。Validator 不可用 503 或 502。resource 不進庫。
+* Bundle 裡的 create/update：同一套規則。
+* `$validate`：OperationOutcome 沒有 error 或 fatal 回 200，有則 422。
+
+關掉時，這些 API 仍做 mongoose 結構檢查（寫入還會驗 contained）。
+
+## HTTP status [#http-status]
+
+Inferno 通常 HTTP 200 帶回 OperationOutcome。Burni 再對應：
+
+| 情況                                            | Status | Body                         |
+| --------------------------------------------- | ------ | ---------------------------- |
+| OperationOutcome issue 嚴重度為 `error` 或 `fatal` | 422    | Validator 的 OperationOutcome |
+| 只有 information 或 warning                      | 200    | Validator 的 OperationOutcome |
+| 連不上或 timeout                                  | 503    | Burni 組的 OperationOutcome    |
+| 有 HTTP 回應但 body 不是 OperationOutcome           | 502    | Burni 組的 OperationOutcome    |
 
 
 # 設定 (/zh-TW/docs/v2/getting-started/configuration)
@@ -2255,9 +2381,9 @@ ADMIN_PASSWORD="adminPassword"
 ENABLE_CHECK_ALL_RESOURCE_ID=false #true that want to check resource id cross all resource
 ENABLE_CHECK_REFERENCE #true that want to check reference is exist in resource content
 
-ENABLE_CSHARP_VALIDATOR=false 
-VALIDATION_FILES_ROOT_PATH="FHIRValidatorAPI/FHIRValidatorAPI/assets/validationResources" # Please config the path corresponded to CSharp assets/validationResources directory
-VALIDATION_API_URL="https://localhost:44381/api/validate"
+ENABLE_VALIDATOR=true
+VALIDATOR_URL=http://localhost:4567/validate
+VALIDATOR_TIMEOUT_MS=30000
 ```
 
 ## 產生程式碼 [#產生程式碼]
@@ -2352,6 +2478,63 @@ services:
 docker-compose up -d
 ```
 
+## MongoDB schema 與 index provisioning [#mongodb-schema-與-index-provisioning]
+
+Burni 預設將 Mongoose `autoCreate` 與 `autoIndex` 設為 `false`。Model registration 只代表 application process 內已註冊 model，**不保證** MongoDB collection 或 index 已存在。正式部署應在 application 啟動前執行 provisioning，或明確啟用 startup opt-in。
+
+期望的 collection 與 index manifest 會在執行時依已註冊 model、model catalog、approved built-in temporal 定義，以及通過 policy 的非 temporal SearchParameter derived index 以 deterministic 方式產生。Manifest 會保存 `artifactIdentity`（compiled SearchParameter artifact）與 `derivedIndexPolicy.searchParameterPolicyVersion`（non-temporal index policy）。Provisioning 會依該 manifest 與 MongoDB 實際狀態 reconcile，並將結果寫入 `MongoProvisioningState`；多 instance 執行時由 `MongoProvisioningLock` 以 database-scoped lease 互斥。需要 JSON 副本時可用 `writeDesiredManifestArtifact()` 寫出（預設路徑 `models/mongodb/provisioning/artifacts/desired-index-manifest.json`）。
+
+### 部署前 provisioning（建議） [#部署前-provisioning建議]
+
+設定與 application 相同的 MongoDB 連線環境變數（`MONGODB_CONNECTION_URL`，或 `MONGODB_HOSTS` / `MONGODB_PORTS` / `MONGODB_NAME`），然後執行：
+
+```sh
+npm run mongodb:provision
+```
+
+此 command 依序完成 control-plane 初始化、取得 lock、建立 collections、建立 baseline indexes、建立 approved built-in derived indexes（temporal 與非 temporal SearchParameter）、執行 verify，並保存 manifest checksum 與 drift 摘要。成功時 exit code 為 `0`；任一 phase 失敗時回傳非零狀態。
+
+**部分完成與重試**：Provisioning 採 additive-only policy，不 rollback 已建立的 collection 或 index。若 run 在中途失敗，已完成的 DDL 會保留；再次執行 `mongodb:provision` 會從 desired/actual diff 繼續補齊缺少項目。Lock lease 到期後可由其他 process 回收 expired lock 並重試。
+
+### 只讀 verify [#只讀-verify]
+
+```sh
+npm run mongodb:verify
+```
+
+`mongodb:verify` **不執行任何 DDL**，也不修改資料。它只讀取 actual collections 與 indexes，回報：
+
+* **missing**：期望存在但資料庫缺少的 index
+* **extra**：資料庫存在但 manifest 未宣告的 index（只報告，不刪除）
+* **mismatch**：key 或 options 與期望不一致的 index
+* **manifest identity drift**：目前 desired manifest 的 checksum 或 version 與 `MongoProvisioningState` 中最近一次成功 run 保存的值不一致
+
+verify 失敗時 exit code 為 `2`。
+
+### `id` duplicate audit（只讀） [#id-duplicate-audit只讀]
+
+```sh
+npm run mongodb:audit-id
+```
+
+掃描 resource 與 history collections 中的 duplicate `id`，供未來 unique migration 前的 clean-audit gate 使用。**不修改任何資料**。一般 provisioning **不會**自動將既有 `id` index 改為 unique。
+
+### Startup opt-in [#startup-opt-in]
+
+預設 `node server.js` **不會**執行 provisioning；application readiness（`mongodb.ready`）與 provisioning readiness 是分開的狀態。缺少 performance index（包含 non-temporal derived index）不會阻止 HTTP listen，但可能導致 COLLSCAN；`mongodb:verify` diagnostics 會標示 missing performance index。
+
+若要在 application ready 前等待完整 provisioning run，設定：
+
+```sh
+MONGODB_PROVISION_ON_STARTUP=true
+```
+
+或 `MONGODB_PROVISION_ON_STARTUP=1`。啟用後，server bootstrap 會在 listen 前執行與 `mongodb:provision` 相同的 locked run；失敗時不宣告 ready、不 listen，並以非零狀態結束 process。正式環境仍建議使用獨立 deployment command，而非 startup opt-in。
+
+### 與 SearchParameter derived index 的關係 [#與-searchparameter-derived-index-的關係]
+
+Derived index manifest 合併 temporal 與通過 policy 的非 temporal（token、reference、string、number、quantity、uri）built-in lookup。Database 自訂 SearchParameter 仍可執行查詢，但預設不建立 derived index。Derived index reconcile 為 additive-only：missing 可由 `provision` 建立，extra 或 mismatch 只由 `verify` 報告，不自動刪除；query runtime 不使用 `$hint`。Rollback 時可停止新 policy 或回復 manifest 版本，已建立的 index 不會被自動刪除。詳見 [搜尋參數概觀](/docs/search-parameter/overview) 與 [ADR 0010](/docs/adr/0010-searchparameter-derived-index-policy)。
+
 
 # 安裝 (/zh-TW/docs/v2/getting-started/installation)
 
@@ -2362,7 +2545,7 @@ docker-compose up -d
 請確認您的環境有以下內容：
 
 * [git](https://git-scm.com/downloads)
-* [Node.JS](https://nodejs.org/zh-tw/download)
+* [Node.JS](https://nodejs.org/zh-tw/download) >= 22
 * [MongoDB](https://www.mongodb.com/try/download/community) > 4.2
 
 ## 使用 git [#使用-git]
@@ -2413,7 +2596,7 @@ docker-compose up -d
 
 由產生器產生之部分搜尋參數可能是錯誤的或遺失。您可以使用 `models\FHIR\searchParameterQueryHandler.js` 內的方法修正。
 
-## 範例： Bundle.composition 與 Bundle.message [#範例-bundlecomposition-與-bundlemessage]
+## 範例：Bundle.composition 與 Bundle.message [#範例bundlecomposition-與-bundlemessage]
 
 FHIR R4 將 `Bundle.composition` 與 `Bundle.message` 定義為 reference 搜尋參數。Burni 透過 SearchParameter Registry 解析這兩個參數，且只評估 `entry[0].resource`：
 
@@ -2480,6 +2663,25 @@ Burni 目前支援的 [FHIR search operations](http://www.hl7.org/fhir/search.ht
 ## Search result parameters [#search-result-parameters]
 
 * \_count
+
+## Derived index 與自訂 SearchParameter [#derived-index-與自訂-searchparameter]
+
+Burni 的 SearchParameter Registry 負責查詢正確性；MongoDB derived index 只負責查詢效能。兩者是分開的生命週期。
+
+第一階段 provisioning 會為 **built-in artifact 中 approved 的 temporal 與非 temporal SearchParameter** 建立 derived index。這些 lookup 必須同時滿足 active、可編譯、通過對應 index policy，且 extraction/projection 具備安全的 index contract。
+
+### 非 temporal derived index 邊界 [#非-temporal-derived-index-邊界]
+
+* **token**：支援 Coding/CodeableConcept 的 system-code correlation，以及 Identifier/ContactPoint 的 system-value correlation；`:text` 查詢不建立 derived index。
+* **reference**：只索引 stored `reference` field；`Reference.type` target guard 仍由 runtime filter 負責。
+* **string**：只為 exact projected leaf 建立 equality index；default prefix 與 `:contains` 維持 regex 語意，不宣稱 B-tree index。
+* **number / quantity**：使用現有 numeric BSON field；`sa`、`eb`、`ap` comparator 尚未支援，不進 capability matrix。
+* **uri**：使用 raw URI single-field index；`:above` / `:below` 共用同一 raw key identity。
+* **array correlation**：只接受可證明的單一 array scope；parallel multikey、positional path 與 unsafe branch 會產生 rejection diagnostic。
+
+**Database 自訂 SearchParameter** 預設仍可正常執行查詢，但**不會**進入 desired index manifest，因此不建立 derived index。這不代表查詢被禁止，只代表可能使用 COLLSCAN。若缺少 performance index，請以 `npm run mongodb:verify` 檢查 drift，並在部署流程執行 `npm run mongodb:provision`。
+
+期望的 derived index 狀態合併在執行時產生的 desired index manifest；詳細部署步驟見 [部署](/docs/getting-started/deploy) 的 MongoDB provisioning 章節。
 
 <Callout type="info">
   下一章您將會知道如何修正 Burni 遺失或錯誤的搜尋參數。下一章[自行新增搜尋參數](/getting-started/configuration)

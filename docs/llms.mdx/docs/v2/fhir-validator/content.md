@@ -12,8 +12,10 @@ Profile validation is a remote [Inferno FHIR validator wrapper](https://github.c
 
 When `ENABLE_VALIDATOR=true`:
 
-* `VALIDATOR_URL` (required): absolute `http`/`https` URL of Inferno `POST /validate`, for example `http://localhost:4567/validate`. Burni does not append `/validate`.
-* `VALIDATOR_TIMEOUT_MS` (optional): positive integer milliseconds. Defaults to `30000`. `0` or a non-integer fails boot.
+| Variable               | Required | Meaning                                                                                                                                   |
+| ---------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| `VALIDATOR_URL`        | yes      | Absolute `http`/`https` URL of Inferno `POST /validate`, for example `http://localhost:4567/validate`. Burni does not append `/validate`. |
+| `VALIDATOR_TIMEOUT_MS` | no       | Positive integer milliseconds. Defaults to `30000`. `0` or a non-integer fails boot.                                                      |
 
 Boot checks these values. It does not ping the Validator. When the Validator is disabled, both variables are ignored.
 
@@ -23,7 +25,7 @@ Burni `POST`s the resource as JSON to `VALIDATOR_URL`. If `meta.profile` is pres
 
 Load StructureDefinitions and IG packages on the Inferno service ([REST API](https://github.com/Chinlinlee/inferno-fhir-validator-wrapper/blob/main/rest-api.md)), not under `utils/validator/igs`.
 
-## Which APIs use the Validator? [#which-apis-use-the-fhir-validator]
+## Which APIs use the Validator? [#which-apis-use-the-validator]
 
 When enabled:
 
@@ -37,7 +39,9 @@ When disabled, those APIs still run mongoose structure validation (and contained
 
 Inferno typically returns HTTP 200 with an OperationOutcome. Burni maps the result:
 
-* OperationOutcome issue severity `error` or `fatal`: 422, the Validator's OperationOutcome
-* Only information or warning issues: 200, the Validator's OperationOutcome
-* Unreachable or timeout: 503, OperationOutcome created by Burni
-* HTTP response whose body is not an OperationOutcome: 502, OperationOutcome created by Burni
+| Situation                                           | Status | Body                              |
+| --------------------------------------------------- | ------ | --------------------------------- |
+| OperationOutcome issue severity `error` or `fatal`  | 422    | The Validator's OperationOutcome  |
+| Only information or warning issues                  | 200    | The Validator's OperationOutcome  |
+| Unreachable or timeout                              | 503    | OperationOutcome created by Burni |
+| HTTP response whose body is not an OperationOutcome | 502    | OperationOutcome created by Burni |
