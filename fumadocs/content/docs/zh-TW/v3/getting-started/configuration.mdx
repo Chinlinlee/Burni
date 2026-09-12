@@ -1,0 +1,149 @@
+---
+title: "設定"
+description: "Burni v3 資源配置、環境變數與程式碼產生"
+---
+
+# 設定 (Configuration)
+
+在啟動 Burni FHIR Server 之前，請完成以下三個設定步驟：設定支援的 FHIR 資源、配置 `.env` 環境變數，以及執行建置產生器產生對應的 Model 與 API 程式碼。
+
+---
+
+## 1. 建立並編輯 `config/config.js`
+
+Burni 透過 `config/config.js` 來決定要啟用並支援哪些 FHIR 資源（Resource）及其對應的互動行為（Interaction，如 `read`、`create`、`search` 等）。
+
+專案根目錄中已提供完整的範本檔案 `config/config.template.js`（內含 FHIR R4 全部 146 項資源及其標準互動）。請先從範本複製一份 `config.js`：
+
+<CodeBlockTabs defaultValue="bash">
+    <CodeBlockTabsList>
+        <CodeBlockTabsTrigger value="bash">bash</CodeBlockTabsTrigger>
+        <CodeBlockTabsTrigger value="powershell">PowerShell</CodeBlockTabsTrigger>
+        <CodeBlockTabsTrigger value="cmd">CMD</CodeBlockTabsTrigger>
+    </CodeBlockTabsList>
+
+    <CodeBlockTab value="bash">
+    ```bash
+    cp config/config.template.js config/config.js
+    ```
+    </CodeBlockTab>
+
+    <CodeBlockTab value="powershell">
+    ```powershell
+    Copy-Item config/config.template.js config/config.js
+    ```
+    </CodeBlockTab>
+
+    <CodeBlockTab value="cmd">
+    ```cmd
+    copy config\config.template.js config\config.js
+    ```
+    </CodeBlockTab>
+</CodeBlockTabs>
+
+<Callout type="info">
+`config/config.template.js` 預設已啟用所有標準 FHIR 資源。若您的系統僅需支援特定資源（例如僅需 `Patient` 與 `Observation`），您可以在複製後的 `config/config.js` 中移除或調整不需要的項目，以減少建置產生的檔案與資料庫索引負擔。
+</Callout>
+
+### `config/config.js` 內容結構範例
+
+```javascript
+module.exports = {
+    // 定義您所要支援的 FHIR 資源名稱
+    "Patient": { 
+        "interaction": {
+            "read": true,
+            "vread": true,
+            "update": true,
+            "delete": true,
+            "history": true,
+            "create": true,
+            "search": true
+        }
+    },
+    "Observation": {
+        "interaction": {
+            "read": true,
+            "vread": true,
+            "update": true,
+            "delete": true,
+            "history": true,
+            "create": true,
+            "search": true
+        }
+    }
+};
+```
+
+---
+
+## 2. 配置 `.env` 環境變數
+
+請於專案根目錄建立 `.env` 檔案，配置 MongoDB 資料庫連線、伺服器連接埠以及相關功能開關：
+
+```bash
+# ==========================================
+# MongoDB 連線設定
+# ==========================================
+MONGODB_NAME="burni-db"
+MONGODB_HOSTS=["localhost"]
+MONGODB_PORTS=[27017]
+MONGODB_USER="myAdmin"
+MONGODB_PASSWORD="MymongoAdmin1"
+MONGODB_IS_SHARDING_MODE=false
+MONGODB_SLAVEMODE=false
+
+# 亦可直接使用單一完整連線字串 (優先權高於 HOSTS/PORTS)
+# MONGODB_CONNECTION_URL="mongodb://myAdmin:MymongoAdmin1@localhost:27017/burni-db?authSource=admin"
+
+# ==========================================
+# 伺服器通訊埠與 API 端點路徑
+# ==========================================
+SERVER_PORT=8080
+
+FHIRSERVER_HOST="localhost"
+FHIRSERVER_PORT=8080 # 用於組裝 Bundle fullUrl
+FHIRSERVER_APIPATH="fhir"
+
+# ==========================================
+# Token 權限認證設定
+# ==========================================
+ENABLE_TOKEN_AUTH=true
+ADMIN_LOGIN_PATH="adminLogin"  
+ADMIN_USERNAME="adminUsername"
+ADMIN_PASSWORD="adminPassword"
+
+# ==========================================
+# FHIR 完整性檢查
+# ==========================================
+ENABLE_CHECK_ALL_RESOURCE_ID=false # 是否跨所有 Resource 檢查 ID 唯一性
+ENABLE_CHECK_REFERENCE=true        # 是否檢查 resource 內所引用的 reference 是否存在
+
+# ==========================================
+# v3 雙資料庫時序架構 (選填)
+# ==========================================
+# 若要將歷史版本 (_history) 與 Provenance 獨立儲存至專用資料庫，可設定：
+# MONGODB_TEMPORAL_NAME="burni-db-temporal"
+# MONGODB_TEMPORAL_CONNECTION_URL="mongodb://localhost:27017/burni-db-temporal"
+
+# ==========================================
+# MongoDB Provisioning 啟動選項 (選填)
+# ==========================================
+MONGODB_PROVISION_ON_STARTUP=false # 若設為 true，伺服器啟動時會執行 locked index provisioning
+```
+
+---
+
+## 3. 產生程式碼 (Generate Code)
+
+完成 `config/config.js` 與 `.env` 的設定後，請執行以下指令。Burni 的程式碼產生器會依據您的設定自動產生對應的 Mongoose Model、Schema 以及 RESTful API 路由程式碼：
+
+```bash
+npm run build
+```
+
+<Callout type="warn">
+若在建置過程中出現 `TypeError: genParamFunc[type] is not a function`，表示該特定型別的搜尋參數目前尚未支援。
+</Callout>
+
+建置完成後，下一步請參考 **[部署](./deploy)** 啟動伺服器並初始化資料庫索引。

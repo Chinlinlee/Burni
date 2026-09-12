@@ -3,6 +3,8 @@
   "root": true,
   "pages": [
     "index",
+    "introduction",
+    "getting-started",
     "migration-preview",
     "temporal-architecture",
     "system-search-parameters"

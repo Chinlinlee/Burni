@@ -1,0 +1,116 @@
+---
+title: "Deploy"
+description: "Burni v3 server startup, Docker containerization, and MongoDB index provisioning"
+---
+
+# Deploy
+
+Burni can be launched directly using Node.js, containerized with Docker / docker-compose, and provisioned with v3 MongoDB index management tools.
+
+---
+
+## 1. Run with Node.js
+
+After completing code generation (`npm run build`), start the server:
+
+```bash
+node server.js
+```
+
+Upon successful startup, the console will output log messages similar to:
+
+```text
+mongodb://localhost:27017/burni-db
+moduleName ::  Patient
+path :  /path/to/burni/models/mongodb/model
+moduleName ::  Patient_history
+path :  /path/to/burni/models/mongodb/model
+moduleName ::  FHIRStoredID
+path :  /path/to/burni/models/mongodb/staticModel
+http server is listening on port:8080
+we're connected!
+```
+
+---
+
+## 2. Deploy with Docker Compose
+
+A standard `docker-compose.yaml` configuration is provided in the repository root:
+
+```yaml
+version: '3.8'
+services:
+  fhir-burni-mongodb:
+    image: mongo:7.0
+    container_name: fhir-burni-mongodb
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./mongodb/db:/data/db
+    environment:
+      - MONGO_INITDB_DATABASE=burni-db
+      - MONGO_INITDB_ROOT_USERNAME=myAdmin
+      - MONGO_INITDB_ROOT_PASSWORD=MymongoAdmin1
+      - MONGO_PORT=27017
+
+  fhir-burni:
+    build: .
+    container_name: fhir-burni
+    restart: on-failure:3
+    ports:
+      - "8080:8080"
+    depends_on:
+      - fhir-burni-mongodb
+    environment:
+      - SERVER_PORT=8080
+      - MONGODB_HOSTS=["fhir-burni-mongodb"]
+      - MONGODB_PORTS=[27017]
+      - MONGODB_NAME=burni-db
+      - MONGODB_USER=myAdmin
+      - MONGODB_PASSWORD=MymongoAdmin1
+```
+
+Start the containers:
+
+```bash
+docker-compose up -d
+```
+
+---
+
+## 3. MongoDB Schema and Index Provisioning
+
+Burni v3 disables Mongoose `autoCreate` and `autoIndex` by default to avoid concurrent index creation overhead in clustered environments. Production deployments should run provisioning prior to starting application processes.
+
+### Pre-deployment Provisioning (Recommended)
+
+Configure MongoDB connection environment variables and run:
+
+```bash
+npm run mongodb:provision
+```
+
+This command:
+1. Acquires a distributed database lease lock (`MongoProvisioningLock`).
+2. Creates collections for all registered FHIR resources.
+3. Builds baseline indexes and approved SearchParameter derived indexes (token, reference, string, uri, and temporal indexes).
+4. Saves the manifest checksum and provisioning run status.
+
+### Read-Only Verification (Verify)
+
+Check whether the database index state has drifted from the desired manifest:
+
+```bash
+npm run mongodb:verify
+```
+
+This command performs no DDL modifications and reports any `missing`, `extra`, or `mismatch` items.
+
+### Duplicate ID Audit
+
+```bash
+npm run mongodb:audit-id
+```
+
+Scans resource and history collections for duplicate `id` values in preparation for future unique constraints.

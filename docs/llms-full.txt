@@ -40,63 +40,6 @@ Browse our documentation according to your current deployment or adoption roadma
 👉 &#x2A;*[Explore v3 (Preview) Documentation](./docs/v3)**
 
 
-# Burni v2 (LTS) Overview (/docs/v2)
-
-
-
-# Burni v2 (LTS) Documentation Guide [#burni-v2-lts-documentation-guide]
-
-Welcome to the &#x2A;*Burni v2 (LTS)** documentation. Burni is a high-performance FHIR R4 (v4.0.1) server built with Node.js, Express, and MongoDB / Mongoose.
-
-The v2 series represents our battle-tested, production-ready Long Term Support release, providing mature FHIR resource storage, validation, and search capabilities.
-
-***
-
-## Core Sections [#core-sections]
-
-* **[Introduction & Conformance](./v2/introduction)**\
-  Understand Burni's architectural goals, FHIR R4 compliance, and AEGIS Touchstone test results (100% pass rate).
-
-* **[Getting Started](./v2/getting-started/installation)**\
-  Environment setup (Windows / Linux), configuration via `.env`, and production deployment guidelines.
-
-* **[FHIR API Specifications](./v2/fhir-api-documentation/overview)**\
-  Detailed overview of FHIR RESTful interactions (CRUD, vread, history, etc.) and OpenAPI / Swagger generation.
-
-* **[Search Parameters](./v2/search-parameter/overview)**\
-  FHIR search mechanisms, extending custom search parameters, and query optimization.
-
-* **[Internal Code & Models](./v2/code-api-documentation/models/fhir/search-parameter-query-handler)**\
-  Deep dive into Mongoose Schema generation and the internal Search Parameter Query Handler.
-
-* **[FHIR Validator](./v2/fhir-validator)**\
-  Validating FHIR resources using built-in and external validation tooling.
-
-***
-
-## Exploring Next Generation Features [#exploring-next-generation-features]
-
-Looking forward to the next generation of Burni? Visit &#x2A;*[Burni v3 (Preview)](../v3)** to explore Express 5, dual-database temporal persistence (Temporal Migration), enhanced FHIR system parameters, and modern tooling!
-
-
-# Introduction (/docs/v2/introduction)
-
-
-
-## Burni FHIR Server [#burni-fhir-server]
-
-Burni is an implementation of the FHIR server with Node, Express, and MongoDB providing very simple ways to generate Mongoose Schema, API code and customize the <a href="https://www.hl7.org/fhir/">HL7 FHIR® specification</a> Currently, Burni support both Windows and Linux environment to enable developers to rapidly deploy a FHIR service.
-
-Burni use version 4.0.1 (R4) of the HL7 FHIR specification.
-
-## Conformance Statement [#conformance-statement]
-
-Burni has been tested  by AEGIS Touchstone Basic-R4-Server. The conformance results show below:
-
-* [FHIR4-0-1-Basic-Server version 18](https://touchstone.aegis.net/touchstone/conformance/detail?suite=FHIR4-0-1-Basic-Server\&sVersion=18\&testSystem=5f9518730a120e4edef042ae\&supportedOnly=false\&cb=%2fFHIR4-0-1-Basic\&format=ALL\&published=true) (2,216 tests has been passed, 100% Pass)
-* [FHIR4-0-1-Basic-Server version 14](https://touchstone.aegis.net/touchstone/conformance/detail?suite=FHIR4-0-1-Basic-Server\&sVersion=14\&testSystem=5f9518730a120e4edef042ae\&supportedOnly=false\&cb=%2FFHIR4-0-1-Basic\&published=true) (1,948 tests has been passed, 100% Pass)
-
-
 # Burni v3 Overview (Preview) (/docs/v3)
 
 
@@ -143,11 +86,40 @@ v3 brings full support for standard FHIR system-level search parameters:
 
 ***
 
-## 📚 Preview Sections [#-preview-sections]
+## 📚 Documentation Sections [#-documentation-sections]
 
+* **[Introduction](./v3/introduction)**: Overview of Burni v3 features and AEGIS Touchstone Conformance test statements.
+* **[Getting Started](./v3/getting-started/installation)**: Quick start guide covering installation, configuration (`config/config.js` and `.env`), and server deployment.
 * **[Migration Preview: Upgrading from v2 to v3](./v3/migration-preview)**: Prerequisites, configuration updates, and migration CLI execution.
 * **[Temporal & Dual Database Architecture](./v3/temporal-architecture)**: How active and historical collections coordinate seamlessly.
 * **[FHIR System Search Parameters](./v3/system-search-parameters)**: Detailed syntax and examples for `_tag`, `_profile`, `_security`, and date filtering.
+
+
+# Introduction (/docs/v3/introduction)
+
+
+
+# Introduction [#introduction]
+
+## Burni FHIR Server [#burni-fhir-server]
+
+Burni is an enterprise-ready implementation of an HL7® FHIR® R4 Server built with Node.js, Express, and MongoDB. It provides straightforward mechanisms to generate Mongoose schemas and RESTful API endpoints for any designated FHIR resources, allowing rapid customization and extension for clinical and health data interoperability workflows. Burni supports both Windows and Linux environments to enable rapid deployment of FHIR services.
+
+Burni conforms to &#x2A;*v4.0.1 (R4)** of the HL7 FHIR specification.
+
+In **v3**, Burni introduces substantial foundational architecture upgrades:
+
+* **Node.js >= 22 (LTS)** and **Express 5** for modern JavaScript runtime performance and improved asynchronous routing.
+* **Mongoose 8** for resilient database connection management and modern driver support.
+* **Dual Database & Temporal Architecture** for segregating active resources from historical versions and audit provenance records.
+* **System-level search parameters** with native support for `_tag`, `_security`, `_profile`, and full-precision timezone date comparisons.
+
+## Conformance Statement [#conformance-statement]
+
+Burni has been validated with AEGIS Touchstone Basic-R4-Server test suites with 100% pass rates:
+
+* [FHIR4-0-1-Basic-Server version 18](https://touchstone.aegis.net/touchstone/conformance/detail?suite=FHIR4-0-1-Basic-Server\&sVersion=18\&testSystem=5f9518730a120e4edef042ae\&supportedOnly=false\&cb=%2fFHIR4-0-1-Basic\&format=ALL\&published=true) (2,216 tests passed, 100% Pass)
+* [FHIR4-0-1-Basic-Server version 14](https://touchstone.aegis.net/touchstone/conformance/detail?suite=FHIR4-0-1-Basic-Server\&sVersion=14\&testSystem=5f9518730a120e4edef042ae\&supportedOnly=false\&cb=%2FFHIR4-0-1-Basic\&published=true) (1,948 tests passed, 100% Pass)
 
 
 # Migration Preview: Upgrading from v2 to v3 (/docs/v3/migration-preview)
@@ -375,6 +347,397 @@ flowchart LR
    * Establish dedicated snapshot policies for operational data versus long-term audit archives.
 3. **Transparent Execution**:
    * Burni's internal Data Operator layer abstracts database routing completely—no custom code is required at the API route level.
+
+
+# Burni v2 (LTS) Overview (/docs/v2)
+
+
+
+# Burni v2 (LTS) Documentation Guide [#burni-v2-lts-documentation-guide]
+
+Welcome to the &#x2A;*Burni v2 (LTS)** documentation. Burni is a high-performance FHIR R4 (v4.0.1) server built with Node.js, Express, and MongoDB / Mongoose.
+
+The v2 series represents our battle-tested, production-ready Long Term Support release, providing mature FHIR resource storage, validation, and search capabilities.
+
+***
+
+## Core Sections [#core-sections]
+
+* **[Introduction & Conformance](./v2/introduction)**\
+  Understand Burni's architectural goals, FHIR R4 compliance, and AEGIS Touchstone test results (100% pass rate).
+
+* **[Getting Started](./v2/getting-started/installation)**\
+  Environment setup (Windows / Linux), configuration via `.env`, and production deployment guidelines.
+
+* **[FHIR API Specifications](./v2/fhir-api-documentation/overview)**\
+  Detailed overview of FHIR RESTful interactions (CRUD, vread, history, etc.) and OpenAPI / Swagger generation.
+
+* **[Search Parameters](./v2/search-parameter/overview)**\
+  FHIR search mechanisms, extending custom search parameters, and query optimization.
+
+* **[Internal Code & Models](./v2/code-api-documentation/models/fhir/search-parameter-query-handler)**\
+  Deep dive into Mongoose Schema generation and the internal Search Parameter Query Handler.
+
+* **[FHIR Validator](./v2/fhir-validator)**\
+  Validating FHIR resources using built-in and external validation tooling.
+
+***
+
+## Exploring Next Generation Features [#exploring-next-generation-features]
+
+Looking forward to the next generation of Burni? Visit &#x2A;*[Burni v3 (Preview)](../v3)** to explore Express 5, dual-database temporal persistence (Temporal Migration), enhanced FHIR system parameters, and modern tooling!
+
+
+# Introduction (/docs/v2/introduction)
+
+
+
+## Burni FHIR Server [#burni-fhir-server]
+
+Burni is an implementation of the FHIR server with Node, Express, and MongoDB providing very simple ways to generate Mongoose Schema, API code and customize the <a href="https://www.hl7.org/fhir/">HL7 FHIR® specification</a> Currently, Burni support both Windows and Linux environment to enable developers to rapidly deploy a FHIR service.
+
+Burni use version 4.0.1 (R4) of the HL7 FHIR specification.
+
+## Conformance Statement [#conformance-statement]
+
+Burni has been tested  by AEGIS Touchstone Basic-R4-Server. The conformance results show below:
+
+* [FHIR4-0-1-Basic-Server version 18](https://touchstone.aegis.net/touchstone/conformance/detail?suite=FHIR4-0-1-Basic-Server\&sVersion=18\&testSystem=5f9518730a120e4edef042ae\&supportedOnly=false\&cb=%2fFHIR4-0-1-Basic\&format=ALL\&published=true) (2,216 tests has been passed, 100% Pass)
+* [FHIR4-0-1-Basic-Server version 14](https://touchstone.aegis.net/touchstone/conformance/detail?suite=FHIR4-0-1-Basic-Server\&sVersion=14\&testSystem=5f9518730a120e4edef042ae\&supportedOnly=false\&cb=%2FFHIR4-0-1-Basic\&published=true) (1,948 tests has been passed, 100% Pass)
+
+
+# Configuration (/docs/v3/getting-started/configuration)
+
+
+
+# Configuration [#configuration]
+
+Before launching the Burni FHIR Server, please complete the following configuration steps: specify supported FHIR resources, set environment variables in `.env`, and run the build generator to create Mongoose models and API code.
+
+***
+
+## 1. Create and Edit `config/config.js` [#1-create-and-edit-configconfigjs]
+
+Burni uses `config/config.js` to determine which FHIR resources and interactions (such as `read`, `create`, `search`, etc.) should be enabled and supported.
+
+The repository provides a complete template file at `config/config.template.js`, covering all 146 FHIR R4 resources. Copy this template to create your `config.js`:
+
+<CodeBlockTabs defaultValue="bash">
+  <CodeBlockTabsList>
+    <CodeBlockTabsTrigger value="bash">
+      bash
+    </CodeBlockTabsTrigger>
+
+    <CodeBlockTabsTrigger value="powershell">
+      PowerShell
+    </CodeBlockTabsTrigger>
+
+    <CodeBlockTabsTrigger value="cmd">
+      CMD
+    </CodeBlockTabsTrigger>
+  </CodeBlockTabsList>
+
+  <CodeBlockTab value="bash">
+    ```bash
+    cp config/config.template.js config/config.js
+    ```
+  </CodeBlockTab>
+
+  <CodeBlockTab value="powershell">
+    ```powershell
+    Copy-Item config/config.template.js config/config.js
+    ```
+  </CodeBlockTab>
+
+  <CodeBlockTab value="cmd">
+    ```cmd
+    copy config\config.template.js config\config.js
+    ```
+  </CodeBlockTab>
+</CodeBlockTabs>
+
+<Callout type="info">
+  `config/config.template.js` enables all standard FHIR resources by default. If your deployment only requires a subset (such as `Patient` and `Observation`), you can modify `config/config.js` to omit unused resources, minimizing generated model code and database index footprints.
+</Callout>
+
+### Example `config/config.js` Structure [#example-configconfigjs-structure]
+
+```javascript
+module.exports = {
+    // Add the resource names that you need
+    "Patient": { 
+        "interaction": {
+            "read": true,
+            "vread": true,
+            "update": true,
+            "delete": true,
+            "history": true,
+            "create": true,
+            "search": true
+        }
+    },
+    "Observation": {
+        "interaction": {
+            "read": true,
+            "vread": true,
+            "update": true,
+            "delete": true,
+            "history": true,
+            "create": true,
+            "search": true
+        }
+    }
+};
+```
+
+***
+
+## 2. Configure Environment Variables (`.env`) [#2-configure-environment-variables-env]
+
+Create a `.env` file in the project root to configure MongoDB connection parameters, server ports, and feature flags:
+
+```bash
+# ==========================================
+# MongoDB Connection Settings
+# ==========================================
+MONGODB_NAME="burni-db"
+MONGODB_HOSTS=["localhost"]
+MONGODB_PORTS=[27017]
+MONGODB_USER="myAdmin"
+MONGODB_PASSWORD="MymongoAdmin1"
+MONGODB_IS_SHARDING_MODE=false
+MONGODB_SLAVEMODE=false
+
+# Alternatively, specify a single connection string URL:
+# MONGODB_CONNECTION_URL="mongodb://myAdmin:MymongoAdmin1@localhost:27017/burni-db?authSource=admin"
+
+# ==========================================
+# Server Port and API Path
+# ==========================================
+SERVER_PORT=8080
+
+FHIRSERVER_HOST="localhost"
+FHIRSERVER_PORT=8080 # Used for generating bundle fullUrl
+FHIRSERVER_APIPATH="fhir"
+
+# ==========================================
+# Token Authentication
+# ==========================================
+ENABLE_TOKEN_AUTH=true
+ADMIN_LOGIN_PATH="adminLogin"  
+ADMIN_USERNAME="adminUsername"
+ADMIN_PASSWORD="adminPassword"
+
+# ==========================================
+# FHIR Integrity Checks
+# ==========================================
+ENABLE_CHECK_ALL_RESOURCE_ID=false # Check uniqueness of resource ID across all resource types
+ENABLE_CHECK_REFERENCE=true        # Validate that referenced resources exist
+
+# ==========================================
+# v3 Dual-Database Temporal Architecture (Optional)
+# ==========================================
+# Segregate history (_history) and Provenance records into a dedicated temporal database:
+# MONGODB_TEMPORAL_NAME="burni-db-temporal"
+# MONGODB_TEMPORAL_CONNECTION_URL="mongodb://localhost:27017/burni-db-temporal"
+
+# ==========================================
+# MongoDB Provisioning Startup Option (Optional)
+# ==========================================
+MONGODB_PROVISION_ON_STARTUP=false # If true, runs locked index provisioning on server startup
+```
+
+***
+
+## 3. Generate Code [#3-generate-code]
+
+After configuring `config/config.js` and `.env`, run the code generator. Burni will automatically create Mongoose models, schemas, and RESTful API routes based on your configuration:
+
+```bash
+npm run build
+```
+
+<Callout type="warn">
+  `TypeError: genParamFunc[type] is not a function` indicates that this specific search parameter type is not currently supported.
+</Callout>
+
+Once code generation is complete, proceed to the &#x2A;*[Deploy](./deploy)** guide to launch the server and initialize database indexes.
+
+
+# Deploy (/docs/v3/getting-started/deploy)
+
+
+
+# Deploy [#deploy]
+
+Burni can be launched directly using Node.js, containerized with Docker / docker-compose, and provisioned with v3 MongoDB index management tools.
+
+***
+
+## 1. Run with Node.js [#1-run-with-nodejs]
+
+After completing code generation (`npm run build`), start the server:
+
+```bash
+node server.js
+```
+
+Upon successful startup, the console will output log messages similar to:
+
+```text
+mongodb://localhost:27017/burni-db
+moduleName ::  Patient
+path :  /path/to/burni/models/mongodb/model
+moduleName ::  Patient_history
+path :  /path/to/burni/models/mongodb/model
+moduleName ::  FHIRStoredID
+path :  /path/to/burni/models/mongodb/staticModel
+http server is listening on port:8080
+we're connected!
+```
+
+***
+
+## 2. Deploy with Docker Compose [#2-deploy-with-docker-compose]
+
+A standard `docker-compose.yaml` configuration is provided in the repository root:
+
+```yaml
+version: '3.8'
+services:
+  fhir-burni-mongodb:
+    image: mongo:7.0
+    container_name: fhir-burni-mongodb
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./mongodb/db:/data/db
+    environment:
+      - MONGO_INITDB_DATABASE=burni-db
+      - MONGO_INITDB_ROOT_USERNAME=myAdmin
+      - MONGO_INITDB_ROOT_PASSWORD=MymongoAdmin1
+      - MONGO_PORT=27017
+
+  fhir-burni:
+    build: .
+    container_name: fhir-burni
+    restart: on-failure:3
+    ports:
+      - "8080:8080"
+    depends_on:
+      - fhir-burni-mongodb
+    environment:
+      - SERVER_PORT=8080
+      - MONGODB_HOSTS=["fhir-burni-mongodb"]
+      - MONGODB_PORTS=[27017]
+      - MONGODB_NAME=burni-db
+      - MONGODB_USER=myAdmin
+      - MONGODB_PASSWORD=MymongoAdmin1
+```
+
+Start the containers:
+
+```bash
+docker-compose up -d
+```
+
+***
+
+## 3. MongoDB Schema and Index Provisioning [#3-mongodb-schema-and-index-provisioning]
+
+Burni v3 disables Mongoose `autoCreate` and `autoIndex` by default to avoid concurrent index creation overhead in clustered environments. Production deployments should run provisioning prior to starting application processes.
+
+### Pre-deployment Provisioning (Recommended) [#pre-deployment-provisioning-recommended]
+
+Configure MongoDB connection environment variables and run:
+
+```bash
+npm run mongodb:provision
+```
+
+This command:
+
+1. Acquires a distributed database lease lock (`MongoProvisioningLock`).
+2. Creates collections for all registered FHIR resources.
+3. Builds baseline indexes and approved SearchParameter derived indexes (token, reference, string, uri, and temporal indexes).
+4. Saves the manifest checksum and provisioning run status.
+
+### Read-Only Verification (Verify) [#read-only-verification-verify]
+
+Check whether the database index state has drifted from the desired manifest:
+
+```bash
+npm run mongodb:verify
+```
+
+This command performs no DDL modifications and reports any `missing`, `extra`, or `mismatch` items.
+
+### Duplicate ID Audit [#duplicate-id-audit]
+
+```bash
+npm run mongodb:audit-id
+```
+
+Scans resource and history collections for duplicate `id` values in preparation for future unique constraints.
+
+
+# Installation (/docs/v3/getting-started/installation)
+
+
+
+# Installation [#installation]
+
+Please ensure your environment meets the following requirements:
+
+* [git](https://git-scm.com/downloads)
+* [Node.js](https://nodejs.org/en/download&#x29; &#x2A;*>= 22 (LTS)**
+* [MongoDB](https://www.mongodb.com/try/download/community&#x29; **> 4.2** (MongoDB 6.0 or 7.0+ recommended)
+
+***
+
+## 1. Clone the Repository [#1-clone-the-repository]
+
+Clone the Burni repository with Git:
+
+<CodeBlockTabs defaultValue="bash">
+  <CodeBlockTabsList>
+    <CodeBlockTabsTrigger value="bash">
+      bash
+    </CodeBlockTabsTrigger>
+  </CodeBlockTabsList>
+
+  <CodeBlockTab value="bash">
+    ```bash
+    git clone https://github.com/Chinlinlee/Burni.git
+    cd Burni
+    ```
+  </CodeBlockTab>
+</CodeBlockTabs>
+
+***
+
+## 2. Install Dependencies [#2-install-dependencies]
+
+Install required dependencies by running `npm install`:
+
+<CodeBlockTabs defaultValue="bash">
+  <CodeBlockTabsList>
+    <CodeBlockTabsTrigger value="bash">
+      bash
+    </CodeBlockTabsTrigger>
+  </CodeBlockTabsList>
+
+  <CodeBlockTab value="bash">
+    ```bash
+    npm install
+    ```
+  </CodeBlockTab>
+</CodeBlockTabs>
+
+***
+
+After completing the installation, proceed to the &#x2A;*[Configuration](./configuration)** section.
 
 
 # Generate OpenAPI (/docs/v2/fhir-api-documentation/generate-open-api)
@@ -801,6 +1164,105 @@ Inferno typically returns HTTP 200 with an OperationOutcome. Burni maps the resu
 | HTTP response whose body is not an OperationOutcome | 502    | OperationOutcome created by Burni |
 
 
+# Add search parameter (/docs/v2/search-parameter/add-search-parameter)
+
+
+
+The code about search parameters can be found in `models\FHIR\queryBuild.js` and `models\FHIR\searchParameterQueryHandler.js` files.
+
+* `queryBuild.js`: get single MongoDB query object from data type.
+* `searchParameterQueryHandler.js`: using `queryBuild.js` and get fully MongoDB query object from HTTP query param.
+
+Some search parameters from generator will got missing or incorrect. You can fix by using methods in `models\FHIR\searchParameterQueryHandler.js`.
+
+## Example: Bundle.composition and Bundle.message [#example-bundlecomposition-and-bundlemessage]
+
+FHIR R4 defines `Bundle.composition` and `Bundle.message` as reference search parameters. Burni resolves them from the SearchParameter Registry and evaluates only `entry[0].resource`:
+
+* `composition` — `document` Bundles whose first entry is a `Composition`
+* `message` — `message` Bundles whose first entry is a `MessageHeader`
+
+Burni does not fan out across all `entry` elements. Only the first embedded resource participates in these special searches.
+
+### Direct identity search [#direct-identity-search]
+
+Supported value forms include relative `ResourceType/id`, a bare id normalized to the fixed target type, and an absolute URL that matches `entry[0].fullUrl`. Versioned, contained, and logical identifier references are rejected.
+
+Example URLs:
+
+```sh
+http://localhost:8080/fhir/Bundle?composition=Composition/comp-1
+http://localhost:8080/fhir/Bundle?message=https://example.org/fhir/MessageHeader/msg-1
+```
+
+### Chained search [#chained-search]
+
+After the inline hop, Burni applies the target resource SearchParameter plan from the Registry. Examples:
+
+```sh
+http://localhost:8080/fhir/Bundle?composition.patient=Patient/123
+http://localhost:8080/fhir/Bundle?message.focus:Patient.name=Smith
+```
+
+`composition.patient` follows `Composition::patient` and may fan out to `Patient` and `Group`. `MessageHeader.focus` is an open reference target, so a type filter is required before chaining further:
+
+```sh
+http://localhost:8080/fhir/Bundle?message.focus.name=Smith
+```
+
+This request is rejected with HTTP 400 and `missing-type-filter`.
+
+### Limitations [#limitations]
+
+* Only `entry[0].resource` is evaluated; later entries do not affect results even when they contain a matching Composition or MessageHeader.
+* Bundle type and first-entry resource type must match; invalid stored Bundles simply do not match rather than returning parameter errors.
+
+
+# Overview (/docs/v2/search-parameter/overview)
+
+
+
+# Search parameters overview [#search-parameters-overview]
+
+The burni currently support [FHIR search operations](http://www.hl7.org/fhir/search.html) below:
+
+## Search Parameter Types [#search-parameter-types]
+
+* Number
+* Date/DateTime
+* String
+* Token
+* Reference
+
+## Parameters for all resources [#parameters-for-all-resources]
+
+* \_id
+* \_lastUpdated
+
+## Search result parameters [#search-result-parameters]
+
+* \_count
+
+## Derived indexes and custom SearchParameters [#derived-indexes-and-custom-searchparameters]
+
+The SearchParameter Registry owns query correctness; MongoDB derived indexes only improve query performance. They are separate lifecycle concerns.
+
+First-phase provisioning creates derived indexes for **approved built-in temporal and non-temporal SearchParameters**. Each included lookup must be active, compilable, pass the corresponding index policy, and expose a safe index contract for its extraction/projection branch.
+
+### Non-temporal derived index boundary [#non-temporal-derived-index-boundary]
+
+* **token**: system-code or system-value correlation for Coding/CodeableConcept/Identifier/ContactPoint; `:text` queries are not indexed.
+* **reference**: indexes stored `reference` only; `Reference.type` target guards remain runtime filters.
+* **string**: equality indexes on exact projected leaves only; default prefix and `:contains` keep regex semantics without B-tree claims.
+* **number / quantity**: use existing numeric BSON fields; `sa`, `eb`, and `ap` comparators are not supported in the capability matrix.
+* **uri**: raw URI single-field index shared by exact, `:above`, and `:below`.
+* **array correlation**: only a single verifiable array scope is admitted; parallel multikey, positional paths, and unsafe branches produce stable rejection diagnostics.
+
+**Custom database SearchParameters** remain executable by default but are **not** added to the desired index manifest, so they do not receive derived indexes. That does not disable the query; it means MongoDB may use COLLSCAN. When performance indexes are missing, run `npm run mongodb:verify` to inspect drift and run `npm run mongodb:provision` as part of deployment.
+
+The expected derived index state is merged into the runtime-generated desired index manifest. See the MongoDB provisioning section in [Deploy](/docs/getting-started/deploy).
+
+
 # Configuration (/docs/v2/getting-started/configuration)
 
 
@@ -1064,105 +1526,6 @@ Please confirm that you have the:
 </CodeBlockTabs>
 
 after installation, let's starting [configuration](/getting-started/configuration)
-
-
-# Add search parameter (/docs/v2/search-parameter/add-search-parameter)
-
-
-
-The code about search parameters can be found in `models\FHIR\queryBuild.js` and `models\FHIR\searchParameterQueryHandler.js` files.
-
-* `queryBuild.js`: get single MongoDB query object from data type.
-* `searchParameterQueryHandler.js`: using `queryBuild.js` and get fully MongoDB query object from HTTP query param.
-
-Some search parameters from generator will got missing or incorrect. You can fix by using methods in `models\FHIR\searchParameterQueryHandler.js`.
-
-## Example: Bundle.composition and Bundle.message [#example-bundlecomposition-and-bundlemessage]
-
-FHIR R4 defines `Bundle.composition` and `Bundle.message` as reference search parameters. Burni resolves them from the SearchParameter Registry and evaluates only `entry[0].resource`:
-
-* `composition` — `document` Bundles whose first entry is a `Composition`
-* `message` — `message` Bundles whose first entry is a `MessageHeader`
-
-Burni does not fan out across all `entry` elements. Only the first embedded resource participates in these special searches.
-
-### Direct identity search [#direct-identity-search]
-
-Supported value forms include relative `ResourceType/id`, a bare id normalized to the fixed target type, and an absolute URL that matches `entry[0].fullUrl`. Versioned, contained, and logical identifier references are rejected.
-
-Example URLs:
-
-```sh
-http://localhost:8080/fhir/Bundle?composition=Composition/comp-1
-http://localhost:8080/fhir/Bundle?message=https://example.org/fhir/MessageHeader/msg-1
-```
-
-### Chained search [#chained-search]
-
-After the inline hop, Burni applies the target resource SearchParameter plan from the Registry. Examples:
-
-```sh
-http://localhost:8080/fhir/Bundle?composition.patient=Patient/123
-http://localhost:8080/fhir/Bundle?message.focus:Patient.name=Smith
-```
-
-`composition.patient` follows `Composition::patient` and may fan out to `Patient` and `Group`. `MessageHeader.focus` is an open reference target, so a type filter is required before chaining further:
-
-```sh
-http://localhost:8080/fhir/Bundle?message.focus.name=Smith
-```
-
-This request is rejected with HTTP 400 and `missing-type-filter`.
-
-### Limitations [#limitations]
-
-* Only `entry[0].resource` is evaluated; later entries do not affect results even when they contain a matching Composition or MessageHeader.
-* Bundle type and first-entry resource type must match; invalid stored Bundles simply do not match rather than returning parameter errors.
-
-
-# Overview (/docs/v2/search-parameter/overview)
-
-
-
-# Search parameters overview [#search-parameters-overview]
-
-The burni currently support [FHIR search operations](http://www.hl7.org/fhir/search.html) below:
-
-## Search Parameter Types [#search-parameter-types]
-
-* Number
-* Date/DateTime
-* String
-* Token
-* Reference
-
-## Parameters for all resources [#parameters-for-all-resources]
-
-* \_id
-* \_lastUpdated
-
-## Search result parameters [#search-result-parameters]
-
-* \_count
-
-## Derived indexes and custom SearchParameters [#derived-indexes-and-custom-searchparameters]
-
-The SearchParameter Registry owns query correctness; MongoDB derived indexes only improve query performance. They are separate lifecycle concerns.
-
-First-phase provisioning creates derived indexes for **approved built-in temporal and non-temporal SearchParameters**. Each included lookup must be active, compilable, pass the corresponding index policy, and expose a safe index contract for its extraction/projection branch.
-
-### Non-temporal derived index boundary [#non-temporal-derived-index-boundary]
-
-* **token**: system-code or system-value correlation for Coding/CodeableConcept/Identifier/ContactPoint; `:text` queries are not indexed.
-* **reference**: indexes stored `reference` only; `Reference.type` target guards remain runtime filters.
-* **string**: equality indexes on exact projected leaves only; default prefix and `:contains` keep regex semantics without B-tree claims.
-* **number / quantity**: use existing numeric BSON fields; `sa`, `eb`, and `ap` comparators are not supported in the capability matrix.
-* **uri**: raw URI single-field index shared by exact, `:above`, and `:below`.
-* **array correlation**: only a single verifiable array scope is admitted; parallel multikey, positional paths, and unsafe branches produce stable rejection diagnostics.
-
-**Custom database SearchParameters** remain executable by default but are **not** added to the desired index manifest, so they do not receive derived indexes. That does not disable the query; it means MongoDB may use COLLSCAN. When performance indexes are missing, run `npm run mongodb:verify` to inspect drift and run `npm run mongodb:provision` as part of deployment.
-
-The expected derived index state is merged into the runtime-generated desired index manifest. See the MongoDB provisioning section in [Deploy](/docs/getting-started/deploy).
 
 
 # searchParameterQueryHandler (/docs/v2/code-api-documentation/models/fhir/search-parameter-query-handler)
@@ -1530,65 +1893,6 @@ Burni 是一個高效能且靈活的 HL7® FHIR® R4 (v4.0.1) 伺服器實作，
 👉 &#x2A;*[進入 v3 (Preview) 預覽文件](./zh-TW/docs/v3)**
 
 
-# Burni v2 (LTS) 總覽 (/zh-TW/docs/v2)
-
-
-
-# Burni v2 (LTS) 文件指南 [#burni-v2-lts-文件指南]
-
-歡迎查閱 &#x2A;*Burni v2 (LTS)** 官方文檔。Burni 是一個基於 Node.js、Express 與 MongoDB / Mongoose 建構的高效能 FHIR R4 (v4.0.1) 伺服器。
-
-v2 系列為當前長期維護之穩定分支（Production Ready），提供成熟的 FHIR 資源儲存、驗證與查詢功能。
-
-***
-
-## 核心章節導覽 [#核心章節導覽]
-
-* **[簡介與能力聲明](./v2/introduction)**\
-  了解 Burni 的核心設計目標、FHIR R4 合規性以及 AEGIS Touchstone 測試通過指標（100% 通過）。
-
-* **[快速開始](./v2/getting-started/installation)**\
-  包含伺服器環境安裝（Windows / Linux）、`.env` 與伺服器參數設定，以及正式環境部署建議。
-
-* **[FHIR API 規格文件](./v2/fhir-api-documentation/overview)**\
-  詳細介紹 Burni 提供的 FHIR RESTful 交互介面（CRUD、vread、history 等）與 OpenAPI / Swagger 規格產生方式。
-
-* **[搜尋參數 (Search Parameters)](./v2/search-parameter/overview)**\
-  說明 FHIR Search 機制、自定義搜尋參數的擴展方法與 MongoDB 查詢優化。
-
-* **[內部程式碼與 Model 結構](./v2/code-api-documentation/models/fhir/search-parameter-query-handler)**\
-  深入解析 Mongoose Schema 生成邏輯與 Search Parameter Query Handler 內部運作。
-
-* **[FHIR 驗證器](./v2/fhir-validator)**\
-  使用內建或外部驗證工具對輸入之 FHIR 資源進行結構與規範校驗。
-
-***
-
-## 預覽下一代架構 [#預覽下一代架構]
-
-如果您正在規劃系統升級或希望體驗次世代功能，歡迎瀏覽 &#x2A;*[Burni v3 (Preview)](../v3)** 文件，搶先了解 Express 5、雙資料庫時序資料儲存（Temporal Migration）及增強型 FHIR 系統參數等全新突破！
-
-
-# 介紹 (/zh-TW/docs/v2/introduction)
-
-
-
-## Burni FHIR Server [#burni-fhir-server]
-
-Burni 使用 Node.JS 、Express 框架以及 MongoDB 實作 FHIR R4 Server，經由簡單的設定即可產生指定 FHIR Resource的 Mongoose Schema、API程式碼並可自行更改，滿足需求。目前Burni支援Windows以及Linux，讓開發人員可以快速架設 FHIR Server。
-
-Burni 所使用的 FHIR 版本為 v4.0.1。
-
-## Server 能力聲明 [#server-能力聲明]
-
-Burni 使用 AEGIS Touchstone Basic-R4-Server 測試.
-
-測試結果:
-
-* [FHIR4-0-1-Basic-Server version 18](https://touchstone.aegis.net/touchstone/conformance/detail?suite=FHIR4-0-1-Basic-Server\&sVersion=18\&testSystem=5f9518730a120e4edef042ae\&supportedOnly=false\&cb=%2fFHIR4-0-1-Basic\&format=ALL\&published=true) (2,216 tests has been passed, 100% Pass)
-* [FHIR4-0-1-Basic-Server version 14](https://touchstone.aegis.net/touchstone/conformance/detail?suite=FHIR4-0-1-Basic-Server\&sVersion=14\&testSystem=5f9518730a120e4edef042ae\&supportedOnly=false\&cb=%2FFHIR4-0-1-Basic\&published=true) (1,948 tests has been passed, 100% Pass)
-
-
 # Burni v3 概覽 (Preview) (/zh-TW/docs/v3)
 
 
@@ -1635,11 +1939,42 @@ v3 針對 FHIR 標準定義的系統全域參數進行了全面實作與底層�
 
 ***
 
-## 📚 預覽章節閱讀導覽 [#-預覽章節閱讀導覽]
+## 📚 章節閱讀導覽 [#-章節閱讀導覽]
 
+* **[介紹](./v3/introduction)**：了解 Burni v3 核心特點與 AEGIS Touchstone Conformance 測試能力聲明。
+* **[讓我們開始吧！](./v3/getting-started/installation)**：快速開始指南，包含安裝、設定（`config/config.js` 與 `.env`）與伺服器部署。
 * **[v2 到 v3 遷移指南預覽](./v3/migration-preview)**：包含升級前提條件、環境變數調整與資料庫遷移步驟。
 * **[時序與雙資料庫架構解析](./v3/temporal-architecture)**：深入了解主資料庫與時序資料庫的協同運作機制與拓撲設計。
 * **[FHIR 系統搜尋參數指南](./v3/system-search-parameters)**：掌握 `_tag`、`_profile`、`_security` 與日期精度的搜尋用法。
+
+
+# 介紹 (/zh-TW/docs/v3/introduction)
+
+
+
+# 介紹 [#介紹]
+
+## Burni FHIR Server [#burni-fhir-server]
+
+Burni 使用 Node.js、Express 框架以及 MongoDB 實作 HL7® FHIR® R4 Server，經由簡單的設定即可產生指定 FHIR Resource 的 Mongoose Schema 與 API 程式碼，並可自由擴充與客製化以滿足臨床與業務需求。目前 Burni 完整支援 Windows 與 Linux 環境，讓醫療資訊工程人員能快速架設高效能、符合規範的 FHIR Server。
+
+Burni 所使用的 FHIR 版本為 &#x2A;*v4.0.1 (R4)**。
+
+在 **v3** 版本中，核心技術棧與底層架構進行了全面現代化升級：
+
+* **Node.js >= 22 (LTS)** 與 **Express 5**，提供更優異的非同步錯誤處理與高並發吞吐量。
+* **Mongoose 8**，提供強健的 ODM 連線管理與現代化驅動支援。
+* **雙資料庫與時序架構（Dual Database & Temporal Architecture）**，將即時資源與歷史版本/審計（Provenance）分離持久化。
+* **系統層級搜尋參數**，原生支援 `_tag`、`_security`、`_profile` 以及全精度時區日期區間查詢。
+
+## Server 能力聲明 [#server-能力聲明]
+
+Burni 使用 AEGIS Touchstone Basic-R4-Server 嚴格測試，展現 100% 的規格相容性：
+
+測試結果：
+
+* [FHIR4-0-1-Basic-Server version 18](https://touchstone.aegis.net/touchstone/conformance/detail?suite=FHIR4-0-1-Basic-Server\&sVersion=18\&testSystem=5f9518730a120e4edef042ae\&supportedOnly=false\&cb=%2fFHIR4-0-1-Basic\&format=ALL\&published=true) (2,216 tests has been passed, 100% Pass)
+* [FHIR4-0-1-Basic-Server version 14](https://touchstone.aegis.net/touchstone/conformance/detail?suite=FHIR4-0-1-Basic-Server\&sVersion=14\&testSystem=5f9518730a120e4edef042ae\&supportedOnly=false\&cb=%2FFHIR4-0-1-Basic\&published=true) (1,948 tests has been passed, 100% Pass)
 
 
 # v2 到 v3 遷移指南預覽 (Migration Preview) (/zh-TW/docs/v3/migration-preview)
@@ -1888,6 +2223,399 @@ flowchart LR
    * 活躍資料庫與歷史資料庫可採用不同的快照與備份排程，提高容災復原（Disaster Recovery）的彈性。
 3. **無縫切換**：
    * Burni v3 核心提供了透明的 Data Operator 層，對上層業務邏輯與外掛模組保持完全透明，無需更改現有 API 呼叫方式。
+
+
+# Burni v2 (LTS) 總覽 (/zh-TW/docs/v2)
+
+
+
+# Burni v2 (LTS) 文件指南 [#burni-v2-lts-文件指南]
+
+歡迎查閱 &#x2A;*Burni v2 (LTS)** 官方文檔。Burni 是一個基於 Node.js、Express 與 MongoDB / Mongoose 建構的高效能 FHIR R4 (v4.0.1) 伺服器。
+
+v2 系列為當前長期維護之穩定分支（Production Ready），提供成熟的 FHIR 資源儲存、驗證與查詢功能。
+
+***
+
+## 核心章節導覽 [#核心章節導覽]
+
+* **[簡介與能力聲明](./v2/introduction)**\
+  了解 Burni 的核心設計目標、FHIR R4 合規性以及 AEGIS Touchstone 測試通過指標（100% 通過）。
+
+* **[快速開始](./v2/getting-started/installation)**\
+  包含伺服器環境安裝（Windows / Linux）、`.env` 與伺服器參數設定，以及正式環境部署建議。
+
+* **[FHIR API 規格文件](./v2/fhir-api-documentation/overview)**\
+  詳細介紹 Burni 提供的 FHIR RESTful 交互介面（CRUD、vread、history 等）與 OpenAPI / Swagger 規格產生方式。
+
+* **[搜尋參數 (Search Parameters)](./v2/search-parameter/overview)**\
+  說明 FHIR Search 機制、自定義搜尋參數的擴展方法與 MongoDB 查詢優化。
+
+* **[內部程式碼與 Model 結構](./v2/code-api-documentation/models/fhir/search-parameter-query-handler)**\
+  深入解析 Mongoose Schema 生成邏輯與 Search Parameter Query Handler 內部運作。
+
+* **[FHIR 驗證器](./v2/fhir-validator)**\
+  使用內建或外部驗證工具對輸入之 FHIR 資源進行結構與規範校驗。
+
+***
+
+## 預覽下一代架構 [#預覽下一代架構]
+
+如果您正在規劃系統升級或希望體驗次世代功能，歡迎瀏覽 &#x2A;*[Burni v3 (Preview)](../v3)** 文件，搶先了解 Express 5、雙資料庫時序資料儲存（Temporal Migration）及增強型 FHIR 系統參數等全新突破！
+
+
+# 介紹 (/zh-TW/docs/v2/introduction)
+
+
+
+## Burni FHIR Server [#burni-fhir-server]
+
+Burni 使用 Node.JS 、Express 框架以及 MongoDB 實作 FHIR R4 Server，經由簡單的設定即可產生指定 FHIR Resource的 Mongoose Schema、API程式碼並可自行更改，滿足需求。目前Burni支援Windows以及Linux，讓開發人員可以快速架設 FHIR Server。
+
+Burni 所使用的 FHIR 版本為 v4.0.1。
+
+## Server 能力聲明 [#server-能力聲明]
+
+Burni 使用 AEGIS Touchstone Basic-R4-Server 測試.
+
+測試結果:
+
+* [FHIR4-0-1-Basic-Server version 18](https://touchstone.aegis.net/touchstone/conformance/detail?suite=FHIR4-0-1-Basic-Server\&sVersion=18\&testSystem=5f9518730a120e4edef042ae\&supportedOnly=false\&cb=%2fFHIR4-0-1-Basic\&format=ALL\&published=true) (2,216 tests has been passed, 100% Pass)
+* [FHIR4-0-1-Basic-Server version 14](https://touchstone.aegis.net/touchstone/conformance/detail?suite=FHIR4-0-1-Basic-Server\&sVersion=14\&testSystem=5f9518730a120e4edef042ae\&supportedOnly=false\&cb=%2FFHIR4-0-1-Basic\&published=true) (1,948 tests has been passed, 100% Pass)
+
+
+# 設定 (/zh-TW/docs/v3/getting-started/configuration)
+
+
+
+# 設定 (Configuration) [#設定-configuration]
+
+在啟動 Burni FHIR Server 之前，請完成以下三個設定步驟：設定支援的 FHIR 資源、配置 `.env` 環境變數，以及執行建置產生器產生對應的 Model 與 API 程式碼。
+
+***
+
+## 1. 建立並編輯 `config/config.js` [#1-建立並編輯-configconfigjs]
+
+Burni 透過 `config/config.js` 來決定要啟用並支援哪些 FHIR 資源（Resource）及其對應的互動行為（Interaction，如 `read`、`create`、`search` 等）。
+
+專案根目錄中已提供完整的範本檔案 `config/config.template.js`（內含 FHIR R4 全部 146 項資源及其標準互動）。請先從範本複製一份 `config.js`：
+
+<CodeBlockTabs defaultValue="bash">
+  <CodeBlockTabsList>
+    <CodeBlockTabsTrigger value="bash">
+      bash
+    </CodeBlockTabsTrigger>
+
+    <CodeBlockTabsTrigger value="powershell">
+      PowerShell
+    </CodeBlockTabsTrigger>
+
+    <CodeBlockTabsTrigger value="cmd">
+      CMD
+    </CodeBlockTabsTrigger>
+  </CodeBlockTabsList>
+
+  <CodeBlockTab value="bash">
+    ```bash
+    cp config/config.template.js config/config.js
+    ```
+  </CodeBlockTab>
+
+  <CodeBlockTab value="powershell">
+    ```powershell
+    Copy-Item config/config.template.js config/config.js
+    ```
+  </CodeBlockTab>
+
+  <CodeBlockTab value="cmd">
+    ```cmd
+    copy config\config.template.js config\config.js
+    ```
+  </CodeBlockTab>
+</CodeBlockTabs>
+
+<Callout type="info">
+  `config/config.template.js` 預設已啟用所有標準 FHIR 資源。若您的系統僅需支援特定資源（例如僅需 `Patient` 與 `Observation`），您可以在複製後的 `config/config.js` 中移除或調整不需要的項目，以減少建置產生的檔案與資料庫索引負擔。
+</Callout>
+
+### `config/config.js` 內容結構範例 [#configconfigjs-內容結構範例]
+
+```javascript
+module.exports = {
+    // 定義您所要支援的 FHIR 資源名稱
+    "Patient": { 
+        "interaction": {
+            "read": true,
+            "vread": true,
+            "update": true,
+            "delete": true,
+            "history": true,
+            "create": true,
+            "search": true
+        }
+    },
+    "Observation": {
+        "interaction": {
+            "read": true,
+            "vread": true,
+            "update": true,
+            "delete": true,
+            "history": true,
+            "create": true,
+            "search": true
+        }
+    }
+};
+```
+
+***
+
+## 2. 配置 `.env` 環境變數 [#2-配置-env-環境變數]
+
+請於專案根目錄建立 `.env` 檔案，配置 MongoDB 資料庫連線、伺服器連接埠以及相關功能開關：
+
+```bash
+# ==========================================
+# MongoDB 連線設定
+# ==========================================
+MONGODB_NAME="burni-db"
+MONGODB_HOSTS=["localhost"]
+MONGODB_PORTS=[27017]
+MONGODB_USER="myAdmin"
+MONGODB_PASSWORD="MymongoAdmin1"
+MONGODB_IS_SHARDING_MODE=false
+MONGODB_SLAVEMODE=false
+
+# 亦可直接使用單一完整連線字串 (優先權高於 HOSTS/PORTS)
+# MONGODB_CONNECTION_URL="mongodb://myAdmin:MymongoAdmin1@localhost:27017/burni-db?authSource=admin"
+
+# ==========================================
+# 伺服器通訊埠與 API 端點路徑
+# ==========================================
+SERVER_PORT=8080
+
+FHIRSERVER_HOST="localhost"
+FHIRSERVER_PORT=8080 # 用於組裝 Bundle fullUrl
+FHIRSERVER_APIPATH="fhir"
+
+# ==========================================
+# Token 權限認證設定
+# ==========================================
+ENABLE_TOKEN_AUTH=true
+ADMIN_LOGIN_PATH="adminLogin"  
+ADMIN_USERNAME="adminUsername"
+ADMIN_PASSWORD="adminPassword"
+
+# ==========================================
+# FHIR 完整性檢查
+# ==========================================
+ENABLE_CHECK_ALL_RESOURCE_ID=false # 是否跨所有 Resource 檢查 ID 唯一性
+ENABLE_CHECK_REFERENCE=true        # 是否檢查 resource 內所引用的 reference 是否存在
+
+# ==========================================
+# v3 雙資料庫時序架構 (選填)
+# ==========================================
+# 若要將歷史版本 (_history) 與 Provenance 獨立儲存至專用資料庫，可設定：
+# MONGODB_TEMPORAL_NAME="burni-db-temporal"
+# MONGODB_TEMPORAL_CONNECTION_URL="mongodb://localhost:27017/burni-db-temporal"
+
+# ==========================================
+# MongoDB Provisioning 啟動選項 (選填)
+# ==========================================
+MONGODB_PROVISION_ON_STARTUP=false # 若設為 true，伺服器啟動時會執行 locked index provisioning
+```
+
+***
+
+## 3. 產生程式碼 (Generate Code) [#3-產生程式碼-generate-code]
+
+完成 `config/config.js` 與 `.env` 的設定後，請執行以下指令。Burni 的程式碼產生器會依據您的設定自動產生對應的 Mongoose Model、Schema 以及 RESTful API 路由程式碼：
+
+```bash
+npm run build
+```
+
+<Callout type="warn">
+  若在建置過程中出現 `TypeError: genParamFunc[type] is not a function`，表示該特定型別的搜尋參數目前尚未支援。
+</Callout>
+
+建置完成後，下一步請參考 &#x2A;*[部署](./deploy)** 啟動伺服器並初始化資料庫索引。
+
+
+# 部署 (/zh-TW/docs/v3/getting-started/deploy)
+
+
+
+# 部署 (Deploy) [#部署-deploy]
+
+Burni 支援使用 Node.js 直接運行、透過 Docker / docker-compose 容器化部署，並提供 v3 專屬的 MongoDB Provisioning 機制以確保集合與索引的一致性。
+
+***
+
+## 1. 使用 Node.js 啟動 [#1-使用-nodejs-啟動]
+
+在完成建置（`npm run build`）後，執行以下指令啟動伺服器：
+
+```bash
+node server.js
+```
+
+伺服器啟動成功時，Console 會印出類似以下連線與 Model 載入訊息：
+
+```text
+mongodb://localhost:27017/burni-db
+moduleName ::  Patient
+path :  /path/to/burni/models/mongodb/model
+moduleName ::  Patient_history
+path :  /path/to/burni/models/mongodb/model
+moduleName ::  FHIRStoredID
+path :  /path/to/burni/models/mongodb/staticModel
+http server is listening on port:8080
+we're connected!
+```
+
+***
+
+## 2. 使用 Docker Compose 部署 [#2-使用-docker-compose-部署]
+
+專案根目錄提供標準 `docker-compose.yaml` 範例：
+
+```yaml
+version: '3.8'
+services:
+  fhir-burni-mongodb:
+    image: mongo:7.0
+    container_name: fhir-burni-mongodb
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./mongodb/db:/data/db
+    environment:
+      - MONGO_INITDB_DATABASE=burni-db
+      - MONGO_INITDB_ROOT_USERNAME=myAdmin
+      - MONGO_INITDB_ROOT_PASSWORD=MymongoAdmin1
+      - MONGO_PORT=27017
+
+  fhir-burni:
+    build: .
+    container_name: fhir-burni
+    restart: on-failure:3
+    ports:
+      - "8080:8080"
+    depends_on:
+      - fhir-burni-mongodb
+    environment:
+      - SERVER_PORT=8080
+      - MONGODB_HOSTS=["fhir-burni-mongodb"]
+      - MONGODB_PORTS=[27017]
+      - MONGODB_NAME=burni-db
+      - MONGODB_USER=myAdmin
+      - MONGODB_PASSWORD=MymongoAdmin1
+```
+
+執行以下指令啟動容器服務：
+
+```bash
+docker-compose up -d
+```
+
+***
+
+## 3. MongoDB Schema 與 Index Provisioning [#3-mongodb-schema-與-index-provisioning]
+
+Burni v3 預設將 Mongoose `autoCreate` 與 `autoIndex` 關閉，以避免多行程並行啟動時產生未受控的索引建立風暴。正式部署建議在伺服器啟動前手動或在 CI/CD 流程中執行 Provisioning 指令。
+
+### 部署前 Provisioning（建議） [#部署前-provisioning建議]
+
+設定與伺服器相同的 MongoDB 連線環境變數後執行：
+
+```bash
+npm run mongodb:provision
+```
+
+此指令會：
+
+1. 獲取分散式資料庫租約鎖定（`MongoProvisioningLock`），確保多節點安全。
+2. 自動建立所有已宣告 Resource 的集合（Collections）。
+3. 建立 baseline indexes 與 approved SearchParameter derived indexes（包含 token、reference、string、uri 及時序索引）。
+4. 寫入 Manifest Checksum 與 Provisioning 狀態記錄。
+
+### 唯讀驗證 (Verify) [#唯讀驗證-verify]
+
+若要檢查目前資料庫實際狀態與期望 Manifest 是否存在漂移（drift），可執行唯讀驗證：
+
+```bash
+npm run mongodb:verify
+```
+
+此指令**不會**修改任何資料或索引，會詳細回報 `missing`、`extra` 或 `mismatch` 的項目。
+
+### 重複 ID 審計 (Audit) [#重複-id-審計-audit]
+
+```bash
+npm run mongodb:audit-id
+```
+
+掃描各 Resource collection 與 history collections 中是否存在重複的 `id`，以利未來升級 unique 索引時的資料乾淨度檢查。
+
+
+# 安裝 (/zh-TW/docs/v3/getting-started/installation)
+
+
+
+# 安裝 (Installation) [#安裝-installation]
+
+請確認您的伺服器或本機環境已具備以下基本條件：
+
+* [git](https://git-scm.com/downloads)
+* [Node.js](https://nodejs.org/zh-tw/download&#x29; &#x2A;*>= 22 (LTS)**
+* [MongoDB](https://www.mongodb.com/try/download/community&#x29; **> 4.2**（建議使用 MongoDB 6.0 或 7.0+）
+
+***
+
+## 1. 複製專案儲存庫 [#1-複製專案儲存庫]
+
+使用 Git 將 Burni 儲存庫複製至本地：
+
+<CodeBlockTabs defaultValue="bash">
+  <CodeBlockTabsList>
+    <CodeBlockTabsTrigger value="bash">
+      bash
+    </CodeBlockTabsTrigger>
+  </CodeBlockTabsList>
+
+  <CodeBlockTab value="bash">
+    ```bash
+    git clone https://github.com/Chinlinlee/Burni.git
+    cd Burni
+    ```
+  </CodeBlockTab>
+</CodeBlockTabs>
+
+***
+
+## 2. 安裝相依套件 [#2-安裝相依套件]
+
+在專案根目錄下執行 `npm install`：
+
+<CodeBlockTabs defaultValue="bash">
+  <CodeBlockTabsList>
+    <CodeBlockTabsTrigger value="bash">
+      bash
+    </CodeBlockTabsTrigger>
+  </CodeBlockTabsList>
+
+  <CodeBlockTab value="bash">
+    ```bash
+    npm install
+    ```
+  </CodeBlockTab>
+</CodeBlockTabs>
+
+***
+
+安裝完畢後，下一步請參考 &#x2A;*[設定](./configuration)** 章節配置資源與環境變數。
 
 
 # 產生OpenAPI (/zh-TW/docs/v2/fhir-api-documentation/generate-open-api)
@@ -2316,6 +3044,109 @@ Inferno 通常 HTTP 200 帶回 OperationOutcome。Burni 再對應：
 | 有 HTTP 回應但 body 不是 OperationOutcome           | 502    | Burni 組的 OperationOutcome    |
 
 
+# 自行新增搜尋參數 (/zh-TW/docs/v2/search-parameter/add-search-parameter)
+
+
+
+與搜尋參數相關的程式碼位於`models\FHIR\queryBuild.js` 以及 `models\FHIR\searchParameterQueryHandler.js` 檔案。
+
+* `queryBuild.js`: 根據不同的 Data Type 組成單個MongoDB 查詢語法。
+* `searchParameterQueryHandler.js`: 根據 HTTP 網址中的查詢條件使用 `queryBuild.js` 取得完整的 MongoDB 查詢語法。
+
+由產生器產生之部分搜尋參數可能是錯誤的或遺失。您可以使用 `models\FHIR\searchParameterQueryHandler.js` 內的方法修正。
+
+## 範例：Bundle.composition 與 Bundle.message [#範例bundlecomposition-與-bundlemessage]
+
+FHIR R4 將 `Bundle.composition` 與 `Bundle.message` 定義為 reference 搜尋參數。Burni 透過 SearchParameter Registry 解析這兩個參數，且只評估 `entry[0].resource`：
+
+* `composition` — `type` 為 `document`、第一個 entry 為 `Composition` 的 Bundle
+* `message` — `type` 為 `message`、第一個 entry 為 `MessageHeader` 的 Bundle
+
+Burni 不會對整個 `entry` 陣列做 fan-out，只有第一個 embedded resource 會參與這類特殊搜尋。
+
+### 直接 identity 搜尋 [#直接-identity-搜尋]
+
+支援的值形式包含 relative `ResourceType/id`、依固定 target type 正規化的 bare id，以及可與 `entry[0].fullUrl` 比對的 absolute URL。versioned、contained 與 logical identifier reference 會被拒絕。
+
+範例 URL：
+
+```sh
+http://localhost:8080/fhir/Bundle?composition=Composition/comp-1
+http://localhost:8080/fhir/Bundle?message=https://example.org/fhir/MessageHeader/msg-1
+```
+
+### Chained search [#chained-search]
+
+inline hop 之後，Burni 會套用 Registry 中 target resource 的 SearchParameter plan。範例：
+
+```sh
+http://localhost:8080/fhir/Bundle?composition.patient=Patient/123
+http://localhost:8080/fhir/Bundle?message.focus:Patient.name=Smith
+```
+
+`composition.patient` 遵循 `Composition::patient`，可 fan-out 到 `Patient` 與 `Group`。`MessageHeader.focus` 是 open reference target，因此繼續 chain 前必須提供 type filter：
+
+```sh
+http://localhost:8080/fhir/Bundle?message.focus.name=Smith
+```
+
+此請求會以 HTTP 400 與 `missing-type-filter` 被拒絕。
+
+### 限制 [#限制]
+
+* 只評估 `entry[0].resource`；即使後續 entry 含有符合條件的 Composition 或 MessageHeader，也不會影響結果。
+* Bundle type 與第一個 entry 的 resource type 必須相符；不符合 FHIR 約束的 stored Bundle 只是不命中，不會回傳參數錯誤。
+
+
+# 概觀 (/zh-TW/docs/v2/search-parameter/overview)
+
+
+
+# 搜尋參數概觀 [#搜尋參數概觀]
+
+Burni 目前支援的 [FHIR search operations](http://www.hl7.org/fhir/search.html) 如下:
+
+## Search Parameter Types [#search-parameter-types]
+
+* Number
+* Date/DateTime
+* String
+* Token
+* Reference
+
+## Parameters for all resources [#parameters-for-all-resources]
+
+* \_id
+* \_lastUpdated
+
+## Search result parameters [#search-result-parameters]
+
+* \_count
+
+## Derived index 與自訂 SearchParameter [#derived-index-與自訂-searchparameter]
+
+Burni 的 SearchParameter Registry 負責查詢正確性；MongoDB derived index 只負責查詢效能。兩者是分開的生命週期。
+
+第一階段 provisioning 會為 **built-in artifact 中 approved 的 temporal 與非 temporal SearchParameter** 建立 derived index。這些 lookup 必須同時滿足 active、可編譯、通過對應 index policy，且 extraction/projection 具備安全的 index contract。
+
+### 非 temporal derived index 邊界 [#非-temporal-derived-index-邊界]
+
+* **token**：支援 Coding/CodeableConcept 的 system-code correlation，以及 Identifier/ContactPoint 的 system-value correlation；`:text` 查詢不建立 derived index。
+* **reference**：只索引 stored `reference` field；`Reference.type` target guard 仍由 runtime filter 負責。
+* **string**：只為 exact projected leaf 建立 equality index；default prefix 與 `:contains` 維持 regex 語意，不宣稱 B-tree index。
+* **number / quantity**：使用現有 numeric BSON field；`sa`、`eb`、`ap` comparator 尚未支援，不進 capability matrix。
+* **uri**：使用 raw URI single-field index；`:above` / `:below` 共用同一 raw key identity。
+* **array correlation**：只接受可證明的單一 array scope；parallel multikey、positional path 與 unsafe branch 會產生 rejection diagnostic。
+
+**Database 自訂 SearchParameter** 預設仍可正常執行查詢，但**不會**進入 desired index manifest，因此不建立 derived index。這不代表查詢被禁止，只代表可能使用 COLLSCAN。若缺少 performance index，請以 `npm run mongodb:verify` 檢查 drift，並在部署流程執行 `npm run mongodb:provision`。
+
+期望的 derived index 狀態合併在執行時產生的 desired index manifest；詳細部署步驟見 [部署](/docs/getting-started/deploy) 的 MongoDB provisioning 章節。
+
+<Callout type="info">
+  下一章您將會知道如何修正 Burni 遺失或錯誤的搜尋參數。下一章[自行新增搜尋參數](/getting-started/configuration)
+</Callout>
+
+
 # 設定 (/zh-TW/docs/v2/getting-started/configuration)
 
 
@@ -2583,109 +3414,6 @@ Derived index manifest 合併 temporal 與通過 policy 的非 temporal（token�
 </CodeBlockTabs>
 
 安裝完畢後，下一步進行[設定](/getting-started/configuration)
-
-
-# 自行新增搜尋參數 (/zh-TW/docs/v2/search-parameter/add-search-parameter)
-
-
-
-與搜尋參數相關的程式碼位於`models\FHIR\queryBuild.js` 以及 `models\FHIR\searchParameterQueryHandler.js` 檔案。
-
-* `queryBuild.js`: 根據不同的 Data Type 組成單個MongoDB 查詢語法。
-* `searchParameterQueryHandler.js`: 根據 HTTP 網址中的查詢條件使用 `queryBuild.js` 取得完整的 MongoDB 查詢語法。
-
-由產生器產生之部分搜尋參數可能是錯誤的或遺失。您可以使用 `models\FHIR\searchParameterQueryHandler.js` 內的方法修正。
-
-## 範例：Bundle.composition 與 Bundle.message [#範例bundlecomposition-與-bundlemessage]
-
-FHIR R4 將 `Bundle.composition` 與 `Bundle.message` 定義為 reference 搜尋參數。Burni 透過 SearchParameter Registry 解析這兩個參數，且只評估 `entry[0].resource`：
-
-* `composition` — `type` 為 `document`、第一個 entry 為 `Composition` 的 Bundle
-* `message` — `type` 為 `message`、第一個 entry 為 `MessageHeader` 的 Bundle
-
-Burni 不會對整個 `entry` 陣列做 fan-out，只有第一個 embedded resource 會參與這類特殊搜尋。
-
-### 直接 identity 搜尋 [#直接-identity-搜尋]
-
-支援的值形式包含 relative `ResourceType/id`、依固定 target type 正規化的 bare id，以及可與 `entry[0].fullUrl` 比對的 absolute URL。versioned、contained 與 logical identifier reference 會被拒絕。
-
-範例 URL：
-
-```sh
-http://localhost:8080/fhir/Bundle?composition=Composition/comp-1
-http://localhost:8080/fhir/Bundle?message=https://example.org/fhir/MessageHeader/msg-1
-```
-
-### Chained search [#chained-search]
-
-inline hop 之後，Burni 會套用 Registry 中 target resource 的 SearchParameter plan。範例：
-
-```sh
-http://localhost:8080/fhir/Bundle?composition.patient=Patient/123
-http://localhost:8080/fhir/Bundle?message.focus:Patient.name=Smith
-```
-
-`composition.patient` 遵循 `Composition::patient`，可 fan-out 到 `Patient` 與 `Group`。`MessageHeader.focus` 是 open reference target，因此繼續 chain 前必須提供 type filter：
-
-```sh
-http://localhost:8080/fhir/Bundle?message.focus.name=Smith
-```
-
-此請求會以 HTTP 400 與 `missing-type-filter` 被拒絕。
-
-### 限制 [#限制]
-
-* 只評估 `entry[0].resource`；即使後續 entry 含有符合條件的 Composition 或 MessageHeader，也不會影響結果。
-* Bundle type 與第一個 entry 的 resource type 必須相符；不符合 FHIR 約束的 stored Bundle 只是不命中，不會回傳參數錯誤。
-
-
-# 概觀 (/zh-TW/docs/v2/search-parameter/overview)
-
-
-
-# 搜尋參數概觀 [#搜尋參數概觀]
-
-Burni 目前支援的 [FHIR search operations](http://www.hl7.org/fhir/search.html) 如下:
-
-## Search Parameter Types [#search-parameter-types]
-
-* Number
-* Date/DateTime
-* String
-* Token
-* Reference
-
-## Parameters for all resources [#parameters-for-all-resources]
-
-* \_id
-* \_lastUpdated
-
-## Search result parameters [#search-result-parameters]
-
-* \_count
-
-## Derived index 與自訂 SearchParameter [#derived-index-與自訂-searchparameter]
-
-Burni 的 SearchParameter Registry 負責查詢正確性；MongoDB derived index 只負責查詢效能。兩者是分開的生命週期。
-
-第一階段 provisioning 會為 **built-in artifact 中 approved 的 temporal 與非 temporal SearchParameter** 建立 derived index。這些 lookup 必須同時滿足 active、可編譯、通過對應 index policy，且 extraction/projection 具備安全的 index contract。
-
-### 非 temporal derived index 邊界 [#非-temporal-derived-index-邊界]
-
-* **token**：支援 Coding/CodeableConcept 的 system-code correlation，以及 Identifier/ContactPoint 的 system-value correlation；`:text` 查詢不建立 derived index。
-* **reference**：只索引 stored `reference` field；`Reference.type` target guard 仍由 runtime filter 負責。
-* **string**：只為 exact projected leaf 建立 equality index；default prefix 與 `:contains` 維持 regex 語意，不宣稱 B-tree index。
-* **number / quantity**：使用現有 numeric BSON field；`sa`、`eb`、`ap` comparator 尚未支援，不進 capability matrix。
-* **uri**：使用 raw URI single-field index；`:above` / `:below` 共用同一 raw key identity。
-* **array correlation**：只接受可證明的單一 array scope；parallel multikey、positional path 與 unsafe branch 會產生 rejection diagnostic。
-
-**Database 自訂 SearchParameter** 預設仍可正常執行查詢，但**不會**進入 desired index manifest，因此不建立 derived index。這不代表查詢被禁止，只代表可能使用 COLLSCAN。若缺少 performance index，請以 `npm run mongodb:verify` 檢查 drift，並在部署流程執行 `npm run mongodb:provision`。
-
-期望的 derived index 狀態合併在執行時產生的 desired index manifest；詳細部署步驟見 [部署](/docs/getting-started/deploy) 的 MongoDB provisioning 章節。
-
-<Callout type="info">
-  下一章您將會知道如何修正 Burni 遺失或錯誤的搜尋參數。下一章[自行新增搜尋參數](/getting-started/configuration)
-</Callout>
 
 
 # searchParameterQueryHandler (/zh-TW/docs/v2/code-api-documentation/models/fhir/search-parameter-query-handler)
