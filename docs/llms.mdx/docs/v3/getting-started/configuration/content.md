@@ -127,13 +127,6 @@ ENABLE_CHECK_ALL_RESOURCE_ID=false # Check uniqueness of resource ID across all 
 ENABLE_CHECK_REFERENCE=true        # Validate that referenced resources exist
 
 # ==========================================
-# v3 Dual-Database Temporal Architecture (Optional)
-# ==========================================
-# Segregate history (_history) and Provenance records into a dedicated temporal database:
-# MONGODB_TEMPORAL_NAME="burni-db-temporal"
-# MONGODB_TEMPORAL_CONNECTION_URL="mongodb://localhost:27017/burni-db-temporal"
-
-# ==========================================
 # MongoDB Provisioning Startup Option (Optional)
 # ==========================================
 MONGODB_PROVISION_ON_STARTUP=false # If true, runs locked index provisioning on server startup

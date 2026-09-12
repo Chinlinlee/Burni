@@ -120,13 +120,6 @@ ENABLE_CHECK_ALL_RESOURCE_ID=false # 是否跨所有 Resource 檢查 ID 唯一�
 ENABLE_CHECK_REFERENCE=true        # 是否檢查 resource 內所引用的 reference 是否存在
 
 # ==========================================
-# v3 雙資料庫時序架構 (選填)
-# ==========================================
-# 若要將歷史版本 (_history) 與 Provenance 獨立儲存至專用資料庫，可設定：
-# MONGODB_TEMPORAL_NAME="burni-db-temporal"
-# MONGODB_TEMPORAL_CONNECTION_URL="mongodb://localhost:27017/burni-db-temporal"
-
-# ==========================================
 # MongoDB Provisioning 啟動選項 (選填)
 # ==========================================
 MONGODB_PROVISION_ON_STARTUP=false # 若設為 true，伺服器啟動時會執行 locked index provisioning

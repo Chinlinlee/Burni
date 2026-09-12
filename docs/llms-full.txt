@@ -781,6 +781,30 @@ The burni currently support [FHIR RESTful API](https://www.hl7.org/fhir/http.htm
 None
 
 
+# FHIR Validator (/docs/v2/fhir-validator)
+
+
+
+Burni's FHIR Validator is implemented through the integration of Node.js and Java from the project [node-java-fhir-validator](https://www.npmjs.com/package/node-java-fhir-validator).
+
+<Callout type="warn" title="Important Note">
+  Please use version 0.2.0 of [node-java-fhir-validator](https://www.npmjs.com/package/node-java-fhir-validator). Subsequent versions have not been integrated into Burni yet.
+
+  * Version 0.2.0 of node-java-fhir-validator uses [joeferner / node-java](https://github.com/joeferner/node-java).
+  * Subsequent versions use [node-java-bridge](https://github.com/MarkusJx/node-java-bridge) to replicate the functionality of [fhir-validator-wrapper](https://github.com/inferno-framework/fhir-validator-wrapper).
+</Callout>
+
+* The path where Burni places the FHIR Validator: `utils/validator`
+  * `index.js`: Initializes and imports StructureDefinition (profile json file) and xxx.package.tgz (ig tgz file) from the `utils/validator/igs` folder into the validator code.
+  * `processor.js`: Implements the code for `validateResource`.
+
+## Which APIs use the FHIR Validator? [#which-apis-use-the-fhir-validator]
+
+* create: When POSTing data, validation is performed first. If validation passes, then create operation is executed; otherwise, a 422 error is returned.
+* update: When PUTting data, validation is performed first. If validation passes, then update operation is executed; otherwise, a 422 error is returned.
+* $validate: Validation function that returns a 200 response if successful; otherwise, a 422 error is returned.
+
+
 # Configuration (/docs/v2/getting-started/configuration)
 
 
@@ -1056,30 +1080,6 @@ The burni currently support [FHIR search operations](http://www.hl7.org/fhir/sea
 * \_count
 
 
-# FHIR Validator (/docs/v2/fhir-validator)
-
-
-
-Burni's FHIR Validator is implemented through the integration of Node.js and Java from the project [node-java-fhir-validator](https://www.npmjs.com/package/node-java-fhir-validator).
-
-<Callout type="warn" title="Important Note">
-  Please use version 0.2.0 of [node-java-fhir-validator](https://www.npmjs.com/package/node-java-fhir-validator). Subsequent versions have not been integrated into Burni yet.
-
-  * Version 0.2.0 of node-java-fhir-validator uses [joeferner / node-java](https://github.com/joeferner/node-java).
-  * Subsequent versions use [node-java-bridge](https://github.com/MarkusJx/node-java-bridge) to replicate the functionality of [fhir-validator-wrapper](https://github.com/inferno-framework/fhir-validator-wrapper).
-</Callout>
-
-* The path where Burni places the FHIR Validator: `utils/validator`
-  * `index.js`: Initializes and imports StructureDefinition (profile json file) and xxx.package.tgz (ig tgz file) from the `utils/validator/igs` folder into the validator code.
-  * `processor.js`: Implements the code for `validateResource`.
-
-## Which APIs use the FHIR Validator? [#which-apis-use-the-fhir-validator]
-
-* create: When POSTing data, validation is performed first. If validation passes, then create operation is executed; otherwise, a 422 error is returned.
-* update: When PUTting data, validation is performed first. If validation passes, then update operation is executed; otherwise, a 422 error is returned.
-* $validate: Validation function that returns a 200 response if successful; otherwise, a 422 error is returned.
-
-
 # Configuration (/docs/v3/getting-started/configuration)
 
 
@@ -1207,13 +1207,6 @@ ADMIN_PASSWORD="adminPassword"
 # ==========================================
 ENABLE_CHECK_ALL_RESOURCE_ID=false # Check uniqueness of resource ID across all resource types
 ENABLE_CHECK_REFERENCE=true        # Validate that referenced resources exist
-
-# ==========================================
-# v3 Dual-Database Temporal Architecture (Optional)
-# ==========================================
-# Segregate history (_history) and Provenance records into a dedicated temporal database:
-# MONGODB_TEMPORAL_NAME="burni-db-temporal"
-# MONGODB_TEMPORAL_CONNECTION_URL="mongodb://localhost:27017/burni-db-temporal"
 
 # ==========================================
 # MongoDB Provisioning Startup Option (Optional)
@@ -2547,6 +2540,30 @@ Burni 目前支援的 [FHIR RESTful API](https://www.hl7.org/fhir/http.html) 如
 None
 
 
+# FHIR Validator (/zh-TW/docs/v2/fhir-validator)
+
+
+
+Burni 的 FHIR Validator 透過 Node.js 與 Java 融合的專案 [node-java-fhir-validator](https://www.npmjs.com/package/node-java-fhir-validator) 實現
+
+<Callout type="warn" title="注意事項">
+  [node-java-fhir-validator](https://www.npmjs.com/package/node-java-fhir-validator) **請使用 0.2.0 版本**，後續版本還未整合至 Burni
+
+  * node-java-fhir-validator 0.2.0 版本使用 [joeferner / node-java](https://github.com/joeferner/node-java)
+  * 後續版本則是使用 [node-java-bridge](https://github.com/MarkusJx/node-java-bridge) 重現 [fhir-validator-wrapper](https://github.com/inferno-framework/fhir-validator-wrapper) 的功能
+</Callout>
+
+* Burni 放置 FHIR Validator 的路徑: `utils/validator`
+  * `index.js`: 初始化引入 `utils/validator/igs` 資料夾中的 StructureDefinition (profile json file) 和 xxx.package.tgz (ig tgz file) 到 validator 的程式碼
+  * `processor.js`: 實作 `validateResource` 的程式碼
+
+## 哪些 API 使用了 FHIR Validator? [#哪些-api-使用了-fhir-validator]
+
+* create: 當 POST 資料時，會先進行驗證，驗證通過才會進行 create，反之回傳 422 錯誤
+* update: 當 PUT 資料時，會先進行驗證，驗證通過才會進行 update，反之回傳 422 錯誤
+* $validate: 驗證功能，通過返回 200，反之回傳 422 錯誤
+
+
 # 設定 (/zh-TW/docs/v2/getting-started/configuration)
 
 
@@ -2830,30 +2847,6 @@ Burni 目前支援的 [FHIR search operations](http://www.hl7.org/fhir/search.ht
 </Callout>
 
 
-# FHIR Validator (/zh-TW/docs/v2/fhir-validator)
-
-
-
-Burni 的 FHIR Validator 透過 Node.js 與 Java 融合的專案 [node-java-fhir-validator](https://www.npmjs.com/package/node-java-fhir-validator) 實現
-
-<Callout type="warn" title="注意事項">
-  [node-java-fhir-validator](https://www.npmjs.com/package/node-java-fhir-validator) **請使用 0.2.0 版本**，後續版本還未整合至 Burni
-
-  * node-java-fhir-validator 0.2.0 版本使用 [joeferner / node-java](https://github.com/joeferner/node-java)
-  * 後續版本則是使用 [node-java-bridge](https://github.com/MarkusJx/node-java-bridge) 重現 [fhir-validator-wrapper](https://github.com/inferno-framework/fhir-validator-wrapper) 的功能
-</Callout>
-
-* Burni 放置 FHIR Validator 的路徑: `utils/validator`
-  * `index.js`: 初始化引入 `utils/validator/igs` 資料夾中的 StructureDefinition (profile json file) 和 xxx.package.tgz (ig tgz file) 到 validator 的程式碼
-  * `processor.js`: 實作 `validateResource` 的程式碼
-
-## 哪些 API 使用了 FHIR Validator? [#哪些-api-使用了-fhir-validator]
-
-* create: 當 POST 資料時，會先進行驗證，驗證通過才會進行 create，反之回傳 422 錯誤
-* update: 當 PUT 資料時，會先進行驗證，驗證通過才會進行 update，反之回傳 422 錯誤
-* $validate: 驗證功能，通過返回 200，反之回傳 422 錯誤
-
-
 # 設定 (/zh-TW/docs/v3/getting-started/configuration)
 
 
@@ -2981,13 +2974,6 @@ ADMIN_PASSWORD="adminPassword"
 # ==========================================
 ENABLE_CHECK_ALL_RESOURCE_ID=false # 是否跨所有 Resource 檢查 ID 唯一性
 ENABLE_CHECK_REFERENCE=true        # 是否檢查 resource 內所引用的 reference 是否存在
-
-# ==========================================
-# v3 雙資料庫時序架構 (選填)
-# ==========================================
-# 若要將歷史版本 (_history) 與 Provenance 獨立儲存至專用資料庫，可設定：
-# MONGODB_TEMPORAL_NAME="burni-db-temporal"
-# MONGODB_TEMPORAL_CONNECTION_URL="mongodb://localhost:27017/burni-db-temporal"
 
 # ==========================================
 # MongoDB Provisioning 啟動選項 (選填)
