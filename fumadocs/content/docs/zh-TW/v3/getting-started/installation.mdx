@@ -1,0 +1,53 @@
+---
+title: "安裝"
+description: "Burni v3 安裝指南與環境需求"
+---
+
+# 安裝 (Installation)
+
+請確認您的伺服器或本機環境已具備以下基本條件：
+
+- [git](https://git-scm.com/downloads)
+- [Node.js](https://nodejs.org/zh-tw/download) **>= 22 (LTS)**
+- [MongoDB](https://www.mongodb.com/try/download/community) **> 4.2**（建議使用 MongoDB 6.0 或 7.0+）
+
+---
+
+## 1. 複製專案儲存庫
+
+使用 Git 將 Burni 儲存庫複製至本地：
+
+<CodeBlockTabs defaultValue="bash">
+    <CodeBlockTabsList>
+        <CodeBlockTabsTrigger value="bash">bash</CodeBlockTabsTrigger>
+    </CodeBlockTabsList>
+
+    <CodeBlockTab value="bash">
+    ```bash
+    git clone https://github.com/Chinlinlee/Burni.git
+    cd Burni
+    ```
+    </CodeBlockTab>
+</CodeBlockTabs>
+
+---
+
+## 2. 安裝相依套件
+
+在專案根目錄下執行 `npm install`：
+
+<CodeBlockTabs defaultValue="bash">
+    <CodeBlockTabsList>
+        <CodeBlockTabsTrigger value="bash">bash</CodeBlockTabsTrigger>
+    </CodeBlockTabsList>
+
+    <CodeBlockTab value="bash">
+    ```bash
+    npm install
+    ```
+    </CodeBlockTab>
+</CodeBlockTabs>
+
+---
+
+安裝完畢後，下一步請參考 **[設定](./configuration)** 章節配置資源與環境變數。

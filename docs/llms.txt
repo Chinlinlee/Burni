@@ -22,6 +22,11 @@
     - [FHIR Validator](/docs/v2/fhir-validator)
 - v3 (Preview)
   - [Burni v3 Overview (Preview)](/docs/v3): Next generation architecture and key features of Burni v3
+  - [Introduction](/docs/v3/introduction): Burni v3 FHIR Server introduction and conformance statement
+  - Getting Started
+    - [Installation](/docs/v3/getting-started/installation): Burni v3 installation guide and prerequisites
+    - [Configuration](/docs/v3/getting-started/configuration): Burni v3 resource configuration, environment variables, and code generation
+    - [Deploy](/docs/v3/getting-started/deploy): Burni v3 server startup, Docker containerization, and MongoDB index provisioning
   - [Migration Preview: Upgrading from v2 to v3](/docs/v3/migration-preview): Guidelines, environment requirements, dual database setup, and temporal migration steps from Burni v2 to v3
   - [Temporal & Dual-Database Architecture](/docs/v3/temporal-architecture): Architecture breakdown of Burni v3 active resource and temporal history segregation
   - [FHIR System Search Parameters](/docs/v3/system-search-parameters): Comprehensive guide to FHIR system-level search parameters supported in Burni v3
@@ -50,6 +55,11 @@
     - [FHIR Validator](/zh-TW/docs/v2/fhir-validator)
 - v3 (Preview)
   - [Burni v3 概覽 (Preview)](/zh-TW/docs/v3): Burni v3 次世代架構與全新特性亮點
+  - [介紹](/zh-TW/docs/v3/introduction): Burni v3 FHIR Server 介紹與能力聲明
+  - 讓我們開始吧！
+    - [安裝](/zh-TW/docs/v3/getting-started/installation): Burni v3 安裝指南與環境需求
+    - [設定](/zh-TW/docs/v3/getting-started/configuration): Burni v3 資源配置、環境變數與程式碼產生
+    - [部署](/zh-TW/docs/v3/getting-started/deploy): Burni v3 伺服器啟動、Docker 容器化與 MongoDB 索引 Provisioning
   - [v2 到 v3 遷移指南預覽 (Migration Preview)](/zh-TW/docs/v3/migration-preview): 從 Burni v2.8 升級至 v3 的注意事項、環境需求、雙資料庫與時序資料平滑遷移步驟
   - [時序與雙資料庫架構 (Temporal & Dual Database Architecture)](/zh-TW/docs/v3/temporal-architecture): 深入解析 Burni v3 的主資料庫與歷史/時序資料分離儲存機制
   - [FHIR 系統參數支援 (System Search Parameters)](/zh-TW/docs/v3/system-search-parameters): Burni v3 對 FHIR 標準系統層級搜尋參數的完整支援與使用範例

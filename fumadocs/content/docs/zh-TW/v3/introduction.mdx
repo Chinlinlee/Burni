@@ -1,0 +1,25 @@
+---
+title: "介紹"
+description: "Burni v3 FHIR Server 介紹與能力聲明"
+---
+
+# 介紹
+
+## Burni FHIR Server
+Burni 使用 Node.js、Express 框架以及 MongoDB 實作 HL7® FHIR® R4 Server，經由簡單的設定即可產生指定 FHIR Resource 的 Mongoose Schema 與 API 程式碼，並可自由擴充與客製化以滿足臨床與業務需求。目前 Burni 完整支援 Windows 與 Linux 環境，讓醫療資訊工程人員能快速架設高效能、符合規範的 FHIR Server。
+
+Burni 所使用的 FHIR 版本為 **v4.0.1 (R4)**。
+
+在 **v3** 版本中，核心技術棧與底層架構進行了全面現代化升級：
+- **Node.js >= 22 (LTS)** 與 **Express 5**，提供更優異的非同步錯誤處理與高並發吞吐量。
+- **Mongoose 8**，提供強健的 ODM 連線管理與現代化驅動支援。
+- **雙資料庫與時序架構（Dual Database & Temporal Architecture）**，將即時資源與歷史版本/審計（Provenance）分離持久化。
+- **系統層級搜尋參數**，原生支援 `_tag`、`_security`、`_profile` 以及全精度時區日期區間查詢。
+
+## Server 能力聲明
+Burni 使用 AEGIS Touchstone Basic-R4-Server 嚴格測試，展現 100% 的規格相容性：
+
+測試結果：
+
+- [FHIR4-0-1-Basic-Server version 18](https://touchstone.aegis.net/touchstone/conformance/detail?suite=FHIR4-0-1-Basic-Server&sVersion=18&testSystem=5f9518730a120e4edef042ae&supportedOnly=false&cb=%2fFHIR4-0-1-Basic&format=ALL&published=true) (2,216 tests has been passed, 100% Pass)
+- [FHIR4-0-1-Basic-Server version 14](https://touchstone.aegis.net/touchstone/conformance/detail?suite=FHIR4-0-1-Basic-Server&sVersion=14&testSystem=5f9518730a120e4edef042ae&supportedOnly=false&cb=%2FFHIR4-0-1-Basic&published=true) (1,948 tests has been passed, 100% Pass)

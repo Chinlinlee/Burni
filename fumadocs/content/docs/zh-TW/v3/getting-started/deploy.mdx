@@ -1,0 +1,116 @@
+---
+title: "部署"
+description: "Burni v3 伺服器啟動、Docker 容器化與 MongoDB 索引 Provisioning"
+---
+
+# 部署 (Deploy)
+
+Burni 支援使用 Node.js 直接運行、透過 Docker / docker-compose 容器化部署，並提供 v3 專屬的 MongoDB Provisioning 機制以確保集合與索引的一致性。
+
+---
+
+## 1. 使用 Node.js 啟動
+
+在完成建置（`npm run build`）後，執行以下指令啟動伺服器：
+
+```bash
+node server.js
+```
+
+伺服器啟動成功時，Console 會印出類似以下連線與 Model 載入訊息：
+
+```text
+mongodb://localhost:27017/burni-db
+moduleName ::  Patient
+path :  /path/to/burni/models/mongodb/model
+moduleName ::  Patient_history
+path :  /path/to/burni/models/mongodb/model
+moduleName ::  FHIRStoredID
+path :  /path/to/burni/models/mongodb/staticModel
+http server is listening on port:8080
+we're connected!
+```
+
+---
+
+## 2. 使用 Docker Compose 部署
+
+專案根目錄提供標準 `docker-compose.yaml` 範例：
+
+```yaml
+version: '3.8'
+services:
+  fhir-burni-mongodb:
+    image: mongo:7.0
+    container_name: fhir-burni-mongodb
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./mongodb/db:/data/db
+    environment:
+      - MONGO_INITDB_DATABASE=burni-db
+      - MONGO_INITDB_ROOT_USERNAME=myAdmin
+      - MONGO_INITDB_ROOT_PASSWORD=MymongoAdmin1
+      - MONGO_PORT=27017
+
+  fhir-burni:
+    build: .
+    container_name: fhir-burni
+    restart: on-failure:3
+    ports:
+      - "8080:8080"
+    depends_on:
+      - fhir-burni-mongodb
+    environment:
+      - SERVER_PORT=8080
+      - MONGODB_HOSTS=["fhir-burni-mongodb"]
+      - MONGODB_PORTS=[27017]
+      - MONGODB_NAME=burni-db
+      - MONGODB_USER=myAdmin
+      - MONGODB_PASSWORD=MymongoAdmin1
+```
+
+執行以下指令啟動容器服務：
+
+```bash
+docker-compose up -d
+```
+
+---
+
+## 3. MongoDB Schema 與 Index Provisioning
+
+Burni v3 預設將 Mongoose `autoCreate` 與 `autoIndex` 關閉，以避免多行程並行啟動時產生未受控的索引建立風暴。正式部署建議在伺服器啟動前手動或在 CI/CD 流程中執行 Provisioning 指令。
+
+### 部署前 Provisioning（建議）
+
+設定與伺服器相同的 MongoDB 連線環境變數後執行：
+
+```bash
+npm run mongodb:provision
+```
+
+此指令會：
+1. 獲取分散式資料庫租約鎖定（`MongoProvisioningLock`），確保多節點安全。
+2. 自動建立所有已宣告 Resource 的集合（Collections）。
+3. 建立 baseline indexes 與 approved SearchParameter derived indexes（包含 token、reference、string、uri 及時序索引）。
+4. 寫入 Manifest Checksum 與 Provisioning 狀態記錄。
+
+### 唯讀驗證 (Verify)
+
+若要檢查目前資料庫實際狀態與期望 Manifest 是否存在漂移（drift），可執行唯讀驗證：
+
+```bash
+npm run mongodb:verify
+```
+
+此指令**不會**修改任何資料或索引，會詳細回報 `missing`、`extra` 或 `mismatch` 的項目。
+
+### 重複 ID 審計 (Audit)
+
+```bash
+npm run mongodb:audit-id
+```
+
+掃描各 Resource collection 與 history collections 中是否存在重複的 `id`，以利未來升級 unique 索引時的資料乾淨度檢查。

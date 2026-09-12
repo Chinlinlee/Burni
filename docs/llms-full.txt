@@ -143,11 +143,40 @@ v3 brings full support for standard FHIR system-level search parameters:
 
 ***
 
-## 📚 Preview Sections [#-preview-sections]
+## 📚 Documentation Sections [#-documentation-sections]
 
+* **[Introduction](./v3/introduction)**: Overview of Burni v3 features and AEGIS Touchstone Conformance test statements.
+* **[Getting Started](./v3/getting-started/installation)**: Quick start guide covering installation, configuration (`config/config.js` and `.env`), and server deployment.
 * **[Migration Preview: Upgrading from v2 to v3](./v3/migration-preview)**: Prerequisites, configuration updates, and migration CLI execution.
 * **[Temporal & Dual Database Architecture](./v3/temporal-architecture)**: How active and historical collections coordinate seamlessly.
 * **[FHIR System Search Parameters](./v3/system-search-parameters)**: Detailed syntax and examples for `_tag`, `_profile`, `_security`, and date filtering.
+
+
+# Introduction (/docs/v3/introduction)
+
+
+
+# Introduction [#introduction]
+
+## Burni FHIR Server [#burni-fhir-server]
+
+Burni is an enterprise-ready implementation of an HL7® FHIR® R4 Server built with Node.js, Express, and MongoDB. It provides straightforward mechanisms to generate Mongoose schemas and RESTful API endpoints for any designated FHIR resources, allowing rapid customization and extension for clinical and health data interoperability workflows. Burni supports both Windows and Linux environments to enable rapid deployment of FHIR services.
+
+Burni conforms to &#x2A;*v4.0.1 (R4)** of the HL7 FHIR specification.
+
+In **v3**, Burni introduces substantial foundational architecture upgrades:
+
+* **Node.js >= 22 (LTS)** and **Express 5** for modern JavaScript runtime performance and improved asynchronous routing.
+* **Mongoose 8** for resilient database connection management and modern driver support.
+* **Dual Database & Temporal Architecture** for segregating active resources from historical versions and audit provenance records.
+* **System-level search parameters** with native support for `_tag`, `_security`, `_profile`, and full-precision timezone date comparisons.
+
+## Conformance Statement [#conformance-statement]
+
+Burni has been validated with AEGIS Touchstone Basic-R4-Server test suites with 100% pass rates:
+
+* [FHIR4-0-1-Basic-Server version 18](https://touchstone.aegis.net/touchstone/conformance/detail?suite=FHIR4-0-1-Basic-Server\&sVersion=18\&testSystem=5f9518730a120e4edef042ae\&supportedOnly=false\&cb=%2fFHIR4-0-1-Basic\&format=ALL\&published=true) (2,216 tests passed, 100% Pass)
+* [FHIR4-0-1-Basic-Server version 14](https://touchstone.aegis.net/touchstone/conformance/detail?suite=FHIR4-0-1-Basic-Server\&sVersion=14\&testSystem=5f9518730a120e4edef042ae\&supportedOnly=false\&cb=%2FFHIR4-0-1-Basic\&published=true) (1,948 tests passed, 100% Pass)
 
 
 # Migration Preview: Upgrading from v2 to v3 (/docs/v3/migration-preview)
@@ -752,30 +781,6 @@ The burni currently support [FHIR RESTful API](https://www.hl7.org/fhir/http.htm
 None
 
 
-# FHIR Validator (/docs/v2/fhir-validator)
-
-
-
-Burni's FHIR Validator is implemented through the integration of Node.js and Java from the project [node-java-fhir-validator](https://www.npmjs.com/package/node-java-fhir-validator).
-
-<Callout type="warn" title="Important Note">
-  Please use version 0.2.0 of [node-java-fhir-validator](https://www.npmjs.com/package/node-java-fhir-validator). Subsequent versions have not been integrated into Burni yet.
-
-  * Version 0.2.0 of node-java-fhir-validator uses [joeferner / node-java](https://github.com/joeferner/node-java).
-  * Subsequent versions use [node-java-bridge](https://github.com/MarkusJx/node-java-bridge) to replicate the functionality of [fhir-validator-wrapper](https://github.com/inferno-framework/fhir-validator-wrapper).
-</Callout>
-
-* The path where Burni places the FHIR Validator: `utils/validator`
-  * `index.js`: Initializes and imports StructureDefinition (profile json file) and xxx.package.tgz (ig tgz file) from the `utils/validator/igs` folder into the validator code.
-  * `processor.js`: Implements the code for `validateResource`.
-
-## Which APIs use the FHIR Validator? [#which-apis-use-the-fhir-validator]
-
-* create: When POSTing data, validation is performed first. If validation passes, then create operation is executed; otherwise, a 422 error is returned.
-* update: When PUTting data, validation is performed first. If validation passes, then update operation is executed; otherwise, a 422 error is returned.
-* $validate: Validation function that returns a 200 response if successful; otherwise, a 422 error is returned.
-
-
 # Configuration (/docs/v2/getting-started/configuration)
 
 
@@ -1049,6 +1054,364 @@ The burni currently support [FHIR search operations](http://www.hl7.org/fhir/sea
 ## Search result parameters [#search-result-parameters]
 
 * \_count
+
+
+# FHIR Validator (/docs/v2/fhir-validator)
+
+
+
+Burni's FHIR Validator is implemented through the integration of Node.js and Java from the project [node-java-fhir-validator](https://www.npmjs.com/package/node-java-fhir-validator).
+
+<Callout type="warn" title="Important Note">
+  Please use version 0.2.0 of [node-java-fhir-validator](https://www.npmjs.com/package/node-java-fhir-validator). Subsequent versions have not been integrated into Burni yet.
+
+  * Version 0.2.0 of node-java-fhir-validator uses [joeferner / node-java](https://github.com/joeferner/node-java).
+  * Subsequent versions use [node-java-bridge](https://github.com/MarkusJx/node-java-bridge) to replicate the functionality of [fhir-validator-wrapper](https://github.com/inferno-framework/fhir-validator-wrapper).
+</Callout>
+
+* The path where Burni places the FHIR Validator: `utils/validator`
+  * `index.js`: Initializes and imports StructureDefinition (profile json file) and xxx.package.tgz (ig tgz file) from the `utils/validator/igs` folder into the validator code.
+  * `processor.js`: Implements the code for `validateResource`.
+
+## Which APIs use the FHIR Validator? [#which-apis-use-the-fhir-validator]
+
+* create: When POSTing data, validation is performed first. If validation passes, then create operation is executed; otherwise, a 422 error is returned.
+* update: When PUTting data, validation is performed first. If validation passes, then update operation is executed; otherwise, a 422 error is returned.
+* $validate: Validation function that returns a 200 response if successful; otherwise, a 422 error is returned.
+
+
+# Configuration (/docs/v3/getting-started/configuration)
+
+
+
+# Configuration [#configuration]
+
+Before launching the Burni FHIR Server, please complete the following configuration steps: specify supported FHIR resources, set environment variables in `.env`, and run the build generator to create Mongoose models and API code.
+
+***
+
+## 1. Create and Edit `config/config.js` [#1-create-and-edit-configconfigjs]
+
+Burni uses `config/config.js` to determine which FHIR resources and interactions (such as `read`, `create`, `search`, etc.) should be enabled and supported.
+
+The repository provides a complete template file at `config/config.template.js`, covering all 146 FHIR R4 resources. Copy this template to create your `config.js`:
+
+<CodeBlockTabs defaultValue="bash">
+  <CodeBlockTabsList>
+    <CodeBlockTabsTrigger value="bash">
+      bash
+    </CodeBlockTabsTrigger>
+
+    <CodeBlockTabsTrigger value="powershell">
+      PowerShell
+    </CodeBlockTabsTrigger>
+
+    <CodeBlockTabsTrigger value="cmd">
+      CMD
+    </CodeBlockTabsTrigger>
+  </CodeBlockTabsList>
+
+  <CodeBlockTab value="bash">
+    ```bash
+    cp config/config.template.js config/config.js
+    ```
+  </CodeBlockTab>
+
+  <CodeBlockTab value="powershell">
+    ```powershell
+    Copy-Item config/config.template.js config/config.js
+    ```
+  </CodeBlockTab>
+
+  <CodeBlockTab value="cmd">
+    ```cmd
+    copy config\config.template.js config\config.js
+    ```
+  </CodeBlockTab>
+</CodeBlockTabs>
+
+<Callout type="info">
+  `config/config.template.js` enables all standard FHIR resources by default. If your deployment only requires a subset (such as `Patient` and `Observation`), you can modify `config/config.js` to omit unused resources, minimizing generated model code and database index footprints.
+</Callout>
+
+### Example `config/config.js` Structure [#example-configconfigjs-structure]
+
+```javascript
+module.exports = {
+    // Add the resource names that you need
+    "Patient": { 
+        "interaction": {
+            "read": true,
+            "vread": true,
+            "update": true,
+            "delete": true,
+            "history": true,
+            "create": true,
+            "search": true
+        }
+    },
+    "Observation": {
+        "interaction": {
+            "read": true,
+            "vread": true,
+            "update": true,
+            "delete": true,
+            "history": true,
+            "create": true,
+            "search": true
+        }
+    }
+};
+```
+
+***
+
+## 2. Configure Environment Variables (`.env`) [#2-configure-environment-variables-env]
+
+Create a `.env` file in the project root to configure MongoDB connection parameters, server ports, and feature flags:
+
+```bash
+# ==========================================
+# MongoDB Connection Settings
+# ==========================================
+MONGODB_NAME="burni-db"
+MONGODB_HOSTS=["localhost"]
+MONGODB_PORTS=[27017]
+MONGODB_USER="myAdmin"
+MONGODB_PASSWORD="MymongoAdmin1"
+MONGODB_IS_SHARDING_MODE=false
+MONGODB_SLAVEMODE=false
+
+# Alternatively, specify a single connection string URL:
+# MONGODB_CONNECTION_URL="mongodb://myAdmin:MymongoAdmin1@localhost:27017/burni-db?authSource=admin"
+
+# ==========================================
+# Server Port and API Path
+# ==========================================
+SERVER_PORT=8080
+
+FHIRSERVER_HOST="localhost"
+FHIRSERVER_PORT=8080 # Used for generating bundle fullUrl
+FHIRSERVER_APIPATH="fhir"
+
+# ==========================================
+# Token Authentication
+# ==========================================
+ENABLE_TOKEN_AUTH=true
+ADMIN_LOGIN_PATH="adminLogin"  
+ADMIN_USERNAME="adminUsername"
+ADMIN_PASSWORD="adminPassword"
+
+# ==========================================
+# FHIR Integrity Checks
+# ==========================================
+ENABLE_CHECK_ALL_RESOURCE_ID=false # Check uniqueness of resource ID across all resource types
+ENABLE_CHECK_REFERENCE=true        # Validate that referenced resources exist
+
+# ==========================================
+# v3 Dual-Database Temporal Architecture (Optional)
+# ==========================================
+# Segregate history (_history) and Provenance records into a dedicated temporal database:
+# MONGODB_TEMPORAL_NAME="burni-db-temporal"
+# MONGODB_TEMPORAL_CONNECTION_URL="mongodb://localhost:27017/burni-db-temporal"
+
+# ==========================================
+# MongoDB Provisioning Startup Option (Optional)
+# ==========================================
+MONGODB_PROVISION_ON_STARTUP=false # If true, runs locked index provisioning on server startup
+```
+
+***
+
+## 3. Generate Code [#3-generate-code]
+
+After configuring `config/config.js` and `.env`, run the code generator. Burni will automatically create Mongoose models, schemas, and RESTful API routes based on your configuration:
+
+```bash
+npm run build
+```
+
+<Callout type="warn">
+  `TypeError: genParamFunc[type] is not a function` indicates that this specific search parameter type is not currently supported.
+</Callout>
+
+Once code generation is complete, proceed to the &#x2A;*[Deploy](./deploy)** guide to launch the server and initialize database indexes.
+
+
+# Deploy (/docs/v3/getting-started/deploy)
+
+
+
+# Deploy [#deploy]
+
+Burni can be launched directly using Node.js, containerized with Docker / docker-compose, and provisioned with v3 MongoDB index management tools.
+
+***
+
+## 1. Run with Node.js [#1-run-with-nodejs]
+
+After completing code generation (`npm run build`), start the server:
+
+```bash
+node server.js
+```
+
+Upon successful startup, the console will output log messages similar to:
+
+```text
+mongodb://localhost:27017/burni-db
+moduleName ::  Patient
+path :  /path/to/burni/models/mongodb/model
+moduleName ::  Patient_history
+path :  /path/to/burni/models/mongodb/model
+moduleName ::  FHIRStoredID
+path :  /path/to/burni/models/mongodb/staticModel
+http server is listening on port:8080
+we're connected!
+```
+
+***
+
+## 2. Deploy with Docker Compose [#2-deploy-with-docker-compose]
+
+A standard `docker-compose.yaml` configuration is provided in the repository root:
+
+```yaml
+version: '3.8'
+services:
+  fhir-burni-mongodb:
+    image: mongo:7.0
+    container_name: fhir-burni-mongodb
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./mongodb/db:/data/db
+    environment:
+      - MONGO_INITDB_DATABASE=burni-db
+      - MONGO_INITDB_ROOT_USERNAME=myAdmin
+      - MONGO_INITDB_ROOT_PASSWORD=MymongoAdmin1
+      - MONGO_PORT=27017
+
+  fhir-burni:
+    build: .
+    container_name: fhir-burni
+    restart: on-failure:3
+    ports:
+      - "8080:8080"
+    depends_on:
+      - fhir-burni-mongodb
+    environment:
+      - SERVER_PORT=8080
+      - MONGODB_HOSTS=["fhir-burni-mongodb"]
+      - MONGODB_PORTS=[27017]
+      - MONGODB_NAME=burni-db
+      - MONGODB_USER=myAdmin
+      - MONGODB_PASSWORD=MymongoAdmin1
+```
+
+Start the containers:
+
+```bash
+docker-compose up -d
+```
+
+***
+
+## 3. MongoDB Schema and Index Provisioning [#3-mongodb-schema-and-index-provisioning]
+
+Burni v3 disables Mongoose `autoCreate` and `autoIndex` by default to avoid concurrent index creation overhead in clustered environments. Production deployments should run provisioning prior to starting application processes.
+
+### Pre-deployment Provisioning (Recommended) [#pre-deployment-provisioning-recommended]
+
+Configure MongoDB connection environment variables and run:
+
+```bash
+npm run mongodb:provision
+```
+
+This command:
+
+1. Acquires a distributed database lease lock (`MongoProvisioningLock`).
+2. Creates collections for all registered FHIR resources.
+3. Builds baseline indexes and approved SearchParameter derived indexes (token, reference, string, uri, and temporal indexes).
+4. Saves the manifest checksum and provisioning run status.
+
+### Read-Only Verification (Verify) [#read-only-verification-verify]
+
+Check whether the database index state has drifted from the desired manifest:
+
+```bash
+npm run mongodb:verify
+```
+
+This command performs no DDL modifications and reports any `missing`, `extra`, or `mismatch` items.
+
+### Duplicate ID Audit [#duplicate-id-audit]
+
+```bash
+npm run mongodb:audit-id
+```
+
+Scans resource and history collections for duplicate `id` values in preparation for future unique constraints.
+
+
+# Installation (/docs/v3/getting-started/installation)
+
+
+
+# Installation [#installation]
+
+Please ensure your environment meets the following requirements:
+
+* [git](https://git-scm.com/downloads)
+* [Node.js](https://nodejs.org/en/download&#x29; &#x2A;*>= 22 (LTS)**
+* [MongoDB](https://www.mongodb.com/try/download/community&#x29; **> 4.2** (MongoDB 6.0 or 7.0+ recommended)
+
+***
+
+## 1. Clone the Repository [#1-clone-the-repository]
+
+Clone the Burni repository with Git:
+
+<CodeBlockTabs defaultValue="bash">
+  <CodeBlockTabsList>
+    <CodeBlockTabsTrigger value="bash">
+      bash
+    </CodeBlockTabsTrigger>
+  </CodeBlockTabsList>
+
+  <CodeBlockTab value="bash">
+    ```bash
+    git clone https://github.com/Chinlinlee/Burni.git
+    cd Burni
+    ```
+  </CodeBlockTab>
+</CodeBlockTabs>
+
+***
+
+## 2. Install Dependencies [#2-install-dependencies]
+
+Install required dependencies by running `npm install`:
+
+<CodeBlockTabs defaultValue="bash">
+  <CodeBlockTabsList>
+    <CodeBlockTabsTrigger value="bash">
+      bash
+    </CodeBlockTabsTrigger>
+  </CodeBlockTabsList>
+
+  <CodeBlockTab value="bash">
+    ```bash
+    npm install
+    ```
+  </CodeBlockTab>
+</CodeBlockTabs>
+
+***
+
+After completing the installation, proceed to the &#x2A;*[Configuration](./configuration)** section.
 
 
 # searchParameterQueryHandler (/docs/v2/code-api-documentation/models/fhir/search-parameter-query-handler)
@@ -1521,11 +1884,42 @@ v3 針對 FHIR 標準定義的系統全域參數進行了全面實作與底層�
 
 ***
 
-## 📚 預覽章節閱讀導覽 [#-預覽章節閱讀導覽]
+## 📚 章節閱讀導覽 [#-章節閱讀導覽]
 
+* **[介紹](./v3/introduction)**：了解 Burni v3 核心特點與 AEGIS Touchstone Conformance 測試能力聲明。
+* **[讓我們開始吧！](./v3/getting-started/installation)**：快速開始指南，包含安裝、設定（`config/config.js` 與 `.env`）與伺服器部署。
 * **[v2 到 v3 遷移指南預覽](./v3/migration-preview)**：包含升級前提條件、環境變數調整與資料庫遷移步驟。
 * **[時序與雙資料庫架構解析](./v3/temporal-architecture)**：深入了解主資料庫與時序資料庫的協同運作機制與拓撲設計。
 * **[FHIR 系統搜尋參數指南](./v3/system-search-parameters)**：掌握 `_tag`、`_profile`、`_security` 與日期精度的搜尋用法。
+
+
+# 介紹 (/zh-TW/docs/v3/introduction)
+
+
+
+# 介紹 [#介紹]
+
+## Burni FHIR Server [#burni-fhir-server]
+
+Burni 使用 Node.js、Express 框架以及 MongoDB 實作 HL7® FHIR® R4 Server，經由簡單的設定即可產生指定 FHIR Resource 的 Mongoose Schema 與 API 程式碼，並可自由擴充與客製化以滿足臨床與業務需求。目前 Burni 完整支援 Windows 與 Linux 環境，讓醫療資訊工程人員能快速架設高效能、符合規範的 FHIR Server。
+
+Burni 所使用的 FHIR 版本為 &#x2A;*v4.0.1 (R4)**。
+
+在 **v3** 版本中，核心技術棧與底層架構進行了全面現代化升級：
+
+* **Node.js >= 22 (LTS)** 與 **Express 5**，提供更優異的非同步錯誤處理與高並發吞吐量。
+* **Mongoose 8**，提供強健的 ODM 連線管理與現代化驅動支援。
+* **雙資料庫與時序架構（Dual Database & Temporal Architecture）**，將即時資源與歷史版本/審計（Provenance）分離持久化。
+* **系統層級搜尋參數**，原生支援 `_tag`、`_security`、`_profile` 以及全精度時區日期區間查詢。
+
+## Server 能力聲明 [#server-能力聲明]
+
+Burni 使用 AEGIS Touchstone Basic-R4-Server 嚴格測試，展現 100% 的規格相容性：
+
+測試結果：
+
+* [FHIR4-0-1-Basic-Server version 18](https://touchstone.aegis.net/touchstone/conformance/detail?suite=FHIR4-0-1-Basic-Server\&sVersion=18\&testSystem=5f9518730a120e4edef042ae\&supportedOnly=false\&cb=%2fFHIR4-0-1-Basic\&format=ALL\&published=true) (2,216 tests has been passed, 100% Pass)
+* [FHIR4-0-1-Basic-Server version 14](https://touchstone.aegis.net/touchstone/conformance/detail?suite=FHIR4-0-1-Basic-Server\&sVersion=14\&testSystem=5f9518730a120e4edef042ae\&supportedOnly=false\&cb=%2FFHIR4-0-1-Basic\&published=true) (1,948 tests has been passed, 100% Pass)
 
 
 # v2 到 v3 遷移指南預覽 (Migration Preview) (/zh-TW/docs/v3/migration-preview)
@@ -2153,30 +2547,6 @@ Burni 目前支援的 [FHIR RESTful API](https://www.hl7.org/fhir/http.html) 如
 None
 
 
-# FHIR Validator (/zh-TW/docs/v2/fhir-validator)
-
-
-
-Burni 的 FHIR Validator 透過 Node.js 與 Java 融合的專案 [node-java-fhir-validator](https://www.npmjs.com/package/node-java-fhir-validator) 實現
-
-<Callout type="warn" title="注意事項">
-  [node-java-fhir-validator](https://www.npmjs.com/package/node-java-fhir-validator) **請使用 0.2.0 版本**，後續版本還未整合至 Burni
-
-  * node-java-fhir-validator 0.2.0 版本使用 [joeferner / node-java](https://github.com/joeferner/node-java)
-  * 後續版本則是使用 [node-java-bridge](https://github.com/MarkusJx/node-java-bridge) 重現 [fhir-validator-wrapper](https://github.com/inferno-framework/fhir-validator-wrapper) 的功能
-</Callout>
-
-* Burni 放置 FHIR Validator 的路徑: `utils/validator`
-  * `index.js`: 初始化引入 `utils/validator/igs` 資料夾中的 StructureDefinition (profile json file) 和 xxx.package.tgz (ig tgz file) 到 validator 的程式碼
-  * `processor.js`: 實作 `validateResource` 的程式碼
-
-## 哪些 API 使用了 FHIR Validator? [#哪些-api-使用了-fhir-validator]
-
-* create: 當 POST 資料時，會先進行驗證，驗證通過才會進行 create，反之回傳 422 錯誤
-* update: 當 PUT 資料時，會先進行驗證，驗證通過才會進行 update，反之回傳 422 錯誤
-* $validate: 驗證功能，通過返回 200，反之回傳 422 錯誤
-
-
 # 設定 (/zh-TW/docs/v2/getting-started/configuration)
 
 
@@ -2458,6 +2828,364 @@ Burni 目前支援的 [FHIR search operations](http://www.hl7.org/fhir/search.ht
 <Callout type="info">
   下一章您將會知道如何修正 Burni 遺失或錯誤的搜尋參數。下一章[自行新增搜尋參數](/getting-started/configuration)
 </Callout>
+
+
+# FHIR Validator (/zh-TW/docs/v2/fhir-validator)
+
+
+
+Burni 的 FHIR Validator 透過 Node.js 與 Java 融合的專案 [node-java-fhir-validator](https://www.npmjs.com/package/node-java-fhir-validator) 實現
+
+<Callout type="warn" title="注意事項">
+  [node-java-fhir-validator](https://www.npmjs.com/package/node-java-fhir-validator) **請使用 0.2.0 版本**，後續版本還未整合至 Burni
+
+  * node-java-fhir-validator 0.2.0 版本使用 [joeferner / node-java](https://github.com/joeferner/node-java)
+  * 後續版本則是使用 [node-java-bridge](https://github.com/MarkusJx/node-java-bridge) 重現 [fhir-validator-wrapper](https://github.com/inferno-framework/fhir-validator-wrapper) 的功能
+</Callout>
+
+* Burni 放置 FHIR Validator 的路徑: `utils/validator`
+  * `index.js`: 初始化引入 `utils/validator/igs` 資料夾中的 StructureDefinition (profile json file) 和 xxx.package.tgz (ig tgz file) 到 validator 的程式碼
+  * `processor.js`: 實作 `validateResource` 的程式碼
+
+## 哪些 API 使用了 FHIR Validator? [#哪些-api-使用了-fhir-validator]
+
+* create: 當 POST 資料時，會先進行驗證，驗證通過才會進行 create，反之回傳 422 錯誤
+* update: 當 PUT 資料時，會先進行驗證，驗證通過才會進行 update，反之回傳 422 錯誤
+* $validate: 驗證功能，通過返回 200，反之回傳 422 錯誤
+
+
+# 設定 (/zh-TW/docs/v3/getting-started/configuration)
+
+
+
+# 設定 (Configuration) [#設定-configuration]
+
+在啟動 Burni FHIR Server 之前，請完成以下三個設定步驟：設定支援的 FHIR 資源、配置 `.env` 環境變數，以及執行建置產生器產生對應的 Model 與 API 程式碼。
+
+***
+
+## 1. 建立並編輯 `config/config.js` [#1-建立並編輯-configconfigjs]
+
+Burni 透過 `config/config.js` 來決定要啟用並支援哪些 FHIR 資源（Resource）及其對應的互動行為（Interaction，如 `read`、`create`、`search` 等）。
+
+專案根目錄中已提供完整的範本檔案 `config/config.template.js`（內含 FHIR R4 全部 146 項資源及其標準互動）。請先從範本複製一份 `config.js`：
+
+<CodeBlockTabs defaultValue="bash">
+  <CodeBlockTabsList>
+    <CodeBlockTabsTrigger value="bash">
+      bash
+    </CodeBlockTabsTrigger>
+
+    <CodeBlockTabsTrigger value="powershell">
+      PowerShell
+    </CodeBlockTabsTrigger>
+
+    <CodeBlockTabsTrigger value="cmd">
+      CMD
+    </CodeBlockTabsTrigger>
+  </CodeBlockTabsList>
+
+  <CodeBlockTab value="bash">
+    ```bash
+    cp config/config.template.js config/config.js
+    ```
+  </CodeBlockTab>
+
+  <CodeBlockTab value="powershell">
+    ```powershell
+    Copy-Item config/config.template.js config/config.js
+    ```
+  </CodeBlockTab>
+
+  <CodeBlockTab value="cmd">
+    ```cmd
+    copy config\config.template.js config\config.js
+    ```
+  </CodeBlockTab>
+</CodeBlockTabs>
+
+<Callout type="info">
+  `config/config.template.js` 預設已啟用所有標準 FHIR 資源。若您的系統僅需支援特定資源（例如僅需 `Patient` 與 `Observation`），您可以在複製後的 `config/config.js` 中移除或調整不需要的項目，以減少建置產生的檔案與資料庫索引負擔。
+</Callout>
+
+### `config/config.js` 內容結構範例 [#configconfigjs-內容結構範例]
+
+```javascript
+module.exports = {
+    // 定義您所要支援的 FHIR 資源名稱
+    "Patient": { 
+        "interaction": {
+            "read": true,
+            "vread": true,
+            "update": true,
+            "delete": true,
+            "history": true,
+            "create": true,
+            "search": true
+        }
+    },
+    "Observation": {
+        "interaction": {
+            "read": true,
+            "vread": true,
+            "update": true,
+            "delete": true,
+            "history": true,
+            "create": true,
+            "search": true
+        }
+    }
+};
+```
+
+***
+
+## 2. 配置 `.env` 環境變數 [#2-配置-env-環境變數]
+
+請於專案根目錄建立 `.env` 檔案，配置 MongoDB 資料庫連線、伺服器連接埠以及相關功能開關：
+
+```bash
+# ==========================================
+# MongoDB 連線設定
+# ==========================================
+MONGODB_NAME="burni-db"
+MONGODB_HOSTS=["localhost"]
+MONGODB_PORTS=[27017]
+MONGODB_USER="myAdmin"
+MONGODB_PASSWORD="MymongoAdmin1"
+MONGODB_IS_SHARDING_MODE=false
+MONGODB_SLAVEMODE=false
+
+# 亦可直接使用單一完整連線字串 (優先權高於 HOSTS/PORTS)
+# MONGODB_CONNECTION_URL="mongodb://myAdmin:MymongoAdmin1@localhost:27017/burni-db?authSource=admin"
+
+# ==========================================
+# 伺服器通訊埠與 API 端點路徑
+# ==========================================
+SERVER_PORT=8080
+
+FHIRSERVER_HOST="localhost"
+FHIRSERVER_PORT=8080 # 用於組裝 Bundle fullUrl
+FHIRSERVER_APIPATH="fhir"
+
+# ==========================================
+# Token 權限認證設定
+# ==========================================
+ENABLE_TOKEN_AUTH=true
+ADMIN_LOGIN_PATH="adminLogin"  
+ADMIN_USERNAME="adminUsername"
+ADMIN_PASSWORD="adminPassword"
+
+# ==========================================
+# FHIR 完整性檢查
+# ==========================================
+ENABLE_CHECK_ALL_RESOURCE_ID=false # 是否跨所有 Resource 檢查 ID 唯一性
+ENABLE_CHECK_REFERENCE=true        # 是否檢查 resource 內所引用的 reference 是否存在
+
+# ==========================================
+# v3 雙資料庫時序架構 (選填)
+# ==========================================
+# 若要將歷史版本 (_history) 與 Provenance 獨立儲存至專用資料庫，可設定：
+# MONGODB_TEMPORAL_NAME="burni-db-temporal"
+# MONGODB_TEMPORAL_CONNECTION_URL="mongodb://localhost:27017/burni-db-temporal"
+
+# ==========================================
+# MongoDB Provisioning 啟動選項 (選填)
+# ==========================================
+MONGODB_PROVISION_ON_STARTUP=false # 若設為 true，伺服器啟動時會執行 locked index provisioning
+```
+
+***
+
+## 3. 產生程式碼 (Generate Code) [#3-產生程式碼-generate-code]
+
+完成 `config/config.js` 與 `.env` 的設定後，請執行以下指令。Burni 的程式碼產生器會依據您的設定自動產生對應的 Mongoose Model、Schema 以及 RESTful API 路由程式碼：
+
+```bash
+npm run build
+```
+
+<Callout type="warn">
+  若在建置過程中出現 `TypeError: genParamFunc[type] is not a function`，表示該特定型別的搜尋參數目前尚未支援。
+</Callout>
+
+建置完成後，下一步請參考 &#x2A;*[部署](./deploy)** 啟動伺服器並初始化資料庫索引。
+
+
+# 部署 (/zh-TW/docs/v3/getting-started/deploy)
+
+
+
+# 部署 (Deploy) [#部署-deploy]
+
+Burni 支援使用 Node.js 直接運行、透過 Docker / docker-compose 容器化部署，並提供 v3 專屬的 MongoDB Provisioning 機制以確保集合與索引的一致性。
+
+***
+
+## 1. 使用 Node.js 啟動 [#1-使用-nodejs-啟動]
+
+在完成建置（`npm run build`）後，執行以下指令啟動伺服器：
+
+```bash
+node server.js
+```
+
+伺服器啟動成功時，Console 會印出類似以下連線與 Model 載入訊息：
+
+```text
+mongodb://localhost:27017/burni-db
+moduleName ::  Patient
+path :  /path/to/burni/models/mongodb/model
+moduleName ::  Patient_history
+path :  /path/to/burni/models/mongodb/model
+moduleName ::  FHIRStoredID
+path :  /path/to/burni/models/mongodb/staticModel
+http server is listening on port:8080
+we're connected!
+```
+
+***
+
+## 2. 使用 Docker Compose 部署 [#2-使用-docker-compose-部署]
+
+專案根目錄提供標準 `docker-compose.yaml` 範例：
+
+```yaml
+version: '3.8'
+services:
+  fhir-burni-mongodb:
+    image: mongo:7.0
+    container_name: fhir-burni-mongodb
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./mongodb/db:/data/db
+    environment:
+      - MONGO_INITDB_DATABASE=burni-db
+      - MONGO_INITDB_ROOT_USERNAME=myAdmin
+      - MONGO_INITDB_ROOT_PASSWORD=MymongoAdmin1
+      - MONGO_PORT=27017
+
+  fhir-burni:
+    build: .
+    container_name: fhir-burni
+    restart: on-failure:3
+    ports:
+      - "8080:8080"
+    depends_on:
+      - fhir-burni-mongodb
+    environment:
+      - SERVER_PORT=8080
+      - MONGODB_HOSTS=["fhir-burni-mongodb"]
+      - MONGODB_PORTS=[27017]
+      - MONGODB_NAME=burni-db
+      - MONGODB_USER=myAdmin
+      - MONGODB_PASSWORD=MymongoAdmin1
+```
+
+執行以下指令啟動容器服務：
+
+```bash
+docker-compose up -d
+```
+
+***
+
+## 3. MongoDB Schema 與 Index Provisioning [#3-mongodb-schema-與-index-provisioning]
+
+Burni v3 預設將 Mongoose `autoCreate` 與 `autoIndex` 關閉，以避免多行程並行啟動時產生未受控的索引建立風暴。正式部署建議在伺服器啟動前手動或在 CI/CD 流程中執行 Provisioning 指令。
+
+### 部署前 Provisioning（建議） [#部署前-provisioning建議]
+
+設定與伺服器相同的 MongoDB 連線環境變數後執行：
+
+```bash
+npm run mongodb:provision
+```
+
+此指令會：
+
+1. 獲取分散式資料庫租約鎖定（`MongoProvisioningLock`），確保多節點安全。
+2. 自動建立所有已宣告 Resource 的集合（Collections）。
+3. 建立 baseline indexes 與 approved SearchParameter derived indexes（包含 token、reference、string、uri 及時序索引）。
+4. 寫入 Manifest Checksum 與 Provisioning 狀態記錄。
+
+### 唯讀驗證 (Verify) [#唯讀驗證-verify]
+
+若要檢查目前資料庫實際狀態與期望 Manifest 是否存在漂移（drift），可執行唯讀驗證：
+
+```bash
+npm run mongodb:verify
+```
+
+此指令**不會**修改任何資料或索引，會詳細回報 `missing`、`extra` 或 `mismatch` 的項目。
+
+### 重複 ID 審計 (Audit) [#重複-id-審計-audit]
+
+```bash
+npm run mongodb:audit-id
+```
+
+掃描各 Resource collection 與 history collections 中是否存在重複的 `id`，以利未來升級 unique 索引時的資料乾淨度檢查。
+
+
+# 安裝 (/zh-TW/docs/v3/getting-started/installation)
+
+
+
+# 安裝 (Installation) [#安裝-installation]
+
+請確認您的伺服器或本機環境已具備以下基本條件：
+
+* [git](https://git-scm.com/downloads)
+* [Node.js](https://nodejs.org/zh-tw/download&#x29; &#x2A;*>= 22 (LTS)**
+* [MongoDB](https://www.mongodb.com/try/download/community&#x29; **> 4.2**（建議使用 MongoDB 6.0 或 7.0+）
+
+***
+
+## 1. 複製專案儲存庫 [#1-複製專案儲存庫]
+
+使用 Git 將 Burni 儲存庫複製至本地：
+
+<CodeBlockTabs defaultValue="bash">
+  <CodeBlockTabsList>
+    <CodeBlockTabsTrigger value="bash">
+      bash
+    </CodeBlockTabsTrigger>
+  </CodeBlockTabsList>
+
+  <CodeBlockTab value="bash">
+    ```bash
+    git clone https://github.com/Chinlinlee/Burni.git
+    cd Burni
+    ```
+  </CodeBlockTab>
+</CodeBlockTabs>
+
+***
+
+## 2. 安裝相依套件 [#2-安裝相依套件]
+
+在專案根目錄下執行 `npm install`：
+
+<CodeBlockTabs defaultValue="bash">
+  <CodeBlockTabsList>
+    <CodeBlockTabsTrigger value="bash">
+      bash
+    </CodeBlockTabsTrigger>
+  </CodeBlockTabsList>
+
+  <CodeBlockTab value="bash">
+    ```bash
+    npm install
+    ```
+  </CodeBlockTab>
+</CodeBlockTabs>
+
+***
+
+安裝完畢後，下一步請參考 &#x2A;*[設定](./configuration)** 章節配置資源與環境變數。
 
 
 # searchParameterQueryHandler (/zh-TW/docs/v2/code-api-documentation/models/fhir/search-parameter-query-handler)
