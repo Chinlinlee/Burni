@@ -34,7 +34,7 @@ function resolveExportDir() {
 function moveExportToDocs(exportDir) {
   fs.mkdirSync(DOCS_DIR, { recursive: true });
 
-  const preservedEntries = new Set(['apidoc', '.git', 'research']);
+  const preservedEntries = new Set(['apidoc', '.git', 'research', 'adr']);
   for (const entry of fs.readdirSync(DOCS_DIR)) {
     if (preservedEntries.has(entry) || entry.endsWith('.md')) continue;
     fs.rmSync(path.join(DOCS_DIR, entry), { recursive: true, force: true });
