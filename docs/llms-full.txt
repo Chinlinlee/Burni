@@ -1,19 +1,85 @@
-# Home (/docs)
+# Burni Documentation Center (/docs)
 
 
 
-# Burni documentation [#burni-documentation]
+# Burni FHIR Server Documentation [#burni-fhir-server-documentation]
 
-# 🚧 **work in progress** [#-work-in-progress]
+Welcome to the official **Burni FHIR Server** documentation portal!
 
-## Getting Started [#getting-started]
+Burni is a flexible and high-performance HL7® FHIR® R4 (v4.0.1) server implementation built with Node.js, Express, and MongoDB, featuring out-of-the-box FHIR resource storage, comprehensive CRUD operations, search parameter resolution, and resource validation.
 
-* Installation
-* Configuration
-* Deploy
+***
+
+## Select Documentation Version [#select-documentation-version]
+
+Browse our documentation according to your current deployment or adoption roadmap:
+
+### 🟢 [v2 (LTS) Stable Release Guide](./docs/v2) [#-v2-lts-stable-release-guide]
+
+**Current Long Term Support Stable Branch (v2.8)**
+
+* Production-grade stability compatible with Node.js 18+ and Express 4
+* Validated with 100% pass rate in AEGIS Touchstone Conformance testing
+* Comprehensive guides for installation, server `.env` configuration, Mongoose resource mapping, and OpenAPI export
+* Recommended for ongoing production maintenance and standard FHIR server deployments
+
+👉 &#x2A;*[Explore v2 (LTS) Documentation](./docs/v2)**
+
+***
+
+### 🚀 [v3 (Preview) Next Generation](./docs/v3) [#-v3-preview-next-generation]
+
+**Sneak Peek at the Upcoming Architecture (v3.0)**
+
+* Upgraded runtime foundation: **Node.js >= 22**, **Express 5**, and **Mongoose 8**
+* **Dual Database & Temporal Architecture**: Segregate active resources from history and provenance audits for peak throughput
+* **Temporal Migration CLI**: Automated database preflight checks and zero-downtime streaming data migration
+* **Enhanced FHIR System Parameters**: Native engine support for `_tag`, `_security`, `_profile`, and full datetime offset precision
+* Modern tooling and CI gates (Mocha 12, Chai 6, ESLint 10 Flat Config)
+
+👉 &#x2A;*[Explore v3 (Preview) Documentation](./docs/v3)**
 
 
-# Introduction (/docs/introduction)
+# Burni v2 (LTS) Overview (/docs/v2)
+
+
+
+# Burni v2 (LTS) Documentation Guide [#burni-v2-lts-documentation-guide]
+
+Welcome to the &#x2A;*Burni v2 (LTS)** documentation. Burni is a high-performance FHIR R4 (v4.0.1) server built with Node.js, Express, and MongoDB / Mongoose.
+
+The v2 series represents our battle-tested, production-ready Long Term Support release, providing mature FHIR resource storage, validation, and search capabilities.
+
+***
+
+## Core Sections [#core-sections]
+
+* **[Introduction & Conformance](./v2/introduction)**\
+  Understand Burni's architectural goals, FHIR R4 compliance, and AEGIS Touchstone test results (100% pass rate).
+
+* **[Getting Started](./v2/getting-started/installation)**\
+  Environment setup (Windows / Linux), configuration via `.env`, and production deployment guidelines.
+
+* **[FHIR API Specifications](./v2/fhir-api-documentation/overview)**\
+  Detailed overview of FHIR RESTful interactions (CRUD, vread, history, etc.) and OpenAPI / Swagger generation.
+
+* **[Search Parameters](./v2/search-parameter/overview)**\
+  FHIR search mechanisms, extending custom search parameters, and query optimization.
+
+* **[Internal Code & Models](./v2/code-api-documentation/models/fhir/search-parameter-query-handler)**\
+  Deep dive into Mongoose Schema generation and the internal Search Parameter Query Handler.
+
+* **[FHIR Validator](./v2/fhir-validator)**\
+  Validating FHIR resources using built-in and external validation tooling.
+
+***
+
+## Exploring Next Generation Features [#exploring-next-generation-features]
+
+Looking forward to the next generation of Burni? Visit &#x2A;*[Burni v3 (Preview)](../v3)** to explore Express 5, dual-database temporal persistence (Temporal Migration), enhanced FHIR system parameters, and modern tooling!
+
+
+# Introduction (/docs/v2/introduction)
 
 
 
@@ -31,7 +97,287 @@ Burni has been tested  by AEGIS Touchstone Basic-R4-Server. The conformance resu
 * [FHIR4-0-1-Basic-Server version 14](https://touchstone.aegis.net/touchstone/conformance/detail?suite=FHIR4-0-1-Basic-Server\&sVersion=14\&testSystem=5f9518730a120e4edef042ae\&supportedOnly=false\&cb=%2FFHIR4-0-1-Basic\&published=true) (1,948 tests has been passed, 100% Pass)
 
 
-# Generate OpenAPI (/docs/fhir-api-documentation/generate-open-api)
+# Burni v3 Overview (Preview) (/docs/v3)
+
+
+
+# Burni v3 (Preview) New Features Overview [#burni-v3-preview-new-features-overview]
+
+**Burni v3** represents a major leap forward for the Burni FHIR Server. Building upon the solid FHIR R4 compliance and production stability of v2, v3 re-engineers the runtime foundation and database layer to meet modern cloud-native standards, large-scale clinical data persistence, and ultra-fast query performance.
+
+***
+
+## 🌟 Key Highlights [#-key-highlights]
+
+### 1. Core Stack Modernization [#1-core-stack-modernization]
+
+* **Node.js >= 22 (LTS)**: Leverages latest ECMAScript features and optimized V8 performance.
+* **Express 5 (5.2.1)**: Upgrades to Express 5 for native Promise rejection handling, hardened query parser security, and lower HTTP routing overhead.
+* **Mongoose 8 (8.24+)**: Latest ODM generation with enhanced TypeScript safety and robust connection pool lifecycle controls.
+* **fhir-tool 5.0.2**: Replaces legacy dependencies with a lightweight, optimized R4 validation and schema utility.
+
+### 2. Dual-Database & Temporal Architecture [#2-dual-database--temporal-architecture]
+
+Clinical FHIR workloads generate continuous version updates (`_history`) and audit provenances that can cause severe database bloat when mixed with active resources.
+
+v3 introduces a clean **Dual-Database topology**:
+
+* **Primary Database**: Holds only currently active resources, keeping index working sets small and clinical reads fast.
+* **Temporal Database**: Houses version histories (`*_history`), vread operations, and HTTP request audit provenances.
+* **Streaming Migration**: Includes `npm run temporal:preflight` and `npm run temporal:migrate` for zero-downtime progressive data migration.
+
+### 3. Enhanced FHIR System Parameters [#3-enhanced-fhir-system-parameters]
+
+v3 brings full support for standard FHIR system-level search parameters:
+
+* **`_tag`**: Filter resources by coding system and code tags.
+* **`_security`**: Filter by security classification labels.
+* **`_profile`**: Filter by StructureDefinition canonical profiles.
+* **Full Date Precision & Timezone Offsets**: Compliant date range parsing across varying granularities (year, month, day, second, millisecond) and UTC offsets.
+
+### 4. Enterprise Quality & Tooling [#4-enterprise-quality--tooling]
+
+* **All-Resource CRUD Gate (`npm run test:all-resource-crud`)**: Automated coverage across all 146 FHIR R4 catalog resources.
+* **Diagnostics CI Gate**: Automated verification for search parameter mappings and query builders.
+* **Mocha 12 + Chai 6 + ESLint 10 Flat Config**: Clean, modern linting and testing toolchain.
+
+***
+
+## 📚 Preview Sections [#-preview-sections]
+
+* **[Migration Preview: Upgrading from v2 to v3](./v3/migration-preview)**: Prerequisites, configuration updates, and migration CLI execution.
+* **[Temporal & Dual Database Architecture](./v3/temporal-architecture)**: How active and historical collections coordinate seamlessly.
+* **[FHIR System Search Parameters](./v3/system-search-parameters)**: Detailed syntax and examples for `_tag`, `_profile`, `_security`, and date filtering.
+
+
+# Migration Preview: Upgrading from v2 to v3 (/docs/v3/migration-preview)
+
+
+
+# Migration Preview: Upgrading from Burni v2 to v3 [#migration-preview-upgrading-from-burni-v2-to-v3]
+
+This document outlines the migration roadmap and key considerations for teams planning to upgrade from &#x2A;*Burni v2 (v2.8)** to **Burni v3**.
+
+***
+
+## 1. Prerequisites & Environment Setup [#1-prerequisites--environment-setup]
+
+### Node.js Engine [#nodejs-engine]
+
+* **v2**: Node.js >= 18
+* **v3**: &#x2A;*Node.js >= 22 (LTS)**
+* Verify your local environment, Docker base images, and CI runners have been updated to Node.js 22+.
+
+### Key Dependency Changes [#key-dependency-changes]
+
+1. **Express 5**:
+   * Asynchronous route handlers automatically forward rejected Promises to error middleware.
+   * Audit any custom plugins or route handlers for Express 5 compatibility.
+2. **fhir-tool 5.0.2**:
+   * Replaces the deprecated `fhir` package.
+
+***
+
+## 2. Dual-Database Configuration [#2-dual-database-configuration]
+
+While v2 stored active resources and historical revisions in a single MongoDB database, v3 introduces separate connections for optimal scalability.
+
+### Configuration (`.env`) [#configuration-env]
+
+Configure your connection URIs:
+
+```bash
+# Primary database for active resources
+MONGODB_URI="mongodb://localhost:27017/burni"
+
+# Temporal database for history and provenance audits
+TEMPORAL_MONGODB_URI="mongodb://localhost:27017/burni-temporal"
+```
+
+> **Note**: If `TEMPORAL_MONGODB_URI` is omitted, Burni operates in single-database fallback mode. Splitting databases is strongly recommended for production environments.
+
+***
+
+## 3. Temporal Data Migration Workflow [#3-temporal-data-migration-workflow]
+
+Burni v3 provides CLI utilities to migrate existing `*_history` collections into the dedicated temporal store.
+
+### Step A: Preflight Verification [#step-a-preflight-verification]
+
+Verify connectivity, disk space, and collection statistics across both database targets:
+
+```bash
+npm run temporal:preflight
+```
+
+### Step B: Database Provisioning [#step-b-database-provisioning]
+
+Initialize required collections and performance indexes in the temporal database:
+
+```bash
+npm run mongodb:provision
+```
+
+### Step C: Streaming Migration [#step-c-streaming-migration]
+
+Execute the data migration process with batching and progress tracking:
+
+```bash
+npm run temporal:migrate
+```
+
+Verify migration consistency:
+
+```bash
+npm run mongodb:verify
+```
+
+***
+
+## 4. Search Parameter Artifacts [#4-search-parameter-artifacts]
+
+Rebuild search parameter artifacts if you maintain custom parameter definitions:
+
+```bash
+npm run search-parameter:build-artifacts
+npm run search-parameter:verify
+```
+
+***
+
+## 5. Test Suite Verification [#5-test-suite-verification]
+
+Run the automated test gates to confirm migration integrity:
+
+```bash
+# Fast test profile (unit & non-mongo suites)
+npm test
+
+# Dual database migration operator and validation tests
+npm run test:dual-database-migration
+
+# All-resource CRUD integration suite (146 resources)
+npm run test:all-resource-crud
+```
+
+
+# FHIR System Search Parameters (/docs/v3/system-search-parameters)
+
+
+
+# FHIR System Search Parameters [#fhir-system-search-parameters]
+
+The HL7 FHIR standard defines system search parameters that apply across all resource types. **Burni v3** provides full native support and MongoDB query optimization for these parameters.
+
+***
+
+## 1. `_tag`: Filtering by Meta Tags [#1-_tag-filtering-by-meta-tags]
+
+Find resources associated with specific category or metadata tags (`Resource.meta.tag`):
+
+```http
+GET [baseUrl]/Patient?_tag=http://example.org/codes|VIP
+GET [baseUrl]/Observation?_tag=critical
+```
+
+### Multiple Tag Combinations [#multiple-tag-combinations]
+
+* Comma separated (`_tag=a,b`): Logical OR
+* Repeated parameters (`_tag=a&_tag=b`): Logical AND
+
+```http
+GET [baseUrl]/Patient?_tag=http://example.org|tagA&_tag=http://example.org|tagB
+```
+
+***
+
+## 2. `_security`: Security Labels [#2-_security-security-labels]
+
+Filter resources based on their confidentiality classification or access constraints (`Resource.meta.security`):
+
+```http
+GET [baseUrl]/DocumentReference?_security=http://terminology.hl7.org/CodeSystem/v3-ActCode|R
+```
+
+Ideal for multi-tenant isolation, role-based filtering, and compliance auditing.
+
+***
+
+## 3. `_profile`: Profile Conformance [#3-_profile-profile-conformance]
+
+Query resources conforming to a designated StructureDefinition Canonical URI (`Resource.meta.profile`):
+
+```http
+GET [baseUrl]/Patient?_profile=http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient
+```
+
+***
+
+## 4. Full Date & Timezone Offset Precision [#4-full-date--timezone-offset-precision]
+
+FHIR date searches require strict interval calculation depending on the parameter format:
+
+* Prefixes: `eq`, `ne`, `gt`, `lt`, `ge`, `le`, `sa`, `eb`, `ap`.
+* Timezone Offsets: Handles UTC offsets (`+08:00`, `-05:00`, `Z`) accurately.
+* Varying Precision: Searches using year (`ge2026`) or month (`2026-09`) automatically expand to exact start and end millisecond ranges, preventing false negatives.
+
+Examples:
+
+```http
+GET [baseUrl]/Appointment?date=ge2026-09-01&date=le2026-09-30
+GET [baseUrl]/Observation?date=gt2026-09-12T00:00:00+08:00
+```
+
+
+# Temporal & Dual-Database Architecture (/docs/v3/temporal-architecture)
+
+
+
+# Temporal & Dual-Database Architecture [#temporal--dual-database-architecture]
+
+Enterprise health systems demand auditability: every resource change or deletion creates an immutable record. Over time, historical versions dwarf active resources, leading to index bloat and degraded read latency.
+
+**Burni v3** introduces a **Temporal & Dual-Database Architecture** to solve this problem cleanly.
+
+***
+
+## Architectural Topology [#architectural-topology]
+
+```mermaid
+flowchart LR
+    Client[FHIR Client / App] --> API[Burni v3 Server]
+    API --> |CRUD & Active Search| PrimaryDB[(Primary MongoDB<br/>Active Resources)]
+    API --> |History & vread| TemporalDB[(Temporal MongoDB<br/>History & Provenance)]
+    PrimaryDB -.-> |Streaming Migration| TemporalDB
+```
+
+### 1. Separation of Concerns [#1-separation-of-concerns]
+
+* **Primary Database**:
+  * Contains strictly the current active resources.
+  * Keeps working sets in memory for maximum throughput on clinical lookups and complex search queries.
+* **Temporal Database**:
+  * Stores historical revisions (`*_history` collections), HTTP request contexts, and audit provenance data.
+  * Indexed on timestamps, versions (`versionId`), and resource identifiers.
+
+### 2. Provenance & Audit Guarantees [#2-provenance--audit-guarantees]
+
+* **BundleRequest Capture**: Every version records its originating HTTP headers, transaction boundaries, and actor credentials.
+* **High-Precision vread**: Historical requests (`[baseUrl]/[type]/[id]/_history/[vid]`) route straight to the temporal store without impacting active resource queries.
+
+***
+
+## Operational Advantages [#operational-advantages]
+
+1. **Tiered Storage Optimization**:
+   * Keep Primary DB on high-performance NVMe volumes, while placing Temporal DB on cost-effective storage tiers.
+2. **Independent Backup & Recovery**:
+   * Establish dedicated snapshot policies for operational data versus long-term audit archives.
+3. **Transparent Execution**:
+   * Burni's internal Data Operator layer abstracts database routing completely—no custom code is required at the API route level.
+
+
+# Generate OpenAPI (/docs/v2/fhir-api-documentation/generate-open-api)
 
 
 
@@ -380,7 +726,7 @@ Example:
 ```
 
 
-# Overview (/docs/fhir-api-documentation/overview)
+# Overview (/docs/v2/fhir-api-documentation/overview)
 
 
 
@@ -406,7 +752,7 @@ The burni currently support [FHIR RESTful API](https://www.hl7.org/fhir/http.htm
 None
 
 
-# FHIR Validator (/docs/fhir-validator)
+# FHIR Validator (/docs/v2/fhir-validator)
 
 
 
@@ -430,7 +776,7 @@ Burni's FHIR Validator is implemented through the integration of Node.js and Jav
 * $validate: Validation function that returns a 200 response if successful; otherwise, a 422 error is returned.
 
 
-# Configuration (/docs/getting-started/configuration)
+# Configuration (/docs/v2/getting-started/configuration)
 
 
 
@@ -511,7 +857,7 @@ npm run build
 </Callout>
 
 
-# Deploy (/docs/getting-started/deploy)
+# Deploy (/docs/v2/getting-started/deploy)
 
 
 
@@ -591,7 +937,7 @@ docker-compose up -d
 ```
 
 
-# Installation (/docs/getting-started/installation)
+# Installation (/docs/v2/getting-started/installation)
 
 
 
@@ -638,7 +984,7 @@ Please confirm that you have the:
 after installation, let's starting [configuration](/getting-started/configuration)
 
 
-# Add search parameter (/docs/search-parameter/add-search-parameter)
+# Add search parameter (/docs/v2/search-parameter/add-search-parameter)
 
 
 
@@ -679,7 +1025,7 @@ paramsSearch["composition.patient"] = (query) => {
 ```
 
 
-# Overview (/docs/search-parameter/overview)
+# Overview (/docs/v2/search-parameter/overview)
 
 
 
@@ -705,7 +1051,7 @@ The burni currently support [FHIR search operations](http://www.hl7.org/fhir/sea
 * \_count
 
 
-# searchParameterQueryHandler (/docs/code-api-documentation/models/fhir/search-parameter-query-handler)
+# searchParameterQueryHandler (/docs/v2/code-api-documentation/models/fhir/search-parameter-query-handler)
 
 
 
@@ -1028,22 +1374,88 @@ getNumberQuery(
 | paramsSearchFunc   | <code>function</code> | parameter search function corresponds to data type e.g. date, dateTime |
 
 
-# Home (/zh-TW/docs)
+# Burni 文件中心 (/zh-TW/docs)
 
 
 
-# Burni documentation [#burni-documentation]
+# Burni FHIR Server 文件中心 [#burni-fhir-server-文件中心]
 
-# 🚧 &#x2A;*正在進行中...** [#-正在進行中]
+歡迎來到 **Burni FHIR Server** 官方文件中心！
 
-## 讓我們開始吧 [#讓我們開始吧]
+Burni 是一個高效能且靈活的 HL7® FHIR® R4 (v4.0.1) 伺服器實作，以 Node.js、Express 與 MongoDB 為核心，支援開箱即用的 FHIR 資源儲存、完整 CRUD 操作、複雜搜尋參數及資料結構驗證。
 
-* 安裝
-* 設定
-* 部屬
+***
+
+## 請選擇版本 [#請選擇版本]
+
+文件中心支援多版本瀏覽，請根據您的需求選擇合適的版本指南：
+
+### 🟢 [v2 (LTS) 穩定版指南](./zh-TW/docs/v2) [#-v2-lts-穩定版指南]
+
+**當前長期支援穩定版本 (v2.8)**
+
+* 穩健成熟的生產環境方案，相容 Node.js 18+ 與 Express 4
+* 通過 AEGIS Touchstone Conformance 測試（100% 通過率）
+* 完整包含安裝步驟、伺服器環境配置、Mongoose 資源映射與 API 規格產生
+* 適用於現有系統維運與標準 FHIR 伺服器部屬
+
+👉 &#x2A;*[進入 v2 (LTS) 穩定版文件](./zh-TW/docs/v2)**
+
+***
+
+### 🚀 [v3 (Preview) 次世代預覽](./zh-TW/docs/v3) [#-v3-preview-次世代預覽]
+
+**下一代架構升級搶先預覽 (v3.0)**
+
+* 全面升級至 **Node.js >= 22**、**Express 5** 與 **Mongoose 8**
+* **雙資料庫與時序架構（Dual Database & Temporal Architecture）**：實現核心即時資源與歷史版本/審計軌跡分離儲存
+* **平滑時序遷移工具（Temporal Migration CLI）**：支援預檢（preflight）與零停機串流資料庫搬遷
+* **增強型 FHIR 系統參數**：原生支援 `_tag`、`_security`、`_profile` 與精確時區日期區間檢索
+* 現代化工具鏈與測試防護（Mocha 12、Chai 6、ESLint 10 Flat Config）
+
+👉 &#x2A;*[進入 v3 (Preview) 預覽文件](./zh-TW/docs/v3)**
 
 
-# 介紹 (/zh-TW/docs/introduction)
+# Burni v2 (LTS) 總覽 (/zh-TW/docs/v2)
+
+
+
+# Burni v2 (LTS) 文件指南 [#burni-v2-lts-文件指南]
+
+歡迎查閱 &#x2A;*Burni v2 (LTS)** 官方文檔。Burni 是一個基於 Node.js、Express 與 MongoDB / Mongoose 建構的高效能 FHIR R4 (v4.0.1) 伺服器。
+
+v2 系列為當前長期維護之穩定分支（Production Ready），提供成熟的 FHIR 資源儲存、驗證與查詢功能。
+
+***
+
+## 核心章節導覽 [#核心章節導覽]
+
+* **[簡介與能力聲明](./v2/introduction)**\
+  了解 Burni 的核心設計目標、FHIR R4 合規性以及 AEGIS Touchstone 測試通過指標（100% 通過）。
+
+* **[快速開始](./v2/getting-started/installation)**\
+  包含伺服器環境安裝（Windows / Linux）、`.env` 與伺服器參數設定，以及正式環境部署建議。
+
+* **[FHIR API 規格文件](./v2/fhir-api-documentation/overview)**\
+  詳細介紹 Burni 提供的 FHIR RESTful 交互介面（CRUD、vread、history 等）與 OpenAPI / Swagger 規格產生方式。
+
+* **[搜尋參數 (Search Parameters)](./v2/search-parameter/overview)**\
+  說明 FHIR Search 機制、自定義搜尋參數的擴展方法與 MongoDB 查詢優化。
+
+* **[內部程式碼與 Model 結構](./v2/code-api-documentation/models/fhir/search-parameter-query-handler)**\
+  深入解析 Mongoose Schema 生成邏輯與 Search Parameter Query Handler 內部運作。
+
+* **[FHIR 驗證器](./v2/fhir-validator)**\
+  使用內建或外部驗證工具對輸入之 FHIR 資源進行結構與規範校驗。
+
+***
+
+## 預覽下一代架構 [#預覽下一代架構]
+
+如果您正在規劃系統升級或希望體驗次世代功能，歡迎瀏覽 &#x2A;*[Burni v3 (Preview)](../v3)** 文件，搶先了解 Express 5、雙資料庫時序資料儲存（Temporal Migration）及增強型 FHIR 系統參數等全新突破！
+
+
+# 介紹 (/zh-TW/docs/v2/introduction)
 
 
 
@@ -1063,7 +1475,308 @@ Burni 使用 AEGIS Touchstone Basic-R4-Server 測試.
 * [FHIR4-0-1-Basic-Server version 14](https://touchstone.aegis.net/touchstone/conformance/detail?suite=FHIR4-0-1-Basic-Server\&sVersion=14\&testSystem=5f9518730a120e4edef042ae\&supportedOnly=false\&cb=%2FFHIR4-0-1-Basic\&published=true) (1,948 tests has been passed, 100% Pass)
 
 
-# 產生OpenAPI (/zh-TW/docs/fhir-api-documentation/generate-open-api)
+# Burni v3 概覽 (Preview) (/zh-TW/docs/v3)
+
+
+
+# Burni v3 (Preview) 全新特性概覽 [#burni-v3-preview-全新特性概覽]
+
+**Burni v3** 是 Burni FHIR Server 的重大里程碑升級。在繼承 v2 優良的 FHIR R4 合規性與高穩定性的基礎上，v3 全面革新了核心底層架構，針對現代化雲端原生環境、大規模醫療資料儲存以及高效能檢索需求進行了深度重構。
+
+***
+
+## 🌟 核心革新亮點 [#-核心革新亮點]
+
+### 1. 核心技術棧升級 [#1-核心技術棧升級]
+
+* **Node.js >= 22 (LTS)**：充分利用現代 JavaScript 語言特性與 V8 引擎的高效能表現。
+* **Express 5 (5.2.1)**：核心框架升級至 Express 5，改善非同步路由錯誤處理（Promise rejection handling）、更安全的 Query Parser，提升 HTTP 處理效率。
+* **Mongoose 8 (8.24+)**：升級至最新世代的 MongoDB ODM，提供更強大的 TypeScript 型別支援與更高效的連線池管理。
+* **fhir-tool 5.0.2**：取代舊版 fhir 套件，採用更輕量且針對 R4 規格高度優化的解析與驗證工具。
+
+### 2. 雙資料庫與時序架構（Dual Database & Temporal Architecture） [#2-雙資料庫與時序架構dual-database--temporal-architecture]
+
+在醫療臨床應用中，FHIR 資源的每一次更新（Update）與刪除（Delete）都必須保留完整的歷史版本與操作記錄（Provenance / History）。然而，將大量的歷史時序資料與目前有效資源（Active Resources）混存於同一個資料庫集合中，會嚴重影響日常查詢效能。
+
+v3 引入了全新的**雙資料庫拓撲架構**：
+
+* **主要資料庫 (Primary DB)**：專注儲存當前有效的 Active FHIR 資源，索引緊湊、查詢與搜尋極速。
+* **時序歷史資料庫 (Temporal DB)**：專門負責持久化歷史版本（`_history`）、vread 操作與審計 Provenance 資料。
+* **串流遷移與預檢機制**：提供 `temporal:preflight` 與 `temporal:migrate` 命令，支援平滑漸進式搬遷與資料完整性驗證。
+
+### 3. 增強的 FHIR 系統層級搜尋參數（System Search Parameters） [#3-增強的-fhir-系統層級搜尋參數system-search-parameters]
+
+v3 針對 FHIR 標準定義的系統全域參數進行了全面實作與底層優化：
+
+* **`_tag`**：支援依據 Coding（系統代碼/值）精準與多條件過濾資源。
+* **`_security`**：提供針對機密等級（Security Labels）的快速權限與合規過濾。
+* **`_profile`**：支援依據 StructureDefinition Canonical URI 檢索符合特定 Profile 的資源。
+* **完整日期與時區精度**：修正 date / dateTime 查詢在跨時區與不同精度（年、月、日、分、秒、毫秒）下的查詢邊界，完全符合 HL7 FHIR 規範。
+
+### 4. 品質保證與現代化工程標準 [#4-品質保證與現代化工程標準]
+
+* **全資源 CRUD 整合測試門禁（`npm run test:all-resource-crud`）**：涵蓋 FHIR R4 Catalog 全部 146 項資源的自動化 Create / Read / History 驗證。
+* **診斷 CI 閘門（Diagnostics Gate）**：自動化驗證所有搜尋參數的型別定義與執行路徑。
+* **Mocha 12 + Chai 6 + ESLint 10 Flat Config**：全面導入現代化測試與代碼規範體系。
+
+***
+
+## 📚 預覽章節閱讀導覽 [#-預覽章節閱讀導覽]
+
+* **[v2 到 v3 遷移指南預覽](./v3/migration-preview)**：包含升級前提條件、環境變數調整與資料庫遷移步驟。
+* **[時序與雙資料庫架構解析](./v3/temporal-architecture)**：深入了解主資料庫與時序資料庫的協同運作機制與拓撲設計。
+* **[FHIR 系統搜尋參數指南](./v3/system-search-parameters)**：掌握 `_tag`、`_profile`、`_security` 與日期精度的搜尋用法。
+
+
+# v2 到 v3 遷移指南預覽 (Migration Preview) (/zh-TW/docs/v3/migration-preview)
+
+
+
+# Burni v2 到 v3 遷移指南預覽 [#burni-v2-到-v3-遷移指南預覽]
+
+本文檔為規劃從 &#x2A;*Burni v2 (v2.8)** 遷移至 **Burni v3** 的工程團隊提供升級指引與架構變更預覽。
+
+***
+
+## 1. 升級前準備與環境要求 [#1-升級前準備與環境要求]
+
+### Node.js 執行環境 [#nodejs-執行環境]
+
+* **v2 要求**：Node.js >= 18
+* **v3 要求**：&#x2A;*Node.js >= 22 (LTS)**
+* 請確保您的生產伺服器、Docker 映像檔或 CI/CD 流程已切換至 Node.js 22+。
+
+### 相依模組重要變更 [#相依模組重要變更]
+
+1. **Express 5**：
+   * 路由處理函式現在原生支援回傳 Promise，未捕捉之例外會自動傳遞至錯誤處理中介軟體（Error Handler Middleware）。
+   * 若您在客製化外掛（Plugins）中有定義自己的路由中介軟體，請檢查是否相容 Express 5 的路由簽名。
+2. **fhir-tool 5.0.2**：
+   * 替換舊版 `fhir` 套件，模組命名空間全面統一為 `fhir-tool`。
+
+***
+
+## 2. 雙資料庫配置（Dual-Database Setup） [#2-雙資料庫配置dual-database-setup]
+
+在 v2 中，所有資源與歷史版本皆存放在單一 MongoDB 資料庫中；在 v3 中，建議採用雙資料庫架構以獲得最佳吞吐量。
+
+### 環境變數設定 (`.env`) [#環境變數設定-env]
+
+在 `.env` 中新增或確認以下連線字串：
+
+```bash
+# 主要資料庫（儲存目前有效資源）
+MONGODB_URI="mongodb://localhost:27017/burni"
+
+# 時序/歷史資料庫（儲存版本歷史與 Provenance 審計紀錄）
+TEMPORAL_MONGODB_URI="mongodb://localhost:27017/burni-temporal"
+```
+
+> **注意**：若未特別指定 `TEMPORAL_MONGODB_URI`，Burni 仍可相容於單一資料庫模式，但建議生產環境分離以發揮完整效能。
+
+***
+
+## 3. 時序資料遷移流程 (Temporal Migration) [#3-時序資料遷移流程-temporal-migration]
+
+Burni v3 提供專屬的命令列工具，協助將現有 v2 資料庫中的歷史版本資料（`*_history`）平滑遷移至時序資料庫。
+
+### 步驟 A：執行環境預檢 (Preflight Check) [#步驟-a執行環境預檢-preflight-check]
+
+在真正搬遷資料前，先執行預檢指令以確認兩邊資料庫之連線性、磁碟容量與索引狀態：
+
+```bash
+npm run temporal:preflight
+```
+
+該指令會自動檢查：
+
+* Primary DB 與 Temporal DB 連線狀態
+* 歷史集合（History Collections）之文件數量與體積評估
+* 既有索引結構相容性
+
+### 步驟 B：資料庫初始化與 Provisioning [#步驟-b資料庫初始化與-provisioning]
+
+為時序資料庫建立所需的集合與標準索引：
+
+```bash
+npm run mongodb:provision
+```
+
+### 步驟 C：執行串流資料搬遷 (Streaming Migration) [#步驟-c執行串流資料搬遷-streaming-migration]
+
+執行線上串流遷移指令，支援批次遷移與進度條回報：
+
+```bash
+npm run temporal:migrate
+```
+
+若要在遷移完成後驗證資料完整性與一致性：
+
+```bash
+npm run mongodb:verify
+```
+
+***
+
+## 4. 搜尋參數成品重構 (Search Parameter Artifacts) [#4-搜尋參數成品重構-search-parameter-artifacts]
+
+v3 改善了 FHIR 搜尋參數的編譯與快取機制。在升級後，若曾自定義搜尋參數，請重新建置搜尋參數成品：
+
+```bash
+npm run search-parameter:build-artifacts
+```
+
+並可執行驗證工具確認所有參數健康狀態：
+
+```bash
+npm run search-parameter:verify
+```
+
+***
+
+## 5. 自動化測試驗證 [#5-自動化測試驗證]
+
+完成資料庫遷移與配置後，建議執行完整的測試驗證套件：
+
+```bash
+# 執行快速測試集（非 MongoDB 依賴）
+npm test
+
+# 執行雙資料庫遷移測試集
+npm run test:dual-database-migration
+
+# 執行全資源 CRUD 門禁驗證（驗證 146 項 FHIR 資源行為）
+npm run test:all-resource-crud
+```
+
+
+# FHIR 系統參數支援 (System Search Parameters) (/zh-TW/docs/v3/system-search-parameters)
+
+
+
+# FHIR 系統搜尋參數指南 [#fhir-系統搜尋參數指南]
+
+FHIR 規範定義了一組可應用於任何資源類型的系統全域搜尋參數（System Search Parameters）。在 **Burni v3** 中，系統搜尋參數經過全面重構，具備了更完整的標準支援與高效的 MongoDB 索引映射。
+
+***
+
+## 1. `_tag` 參數：標籤篩選 [#1-_tag-參數標籤篩選]
+
+用於檢索資源中含有特定標籤（`Resource.meta.tag`）的資源。
+
+### 查詢語法 [#查詢語法]
+
+```http
+GET [baseUrl]/Patient?_tag=http://example.org/codes|VIP
+GET [baseUrl]/Observation?_tag=critical
+```
+
+### 多標籤組合 [#多標籤組合]
+
+支援以逗號表示 OR（或）、多個 `_tag` 參數表示 AND（且）：
+
+```http
+# 含有 code1 或 code2
+GET [baseUrl]/Patient?_tag=http://example.org|code1,http://example.org|code2
+
+# 同時含有 tagA 且含有 tagB
+GET [baseUrl]/Patient?_tag=http://example.org|tagA&_tag=http://example.org|tagB
+```
+
+***
+
+## 2. `_security` 參數：安全標籤 [#2-_security-參數安全標籤]
+
+用於依據資源的敏感等級或安全分類（`Resource.meta.security`）進行篩選：
+
+```http
+GET [baseUrl]/DocumentReference?_security=http://terminology.hl7.org/CodeSystem/v3-ActCode|R
+```
+
+適用於資安稽核、多租戶隔離或臨床病歷受限閱覽情境。
+
+***
+
+## 3. `_profile` 參數：Profile 規格符合性 [#3-_profile-參數profile-規格符合性]
+
+用於查詢符合特定 StructureDefinition Profile Canonical URI（`Resource.meta.profile`）的資源：
+
+```http
+GET [baseUrl]/Patient?_profile=http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient
+```
+
+***
+
+## 4. 完整的日期與時區精度支援 (Full Date/Time Precision) [#4-完整的日期與時區精度支援-full-datetime-precision]
+
+FHIR 日期查詢規格對時間範圍（Period）與精度有極為嚴格的要求。在 Burni v3 中：
+
+* 支援 `eq`, `ne`, `gt`, `lt`, `ge`, `le`, `sa`, `eb`, `ap` 前綴修飾符。
+* 精確解析帶有時區位移（Timezone Offset，如 `+08:00`、`-05:00` 或 `Z`）的時間字串。
+* 若只給予年份（例如 `ge2026`）或月份（例如 `2026-09`），Burni 會自動換算為該年份或月份的精確起始與結束毫秒邊界，杜絕邊界值落空或誤判問題。
+
+範例：
+
+```http
+# 查詢 2026 年 9 月所有排程
+GET [baseUrl]/Appointment?date=ge2026-09-01&date=le2026-09-30
+
+# 查詢特定時區偏移的觀察記錄
+GET [baseUrl]/Observation?date=gt2026-09-12T00:00:00+08:00
+```
+
+
+# 時序與雙資料庫架構 (Temporal & Dual Database Architecture) (/zh-TW/docs/v3/temporal-architecture)
+
+
+
+# 時序與雙資料庫架構解析 [#時序與雙資料庫架構解析]
+
+在大型醫療資訊系統（HIS）與健康資料交換平台中，FHIR 伺服器的資料量往往呈指數級成長。尤其是依據 FHIR 規範，所有資源修改與刪除操作都必須寫入歷史版本，歷史版本資料量往往是當前資源的數倍至數十倍。
+
+**Burni v3** 採用了創新的 **Temporal & Dual Database 架構**，從根本上解決了大量歷史資料引發的資料庫膨脹與查詢延遲問題。
+
+***
+
+## 架構設計理念 [#架構設計理念]
+
+```mermaid
+flowchart LR
+    Client[FHIR Client / App] --> API[Burni v3 Server]
+    API --> |CRUD & Active Search| PrimaryDB[(Primary MongoDB<br/>現有活躍資源)]
+    API --> |History & vread| TemporalDB[(Temporal MongoDB<br/>時序歷史與審計)]
+    PrimaryDB -.-> |時序異動流 / 搬遷| TemporalDB
+```
+
+### 1. 職責分離 (Separation of Concerns) [#1-職責分離-separation-of-concerns]
+
+* **Primary DB（活躍資源資料庫）**：
+  * 僅存放最新的 Active 資源版本。
+  * 資料庫容量精簡，索引可常駐記憶體（Working Set），大幅提升日常臨床檢索與 RESTful API 的回應速度。
+* **Temporal DB（時序歷史資料庫）**：
+  * 存放所有資源的歷史修訂版（`_history` 集合）、HTTP 請求關聯紀錄與 Provenance 審計資料。
+  * 針對時間序列（Timestamp）、版本編號（`versionId`）進行複合索引優化。
+
+### 2. 資料一致性與 Provenance 保證 [#2-資料一致性與-provenance-保證]
+
+在 v3 中，針對資源更新的歷史歸檔流程進行了精準強化：
+
+* **BundleRequest Provenance 保全**：確保在交易（Transaction）與批次操作下，每個版本都能完整對應到發起請求的 HTTP 標頭與使用者識別。
+* **vread 操作精確回溯**：即便資源已經過多次更新或甚至邏輯刪除，客戶端依舊能透過 `[baseUrl]/[type]/[id]/_history/[vid]` 快速且零延遲地從 Temporal DB 讀取當時的快照。
+
+***
+
+## 營運與維護優勢 [#營運與維護優勢]
+
+1. **分級儲存 (Tiered Storage)**：
+   * Primary DB 可配置高 IOPS 的 NVMe SSD，Temporal DB 則可配置具備成本效益的大容量儲存媒體，大幅節約雲端基礎設施成本。
+2. **獨立備份策略**：
+   * 活躍資料庫與歷史資料庫可採用不同的快照與備份排程，提高容災復原（Disaster Recovery）的彈性。
+3. **無縫切換**：
+   * Burni v3 核心提供了透明的 Data Operator 層，對上層業務邏輯與外掛模組保持完全透明，無需更改現有 API 呼叫方式。
+
+
+# 產生OpenAPI (/zh-TW/docs/v2/fhir-api-documentation/generate-open-api)
 
 
 
@@ -1414,7 +2127,7 @@ node docs/getAPIDocOpenapi.js
 ```
 
 
-# 概觀 (/zh-TW/docs/fhir-api-documentation/overview)
+# 概觀 (/zh-TW/docs/v2/fhir-api-documentation/overview)
 
 
 
@@ -1440,7 +2153,7 @@ Burni 目前支援的 [FHIR RESTful API](https://www.hl7.org/fhir/http.html) 如
 None
 
 
-# FHIR Validator (/zh-TW/docs/fhir-validator)
+# FHIR Validator (/zh-TW/docs/v2/fhir-validator)
 
 
 
@@ -1464,7 +2177,7 @@ Burni 的 FHIR Validator 透過 Node.js 與 Java 融合的專案 [node-java-fhir
 * $validate: 驗證功能，通過返回 200，反之回傳 422 錯誤
 
 
-# 設定 (/zh-TW/docs/getting-started/configuration)
+# 設定 (/zh-TW/docs/v2/getting-started/configuration)
 
 
 
@@ -1547,7 +2260,7 @@ npm run build
 </Callout>
 
 
-# 部屬 (/zh-TW/docs/getting-started/deploy)
+# 部屬 (/zh-TW/docs/v2/getting-started/deploy)
 
 
 
@@ -1627,7 +2340,7 @@ docker-compose up -d
 ```
 
 
-# 安裝 (/zh-TW/docs/getting-started/installation)
+# 安裝 (/zh-TW/docs/v2/getting-started/installation)
 
 
 
@@ -1676,7 +2389,7 @@ docker-compose up -d
 安裝完畢後，下一步進行[設定](/getting-started/configuration)
 
 
-# 自行新增搜尋參數 (/zh-TW/docs/search-parameter/add-search-parameter)
+# 自行新增搜尋參數 (/zh-TW/docs/v2/search-parameter/add-search-parameter)
 
 
 
@@ -1717,7 +2430,7 @@ paramsSearch["composition.patient"] = (query) => {
 ```
 
 
-# 概觀 (/zh-TW/docs/search-parameter/overview)
+# 概觀 (/zh-TW/docs/v2/search-parameter/overview)
 
 
 
@@ -1747,7 +2460,7 @@ Burni 目前支援的 [FHIR search operations](http://www.hl7.org/fhir/search.ht
 </Callout>
 
 
-# searchParameterQueryHandler (/zh-TW/docs/code-api-documentation/models/fhir/search-parameter-query-handler)
+# searchParameterQueryHandler (/zh-TW/docs/v2/code-api-documentation/models/fhir/search-parameter-query-handler)
 
 
 

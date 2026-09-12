@@ -1,13 +1,40 @@
-# Home (/docs)
+# Burni Documentation Center (/docs)
 
 
 
-# Burni documentation [#burni-documentation]
+# Burni FHIR Server Documentation [#burni-fhir-server-documentation]
 
-# 🚧 **work in progress** [#-work-in-progress]
+Welcome to the official **Burni FHIR Server** documentation portal!
 
-## Getting Started [#getting-started]
+Burni is a flexible and high-performance HL7® FHIR® R4 (v4.0.1) server implementation built with Node.js, Express, and MongoDB, featuring out-of-the-box FHIR resource storage, comprehensive CRUD operations, search parameter resolution, and resource validation.
 
-* Installation
-* Configuration
-* Deploy
+***
+
+## Select Documentation Version [#select-documentation-version]
+
+Browse our documentation according to your current deployment or adoption roadmap:
+
+### 🟢 [v2 (LTS) Stable Release Guide](./docs/v2) [#-v2-lts-stable-release-guide]
+
+**Current Long Term Support Stable Branch (v2.8)**
+
+* Production-grade stability compatible with Node.js 18+ and Express 4
+* Validated with 100% pass rate in AEGIS Touchstone Conformance testing
+* Comprehensive guides for installation, server `.env` configuration, Mongoose resource mapping, and OpenAPI export
+* Recommended for ongoing production maintenance and standard FHIR server deployments
+
+👉 &#x2A;*[Explore v2 (LTS) Documentation](./docs/v2)**
+
+***
+
+### 🚀 [v3 (Preview) Next Generation](./docs/v3) [#-v3-preview-next-generation]
+
+**Sneak Peek at the Upcoming Architecture (v3.0)**
+
+* Upgraded runtime foundation: **Node.js >= 22**, **Express 5**, and **Mongoose 8**
+* **Dual Database & Temporal Architecture**: Segregate active resources from history and provenance audits for peak throughput
+* **Temporal Migration CLI**: Automated database preflight checks and zero-downtime streaming data migration
+* **Enhanced FHIR System Parameters**: Native engine support for `_tag`, `_security`, `_profile`, and full datetime offset precision
+* Modern tooling and CI gates (Mocha 12, Chai 6, ESLint 10 Flat Config)
+
+👉 &#x2A;*[Explore v3 (Preview) Documentation](./docs/v3)**

@@ -1,11 +1,41 @@
 ---
-title: "Home"
-description: ""
+title: "Burni 文件中心"
+description: "Burni FHIR Server 官方多版本文件中心與技術指南"
 ---
-# Burni documentation
-# 🚧 **正在進行中...**
-## 讓我們開始吧
-- 安裝
-- 設定
-- 部屬
 
+# Burni FHIR Server 文件中心
+
+歡迎來到 **Burni FHIR Server** 官方文件中心！
+
+Burni 是一個高效能且靈活的 HL7® FHIR® R4 (v4.0.1) 伺服器實作，以 Node.js、Express 與 MongoDB 為核心，支援開箱即用的 FHIR 資源儲存、完整 CRUD 操作、複雜搜尋參數及資料結構驗證。
+
+---
+
+## 請選擇版本
+
+文件中心支援多版本瀏覽，請根據您的需求選擇合適的版本指南：
+
+### 🟢 [v2 (LTS) 穩定版指南](./zh-TW/docs/v2)
+
+**當前長期支援穩定版本 (v2.8)**
+
+- 穩健成熟的生產環境方案，相容 Node.js 18+ 與 Express 4
+- 通過 AEGIS Touchstone Conformance 測試（100% 通過率）
+- 完整包含安裝步驟、伺服器環境配置、Mongoose 資源映射與 API 規格產生
+- 適用於現有系統維運與標準 FHIR 伺服器部屬
+
+👉 **[進入 v2 (LTS) 穩定版文件](./zh-TW/docs/v2)**
+
+---
+
+### 🚀 [v3 (Preview) 次世代預覽](./zh-TW/docs/v3)
+
+**下一代架構升級搶先預覽 (v3.0)**
+
+- 全面升級至 **Node.js >= 22**、**Express 5** 與 **Mongoose 8**
+- **雙資料庫與時序架構（Dual Database & Temporal Architecture）**：實現核心即時資源與歷史版本/審計軌跡分離儲存
+- **平滑時序遷移工具（Temporal Migration CLI）**：支援預檢（preflight）與零停機串流資料庫搬遷
+- **增強型 FHIR 系統參數**：原生支援 `_tag`、`_security`、`_profile` 與精確時區日期區間檢索
+- 現代化工具鏈與測試防護（Mocha 12、Chai 6、ESLint 10 Flat Config）
+
+👉 **[進入 v3 (Preview) 預覽文件](./zh-TW/docs/v3)**

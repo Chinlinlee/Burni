@@ -1,0 +1,115 @@
+---
+title: "v2 到 v3 遷移指南預覽 (Migration Preview)"
+description: "從 Burni v2.8 升級至 v3 的注意事項、環境需求、雙資料庫與時序資料平滑遷移步驟"
+---
+
+# Burni v2 到 v3 遷移指南預覽
+
+本文檔為規劃從 **Burni v2 (v2.8)** 遷移至 **Burni v3** 的工程團隊提供升級指引與架構變更預覽。
+
+---
+
+## 1. 升級前準備與環境要求
+
+### Node.js 執行環境
+- **v2 要求**：Node.js >= 18
+- **v3 要求**：**Node.js >= 22 (LTS)**
+- 請確保您的生產伺服器、Docker 映像檔或 CI/CD 流程已切換至 Node.js 22+。
+
+### 相依模組重要變更
+1. **Express 5**：
+   - 路由處理函式現在原生支援回傳 Promise，未捕捉之例外會自動傳遞至錯誤處理中介軟體（Error Handler Middleware）。
+   - 若您在客製化外掛（Plugins）中有定義自己的路由中介軟體，請檢查是否相容 Express 5 的路由簽名。
+2. **fhir-tool 5.0.2**：
+   - 替換舊版 `fhir` 套件，模組命名空間全面統一為 `fhir-tool`。
+
+---
+
+## 2. 雙資料庫配置（Dual-Database Setup）
+
+在 v2 中，所有資源與歷史版本皆存放在單一 MongoDB 資料庫中；在 v3 中，建議採用雙資料庫架構以獲得最佳吞吐量。
+
+### 環境變數設定 (`.env`)
+
+在 `.env` 中新增或確認以下連線字串：
+
+```bash
+# 主要資料庫（儲存目前有效資源）
+MONGODB_URI="mongodb://localhost:27017/burni"
+
+# 時序/歷史資料庫（儲存版本歷史與 Provenance 審計紀錄）
+TEMPORAL_MONGODB_URI="mongodb://localhost:27017/burni-temporal"
+```
+
+> **注意**：若未特別指定 `TEMPORAL_MONGODB_URI`，Burni 仍可相容於單一資料庫模式，但建議生產環境分離以發揮完整效能。
+
+---
+
+## 3. 時序資料遷移流程 (Temporal Migration)
+
+Burni v3 提供專屬的命令列工具，協助將現有 v2 資料庫中的歷史版本資料（`*_history`）平滑遷移至時序資料庫。
+
+### 步驟 A：執行環境預檢 (Preflight Check)
+在真正搬遷資料前，先執行預檢指令以確認兩邊資料庫之連線性、磁碟容量與索引狀態：
+
+```bash
+npm run temporal:preflight
+```
+
+該指令會自動檢查：
+- Primary DB 與 Temporal DB 連線狀態
+- 歷史集合（History Collections）之文件數量與體積評估
+- 既有索引結構相容性
+
+### 步驟 B：資料庫初始化與 Provisioning
+為時序資料庫建立所需的集合與標準索引：
+
+```bash
+npm run mongodb:provision
+```
+
+### 步驟 C：執行串流資料搬遷 (Streaming Migration)
+執行線上串流遷移指令，支援批次遷移與進度條回報：
+
+```bash
+npm run temporal:migrate
+```
+
+若要在遷移完成後驗證資料完整性與一致性：
+
+```bash
+npm run mongodb:verify
+```
+
+---
+
+## 4. 搜尋參數成品重構 (Search Parameter Artifacts)
+
+v3 改善了 FHIR 搜尋參數的編譯與快取機制。在升級後，若曾自定義搜尋參數，請重新建置搜尋參數成品：
+
+```bash
+npm run search-parameter:build-artifacts
+```
+
+並可執行驗證工具確認所有參數健康狀態：
+
+```bash
+npm run search-parameter:verify
+```
+
+---
+
+## 5. 自動化測試驗證
+
+完成資料庫遷移與配置後，建議執行完整的測試驗證套件：
+
+```bash
+# 執行快速測試集（非 MongoDB 依賴）
+npm test
+
+# 執行雙資料庫遷移測試集
+npm run test:dual-database-migration
+
+# 執行全資源 CRUD 門禁驗證（驗證 146 項 FHIR 資源行為）
+npm run test:all-resource-crud
+```

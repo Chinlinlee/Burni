@@ -1,0 +1,38 @@
+---
+title: "Burni v2 (LTS) Overview"
+description: "Documentation and guide for Burni v2 LTS (v2.8) release"
+---
+
+# Burni v2 (LTS) Documentation Guide
+
+Welcome to the **Burni v2 (LTS)** documentation. Burni is a high-performance FHIR R4 (v4.0.1) server built with Node.js, Express, and MongoDB / Mongoose.
+
+The v2 series represents our battle-tested, production-ready Long Term Support release, providing mature FHIR resource storage, validation, and search capabilities.
+
+---
+
+## Core Sections
+
+- **[Introduction & Conformance](./v2/introduction)**  
+  Understand Burni's architectural goals, FHIR R4 compliance, and AEGIS Touchstone test results (100% pass rate).
+
+- **[Getting Started](./v2/getting-started/installation)**  
+  Environment setup (Windows / Linux), configuration via `.env`, and production deployment guidelines.
+
+- **[FHIR API Specifications](./v2/fhir-api-documentation/overview)**  
+  Detailed overview of FHIR RESTful interactions (CRUD, vread, history, etc.) and OpenAPI / Swagger generation.
+
+- **[Search Parameters](./v2/search-parameter/overview)**  
+  FHIR search mechanisms, extending custom search parameters, and query optimization.
+
+- **[Internal Code & Models](./v2/code-api-documentation/models/fhir/search-parameter-query-handler)**  
+  Deep dive into Mongoose Schema generation and the internal Search Parameter Query Handler.
+
+- **[FHIR Validator](./v2/fhir-validator)**  
+  Validating FHIR resources using built-in and external validation tooling.
+
+---
+
+## Exploring Next Generation Features
+
+Looking forward to the next generation of Burni? Visit **[Burni v3 (Preview)](../v3)** to explore Express 5, dual-database temporal persistence (Temporal Migration), enhanced FHIR system parameters, and modern tooling!

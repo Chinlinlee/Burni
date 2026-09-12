@@ -1,0 +1,13 @@
+{
+  "title": "v2 (LTS)",
+  "root": true,
+  "pages": [
+    "index",
+    "introduction",
+    "getting-started",
+    "fhir-api-documentation",
+    "search-parameter",
+    "code-api-documentation",
+    "fhir-validator"
+  ]
+}

@@ -34,6 +34,12 @@ function resolveExportDir() {
 function moveExportToDocs(exportDir) {
   fs.mkdirSync(DOCS_DIR, { recursive: true });
 
+  const preservedEntries = new Set(['apidoc', '.git']);
+  for (const entry of fs.readdirSync(DOCS_DIR)) {
+    if (preservedEntries.has(entry)) continue;
+    fs.rmSync(path.join(DOCS_DIR, entry), { recursive: true, force: true });
+  }
+
   for (const entry of fs.readdirSync(exportDir)) {
     const src = path.join(exportDir, entry);
     const dest = path.join(DOCS_DIR, entry);

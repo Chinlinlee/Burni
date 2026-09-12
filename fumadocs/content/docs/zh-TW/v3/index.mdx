@@ -1,0 +1,46 @@
+---
+title: "Burni v3 概覽 (Preview)"
+description: "Burni v3 次世代架構與全新特性亮點"
+---
+
+# Burni v3 (Preview) 全新特性概覽
+
+**Burni v3** 是 Burni FHIR Server 的重大里程碑升級。在繼承 v2 優良的 FHIR R4 合規性與高穩定性的基礎上，v3 全面革新了核心底層架構，針對現代化雲端原生環境、大規模醫療資料儲存以及高效能檢索需求進行了深度重構。
+
+---
+
+## 🌟 核心革新亮點
+
+### 1. 核心技術棧升級
+- **Node.js >= 22 (LTS)**：充分利用現代 JavaScript 語言特性與 V8 引擎的高效能表現。
+- **Express 5 (5.2.1)**：核心框架升級至 Express 5，改善非同步路由錯誤處理（Promise rejection handling）、更安全的 Query Parser，提升 HTTP 處理效率。
+- **Mongoose 8 (8.24+)**：升級至最新世代的 MongoDB ODM，提供更強大的 TypeScript 型別支援與更高效的連線池管理。
+- **fhir-tool 5.0.2**：取代舊版 fhir 套件，採用更輕量且針對 R4 規格高度優化的解析與驗證工具。
+
+### 2. 雙資料庫與時序架構（Dual Database & Temporal Architecture）
+在醫療臨床應用中，FHIR 資源的每一次更新（Update）與刪除（Delete）都必須保留完整的歷史版本與操作記錄（Provenance / History）。然而，將大量的歷史時序資料與目前有效資源（Active Resources）混存於同一個資料庫集合中，會嚴重影響日常查詢效能。
+
+v3 引入了全新的**雙資料庫拓撲架構**：
+- **主要資料庫 (Primary DB)**：專注儲存當前有效的 Active FHIR 資源，索引緊湊、查詢與搜尋極速。
+- **時序歷史資料庫 (Temporal DB)**：專門負責持久化歷史版本（`_history`）、vread 操作與審計 Provenance 資料。
+- **串流遷移與預檢機制**：提供 `temporal:preflight` 與 `temporal:migrate` 命令，支援平滑漸進式搬遷與資料完整性驗證。
+
+### 3. 增強的 FHIR 系統層級搜尋參數（System Search Parameters）
+v3 針對 FHIR 標準定義的系統全域參數進行了全面實作與底層優化：
+- **`_tag`**：支援依據 Coding（系統代碼/值）精準與多條件過濾資源。
+- **`_security`**：提供針對機密等級（Security Labels）的快速權限與合規過濾。
+- **`_profile`**：支援依據 StructureDefinition Canonical URI 檢索符合特定 Profile 的資源。
+- **完整日期與時區精度**：修正 date / dateTime 查詢在跨時區與不同精度（年、月、日、分、秒、毫秒）下的查詢邊界，完全符合 HL7 FHIR 規範。
+
+### 4. 品質保證與現代化工程標準
+- **全資源 CRUD 整合測試門禁（`npm run test:all-resource-crud`）**：涵蓋 FHIR R4 Catalog 全部 146 項資源的自動化 Create / Read / History 驗證。
+- **診斷 CI 閘門（Diagnostics Gate）**：自動化驗證所有搜尋參數的型別定義與執行路徑。
+- **Mocha 12 + Chai 6 + ESLint 10 Flat Config**：全面導入現代化測試與代碼規範體系。
+
+---
+
+## 📚 預覽章節閱讀導覽
+
+- **[v2 到 v3 遷移指南預覽](./v3/migration-preview)**：包含升級前提條件、環境變數調整與資料庫遷移步驟。
+- **[時序與雙資料庫架構解析](./v3/temporal-architecture)**：深入了解主資料庫與時序資料庫的協同運作機制與拓撲設計。
+- **[FHIR 系統搜尋參數指南](./v3/system-search-parameters)**：掌握 `_tag`、`_profile`、`_security` 與日期精度的搜尋用法。

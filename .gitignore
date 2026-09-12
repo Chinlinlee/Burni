@@ -1,6 +1,7 @@
 .vscode/
 node_modules/
 .env
+.next/
 
 
 #ignore temp folder
